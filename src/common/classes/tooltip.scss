@@ -1,0 +1,66 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+
+
+$popuptip-background: #{'rgba(3,4,6,90%)'};
+
+.tooltip {
+	position: absolute;
+	background: $popuptip-background;
+	padding: 8px 16px;
+	z-index: 1000;
+	// left: 16px;
+	// right: 16px;
+	// transform: translateY(-100%) translateY(-18px);
+	border-radius: 4px;
+	transform: translateX(-50%) translateY(-100%) translateY(-5px);
+
+	&--text {
+		white-space: pre;
+		font-size: $font-size-small;
+		color: $color4-lighter;
+	}
+
+	&--left {
+		left: 0;
+		transform: translateY(-100%) translateY(-5px);
+	}
+	&--right {
+		right: 0;
+		transform: translateY(-100%) translateY(-5px);
+	}
+	&--full {
+		right: 0;
+		left: 0;
+		transform: translateY(-100%) translateY(-5px);
+
+		.tooltip--text {
+			white-space: pre-wrap;
+		}
+	}
+
+	&--margin-m {
+		&.tooltip--left {
+			left: 16px;
+		}
+		&.tooltip--right {
+			right: 16px;
+		}
+		&.tooltip--full {
+			right: 16px;
+			left: 16px;
+		}
+	}
+
+	&--caret {
+		position: absolute;
+
+		margin-left: 5px;
+		border-width: 5px;
+		border-style: solid;
+		transform: translateY(-5px) translateX(-5px);
+		border-color: $popuptip-background transparent transparent transparent;
+
+	}
+}

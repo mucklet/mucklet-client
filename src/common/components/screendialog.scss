@@ -1,0 +1,35 @@
+@import '~scss/variables';
+
+.screendialog {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+	width: 100vw;
+
+	&--container {
+		width: 90%;
+		max-width: 280px;
+		padding: 14px 0;
+
+		&.wide {
+			max-width: 800px;
+		}
+	}
+
+	&--head {
+		padding-bottom: 14px;
+		margin-bottom: 12px;
+		border-bottom: 1px solid $color2;
+		h2 {
+			margin: 0;
+			padding: 8px 16px 8px 0;
+		}
+	}
+
+	&--close.iconbtn {
+		float: right;
+		background: $color1-light;
+	}
+}
+

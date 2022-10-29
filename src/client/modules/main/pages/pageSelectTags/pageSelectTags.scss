@@ -1,0 +1,44 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.pageselecttags {
+	padding: 16px;
+	margin: 0;
+
+	&--custom {
+		.pageselecttags-tag--label {
+			font-style: italic;
+		}
+	}
+}
+
+.pageselecttags-section {
+	&--title {
+		font-size: $font-size-large;
+	}
+}
+
+.pageselecttags-tag {
+	&--label {
+		cursor: pointer;
+
+		&:hover {
+			color: $color4-lighter;
+		}
+
+		&.roletag {
+			color: $color6;
+			&:hover {
+				color: $color6-hover;
+			}
+		}
+	}
+
+	> * {
+		line-height: 16px;
+	}
+
+	&--key {
+		font-size: $font-size-small;
+	}
+}

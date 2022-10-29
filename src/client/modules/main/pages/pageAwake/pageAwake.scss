@@ -1,0 +1,97 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.pageawake {
+	padding: 14px 14px 16px 14px;
+
+	&--tools {
+		display: flex;
+		padding-bottom: 8px;
+
+		&::after {
+			content: " ";
+			display: block;
+			height: 0;
+			clear: both;
+		}
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--awakeheader {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&--awaketools {
+		margin-left: 12px;
+	}
+
+	&--watched {
+		padding-bottom: 4px;
+	}
+
+	&--unwatched {
+		padding-top: 4px;
+		border-top: 1px solid $color2;
+		// > *:first-child {
+		// 	padding-top: 4px;
+		// 	border-top: 1px solid $color2;
+		// }
+	}
+
+	&--filter {
+		position: relative;
+
+		> input {
+			padding-right: 38px;
+		}
+	}
+
+	&--filter-clear.iconbtn {
+		@include btn-style(none, $color1-lighter, $color1-lightest, $color4-light, $color4-lighter);
+		position: absolute;
+		right: 3px;
+		top: 3px;
+	}
+}
+
+.pageawake-char {
+	padding: 2px 0;
+
+	// &.nomatch {
+	// 	opacity: 0.8;
+	// }
+
+	&--name {
+		@include transition(color 1s);
+	}
+
+	&--note i {
+		@include transition(opacity 0.3s);
+	}
+
+	&--note:not(.hasnote) i {
+		opacity: 0;
+	}
+
+	&--badge:hover &--note i {
+		opacity: 1;
+	}
+
+	&--badge:hover &--note:not(.hasnote) i {
+		opacity: 0.6;
+	}
+
+	&--badge:hover &--note:hover:not(.hasnote) i {
+		opacity: 1;
+	}
+
+	&--status {
+		color: mix($color4, $color2, 20%);
+		font-style: italic;
+	}
+}

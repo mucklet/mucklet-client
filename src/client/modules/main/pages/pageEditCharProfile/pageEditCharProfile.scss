@@ -1,0 +1,39 @@
+@import '~scss/variables';
+
+.pageeditcharprofile {
+	padding: 16px;
+	margin: 0;
+
+	&--tools {
+		padding-bottom: 8px;
+
+		&::after {
+			content: " ";
+			display: block;
+			height: 0;
+			clear: both;
+		}
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--image {
+		display: block;
+		border-radius: 10px;
+		width: 140px;
+		height: 140px;
+		background: $color1-lighter;
+
+		&:not(.placeholder) {
+			cursor: pointer;
+		}
+	}
+
+	&--imagebtn {
+		> .btn + .btn {
+			margin-top: 8px;
+		}
+	}
+}

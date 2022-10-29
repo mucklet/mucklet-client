@@ -1,0 +1,18 @@
+# dependencies
+node_modules
+/coverage
+
+# local config
+/webpack.alias.js
+
+# production
+build
+
+# misc
+.DS_Store
+
+npm-debug.log
+yarn-error.log
+yarn.lock
+.yarnclean
+.vscode

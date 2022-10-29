@@ -1,0 +1,13 @@
+@import '~scss/variables';
+
+.dialogsetroomowner {
+	max-width: 380px;
+
+	&--fullname {
+		display: block;
+		margin-bottom: 12px;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 20px;
+	}
+}

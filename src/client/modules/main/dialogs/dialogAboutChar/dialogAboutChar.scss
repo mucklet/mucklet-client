@@ -1,0 +1,33 @@
+@import '~scss/variables';
+
+.dialogaboutchar {
+	max-width: 480px;
+
+	&--fullname {
+		font-family: $font-text;
+		color: $color3;
+		font-size: $font-size-large;
+		line-height: 24px;
+	}
+
+	&--genderspecies {
+		font-size: $font-size-small;
+		line-height: 20px;
+	}
+
+	&--status {
+		font-size: $font-size-small;
+		line-height: 20px;
+	}
+
+	&--lastawake, &--puppeteer {
+		font-size: $font-size-small;
+	}
+
+	&--about {
+		max-height: 160px;
+		overflow-x: hidden;
+		margin-right: -13px;
+		padding-right: 13px;
+	}
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1">
+	<meta name="description" content="<%= APP_DESCRIPTION %>">
+	<link href="/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/fonts/fonts.css" rel="stylesheet">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+	<style>
+		.greeting { display: flex; justify-content: center; align-items: center; min-height: 100vh; width: 100vw; }
+		.greeting-container { width: 90%; max-width: 720px; padding: 20px 0; }
+		.greeting-header {
+			padding-bottom: 20px;
+			margin: 0 0 18px 0;
+			border-bottom: 1px solid #c1a657;
+		}
+		.greeting-foot { padding-top: 24px; }
+		.greeting-btn { max-width: 280px; }
+		@media screen and (max-width: 600px) {
+			.greeting-foot { padding-top: 16px; }
+			.greeting-btn { max-width: 100%; }
+		}
+	</style>
+	<div class="greeting">
+		<div class="greeting-container">
+			<h1 class="greeting-header"><img src="/img/paw.svg" style="height: 50px; margin-right: 22px;">Wolfery<span style="font-size:62%">.com</span></h1>
+			<img src="/img/miranda_269x506.png" style="float:right; max-width: 50%;">
+			<div class="greeting-body common--formattext">
+			<p>Welcome to Wolfery!</p>
+			<h3 class="margin-bottom-m">What is this?</h3>
+			<p>A textual world of roleplay. Create a character, wake them up, and join in.</p>
+			<h3 class="margin-bottom-m">Is it a roleplay chat?</h3>
+			<p>Yes. But it has more in common with the textual MUCK games of old, where you explore and create a world for you to roleplay in.</p>
+			<h3 class="margin-bottom-m">Is there an age limit?</h3>
+			<p>You must be at least be 18 to register. Any type of roleplay is allowed, including sexual roleplay. Some characters may also have explicit descriptions or images.</p>
+			<h3 class="margin-bottom-m">How to get started?</h3>
+			<p>Click the button below, register an account, and create a character. Once inside the realm, you can always find friendly people willing to help you out.</p>
+			</div>
+			<div class="greeting-foot"><a class="greeting-btn btn large primary full-width" href="/"><span>Go to login</span></a></div>
+		</div>
+	</div>
+</body>
+</html>

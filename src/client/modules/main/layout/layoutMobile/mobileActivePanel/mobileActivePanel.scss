@@ -1,0 +1,33 @@
+@import '~scss/variables';
+
+.mobileactivepanel {
+	flex: 1 1 0px;
+	background-color: $color1;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	width: 100%;
+
+	&--main {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 0px;
+	}
+
+	&--logpanel {
+		flex: 1 1 0px;
+	}
+
+	&--consolepanel {
+		flex: 0 0 auto;
+	}
+}
+
+.mobileactivepanel-placeholder {
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+	padding-top: 32px;
+	text-align: center;
+}

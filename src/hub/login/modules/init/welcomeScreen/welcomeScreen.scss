@@ -1,0 +1,22 @@
+@import '~scss/variables';
+
+.welcomescreen {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100vw;
+
+	&--container {
+		width: 90%;
+		max-width: 320px;
+		padding: 14px 0;
+	}
+
+	&--header {
+		text-align: center;
+	}
+	&--content {
+		text-align: center;
+	}
+}

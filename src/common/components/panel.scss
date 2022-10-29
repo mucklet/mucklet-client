@@ -1,0 +1,168 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.simplebar-content-wrapper {
+	overflow: auto;
+}
+
+.simplebar-scrollbar::before {
+	background-color: $color4;
+}
+
+.panel {
+	height: 100%;
+	position: relative;
+	transform: translateX(0%);
+	display: flex;
+	flex-direction: column;
+
+	&--container {
+		height: 100%;
+		position: relative;
+	}
+
+	&--headercont {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		border-bottom: 1px solid $black;
+	}
+
+	&--header {
+		flex: 0 0 42px;
+		padding: 0 20px;
+	}
+
+	&--subheader {
+		flex: 1 1 0px;
+	}
+
+	&--footer {
+		flex: 0 0 auto;
+		border-top: 1px solid $color1;
+	}
+
+	&--btncont {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+	}
+
+	&--btn {
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	&--main {
+		flex: 1 1 0;
+		overflow: hidden;
+	}
+
+	&--content {
+		height: 100%;
+		// /* Hide scrollbar for Chrome, Safari and Opera */
+		// &::-webkit-scrollbar {
+		// 	display: none;
+		// }
+
+		// /* Hide scrollbar for IE, Edge and Firefox */
+		// -ms-overflow-style: none;  /* IE and Edge */
+		// scrollbar-width: none;  /* Firefox */
+
+		// overflow-x: auto;
+	}
+
+	&--title {
+		text-align: center;
+	}
+
+	&--titletxt {
+		margin: 0;
+		line-height: 42px;
+	}
+
+	&--toggle {
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		z-index: 10;
+		> i {
+			padding-right: 2px;
+		}
+		&:focus {
+			box-shadow: none;
+		}
+		&.panel--notoggle {
+			display: none;
+		}
+	}
+
+	&.panel--align-right {
+		.panel--toggle > i {
+			transform: rotate(-180deg);
+		}
+	}
+}
+
+.panel--container.panel--hide {
+
+	.panel {
+		cursor: pointer;
+		&:hover {
+			background-color: $color1-lighter;
+		}
+	}
+
+	.panel.panel--align-left {
+		transform: translateX(-100%) translateX(24px);
+		.panel--toggle > i {
+			transform: rotate(-180deg);
+		}
+	}
+	.panel.panel--align-right {
+		transform: translateX(100%) translateX(-24px);
+		.panel--toggle > i {
+			transform: rotate(0deg);
+		}
+	}
+
+	.panel--toggle {
+		width: 20px;
+		left: 2px;
+		> i {
+			transform: rotate(-180deg);
+		}
+	}
+	.panel--headercont, .panel--main {
+		opacity: 0;
+	}
+}
+
+.panel--container.panel--hidden {
+	.panel {
+		width: 24px;
+	}
+	.panel--header {
+		padding: 4px 0px;
+	}
+}
+
+.panel--container:not(.panel--instant) {
+
+	.panel {
+		@include transition(transform 200ms ease-out, background-color 200ms linear);
+	}
+
+	.panel--toggle {
+		@include transition(border-color 0.2s, color 0.2s, background-color 0.2s, width 200ms ease-out, left 200ms ease-out);
+		> i {
+			@include transition(transform 200ms ease-out);
+		}
+	}
+
+	.panel--headercont, .panel--main {
+		@include transition(opacity 200ms ease-out);
+	}
+}
+

@@ -1,0 +1,115 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.pageroom {
+	padding: 8px 16px 16px 16px;
+	margin: 0;
+
+	&--tools {
+		&::after {
+			content: " ";
+			display: block;
+			height: 0;
+			clear: both;
+		}
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--image-cont {
+		padding-top: 8px;
+	}
+
+	&--image {
+		cursor: pointer;
+		display: block;
+		border-radius: 20px;
+		width: 286px;
+		height: 286px;
+	}
+
+	&--name {
+		padding: 10px 0 4px 0;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 20px;
+	}
+
+	&--exitsheader, &--inroomheader {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&--exitstools, &--inroomtools {
+		margin-left: 12px;
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--sections {
+		position: relative;
+		top: -4px;
+		padding-bottom: 4px;
+	}
+}
+
+.pageroom-char, .pageroom-exit {
+	padding: 2px 0;
+}
+
+.pageroom-char {
+	position: relative;
+
+	&--cont {
+		margin-left: -8px;
+		border-left: 4px solid transparent;
+		padding-left: 4px;
+		@include transition(border 0.5s);
+
+		&.looking {
+			border-left: 4px solid $color2;
+		}
+	}
+
+	&--looking {
+		color: $color4-light;
+		font-size: $font-size-tiny;
+		position: absolute;
+		top: 4px;
+		right: 8px;
+	}
+
+	&--note i {
+		@include transition(opacity 0.3s);
+	}
+
+	&--note:not(.hasnote) i {
+		opacity: 0;
+	}
+
+	&--badge:hover &--note i {
+		opacity: 1;
+	}
+
+	&--badge:hover &--note:not(.hasnote) i {
+		opacity: 0.6;
+	}
+
+	&--badge:hover &--note:hover:not(.hasnote) i {
+		opacity: 1;
+	}
+
+	&--name {
+		@include transition(color 1s);
+	}
+
+	&--status {
+		color: mix($color4, $color2, 20%);
+		font-style: italic;
+	}
+}

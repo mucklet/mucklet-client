@@ -1,0 +1,64 @@
+/* General */
+$font-size: 16px;
+$font-size-large: 20px;
+$font-size-small: 14px;
+$font-size-tiny: 12px;
+$font-size-micro: 11px;
+
+/* Colors */
+$white: #fff;
+$black: #000;
+$color1: rgba(22, 25, 38, 1);
+$color2: rgba(193, 166, 87, 1);
+$color3: rgba(255, 252, 242, 1);
+$color4: lighten(rgba(125, 129, 140, 1), 8%);
+$color5: rgba(201, 96, 54, 1);
+$color6: #4a9fc3;
+/* Other brands */
+$color-google:#d9534f;
+/* Shadow */
+$shadow: rgba(0, 0, 0, 0.3);
+
+/* Variants */
+$color1-light: lighten($color1, 4%);
+$color1-lighter: lighten($color1, 8%);
+$color1-lightest: lighten($color1, 14%);
+$color1-placeholder: desaturate(lighten($color1, 24%), 15%);
+$color1-placeholder-light: desaturate(lighten($color1, 34%), 15%);
+$color1-dark: darken($color1, 4%);
+
+$color4-light: lighten($color4, 4%);
+$color4-lighter: lighten($color4, 8%);
+$color4-lightest: lighten($color4, 16%);
+$color4-lightestest: lighten($color4, 20%);
+
+$color4-semidark: darken($color4, 8%);
+$color4-dark: darken($color4, 16%);
+$color4-darker: darken($color4, 24%);
+
+$color3-dark: darken($color3, 16%);
+
+$color5-light: lighten($color5, 6%);
+$color5-dark: darken($color5, 10%);
+
+$color6-hover: darken($color6, 8%);
+$color6-active: darken($color6, 16%);
+
+$color-google-hover: darken($color-google, 8%);
+$color-google-active: darken($color-google, 16%);
+
+
+/* Log colors */
+$log-error: #9a593e;
+$log-cmd: $color2;
+$log-attr: $color2;
+$log-listitem: mix($color6, $color4, 50%);
+$log-delim: $color4;
+$log-text: $color4-lightest;
+$log-entityid: $color4-lightest;
+
+/* Font families */
+// @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Open+Sans&display=swap');
+$font-header: 'Amatic SC', cursive;
+$font-text: 'Open Sans', sans-serif;
+$font-code: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;

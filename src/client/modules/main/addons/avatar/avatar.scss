@@ -1,0 +1,69 @@
+@import '~scss/variables';
+
+.avatar {
+	font-size: 24px;
+	line-height: 24px;
+	width: 48px;
+	height: 48px;
+	border-radius: 4px;
+	font-weight: bold;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	background: $color1-lightest;
+	> img {
+		width: 48px;
+		height: 48px;
+
+		&.clickable {
+			cursor: pointer;
+		}
+	}
+
+	&.avatar--tiny {
+		font-size: 12px;
+		line-height: 12px;
+		width: 24px;
+		height: 24px;
+		> img {
+			width: 24px;
+			height: 24px;
+		}
+	}
+
+	&.avatar--small {
+		font-size: 16px;
+		line-height: 16px;
+		width: 32px;
+		height: 32px;
+		> img {
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	&.avatar--large {
+		font-size: 32px;
+		line-height: 32px;
+		width: 64px;
+		height: 64px;
+		border-radius: 6px;
+		> img {
+			width: 64px;
+			height: 64px;
+		}
+	}
+
+	&.avatar--xlarge {
+		font-size: 64px;
+		line-height: 64px;
+		width: 140px;
+		height: 140px;
+		border-radius: 10px;
+		> img {
+			width: 140px;
+			height: 140px;
+		}
+	}
+}

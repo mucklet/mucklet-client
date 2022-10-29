@@ -1,0 +1,21 @@
+@import '~scss/variables';
+
+.dialogtag {
+	max-width: 420px;
+
+	&--desc {
+		transition: color 0.2s, background-color 0.2s;
+
+		&:disabled {
+			color: $color4;
+			background: rgba($color4-lighter, 0.1);
+		}
+	}
+
+	&--pref-dislike > .togglebox.value-1 > div {
+		background: $color5;
+		&:hover {
+			background: lighten($color5, 5%);
+		}
+	}
+}

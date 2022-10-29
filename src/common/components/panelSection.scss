@@ -1,0 +1,53 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.panelsection {
+	&--head {
+		position: relative;
+		padding-bottom: 6px;
+		display: flex;
+		flex-direction: row;
+	}
+
+	&:not(.notoggle) > .panelsection--head {
+		cursor: pointer;
+	}
+
+	&--title {
+		flex: 0 0 auto;
+	}
+
+	&--required {
+		flex: 1 1 0;
+		color: $color5;
+	}
+
+	&--popuptip {
+		flex: 0 0 auto;
+		padding-right: 2px;
+	}
+
+	&--caret {
+		padding-left: 1px;
+		font-size: $font-size;
+		color: $color2;
+		position: absolute;
+		bottom: 9px;
+		right: 0;
+		@include transition(transform 0.2s linear);
+	}
+
+	&.open {
+		> .panelsection--head > .panelsection--caret {
+			-moz-transform: rotate(90deg);
+			-webkit-transform: rotate(90deg);
+			transform: rotate(90deg);
+		}
+	}
+
+	&.small {
+		> .panelsection--head > .panelsection--title > h3 {
+			font-size: 20px;
+		}
+	}
+}

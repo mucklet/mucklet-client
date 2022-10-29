@@ -1,0 +1,16 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.help, .help-category {
+	@include log-pad(huge);
+
+	&--desc {
+		p {
+			@include log-pad();
+		}
+	}
+}
+
+.help-relatedtopic, .help-topic {
+	@include log-pad();
+}

@@ -1,0 +1,8 @@
+@import '~scss/variables';
+
+.errorscreendialog {
+	&--message {
+		font-style: italic;
+		white-space: pre-wrap;
+	}
+}

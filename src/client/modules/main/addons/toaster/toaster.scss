@@ -1,0 +1,71 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.toaster {
+	position: fixed;
+	z-index: 800;
+	bottom: 4px;
+	right: 14px;
+	width: 360px;
+}
+
+$success-background: #{'rgba(39,67,42,90%)'};
+$info-background: #{'rgba(48,55,83,90%)'};
+$warn-background: #{'rgba(73,40,28,90%)'};
+$white-transparent: #{'rgba(255,255,255,6%)'};
+
+.toaster-toast {
+	padding-bottom: 10px;
+
+	.toaster-toast--cont {
+		box-shadow: 2px 2px 8px 0px #000;
+		padding: 8px 16px;
+		position: relative;
+
+		transition: background-color 0.3s;
+
+
+		&.info {
+			background: $info-background;
+			&:hover {
+				background: $color1-lightest;
+			}
+		}
+
+		&.success {
+			background: $success-background;
+			&:hover {
+				background: #27432a;
+			}
+		}
+
+		&.warn {
+			background: $warn-background;
+			&:hover {
+				background: rgba(73,40,28,1);
+			}
+		}
+
+		&.clickable {
+			cursor: pointer;
+		}
+	}
+
+	&--head {
+		margin: 8px 0;
+		h2 {
+			margin: 0;
+		}
+	}
+
+	&--content {
+		margin: 8px 0;
+	}
+
+	&--close {
+		position: absolute;
+		top: 4px;
+		right: 4px;
+		@include btn-style(none, $white-transparent, $white-transparent, $color4-light, $color4-lighter);
+	}
+}

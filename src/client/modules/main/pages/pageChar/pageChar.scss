@@ -1,0 +1,54 @@
+@import '~scss/variables';
+
+.pagechar {
+	padding: 8px 16px 16px 16px;
+	margin: 0;
+
+	&--tools {
+		display: flex;
+
+		&::after {
+			content: " ";
+			display: block;
+			height: 0;
+			clear: both;
+		}
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--image-cont {
+		padding-top: 8px;
+	}
+
+	&--image {
+		cursor: pointer;
+		display: block;
+		border-radius: 20px;
+		width: 286px;
+		height: 286px;
+	}
+
+	&--fullname {
+		padding: 10px 0 4px 0;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 20px;
+	}
+
+	&--notset {
+		font-style: italic;
+		font-size: $font-size;
+		color: $color4-dark;
+	}
+
+	&--tags {
+		padding-top: 6px;
+	}
+}
+
+.pagechar--sleep {
+	margin-left: auto;
+}

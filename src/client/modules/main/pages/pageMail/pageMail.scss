@@ -1,0 +1,48 @@
+@import '~scss/variables';
+
+
+.pagemail {
+	padding: 12px 0 16px 0;
+
+	&--tool-btn {
+		position: relative;
+	}
+
+	&--head {
+		padding: 0 14px 8px;
+		font-size: $font-size-small;
+	}
+
+	&--nomail {
+		font-style: italic;
+	}
+}
+
+.pagemail-mail {
+	padding: 2px 14px;
+
+	&--badge.unread {
+		background: darken($color1, 6%);
+
+		&:not(:disabled) {
+			&:hover, &:focus, &:active {
+				background: darken($color1, 9%);
+			}
+		}
+	}
+}
+
+.pagemail-mailcontent {
+	&--text {
+		padding-top: 6px;
+	}
+
+	&--ooc {
+		font-size: 75%;
+		color: $color4;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+		top: -0.7em;
+	}
+}

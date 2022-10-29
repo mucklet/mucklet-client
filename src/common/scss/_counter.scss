@@ -1,0 +1,31 @@
+.counter {
+	position: absolute;
+	background: $color4;
+	color: $black;
+	top: -3px;
+	right: -3px;
+	height: 16px;
+	min-width: 16px;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 12px;
+	border-radius: 8px;
+	padding: 2px;
+	transition: 0.2s opacity, 0.2s background-color;
+
+	&.hide {
+		opacity: 0;
+	}
+
+	&.alert {
+		background: $color5;
+	}
+
+	&.small {
+		height: 8px;
+		min-width: 8px;
+		border-radius: 4px;
+		top: 0px;
+		right: 0px;
+	}
+}

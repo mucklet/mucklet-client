@@ -1,0 +1,49 @@
+@import '~scss/variables';
+
+.imgmodal {
+	background: #{'rgba(0,0,0,50%)'};
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 2000;
+	animation-name: imgmodal-opacity;
+	animation-duration: 0.3s;
+	opacity: 1;
+
+
+	&--img {
+		background: $color1-lighter;
+		position: absolute;
+		max-width: 90%;
+		max-height: 90%;
+
+		top: 50%;
+		left: 50%;
+		animation-name: imgmodal-zoom;
+		animation-duration: 0.3s;
+		transform: translateX(-50%) translateY(-50%);
+		-webkit-box-shadow: 0px 0px 20px 6px #000;
+		box-shadow: 0px 0px 20px 6px #000;
+	}
+
+	@keyframes imgmodal-zoom {
+		from {
+			transform: translateX(-50%) translateY(-50%) scale(0.9);
+		}
+		to {
+			transform: translateX(-50%) translateY(-50%) scale(1);
+		}
+	}
+
+	@keyframes imgmodal-opacity {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+}

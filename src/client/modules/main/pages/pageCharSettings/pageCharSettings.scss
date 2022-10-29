@@ -1,0 +1,12 @@
+@import '~scss/variables';
+
+.pagecharsettings {
+	padding: 16px 14px;
+
+	&--name {
+		padding: 6px 0 12px 0;
+		font-family: $font-text;
+		color: $color3;
+		font-size: $font-size;
+	}
+}

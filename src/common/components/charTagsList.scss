@@ -1,0 +1,106 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.chartagslist {
+	overflow: hidden;
+
+	&--list {
+		margin: -2px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	&--item {
+		flex: 0 0 auto;
+		margin: 3px 2px;
+	}
+
+	&--tag {
+		position: relative;
+		line-height: 16px;
+		font-size: $font-size-tiny;
+		text-align: left;
+		white-space: nowrap;
+		padding: 4px 6px 4px 4px;
+		color: $color4;
+		border: 1px solid $color4;
+		border-radius: 4px;
+		border-left: 13px solid;
+
+		&::before {
+			font-family: FontAwesome;
+			font-style: normal;
+			position: absolute;
+			color: $color1;
+			left: -11px;
+			font-size: 10px;
+		}
+
+		&.like::before {
+			content: "\f00c";
+		}
+
+		&.dislike {
+			color: $color5;
+			border-color: $color5;
+			&::before {
+				content: "\f05e";
+			}
+		}
+
+		&.title {
+			color: $color6;
+			border-color: $color6;
+			&::before {
+				content: "\f132";
+				left: -10px;
+			}
+		}
+
+		&.hasdesc {
+			cursor: help;
+		}
+
+		&.custom {
+			font-style: italic;
+		}
+
+		&.editable {
+			cursor: pointer;
+			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+
+			&:hover {
+				color: $color4-lighter;
+				border-color: $color4-lighter;
+				&.dislike {
+					color: $color5-light;
+					border-color: $color5-light;
+				}
+				&.title {
+					color: $color6-hover;
+					border-color: $color6-hover;
+				}
+				// background: $color1;
+			}
+		}
+	}
+
+	&--delete {
+		margin: -1px -3px -1px 2px;
+		text-decoration: none;
+		border: 0;
+		padding: 0;
+		border-radius: 2px;
+		transition: border-color 0.2s, color 0.2s, background-color 0.2s, opacity 0.4s;
+		cursor: pointer;
+		font-size: 12px;
+		width: 17px;
+		height: 17px;
+		text-align: center;
+		@include btn-style(none, $color1-lightest, $color1-lightest, $color4, $color4-light);
+		> i {
+			line-height: 15px;
+		}
+	}
+}

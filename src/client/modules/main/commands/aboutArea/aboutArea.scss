@@ -1,0 +1,12 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.aboutarea {
+	@include log-pad(huge);
+
+	&--desc {
+		p {
+			@include log-pad();
+		}
+	}
+}

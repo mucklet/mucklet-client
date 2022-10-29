@@ -1,0 +1,26 @@
+@import '~scss/variables';
+
+.pageplayersettings {
+	padding: 16px 14px;
+
+	&--tool {
+		flex: 0 0 auto;
+		margin-left: 4px;
+	}
+
+	&--tool-btn {
+		position: relative;
+	}
+
+	&--name {
+		color: $color3;
+		font-size: $font-size;
+	}
+
+	&--name, &--email, &--username {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}

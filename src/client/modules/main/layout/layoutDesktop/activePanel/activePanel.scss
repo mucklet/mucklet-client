@@ -1,0 +1,42 @@
+@import '~scss/variables';
+
+.activepanel {
+	flex: 1 1 0px;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+
+
+	&--charpanel {
+		flex: 0 0 auto;
+	}
+
+	&--main {
+		position: relative;
+		flex: 1 1 0px;
+		background-color: $color1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--logpanel {
+		flex: 1 1 0px;
+	}
+
+	&--consolepanel {
+		flex: 0 0 auto;
+	}
+
+	&--roompanel {
+		flex: 0 0 auto;
+	}
+}
+
+.activepanel-placeholder {
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+	padding-top: 32px;
+	text-align: center;
+}

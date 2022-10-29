@@ -1,0 +1,24 @@
+@import '~scss/variables';
+
+.pageeditroom {
+	padding: 16px;
+	margin: 0;
+
+	&--image {
+		display: block;
+		border-radius: 10px;
+		width: 140px;
+		height: 140px;
+		background: $color1-lighter;
+
+		&:not(.placeholder) {
+			cursor: pointer;
+		}
+	}
+
+	&--imagebtn {
+		> .btn + .btn {
+			margin-top: 8px;
+		}
+	}
+}

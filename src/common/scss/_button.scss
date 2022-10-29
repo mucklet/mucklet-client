@@ -1,0 +1,248 @@
+//-------------------------------------------------------------------
+// Button Styles & Classes
+//-------------------------------------------------------------------
+
+// Set Generic <button> and .btn styling.
+// use .btn on any element to give it the styling of a button
+.btn, .iconbtn {
+	font-size: $font-size;
+	font-family: $font-text;
+	text-decoration: none;
+	border: 0;
+	padding: 0;
+	border-radius: 6px; // rounded corners
+	display: inline-block; // Enables non-inline-block elements like <a>s to be buttons
+	text-align: center;
+	transition: border-color 0.2s, color 0.2s, background-color 0.2s, opacity 0.4s;
+	&:not(:disabled) {
+		cursor: pointer;
+	}
+
+	&:disabled {
+		opacity: 0.3;
+	}
+}
+
+button:focus {
+	outline: 0;
+	&:not(.nooutline) {
+		box-shadow: 0 0 4px 1px $color2;
+	}
+}
+
+.btn {
+	@include btn-style;
+	white-space: nowrap;
+	padding: 8px 24px 9px;
+	position: relative;
+}
+
+.btn > span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: normal;
+}
+
+.btn > .fa, .btn > * > .fa, .iconbtn > .fa, .iconbtn > * > .fa {
+	position: relative;
+}
+
+.btn > .fa + *, .btn > * > .fa + * {
+	padding-left: 14px;
+}
+
+.btn.full-width {
+	width: 100%;
+}
+
+// .btn.icon-left .fa {
+// 	padding: 0 7px;
+// 	left: -16px;
+// }
+
+
+.btn.icon-left {
+	display: flex;
+	align-items: center;
+
+	> .fa, > * > .fa {
+		flex: 0 0 auto;
+	}
+	> .fa + *, > * > .fa + * {
+		flex: 1 1 0px;
+	}
+}
+
+
+// Set colors for your buttons, see the button mixin at the top of this
+// file to see how the hex colors are allocated
+.btn.primary, .iconbtn.primary {
+	@include btn-style($color6, $color6-hover, $color6-active, $color1-light, $color1-lighter);
+}
+
+.btn.secondary {
+	@include btn-style($color4, darken($color4-light, 8%), darken($color4, 16%), $color1-light, $color1-lighter);
+}
+
+.btn.warning {
+	@include btn-style($color5, darken($color5, 8%), darken($color5, 16%), $black, $black);
+}
+
+.btn.google {
+	@include btn-style($color-google, $color-google-hover, $color-google-active, $white, $white);
+}
+
+.btn.light, .iconbtn.light {
+	@include btn-style(none, $color1-lightest, $color1-lightest, $color4-light, $color4-lighter);
+}
+
+.btn.lighten, .iconbtn.lighten {
+	@include btn-style(none, rgba($white, 0.07), rgba($white, 0.10), $color4-light, $color4-lighter);
+}
+
+.btn.darken, .iconbtn.darken {
+	@include btn-style(rgba($black, 0.3), rgba($black, 0.5), rgba($black, 0.6), $color4-light, $color4-lighter);
+}
+
+.btn.solid, .iconbtn.solid {
+	@include btn-style($color1-lighter, $color1-lightest, $color1-lightest, $color4-light, $color4-lighter);
+}
+
+// Add this class to a <button> or element with a .btn class
+// to create a larger sized button.
+.btn.large {
+	font-size: $font-size-large;;
+	border-radius: 8px; /* rounded corners */
+	padding: 12px 21px 13px;
+
+	> .fa, > * > .fa {
+		font-size: 24px;
+	}
+	> .fa + *, > * > .fa + * {
+		padding-left: 10px;
+	}
+}
+
+
+// Add this class to a <button> or element with a .btn class
+// to create a medium sized button.
+.btn.medium {
+	font-size: $font-size;
+	border-radius: 4px; /* rounded corners */
+	padding: 0 10px;
+	height: 32px;
+
+	> .fa, > * > .fa {
+		width: 20px;
+		font-size: 18px;
+	}
+	> .fa + *, > * > .fa + * {
+		padding-left: 10px;
+	}
+}
+
+.btn.small {
+	font-size: $font-size-small;
+	border-radius: 3px; /* rounded corners */
+	padding: 0 8px;
+	height: 28px;
+
+	> .fa, > * > .fa {
+		width: 16px;
+		font-size: 16px;
+	}
+	> .fa + *, > * > .fa + * {
+		padding-left: 10px;
+	}
+}
+
+.btn.tiny {
+	font-size: 13px;
+	border-radius: 3px; /* rounded corners */
+	padding: 0 6px;
+	height: 24px;
+
+	> .fa, > * > .fa {
+		width: 16px;
+		font-size: 14px;
+	}
+	> .fa + *, > * > .fa + * {
+		padding-left: 4px;
+	}
+}
+
+
+.iconbtn {
+	font-size: 42px;
+	width: 52px;
+	height: 52px;
+	text-align: center;
+	@include btn-style(none, $color1-lighter, $color1-lightest, $color4, $color4-light);
+	> i {
+		line-height: 51px;
+	}
+}
+
+.iconbtn.medium {
+	font-size: 22px;
+	border-radius: 4px;
+	width: 32px;
+	height: 32px;
+	> i {
+		line-height: 32px;
+	}
+	&.order {
+		flex: 1 1 0;
+		font-size: 16px;
+		height: 16px;
+		line-height: 16px;
+		overflow: hidden;
+		> i {
+			line-height: 14px;
+		}
+	}
+}
+
+.iconbtn.small {
+	font-size: 18px;
+	border-radius: 4px;
+	width: 28px;
+	height: 28px;
+	> i {
+		line-height: 27px;
+	}
+
+}
+
+.iconbtn.tiny {
+	font-size: 18px;
+	border-radius: 3px;
+	width: 24px;
+	height: 24px;
+	> i {
+		line-height: 23px;
+	}
+}
+
+.iconbtn.puny {
+	font-size: 12px;
+	border-radius: 2px;
+	width: 16px;
+	height: 16px;
+	> i {
+		line-height: 15px;
+	}
+}
+
+.iconbtn.smallicon {
+	font-size: 18px;
+}
+
+.iconbtn.tinyicon {
+	font-size: 14px;
+}
+
+.orderbtn {
+	display: flex;
+	flex-direction: column;
+}

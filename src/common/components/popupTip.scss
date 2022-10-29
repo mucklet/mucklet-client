@@ -1,0 +1,98 @@
+@import '~scss/variables';
+
+$popuptip-background: #{'rgba(3,4,6,90%)'};
+
+.popuptip {
+	display: block;
+	position: relative;
+
+	&--tip {
+		position: absolute;
+		z-index: 100;
+		background: $popuptip-background;
+		padding: 8px 16px;
+		border-radius: 4px;
+	}
+
+	&--text {
+		white-space: pre;
+		font-size: $font-size-small;
+	}
+
+	&.popuptip--position-left {
+		.popuptip--tip {
+			top:50%;
+			left: 0;
+			transform: translateY(-50%) translateX(-100%) translateX(-10px);
+
+			&::after {
+				content: "";
+				position: absolute;
+				top: 50%;
+				left: 100%;
+				margin-top: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: transparent transparent transparent $popuptip-background;
+			}
+		}
+	}
+
+	&.popuptip--position-top {
+		.popuptip--tip {
+			bottom: 100%;
+			left: 50%;
+			transform: translateY(-8px) translateX(-50%);
+
+			&::after {
+				content: "";
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				margin-left: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: $popuptip-background transparent transparent transparent;
+			}
+		}
+	}
+
+	&.popuptip--position-right {
+		.popuptip--tip {
+			top:50%;
+			left: 0;
+			transform: translateY(-50%) translateX(10px);
+
+			&::after {
+				content: "";
+				position: absolute;
+				top: 50%;
+				left: -10px;
+				margin-top: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: transparent $popuptip-background transparent transparent ;
+			}
+		}
+	}
+
+
+	&.popuptip--width-m {
+		.popuptip--tip {
+			width: 230px;
+		}
+		.popuptip--text {
+			white-space: pre-wrap;
+		}
+	}
+
+	&.popuptip--width-s {
+		.popuptip--tip {
+			width: 180px;
+		}
+		.popuptip--text {
+			white-space: pre-wrap;
+		}
+	}
+}
+

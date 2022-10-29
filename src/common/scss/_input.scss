@@ -1,0 +1,31 @@
+
+input, textarea {
+	background: $color1-lightest;
+	font-size: $font-size;
+	font-family: $font-text;
+	border: none;
+	padding: 8px;
+	border-radius: 4px;
+	color: $color3;
+	width: 100%;
+
+	&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: $color1-placeholder-light;
+		opacity: 1; /* Firefox */
+	}
+	&:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		color: $color1-placeholder-light;
+	}
+	&::-ms-input-placeholder { /* Microsoft Edge */
+		color: $color1-placeholder-light;
+	}
+
+	&:focus {
+		outline: 0;
+		box-shadow: 0 0 4px 1px $color2;
+	}
+}
+
+input[type='text'], textarea {
+	-webkit-appearance: none; // make iOS inputs pretty
+}

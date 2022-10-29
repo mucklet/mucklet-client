@@ -1,0 +1,7 @@
+@import '~scss/variables';
+
+.reportattachmentwarn {
+	&--char {
+		color: $log-listitem;
+	}
+}

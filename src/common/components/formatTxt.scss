@@ -1,0 +1,52 @@
+@import '~scss/variables';
+
+.formattxt {
+	&--section {
+		padding-top: 2px;
+
+		> .panelsection--head {
+			padding-bottom: 4px;
+			h3 {
+				color: $color4-light;
+				font-family: $font-text;
+				font-size: $font-size;
+				font-weight: 700;
+			}
+			.panelsection--caret {
+				color: $color4-light;
+			}
+		}
+	}
+
+	&--sectioncontent {
+		padding: 2px 0px 10px 12px;
+	}
+
+}
+
+.formattxt.formattxt-charlog {
+	font-size: 14px;
+	.common--sectionpadding {
+		padding: 6px 0 6px 0;
+	}
+
+	.formattxt--section {
+		padding-top: 2px;
+
+		> .panelsection--head {
+			padding-bottom: 0;
+			h3 {
+				font-size: 14px;
+				color: $color2;
+				font-weight: normal;
+			}
+			.panelsection--caret {
+				color: $color2;
+			}
+		}
+	}
+
+	&--sectioncontent {
+		padding: 2px 0px 10px 12px;
+	}
+}

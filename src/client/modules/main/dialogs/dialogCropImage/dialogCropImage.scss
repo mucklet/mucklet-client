@@ -1,0 +1,14 @@
+.dialog.dialogcropimage {
+	max-width: inherit;
+	width: inherit;
+}
+
+.dialogcropimage {
+	&--footer {
+		margin-top: 20px;
+	}
+
+	.cr-vp-square {
+		border-radius: 8%;
+	}
+}

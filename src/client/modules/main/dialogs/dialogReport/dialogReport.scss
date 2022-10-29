@@ -1,0 +1,25 @@
+@import '~scss/variables';
+
+.dialogreport {
+	max-width: 380px;
+
+	&--fullname {
+		display: block;
+		margin-bottom: 12px;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 20px;
+	}
+
+	&--submit {
+		width: 152px;
+	}
+
+	&--interval {
+		padding: 0 9px;
+	}
+
+	&--slider {
+		margin: 12px 9px 0 9px;
+	}
+}

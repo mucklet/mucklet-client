@@ -1,0 +1,13 @@
+@import '~scss/variables';
+
+.dialogunregisterpuppet {
+	max-width: 380px;
+
+	&--fullname {
+		display: block;
+		padding-bottom: 12px;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 20px;
+	}
+}

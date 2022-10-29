@@ -1,0 +1,13 @@
+.dialogcreatechar {
+	max-width: 324px;
+
+	&--disclaimer {
+		margin-bottom: 12px;
+		padding-right: 2px;
+	}
+
+	&--disclaimer-info {
+		font-size: 13px;
+		font-style: italic;
+	}
+}

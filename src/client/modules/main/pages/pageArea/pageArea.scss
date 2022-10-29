@@ -1,0 +1,215 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.pagearea-zoom {
+	padding: 12px 0 16px 0;
+}
+
+.pagearea-zoombar {
+	padding: 0 16px;
+	display: flex;
+	flex-direction: row;
+
+	&--zoomin {
+		flex: 0 0 auto;
+		padding-right: 2px;
+	}
+
+	&--zoomout {
+		flex: 0 0 auto;
+		padding-left: 10px;
+	}
+
+	&--areas {
+		flex: 1 1 0px;
+		display: flex;
+		flex-direction: row;
+
+		> * {
+			flex: 1 1 0px;
+		}
+	}
+
+	&--area {
+		padding: 11px 0 0 8px;
+	}
+
+	&--bar {
+		height: 12px;
+		background: $color4;
+		border-radius: 3px;
+		opacity: 0.6;
+		cursor: pointer;
+		&:hover {
+			opacity: 0.8;
+		}
+
+		@include transition(background-color 200ms linear, opacity 200ms linear);
+
+		&.current {
+			opacity: 1;
+			background: $color2;
+			&:hover {
+				opacity: 0.8;
+				// background: darken($color2, 8%);
+			}
+		}
+	}
+}
+
+
+.pagearea-area {
+	padding: 0 16px;
+
+	&--tools {
+		padding-top: 8px;
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--image {
+		padding-top: 8px;
+	}
+
+	&--imagebtn {
+		> .btn + .btn {
+			margin-top: 8px;
+		}
+	}
+
+	&--population {
+		font-size: $font-size-tiny;
+		margin-top: -8px;
+		padding-bottom: 4px;
+		color: $color4;
+		cursor: help;
+	}
+
+	&--desc {
+		white-space: pre-wrap;
+	}
+}
+
+.pagearea-location {
+	padding: 2px 0;
+
+	&--cont {
+		margin-left: -8px;
+		border-left: 4px solid transparent;
+		padding-left: 4px;
+		transition: 0.5s border;
+
+		&.inlocation {
+			border-left: 4px solid $color2;
+		}
+	}
+
+	&--private {
+		opacity: 0.6;
+	}
+
+	&.selected {
+		.btn.badge {
+			&:not(:disabled) {
+				background: darken($color1, 3%);
+			}
+		}
+	}
+
+	&--content {
+		white-space: pre-wrap;
+	}
+}
+
+.pagearea-image {
+	cursor: move;
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+
+	display: block;
+	border-radius: 20px;
+	overflow: hidden;
+	position: relative;
+
+	&.small {
+		border-radius: 8px;
+	}
+
+	&.grabbed {
+		cursor: grabbing;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+	}
+	&:not(.grabbed) > &--body {
+		@include transition(transform 200ms ease-out);
+	}
+
+	&--body {
+		position: relative;
+		transform-origin: top left;
+		// transform: scale(0.5) translateX(-474px) translateY(-474px);
+
+	}
+
+	&--btn.iconbtn {
+		@include btn-style(rgba($white, 0.5), rgba($white, 0.6), rgba($white, 0.7), $black, $black);
+	}
+
+	&--zoomout {
+		position: absolute;
+		right: 8px;
+		bottom: 72px;
+	}
+
+	&--zoomin {
+		position: absolute;
+		right: 8px;
+		bottom: 40px;
+	}
+
+	&--center {
+		position: absolute;
+		right: 8px;
+		bottom: 8px;
+	}
+
+	&.small .pagearea-image--zoomout {
+		right: 4px;
+		bottom: 60px;
+	}
+
+	&.small .pagearea-image--zoomin {
+		right: 4px;
+		bottom: 32px;
+	}
+
+	&.small .pagearea-image--center {
+		right: 4px;
+		bottom: 4px;
+	}
+
+	&--location {
+		@include transition(border-color 200ms ease-in, width 200ms ease-in-out, height 200ms ease-in-out, background-color 200ms ease-in);
+		transform: translateX(-50%) translateY(-50%);
+		position: absolute;
+
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: 14px solid rgba($color5, 0.6);
+		box-shadow: inset 0px 0px 6px 1px #000, 0px 0px 6px 2px #000;
+
+		&.current {
+			width: 48px;
+			height: 48px;
+			border: 6px solid rgba($color5, 0.6);
+		}
+
+		&.selected {
+			border-color: rgba($color5, 0.8);
+		}
+	}
+}

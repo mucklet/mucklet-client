@@ -1,0 +1,29 @@
+@font-face {
+	font-family: 'Amatic SC';
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: local(''),
+		url('amatic-sc-v22-latin-700.woff2') format('woff2'),
+		url('amatic-sc-v22-latin-700.woff') format('woff'),
+		url('amatic-sc-v22-latin-700.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: local(''),
+		url('open-sans-v27-latin-ext_latin-regular.woff2') format('woff2'),
+		url('open-sans-v27-latin-ext_latin-regular.woff') format('woff'),
+		url('open-sans-v27-latin-ext_latin-regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 700;
+	src: local(''),
+		url('open-sans-v27-latin-ext_latin-700.woff2') format('woff2'),
+		url('open-sans-v27-latin-ext_latin-700.woff') format('woff'),
+		url('open-sans-v27-latin-ext_latin-700.ttf') format('truetype');
+}

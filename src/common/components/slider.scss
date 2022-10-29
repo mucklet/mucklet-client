@@ -1,0 +1,21 @@
+.comp-slider {
+	transform: translateX(0%);
+	transition: 0.3s;
+}
+
+.comp-slider.slide-out-left {
+	transform: translateX(-100%);
+}
+
+.comp-slider.slide-out-right {
+	transform: translateX(100%);
+}
+
+.comp-slider.slide-out-bottom {
+	transform: translateY(100%);
+}
+
+.comp-slider.slide-out-top {
+	transform: translateY(-100%);
+}
+

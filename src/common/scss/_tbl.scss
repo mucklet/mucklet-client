@@ -1,0 +1,39 @@
+.tbl {
+	th, td {
+		padding: 3px 12px;
+		text-align: left;
+	}
+	th.tbl-padtop > td, tr.tbl-padtop > td {
+		padding-top: 12px;
+	}
+}
+
+.tbl-small {
+	th, td {
+		padding: 1px 8px;
+		text-align: left;
+	}
+	th.tbl-padtop > td, tr.tbl-padtop > td {
+		padding-top: 8px;
+	}
+}
+
+
+
+.tbl-hr, .tbl thead, .tbl-small thead {
+	border-bottom: 1px solid $color1-lighter;
+}
+
+.tbl-nomargin {
+	th:first-child, td:first-child {
+		padding-left: 0px;
+	}
+
+	th:last-child, td:last-child {
+		padding-right: 0px;
+	}
+}
+
+.tbl-header {
+	color: $color3;
+}

@@ -1,0 +1,125 @@
+@import '~scss/variables';
+
+.console {
+	padding: 1px 14px 14px 14px;
+
+	&--container {
+		background-color: $color1-light;
+		border-radius: 16px; // rounded corners
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	&--controlled {
+		flex: 0 0 42px;
+		border-bottom: 2px solid $color1;
+	}
+
+	&--controlledlist {
+		padding: 4px 12px 2px 12px;
+		display: flex;
+		flex-direction: row;
+	}
+
+	&--editorcont {
+		flex: 1 1 0px;
+		padding: 5px 34px 10px 5px;
+		position: relative;
+	}
+
+	&--tools {
+		position: absolute;
+		right: 0;
+		width: 32px;
+
+		> * + * {
+			margin-top: 4px;
+		}
+	}
+
+	&--editor {
+		height: 100px;
+		padding-right: 8px;
+	}
+
+
+	.simplebar-scrollbar::before {
+		background-color: lighten($color1, 18%);
+	}
+}
+
+.console.console--layoutmobile {
+	padding: 0 0;
+
+	.console--container {
+		border-radius: 0;
+	}
+
+	.console--editor {
+		height: 80px;
+	}
+
+	.console-editor > .cm-editor .cm-content {
+		min-height: 80px;
+	}
+}
+
+.console-controlledchar {
+	padding: 0 4px;
+	transition: border-bottom 0.2s;
+	border-bottom: 2px transparent;
+
+	&.active {
+		border-bottom: 2px solid $color5;
+	}
+
+	> .btn:focus {
+		box-shadow: none;
+	}
+
+	&--counter {
+		right: -6px;
+	}
+
+	&--avatar {
+		display: inline-block;
+		vertical-align: bottom;
+
+		+ * {
+			margin-left: 8px;
+		}
+	}
+
+}
+
+.console-editor {
+	position: relative;
+
+	> .cm-editor {
+		.cm-content {
+			font-family: $font-text;
+			caret-color: $color3;
+			padding: 4px 0 0 0;
+			min-height: 100px;
+			// white-space: pre-line;
+		}
+		.cm-line {
+			padding: 0 5px 0 3px;
+			// word-break: break-word;
+			line-height: 22px;
+		}
+		.cm-placeholder {
+			color: $color1-placeholder;
+		}
+
+		.console--error { color: $log-error; }  // invalid
+		.console--listitem { color: $log-listitem; } // attributeValue
+		.console--text { color: $log-text; }  // string
+		.console--delim { color: $log-delim; } // operator
+		.console--cmd { color: $log-cmd; } // name
+		.console--attr { color: $log-attr; } // propertyName
+		.console--unknown { color: $log-error; } // comment
+		.console--entityid { color: $log-entityid; } // keyword
+	}
+}

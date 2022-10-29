@@ -1,0 +1,8 @@
+@import '~scss/mixins';
+
+.helpformat {
+	p {
+		margin: 0;
+		@include log-pad();
+	}
+}

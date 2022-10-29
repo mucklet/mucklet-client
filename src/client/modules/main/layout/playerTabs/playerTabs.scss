@@ -1,0 +1,21 @@
+@import '~scss/variables';
+
+.playertabs-tabs {
+	padding: 8px 8px 0px 8px;
+	display: flex;
+	flex-direction: row;
+}
+
+.playertabs-tab {
+	padding: 0 2px 4px 2px;
+	transition: border-bottom 0.2s;
+	border-bottom: 2px solid transparent;
+
+	&.active {
+		border-bottom: 2px solid $color5;
+	}
+
+	> .iconbtn:focus {
+		box-shadow: none;
+	}
+}

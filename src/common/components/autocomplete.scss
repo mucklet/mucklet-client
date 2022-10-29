@@ -1,0 +1,40 @@
+@import '~scss/variables';
+
+.autocomplete {
+	background: white;
+	z-index: 1000;
+	font-size: $font-size;
+	line-height: 32px;
+	font-family: $font-text;
+	overflow: auto;
+	box-sizing: border-box;
+	border: 1px solid rgba(50, 50, 50, 0.6);
+	border-radius: 4px;
+	padding-bottom: 4px;
+}
+
+.autocomplete * {
+	font: inherit;
+}
+
+.autocomplete > div {
+	padding: 0 14px;
+}
+
+.autocomplete > div > em {
+	font-weight: bold;
+	color: $black;
+}
+
+.autocomplete .group {
+	background: #eee;
+}
+
+.autocomplete > div:hover:not(.group) {
+	background: lighten($color6, 20%);
+}
+.autocomplete > div.selected {
+	background: lighten($color6, 30%);
+	cursor: pointer;
+}
+

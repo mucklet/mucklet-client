@@ -1,0 +1,161 @@
+@import '~scss/variables';
+
+// Highlight trigger words
+.charlog--highlight-triggers {
+	.common--formattext {
+		span.highlight {
+			color: $color4-lightest;
+			background: $color1-lighter;
+			padding: 0 3px;
+			margin: 0 -1px;
+			border-radius: 4px;
+		}
+		// Inline ooc text
+		span.ooc {
+			span.highlight {
+				color: $color4-light;
+			}
+		}
+	}
+
+	// Highlight text color for ooc text
+	.charlog--ooc .common--formattext {
+		span.highlight {
+			color: $color4-light;
+		}
+	}
+	// Highlight text color for communication text
+	.charlog--comm {
+		.common--formattext {
+			span.highlight {
+				color: $color3;
+			}
+		}
+	}
+}
+
+// Highlight targeted/mention messages
+.charlog--highlight-mention {
+	.charlog--ev.mentioned, .charlog--ev.targeted {
+		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
+			background: $color1-light;
+		}
+	}
+}
+
+// Highlight own messages
+.charlog--highlight-own {
+	.charlog--ev.own {
+		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
+			background: $color1-light;
+		}
+	}
+}
+
+// Text color for highlighted targeted/mention messages
+.charlog--highlight-mention {
+	.charlog--ev.mentioned, .charlog--ev.targeted {
+		// Default color
+		color: $color4-light;
+		// Inline ooc text
+		.common--formattext {
+			span.ooc {
+				color: $color4-semidark;
+			}
+		}
+		// Brighten comm
+		.charlog--comm {
+			color: $color4-lightestest;
+		}
+		// Brighten ooc
+		.charlog--ooc {
+			color: $color4-semidark;
+		}
+	}
+}
+
+// Text color for highlighted own messages
+.charlog--highlight-own {
+	.charlog--ev.own{
+		// Default color
+		color: $color4-light;
+		// Inline ooc text
+		.common--formattext {
+			span.ooc {
+				color: $color4-semidark;
+			}
+		}
+		// Brighten comm
+		.charlog--comm {
+			color: $color4-lightestest;
+		}
+		// Brighten ooc
+		.charlog--ooc {
+			color: $color4-semidark;
+		}
+	}
+}
+
+// Highlighted targeted/mention messages with highlighted triggers
+.charlog--highlight-triggers.charlog--highlight-mention {
+	.charlog--ev.mentioned, .charlog--ev.targeted {
+		.common--formattext {
+			span.highlight {
+				background: $color1-lightest;
+			}
+			span.ooc {
+				span.highlight {
+					color: $color4-lighter;
+				}
+			}
+		}
+		// Brighten comm highlighting
+		.charlog--comm {
+			.common--formattext {
+				span.highlight {
+					color: $white;
+				}
+			}
+		}
+		// Brighten ooc highlighting
+		.charlog--ooc {
+			.common--formattext {
+				span.highlight {
+					color: $color4-lighter;
+				}
+			}
+		}
+	}
+}
+
+// Highlighted own messages with highlighted triggers
+.charlog--highlight-triggers.charlog--highlight-own {
+	.charlog--ev.own {
+		.common--formattext {
+			span.highlight {
+				background: $color1-lightest;
+			}
+			span.ooc {
+				span.highlight {
+					color: $color4-lighter;
+				}
+			}
+		}
+		// Brighten comm highlighting
+		.charlog--comm {
+			.common--formattext {
+				span.highlight {
+					color: $white;
+				}
+			}
+		}
+		// Brighten ooc highlighting
+		.charlog--ooc {
+			.common--formattext {
+				span.highlight {
+					color: $color4-lighter;
+				}
+			}
+		}
+	}
+}

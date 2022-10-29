@@ -1,0 +1,281 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.charlog {
+	position: absolute;
+	height: 100%;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+
+	&--log {
+		position: absolute;
+		height: 100%;
+		top: 0;
+		bottom: 0;
+		right: 2px;
+		left: 0;
+	}
+	// > :first-child {
+	// 	margin-top: auto !important;
+	// }
+
+	&--ev {
+		position: relative;
+		border-left: 4px solid transparent;
+		overflow-wrap: break-word;
+
+		pre {
+			white-space: pre-wrap;
+		}
+
+		&.charlog--nofocus {
+			border-left: none;
+		}
+
+		> * {
+			padding: 2px 0 2px 6px;
+		}
+	}
+
+	// Colors
+	&--strong {
+		color: $color3;
+	}
+
+	&--cmd {
+		color: $log-cmd;
+	}
+
+	&--error {
+		color: $log-error;
+	}
+
+	&--listitem {
+		color: $log-listitem;
+	}
+
+	&--default {
+		color: $color4;
+	}
+
+	&--ooc {
+		color: $color4-dark;
+	}
+
+	&--comm {
+		color: $color4-lightest;
+	}
+
+	&--placeholder {
+		color: $color4-dark;
+		font-style: italic;
+	}
+
+	// Should have higher priority than the others.
+	&--char {
+		color: $log-listitem;
+	}
+
+
+	// Common padding
+	&--pad-small {
+		@include log-pad(small)
+	}
+	&--pad {
+		@include log-pad()
+	}
+	&--pad-large {
+		@include log-pad(large)
+	}
+
+	// Common styling
+	&--fieldset {
+		position: relative;
+		border: 1px solid $color4-dark;
+		padding: 6px 10px;
+		border-radius: 8px;
+	}
+
+	&--fieldset-label {
+		color: $color4;
+		position: absolute;
+		background: $color1;
+		top: -1px;
+		height: 2px;
+		left: 16px;
+		padding: 0 4px;
+
+		> span {
+			position: relative;
+			top: -12px;
+			font-size: $font-size-tiny;
+			line-height: $font-size-tiny;
+		}
+	}
+
+	&--tag {
+		font-size: $font-size-tiny;
+		color: $color4;
+		position: absolute;
+		margin-left: -1em;
+		margin-top: -1em;
+	}
+
+	&--font-small {
+		font-size: $font-size-small;
+	}
+
+	&--code-simple {
+		font-size: $font-size-small;
+		font-family: $font-code;
+		color: $color2;
+	}
+
+	&--badge {
+		background: $color1-dark;
+	}
+
+	&--code, &--code-inline {
+		font-style: normal;
+		font-size: $font-size-small;
+		padding: 6px 10px;
+		background: $color1-dark;
+		border-radius: 8px;
+
+		p {
+			font-size: $font-size-small;
+			margin-bottom: 2px;
+		}
+
+		code {
+			font-size: $font-size-small;
+			font-family: $font-code;
+			color: $color2;
+
+			em {
+				color: $color6;
+				font-style: normal;
+			}
+		}
+
+		.opt {
+			&::before {
+				content: "[";
+				color: $color4-dark;
+			}
+			&::after {
+				content: "]";
+				color: $color4-dark;
+			}
+		}
+
+		.param {
+			color: $log-listitem;
+			&::before {
+				content: "<";
+			}
+			&::after {
+				content: ">";
+			}
+		}
+
+		.comment {
+			color: $color4;
+		}
+
+		sup {
+			font-size: 75%;
+			line-height: 0;
+			position: relative;
+			top: -0.5em;
+		}
+	}
+
+	&--code-inline {
+		display: inline-block;
+		padding: 3px 5px;
+	}
+
+	&--list {
+		padding: 8px 14px 8px 8px;
+	}
+
+	&--info {
+		color: $color4-dark;
+		font-style: italic;
+		padding-top: 4px;
+	}
+
+	&--title {
+		padding: 6px 0 2px 0;
+		color: $color3-dark;
+		padding-top: 4px;
+	}
+
+	.simplebar-scrollbar::before {
+		background-color: $color1-lightest;
+	}
+}
+
+.charlog-eventmenu {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+
+	@include btn-style(rgba($color1, 0.8), $color1-lighter, $color1-lightest, $color4, $color4-light);
+
+	&--menu {
+		position: absolute;
+		background: $color1-lighter;
+		min-width: 100px;
+		// min-height: 100px;
+		box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.65);
+		padding: 8px 0;
+		// Animation
+		transform: translate(-100%, 0px);
+		animation-name: charlog-eventmenu-opacity;
+		animation-duration: 0.3s;
+		opacity: 1;
+		z-index: 5;
+	}
+
+	&--btn {
+		padding: 4px 12px;
+		font-size: $font-size-small;
+		font-family: $font-text;
+		text-decoration: none;
+		border: 0;
+		width: 100%;
+		transition: color 0.2s, background-color 0.2s;
+		cursor: pointer;
+		@include btn-style(none, $color1-lightest, $color1-lightest, $color4-light, $color4-lighter);
+	}
+
+	&--btnicon {
+		min-width: 20px;
+	}
+}
+
+.charlog-muted {
+	padding: 0 0 2px 2px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	> div {
+		padding: 8px 0 0 8px;
+	}
+}
+
+@keyframes charlog-eventmenu-opacity {
+	from {
+		transform: translate(-100%, 0px) scale(0.9);
+		opacity: 0;
+	}
+	to {
+		transform: translate(-100%, 0px) scale(1);
+		opacity: 1;
+	}
+}
+

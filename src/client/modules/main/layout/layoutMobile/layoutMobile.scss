@@ -1,0 +1,78 @@
+@import '~scss/variables';
+
+html, body {
+	box-sizing: border-box;
+}
+
+.layoutmobile {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	&--container {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 100%;
+	}
+
+	&--topbar {
+		flex: 0 0 auto;
+		background-color: $color1-lighter;
+		z-index: 5;
+		-webkit-box-shadow: 4px 0px 5px 0px $shadow;
+		-moz-box-shadow: 4px 0px 5px 0px $shadow;
+		box-shadow: 2px 0px 6px 0px $shadow;
+	}
+
+	&--tabscont {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+
+	&--main {
+		height: 100%;
+		flex: 1 1 0px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--tabpage {
+		background-color: $color1-lighter;
+		min-height: 100%;
+	}
+
+	&--kebabmenu {
+		position: absolute;
+		bottom: 6px;
+		right: 5px;
+	}
+}
+
+.layoutmobile-titlebar {
+	position: relative;
+	padding: 0 20px;
+
+	&--btncont {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+	}
+
+	&--btn {
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	&--title {
+		text-align: center;
+	}
+
+	&--titletxt {
+		margin: 0;
+		padding-top: 8px;
+		line-height: 24px;
+	}
+}

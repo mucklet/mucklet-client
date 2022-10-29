@@ -1,0 +1,68 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.kebabmenu {
+
+	position: relative;
+
+	&--btn {
+		@include btn-style(rgba($color1, 0.8), $color1-lighter, $color1-lightest, $color4, $color4-light);
+	}
+
+	&--menu {
+		position: absolute;
+		background: $color1-lighter;
+		min-width: 100px;
+		// min-height: 100px;
+		box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.65);
+		padding: 8px 0;
+		// Animation
+		animation-name: kebabmenu-opacity;
+		animation-duration: 0.3s;
+		opacity: 1;
+		z-index: 50;
+
+		&-absolute {
+			animation-name: kebabmenu-opacity;
+			transform: translate(-100%, 0px);
+		}
+	}
+
+	&--itembtn {
+		padding: 8px 20px;
+		font-size: $font-size;
+		font-family: $font-text;
+		text-decoration: none;
+		border: 0;
+		width: 100%;
+		transition: color 0.2s, background-color 0.2s;
+		cursor: pointer;
+		@include btn-style(none, $color1-lightest, $color1-lightest, $color4-light, $color4-lighter);
+	}
+
+	&--itemicon {
+		min-width: 20px;
+	}
+}
+
+@keyframes kebabmenu-opacity {
+	from {
+		transform: scale(0.9);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes kebabmenu-opacity-absolute {
+	from {
+		transform: translate(-100%, 0px) scale(0.9);
+		opacity: 0;
+	}
+	to {
+		transform: translate(-100%, 0px) scale(1);
+		opacity: 1;
+	}
+}

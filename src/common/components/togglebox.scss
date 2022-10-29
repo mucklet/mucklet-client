@@ -1,0 +1,44 @@
+@import '~scss/variables';
+
+.togglebox {
+	display: inline-block;
+	border: 4px solid $color4;
+	background: transparent;
+	border-radius: 3px;
+	padding: 0;
+	> div {
+		width: 14px;
+		height: 14px;
+	}
+
+	&.small {
+		border-width: 3px;
+		border-radius: 2px;
+		> div {
+			width: 10px;
+			height: 10px;
+		}
+	}
+
+	&:not(:disabled) {
+		cursor: pointer;
+	}
+}
+
+.togglebox.form + * {
+	margin-left: 16px;
+}
+
+.togglebox.value-1 > div {
+	background: $color6;
+	&:hover:not(:disabled) {
+		background: lighten($color6, 5%);
+	}
+}
+
+.togglebox.value-2 > div {
+	background: $color5;
+	&:hover:not(:disabled) {
+		background: lighten($color5, 5%);
+	}
+}

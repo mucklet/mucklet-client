@@ -1,0 +1,20 @@
+@import '~scss/variables';
+
+.pageteleportchar {
+	padding: 16px;
+}
+
+.pageteleportchar-room, .pageteleportchar-node {
+	padding: 2px 0;
+
+	&--tools i {
+		color: $color1;
+		transition: color 0.3s;
+	}
+
+	&:hover {
+		.pageteleportchar-room--tools i, .pageteleportchar-node--tools i {
+			color: $color4-light;
+		}
+	}
+}

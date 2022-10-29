@@ -1,0 +1,84 @@
+@import '~scss/variables';
+
+.areamap {
+	position: absolute;
+	top: 9px;
+	right: 14px;
+	flex-direction: row;
+	display: flex;
+
+	&--name {
+		line-height: 20px;
+	}
+
+	&--map {
+		position: absolute;
+		top: 34px;
+		right: 0px;
+		box-shadow: 0px 0px 8px 4px $color1;
+	}
+
+	&--badge {
+		width: 212px;
+		position: absolute;
+		right: 0px;
+		transition: width 0.3s;
+		overflow: hidden;
+		box-shadow: 0px 0px 8px 4px $color1;
+
+		> .btn.badge {
+			background: $color1-lighter;
+			&:not(:disabled) {
+				&:hover, &:focus, &:active {
+					background: lighten($color1-lighter, 3%);
+				}
+			}
+		}
+	}
+
+	&--badgecont {
+		width: 204px;
+		transition: opacity 0.2s;
+	}
+
+	&--symbol {
+		padding-left: 6px;
+		font-size: $font-size-tiny;
+		color: $color4;
+		flex: 0 0 auto;
+		transition: padding-left 0.2s;
+	}
+
+	&--counter {
+		flex: 0 0 auto;
+		padding-right: 35px;
+		padding-left: 6px;
+	}
+
+	&--close.iconbtn {
+		position: absolute;
+		top: 3px;
+		right: 3px;
+		font-size: 12px;
+		border-radius: 3px;
+		width: 20px;
+		height: 20px;
+		> i {
+			line-height: 19px;
+		}
+	}
+
+	&.closed {
+		.areamap {
+			&--badge {
+				width: 26px;
+			}
+			&--symbol {
+				padding-left: 4px;
+			}
+			&--close {
+				opacity: 0;
+			}
+		}
+	}
+}

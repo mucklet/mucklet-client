@@ -1,0 +1,58 @@
+@import '~scss/variables';
+
+
+.pagecharselect {
+
+	padding: 16px 14px;
+
+	&--add {
+		padding: 16px 0;
+
+		> .btn {
+			background: none;
+			width: 100%;
+			border: dashed 2px $color4;
+
+			&:hover, &:focus {
+				color: $color4-lighter;
+				background: $color1-light;
+			}
+
+			> .fa {
+				 line-height: 24px;
+			}
+		}
+	}
+
+	&--add-tip.popuptip {
+		position: absolute;
+	}
+
+	&--add-tip-body {
+		h3 {
+			padding: 2px 0 8px;
+		}
+		span {
+			font-size: $font-size-small;
+		}
+	}
+}
+
+.pagecharselect-char {
+	padding: 3px 0;
+
+	&.suspended .pagecharselect-char--title {
+		color: $color5;
+	}
+}
+
+.pagecharselect-puppet {
+	padding: 3px 0;
+
+	.suspended {
+		color: $color5;
+	}
+
+	&--btn {
+	}
+}

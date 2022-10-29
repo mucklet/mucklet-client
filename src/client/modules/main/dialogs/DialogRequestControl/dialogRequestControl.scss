@@ -1,0 +1,22 @@
+@import '~scss/variables';
+
+.dialogrequestcontrol {
+	max-width: 480px;
+
+	&--fullname {
+		font-family: $font-text;
+		color: $color3;
+		font-size: $font-size-large;
+		line-height: 24px;
+	}
+
+	&--genderspecies {
+		font-size: $font-size-small;
+		line-height: 20px;
+	}
+
+	&--controlledby {
+		font-size: $font-size-small;
+		line-height: 20px;
+	}
+}

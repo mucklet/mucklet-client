@@ -1,0 +1,44 @@
+h1, h2, h3 {
+	font-family: $font-header;
+	color: $color2;
+}
+
+h4 {
+	font-size: 14px;
+	color: $color2
+}
+
+// Subtitles
+h6 {
+	font-family: $font-text;
+	font-size: $font-size-small;
+	color: $color4;
+}
+
+p {
+	margin-bottom: 12px;
+	line-height: 140%;
+}
+
+h1 {
+	font-size: 64px;
+	margin: 20px 0 44px;
+	font-weight: 700;
+}
+
+h2 {
+	font-size: 28px;
+	font-weight: 700;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+em {
+	font-style: italic;
+}
+
+strong {
+	font-weight: 700;
+}

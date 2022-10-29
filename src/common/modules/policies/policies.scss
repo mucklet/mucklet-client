@@ -1,0 +1,52 @@
+@import '~scss/variables';
+
+.policies {
+	&--head {
+		padding-bottom: 14px;
+		margin-bottom: 12px;
+		border-bottom: 1px solid $color2;
+		h2 {
+			margin: 0;
+			padding: 8px 16px 8px 0;
+		}
+	}
+
+	&--close.iconbtn {
+		float: right;
+		background: $color1-light;
+	}
+
+	&--subtitle {
+		display: block;
+		margin: 12px 0;
+		font-size: $font-size-small;
+		font-style: italic;
+	}
+
+	&--btn {
+		margin-top: 20px;
+		min-width: 158px;
+	}
+}
+
+.policies-body {
+	h2 {
+		margin: 20px 0 8px 0;
+	}
+
+	ul {
+		margin-top: 20px;
+		margin-left: 2em;
+	}
+
+	li::before {
+		content: "\2022";
+		display: inline-block;
+		width: 2em;
+		margin-left: -2em;
+	}
+
+	li {
+		margin-top: 8px;
+	}
+}

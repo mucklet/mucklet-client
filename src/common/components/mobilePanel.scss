@@ -1,0 +1,110 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.simplebar-content-wrapper {
+	overflow: auto;
+}
+
+.simplebar-scrollbar::before {
+	background-color: $color4;
+}
+
+.mobilepanel {
+	position: absolute;
+	transform: translateX(0%);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	z-index: 4;
+
+	@include transition(transform 200ms ease-out, background-color 200ms linear);
+
+	&--header {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		border-bottom: 1px solid $black;
+		@include transition(opacity 200ms ease-out);
+	}
+
+	// &--header {
+	// 	flex: 0 0 42px;
+	// 	padding: 0 20px;
+	// }
+
+	&--btncont {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+	}
+
+	&--btn {
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	&--main {
+		flex: 1 1 0;
+		overflow: hidden;
+		@include transition(opacity 200ms ease-out);
+	}
+
+	&--content {
+		height: 100%;
+		// /* Hide scrollbar for Chrome, Safari and Opera */
+		// &::-webkit-scrollbar {
+		// 	display: none;
+		// }
+
+		// /* Hide scrollbar for IE, Edge and Firefox */
+		// -ms-overflow-style: none;  /* IE and Edge */
+		// scrollbar-width: none;  /* Firefox */
+
+		// overflow-x: auto;
+	}
+
+	&--title {
+		text-align: center;
+	}
+
+	&--titletxt {
+		margin: 0;
+		line-height: 42px;
+	}
+
+	&--toggle {
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		z-index: 10;
+		> i {
+			padding-right: 2px;
+		}
+		&:focus {
+			box-shadow: none;
+		}
+		&.mobilepanel--notoggle {
+			display: none;
+		}
+	}
+}
+
+.mobilepanel--container.mobilepanel--hide {
+
+	.mobilepanel.mobilepanel--align-left {
+		transform: translateX(-100%);
+	}
+	.mobilepanel.mobilepanel--align-right {
+		transform: translateX(100%);
+	}
+
+	.mobilepanel--header, .mobilepanel--main {
+		opacity: 0;
+	}
+
+}
+
+
+

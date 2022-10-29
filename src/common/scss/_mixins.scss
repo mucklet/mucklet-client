@@ -1,0 +1,49 @@
+/* Transition */
+@mixin transition($args...) {
+	-webkit-transition: $args;
+	-ms-transition: $args;
+	transition: $args;
+}
+
+//-------------------------------------------------------------------
+// Mixin to set btn background for inactive, active & hover states
+//-------------------------------------------------------------------
+
+// set default variables to be base button colors.
+@mixin btn-style (
+	$bg:          $color1-light,
+	$bg-hover:    $color1-lighter,
+	$bg-active:   $color1-lightest,
+	$color:       $color4,
+	$color-hover: $color4-light
+) {
+	background: $bg;
+	color: $color;
+
+	&:not(:disabled) {
+		&:hover {
+			background: $bg-hover;
+			color: $color-hover;
+		}
+
+		&:active, &:focus {
+			background: $bg-active;
+			color: $color;
+		}
+	}
+}
+
+@mixin log-pad (
+	$size: medium
+) {
+	margin: 0;
+	@if $size == small {
+		padding: 4px 0 2px 0;
+	} @else if $size == medium {
+		padding: 6px 0 3px 0;
+	} @else if $size == large {
+		padding: 12px 0 6px 0;
+	} @else if $size == huge {
+		padding: 20px 0 10px 0;
+	}
+}

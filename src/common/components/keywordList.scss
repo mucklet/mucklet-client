@@ -1,0 +1,58 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.keywordlist {
+	overflow: hidden;
+
+	&--list {
+		margin: -2px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	&--item {
+		flex: 0 0 auto;
+		margin: 3px 2px;
+	}
+
+	&--keyword {
+		position: relative;
+		line-height: 16px;
+		font-size: $font-size-tiny;
+		text-align: left;
+		white-space: nowrap;
+		padding: 4px 6px;
+		color: $color4;
+		border: 1px solid $color4;
+		border-radius: 4px;
+
+		&.editable {
+			cursor: pointer;
+			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+
+			&:hover {
+				color: $color4-lighter;
+				border-color: $color4-lighter;
+			}
+		}
+	}
+
+	&--delete {
+		margin: -1px -3px -1px 2px;
+		text-decoration: none;
+		border: 0;
+		padding: 0;
+		border-radius: 2px;
+		transition: border-color 0.2s, color 0.2s, background-color 0.2s, opacity 0.4s;
+		cursor: pointer;
+		font-size: 12px;
+		width: 17px;
+		height: 17px;
+		text-align: center;
+		@include btn-style(none, $color1-lightest, $color1-lightest, $color4, $color4-light);
+		> i {
+			line-height: 15px;
+		}
+	}
+}

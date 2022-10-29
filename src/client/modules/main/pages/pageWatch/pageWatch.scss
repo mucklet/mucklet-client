@@ -1,0 +1,30 @@
+@import '~scss/variables';
+
+
+.pagewatch {
+	padding: 16px 14px;
+}
+
+.pagewatch-char {
+	padding: 2px 0;
+
+	&--note i {
+		transition: opacity 0.3s;
+	}
+
+	&--note:not(.hasnote) i {
+		opacity: 0;
+	}
+
+	&--badge:hover &--note i {
+		opacity: 1;
+	}
+
+	&--badge:hover &--note:not(.hasnote) i {
+		opacity: 0.6;
+	}
+
+	&--badge:hover &--note:hover:not(.hasnote) i {
+		opacity: 1;
+	}
+}

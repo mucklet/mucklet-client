@@ -1,0 +1,19 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.charsettingstriggers {
+	&--trigger {
+		position: relative;
+
+		> input {
+			padding-right: 38px;
+		}
+	}
+
+	&--add.iconbtn {
+		@include btn-style(none, $color1-lighter, $color1-lightest, $color4-light, $color4-lighter);
+		position: absolute;
+		right: 3px;
+		top: 3px;
+	}
+}

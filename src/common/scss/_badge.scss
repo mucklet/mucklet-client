@@ -1,0 +1,200 @@
+$color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
+
+.badge {
+	width: 100%;
+	border: none;
+	background: $color1;
+	color: $white;
+	padding: 4px;
+	border-radius: 8px;
+
+	&.highlight {
+		background: $color-highlight;
+	}
+
+	&.inactive {
+		opacity: 0.5;
+		&.open {
+			opacity: 0.8;
+		}
+	}
+
+	&.tooltip {
+		cursor: help;
+	}
+
+	&--select {
+		display: flex;
+		flex-direction: row;
+	}
+
+	&--select-margin {
+		> * + * {
+			margin-left: 4px;
+		}
+	}
+
+	&--icon, &--faicon {
+		flex: 0 0 auto;
+		width: 32px;
+		height: 32px;
+	}
+
+	&--symbol {
+		padding-left: 6px;
+		font-size: $font-size-tiny;
+		color: $color4;
+		flex: 0 0 auto;
+	}
+
+	&--faicon {
+		font-size: 22px;
+		border-radius: 4px;
+		> i {
+			line-height: 31px;
+		}
+		transition: 0.2s color, 0.2s background-color;
+		color: $color4;
+		background: $color1-lighter;
+	}
+
+	&--info {
+		flex: 1 1 0px;
+		text-align: left;
+		overflow: hidden;
+		padding-left: 6px;
+		line-height: 16px;
+	}
+
+	&--tools {
+		flex: 0 0 auto;
+		margin-left: 4px;
+		> button {
+			display: block;
+		}
+	}
+
+	&--counter {
+		flex: 0 0 auto;
+		padding-right: 6px;
+		padding-left: 6px;
+	}
+
+	&--title, &--subtitle, &--strong, &--text, &--error {
+		line-height: 16px;
+		font-size: $font-size-tiny;
+		text-align: left;
+		white-space: normal;
+		overflow: hidden;
+		overflow-wrap: break-word;
+	}
+
+	&--nowrap {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&--title {
+		font-size: $font-size-tiny + 1px;
+		color: $color2;
+	}
+
+	&--subtitle {
+		color: $color2;
+	}
+
+	&--strong {
+		color: $color3;
+	}
+
+	&--text {
+		color: $color4;
+	}
+
+	&--error {
+		color: $color5;
+	}
+
+	&--strikethrough {
+		text-decoration: line-through;
+	}
+
+	&--margin {
+		padding-top: 4px;
+	}
+
+	&--divider {
+		margin-top: 6px;
+		border-top: 1px solid $color1-lightest;
+		padding-bottom: 4px;
+	}
+
+	&--iconcol {
+		flex: 0 0 32px;
+	}
+}
+
+.btn.badge {
+	transition: 0.2s opacity, 0.2s background-color;
+	cursor: pointer;
+
+	&.tooltip {
+		cursor: help;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+	}
+
+	&.inactive:hover:not(:disabled), &.inactive:focus:not(:disabled) {
+		opacity: 0.7;
+	}
+
+	&.inactive.open:hover:not(:disabled), &.inactive.open:focus:not(:disabled) {
+		opacity: 1;
+	}
+
+
+	&:not(:disabled) {
+		&:hover, &:focus, &:active {
+			background: darken($color1, 3%);
+			&.highlight {
+				background: darken($color-highlight, 3%);
+			}
+		}
+	}
+}
+
+
+.badge.large {
+	padding: 6px;
+	border-radius: 10px;
+
+	.badge {
+
+		&--icon, &--faicon {
+			width: 48px;
+			height: 48px;
+		}
+
+		&--icon.small, &--faicon.small {
+			height: 32px;
+		}
+
+		&--margin {
+			padding-top: 6px;
+		}
+
+		&--iconcol {
+			flex: 0 0 48px;
+		}
+
+		&--select-margin {
+			> * + * {
+				margin-left: 6px;
+			}
+		}
+	}
+}
+

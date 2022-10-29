@@ -1,0 +1,45 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+
+
+$popuptip-background: #{'rgba(3,4,6,90%)'};
+
+.charlog-mutedevent {
+	&--pill {
+		width: 20px;
+		height: 8px;
+		border-radius: 3px;
+		border: solid 4px $color4;
+	}
+
+	&--tip {
+		position: absolute;
+		background: $popuptip-background;
+		padding: 8px 14px 14px 8px;
+		left: 16px;
+		right: 16px;
+		transform: translateY(-100%) translateY(-18px);
+		border-radius: 4px;
+	}
+	&--caret {
+		position: absolute;
+
+		margin-left: 5px;
+		margin-top: -18px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: $popuptip-background transparent transparent transparent;
+
+	}
+}
+
+.mev- {
+	&travel, &arrive, &leave, &wakeup, &sleep {
+		opacity: 50%;
+	}
+
+	&whisper, &message, &mail, &address, &controlRequest, &summon, &join, &leadRequest, &followRequest, &follow, &stopFollow, &stopLead, &dnd{
+		border-width: 1px 1px 1px 5px;
+	}
+}

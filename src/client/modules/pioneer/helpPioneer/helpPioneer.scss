@@ -1,0 +1,8 @@
+@import '~scss/mixins';
+
+.helppioneer {
+	p {
+		margin: 0;
+		@include log-pad();
+	}
+}

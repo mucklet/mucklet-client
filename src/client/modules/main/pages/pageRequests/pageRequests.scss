@@ -1,0 +1,35 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.pagerequests {
+	padding: 16px 14px;
+
+	&--name {
+		color: $color3;
+		font-size: $font-size;
+	}
+
+	&--name, &--email {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&--tool-btn {
+		position: relative;
+	}
+}
+
+
+.pagerequests-request {
+	padding: 2px 0;
+
+	&--icon.accepted {
+		@include btn-style($color6, $color6, $color6, $black, $black);
+	}
+
+	&--icon.rejected, &--icon.failed {
+		@include btn-style($color5, $color5, $color5, $black, $black);
+	}
+}

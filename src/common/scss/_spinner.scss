@@ -1,0 +1,37 @@
+@keyframes comp-spinner {
+	to {transform: rotate(360deg);}
+}
+
+.spinner {
+
+	&:before {
+		content: '';
+		box-sizing: border-box;
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		margin-top: -10px;
+		margin-left: -10px;
+		border-radius: 50%;
+		border-top: 2px solid $color5;
+		border-right: 2px solid transparent;
+		animation: comp-spinner 1s linear infinite;
+	}
+
+	&.small:before {
+		width: 16px;
+		height: 16px;
+		margin-top: -8px;
+		margin-left: -8px;
+	}
+
+	&.dark:before {
+		border-top-color: $color1;
+	}
+}
+
+
+
+@keyframes comp-spinner {
+	to {transform: rotate(360deg);}
+}

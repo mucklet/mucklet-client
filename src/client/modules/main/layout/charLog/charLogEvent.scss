@@ -1,0 +1,95 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.ev- {
+	&control {
+		font-size: $font-size-small;
+		padding-top: 9px;
+		padding-bottom: 12px;
+		line-height: 24px;
+		&--border {
+			border-bottom: 1px solid $color4;
+		}
+	}
+	color: $color4-dark; // Info, OOC
+	color: $color4; // Events (default)
+	color: $color4-lightest; // Communication
+
+	&describe {
+		font-size: $font-size-small;
+		white-space: pre-wrap;
+		// color: $color4;
+		padding: 4px 0 0 0;
+	}
+
+	&error, &errorComponent {
+		color: $log-error;
+		font-style: italic;
+		padding-top: 4px;
+	}
+
+	&info {
+		// color: $color4-dark;
+		font-style: italic;
+		padding-top: 4px;
+	}
+
+	&whisper, &message, &mail {
+		white-space: pre-wrap;
+		// color: $color4-lightest;
+		padding: 8px 0 0 0;
+	}
+
+	&dnd {
+		white-space: pre-wrap;
+		// color: $color4;
+		padding: 8px 0 0 0;
+	}
+
+	&say, &pose, &ooc, &address {
+		white-space: pre-wrap;
+		// color: $color4-lightest;
+		padding: 4px 0 0 0;
+	}
+
+	&msg, &wakeup, &sleep, &leave, &arrive, &travel, &action {
+		// color: $color4;
+		padding: 4px 0 0 0;
+		font-style: italic;
+	}
+
+	&warn {
+		white-space: pre-wrap;
+		// color: $log-error;
+		padding: 8px 0 0 0;
+
+		.charlog--fieldset {
+			border-color: $log-error;
+		}
+
+		.charlog--fieldset-label {
+			color: $log-error;
+		}
+	}
+
+	&summon, &join, &leadRequest, &followRequest, &follow, &stopFollow, &stopLead, &controlRequest {
+		// color: $color4;
+		padding: 8px 0 0 0;
+		font-style: italic;
+	}
+
+	&describe {
+		font-size: $font-size-small;
+		white-space: pre-wrap;
+		// color: $color4;
+		padding: 4px 0 0 0;
+	}
+
+	&travel {
+		&--room {
+			padding: 16px 0 4px 0;
+			font-size: $font-size;
+			color: $color2;
+		}
+	}
+}

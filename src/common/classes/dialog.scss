@@ -1,0 +1,125 @@
+@import '~scss/variables';
+
+.dialog--overlay {
+	background: #000;
+	opacity: 0.25;
+	filter: Alpha(Opacity=25);
+}
+
+.dialog--container, .dialog--overlay {
+	position:absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.dialog {
+	width: 80%;
+	max-width: 420px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+
+	&:not(.dialog--noanim) {
+		animation-name: dialog-opacity;
+		animation-duration: 0.3s;
+		opacity: 1;
+	}
+
+	background: $color1-lightest;
+}
+
+.dialog--head {
+	padding: 8px 8px;
+	h2 {
+		margin: 0;
+		padding: 8px 16px;
+	}
+	border-bottom: 1px solid $color2;
+}
+
+.dialog--content {
+	padding: 16px;
+}
+
+.dialog--close {
+	float: right;
+}
+
+.dialog--input {
+	width: 100%;
+	background: $color4-lighter;
+	color: $black;
+}
+
+.dialog--incomplete {
+	color: $color1-placeholder;
+}
+
+.dialog--error {
+	color: $color5;
+}
+
+.dialog--strong {
+	display: inline-block;
+	font-family: $font-text;
+	color: $color3;
+}
+
+.dialog--emphasis {
+	font-style: italic;
+}
+
+.dialog--large {
+	font-size: $font-size-large;
+}
+
+.dialog--small {
+	font-size: $font-size-small;
+}
+
+.dialog--footer {
+	margin: 32px 0 8px 0;
+}
+
+.dialog--btn {
+	margin-bottom: 10px;
+}
+
+@keyframes dialog-opacity {
+	from {
+		transform: translateX(-50%) translateY(-50%) scale(0.9);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(-50%) translateY(-50%) scale(1);
+		opacity: 1;
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.dialog {
+		min-height: 100vh;
+		min-width: 100%;
+		top: 0;
+		left: 0;
+		-moz-transform: scale(1);
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	@keyframes dialog-opacity {
+		from {
+			transform: scale(0.9);
+			opacity: 0;
+		}
+		to {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+}
+
