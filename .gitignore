@@ -4,6 +4,7 @@ node_modules
 
 # local config
 /webpack.alias.js
+/webpack.alias.js.*
 
 # production
 build
