@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const path = require('path');
 
 module.exports = function(ctx) {
@@ -43,6 +44,12 @@ module.exports = function(ctx) {
 		},
 		plugins: [
 			new CleanWebpackPlugin(),
+			new ESLintPlugin({
+				exclude: [
+					'/node_modules/',
+				],
+				emitWarning: true
+			}),
 			new CopyWebpackPlugin({
 				patterns: [
 					{ from: path.resolve(ctx.commonPath, 'static') },
