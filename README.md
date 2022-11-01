@@ -4,7 +4,7 @@ Web client for Mucklet.com, a textual world of roleplay.
 
 # Quick start
 
-Install [git](https://git-scm.com/downloads) and [node 14](https://nodejs.org/download/release/v14.20.1/)[^1], and run the following commands:
+Install [Git](https://git-scm.com/downloads) and [NodeJS](https://nodejs.org/en/download/), and run the following commands:
 
 ```text
 git clone https://bitbucket.org/anisus/mucklet-client
@@ -18,5 +18,3 @@ username and password of your Mucklet developer account:
 ```text
 http://localhost:6450/?login.player=<USER>&login.pass=<PASS>
 ```
-
-[^1]: The npm package [node-sass v4.14](https://www.npmjs.com/package/node-sass) dependency requires Node 14.
