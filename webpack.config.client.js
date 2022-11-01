@@ -1,5 +1,5 @@
 const Webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -13,7 +13,6 @@ module.exports = function(ctx) {
 			welcome: path.resolve(ctx.srcPath, 'welcome/app-welcome.js'),
 		},
 		devServer: {
-			index: 'index.html',
 			port: 6450,
 			allowedHosts: [
 				'localhost',

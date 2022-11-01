@@ -4,7 +4,7 @@ const modules = {
 	screen: Screen,
 };
 
-const req = require.context("./init/", true, /^.*\/([^/]*)\/\1.js$/i);
+const req = require.context("./init/", true, /^\..*\/([^/]*)\/\1.js$/i);
 
 // Using the first-character-lowercase name of the js-file as module name
 req.keys().forEach(key => {

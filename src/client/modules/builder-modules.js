@@ -1,4 +1,4 @@
-const req = require.context("./builder/", true, /^.*\/([^/]*)\/\1.js$/i);
+const req = require.context("./builder/", true, /^\..*\/([^/]*)\/\1.js$/i);
 
 let modules = {
 	// Add third party modules here

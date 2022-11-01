@@ -80,17 +80,17 @@ for (let app of apps) {
 					include: /node_modules/,
 					type: 'javascript/auto'
 				},
-				... ctx.devMode
-					? [{
-						test: /\.(js)$/,
-						include: ctx.srcPath,
-						enforce: 'pre',
-						loader: 'eslint-loader',
-						options: {
-							emitWarning: true
-						}
-					}]
-					: [],
+				// ... ctx.devMode
+				// 	? [{
+				// 		test: /\.(js)$/,
+				// 		include: ctx.srcPath,
+				// 		enforce: 'pre',
+				// 		loader: 'eslint-loader',
+				// 		options: {
+				// 			emitWarning: true
+				// 		}
+				// 	}]
+				// 	: [],
 				{
 					test: /\.(js)$/,
 					exclude: /node_modules/,
