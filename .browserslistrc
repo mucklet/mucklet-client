@@ -1,8 +1,9 @@
+[development]
 last 1 chrome version
 last 1 firefox version
 last 1 edge version
 
-[production staging]
+[production]
 > 5%
 last 2 versions
 Firefox ESR

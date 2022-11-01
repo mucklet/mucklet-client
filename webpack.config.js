@@ -5,7 +5,8 @@ const pkg = require('./package.json');
 
 const env = process.env.NODE_ENV || 'development';
 const appName = process.env.APP_NAME || null;
-const devMode = [ 'production', 'test', 'wolfery' ].indexOf(env) == -1;
+const cfgName = process.env.CFG_NAME || env;
+const devMode = env != 'production';
 const commonPath = path.resolve(__dirname, 'src/common/');
 
 function jsonEncodeObject(o) {
@@ -16,6 +17,17 @@ function jsonEncodeObject(o) {
 		}
 	}
 	return jo;
+}
+
+function resolveFirstExistingFile(filePath, files) {
+	let p;
+	for (let file of files) {
+		p = path.resolve(filePath, file);
+		if (fs.existsSync(p)) {
+			break;
+		}
+	}
+	return p;
 }
 
 const apps = [ 'client', 'hub' ];
@@ -30,19 +42,24 @@ for (let app of apps) {
 	ctx.buildPath = path.resolve(__dirname, 'build/', app);
 	ctx.cfgPath = path.resolve(__dirname, 'cfg/', app);
 
-	let siteConfigPath = path.resolve(ctx.cfgPath, 'site.config.' + env + '.js');
-	if (!fs.existsSync(siteConfigPath)) {
-		siteConfigPath = path.resolve(ctx.cfgPath, 'site.config.js');
-	}
+	// Resolve site config file path
+	let siteConfigPath = resolveFirstExistingFile(ctx.cfgPath, [
+		'site.config.' + cfgName + '.js',
+		'site.config.' + env + '.js',
+		'site.config.js'
+	]);
 	ctx.siteConfig = require(siteConfigPath);
 
-	let moduleConfigPath = path.resolve(ctx.cfgPath, 'module.config.' + env + '.js');
-	if (!fs.existsSync(moduleConfigPath)) {
-		moduleConfigPath = path.resolve(ctx.cfgPath, 'module.config.js');
-	}
+	// Resolve module config file path
+	let moduleConfigPath = resolveFirstExistingFile(ctx.cfgPath, [
+		'module.config.' + cfgName + '.js',
+		'module.config.' + env + '.js',
+		'module.config.js'
+	]);
 	ctx.alias = {
 		'moduleConfig$': moduleConfigPath,
 	};
+
 	let aliasPath = path.resolve(__dirname, 'webpack.alias.js');
 	if (fs.existsSync(aliasPath)) {
 		let aliasFile = require(aliasPath);
