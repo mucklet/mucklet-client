@@ -4,7 +4,8 @@ Web client for Mucklet.com, a textual world of roleplay.
 
 # Quick start
 
-Install [Git](https://git-scm.com/downloads) and [NodeJS](https://nodejs.org/en/download/), and run the following commands:
+Install [Git](https://git-scm.com/downloads) and
+[NodeJS](https://nodejs.org/en/download/), and run the following commands:
 
 ```text
 git clone https://bitbucket.org/anisus/mucklet-client
@@ -18,3 +19,9 @@ username and password of your Mucklet developer account:
 ```text
 http://localhost:6450/?login.player=<USER>&login.pass=<PASS>
 ```
+
+
+# Contributing
+
+To learn how to contribute to the project, start by reading the
+[about](./docs/about.md) documentation.
