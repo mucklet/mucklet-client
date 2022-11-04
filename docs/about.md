@@ -3,12 +3,15 @@
 The Mucklet Client is a Single Page Application, written in pure Javascript,
 compiled into a bundle using Webpack.
 
-## Dependencies
+## Understanding the application
 
-The client uses multiple experimental technologies, unfamiliar to most.
-So, when working with this client, make sure to read the overviews for those:
+The application uses multiple experimental technologies, unfamiliar to most
+developers. So, when working with this client, make sure to read the overviews:
 
-* [Dependency - Modapp](./dependency-modapp.md)
+* [Understanding modules](./understanding-modules.md)
+* [Understanding events](./understanding-events.md)
+* [Understanding components](./understanding-components.md)
+* [Understanding the API](./understanding-api.md)
 
 
 ## Style guide
