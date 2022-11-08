@@ -12,6 +12,7 @@ developers. So, when working with this client, make sure to read the overviews:
 * [Understanding events](./understanding-events.md)
 * [Understanding components](./understanding-components.md)
 * [Understanding the API](./understanding-api.md)
+* [Understanding the folder structure](./understanding-folders.md)
 
 
 ## Style guide

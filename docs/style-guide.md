@@ -1,10 +1,10 @@
 # Style guide
 
-The purpose of this style guide not only to keep the code style and file naming
+The purpose of this style guide not only to keep the code style, file naming,
 and structure consistent, but also to make it easier to search through the
 source for the code you are looking for.
 
-The rules may not be anyone's preference, but is better to have common
+The rules may not be anyone's preference, but it is better to have common
 formatting than having preferred formatting.
 
 > **Note**
@@ -13,9 +13,18 @@ formatting than having preferred formatting.
 > rules of this guide.
 
 ## Code formatting
-An [ESLint](https://eslint.org/) file, [.eslint.rc](../.eslintrc), is included
-in the project. All javascript code should follow the rules specified in this
-file. To make it easier, install ESLint support for your IDE of choice.
+
+### ESLint
+All javascript code should follow the rules specified in the
+[.eslintrc](../.eslintrc) file.  
+To make it easier, install [ESLint](https://eslint.org/)  support for your IDE
+of choice.
+
+### EditorConfig
+All text files (.js, .md, .json, etc.) should follow the rules specified in the
+[.editorconfig](../.editorconfig) file.  
+To make it easier, install [EditorConfig](https://editorconfig.org/) support for
+your IDE of choice.
 
 ## Code rules
 
@@ -28,7 +37,7 @@ methods, even if the intial value will never be changed.
 ```javascript
 // Const used to declare a static LocaleString outside of the class.
 const txtHelloWorld = l10n.l('example.helloWorld', "Hello, world!");
-// Variable declared inside a method of function.
+// Variable declared inside a method or function.
 let sum = 0;
 ```
 
@@ -171,6 +180,68 @@ Example file | Description
 `init/login/LoginComponent.js` | Main component of the _login_ module has `Component` added to the file name.
 
 
+## Common patterns
+
+When applicable, follow the existing conventions and patterns.
+
+### Module app reference
+
+* Always store the app reference passed to the module constructor in `this.app`.
+
+```javascript
+constructor(app, params) {
+	this.app = app;
+	/* ... */
+}
+```
+
+### Module dependencies
+
+* Use `this._init` as callback method when requiring dependencies.
+* Put `this._init` method directly below the constructor.
+* Put dependencies on separate lines with trailing comma.
+* Store module dependencies in `this.module` (no plural s).
+* Add `self` as a reference to `this`.
+
+```javascript
+constructor(app, params) {
+	this.app = app;
+	/* ... */
+	this.app.require([
+		'api', // Dependencies on separate lines with trailing comma
+	], this._init.bind(this));
+}
+
+_init(module) {
+	this.module = Object.assign({ self: this }, module);
+	/* ... */
+}
+```
+
+### Exposed module subclasses
+
+If a module ("host module") has a component or other class that other modules
+("client modules") may create instances of, the following rules apply:
+
+* Classes should only be exposed through modules if it has dependencies of other
+  modules.
+* Classes without dependencies of other modules should instead be put as a
+  shared class under `common/components/` or `common/classes`.
+* Class instances should be created through a public module method:
+  * The method should be prefixed with `new` followed by the name of the class,
+    but without the module name.
+* Client modules should NOT directly import the class file.
+* Module dependencies should by provided by the host module.
+
+```javascript
+// In the pageArea module, PageArea.js, a method prefixed with
+// new is used to create an instance of PageAreaBadge.
+newBadge(ctrl, area, opt) {
+	return new PageAreaBadge(this.module, ctrl, area, opt);
+}
+```
+
+
 ## SCSS style rules
 
 * Sass is used for all module styles.
@@ -192,3 +263,35 @@ Example class name | Description
 > Because of the class naming rules, it is easy to inspect the DOM of the web
 > application to see, using only class names, which module renders a certain
 > element.
+
+## JS Doc
+
+For code documentation, [JSDoc3](https://jsdoc.app/) syntax is used.
+
+### Modules
+* Module classes should have JSDoc comments describing what the module does.
+* Module class constructor does NOT need any comment.
+* Public module methods (methods not prefixed with `_`) should have JSDoc3
+  comments.
+
+```javascript
+/**
+ * CharPing periodically sends a ping for all controlled characters
+ * to ensure they are not released out of inactivity.
+ */
+class CharPing { /* ... */ }
+```
+
+## Localization
+
+To prepare for future multi-language support, all texts meant to be rendered for
+the user should be wrapped using the `l10n` package:
+
+* LocaleString key should be prefixed with the name of the module, followed by a dot.
+* LocaleString key should be suffixed with a short explainatory key following the [variable naming](#variable-naming) rules.
+
+```javascript
+// The "Wake up" LocaleString defined in the pageCharSelect module.
+l10n.l('pageCharSelect.wakeUp', "Wake up")
+```
+
