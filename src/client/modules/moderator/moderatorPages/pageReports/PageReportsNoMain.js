@@ -10,7 +10,7 @@ class PageReportsNoMain {
 		this.elem = new Elem(n => n.elem('div', { className: 'pagereports-nomain common--sectionpadding' }, [
 			n.component(new Txt(l10n.l('pageReports.emptyWatchList', "You must set a main character to assign reports."), { className: 'common--nolistplaceholder common--font-small' })),
 			n.component(new Txt(l10n.l('pageReports.addWatchInfo', "Learn how by typing:"), { className: 'common--nolistplaceholder common--font-small' })),
-			n.component(new Html(`<section class="charlog--pad"><div class="charlog--code"><code>help set main</code></div></section>`))
+			n.component(new Html(`<section class="charlog--pad"><div class="charlog--code"><code>help set main</code></div></section>`)),
 		]));
 		return this.elem.render(el);
 	}

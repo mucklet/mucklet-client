@@ -24,7 +24,7 @@ class ListProfiles {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'profiles',
 			alias: [ 'profile' ],
-			value: (ctx, p) => this.listProfiles(ctx.char)
+			value: (ctx, p) => this.listProfiles(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -49,9 +49,9 @@ class ListProfiles {
 				n.component(new Txt(l10n.l('listProfiles.charProfiles', "Character profiles"), { tagName: 'h4', className: 'charlog--pad' })),
 				n.elem('div', { className: 'charlog--code' }, [
 					n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-						n.component(new Html(list.join(''), { tagName: 'tbody' }))
-					])
-				])
+						n.component(new Html(list.join(''), { tagName: 'tbody' })),
+					]),
+				]),
 			])));
 		} else {
 			this.module.charLog.logInfo(char, l10n.l('listProfiles.noProfiles', "{charName} has no profiles.", { charName: char.name }));

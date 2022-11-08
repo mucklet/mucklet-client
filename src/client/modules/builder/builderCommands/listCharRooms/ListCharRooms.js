@@ -20,7 +20,7 @@ class ListCharRooms {
 			alias: [ 'room' ],
 			value: (ctx, p) => this.listCharRooms(ctx.char, p),
 			desc: l10n.l('listCharRooms', "Rooms owned by the character."),
-			sortOrder: 10
+			sortOrder: 10,
 		});
 	}
 
@@ -40,11 +40,11 @@ class ListCharRooms {
 									escapeHtml(l10n.t('listCharRooms.room', "Room ID")) +
 									'</th><th class="charlog--strong">' +
 									escapeHtml(l10n.t('listCharRooms.id', "Room")) +
-									'</th></tr>', { tagName: 'thead' }
+									'</th></tr>', { tagName: 'thead' },
 								)),
-								n.component(new Html(owned.join(''), { tagName: 'tbody' }))
-							])
-						])
+								n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+							]),
+						]),
 					])));
 				} else {
 					this.module.charLog.logInfo(char, l10n.l('listCharRooms.noRooms', "{name} owns no rooms yet.", c));

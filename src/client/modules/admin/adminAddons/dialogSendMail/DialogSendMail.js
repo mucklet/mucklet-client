@@ -70,13 +70,13 @@ class DialogSendMail {
 							c.removeClass('dialog--incomplete');
 							model.set({ from: item.value });
 							c.setProperty('value', item.label);
-						}
+						},
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
 						required: true,
-					}
+					},
 				)),
 				n.component('to', new PanelSection(
 					l10n.l('dialogSendMail.to', "To"),
@@ -89,7 +89,7 @@ class DialogSendMail {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						required: true,
-					}
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('dialogSendMail.message', "Message"),
@@ -99,35 +99,35 @@ class DialogSendMail {
 							events: { input: c => model.set({ text: c.getValue() }) },
 							attributes: {
 								spellcheck: 'false',
-								placeholder: l10n.t('dialogSendMail.textPlaceholder', "Enter the message")
+								placeholder: l10n.t('dialogSendMail.textPlaceholder', "Enter the message"),
 							},
-							className: 'dialog--input common--paneltextarea-small'
+							className: 'dialog--input common--paneltextarea-small',
 						}),
-						(m, c) => c.setValue(m.text)
+						(m, c) => c.setValue(m.text),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('dialogSendMail.messageInfo', "Message to send to the character. Use : (colon) and > (greater than) modifiers for pose or OOC messages."),
-					}
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
 					n.elem('button', {
 						events: { click: () => this._onSend(player, model) },
-						className: 'btn primary flex-1'
+						className: 'btn primary flex-1',
 					}, [
-						n.component(new Txt(l10n.l('dialogSendMail.sendMail', "Send mail")))
+						n.component(new Txt(l10n.l('dialogSendMail.sendMail', "Send mail"))),
 					]),
 					n.elem('button', {
 						className: 'btn secondary flex-1',
-						events: { click: () => this.close() }
+						events: { click: () => this.close() },
 					}, [
-						n.component(new Txt(l10n.l('dialogSendMail.cancel', "Cancel")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogSendMail.cancel', "Cancel"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();

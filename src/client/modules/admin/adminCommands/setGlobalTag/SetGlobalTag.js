@@ -25,7 +25,7 @@ const defaultAttr = [
 			errTooLong: keyTooLong,
 		}),
 		desc: l10n.l('setGlobalTag.keywordDesc', "Tag keyword."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'desc',
@@ -33,30 +33,30 @@ const defaultAttr = [
 			name: "tag description",
 			maxLength: () => module.info.getTag().tagDescMaxLength,
 			errTooLong: descriptionTooLong,
-			errRequired: null
+			errRequired: null,
 		}),
 		desc: l10n.l('setGlobalTag.descDesc', "Description of the tag."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'group',
 		stepFactory: module => new ListStep('value', module.tags.getGroupsList(), {
 			name: "tag group",
-			else: new ValueStep('value', "")
+			else: new ValueStep('value', ""),
 		}),
 		desc: l10n.l('setGlobalTag.groupDesc', "Tag group. Empty means no group. List groups with <code>list taggroups</code>."),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	{
 		key: 'parent',
 		value: 'parentId',
 		stepFactory: module => new ListStep('value', module.tags.getTagsList(), {
 			name: "parent tag",
-			else: new ValueStep('value', "")
+			else: new ValueStep('value', ""),
 		}),
 		desc: l10n.l('setGlobalTag.parentIdDesc', "Parent tag. Empty means no parent. Cyclic relations are not allowed."),
-		sortOrder: 40
-	}
+		sortOrder: 40,
+	},
 ];
 
 /**
@@ -72,7 +72,7 @@ class SetGlobalTag {
 	_init(module) {
 		this.module = module;
 		this.tagAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -82,18 +82,18 @@ class SetGlobalTag {
 			key: 'globaltag',
 			next: [
 				new ListStep('tagId', this.module.tags.getTagsList(), {
-					name: "tag keyword"
+					name: "tag keyword",
 				}),
 				new DelimStep(":", {
 					next: new ListStep('attr', this.tagAttr, {
 						name: "tag attribute",
-						token: 'attr'
+						token: 'attr',
 					}),
-				})
+				}),
 			],
 			value: (ctx, p) => this.setGlobalTag(ctx.char, p.tagId, {
-				[p.attr]: p.value
-			})
+				[p.attr]: p.value,
+			}),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -113,8 +113,8 @@ class SetGlobalTag {
 			attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
-				})
+					name: attr.name || attr.key,
+				}),
 		];
 		this.tagAttr.addItem(Object.assign({}, attr, { next }));
 		return this;

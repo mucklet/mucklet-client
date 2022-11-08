@@ -22,7 +22,7 @@ class AreaMap {
 		this.module.charLog.addOverlay({
 			id: 'areaMap',
 			componentFactory: (char, state, layoutId) => new AreaMapComponent(this.module, char, state),
-			filter: (char, layoutId) => layoutId == 'desktop'
+			filter: (char, layoutId) => layoutId == 'desktop',
 		});
 	}
 

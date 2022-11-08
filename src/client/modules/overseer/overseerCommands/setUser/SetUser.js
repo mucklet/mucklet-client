@@ -17,19 +17,19 @@ const defaultAttr = [
 		key: 'name',
 		name: "account name",
 		desc: l10n.l('setUser.nameDesc', "Account display name."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'username',
 		name: "login username",
 		desc: l10n.l('setUser.usernameDesc', "Account username."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'email',
 		name: "user email",
 		desc: l10n.l('setUser.emailDesc', "Account email."),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	{
 		key: 'emailVerified',
@@ -37,8 +37,8 @@ const defaultAttr = [
 			name: "email verified flag",
 		}),
 		desc: l10n.l('setUser.emailVerifiedDesc', "Flag telling if user email is verified."),
-		sortOrder: 40
-	}
+		sortOrder: 40,
+	},
 ];
 
 /**
@@ -54,7 +54,7 @@ class SetUser {
 	_init(module) {
 		this.module = module;
 		this.userAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -68,23 +68,23 @@ class SetUser {
 						name: "username",
 						token: 'listitem',
 						regex: /^[^:]+/,
-						spellcheck: false
+						spellcheck: false,
 					}),
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "user",
-						errRequired: step => ({ code: 'setUser.characterRequired', message: "Which user?" })
+						errRequired: step => ({ code: 'setUser.characterRequired', message: "Which user?" }),
 					}),
 				}),
 				new DelimStep(":"),
 				new ListStep('attr', this.userAttr, {
 					name: "account attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
 			value: (ctx, p) => typeof p.attr == 'function'
 				? p.attr(ctx, p)
-				: this._setUser(ctx, p)
+				: this._setUser(ctx, p),
 		});
 
 		this.module.helpOverseer.addTopic({
@@ -104,9 +104,9 @@ class SetUser {
 				attr.stepFactory
 					? attr.stepFactory(this.module)
 					: new TextStep('value', {
-						name: attr.name || attr.key
-					})
-			]
+						name: attr.name || attr.key,
+					}),
+			],
 		}, attr));
 		return this;
 	}
@@ -117,7 +117,7 @@ class SetUser {
 			? this.module.api.call('identity.overseer', 'getUserByUsername', { username: p.username.trim() })
 			: mod.getPlayer().call('getUser', p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
+				: { charName: p.charName },
 			)
 		)
 			.then(user => this.module.api.call('identity.user.' + user.id, 'set', { [p.attr]: p.value }))

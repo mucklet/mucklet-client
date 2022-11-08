@@ -23,7 +23,7 @@ class Evict {
 	_init(module) {
 		this.module = module;
 		this.evictType = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 
 		this.module.cmd.addCmd({
@@ -32,14 +32,14 @@ class Evict {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'evict.characterRequired', message: "Who do you want to evict?" })
+					errRequired: step => ({ code: 'evict.characterRequired', message: "Who do you want to evict?" }),
 				}),
 				new DelimStep(":", {
 					next: new ListStep('type', this.evictType, {
 						name: "type of eviction",
-						token: 'attr'
+						token: 'attr',
 					}),
-					errRequired: null
+					errRequired: null,
 				}),
 			],
 			value: (ctx, p) => {
@@ -48,9 +48,9 @@ class Evict {
 					? f(ctx, p, this)
 					: this.evict(ctx.char, p.charId
 						? { charId: p.charId }
-						: { charName: p.charName }
+						: { charName: p.charName },
 					);
-			}
+			},
 		});
 
 		this.module.help.addTopic({
@@ -77,7 +77,7 @@ class Evict {
 		return char.call('evict', params).then(result => {
 			let tc = result.targetChar;
 			this.module.charLog.logInfo(char, l10n.l('evict.charEvicted', "Successfully evicted {targetCharName} from this room.", {
-				targetCharName: (tc.name + " " + tc.surname).trim()
+				targetCharName: (tc.name + " " + tc.surname).trim(),
 			}));
 		});
 	}

@@ -38,18 +38,18 @@ class MobileCharToggle {
 								click: (c, ev) => {
 									this.module.charPages.openPanel();
 									ev.preventDefault();
-								}
-							}
+								},
+							},
 						}),
 						(m, c) => model.setModel(m
 							? m.char || m.unseen
-							: char
-						)
+							: char,
+						),
 					),
-					(m, c) => c.setModel(m.lookingAt)
-				)
+					(m, c) => c.setModel(m.lookingAt),
+				),
 			),
-			filter: (char, layoutId) => layoutId == 'mobile'
+			filter: (char, layoutId) => layoutId == 'mobile',
 		});
 	}
 

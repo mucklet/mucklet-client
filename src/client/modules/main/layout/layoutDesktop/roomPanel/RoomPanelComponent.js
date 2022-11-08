@@ -53,7 +53,7 @@ class RoomPanelComponent {
 				this.roomPage = (m.inRoom && f && f(m, m.inRoom, this.state)) || {};
 				this.roomState = state;
 				this._setComponent();
-			}
+			},
 		);
 		return this.elem.render(el);
 	}
@@ -148,7 +148,7 @@ class RoomPanelComponent {
 				if (sb) {
 					d.scrollTop = sb.getScrollElement().scrollTop;
 				}
-			}
+			},
 		});
 	}
 

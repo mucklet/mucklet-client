@@ -30,13 +30,13 @@ class GetNote {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'getNote.characterRequired', message: "Who do you want to view the notes for?" })
-				})
+					errRequired: step => ({ code: 'getNote.characterRequired', message: "Who do you want to view the notes for?" }),
+				}),
 			],
 			value: (ctx, p) => this.getNote(ctx.player, ctx.char, p.charId
 				? { charId: p.charId, text: p.text }
-				: { charName: p.charName, text: p.text }
-			)
+				: { charName: p.charName, text: p.text },
+			),
 		});
 
 		this.module.help.addTopic({

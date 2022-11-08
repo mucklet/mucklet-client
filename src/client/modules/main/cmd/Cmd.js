@@ -27,7 +27,7 @@ class Cmd {
 		this.notFoundHandlers = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.cmds = new ItemList({ regex: /^\s*([\w\d/][\w\d]*)/ });
 		this.cmdStep = new ListStep('cmd', this.cmds, {
@@ -36,10 +36,10 @@ class Cmd {
 			token: 'name',
 			delimToken: 'name',
 			errRequired: null,
-			errNotFound: (step, match) => ({ code: 'cmd.commandNotFound', message: 'There is no command called "{match}".', data: { name: step.name, match: match }})
+			errNotFound: (step, match) => ({ code: 'cmd.commandNotFound', message: 'There is no command called "{match}".', data: { name: step.name, match: match }}),
 		});
 		this.cmdLanguage = StreamLanguage.define(cmdParser({
-			step: this.cmdStep
+			step: this.cmdStep,
 		}));
 		this.prefixes = {};
 		this.lists = {};
@@ -74,7 +74,7 @@ class Cmd {
 				return {
 					list: range.list,
 					from: range.from + token.from,
-					to: range.to + token.from
+					to: range.to + token.from,
 				};
 			}
 		}
@@ -101,7 +101,7 @@ class Cmd {
 				? { code: 'cmd.parseError', message: err }
 				: err.code == 'cmd.commandNotFound'
 					? this._resolveNotFound(ctx, err, p.unknown || null)
-					: err
+					: err,
 			);
 		}
 		let f = p.cmd;
@@ -123,16 +123,16 @@ class Cmd {
 		let list = this.prefixes[prefix];
 		if (!list) {
 			list = new ItemList('object', {
-				name: "object type"
+				name: "object type",
 			});
 			this.prefixes[prefix] = list;
 			this.addCmd({
 				key: prefix,
 				next: new ListStep('object', list, {
 					name: "object type",
-					token: 'name'
+					token: 'name',
 				}),
-				value: this._execPrefix
+				value: this._execPrefix,
 			});
 		}
 
@@ -196,7 +196,7 @@ class Cmd {
 		}
 		return new Html(
 			l10n.t('cmd.commandNotFound', 'There is no command named "{match}".', { match: escapeHtml(match) }) + ' Type <span class="cmd">help</span> to learn more.',
-			{ className: 'common--formattext' }
+			{ className: 'common--formattext' },
 		);
 	}
 }

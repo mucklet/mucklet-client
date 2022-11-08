@@ -33,7 +33,7 @@ class Suspend {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to suspend?" })
+					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to suspend?" }),
 				}),
 				new DelimStep("=", {
 					next: [
@@ -42,15 +42,15 @@ class Suspend {
 							errRequired: step => ({ code: 'suspend.reasonRequired', message: "What is the reason to suspend the character?" }),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getCharsAwake()
+							completer: this.module.cmdLists.getCharsAwake(),
 						}),
-					]
-				})
+					],
+				}),
 			],
 			value: (ctx, p) => this.suspend(ctx.char, p.charId
 				? { charId: p.charId, reason: p.reason }
-				: { charName: p.charName, reason: p.reason }
-			)
+				: { charName: p.charName, reason: p.reason },
+			),
 		});
 
 		this.module.helpModerate.addTopic({

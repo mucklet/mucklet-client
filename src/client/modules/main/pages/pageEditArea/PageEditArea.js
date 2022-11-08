@@ -27,11 +27,11 @@ class PageEditArea {
 			id: 'editArea',
 			sortOrder: 10,
 			componentFactory: (ctrl, area) => new Elem(n => n.elem('button', { className: 'iconbtn small', events: {
-				click: () => this.open(ctrl, area)
+				click: () => this.open(ctrl, area),
 			}}, [
 				n.component(new FAIcon('pencil')),
 			])),
-			filter: (ctrl, area, canEdit) => canEdit
+			filter: (ctrl, area, canEdit) => canEdit,
 		});
 	}
 
@@ -50,7 +50,7 @@ class PageEditArea {
 			(ctrl, room, state, close) => ({
 				component: new PageEditAreaComponent(this.module, ctrl, area, state, close),
 				title: l10n.l('pageEditArea.editArea', "Edit Area"),
-			})
+			}),
 		);
 		if (toggleOpen) {
 			this.module.roomPages.openPanel();

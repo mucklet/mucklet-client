@@ -28,7 +28,7 @@ const codemirrorSpellcheck = ViewPlugin.fromClass(class {
 		return Decoration.set(set);
 	}
 }, {
-	decorations: v => v.decorations
+	decorations: v => v.decorations,
 });
 
 export default codemirrorSpellcheck;

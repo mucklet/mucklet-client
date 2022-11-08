@@ -26,14 +26,14 @@ class SetCharType {
 		this.module = module;
 
 		this.charTypes = new ItemList({
-			items: [{ key: 'normal', value: 'player' }, { key: 'puppet' }]
+			items: [{ key: 'normal', value: 'player' }, { key: 'puppet' }],
 		});
 
 		this.module.setChar.addAttribute({
 			key: 'type',
 			stepFactory: () => new ListStep('value', this.charTypes, { name: "character type" }),
 			desc: l10n.l('setCharType.typeDesc', "Character type. Value is <code>normal</code> or <code>puppet</code>."),
-			sortOrder: 100
+			sortOrder: 100,
 		});
 
 		this.module.helpBuilder.addTopic({

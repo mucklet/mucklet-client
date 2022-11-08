@@ -22,7 +22,7 @@ class Getconfig {
 
 		this.module.cmd.addPrefixCmd('get', {
 			key: 'config',
-			value: (ctx, p) => this._getconfig(ctx)
+			value: (ctx, p) => this._getconfig(ctx),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -40,8 +40,8 @@ class Getconfig {
 			this.module.charLog.logComponent(ctx.char, 'getconfig', new Elem(n => n.elem('div', { className: 'charlog--pad' }, [
 				n.component(new Txt(l10n.l('getconfig.worldConfig', "World configuration"), { tagName: 'h4' })),
 				n.elem('div', { className: 'charlog--code' }, [
-					n.elem('pre', { className: 'common--pre-wrap' }, [ n.text(JSON.stringify(result, null, 4)) ])
-				])
+					n.elem('pre', { className: 'common--pre-wrap' }, [ n.text(JSON.stringify(result, null, 4)) ]),
+				]),
 			])));
 		});
 	}

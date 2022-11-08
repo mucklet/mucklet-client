@@ -17,118 +17,118 @@ const defaultAttr = [
 		key: 'title',
 		name: "world title",
 		desc: l10n.l('setConfig.titleDesc', "World title."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'greeting',
 		stepFactory: (module) => new TextStep('value', {
 			name: "greeting html",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.greetingDesc', "Front page greeting message (HTML)."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'arrivalRoom',
 		stepFactory: (module) => new ValueStep('valueRoomId', true),
 		desc: l10n.l('setConfig.arrivalRoomDesc', "Value is omitted. Sets current room as arrival room."),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	{
 		key: 'defaultHome',
 		stepFactory: (module) => new ValueStep('valueRoomId', true),
 		desc: l10n.l('setConfig.defaultHomeDesc', "Value is omitted. Sets current room as default home."),
-		sortOrder: 40
+		sortOrder: 40,
 	},
 	{
 		key: 'arrivalMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "arrival message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.arrivalMsgDesc', "Arrival message for characters in the arrival room."),
-		sortOrder: 50
+		sortOrder: 50,
 	},
 	{
 		key: 'deleteCharMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "deleted character message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.deleteCharMsgDesc', "Deletion message for others in the room of the character being deleted."),
-		sortOrder: 60
+		sortOrder: 60,
 	},
 	{
 		key: 'quietMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "quiet room message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.quietMsgDesc', "Quiet message shown when trying to communicate in a quiet room."),
-		sortOrder: 70
+		sortOrder: 70,
 	},
 	{
 		key: 'fallAsleepMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "fall asleep message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.fallAsleepMsgDesc', "Fall asleep message shown to the room when a character falls asleep."),
-		sortOrder: 71
+		sortOrder: 71,
 	},
 	{
 		key: 'wakeUpMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "wake up message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.wakeUpMsgDesc', "Wake up message shown to the room room when a character wakes up."),
-		sortOrder: 72
+		sortOrder: 72,
 	},
 	{
 		key: 'dazedMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "dazed message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.dazedMsgDesc', "Dazed message shown to the room when a previous puppeteer leaves control over an awake puppet."),
-		sortOrder: 73
+		sortOrder: 73,
 	},
 	{
 		key: 'recoverFromDazeMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "recover from daze message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.recoverFromDazeMsgDesc', "Recover from daze message shown when a new puppeteer takes control over a dazed puppet."),
-		sortOrder: 74
+		sortOrder: 74,
 	},
 	{
 		key: 'notAPuppetMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "not a puppet message",
-			spanLines: false
+			spanLines: false,
 		}),
 		desc: l10n.l('setConfig.notAPuppetMsgDesc', "Reject message shown on a request to take control of character that is not a puppet."),
-		sortOrder: 75
+		sortOrder: 75,
 	},
 	{
 		key: 'puppetControlledByOtherMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "puppet controlled by other message",
-			spanLines: false
+			spanLines: false,
 		}),
 		desc: l10n.l('setConfig.puppetControlledByOtherMsgDesc', "Reject message shown when trying to take control of a puppet already in control by someone else."),
-		sortOrder: 76
+		sortOrder: 76,
 	},
 	{
 		key: 'defaultDoNotDisturbMsg',
 		stepFactory: () => new TextStep('value', {
 			name: "default do not disturb message",
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.defaultDoNotDisturbMsgDesc', "Do not disturb message shown when a character doesn't have a custom do not disturb message set."),
-		sortOrder: 76
+		sortOrder: 76,
 	},
 
 	// Movement messages
@@ -136,19 +136,19 @@ const defaultAttr = [
 		key: 'teleportHome',
 		nextFactory: module => module.self._createMoveMsgItem(),
 		desc: l10n.l('setConfig.teleportHomeDesc', "Teleport home move messages. Has subattributes <code>leaveMsg</code>, <code>arriveMsg</code>, and <code>travelMsg</code>."),
-		sortOrder: 100
+		sortOrder: 100,
 	},
 	{
 		key: 'teleport',
 		nextFactory: module => module.self._createMoveMsgItem(),
 		desc: l10n.l('setConfig.teleportDesc', "Teleport move messages. Has subattributes <code>leaveMsg</code>, <code>arriveMsg</code>, and <code>travelMsg</code>."),
-		sortOrder: 110
+		sortOrder: 110,
 	},
 	{
 		key: 'summon',
 		nextFactory: module => module.self._createMoveMsgItem(),
 		desc: l10n.l('setConfig.summonDesc', "Summon move messages. Has subattributes <code>leaveMsg</code>, <code>arriveMsg</code>, and <code>travelMsg</code>."),
-		sortOrder: 120
+		sortOrder: 120,
 	},
 ];
 
@@ -165,7 +165,7 @@ class SetConfig {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 		this.configAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -175,13 +175,13 @@ class SetConfig {
 			key: 'config',
 			next: new ListStep('attr', this.configAttr, {
 				name: "config attribute",
-				token: 'attr'
+				token: 'attr',
 			}),
 			value: (ctx, p) => this.setConfig({
 				[p.attr]: p.valueRoomId
 					? ctx.char.inRoom.id
-					: ((p.subAttr ? { [p.subAttr]: p.value } : p.value))
-			})
+					: ((p.subAttr ? { [p.subAttr]: p.value } : p.value)),
+			}),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -201,8 +201,8 @@ class SetConfig {
 			attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
-				})
+					name: attr.name || attr.key,
+				}),
 		];
 		this.configAttr.addItem(Object.assign({}, attr, { next }));
 		return this;
@@ -223,8 +223,8 @@ class SetConfig {
 					new DelimStep("=", { errRequired: null }),
 					new TextStep('value', {
 						name: "leave message",
-						spanLines: true
-					})
+						spanLines: true,
+					}),
 				],
 			}, {
 				key: 'arriveMsg',
@@ -232,8 +232,8 @@ class SetConfig {
 					new DelimStep("=", { errRequired: null }),
 					new TextStep('value', {
 						name: "arrive message",
-						spanLines: true
-					})
+						spanLines: true,
+					}),
 				],
 			}, {
 				key: 'travelMsg',
@@ -241,13 +241,13 @@ class SetConfig {
 					new DelimStep("=", { errRequired: null }),
 					new TextStep('value', {
 						name: "travel message",
-						spanLines: true
-					})
+						spanLines: true,
+					}),
 				],
-			}]
+			}],
 		}), {
 			name: "config attribute",
-			token: 'attr'
+			token: 'attr',
 		});
 	}
 }

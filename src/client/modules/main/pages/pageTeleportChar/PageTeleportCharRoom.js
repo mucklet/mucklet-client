@@ -14,7 +14,7 @@ class PageTeleportCharRoom {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'pageteleportchar-room' }, [
 			n.elem('btn', 'div', { className: 'badge btn', events: {
-				click: () => this._teleport()
+				click: () => this._teleport(),
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.elem('div', { className: 'badge--info' }, [
@@ -26,13 +26,13 @@ class PageTeleportCharRoom {
 							click: (c, ev) => {
 								copyToClipboard("#" + this.room.id);
 								ev.stopPropagation();
-							}
+							},
 						}}, [
 							n.component(new FAIcon('clipboard')),
-						])
-					])
-				])
-			])
+						]),
+					]),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

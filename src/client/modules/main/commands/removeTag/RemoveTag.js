@@ -38,7 +38,7 @@ class RemoveTag {
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 
 		this.module.cmd.addPrefixCmd('remove', {
@@ -49,12 +49,12 @@ class RemoveTag {
 					'keys',
 					(next, idx) => new ListStep('tagId-' + idx, this.tagsList, {
 						name: "tag to remove",
-						next
+						next,
 					}),
 					{
-						delimiter: ","
-					}
-				)
+						delimiter: ",",
+					},
+				),
 			],
 			value: (ctx, p) => {
 				let tags = {};
@@ -64,7 +64,7 @@ class RemoveTag {
 					i++;
 				}
 				return this.removeTag(ctx.char, tags);
-			}
+			},
 		});
 
 		this.module.help.addTopic({

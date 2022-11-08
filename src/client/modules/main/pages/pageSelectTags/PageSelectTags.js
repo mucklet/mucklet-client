@@ -30,10 +30,10 @@ class PageSelectTags {
 				click: (c, e) => {
 					this.open(ctrl, room);
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('list-ul')),
-			]))
+			])),
 		});
 	}
 
@@ -49,8 +49,8 @@ class PageSelectTags {
 			(ctrl, char, state, close) => ({
 				component: new PageSelectTagsComponent(this.module, ctrl, state, close),
 				title: l10n.l('pageSelectTags.characterTags', "Character Tags"),
-				onClose: close
-			})
+				onClose: close,
+			}),
 		);
 	}
 

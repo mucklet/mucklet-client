@@ -35,20 +35,20 @@ class PageEditTeleportComponent {
 				new ModelTxt(this.node.room, m => m.name),
 				{
 					className: 'common--sectionpadding',
-					noToggle: true
-				}
+					noToggle: true,
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditTeleport.keyword', "Keyword"),
 				new Input(model.key, {
 					events: { input: c => model.set({ key: c.getValue() }) },
-					attributes: { spellcheck: 'false' }
+					attributes: { spellcheck: 'false' },
 				}),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('pageEditTeleport.keyInfo', "A keyword used for identifying the teleport destination.")
-				}
+					popupTip: l10n.l('pageEditTeleport.keyInfo', "A keyword used for identifying the teleport destination."),
+				},
 			)),
 			n.component(this._message),
 			n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
@@ -56,19 +56,19 @@ class PageEditTeleportComponent {
 					n.component(new ModelComponent(
 						model,
 						new Elem(n => n.elem('update', 'button', { events: {
-							click: () => this._save(model)
+							click: () => this._save(model),
 						}, className: 'btn primary' }, [
-							n.component(new Txt(l10n.l('pageEditTeleport.update', "Save edits")))
+							n.component(new Txt(l10n.l('pageEditTeleport.update', "Save edits"))),
 						])),
-						(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled')
+						(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
 					)),
 				]),
 				n.elem('button', { events: {
 					click: () => this._delete(),
 				}, className: 'iconbtn medium' }, [
-					n.component(new FAIcon('trash'))
+					n.component(new FAIcon('trash')),
 				]),
-			])
+			]),
 		]));
 		return this.elem.render(el);
 	}
@@ -93,7 +93,7 @@ class PageEditTeleportComponent {
 	_setMessage(msg) {
 		this._message.setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
-			: null
+			: null,
 		);
 	}
 
@@ -115,9 +115,9 @@ class PageEditTeleportComponent {
 			title: l10n.l('pageEditTeleport.confirmRemove', "Confirm remove"),
 			body: new Elem(n => n.elem('div', [
 				n.component(new Txt(l10n.l('pageEditTeleport.removeNodeBody', "Do you really wish to remove the teleport node?"), { tagName: 'p' })),
-				n.elem('p', [ n.component(new ModelTxt(this.node.room, m => m.name, { className: 'dialog--strong' })) ])
+				n.elem('p', [ n.component(new ModelTxt(this.node.room, m => m.name, { className: 'dialog--strong' })) ]),
 			])),
-			confirm: l10n.l('pageEditTeleport.remove', "Remove")
+			confirm: l10n.l('pageEditTeleport.remove', "Remove"),
 		});
 	}
 

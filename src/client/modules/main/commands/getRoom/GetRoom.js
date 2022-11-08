@@ -30,17 +30,17 @@ class GetRoom {
 		this.roomAttr = new ItemList({
 			items: [
 				{ key: 'id' },
-				{ key: 'owner' }
-			]
+				{ key: 'owner' },
+			],
 		});
 
 		this.module.cmd.addPrefixCmd('get', {
 			key: 'room',
 			next: new ListStep('attr', this.roomAttr, {
 				name: "room attribute",
-				token: 'attr'
+				token: 'attr',
 			}),
-			value: (ctx, p) => this.getRoom(ctx.char, p.attr)
+			value: (ctx, p) => this.getRoom(ctx.char, p.attr),
 		});
 
 		this.module.help.addTopic({

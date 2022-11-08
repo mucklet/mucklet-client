@@ -18,7 +18,7 @@ class PasswordReset {
 			resetUrl: '/identity/resetpass?noredirect',
 			resetValidateUrl: '/identity/resetpass/validate?noredirect',
 			redirectUrl: '/',
-			crossOrigin: true
+			crossOrigin: true,
 		}, params);
 
 		this.app.require([
@@ -63,7 +63,7 @@ class PasswordReset {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -86,7 +86,7 @@ class PasswordReset {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -110,7 +110,7 @@ class PasswordReset {
 				n.component(new Txt(l10n.l('passwordReset.passwordUpdateInfo1', "Your password has been updated."), { tagName: 'p' })),
 				n.component(new Txt(l10n.l('passwordReset.passwordUpdateInfo2', "Go to the login and try it out!"), { tagName: 'p' })),
 			])),
-			onConfirm: () => this._redirect()
+			onConfirm: () => this._redirect(),
 		}));
 	}
 
@@ -121,7 +121,7 @@ class PasswordReset {
 				n.component(new Txt(l10n.l('passwordReset.invalidCodeInfo1', "Maybe the reset link was too old, or it has already been used."), { tagName: 'p' })),
 				n.component(new Txt(l10n.l('passwordReset.invalidCodeInfo2', "Try requesting a new reset link from the login screen."), { tagName: 'p' })),
 			])),
-			onConfirm: () => this._redirect()
+			onConfirm: () => this._redirect(),
 		}));
 	}
 
@@ -130,13 +130,13 @@ class PasswordReset {
 			render: () => {
 				redirect(this.params.redirectUrl);
 			},
-			unrender: () => {}
+			unrender: () => {},
 		});
 	}
 
 	_showError(err) {
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
-			redirectUrl: this.params.redirectUrl
+			redirectUrl: this.params.redirectUrl,
 		}));
 	}
 }

@@ -62,7 +62,7 @@ class DialogReport {
 								model.set({ attachLog: v });
 							},
 							popupTip: l10n.l('dialogReport.attachLogInfo', "Attaches a section of your character's log to the report.\nIt will only be seen by moderators."),
-							popupTipClassName: 'popuptip--width-m'
+							popupTipClassName: 'popuptip--width-m',
 						})),
 						n.component(new ModelComponent(
 							model,
@@ -77,7 +77,7 @@ class DialogReport {
 												n.component(new ModelTxt(
 													model,
 													m => toTime(ev, m.start),
-													{ duration: 0 }
+													{ duration: 0 },
 												)),
 												n.text(" – "),
 												n.component(new Context(
@@ -94,15 +94,15 @@ class DialogReport {
 															let diff = endTime - (new Date().getTime());
 															c.setText(diff > 0
 																? l10n.l('dialogReport.now', "now")
-																: formatTime(endTime)
+																: formatTime(endTime),
 															);
 															if (diff > 0) {
 																o.timer = setTimeout(() => {
 																	c.setText(formatTime(endTime));
 																}, diff);
 															}
-														}
-													)
+														},
+													),
 												)),
 											]),
 											n.component(new NoUiSlider({
@@ -117,7 +117,7 @@ class DialogReport {
 													format: {
 														to: v => toTime(ev, v),
 														from: v => v,
-													}
+													},
 												},
 												className: 'dialogreport--slider pips-centered',
 												onUpdate: (c, v, handle, unencoded, tap, positions, slider) => {
@@ -132,19 +132,19 @@ class DialogReport {
 														slider.setHandle(1, 0, false);
 													}
 													model.set({ start, end });
-												}
-											}))
+												},
+											})),
 										])),
 										{
 											className: 'common--sectionpadding small',
 											noToggle: true,
-											popupTip: l10n.l('dialogReport.logIntevalInfo', "Time interval of log events to include in the attachment.")
-										}
+											popupTip: l10n.l('dialogReport.logIntevalInfo', "Time interval of log events to include in the attachment."),
+										},
 									)
-									: null
+									: null,
 								);
-							}
-						))
+							},
+						)),
 					]));
 				}
 
@@ -163,28 +163,28 @@ class DialogReport {
 										let v = c.getValue().replace(/\r?\n/gi, '');
 										c.setValue(v);
 										model.set({ msg: v });
-									}
+									},
 								},
-								attributes: { name: 'dialogreport-msg', spellcheck: 'true' }
+								attributes: { name: 'dialogreport-msg', spellcheck: 'true' },
 							}),
 							{
 								className: 'common--sectionpadding',
 								noToggle: true,
-								popupTip: l10n.l('dialogReport.messageInfo', "Describe what you wish to report. This will only be seen by moderators.")
-							}
+								popupTip: l10n.l('dialogReport.messageInfo', "Describe what you wish to report. This will only be seen by moderators."),
+							},
 						)),
 						n.component(logAttachComponent),
 						n.component('message', new Collapser(null)),
 						n.elem('div', { className: 'pad-top-xl' }, [
 							n.elem('submit', 'button', {
 								events: { click: () => this._sendReport(ctrlId, charId, puppeteerId, ev, model) },
-								className: 'btn primary dialog-btn dialogreport--submit'
+								className: 'btn primary dialog-btn dialogreport--submit',
 							}, [
-								n.component(new Txt(l10n.l('dialogReport.sendReport', "Send report")))
-							])
-						])
+								n.component(new Txt(l10n.l('dialogReport.sendReport', "Send report"))),
+							]),
+						]),
 					])),
-					onClose: () => { this.dialog = null; }
+					onClose: () => { this.dialog = null; },
 				});
 
 				this.dialog.open();
@@ -209,8 +209,8 @@ class DialogReport {
 				params: {
 					startTime: addMin(ev.time, model.start).getTime(),
 					endTime: addMin(ev.time, model.end).getTime(),
-				}
-			} : undefined
+				},
+			} : undefined,
 		}).then(() => {
 			if (this.dialog) {
 				this.dialog.close();
@@ -220,7 +220,7 @@ class DialogReport {
 				content: new Txt(l10n.l('dialogReport.reportSentBody', "The report was successfully sent to the moderators.")),
 				closeOn: 'click',
 				type: 'success',
-				autoclose: true
+				autoclose: true,
 			});
 		}).catch(err => {
 			if (!this.dialog) return;

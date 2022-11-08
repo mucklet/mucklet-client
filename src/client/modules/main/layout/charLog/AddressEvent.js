@@ -11,13 +11,13 @@ class AddressEvent extends Elem {
 			n.component(new Txt(c && c.name, { className: 'charlog--char' })),
 			n.elem('span', { className: 'charlog--tag' }, [ n.text(ev.ooc
 				? l10n.t('charLog.oocTo', "ooc to {name}", { name: t && t.name })
-				: l10n.t('charLog.to', " to {name}", { name: t && t.name })
+				: l10n.t('charLog.to', " to {name}", { name: t && t.name }),
 			) ]),
 			n.elem('span', { className: ev.ooc ? 'charlog--ooc' : 'charlog--comm' }, [
 				n.text(ev.pose ? poseSpacing(ev.msg) : ' says, "'),
 				n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
-				n.text(ev.pose ? '' : '"')
-			])
+				n.text(ev.pose ? '' : '"'),
+			]),
 		]));
 	}
 

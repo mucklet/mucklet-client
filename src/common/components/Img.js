@@ -81,7 +81,7 @@ class Img extends RootElem {
 			callback: () => {
 				if (this.src !== src) return;
 				this._setCurrent();
-			}
+			},
 		});
 		return this;
 	}

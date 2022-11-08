@@ -29,8 +29,8 @@ class PageRequestsComponent {
 						incoming => incoming.dispose(),
 						incoming => new CollectionList(
 							incoming,
-							m => new PageRequestsRequest(this.module, m, this.model, false)
-						)
+							m => new PageRequestsRequest(this.module, m, this.model, false),
+						),
 					)),
 					// Placeholder text
 					n.component(new CollectionComponent(
@@ -38,13 +38,13 @@ class PageRequestsComponent {
 						new Collapser(),
 						(col, c, ev) => c.setComponent(col.length
 							? null
-							: new Txt(l10n.l('pageRealm.noPending', "No incoming requests."), { className: 'common--nolistplaceholder' })
-						)
-					))
+							: new Txt(l10n.l('pageRealm.noPending', "No incoming requests."), { className: 'common--nolistplaceholder' }),
+						),
+					)),
 				])),
 				{
-					className: 'common--sectionpadding'
-				}
+					className: 'common--sectionpadding',
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageRequests.outgoing', "Outgoing"),
@@ -54,8 +54,8 @@ class PageRequestsComponent {
 						outgoing => outgoing.dispose(),
 						outgoing => new CollectionList(
 							outgoing,
-							m => new PageRequestsRequest(this.module, m, this.model, true)
-						)
+							m => new PageRequestsRequest(this.module, m, this.model, true),
+						),
 					)),
 					// Placeholder text
 					n.component(new CollectionComponent(
@@ -63,14 +63,14 @@ class PageRequestsComponent {
 						new Collapser(),
 						(col, c, ev) => c.setComponent(col.length
 							? null
-							: new Txt(l10n.l('pageRealm.noPending', "No outgoing requests."), { className: 'common--nolistplaceholder' })
-						)
-					))
+							: new Txt(l10n.l('pageRealm.noPending', "No outgoing requests."), { className: 'common--nolistplaceholder' }),
+						),
+					)),
 				])),
 				{
 					className: 'common--sectionpadding',
-				}
-			))
+				},
+			)),
 		]));
 		this.elem.render(el);
 	}

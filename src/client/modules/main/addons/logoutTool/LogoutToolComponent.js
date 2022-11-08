@@ -9,10 +9,10 @@ class LogoutToolComponent {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('button', { className: 'btn medium logouttool lighten', events: {
-			click: () => this.module.self.logout()
+			click: () => this.module.self.logout(),
 		}}, [
 			n.component(new FAIcon('sign-out')),
-			n.component(new Txt(l10n.l('playerPanel.logout', "Logout")))
+			n.component(new Txt(l10n.l('playerPanel.logout', "Logout"))),
 		]));
 		return this.elem.render(el);
 	}

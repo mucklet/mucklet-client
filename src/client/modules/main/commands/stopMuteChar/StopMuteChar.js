@@ -27,9 +27,9 @@ class StopMuteChar {
 			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 				textId: 'charName',
 				name: "character",
-				errRequired: step => ({ code: 'stopMuteChar.characterRequired', message: "Who do you want to stop muting?" })
+				errRequired: step => ({ code: 'stopMuteChar.characterRequired', message: "Who do you want to stop muting?" }),
 			}),
-			value: (ctx, p) => this.stopMuteChar(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.stopMuteChar(ctx.player, ctx.char, p),
 		};
 
 		this.module.stopMute.addType(Object.assign({ key: 'char' }, opts));

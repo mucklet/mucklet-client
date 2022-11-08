@@ -24,9 +24,9 @@ class Go {
 			next: new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
 				name: "exit",
 				textId: 'exitKey',
-				errRequired: () => ({ code: 'go.exitRequired', message: "Where do you want to go?" })
+				errRequired: () => ({ code: 'go.exitRequired', message: "Where do you want to go?" }),
 			}),
-			value: this.go.bind(this)
+			value: this.go.bind(this),
 		});
 
 		this.module.help.addTopic({
@@ -43,7 +43,7 @@ class Go {
 	go(ctx, p) {
 		return ctx.char.call('useExit', p.exitId
 			? { exitId: p.exitId }
-			: { exitKey: p.exitKey }
+			: { exitKey: p.exitKey },
 		);
 	}
 }

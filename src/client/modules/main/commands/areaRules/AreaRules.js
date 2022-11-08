@@ -23,7 +23,7 @@ class RulesArea {
 
 		this.module.cmd.addPrefixCmd('area', {
 			key: 'rules',
-			value: (ctx, p) => this.areaRules(ctx.char, p.attr)
+			value: (ctx, p) => this.areaRules(ctx.char, p.attr),
 		});
 
 		this.module.help.addTopic({

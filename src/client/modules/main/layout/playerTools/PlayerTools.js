@@ -17,13 +17,13 @@ class PlayerTools {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.footerTools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 	}
 

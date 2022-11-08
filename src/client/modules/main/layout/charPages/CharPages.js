@@ -148,7 +148,7 @@ class CharPages {
 		this.model.set({
 			char: char || null,
 			page: page || null,
-			factory: factory || null
+			factory: factory || null,
 		});
 	}
 

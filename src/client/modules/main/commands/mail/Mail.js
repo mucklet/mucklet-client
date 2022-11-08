@@ -37,7 +37,7 @@ class Mail {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'mail.characterRequired', message: "Who do you want to send a mail to?" })
+					errRequired: step => ({ code: 'mail.characterRequired', message: "Who do you want to send a mail to?" }),
 				}),
 				new DelimStep("=", {
 					next: [
@@ -50,12 +50,12 @@ class Mail {
 							maxLength: () => this.module.info.getMail().mailMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'mail.messageRequired', message: "What is the message you want to mail?" }),
-							completer: this.module.cmdLists.getCharsAwake()
+							completer: this.module.cmdLists.getCharsAwake(),
 						}),
-					]
-				})
+					],
+				}),
 			],
-			value: (ctx, p) => this.mail(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.mail(ctx.player, ctx.char, p),
 		});
 
 		this.module.help.addTopic({
@@ -79,7 +79,7 @@ class Mail {
 				fromCharId: char.id,
 				text: params.msg,
 				pose: params.pose,
-				ooc: params.ooc
+				ooc: params.ooc,
 			};
 			return this.module.api.call('mail.player.' + player.id + '.inbox', 'send', o).catch(err => {
 				if (err.code != 'mail.toCharIsPuppet') {
@@ -100,7 +100,7 @@ class Mail {
 							n.component(new Txt(l10n.l('mail.mailPuppetWarning', "The mail will be sent to the puppet's owner, not the controlling puppeteer."))),
 						]),
 					])),
-					confirm: l10n.l('mail.sendMail', "Send mail")
+					confirm: l10n.l('mail.sendMail', "Send mail"),
 				});
 			});
 		});

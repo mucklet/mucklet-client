@@ -33,11 +33,11 @@ class Ooc {
 					errRequired: step => ({ code: 'ooc.messageRequired', message: "What do you want to say?" }),
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
-					completer: this.module.cmdLists.getInRoomChars()
-				})
+					completer: this.module.cmdLists.getInRoomChars(),
+				}),
 			],
 			symbol: '>',
-			value: (ctx, p) => this.ooc(ctx.char, { msg: p.msg, pose: p.pose })
+			value: (ctx, p) => this.ooc(ctx.char, { msg: p.msg, pose: p.pose }),
 		});
 
 		this.module.help.addTopic({

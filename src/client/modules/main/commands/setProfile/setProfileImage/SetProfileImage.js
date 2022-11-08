@@ -18,7 +18,7 @@ class SetProfileImage {
 			desc: l10n.l('setProfileImage.imageDesc', "Value is omitted. Set profile image to character's current image."),
 			value: this._setProfileImage.bind(this),
 			next: null,
-			sortOrder: 100
+			sortOrder: 100,
 		});
 	}
 

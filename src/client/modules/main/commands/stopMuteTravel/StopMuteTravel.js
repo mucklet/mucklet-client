@@ -23,7 +23,7 @@ class StopMuteTravel {
 
 		this.module.stopMute.addType({
 			key: 'travel',
-			value: (ctx, p) => this.stopMuteTravel(ctx.char)
+			value: (ctx, p) => this.stopMuteTravel(ctx.char),
 		});
 
 		this.module.help.addTopic({

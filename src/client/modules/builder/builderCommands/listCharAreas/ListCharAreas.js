@@ -20,7 +20,7 @@ class ListCharAreas {
 			alias: [ 'area' ],
 			value: (ctx, p) => this.listCharAreas(ctx.char, p),
 			desc: l10n.l('listCharAreas', "Areas owned by the character."),
-			sortOrder: 20
+			sortOrder: 20,
 		});
 	}
 
@@ -40,11 +40,11 @@ class ListCharAreas {
 									escapeHtml(l10n.t('listCharAreas.area', "Area ID")) +
 									'</th><th class="charlog--strong">' +
 									escapeHtml(l10n.t('listCharAreas.id', "Area")) +
-									'</th></tr>', { tagName: 'thead' }
+									'</th></tr>', { tagName: 'thead' },
 								)),
-								n.component(new Html(owned.join(''), { tagName: 'tbody' }))
-							])
-						])
+								n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+							]),
+						]),
 					])));
 				} else {
 					this.module.charLog.logInfo(char, l10n.l('listCharAreas.noAreas', "{name} owns no areas yet.", c));

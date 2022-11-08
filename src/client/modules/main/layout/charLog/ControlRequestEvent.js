@@ -25,24 +25,24 @@ class ControlRequestEvent extends Elem {
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Html('grant control <span class="opt">' + escapeHtml((c.name + " " + c.surname).trim()) + '</span>', { tagName: 'code' }))
-						])
-					]))
+							n.component(new Html('grant control <span class="opt">' + escapeHtml((c.name + " " + c.surname).trim()) + '</span>', { tagName: 'code' })),
+						]),
+					])),
 				),
 				n.component(opt.noCode ? null : new Txt(txtHowtoDenyControl)),
 				n.component(opt.noCode
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Html('deny control <span class="opt">' + escapeHtml((c.name + " " + c.surname).trim()) + '</span> <span class="opt">= <span class="param">Reason</span></span>', { tagName: 'code' }))
-						])
-					]))
+							n.component(new Html('deny control <span class="opt">' + escapeHtml((c.name + " " + c.surname).trim()) + '</span> <span class="opt">= <span class="param">Reason</span></span>', { tagName: 'code' })),
+						]),
+					])),
 				),
 				n.component(ev.msg
 					? new Txt('"' + ev.msg + '"')
-					: null
-				)
-			])
+					: null,
+				),
+			]),
 		]));
 	}
 }

@@ -53,15 +53,15 @@ class AddTag {
 						next: [
 							new DelimStep(":", {
 								next: new ListStep('type-' + idx, this.module.tags.getPreferenceList(), { name: "preference flag" }),
-								else: new ValueStep('type-' + idx, "like")
+								else: new ValueStep('type-' + idx, "like"),
 							}),
-							next
-						]
+							next,
+						],
 					}),
 					{
-						delimiter: ","
-					}
-				)
+						delimiter: ",",
+					},
+				),
 			],
 			value: (ctx, p) => {
 				let tags = {};
@@ -71,7 +71,7 @@ class AddTag {
 					i++;
 				}
 				return this.addTag(ctx.char, tags);
-			}
+			},
 		});
 
 		this.module.help.addTopic({

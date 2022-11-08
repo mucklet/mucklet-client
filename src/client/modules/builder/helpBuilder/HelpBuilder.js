@@ -20,7 +20,7 @@ class HelpBuilder {
 			title: l10n.l('helpBuilder.title', "Builder info"),
 			shortDesc: l10n.l('helpBuilder.shortDesc', "Info about the builder role"),
 			desc: () => new HelpBuilderComponent(this.module),
-			sortOrder: 1200
+			sortOrder: 1200,
 		});
 	}
 

@@ -16,7 +16,7 @@ class PageMailMessage {
 			this.mail,
 			new Elem(n => n.elem('div', { className: 'pagemail-mail' }, [
 				n.elem('badge', 'div', { className: 'pagemail-mail--badge badge btn margin4', events: {
-					click: () => this._toggleInfo()
+					click: () => this._toggleInfo(),
 				}}, [
 					n.elem('div', { className: 'badge--select' }, [
 						n.component(this.module.avatar.newAvatar(this.mail.from, { size: 'small', className: 'badge--icon' })),
@@ -25,7 +25,7 @@ class PageMailMessage {
 								n.component(new ModelTxt(this.mail, m => (m.from.name + ' ' + m.from.surname).trim())),
 							]),
 							n.elem('div', { className: 'badge--text badge--nowrap' }, [
-								n.component(new ModelTxt(this.mail, m => formatDateTime(new Date(m.received))))
+								n.component(new ModelTxt(this.mail, m => formatDateTime(new Date(m.received)))),
 							]),
 						]),
 					]),
@@ -36,15 +36,15 @@ class PageMailMessage {
 							if (change && !change.hasOwnProperty('mailId')) return;
 							c.setComponent(m.mailId === this.mail.getResourceId()
 								? new PageMailMailContent(this.module, this.mail, (show) => this._toggleInfo(show))
-								: null
+								: null,
 							);
-						}
-					))
-				])
+						},
+					)),
+				]),
 			])),
 			(m, c) => {
 				c[m.read ? 'removeNodeClass' : 'addNodeClass']('badge', 'unread');
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

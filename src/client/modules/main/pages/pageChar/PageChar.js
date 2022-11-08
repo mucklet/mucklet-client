@@ -18,7 +18,7 @@ class PageChar {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.module.charPages.setDefaultPageFactory((ctrl, char, state) => ({
 			component: new PageCharComponent(this.module, ctrl, char, state),

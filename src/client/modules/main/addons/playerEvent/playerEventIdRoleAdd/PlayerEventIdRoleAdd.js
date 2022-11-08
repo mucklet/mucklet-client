@@ -39,11 +39,11 @@ class PlayerEventIdRoleAdd {
 				n.component(new Txt(idroles.toLocaleString(ev.idRole), { tagName: 'p', className: 'dialog--strong dialog--large' })),
 				n.component(info
 					? new Html(info, { tagName: 'div', className: 'common--sectionpadding' })
-					: null
-				)
+					: null,
+				),
 			])),
 			closeOn: 'click',
-			onClose
+			onClose,
 		});
 	}
 

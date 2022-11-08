@@ -19,11 +19,11 @@ class PageTeleportChar {
 			id: 'teleport',
 			sortOrder: 30,
 			componentFactory: (ctrl, char) => new Elem(n => n.elem('button', { className: 'iconbtn small', events: {
-				click: () => this.open(ctrl)
+				click: () => this.open(ctrl),
 			}}, [
 				n.component(new FAIcon('arrows')),
 			])),
-			filter: (ctrl, char) => ctrl.id == char.id
+			filter: (ctrl, char) => ctrl.id == char.id,
 		});
 	}
 
@@ -40,7 +40,7 @@ class PageTeleportChar {
 				component: new PageTeleportCharComponent(this.module, ctrl, state, close),
 				onClose: close,
 				title: l10n.l('pageTeleportChar.teleportChar', "Teleport Character"),
-			})
+			}),
 		);
 	}
 

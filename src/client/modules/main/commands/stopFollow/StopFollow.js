@@ -21,12 +21,12 @@ class Follow {
 
 		this.module.cmd.addPrefixCmd('stop', {
 			key: 'follow',
-			value: (ctx, p) => this.stopFollow(ctx.char)
+			value: (ctx, p) => this.stopFollow(ctx.char),
 		});
 		// Add alias
 		this.module.cmd.addCmd({
 			key: 'hopoff',
-			value: (ctx, p) => this.stopFollow(ctx.char)
+			value: (ctx, p) => this.stopFollow(ctx.char),
 		});
 
 		this.module.help.addTopic({

@@ -31,29 +31,29 @@ class DialogExportLog {
 					new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialog--strong' }),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.startingFrom', "From"),
 					new Txt(formatDateTime(new Date(timestamp))),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('create', 'button', {
 						events: { click: () => this._onExport(char, timestamp) },
-						className: 'btn primary icon-left dialog--btn'
+						className: 'btn primary icon-left dialog--btn',
 					}, [
 						n.component(new FAIcon('download')),
-						n.component(new Txt(l10n.l('dialogexportlog.export', "Export")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogexportlog.export', "Export"))),
+					]),
+				]),
 			])),
-			onClose: () => this._onClose()
+			onClose: () => this._onClose(),
 		});
 
 		this.dialog.open();

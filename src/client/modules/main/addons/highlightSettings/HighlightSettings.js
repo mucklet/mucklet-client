@@ -32,10 +32,10 @@ class HighlightSettings {
 						className: 'common--formmargin',
 						onChange: (v, c) => settings.set({ highlightTriggers: v }),
 						popupTip: l10n.l('highlightSettings.highlightTriggersInfo', "Highlight your character's name and other mention triggers in the chat log."),
-						popupTipClassName: 'popuptip--width-s'
+						popupTipClassName: 'popuptip--width-s',
 					}),
-					(m, c) => c.setValue(settings.highlightTriggers, false)
-				)
+					(m, c) => c.setValue(settings.highlightTriggers, false),
+				),
 			});
 			this.module.pagePlayerSettings.addTool({
 				id: 'highlightMentionMessages',
@@ -46,10 +46,10 @@ class HighlightSettings {
 						className: 'common--formmargin',
 						onChange: (v, c) => settings.set({ highlightMentionMessages: v }),
 						popupTip: l10n.l('highlightSettings.highlightMentionMessagesInfo', "Highlight communication either directly targeting your character, or in which your character is mentioned."),
-						popupTipClassName: 'popuptip--width-s'
+						popupTipClassName: 'popuptip--width-s',
 					}),
-					(m, c) => c.setValue(settings.highlightMentionMessages, false)
-				)
+					(m, c) => c.setValue(settings.highlightMentionMessages, false),
+				),
 			});
 			this.module.pagePlayerSettings.addTool({
 				id: 'highlightOwnMessages',
@@ -60,10 +60,10 @@ class HighlightSettings {
 						className: 'common--formmargin',
 						onChange: (v, c) => settings.set({ highlightOwnMessages: v }),
 						popupTip: l10n.l('highlightSettings.highlightOwnMessagesInfo', "Highlight communication sent by your own character."),
-						popupTipClassName: 'popuptip--width-s'
+						popupTipClassName: 'popuptip--width-s',
 					}),
-					(m, c) => c.setValue(settings.highlightOwnMessages, false)
-				)
+					(m, c) => c.setValue(settings.highlightOwnMessages, false),
+				),
 			});
 		});
 	}

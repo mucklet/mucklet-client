@@ -33,7 +33,7 @@ class PlayerEventSuspend {
 			])),
 			confirm: l10n.l('playerEventSuspend.okay', "Okay"),
 			cancel: null,
-			onClose
+			onClose,
 		});
 	}
 

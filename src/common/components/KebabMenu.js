@@ -24,10 +24,10 @@ class KebabMenu {
 						ev.currentTarget.blur();
 						ev.stopPropagation();
 						ev.preventDefault();
-					}
-				}
+					},
+				},
 			}, [
-				n.component(new FAIcon('ellipsis-v'))
+				n.component(new FAIcon('ellipsis-v')),
 			]),
 		]));
 		this._setListeners(true);
@@ -90,8 +90,8 @@ class KebabMenu {
 			attributes: {
 				style: this.absolutePositioned
 					? 'top: ' + (rect.top + document.documentElement.scrollTop + el.offsetHeight + this.topMargin) + 'px; left: ' + (rect.left + document.documentElement.scrollLeft + el.offsetWidth) + 'px;'
-					: 'margin-top:' + this.topMargin + 'px; right: 0px;'
-			}
+					: 'margin-top:' + this.topMargin + 'px; right: 0px;',
+			},
 		}, [
 			n.component(new CollectionList(
 				this.menuItems,
@@ -105,13 +105,13 @@ class KebabMenu {
 						? m.componentFactory(click)
 						: new Elem(n => n.elem('div', {
 							className: 'kebabmenu--itembtn flex-row pad8',
-							events: { click }
+							events: { click },
 						}, [
 							n.elem('div', { className: 'kebabmenu--itemicon flex-auto' }, [ n.component(m.icon ? new FAIcon(m.icon) : null) ]),
-							n.component(new Txt(m.name, { className: 'flex-1' }))
+							n.component(new Txt(m.name, { className: 'flex-1' })),
 						]));
-				}
-			))
+				},
+			)),
 		]));
 		this._menu.render(this.absolutePositioned ? document.body : this.elem.getElement());
 	}

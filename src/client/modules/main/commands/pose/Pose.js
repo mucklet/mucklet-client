@@ -33,12 +33,12 @@ class Pose {
 					errRequired: step => ({ code: 'pose.messageRequired', message: "What is your pose message?" }),
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
-					completer: this.module.cmdLists.getInRoomChars()
+					completer: this.module.cmdLists.getInRoomChars(),
 				}),
 			],
 			symbol: ':',
 			alias: [ '/me' ],
-			value: this.pose.bind(this)
+			value: this.pose.bind(this),
 		});
 
 		this.module.help.addTopic({

@@ -33,10 +33,10 @@ class RequestAreaParent {
 					list: () => {
 						let c = module.player.getActiveChar();
 						return ((c && c.ownedAreas && c.ownedAreas.toArray()) || []).map(v => v.id);
-					}
-				})
+					},
+				}),
 			],
-			value: (ctx, p) => this.requestAreaParent(ctx.char, Object.assign({ areaId: p.areaId, parentId: p.parentId }))
+			value: (ctx, p) => this.requestAreaParent(ctx.char, Object.assign({ areaId: p.areaId, parentId: p.parentId })),
 		});
 
 		this.module.help.addTopic({

@@ -28,7 +28,7 @@ class PageSelectTagsSection {
 			() => new CollectionWrapper(this.collection, {
 				filter: t => this._inGroup(t)
 					&& !this._hasCustom(t)
-					&& this.isRoleTags !== !(t.role || t.idRole)
+					&& this.isRoleTags !== !(t.role || t.idRole),
 			}),
 			tags => tags.dispose(),
 			tags => new CollectionComponent(
@@ -46,12 +46,12 @@ class PageSelectTagsSection {
 							new ModelTxt(this.group, m => m.name, { className: 'pageselecttags-section--title', tagName: 'h3' }),
 							new CollectionList(col, tag => new PageSelectTagsTag(this.model, tag, this.module.tags.getPreferences())),
 							{
-								className: 'pageselecttags-section pad-bottom-s' + this.className
-							}
+								className: 'pageselecttags-section pad-bottom-s' + this.className,
+							},
 						));
 					}
-				}
-			)
+				},
+			),
 		);
 		return this.elem.render(el);
 	}

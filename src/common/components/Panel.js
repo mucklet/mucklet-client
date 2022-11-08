@@ -45,10 +45,10 @@ class Panel extends RootElem {
 				click: (c, e) => {
 					this.toggle();
 					e.stopPropagation();
-				}
-			}
+				},
+			},
 		}, [
-			n.component(new FAIcon('caret-left'))
+			n.component(new FAIcon('caret-left')),
 		]));
 
 		// Click button is the corner button that can be clicked for an action.
@@ -60,10 +60,10 @@ class Panel extends RootElem {
 						this._onButtonClick(this);
 					}
 					e.stopPropagation();
-				}
-			}
+				},
+			},
 		}, [
-			n.component('icon', new FAIcon())
+			n.component('icon', new FAIcon()),
 		]));
 
 		this.subheaderComponent = opt.subheaderComponent || null;
@@ -78,11 +78,11 @@ class Panel extends RootElem {
 				n.component(!this._alignLeft ? this.toggleBtn : null),
 				n.elem('headercont', 'div', { className: 'panel--headercont' }, [
 					n.component('btn', new Fader(null, { className: 'panel--btncont' })),
-					n.elem('header', 'div', { className: 'panel--header' })
+					n.elem('header', 'div', { className: 'panel--header' }),
 				]),
 				n.elem('content', 'div', { className: 'panel--main' }),
-				n.component(this.footer)
-			])
+				n.component(this.footer),
+			]),
 		]));
 
 		// Additional components

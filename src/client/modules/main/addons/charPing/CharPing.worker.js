@@ -4,7 +4,7 @@ let cfg = {
 	serviceUri: '/api/core',
 	duration: 1000 * 60 * 3,
 	threshold: 1000 * 60 * 5,
-	retry: 1000 * 20
+	retry: 1000 * 20,
 };
 
 /**
@@ -26,7 +26,7 @@ function pingChar(charId, puppeteerId, since) {
 	let url = cfg.serviceUri + '/char/' + (puppeteerId ? puppeteerId + '/puppet/' : '') + charId + '/ctrl/ping';
 	fetch(url, {
 		method: 'POST',
-		credentials: 'include'
+		credentials: 'include',
 	}).then(resp => {
 		if (resp.status < 200 || resp.status >= 300) {
 			// Access denied likely means the token cookie wasn't included
@@ -34,7 +34,7 @@ function pingChar(charId, puppeteerId, since) {
 			if (resp.status == 401) {
 				postMessage({
 					cmd: 'useWs',
-					params: { charId, puppeteerId }
+					params: { charId, puppeteerId },
 				});
 				return;
 			}
@@ -71,7 +71,7 @@ let cmds = {
 			clearTimeout(t);
 			delete chars[p.charId];
 		}
-	}
+	},
 };
 
 onmessage = function (event) {

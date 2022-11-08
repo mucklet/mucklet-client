@@ -26,10 +26,10 @@ class Join {
 				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
 					name: "character",
 					errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to join?" }),
-				})
+				}),
 			],
 			alias: [ 'mjoin' ],
-			value: (ctx, p) => this.join(ctx.char, { charId: p.charId })
+			value: (ctx, p) => this.join(ctx.char, { charId: p.charId }),
 		});
 
 		this.module.help.addTopic({

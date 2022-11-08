@@ -26,7 +26,7 @@ class ReportAttachmentUnsuspend {
 					n.component(new Txt(txtType, { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new Txt(txtUnsuspend, { className: 'badge--info badge--text' })),
 				]),
-			]))
+			])),
 		});
 	}
 

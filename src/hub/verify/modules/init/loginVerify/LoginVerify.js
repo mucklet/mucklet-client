@@ -20,7 +20,7 @@ class LoginVerify {
 			loginUrl: '/identity/login?noredirect',
 			verifyUrl: '/identity/verify?noredirect',
 			redirectUrl: '/',
-			crossOrigin: true
+			crossOrigin: true,
 		}, params);
 
 		this.app.require([
@@ -62,7 +62,7 @@ class LoginVerify {
 		return fetch(this.params.authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				if (resp.status < 500) {
@@ -109,7 +109,7 @@ class LoginVerify {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -127,7 +127,7 @@ class LoginVerify {
 		fetch(this.params.logoutUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => this._afterFade(reload));
 	}
 
@@ -141,11 +141,11 @@ class LoginVerify {
 			body: new Elem(n => n.elem('div', [
 				n.component(new Txt(l10n.l('loginVerify.errorOccured', "Your email has been verified:"), { tagName: 'p' })),
 				n.elem('p', { className: 'loginverify--email ' }, [
-					n.text(email)
+					n.text(email),
 				]),
 				n.component(new Txt(l10n.l('loginVerify.verificationInfo', "It can now be safely used to reset lost passwords. Well done!"), { tagName: 'p' })),
 			])),
-			onConfirm: () => this._redirect()
+			onConfirm: () => this._redirect(),
 		}));
 	}
 
@@ -156,7 +156,7 @@ class LoginVerify {
 				n.component(new Txt(l10n.l('loginVerify.errorOccured', "Maybe the code was too old, or meant for a different account."), { tagName: 'p' })),
 				n.component(new Txt(l10n.l('loginVerify.verificationInfo', "Try sending a new verification mail from the client."), { tagName: 'p' })),
 			])),
-			onConfirm: () => this._redirect()
+			onConfirm: () => this._redirect(),
 		}));
 	}
 
@@ -177,7 +177,7 @@ class LoginVerify {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -201,13 +201,13 @@ class LoginVerify {
 			render: () => {
 				redirect(this.params.redirectUrl);
 			},
-			unrender: () => {}
+			unrender: () => {},
 		});
 	}
 
 	_showError(err) {
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
-			redirectUrl: this.params.redirectUrl
+			redirectUrl: this.params.redirectUrl,
 		}));
 	}
 }

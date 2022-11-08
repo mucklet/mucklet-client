@@ -34,10 +34,10 @@ class CharLogMutedEvent extends Elem {
 					this.toggle();
 					ev.stopPropagation();
 					ev.preventDefault();
-				}
-			}
+				},
+			},
 		}, [
-			n.elem('div', { className: 'charlog-mutedevent--pill mev-' + (ev.type || 'unknown') + (ec ? ' mf-' + char.id + '-' + ec.id : '') })
+			n.elem('div', { className: 'charlog-mutedevent--pill mev-' + (ev.type || 'unknown') + (ec ? ' mf-' + char.id + '-' + ec.id : '') }),
 		]));
 	}
 
@@ -79,7 +79,7 @@ class CharLogMutedEvent extends Elem {
 		if (!el) return;
 
 		this._tip = new Elem(n => n.elem('div', { className: 'charlog-mutedevent--tip' }, [
-			n.component(this.module.self.getLogEventComponent(this.char.id, this.ev, { noFocus: true, noMessageHighlight: true }))
+			n.component(this.module.self.getLogEventComponent(this.char.id, this.ev, { noFocus: true, noMessageHighlight: true })),
 		]));
 		this._caret = new Elem(n => n.elem('div', { className: 'charlog-mutedevent--caret' }));
 		this._tip.render(el);

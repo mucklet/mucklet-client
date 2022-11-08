@@ -23,14 +23,14 @@ class PlayerSettingsMainCharComponent {
 					if (change && !change.hasOwnProperty('mainChar')) return;
 					c.setComponent(m.mainChar && !isResError(m.mainChar) && !m.mainChar.deleted
 						? new ModelTxt(m.mainChar, m => (m.name + ' ' + m.surname).trim(), { className: 'pageSectionSettingsMainChar--name' })
-						: new Txt(l10n.l('playerSettingsMainChar.noCharacterSet', "No character set"), { className: 'common--placeholder' })
+						: new Txt(l10n.l('playerSettingsMainChar.noCharacterSet', "No character set"), { className: 'common--placeholder' }),
 					);
-				}
+				},
 			),
 			{
 				className: 'common--sectionpadding',
-				noToggle: true
-			}
+				noToggle: true,
+			},
 		);
 		this.elem.render(el);
 	}

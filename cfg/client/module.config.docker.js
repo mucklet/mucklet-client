@@ -5,16 +5,16 @@ const config = {
 		logoutUrl: '/dockerauth/logout?noredirect',
 		registerUrl: '/dockerauth/register?noredirect',
 		agreeUrl: '/dockerauth/agree?noredirect',
-		googleUrl: '/dockerauth/google'
+		googleUrl: '/dockerauth/google',
 	},
 	api: {
 		hostUrl: 'ws://api.mucklet.localhost/',
-		webResourcePath: 'http://api.mucklet.localhost/api/'
+		webResourcePath: 'http://api.mucklet.localhost/api/',
 	},
 	avatar: {
 		avatarPattern: "http://file.mucklet.localhost/core/char/avatar/{0}",
-		charImgPattern: "http://file.mucklet.localhost/core/char/img/{0}"
-	}
+		charImgPattern: "http://file.mucklet.localhost/core/char/img/{0}",
+	},
 };
 
 export default config;

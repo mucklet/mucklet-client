@@ -167,7 +167,7 @@ class CharFocus {
 				this.module.player.setActiveChar(charId).catch(() => {});
 				window.focus();
 				ev.target.close();
-			}
+			},
 		});
 		return true;
 	}
@@ -207,7 +207,7 @@ class CharFocus {
 				this.module.player.setActiveChar(charId).catch(() => {});
 				window.focus();
 				ev.target.close();
-			}
+			},
 		});
 		return true;
 	}
@@ -236,7 +236,7 @@ class CharFocus {
 				this.module.player.setActiveChar(charId).catch(() => {});
 				window.focus();
 				ev.target.close();
-			}
+			},
 		});
 		return true;
 	}

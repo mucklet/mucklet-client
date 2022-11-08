@@ -25,25 +25,25 @@ class DialogUnregisterPuppet {
 			content: new Elem(n => n.elem('div', [
 				n.elem('div', [
 					n.component(new Txt(l10n.l('dialogUnregisterPuppet.unregisterPuppetBody', "Do you really wish to unregister the puppet?"), { tagName: 'p' })),
-					n.component(new ModelTxt(puppeteer.puppet, m => (m.name + " " + m.surname).trim(), { className: 'dialogunregisterpuppet--fullname' }))
+					n.component(new ModelTxt(puppeteer.puppet, m => (m.name + " " + m.surname).trim(), { className: 'dialogunregisterpuppet--fullname' })),
 				]),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
 					n.elem('button', {
 						events: { click: () => this._onUnregister(puppeteer) },
-						className: 'btn primary flex-1'
+						className: 'btn primary flex-1',
 					}, [
-						n.component(new Txt(l10n.l('dialogUnregisterPuppet.unregister', "Unregister puppet")))
+						n.component(new Txt(l10n.l('dialogUnregisterPuppet.unregister', "Unregister puppet"))),
 					]),
 					n.elem('button', {
 						className: 'btn secondary flex-1',
-						events: { click: () => this.close() }
+						events: { click: () => this.close() },
 					}, [
-						n.component(new Txt(l10n.l('dialogUnregisterPuppet.cancel', "Cancel")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogUnregisterPuppet.cancel', "Cancel"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -65,7 +65,7 @@ class DialogUnregisterPuppet {
 
 		this.unregisterPromise = this.module.player.getPlayer().call('unregisterPuppet', {
 			charId: puppeteer.char.id,
-			puppetId: puppeteer.puppet.id
+			puppetId: puppeteer.puppet.id,
 		}).then(() => {
 			this.close();
 		}).catch(err => {

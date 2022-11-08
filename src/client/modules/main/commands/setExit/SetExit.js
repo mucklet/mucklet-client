@@ -22,7 +22,7 @@ const defaultAttr = [
 			errTooLong: itemNameTooLong,
 		}),
 		desc: l10n.l('setExit.nameDesc', "Name of the exit."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'keywords',
@@ -44,35 +44,35 @@ const defaultAttr = [
 					v.push(state.getParam(step.id));
 					state.setParam('value', v);
 				},
-				delimiter: ","
-			}
+				delimiter: ",",
+			},
 		),
 		desc: l10n.l('setExit.keywordsDesc', "Comma-separated list of case-insensitive keywords used with the <code>go</code> command."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'hidden',
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is hidden flag" }),
 		desc: l10n.l('setExit.hiddenDesc', "Flag telling if the exit is hidden, preventing it from being listed. Value is <code>yes</code> or <code>no</code>."),
-		sortOrder: 190
+		sortOrder: 190,
 	},
 	{
 		key: 'leaveMsg',
 		name: "leave message",
 		desc: l10n.l('setExit.leaveMsgDesc', "Message seen by the origin room. Usually in present tense (eg. \"leaves ...\")."),
-		sortOrder: 200
+		sortOrder: 200,
 	},
 	{
 		key: 'arriveMsg',
 		name: "arrival message",
 		desc: l10n.l('setExit.arriveMsgDesc', "Message seen by the destination room. Usually in present tense (eg. \"arrives from ...\")."),
-		sortOrder: 210
+		sortOrder: 210,
 	},
 	{
 		key: 'travelMsg',
 		name: "travel message",
 		desc: l10n.l('setExit.travelMsgDesc', "Message seen by the exit user. Usually in present tense (eg. \"goes ...\")."),
-		sortOrder: 220
+		sortOrder: 220,
 	},
 ];
 
@@ -89,7 +89,7 @@ class SetExit {
 	_init(module) {
 		this.module = module;
 		this.exitAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -101,15 +101,15 @@ class SetExit {
 				new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
 					name: "exit",
 					textId: 'exitKey',
-					errRequired: step => ({ code: 'setExit.keyRequired', message: "What exit do you want to set?" })
+					errRequired: step => ({ code: 'setExit.keyRequired', message: "What exit do you want to set?" }),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.exitAttr, {
 					name: "exit attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
-			value: this._exec.bind(this)
+			value: this._exec.bind(this),
 		});
 
 		this.module.help.addTopic({
@@ -133,7 +133,7 @@ class SetExit {
 					name: attr.name || attr.key,
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
-				})
+				}),
 		];
 		this.exitAttr.addItem(Object.assign({}, attr, { next }));
 		return this;
@@ -149,7 +149,7 @@ class SetExit {
 	setExit(ctx, p) {
 		return ctx.char.call('setExit', Object.assign({ [p.attr]: p.value }, p.exitId
 			? { exitId: p.exitId }
-			: { exitKey: p.exitKey }
+			: { exitKey: p.exitKey },
 		)).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('setExit.updatedExit', "Exit attribute was successfully set."));
 		});

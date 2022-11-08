@@ -30,10 +30,10 @@ class ReportAttachmentLog {
 							click: (c, e) => {
 								this.module.dialogLogAttachment.open(reporter);
 								e.stopPropagation();
-							}
-						}
+							},
+						},
 					}, [
-						n.component(new FAIcon('file-text-o'))
+						n.component(new FAIcon('file-text-o')),
 					]),
 					n.elem('div', { className: 'badge--info' }, [
 						n.elem('div', { className: 'badge--subtitle' }, [
@@ -41,10 +41,10 @@ class ReportAttachmentLog {
 						]),
 						n.elem('div', { className: 'badge--text' }, [
 							n.component(new ModelTxt(info, m => formatTimeSpan(new Date(m.startTime), new Date(m.endTime)))),
-						])
-					])
+						]),
+					]),
 				]));
-			}
+			},
 		});
 	}
 

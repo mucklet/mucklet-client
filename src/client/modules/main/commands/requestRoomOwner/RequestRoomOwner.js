@@ -29,13 +29,13 @@ class RequestRoomOwner {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "new owner",
-					errRequired: step => ({ code: 'requestRoomOwner.characterRequired', message: "Who do you want to transfer ownership to?" })
+					errRequired: step => ({ code: 'requestRoomOwner.characterRequired', message: "Who do you want to transfer ownership to?" }),
 				}),
 			],
 			value: (ctx, p) => this.requestRoomOwner(ctx.char, p.charId
 				? { charId: p.charId, roomId: ctx.char.inRoom.id }
-				: { charName: p.charName, roomId: ctx.char.inRoom.id }
-			)
+				: { charName: p.charName, roomId: ctx.char.inRoom.id },
+			),
 		});
 
 		this.module.help.addTopic({

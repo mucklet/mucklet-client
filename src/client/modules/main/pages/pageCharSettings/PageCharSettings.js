@@ -26,7 +26,7 @@ class PageCharSettings {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 	}
 
@@ -88,8 +88,8 @@ class PageCharSettings {
 				title: l10n.l('pageCharSettings.characterSettings', "Character Settings"),
 			}),
 			{
-				onClose: () => this._onClose(char)
-			}
+				onClose: () => this._onClose(char),
+			},
 		);
 
 		d.close = close;

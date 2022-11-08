@@ -18,13 +18,13 @@ class EvictTeleport {
 			desc: l10n.l('evictTeleport.desc', `Evict from using current room as a teleport destination. <code class="param">Value</code> is omitted.`),
 			value: (ctx, p) => this.evictTeleport(ctx.char, p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
+				: { charName: p.charName },
 			),
 			examples: [{
 				cmd: 'evict Jane Doe : teleport',
-				desc: l10n.l('evictTeleport.exampleDesc', "Evicts Jane Doe from using current room as a teleport destination.")
+				desc: l10n.l('evictTeleport.exampleDesc', "Evicts Jane Doe from using current room as a teleport destination."),
 			}],
-			sortOrder: 20
+			sortOrder: 20,
 		});
 	}
 
@@ -32,7 +32,7 @@ class EvictTeleport {
 		return char.call('evictTeleport', params).then(result => {
 			let c = result.char;
 			this.module.charLog.logInfo(char, l10n.l('evictTeleport.charEvicted', "Successfully evicted {charName} from teleporting to this room.", {
-				charName: (c.name + " " + c.surname).trim()
+				charName: (c.name + " " + c.surname).trim(),
 			}));
 		});
 	}

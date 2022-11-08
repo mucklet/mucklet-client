@@ -20,7 +20,7 @@ class HelpFilter {
 			title: l10n.l('help.filterTitle', "Character filtering syntax"),
 			shortDesc: l10n.l('help.filterSortDesc', "How to write character search filters"),
 			desc: () => new HelpFilterComponent(this.module),
-			sortOrder: 88
+			sortOrder: 88,
 		});
 	}
 

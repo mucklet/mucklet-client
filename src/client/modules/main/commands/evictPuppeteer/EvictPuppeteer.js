@@ -23,18 +23,18 @@ class EvictPuppeteer {
 				new ListStep('puppetId', this.module.cmdLists.getAllChars(), {
 					textId: 'puppetName',
 					name: "puppet",
-					errRequired: step => ({ code: 'evictPuppeteer.puppetRequired', message: "What puppet do you want to evict from?" })
+					errRequired: step => ({ code: 'evictPuppeteer.puppetRequired', message: "What puppet do you want to evict from?" }),
 				}),
 			],
 			value: (ctx, p) => this.evictPuppeteer(ctx.char, Object.assign(
 				p.charId ? { charId: p.charId } : { charName: p.charName },
-				p.puppetId ? { puppetId: p.puppetId } : { puppetName: p.puppetName }
+				p.puppetId ? { puppetId: p.puppetId } : { puppetName: p.puppetName },
 			)),
 			examples: [{
 				cmd: 'evict John Doe : puppeteer = Jane Puppet',
-				desc: l10n.l('evictPuppeteer.exampleDesc', "Evicts Jane Doe from using current Jane Puppet as a puppet.")
+				desc: l10n.l('evictPuppeteer.exampleDesc', "Evicts Jane Doe from using current Jane Puppet as a puppet."),
 			}],
-			sortOrder: 30
+			sortOrder: 30,
 		});
 	}
 
@@ -44,7 +44,7 @@ class EvictPuppeteer {
 			let p = result.puppet;
 			this.module.charLog.logInfo(char, l10n.l('evictPuppeteer.charEvicted', "Successfully evicted {charName} from using {puppetName} as a puppet.", {
 				charName: (c.name + " " + c.surname).trim(),
-				puppetName: (p.name + " " + p.surname).trim()
+				puppetName: (p.name + " " + p.surname).trim(),
 			}));
 		});
 	}

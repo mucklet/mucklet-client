@@ -16,7 +16,7 @@ class PageEditCharProfile {
 			'confirm',
 			'avatar',
 			'deleteProfile',
-			'toaster'
+			'toaster',
 		], this._init.bind(this));
 	}
 
@@ -42,8 +42,8 @@ class PageEditCharProfile {
 					onClose: () => {
 						profile.off();
 						close();
-					}
-				})
+					},
+				}),
 			);
 		});
 	}

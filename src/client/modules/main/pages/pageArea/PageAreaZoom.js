@@ -23,14 +23,14 @@ class PageAreaZoom {
 			this.model,
 			new Elem(n => n.elem('div', { className: 'pagearea-zoom' }, [
 				n.component('bar', new Fader(null, { className: 'pagearea-zoom--bar', duration: 150 })),
-				n.component('area', new Transition(null, { className: 'pagearea-zoom--area', duration: 150 }))
+				n.component('area', new Transition(null, { className: 'pagearea-zoom--area', duration: 150 })),
 			])),
 			(m, c, change) => {
 				// Zoom bar
 				if (!change || change.hasOwnProperty('areas')) {
 					c.getNode('bar').setComponent(m.areas.length > 1
 						? new PageAreaZoomBar(this.module, m.areas, m)
-						: null
+						: null,
 					);
 				}
 				// Area transition
@@ -45,10 +45,10 @@ class PageAreaZoom {
 					}
 					c.getNode('area')[cb](m.current
 						? new PageAreaArea(this.module, this.ctrl, m.current, this.state, this.close)
-						: null
+						: null,
 					);
 				}
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

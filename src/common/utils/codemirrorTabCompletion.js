@@ -8,7 +8,7 @@ const tabCompletionConfig = Facet.define({
 		return combineConfig(configs, {
 			complete: () => null,
 		});
-	}
+	},
 });
 
 const tabCompletionState = StateField.define({
@@ -17,7 +17,7 @@ const tabCompletionState = StateField.define({
 	},
 	update(value, tr) {
 		return value.update(tr);
-	}
+	},
 });
 
 function tabComplete(view) {
@@ -36,7 +36,7 @@ function tabComplete(view) {
 				changes: { from: result.from, to: last === null ? result.to : result.from + last.length, insert: apply },
 				selection: { anchor: result.from + apply.length },
 				userEvent: "input.tabcomplete",
-			}
+			},
 		);
 	}
 	return true;
@@ -44,7 +44,7 @@ function tabComplete(view) {
 
 function tabCompletionKeymap(opt) {
 	return keymap.of([
-		{ key: opt.key || 'Tab', run: tabComplete }
+		{ key: opt.key || 'Tab', run: tabComplete },
 	]);
 }
 

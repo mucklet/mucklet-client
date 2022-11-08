@@ -27,10 +27,10 @@ class PageInRoom {
 				click: (c, ev) => {
 					this.open(ctrl, room);
 					ev.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('expand')),
-			]))
+			])),
 		});
 	}
 
@@ -48,7 +48,7 @@ class PageInRoom {
 			(ctrl, room, state, close) => ({
 				component: new PageInRoomComponent(this.module, ctrl, room, state, close),
 				title: l10n.l('pageInRoom.inRoom', "In Room"),
-			})
+			}),
 		);
 	}
 

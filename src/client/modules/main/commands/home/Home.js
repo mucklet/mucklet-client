@@ -21,7 +21,7 @@ class Home {
 		this.module.cmd.addCmd({
 			key: 'home',
 			value: (ctx, p) => this.home(ctx.char),
-			alias: [ 'gohome' ]
+			alias: [ 'gohome' ],
 		});
 
 		this.module.help.addTopic({

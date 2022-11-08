@@ -16,7 +16,7 @@ class PageAwake {
 			'charsAwake',
 			'avatar',
 			'dialogEditNote',
-			'dialogAboutChar'
+			'dialogAboutChar',
 		], this._init.bind(this));
 	}
 
@@ -26,7 +26,7 @@ class PageAwake {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		// Add awake tab;
@@ -37,14 +37,14 @@ class PageAwake {
 				click: (c, e) => {
 					click();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('users')),
 			])),
 			factory: (state, close, layoutId) => ({
 				component: new PageAwakeComponent(this.module, state),
-				title: l10n.l('pageAwake.awake', "Awake")
-			})
+				title: l10n.l('pageAwake.awake', "Awake"),
+			}),
 		}, true);
 	}
 

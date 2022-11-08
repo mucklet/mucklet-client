@@ -27,7 +27,7 @@ class LayoutMobileComponent {
 								n.component('titleBar', new Collapser()),
 								n.elem('div', { className: 'layoutmobile--tabscont' }, [
 									n.component(this.module.playerTabs.newTabs({
-										closeOnReselect: true
+										closeOnReselect: true,
 									})),
 									n.component(new KebabMenu(this.module.playerTools.getTools(), {
 										className: 'layoutmobile--kebabmenu',
@@ -37,14 +37,14 @@ class LayoutMobileComponent {
 								]),
 							]),
 							n.component('main', new Fader(null, { className: 'layoutmobile--main' })),
-						])
+						]),
 					])
 				)),
 				(m, c, change) => {
 					if (!change || change.hasOwnProperty('pageInfo')) {
 						c.getNode('titleBar').setComponent(component.titleBar = m.pageInfo
 							? component.titleBar || new LayoutMobileTitleBar(this.module, model)
-							: null
+							: null,
 						);
 
 						if (m.pageInfo) {
@@ -62,7 +62,7 @@ class LayoutMobileComponent {
 
 						c.getNode('main').setComponent(m.pageInfo
 							? tabPage
-							: this.mainComponent
+							: this.mainComponent,
 						);
 					}
 				},
@@ -72,10 +72,10 @@ class LayoutMobileComponent {
 					model.set(Object.assign({
 						pageInfo: m.factory
 							? m.factory('mobile')
-							: null
+							: null,
 					}, m.props));
 				}
-			}
+			},
 		);
 		this.elem.render(el);
 	}

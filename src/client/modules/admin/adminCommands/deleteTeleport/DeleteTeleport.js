@@ -26,9 +26,9 @@ class DeleteTeleport {
 		this.module.cmd.addPrefixCmd('delete', {
 			key: 'teleport',
 			next: new ListStep('nodeId', this.module.globalTeleports.getGlobalTeleportsList(), {
-				name: "global teleport destination keyword"
+				name: "global teleport destination keyword",
 			}),
-			value: (ctx, p) => this.deleteTeleport(ctx.char, { nodeId: p.nodeId })
+			value: (ctx, p) => this.deleteTeleport(ctx.char, { nodeId: p.nodeId }),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -56,7 +56,7 @@ class DeleteTeleport {
 					n.component(new Txt(l10n.l('deleteTeleport.deletionWarning', "Deletion will remove the teleport destination for everyone."))),
 				]),
 			])),
-			confirm: l10n.l('deleteTeleport.delete', "Delete")
+			confirm: l10n.l('deleteTeleport.delete', "Delete"),
 		});
 	}
 }

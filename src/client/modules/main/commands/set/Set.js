@@ -3,7 +3,7 @@ import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
-import { descriptionTooLong, propertyTooLong, } from 'utils/cmdErr';
+import { descriptionTooLong, propertyTooLong } from 'utils/cmdErr';
 
 const usageText = 'set <span class="param">Attribute</span> <span class="opt">=</span> <span class="param">Value</span>';
 const shortDesc = 'Set an attribute of your character';
@@ -15,13 +15,13 @@ const defaultAttr = [
 		key: 'name',
 		name: "character name",
 		desc: l10n.l('set.nameDesc', "Name which may contain numbers, letters, dash (-), and apostrophe (')."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'surname',
 		name: "character surname",
 		desc: l10n.l('set.surnameDesc', "Surname which may contain numbers, letters, dash (-), apostrophe ('), and spaces. It may also be titles (eg. \"the Beast\") or other creative name endings."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'desc',
@@ -29,10 +29,10 @@ const defaultAttr = [
 			name: "character description",
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('set.descDesc', "Description of the character's appearance. It may be formatted and span multiple paragraphs."),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	{
 		key: 'about',
@@ -40,30 +40,30 @@ const defaultAttr = [
 			name: "about the character",
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('set.aboutDesc', "Information about the character and its player's preferences. It may be formatted and span multiple paragraphs."),
-		sortOrder: 40
+		sortOrder: 40,
 	},
 	{
 		key: 'gender',
 		stepFactory: module => new TextStep('value', {
 			name: "character gender",
 			maxLength: () => module.info.getCore().propertyMaxLength,
-			errTooLong: propertyTooLong
+			errTooLong: propertyTooLong,
 		}),
 		desc: l10n.l('set.genderDesc', "Gender of the character."),
-		sortOrder: 50
+		sortOrder: 50,
 	},
 	{
 		key: 'species',
 		stepFactory: module => new TextStep('value', {
 			name: "character species",
 			maxLength: () => module.info.getCore().propertyMaxLength,
-			errTooLong: propertyTooLong
+			errTooLong: propertyTooLong,
 		}),
 		desc: l10n.l('set.speciesDesc', "Species of the character."),
-		sortOrder: 60
+		sortOrder: 60,
 	},
 ];
 
@@ -80,7 +80,7 @@ class Set {
 	_init(module) {
 		this.module = module;
 		this.charAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -104,8 +104,8 @@ class Set {
 			attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
-				})
+					name: attr.name || attr.key,
+				}),
 		];
 		let item = Object.assign({}, attr, { next });
 		this.charAttr.addItem(item);
@@ -128,7 +128,7 @@ class Set {
 
 	set(ctx, p) {
 		return ctx.char.call('set', {
-			[p.attr]: p.value
+			[p.attr]: p.value,
 		}).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('set.updatedCharacter', "Character attribute was successfully set."));
 		});

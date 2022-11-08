@@ -26,7 +26,7 @@ class Focus {
 		this.lastCharId = {};
 
 		this.colors = new ItemList({
-			items: Object.keys(this.module.charFocus.getFocusColors()).map(key => ({ key }))
+			items: Object.keys(this.module.charFocus.getFocusColors()).map(key => ({ key })),
 		});
 
 		this.module.cmd.addCmd({
@@ -35,31 +35,31 @@ class Focus {
 				new DelimStep('@', {
 					next: [
 						new ListStep('at', new ItemList({
-							items: [{ key: 'all' }]
+							items: [{ key: 'all' }],
 						}), {
 							name: "focus at",
 							errNotFound: step => ({ code: 'focus.atNotFound', message: "Did you mean to focus @all?" }),
-							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to focus @all?" })
+							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to focus @all?" }),
 						}),
-						new ErrorStep(/\s*(=)/, { code: 'focus.colorNotAllowed', message: "Highlight colors not avalable for @all." })
+						new ErrorStep(/\s*(=)/, { code: 'focus.colorNotAllowed', message: "Highlight colors not avalable for @all." }),
 					],
 					else: [
 						new ListStep('charId', this.module.cmdLists.getAllChars(), {
 							textId: 'charName',
 							name: "character",
-							errRequired: step => ({ code: 'focus.characterRequired', message: "Who do you want to focus on?" })
+							errRequired: step => ({ code: 'focus.characterRequired', message: "Who do you want to focus on?" }),
 						}),
 						new DelimStep("=", {
 							errRequired: null,
 							next: new ListStep('color', this.colors, {
 								name: "focus color",
-								errRequired: step => ({ code: 'focus.colorRequired', message: "What focus color do you want?" })
+								errRequired: step => ({ code: 'focus.colorRequired', message: "What focus color do you want?" }),
 							}),
 						}),
-					]
-				})
+					],
+				}),
 			],
-			value: (ctx, p) => this.focus(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.focus(ctx.player, ctx.char, p),
 		});
 
 		this.module.help.addTopic({

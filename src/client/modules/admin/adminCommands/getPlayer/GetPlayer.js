@@ -42,11 +42,11 @@ class GetPlayer {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" })
+						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" }),
 					}),
 				}),
 			],
-			value: (ctx, p) => this._getPlayer(ctx, p)
+			value: (ctx, p) => this._getPlayer(ctx, p),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -93,10 +93,10 @@ class GetPlayer {
 					n.component(new Txt(l10n.t('getPlayer.playerInfo', "Player info"), { tagName: 'h4' })),
 					n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, rows.map(m => n.elem('tr', [
 						n.elem('td', { className: 'charlog--strong' }, [
-							n.component(new Txt(m[0]))
+							n.component(new Txt(m[0])),
 						]),
 						n.elem('td', [
-							n.component(new Txt(m[1]))
+							n.component(new Txt(m[1])),
 						]),
 					]))),
 					n.component(new Txt(l10n.t('getPlayer.playerCharacters', "Player characters"), { tagName: 'h4', className: 'charlog--pad' })),
@@ -107,11 +107,11 @@ class GetPlayer {
 								'<th class="charlog--strong">' + escapeHtml(l10n.t('getPlayer.created', "Created")) + '</th>' +
 								'<th class="charlog--strong">' + escapeHtml(l10n.t('getPlayer.lastAwake', "Last awake")) + '</th>' +
 								'<th class="charlog--strong">' + escapeHtml(l10n.t('getPlayer.status', "Status")) + '</th>' +
-								'</tr>', { tagName: 'thead' }
+								'</tr>', { tagName: 'thead' },
 							)),
-							n.component(new Html(owned.join(''), { tagName: 'tbody' }))
-						])
-					])
+							n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+						]),
+					]),
 				]));
 
 				this.module.charLog.logComponent(ctx.char, 'getPlayer', elem);

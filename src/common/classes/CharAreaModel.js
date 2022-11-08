@@ -38,7 +38,7 @@ class CharAreaModel extends ModifyModel {
 		super(area.children, {
 			props: getLocationObject(ctrl, area),
 			isModifiedProperty: null,
-			modifiedOnNew: true
+			modifiedOnNew: true,
 		}, opt);
 
 		// Bind callbacks

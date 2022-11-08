@@ -20,7 +20,7 @@ class RegisterHome {
 
 		this.module.cmd.addPrefixCmd('register', {
 			key: 'home',
-			value: (ctx, p) => this.registerHome(ctx.char, { [p.attr]: p.value })
+			value: (ctx, p) => this.registerHome(ctx.char, { [p.attr]: p.value }),
 		});
 
 		this.module.help.addTopic({

@@ -5,7 +5,7 @@ import TextStep from 'classes/TextStep';
 import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
-import { descriptionTooLong, shortDescriptionTooLong, itemNameTooLong, } from 'utils/cmdErr';
+import { descriptionTooLong, shortDescriptionTooLong, itemNameTooLong } from 'utils/cmdErr';
 
 const usageText = 'set area <span class="param">#AreaID<span class="comment">/</span>Area</span> : <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set an area attribute';
@@ -23,7 +23,7 @@ const defaultAttr = [
 			errTooLong: itemNameTooLong,
 		}),
 		desc: l10n.l('setArea.nameDesc', "Name of the area."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'desc',
@@ -35,7 +35,7 @@ const defaultAttr = [
 			errTooLong: shortDescriptionTooLong,
 		}),
 		desc: l10n.l('setRoom.descDesc', "Short description of the area. May span multiple paragraphs."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'about',
@@ -46,7 +46,7 @@ const defaultAttr = [
 			errTooLong: descriptionTooLong,
 		}),
 		desc: l10n.l('setChar.aboutDesc', "Information about the area, such as setting, purpose, and rules. It may be formatted and span multiple paragraphs."),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	{
 		key: 'rules',
@@ -57,7 +57,7 @@ const defaultAttr = [
 			errTooLong: descriptionTooLong,
 		}),
 		desc: l10n.l('setChar.rulesDesc', "Area specific rules that adds to the realm rules. It may be formatted and span multiple paragraphs."),
-		sortOrder: 40
+		sortOrder: 40,
 	},
 	{
 		key: 'parent',
@@ -69,12 +69,12 @@ const defaultAttr = [
 				return ((c && c.ownedAreas && c.ownedAreas.toArray()) || []).map(v => v.id);
 			},
 			else: new ListStep('value', module.cmdLists.getCharOwnedAreas(true), {
-				name: "parent area"
-			})
+				name: "parent area",
+			}),
 		}),
 		desc: l10n.l('setArea.parentDesc', "#AreaID, or name of owned area, to set as parent area. Or <code>none</code> to unset current parent area. List owned areas with <code>list areas</code>."),
-		sortOrder: 50
-	}
+		sortOrder: 50,
+	},
 ];
 
 /**
@@ -90,7 +90,7 @@ class SetArea {
 	_init(module) {
 		this.module = module;
 		this.areaAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -106,16 +106,16 @@ class SetArea {
 						return ((c && c.ownedAreas && c.ownedAreas.toArray()) || []).map(v => v.id);
 					},
 					else: new ListStep('areaId', this.module.cmdLists.getCharOwnedAreas(), {
-						name: "area"
-					})
+						name: "area",
+					}),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.areaAttr, {
 					name: "area attribute",
-					token: 'attr'
-				})
+					token: 'attr',
+				}),
 			],
-			value: this._exec.bind(this)
+			value: this._exec.bind(this),
 		});
 
 		this.module.help.addTopic({
@@ -135,7 +135,7 @@ class SetArea {
 			next = attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
+					name: attr.name || attr.key,
 				});
 			next = Array.isArray(next) ? next : [ next ];
 			next.unshift(new DelimStep("=", { errRequired: null }));
@@ -150,7 +150,7 @@ class SetArea {
 			? f(ctx, p, this)
 			: ctx.char.call('setArea', {
 				areaId: p.areaId,
-				[f]: p.value
+				[f]: p.value,
 			}).then(() => {
 				this.module.charLog.logInfo(ctx.char, l10n.l('setArea.updatedArea', "Area attribute was successfully set."));
 			});;

@@ -22,7 +22,7 @@ class PageCharSelectChar {
 				new Elem(n =>
 					n.elem('div', { className: 'pagecharselect-char' }, [
 						n.elem('btn', 'div', { className: 'badge btn large', events: {
-							click: () => this._toggleActions()
+							click: () => this._toggleActions(),
 						}}, [
 							n.elem('div', { className: 'badge--select' }, [
 								n.component(this.module.avatar.newAvatar(this.char, { className: 'badge--icon' })),
@@ -30,25 +30,25 @@ class PageCharSelectChar {
 									n.elem('fullname', 'div', { className: 'pagecharselect-char--title badge--title badge--nowrap' }, [
 										n.component(new ModelTxt(this.char, c => c.name)),
 										n.text(' '),
-										n.component(new ModelTxt(this.char, c => c.surname))
+										n.component(new ModelTxt(this.char, c => c.surname)),
 									]),
 									n.elem('div', { className: 'badge--strong badge--nowrap' }, [
 										n.component(new ModelTxt(this.char, p => firstLetterUppercase(p.gender))),
 										n.text(' '),
-										n.component(new ModelTxt(this.char, p => firstLetterUppercase(p.species)))
+										n.component(new ModelTxt(this.char, p => firstLetterUppercase(p.species))),
 									]),
 									n.elem('div', { className: 'badge--text badge--nowrap' }, [
 										n.component(new ModelComponent(
 											this.char,
 											new ModelTxt(null, m => m && m.name),
-											(m, c) => c.setModel(m.inRoom)
-										))
+											(m, c) => c.setModel(m.inRoom),
+										)),
 									]),
-								])
+								]),
 							]),
-							n.component('actions', new Collapser(null))
-						])
-					])
+							n.component('actions', new Collapser(null)),
+						]),
+					]),
 				),
 				(m, c) => {
 					c[m.state !== 'asleep' ? 'addNodeClass' : 'removeNodeClass']('btn', 'inactive');
@@ -58,16 +58,16 @@ class PageCharSelectChar {
 						let lvl = idleLevels[i];
 						c[m.state != 'asleep' && i == m.idle ? 'addNodeClass' : 'removeNodeClass']('fullname', lvl.className);
 					}
-				}
+				},
 			),
 			(m, c, change) => {
 				if (change && !change.hasOwnProperty('itemId')) return;
 
 				c.getComponent().getNode('actions').setComponent(m.itemId === this.char.id
 					? new PageCharSelectCharContent(this.module, this.char, (show) => this._toggleActions(show), this.close)
-					: null
+					: null,
 				);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

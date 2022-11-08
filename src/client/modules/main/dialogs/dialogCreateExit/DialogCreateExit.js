@@ -47,7 +47,7 @@ class DialogCreateExit {
 			newRoom: true,
 			targetRoom: "",
 			targetRoomValue: "",
-			keys: ""
+			keys: "",
 		}, eventBus: this.app.eventBus });
 
 		this.dialog = new Dialog({
@@ -61,25 +61,25 @@ class DialogCreateExit {
 					new Input(model.name, {
 						events: { input: c => model.set({ name: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
-						className: 'dialog--input'
+						className: 'dialog--input',
 					}),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.exitName', "Keywords"),
 					new Input(model.keys, {
 						events: { input: c => model.set({ keys: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
-						className: 'dialog--input'
+						className: 'dialog--input',
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditExit.keysInfo', "Comma-separated list of case-insensitive keywords used for identifying the exit.")
-					}
+						popupTip: l10n.l('pageEditExit.keysInfo', "Comma-separated list of case-insensitive keywords used for identifying the exit."),
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('dialogCreateExit.destination', "Destination"),
@@ -88,9 +88,9 @@ class DialogCreateExit {
 							model,
 							new LabelToggleBox(l10n.l('dialogCreateExit.createNewRoom', "Create new room"), false, {
 								className: 'common--formmargin',
-								onChange: v => model.set({ newRoom: v })
+								onChange: v => model.set({ newRoom: v }),
 							}),
-							(m, c) => c.setValue(m.newRoom, false)
+							(m, c) => c.setValue(m.newRoom, false),
 						)),
 						n.component(new ModelComponent(
 							model,
@@ -118,7 +118,7 @@ class DialogCreateExit {
 											if (isId(v)) {
 												c.removeClass('dialog--incomplete');
 											}
-										}
+										},
 									},
 									render: patternMatchRender,
 									minLength: 1,
@@ -126,28 +126,28 @@ class DialogCreateExit {
 										c.removeClass('dialog--incomplete');
 										model.set({ targetRoom: item.value });
 										c.setProperty('value', item.label);
-									}
+									},
 								}));
-							}
-						))
+							},
+						)),
 					])),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateExit.destinationInfo', "Create a new room, search for an owned room, or enter a room #ID as exit destination.")
-					}
+						popupTip: l10n.l('dialogCreateExit.destinationInfo', "Create a new room, search for an owned room, or enter a room #ID as exit destination."),
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('create', 'button', {
 						events: { click: () => this._onCreate(ctrl, room, opt, model) },
-						className: 'btn primary dialog--btn'
+						className: 'btn primary dialog--btn',
 					}, [
-						n.component(new Txt(l10n.l('dialogcreateexit.createExit', "Create exit")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogcreateexit.createExit', "Create exit"))),
+					]),
+				]),
 			])),
-			onClose: this._onClose
+			onClose: this._onClose,
 		});
 
 		this.dialog.open();
@@ -170,7 +170,7 @@ class DialogCreateExit {
 			name: model.name,
 			keys: prepareKeys(model.keys),
 			targetRoom: model.targetRoom || model.targetRoomValue.replace(/^#/, '') || null,
-			hidden: opt.hidden || undefined
+			hidden: opt.hidden || undefined,
 		};
 
 		this.createPromise = this.module.createExit.createExit(ctrl, params).then(char => {

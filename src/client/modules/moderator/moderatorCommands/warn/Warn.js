@@ -33,7 +33,7 @@ class Warn {
 			next: [
 				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
 					name: "character",
-					errRequired: null
+					errRequired: null,
 				}),
 				new DelimStep("=", {
 					next: [
@@ -43,12 +43,12 @@ class Warn {
 							errRequired: step => ({ code: 'warn.messageRequired', message: "What warning message do you want to send?" }),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getCharsAwake()
+							completer: this.module.cmdLists.getCharsAwake(),
 						}),
-					]
-				})
+					],
+				}),
 			],
-			value: (ctx, p) => this.warn(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose })
+			value: (ctx, p) => this.warn(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose }),
 		});
 
 		this.module.helpModerate.addTopic({

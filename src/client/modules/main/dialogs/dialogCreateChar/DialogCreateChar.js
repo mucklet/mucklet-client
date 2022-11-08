@@ -24,7 +24,7 @@ class DialogCreateChar {
 
 		let model = new Model({ data: {
 			name: "",
-			surname: ""
+			surname: "",
 		}, eventBus: this.app.eventBus });
 
 		this.dialog = new Dialog({
@@ -40,38 +40,38 @@ class DialogCreateChar {
 					new Input("", {
 						events: { input: c => model.set({ name: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
-						className: 'dialog--input'
+						className: 'dialog--input',
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateChar.nameInfo', "Character name may contain numbers, letters, dash (-), and apostrophe (').\nIt can be changed later.")
-					}
+						popupTip: l10n.l('dialogCreateChar.nameInfo', "Character name may contain numbers, letters, dash (-), and apostrophe (').\nIt can be changed later."),
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('dialogCreateChar.surname', "Surname"),
 					new Input("", {
 						events: { input: c => model.set({ surname: c.getValue() }) },
 						attributes: { name: 'dialogcreatechar-surname', spellcheck: 'false' },
-						className: 'dialog--input'
+						className: 'dialog--input',
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateChar.surnameInfo', "Surname is used for unique identification, and may contain numbers, letters, dash (-), apostrophe ('), and spaces. It may also be titles (eg. \"the Beast\") or other creative name endings.\nIt can be changed later.")
-					}
+						popupTip: l10n.l('dialogCreateChar.surnameInfo', "Surname is used for unique identification, and may contain numbers, letters, dash (-), apostrophe ('), and spaces. It may also be titles (eg. \"the Beast\") or other creative name endings.\nIt can be changed later."),
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('create', 'button', {
 						events: { click: () => this._onCreate(model) },
-						className: 'btn primary dialog--btn'
+						className: 'btn primary dialog--btn',
 					}, [
-						n.component(new Txt(l10n.l('dialogcreatechar.create', "Create")))
+						n.component(new Txt(l10n.l('dialogcreatechar.create', "Create"))),
 					]),
-				])
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -83,7 +83,7 @@ class DialogCreateChar {
 
 		this.createPromise = this.module.player.getPlayer().call('createChar', {
 			name: model.name,
-			surname: model.surname
+			surname: model.surname,
 		}).then(char => {
 			if (this.dialog) {
 				this.dialog.close();

@@ -37,17 +37,17 @@ class Fullscreen {
 					this.model.set(this._getData());
 					return new Elem(n => n.elem('div', {
 						className: 'kebabmenu--itembtn flex-row pad8',
-						events: { click }
+						events: { click },
 					}, [
 						n.elem('div', { className: 'kebabmenu--itemicon flex-auto' }, [
-							n.component(new FAIcon(this.model.isFullscreen ? 'compress' : 'expand'))
+							n.component(new FAIcon(this.model.isFullscreen ? 'compress' : 'expand')),
 						]),
 						n.component(new Txt(
 							this.model.isFullscreen
 								? txtFramed
 								: txtFullscreen,
-							{ className: 'flex-1' }
-						))
+							{ className: 'flex-1' },
+						)),
 					]));
 				},
 				onClick: this._onClick,
@@ -73,7 +73,7 @@ class Fullscreen {
 	_getData() {
 		return {
 			isFullscreen: !!fullscreen.fullscreenElement(),
-			fullscreenEnabled: fullscreen.fullscreenEnabled()
+			fullscreenEnabled: fullscreen.fullscreenEnabled(),
 		};
 	}
 

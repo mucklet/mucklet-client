@@ -31,7 +31,7 @@ class Report {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'report.characterRequired', message: "Who do you want to report?" })
+					errRequired: step => ({ code: 'report.characterRequired', message: "Who do you want to report?" }),
 				}),
 				new DelimStep("=", {
 					errRequired: null,
@@ -41,12 +41,12 @@ class Report {
 							maxLength: () => this.module.info.getReport().reportMsgMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'report.messageRequired', message: "What do you want to report?" }),
-							completer: this.module.cmdLists.getCharsAwake()
+							completer: this.module.cmdLists.getCharsAwake(),
 						}),
-					]
-				})
+					],
+				}),
 			],
-			value: (ctx, p) => this.report(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.report(ctx.player, ctx.char, p),
 		});
 
 		this.module.help.addTopic({
@@ -68,7 +68,7 @@ class Report {
 			charId: char.id,
 			targetId: c.id,
 			currentPuppeteer: true,
-			msg: params.msg || null
+			msg: params.msg || null,
 		})).then(() => {
 			this.module.charLog.logInfo(char, l10n.l('report.reportSentB', "The report was sent to the moderators."));
 		});

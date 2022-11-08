@@ -19,7 +19,7 @@ class CharSettingsDndComponent {
 		let components = {};
 		this.elem = new Context(
 			() => new ModifyModel(this.charSettings, {
-				eventBus: this.module.self.app.eventBus
+				eventBus: this.module.self.app.eventBus,
 			}),
 			charSettings => charSettings.dispose(),
 			charSettings => new Elem(n => n.elem('div', [
@@ -29,24 +29,24 @@ class CharSettingsDndComponent {
 						className: 'common--formmargin',
 						onChange: (v, c) => this._setValue(charSettings, v),
 						popupTip: l10n.l('charSettingsDnd.enabledDoNotDisturbInfo', "Prevent messages to be sent to and from the character."),
-						popupTipClassName: 'popuptip--width-s'
+						popupTipClassName: 'popuptip--width-s',
 					}),
-					(m, c) => c.setValue(m.dnd, false)
+					(m, c) => c.setValue(m.dnd, false),
 				)),
 				n.component(new ModelComponent(
 					charSettings,
 					new Collapser(),
 					(m, c) => c.setComponent(components.setDndMsg = m.dnd
 						? components.setDndMsg || new Elem(n => n.elem('button', { events: {
-							click: () => this.module.dialogEditDndMsg.open(this.char, this.puppeteer, this.charSettings)
+							click: () => this.module.dialogEditDndMsg.open(this.char, this.puppeteer, this.charSettings),
 						}, className: 'btn medium light full-width icon-left' }, [
 							n.component(new FAIcon('pencil')),
-							n.component(new Txt(l10n.l('charSettingsDnd.editMessage', "Edit message")))
+							n.component(new Txt(l10n.l('charSettingsDnd.editMessage', "Edit message"))),
 						]))
-						: null
-					)
-				))
-			]))
+						: null,
+					),
+				)),
+			])),
 		);
 		this.elem.render(el);
 	}
@@ -63,7 +63,7 @@ class CharSettingsDndComponent {
 		this.module.player.getPlayer().call('setCharSettings', {
 			charId: this.char.id,
 			puppeteerId: this.puppeteer ? this.puppeteer.id : undefined,
-			dnd: v
+			dnd: v,
 		}).catch(err => {
 			if (charSettings.getModel()) {
 				charSettings.reset('dnd');

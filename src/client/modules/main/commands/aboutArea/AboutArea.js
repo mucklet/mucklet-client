@@ -23,7 +23,7 @@ class AboutArea {
 
 		this.module.cmd.addPrefixCmd('about', {
 			key: 'area',
-			value: (ctx, p) => this.aboutArea(ctx.char, p.attr)
+			value: (ctx, p) => this.aboutArea(ctx.char, p.attr),
 		});
 
 		this.module.help.addTopic({

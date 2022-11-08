@@ -18,7 +18,7 @@ class PlayerSettingsMainChar {
 			id: 'mainChar',
 			type: 'section',
 			sortOrder: 30,
-			componentFactory: (user, player, state) => new PlayerSettingsMainCharComponent(this.module, user, player, state)
+			componentFactory: (user, player, state) => new PlayerSettingsMainCharComponent(this.module, user, player, state),
 		});
 	}
 

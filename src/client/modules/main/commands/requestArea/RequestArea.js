@@ -27,16 +27,16 @@ class RequestArea {
 						return ((c && c.ownedAreas && c.ownedAreas.toArray()) || []).map(v => v.id);
 					},
 					else: new ListStep('areaId', this.module.cmdLists.getCharOwnedAreas(), {
-						name: "area"
-					})
+						name: "area",
+					}),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.areaAttr, {
 					name: "area attribute",
-					token: 'attr'
-				})
+					token: 'attr',
+				}),
 			],
-			value: this._exec.bind(this)
+			value: this._exec.bind(this),
 		});
 	}
 

@@ -174,7 +174,7 @@ class CharPagesChar {
 				image: c.image ? c.image.toJSON() : null,
 				desc: c.desc,
 				about: c.about,
-				timestamp
+				timestamp,
 			});
 			props = Object.assign({ timestamp }, props);
 		}

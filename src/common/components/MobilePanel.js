@@ -47,10 +47,10 @@ class MobilePanel extends RootElem {
 						this._onButtonClick(this);
 					}
 					e.stopPropagation();
-				}
-			}
+				},
+			},
 		}, [
-			n.component('icon', new FAIcon())
+			n.component('icon', new FAIcon()),
 		]));
 		this.rendered = false;
 
@@ -63,16 +63,16 @@ class MobilePanel extends RootElem {
 						click: (c, e) => {
 							this.toggle();
 							e.stopPropagation();
-						}
-					}
+						},
+					},
 				}, [
-					n.component(new FAIcon(this._alignLeft ? 'caret-left' : 'caret-right'))
+					n.component(new FAIcon(this._alignLeft ? 'caret-left' : 'caret-right')),
 				]),
 				n.component('btn', new Fader(null, { className: 'mobilepanel--btncont' })),
-				n.component(this.titleFader)
+				n.component(this.titleFader),
 			]),
 			n.elem('content', 'div', { className: 'mobilepanel--main' }, [
-				n.component(this.simpleBar)
+				n.component(this.simpleBar),
 			]),
 		]));
 

@@ -19,7 +19,7 @@ class Collapser extends RootElem {
 		opt = opt || {};
 		this._slideOpt = {
 			callback: this._onTransitionEnd.bind(this),
-			duration: opt.duration
+			duration: opt.duration,
 		};
 		this._current = null;
 		this._component = null;

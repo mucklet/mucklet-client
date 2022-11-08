@@ -20,7 +20,7 @@ class MuteTravel {
 
 		this.module.muteCmd.addType({
 			key: 'travel',
-			value: (ctx, p) => this.muteTravel(ctx.char)
+			value: (ctx, p) => this.muteTravel(ctx.char),
 		});
 
 		this.module.help.addTopic({

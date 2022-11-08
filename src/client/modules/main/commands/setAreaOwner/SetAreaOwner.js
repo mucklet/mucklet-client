@@ -19,14 +19,14 @@ class SetAreaOwner {
 			stepFactory: () => new ListStep('charId', this.module.cmdLists.getAllChars(), {
 				textId: 'charName',
 				name: "new owner",
-				errRequired: step => ({ code: 'setAreaOwner.characterRequired', message: "Who do you want to set as new owner?" })
+				errRequired: step => ({ code: 'setAreaOwner.characterRequired', message: "Who do you want to set as new owner?" }),
 			}),
 			desc: l10n.l('setAreaOwner.ownerDesc', "Name of the new owner. To give ownership to another player's character, use the <code>request area owner</code> command instead."),
 			value: (ctx, p) => this.setAreaOwner(ctx.char, p.charId
-				? { charId: p.charId, areaId: p.areaId, }
-				: { charName: p.charName, areaId: p.areaId, }
+				? { charId: p.charId, areaId: p.areaId }
+				: { charName: p.charName, areaId: p.areaId },
 			),
-			sortOrder: 100
+			sortOrder: 100,
 		});
 	}
 

@@ -21,7 +21,7 @@ export default function(cfg) {
 				[ cfg.ctx ],
 				{},
 				{},
-				null
+				null,
 			);
 		},
 
@@ -54,7 +54,7 @@ export default function(cfg) {
 
 		copyState: function(state) {
 			return state.clone();
-		}
+		},
 
 	};
 };

@@ -32,10 +32,10 @@ class Teleport {
 					return ((c && c.ownedRooms & c.ownedRooms.toArray()) || []).map(v => v.id);
 				},
 				else: new ListStep('nodeId', this.module.cmdLists.getTeleportNodes(), {
-					name: "destination node"
-				})
+					name: "destination node",
+				}),
 			}),
-			value: this.teleport.bind(this)
+			value: this.teleport.bind(this),
 		});
 
 		this.module.help.addTopic({

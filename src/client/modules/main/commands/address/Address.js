@@ -48,14 +48,14 @@ class Address {
 							errRequired: step => ({ code: 'address.messageRequired', message: "What do you want to communicate?" }),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getInRoomChars()
-						})
-					]
-				})
+							completer: this.module.cmdLists.getInRoomChars(),
+						}),
+					],
+				}),
 			],
 			symbol: '@',
 			alias: [ 'to' ],
-			value: (ctx, p) => this.address(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc })
+			value: (ctx, p) => this.address(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc }),
 		});
 
 		this.module.help.addTopic({

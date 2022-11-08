@@ -33,7 +33,7 @@ class PageMailMailContent {
 
 			return n.elem('div', [
 				n.elem('div', { className: 'badge--select pagemail-mailcontent--text' }, [
-					n.elem('div', { className: 'badge--text' }, text)
+					n.elem('div', { className: 'badge--text' }, text),
 				]),
 				n.elem('div', { className: 'badge--divider' }),
 				n.elem('div', { className: 'badge--select badge--margin' }, [
@@ -41,14 +41,14 @@ class PageMailMailContent {
 						n.elem('div', { className: 'flex-row' }, [
 							n.component(new Txt(l10n.l('pageMail.to', "To"), { className: 'badge--iconcol badge--subtitle' })),
 							n.component(new ModelTxt(this.mail.to, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageMail.unknown', "(Unknown)")), {
-								className: 'badge--info badge--strong'
-							}))
+								className: 'badge--info badge--strong',
+							})),
 						]),
 						n.elem('div', { className: 'flex-row' }, [
 							n.component(new Txt(l10n.l('pageMail.read', "Read"), { className: 'badge--iconcol badge--subtitle' })),
 							n.component(new ModelTxt(this.mail, m => m.read ? formatDateTime(new Date(m.received)) : l10n.l('pageMail.unread', "Reading..."), {
-								className: 'badge--info badge--text'
-							}))
+								className: 'badge--info badge--text',
+							})),
 						]),
 					]),
 					n.elem('button', { className: 'iconbtn medium tinyicon', events: {
@@ -58,12 +58,12 @@ class PageMailMailContent {
 								body: new Elem(n => n.elem('div', [
 									n.component(new Txt(l10n.l('pageMail.deleteWatchBody', "Do you really wish delete this mail?"), { tagName: 'p' })),
 								])),
-								confirm: l10n.l('pageMail.delete', "Delete")
+								confirm: l10n.l('pageMail.delete', "Delete"),
 							});
 							ev.stopPropagation();
-						}
+						},
 					}}, [
-						n.component(new FAIcon('trash'))
+						n.component(new FAIcon('trash')),
 					]),
 				]),
 			]);

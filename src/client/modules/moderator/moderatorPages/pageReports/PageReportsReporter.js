@@ -30,8 +30,8 @@ class PageReportsReporter {
 			n.elem('div', { className: 'flex-row' }, [
 				n.component(new ModelTxt(this.reporter, m => m.type == 'report' ? txtReporterFrom : txtReporterMod, { className: 'badge--iconcol badge--subtitle' })),
 				n.component(new ModelTxt(this.reporter.char, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
-					className: 'badge--info badge--strong'
-				}))
+					className: 'badge--info badge--strong',
+				})),
 			]),
 			n.component(new ModelComponent(
 				this.reporter,
@@ -42,22 +42,22 @@ class PageReportsReporter {
 							? new Elem(n => n.elem('div', { className: 'flex-row' }, [
 								n.component(new Txt(l10n.l('pageReports.ctrl', "Ctrl"), { className: 'badge--iconcol badge--subtitle' })),
 								n.component(new ModelTxt(m.puppeteer, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
-									className: 'badge--info badge--text'
-								}))
+									className: 'badge--info badge--text',
+								})),
 							]))
-							: null
+							: null,
 						);
 					}
-				}
+				},
 			)),
 			n.elem('div', { className: 'flex-row' }, [
 				n.component(new ModelTxt(this.reporter, m => this._reporterTypeText(m), { className: 'badge--iconcol badge--subtitle' })),
 				n.component(new ModelTxt(this.reporter, m => formatDateTime(new Date(m.created)), {
-					className: 'badge--info badge--text'
-				}))
+					className: 'badge--info badge--text',
+				})),
 			]),
 			n.elem('div', { className: 'badge--text' }, [
-				n.component(new ModelHtml(this.reporter, m => formatText(m.msg), { tagName: 'span', className: 'common--formattext' }))
+				n.component(new ModelHtml(this.reporter, m => formatText(m.msg), { tagName: 'span', className: 'common--formattext' })),
 			]),
 			n.component(new ModelComponent(
 				this.reporter,
@@ -75,15 +75,15 @@ class PageReportsReporter {
 								n.elem('div', { className: 'flex-row' }, [
 									n.component(new Txt(txtType, { className: 'badge--iconcol badge--subtitle' })),
 									n.component(new ModelTxt(this.reporter, m => m.attachmentType, {
-										className: 'badge--info badge--text'
-									}))
+										className: 'badge--info badge--text',
+									})),
 								]),
-								n.component(new ModelTxt(m, m => m.attachmentInfo ? JSON.stringify(m.attachmentInfo, null, 2) : "", { tagName: 'pre', className: 'badge--text common--formattext' }))
-							]))
+								n.component(new ModelTxt(m, m => m.attachmentInfo ? JSON.stringify(m.attachmentInfo, null, 2) : "", { tagName: 'pre', className: 'badge--text common--formattext' })),
+							])),
 						);
 					}
-				}
-			))
+				},
+			)),
 		]));
 		return this.elem.render(el);
 	}

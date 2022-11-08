@@ -38,14 +38,14 @@ class RemovePlayerRole {
 								{ key: "moderator" },
 								{ key: "builder" },
 								{ key: "admin" },
-							]
+							],
 						}), {
 							name: "player role",
-							token: 'text'
-						})
+							token: 'text',
+						}),
 					],
 				},
-			]
+			],
 		});
 
 		this.module.cmd.addPrefixCmd('remove', {
@@ -56,16 +56,16 @@ class RemovePlayerRole {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'removePlayerRole.characterRequired', message: "Which player (by character)?" })
+						errRequired: step => ({ code: 'removePlayerRole.characterRequired', message: "Which player (by character)?" }),
 					}),
 				}),
 				new DelimStep(":"),
 				new ListStep('attr', this.playerAttr, {
 					name: "player list attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
-			value: (ctx, p) => this["_removePlayer" + p.attr](ctx, p)
+			value: (ctx, p) => this["_removePlayer" + p.attr](ctx, p),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -82,7 +82,7 @@ class RemovePlayerRole {
 		let player = this.module.player.getPlayer();
 		return player.call('getUser', p).then(user => player.call('removePlayerRole', {
 			playerId: user.id,
-			role: p.value
+			role: p.value,
 		})).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('removePlayerRole.removedRoleToPlayer', "Removed role from player."));
 		});

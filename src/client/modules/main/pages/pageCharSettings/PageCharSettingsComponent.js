@@ -19,7 +19,7 @@ class PageCharSettingsComponent {
 	render(el) {
 		this.model = new ModifyModel(this.ctrl, {
 			props: this.state.changes,
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 		this.elem = new CollectionComponent(
 			this.module.player.getChars(),
@@ -28,30 +28,30 @@ class PageCharSettingsComponent {
 					n.component(new ModelTxt(this.char, m => (m.name + " " + m.surname).trim(), { tagName: 'div', className: 'pagecharsettings--name' })),
 					n.component(new Context(
 						() => new CollectionWrapper(this.module.self.getTools(), {
-							filter: t => t.type == 'topSection'
+							filter: t => t.type == 'topSection',
 						}),
 						tools => tools.dispose(),
 						tools => new CollectionList(
 							tools,
 							t => t.componentFactory(this.char, this.charSettings, this.state),
 							{
-								subClassName: t => t.className || null
-							}
-						)
+								subClassName: t => t.className || null,
+							},
+						),
 					)),
 				]),
 				n.component(new Context(
 					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => t.type == 'sections'
+						filter: t => t.type == 'sections',
 					}),
 					tools => tools.dispose(),
 					tools => new CollectionList(
 						tools,
 						t => t.componentFactory(this.char, this.charSettings, this.state),
 						{
-							subClassName: t => t.className || null
-						}
-					)
+							subClassName: t => t.className || null,
+						},
+					),
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
@@ -59,22 +59,22 @@ class PageCharSettingsComponent {
 						n.component(new ModelComponent(
 							this.model,
 							new Elem(n => n.elem('update', 'button', { events: {
-								click: () => this._save(this.model)
+								click: () => this._save(this.model),
 							}, className: 'btn primary flex-1' }, [
-								n.component('text', new Txt())
+								n.component('text', new Txt()),
 							])),
 							(m, c) => c.getNode('text').setText(m.isModified
 								? l10n.l('pageCharSettings.update', "Save edits")
-								: l10n.l('pageCharSettings.close', "Close")
-							)
+								: l10n.l('pageCharSettings.close', "Close"),
+							),
 						)),
 					]),
 					n.elem('button', { events: {
-						click: () => this.module.dialogDeleteChar.open(this.char)
+						click: () => this.module.dialogDeleteChar.open(this.char),
 					}, className: 'iconbtn medium light' }, [
-						n.component(new FAIcon('trash'))
+						n.component(new FAIcon('trash')),
 					]),
-				])
+				]),
 			])),
 			(col, c) => {
 				// Close if we no longer own the char
@@ -82,7 +82,7 @@ class PageCharSettingsComponent {
 					if (char.id === this.char.id) return;
 				}
 				setTimeout(() => this.close(), 0);
-			}
+			},
 		);
 		this.elem.render(el);
 	}
@@ -116,7 +116,7 @@ class PageCharSettingsComponent {
 		if (!this.elem) return;
 		this.elem.getNode('message').setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
-			: null
+			: null,
 		);
 	}
 

@@ -46,7 +46,7 @@ for (let app of apps) {
 	let siteConfigPath = resolveFirstExistingFile(ctx.cfgPath, [
 		'site.config.' + cfgName + '.js',
 		'site.config.' + env + '.js',
-		'site.config.js'
+		'site.config.js',
 	]);
 	ctx.siteConfig = require(siteConfigPath);
 
@@ -54,7 +54,7 @@ for (let app of apps) {
 	let moduleConfigPath = resolveFirstExistingFile(ctx.cfgPath, [
 		'module.config.' + cfgName + '.js',
 		'module.config.' + env + '.js',
-		'module.config.js'
+		'module.config.js',
 	]);
 	ctx.alias = {
 		'moduleConfig$': moduleConfigPath,
@@ -78,38 +78,38 @@ for (let app of apps) {
 		},
 		optimization: {
 			splitChunks: {
-				chunks: 'all'
+				chunks: 'all',
 			},
-			concatenateModules: !ctx.devMode
+			concatenateModules: !ctx.devMode,
 		},
 		resolve: {
 			alias: ctx.alias,
 			modules: [
 				'node_modules',
 				ctx.srcPath,
-				commonPath
-			]
+				commonPath,
+			],
 		},
 		module: {
 			rules: [
 				{
 					test: /\.mjs$/,
 					include: /node_modules/,
-					type: 'javascript/auto'
+					type: 'javascript/auto',
 				},
 				{
 					test: /\.(js)$/,
 					exclude: /node_modules/,
-					use: 'babel-loader'
+					use: 'babel-loader',
 				},
 				{
 					test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
 					use: {
 						loader: 'file-loader',
 						options: {
-							name: '[path][name].[ext]'
-						}
-					}
+							name: '[path][name].[ext]',
+						},
+					},
 				},
 				{
 					test: /\.worker\.js$/,
@@ -126,10 +126,10 @@ for (let app of apps) {
 						MiniCssExtractPlugin.loader,
 						'css-loader',
 						'sass-loader',
-					]
-				}
-			]
-		}
+					],
+				},
+			],
+		},
 	};
 
 	let appConfigPath = path.resolve(__dirname, 'webpack.config.' + app + '.js');

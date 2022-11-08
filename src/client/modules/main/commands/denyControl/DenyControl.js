@@ -29,19 +29,19 @@ class DenyControl {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: null
+					errRequired: null,
 				}),
 				new DelimStep("=", {
 					next: new TextStep('msg', {
 						spanLines: false,
 						maxLength: () => this.module.info.getCore().communicationMaxLength,
 						errTooLong: communicationTooLong,
-						errRequired: null
+						errRequired: null,
 					}),
-					errRequired: null
+					errRequired: null,
 				}),
 			],
-			value: (ctx, p) => this.denyControl(ctx.char, p)
+			value: (ctx, p) => this.denyControl(ctx.char, p),
 		});
 
 		this.module.help.addTopic({

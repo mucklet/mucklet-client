@@ -21,9 +21,9 @@ class SetExitOrder {
 			desc: l10n.l('setExitOrder.orderDesc', "Order position of the exit, starting with 1."),
 			value: (ctx, p) => this.setExitOrder(ctx.char, p.exitId
 				? { exitId: p.exitId, order: p.order - 1 }
-				: { exitKey: p.exitKey, order: p.order - 1 }
+				: { exitKey: p.exitKey, order: p.order - 1 },
 			),
-			sortOrder: 100
+			sortOrder: 100,
 		});
 	}
 

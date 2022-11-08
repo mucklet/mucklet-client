@@ -30,7 +30,7 @@ class Settings {
 			m,
 			cb: null,
 			def: defaultSettings,
-			user: null
+			user: null,
 		};
 		this.settings[id] = c;
 
@@ -40,7 +40,7 @@ class Settings {
 				return m.set(Object.assign({},
 					this._legacySettings(user, legacyMap),
 					this._storedSettings(user, id),
-					this._paramSettings(id)
+					this._paramSettings(id),
 				));
 			})
 			.then(() => {

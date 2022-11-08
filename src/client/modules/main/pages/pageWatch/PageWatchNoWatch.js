@@ -10,7 +10,7 @@ class PageWatchNoWatch {
 		this.elem = new Elem(n => n.elem('div', { className: 'pagewatch-nowatch' }, [
 			n.component(new Txt(l10n.l('pageWatch.emptyWatchList', "Your watch list is empty."), { className: 'common--nolistplaceholder' })),
 			n.component(new Txt(l10n.l('pageWatch.addWatchInfo', "Learn how to add a watch by typing:"), { className: 'common--nolistplaceholder' })),
-			n.component(new Html(`<section class="charlog--pad"><div class="charlog--code"><code>help watch</code></div></section>`))
+			n.component(new Html(`<section class="charlog--pad"><div class="charlog--code"><code>help watch</code></div></section>`)),
 		]));
 		return this.elem.render(el);
 	}

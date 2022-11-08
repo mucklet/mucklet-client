@@ -18,7 +18,7 @@ const defaultAttr = [
 		key: 'trusted',
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is trusted flag" }),
 		desc: l10n.l('setPlayer.trustedDesc', "Flag telling if the player is trusted to play unrestricted. Value is <code>yes</code> or <code>no</code>."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 ];
 
@@ -35,7 +35,7 @@ class SetPlayer {
 	_init(module) {
 		this.module = module;
 		this.playerAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -49,18 +49,18 @@ class SetPlayer {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" })
+						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" }),
 					}),
 				}),
 				new DelimStep(":"),
 				new ListStep('attr', this.playerAttr, {
 					name: "account attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
 			value: (ctx, p) => typeof p.attr == 'function'
 				? p.attr(ctx, p)
-				: this._setPlayer(ctx, p)
+				: this._setPlayer(ctx, p),
 		});
 
 		this.module.helpModerate.addTopic({
@@ -80,9 +80,9 @@ class SetPlayer {
 				attr.stepFactory
 					? attr.stepFactory(this.module)
 					: new TextStep('value', {
-						name: attr.name || attr.key
-					})
-			]
+						name: attr.name || attr.key,
+					}),
+			],
 		}, attr));
 		return this;
 	}

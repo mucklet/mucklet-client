@@ -35,12 +35,12 @@ class Broadcast {
 					next: [
 						new TextStep('msg', {
 							spanLines: true,
-							errRequired: step => ({ code: 'broadcast.messageRequired', message: "What do you want to broadcast?" })
-						})
-					]
-				})
+							errRequired: step => ({ code: 'broadcast.messageRequired', message: "What do you want to broadcast?" }),
+						}),
+					],
+				}),
 			],
-			value: (ctx, p) => this.broadcast(ctx.char, { title: (p.title || "").trim(), msg: p.msg.trim() })
+			value: (ctx, p) => this.broadcast(ctx.char, { title: (p.title || "").trim(), msg: p.msg.trim() }),
 		});
 
 		this.module.helpAdmin.addTopic({

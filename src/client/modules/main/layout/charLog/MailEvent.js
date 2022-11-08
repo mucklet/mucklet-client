@@ -16,9 +16,9 @@ class MailEvent extends Elem {
 							: l10n.l('charLog.mailTo', "Mail sent to {name}", { name: t && t.name })
 						: ev.ooc
 							? l10n.l('charLog.mailOocFrom', "Mail received ooc from {name}", { name: c && c.name })
-							: l10n.l('charLog.mailFrom', "Mail received from {name}", { name: c && c.name })
-					))
-				])
+							: l10n.l('charLog.mailFrom', "Mail received from {name}", { name: c && c.name }),
+					)),
+				]),
 			];
 			if (ev.pose) {
 				children.push(n.component(new Txt(c && c.name, { className: 'charlog--char' })));
@@ -29,7 +29,7 @@ class MailEvent extends Elem {
 			}
 			children.push(n.component(new Html(formatText(ev.msg), { tagName: 'span', className: 'common--formattext' })));
 			return n.elem('div', [
-				n.elem('div', { className: 'charlog--fieldset ' + (ev.ooc ? 'charlog--ooc' : 'charlog--comm') }, children)
+				n.elem('div', { className: 'charlog--fieldset ' + (ev.ooc ? 'charlog--ooc' : 'charlog--comm') }, children),
 			]);
 		});
 	}

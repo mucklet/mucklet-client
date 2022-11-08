@@ -41,23 +41,23 @@ class Policies {
 						n.component(data.created
 							? new Txt(l10n.t('policies.lastUpdate', "Last update {date}", { date: formatDate(new Date(data.created), { showYear: true }) }), {
 								tagName: 'span',
-								className: 'policies--subtitle'
+								className: 'policies--subtitle',
 							})
-							: null
+							: null,
 				 		),
 						n.component(new PoliciesBody(this.module, data.body, { className: 'policies--body' })),
 						n.elem('button', {
 							events: { click: close },
-							className: 'policies--btn btn large primary'
+							className: 'policies--btn btn large primary',
 						}, [
-							n.component(new Txt(l10n.l('policies.close', "Close")))
-						])
+							n.component(new Txt(l10n.l('policies.close', "Close"))),
+						]),
 					])),
 					{
 						size: 'wide',
 						title: data.title,
-						close
-					}
+						close,
+					},
 				));
 			});
 	}

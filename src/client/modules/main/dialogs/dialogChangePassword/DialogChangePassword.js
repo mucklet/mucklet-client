@@ -25,7 +25,7 @@ class DialogChangePassword {
 		let model = new Model({ data: {
 			oldPass: "",
 			newPass: "",
-			showPass: false
+			showPass: false,
 		}, eventBus: this.app.eventBus });
 
 		this.dialog = new Dialog({
@@ -37,24 +37,24 @@ class DialogChangePassword {
 					new PasswordInput(model.oldPass, {
 						onInput: c => model.set({ oldPass: c.getValue() }),
 						inputOpt: { className: 'dialog--input' },
-						className: 'darkeye'
+						className: 'darkeye',
 					}),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('dialogChangePassword.newPassword', "New password"),
 					new PasswordInput(model.newPass, {
 						onInput: c => model.set({ newPass: c.getValue() }),
 						inputOpt: { className: 'dialog--input' },
-						className: 'darkeye'
+						className: 'darkeye',
 					}),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
@@ -62,15 +62,15 @@ class DialogChangePassword {
 						model,
 						new Elem(n => n.elem('button', {
 							events: { click: () => this._changePass(model) },
-							className: 'btn primary dialog--btn'
+							className: 'btn primary dialog--btn',
 						}, [
-							n.component(new Txt(l10n.l('dialogChangePassword.changePassword', "Change password")))
+							n.component(new Txt(l10n.l('dialogChangePassword.changePassword', "Change password"))),
 						])),
-						(m, c) => c.setProperty('disabled', m.newPass.trim().length >= 4 ? null : 'disabled')
-					))
-				])
+						(m, c) => c.setProperty('disabled', m.newPass.trim().length >= 4 ? null : 'disabled'),
+					)),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -88,10 +88,10 @@ class DialogChangePassword {
 				this.module.confirm.open(null, {
 					title: l10n.l('dialogChangePassword.changeSuccessful', "Password changed"),
 					body: [
-						l10n.l('dialogChangePassword.changeSuccessfulBody', "Password was successfully changed.")
+						l10n.l('dialogChangePassword.changeSuccessfulBody', "Password was successfully changed."),
 					],
 					confirm: l10n.l('playerPanel.okay', "Okay"),
-					cancel: null
+					cancel: null,
 				});
 			}, 0);
 		}).catch(err => {

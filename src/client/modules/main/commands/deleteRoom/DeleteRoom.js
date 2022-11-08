@@ -23,7 +23,7 @@ class DeleteRoom {
 
 		this.module.cmd.addPrefixCmd('delete', {
 			key: 'room',
-			value: (ctx, p) => this.deleteRoom(ctx.char)
+			value: (ctx, p) => this.deleteRoom(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -52,7 +52,7 @@ class DeleteRoom {
 					n.component(new Txt(l10n.l('deleteRoom.deletionWarning', "Deletion cannot be undone."))),
 				]),
 			])),
-			confirm: l10n.l('deleteRoom.delete', "Delete")
+			confirm: l10n.l('deleteRoom.delete', "Delete"),
 		});
 	}
 }

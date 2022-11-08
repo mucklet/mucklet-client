@@ -17,7 +17,7 @@ class PageRoom {
 			'charsAwake',
 			'dialogEditNote',
 			'charPages',
-			'toaster'
+			'toaster',
 		], this._init.bind(this));
 	}
 
@@ -27,10 +27,10 @@ class PageRoom {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.module.roomPages.setDefaultPageFactory((ctrl, room, state, layout) => ({
-			component: new PageRoomComponent(this.module, ctrl, room, state, layout)
+			component: new PageRoomComponent(this.module, ctrl, room, state, layout),
 		}));
 	}
 

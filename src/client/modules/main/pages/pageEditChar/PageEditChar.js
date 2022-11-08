@@ -20,18 +20,18 @@ class PageEditChar {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.module.pageChar.addTool({
 			id: 'editChar',
 			sortOrder: 10,
 			componentFactory: (ctrl, char) => new Elem(n => n.elem('button', { className: 'iconbtn small', events: {
-				click: () => this.open(ctrl)
+				click: () => this.open(ctrl),
 			}}, [
 				n.component(new FAIcon('pencil')),
 			])),
-			filter: (ctrl, char) => ctrl.id == char.id && !ctrl.puppeteer
+			filter: (ctrl, char) => ctrl.id == char.id && !ctrl.puppeteer,
 		});
 	}
 
@@ -47,8 +47,8 @@ class PageEditChar {
 			(ctrl, char, state, close) => ({
 				component: new PageEditCharComponent(this.module, ctrl, state, close),
 				title: l10n.l('pageEditChar.editChar', "Edit Character"),
-				onClose: close
-			})
+				onClose: close,
+			}),
 		);
 	}
 

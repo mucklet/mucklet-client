@@ -23,16 +23,16 @@ class RequestSetArea {
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetArea.area', "Area"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.area, m => errString(m, m => m.name, l10n.l('requestSetArea.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
+						className: 'badge--info badge--strong',
+					})),
 				]),
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetArea.from', "Parent"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.parent, m => errString(m, m => m.name, l10n.l('requestSetArea.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
-				])
-			]))
+						className: 'badge--info badge--strong',
+					})),
+				]),
+			])),
 		});
 	}
 

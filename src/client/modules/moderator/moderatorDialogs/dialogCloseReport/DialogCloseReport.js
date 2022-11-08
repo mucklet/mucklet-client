@@ -37,27 +37,27 @@ class DialogCloseReport {
 					new Textarea(model.comment, {
 						className: 'dialogclosereport--comment dialog--input common--paneltextarea-small common--desc-size',
 						events: {
-							input: c => model.set({ comment: c.getValue() })
+							input: c => model.set({ comment: c.getValue() }),
 						},
-						attributes: { name: 'dialogclosereport-comment', spellcheck: 'true' }
+						attributes: { name: 'dialogclosereport-comment', spellcheck: 'true' },
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCloseReport.commentInfo', "Short comment on what had happened, and how it was resolved.")
-					}
+						popupTip: l10n.l('dialogCloseReport.commentInfo', "Short comment on what had happened, and how it was resolved."),
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer' }, [
 					n.elem('submit', 'button', {
 						events: { click: () => this._closeReport(report, model) },
-						className: 'btn primary dialogclosereport--submit'
+						className: 'btn primary dialogclosereport--submit',
 					}, [
-						n.component(new Txt(l10n.l('dialogCloseReport.closeReport', "Close report")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogCloseReport.closeReport', "Close report"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -68,7 +68,7 @@ class DialogCloseReport {
 		if (this.closePromise) return this.closePromise;
 
 		report.call('close', {
-			comment: model.comment.trim()
+			comment: model.comment.trim(),
 		}).then(() => {
 			if (this.dialog) {
 				this.dialog.close();
@@ -78,7 +78,7 @@ class DialogCloseReport {
 				content: new Txt(l10n.l('dialogCloseReport.reportSend', "The report was closed.", char)),
 				closeOn: 'click',
 				type: 'success',
-				autoclose: true
+				autoclose: true,
 			});
 		}).catch(err => {
 			if (!this.dialog) return;

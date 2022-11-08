@@ -41,7 +41,7 @@ class BroadcastHandler {
 			title: ev.title || l10n.l('broadcastHandler.broadcast', "Broadcast"),
 			content: new Html(formatText(ev.msg), { className: 'common--formattext' }),
 			closeOn: 'button',
-			time: ev.time ? new Date(ev.time) : new Date()
+			time: ev.time ? new Date(ev.time) : new Date(),
 		});
 	}
 

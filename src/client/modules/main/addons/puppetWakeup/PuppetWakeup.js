@@ -100,11 +100,11 @@ class PuppetWakeup {
 					n.component(new Txt(l10n.l('puppetWakeup.roleGranted', "Control request was rejected."), { tagName: 'p' })),
 					n.elem('div', { className: 'common--sectionpadding' }, [
 						n.component(new Txt((puppet.name + ' ' + puppet.surname).trim(), { tagName: 'div', className: 'dialog--strong' })),
-						n.component(new Txt("(" + (puppeteer.requestPuppeteer.name + ' ' + puppeteer.requestPuppeteer.surname).trim() + ")", { tagName: 'div', className: 'dialog--small' }))
+						n.component(new Txt("(" + (puppeteer.requestPuppeteer.name + ' ' + puppeteer.requestPuppeteer.surname).trim() + ")", { tagName: 'div', className: 'dialog--small' })),
 					]),
-					n.component(puppeteer.requestAnswer ? new Txt('"' + puppeteer.requestAnswer + '"', { tagName: 'p', className: 'dialog--emphasis' }) : null)
+					n.component(puppeteer.requestAnswer ? new Txt('"' + puppeteer.requestAnswer + '"', { tagName: 'p', className: 'dialog--emphasis' }) : null),
 				])),
-				closeOn: 'click'
+				closeOn: 'click',
 			});
 		}
 
@@ -120,7 +120,7 @@ class PuppetWakeup {
 						n.component(new Txt(l10n.l('puppetWakeup.roleGranted', "Do you want to control puppet?"), { tagName: 'p' })),
 						n.elem('div', { className: 'common--sectionpadding' }, [
 							n.component(new Txt((puppet.name + ' ' + puppet.surname).trim(), { tagName: 'div', className: 'dialog--strong' })),
-							n.component(new Txt("(" + (char.name + ' ' + char.surname).trim() + ")", { tagName: 'div', className: 'dialog--small' }))
+							n.component(new Txt("(" + (char.name + ' ' + char.surname).trim() + ")", { tagName: 'div', className: 'dialog--small' })),
 						]),
 						n.elem('div', { className: 'flex-row margin8' }, [
 							n.elem('button', {
@@ -128,28 +128,28 @@ class PuppetWakeup {
 								events: { click: () => {
 									this._control(puppeteer);
 									close();
-								} }
+								} },
 							}, [
-								n.component(new Txt(l10n.l('puppetWakeup.control', "Control")))
+								n.component(new Txt(l10n.l('puppetWakeup.control', "Control"))),
 
 							]),
 							n.elem('button', {
 								className: 'btn secondary',
-								events: { click: close }
+								events: { click: close },
 							}, [
-								n.component(new Txt(l10n.l('puppetWakeup.cancel', "Cancel")))
-							])
-						])
+								n.component(new Txt(l10n.l('puppetWakeup.cancel', "Cancel"))),
+							]),
+						]),
 					])),
 					(m, c) => {
 						if (m.puppeteer && m.puppeteer.id == char.id) close();
-					}
+					},
 				),
 				(m, c) => {
 					if (m.requestStatus != 'accepted') close();
-				}
+				},
 			),
-			closeOn: 'button'
+			closeOn: 'button',
 		});
 	}
 

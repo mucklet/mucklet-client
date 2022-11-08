@@ -18,7 +18,7 @@ class PageAreaZoomBar {
 			new Elem(n => n.elem('div', { className: 'pagearea-zoombar' }, [
 				n.elem('div', { className: 'pagearea-zoombar--zoomin' }, [
 					n.elem('zoomin', 'button', { className: 'iconbtn medium', events: { click: () => this._zoom(-1) }}, [
-						n.component(new FAIcon('search-plus'))
+						n.component(new FAIcon('search-plus')),
 					]),
 				]),
 				n.component('areas', new CollectionList(this.areas, area => new ModelComponent(
@@ -26,20 +26,20 @@ class PageAreaZoomBar {
 					new Elem(n => n.elem('div', { className: 'pagearea-zoombar--area' }, [
 						n.elem('bar', 'div', {
 							className: 'pagearea-zoombar--bar',
-							events: { click: () => this.model.set({ current: area }) }
-						})
+							events: { click: () => this.model.set({ current: area }) },
+						}),
 					])),
-					(m, c) => c[area == m.current ? 'addNodeClass' : 'removeNodeClass']('bar', 'current')
+					(m, c) => c[area == m.current ? 'addNodeClass' : 'removeNodeClass']('bar', 'current'),
 				), {
 					className: 'pagearea-zoombar--areas',
 					duration: 600,
-					horizontal: true
+					horizontal: true,
 				})),
 				n.elem('div', { className: 'pagearea-zoombar--zoomout' }, [
 					n.elem('zoomout', 'button', { className: 'iconbtn medium', events: { click: () => this._zoom(1) }}, [
-						n.component(new FAIcon('search-minus'))
+						n.component(new FAIcon('search-minus')),
 					]),
-				])
+				]),
 			])),
 			(m, c, change) => {
 				if (change && !change.hasOwnProperty('current')) return;
@@ -47,7 +47,7 @@ class PageAreaZoomBar {
 				let idx = this._getAreaIndex();
 				c.setNodeProperty('zoomin', 'disabled', idx > 0 ? null : 'disabled');
 				c.setNodeProperty('zoomout', 'disabled', idx < (this.areas.length - 1) ? null : 'disabled');
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

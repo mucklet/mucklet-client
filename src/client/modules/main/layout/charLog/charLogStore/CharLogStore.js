@@ -85,7 +85,7 @@ class CharLogStore {
 				.objectStore(eventStore)
 				.put({ ctrlId, ev }),
 			(req, ev) => true,
-			(req, ev) => console.error("Failed to store event: ", ctrlId, ev)
+			(req, ev) => console.error("Failed to store event: ", ctrlId, ev),
 		);
 	}
 
@@ -229,7 +229,7 @@ class CharLogStore {
 				(r, ev) => {
 					console.error("Error opening " + dbName + ": ", ev);
 					this.useLocalStorage = true;
-				}
+				},
 			);
 		});
 	}

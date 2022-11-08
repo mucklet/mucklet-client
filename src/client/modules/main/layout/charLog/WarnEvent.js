@@ -12,14 +12,14 @@ class WarnEvent extends Elem {
 				n.elem('div', { className: 'charlog--fieldset-label' }, [
 					n.component(new Txt(c && c.id === charId
 						? l10n.l('charLog.messageTo', "Message to {name}", { name: t && t.name })
-						: l10n.l('charLog.message', "Message")
+						: l10n.l('charLog.message', "Message"),
 					)),
 				]),
 				n.component(new Txt(c && c.name, { className: 'charlog--default' })),
 				n.text(ev.pose ? poseSpacing(ev.msg) : ' warns, "'),
 				n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
-				n.text(ev.pose ? '' : '"')
-			])
+				n.text(ev.pose ? '' : '"'),
+			]),
 		]));
 	}
 

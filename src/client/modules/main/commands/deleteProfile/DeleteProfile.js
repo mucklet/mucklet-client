@@ -24,12 +24,12 @@ class DeleteProfile {
 			key: 'profile',
 			next: [
 				new ListStep('profileId', this.module.cmdLists.getCharProfiles(), {
-					name: "character profile to delete"
-				})
+					name: "character profile to delete",
+				}),
 			],
 			value: (ctx, p) => this.deleteProfile(ctx.char, {
-				profileId: p.profileId
-			})
+				profileId: p.profileId,
+			}),
 		});
 
 		this.module.help.addTopic({

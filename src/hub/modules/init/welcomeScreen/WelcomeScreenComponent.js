@@ -17,7 +17,7 @@ class WelcomeScreenComponent {
 				n.elem('div', { className: 'welcomescreen--content' }, [
 					n.component(new Txt(l10n.l('welcomeScreen.welcomeContent', "A world of role play"), { tagName: 'p' })),
 				]),
-			])
+			]),
 		]));
 		this.elem.render(el);
 	}

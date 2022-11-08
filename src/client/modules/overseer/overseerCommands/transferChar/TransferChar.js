@@ -34,7 +34,7 @@ class TransferChar {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'transferChar.characterRequired', message: "What character do you want to transfer ownership of?" })
+					errRequired: step => ({ code: 'transferChar.characterRequired', message: "What character do you want to transfer ownership of?" }),
 				}),
 				new DelimStep("="),
 				new DelimStep("@", {
@@ -42,19 +42,19 @@ class TransferChar {
 						name: "username",
 						token: 'listitem',
 						regex: /^[^:]+/,
-						spellcheck: false
+						spellcheck: false,
 					}),
 					else: new IDStep('userId', {
 						name: "user's character name or user ID",
 						else: new ListStep('ownerCharId', this.module.cmdLists.getAllChars(), {
 							textId: 'ownerCharName',
 							name: "user",
-							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" })
+							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),
 						}),
 					}),
 				}),
 			],
-			value: (ctx, p) => this._transferChar(ctx, p)
+			value: (ctx, p) => this._transferChar(ctx, p),
 		});
 
 		this.module.helpOverseer.addTopic({
@@ -75,13 +75,13 @@ class TransferChar {
 				? Promise.resolve({ id: p.userId })
 				: mod.getPlayer().call('getUser', p.ownerCharId
 					? { charId: p.ownerCharId }
-					: { charName: p.ownerCharName }
+					: { charName: p.ownerCharName },
 				)
 			)
 		)
 			.then(user => mod.getPlayer().call('transferChar', p.charId
 				? { playerId: user.id, charId: p.charId }
-				: { playerId: user.id, charName: p.charName }
+				: { playerId: user.id, charName: p.charName },
 			))
 			.then(result => {
 				let c = result.char;

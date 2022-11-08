@@ -26,7 +26,7 @@ class ReportAttachmentUnban {
 					n.component(new Txt(txtType, { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new Txt(txtUnban, { className: 'badge--info badge--text' })),
 				]),
-			]))
+			])),
 		});
 	}
 

@@ -27,10 +27,10 @@ class CharLogEventMenu {
 					ev.currentTarget.blur();
 					ev.stopPropagation();
 					ev.preventDefault();
-				}
-			}
+				},
+			},
 		}, [
-			n.component(new FAIcon('ellipsis-v'))
+			n.component(new FAIcon('ellipsis-v')),
 		]));
 		this._setListeners(true);
 		return this.elem.render(el);
@@ -89,8 +89,8 @@ class CharLogEventMenu {
 		let rect = el.getBoundingClientRect();
 		this._menu = new Elem(n => n.elem('div', {
 			className: 'charlog-eventmenu--menu', attributes: {
-				style: 'position: absolute; top: ' + (rect.top + document.documentElement.scrollTop + el.offsetHeight + 6) + 'px; left: ' + (rect.left + document.documentElement.scrollLeft + el.offsetWidth) + 'px;'
-			}
+				style: 'position: absolute; top: ' + (rect.top + document.documentElement.scrollTop + el.offsetHeight + 6) + 'px; left: ' + (rect.left + document.documentElement.scrollLeft + el.offsetWidth) + 'px;',
+			},
 		}, [
 			n.component(new CollectionList(
 				this.menuItems,
@@ -101,13 +101,13 @@ class CharLogEventMenu {
 							m.onClick(this.charId, this.ev);
 							this.toggle(false);
 							ev.stopPropagation();
-						}
-					}
+						},
+					},
 				}, [
 					n.elem('div', { className: 'charlog-eventmenu--btnicon flex-auto' }, [ n.component(m.icon ? new FAIcon(m.icon) : null) ]),
-					n.component(new Txt(m.name, { className: 'charlog-eventmenu--btnname flex-1' }))
-				]))
-			))
+					n.component(new Txt(m.name, { className: 'charlog-eventmenu--btnname flex-1' })),
+				])),
+			)),
 		]));
 		this._menu.render(document.body);
 	}

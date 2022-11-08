@@ -32,13 +32,13 @@ class DeleteArea {
 						return ((c && c.ownedAreas && c.ownedAreas.toArray()) || []).map(v => v.id);
 					},
 					else: new ListStep('areaId', this.module.cmdLists.getCharOwnedAreas(), {
-						name: "area"
-					})
-				})
+						name: "area",
+					}),
+				}),
 			],
 			value: (ctx, p) => this.deleteArea(ctx.char, {
-				areaId: p.areaId
-			})
+				areaId: p.areaId,
+			}),
 		});
 
 		this.module.help.addTopic({

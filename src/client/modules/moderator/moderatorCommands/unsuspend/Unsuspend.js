@@ -28,13 +28,13 @@ class Unsuspend {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to unsuspend?" })
-				})
+					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to unsuspend?" }),
+				}),
 			],
 			value: (ctx, p) => this.unsuspend(ctx.char, p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
-			)
+				: { charName: p.charName },
+			),
 		});
 
 		this.module.helpModerate.addTopic({

@@ -25,10 +25,10 @@ class GrantControl {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: null
+					errRequired: null,
 				}),
 			],
-			value: (ctx, p) => this.grantControl(ctx.char, { charId: p.charId })
+			value: (ctx, p) => this.grantControl(ctx.char, { charId: p.charId }),
 		});
 
 		this.module.help.addTopic({

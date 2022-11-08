@@ -20,7 +20,7 @@ class HelpModerate {
 			title: l10n.l('help.moderateTitle', "Moderator guidelines"),
 			shortDesc: l10n.l('help.moderateTitle', "Info about the moderator role"),
 			desc: () => new HelpModerateComponent(this.module),
-			sortOrder: 1300
+			sortOrder: 1300,
 		});
 	}
 

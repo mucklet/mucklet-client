@@ -9,16 +9,16 @@ const config = {
 		registerUrl: 'https://auth.mucklet.com/register?noredirect',
 		agreeUrl: 'https://auth.mucklet.com/agree?noredirect',
 		googleUrl: 'https://auth.mucklet.com/google',
-		crossOrigin: true
+		crossOrigin: true,
 	},
 	api: {
 		hostUrl: 'wss://api.wolfery.com/',
-		webResourcePath: 'https://api.wolfery.com/api/'
+		webResourcePath: 'https://api.wolfery.com/api/',
 	},
 	avatar: {
 		avatarPattern: "https://file.wolfery.com/core/char/avatar/{0}",
-		charImgPattern: "https://file.wolfery.com/core/char/img/{0}"
-	}
+		charImgPattern: "https://file.wolfery.com/core/char/img/{0}",
+	},
 };
 
 export default config;

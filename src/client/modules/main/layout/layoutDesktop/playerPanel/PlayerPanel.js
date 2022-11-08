@@ -32,12 +32,12 @@ class PlayerPanel {
 		this.footerTools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.model = new Model({
 			data: Object.assign({ pageInfo: null }, this.module.playerTabs.getModel().props),
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 
 		this.tabPage = new Transition({ className: 'playerpanel--tabpage' });
@@ -47,7 +47,7 @@ class PlayerPanel {
 			className: 'playerpanel',
 			footerComponent: new PlayerPanelFooter(this.module),
 			subheaderComponent: this.module.playerTabs.newTabs({ closeOnReselect: true, hideDefaultTab: true }),
-			btnClass: 'light'
+			btnClass: 'light',
 		});
 
 		this._setListeners(true);
@@ -107,7 +107,7 @@ class PlayerPanel {
 			this.model.set(Object.assign({
 				pageInfo: factory
 					? factory('desktop')
-					: null
+					: null,
 			}, m.props));
 		}
 	}

@@ -33,8 +33,8 @@ class PlayerTabsTabs {
 						this.module.self.getTabs(),
 						{
 							filter: t => t.id != model.defaultTab,
-							eventBus: this.module.self.app.eventBus
-						}
+							eventBus: this.module.self.app.eventBus,
+						},
 					);
 				}
 				return this.module.self.getTabs();
@@ -49,7 +49,7 @@ class PlayerTabsTabs {
 				tabs,
 				m => new PlayerTabsTab(this.module, m, this._onTabClick),
 				this.opt,
-			)
+			),
 		);
 		return this.elem.render(el);
 	}

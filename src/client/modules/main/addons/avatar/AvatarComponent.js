@@ -95,11 +95,11 @@ class AvatarComponent extends Fader {
 								if (!c.hasClass('placeholder')) {
 									new ImgModal(this.resolve(imageId)).open();
 								}
-							}
-						}
+							},
+						},
 					} : null)
 					: new ModelTxt(this.char || m, m => getInitials(m), { tagName: 'span' })
-			: null
+			: null,
 		);
 	}
 

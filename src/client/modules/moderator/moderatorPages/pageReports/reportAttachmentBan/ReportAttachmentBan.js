@@ -29,9 +29,9 @@ class ReportAttachmentBan {
 					n.component(new Txt(txtBan, { className: 'badge--info badge--text' })),
 				]),
 				n.elem('div', { className: 'badge--text' }, [
-					n.component(new ModelTxt(info, m => banReasons.toLocaleString(m.reason), { className: 'common--formattext' }))
-				])
-			]))
+					n.component(new ModelTxt(info, m => banReasons.toLocaleString(m.reason), { className: 'common--formattext' })),
+				]),
+			])),
 		});
 	}
 

@@ -22,9 +22,9 @@ class UpdateProfile {
 		this.module.cmd.addPrefixCmd('update', {
 			key: 'profile',
 			next: new ListStep('profileId', this.module.cmdLists.getCharProfiles(), {
-				name: "character profile"
+				name: "character profile",
 			}),
-			value: (ctx, p) => this.updateProfile(ctx.char, p)
+			value: (ctx, p) => this.updateProfile(ctx.char, p),
 		});
 
 		this.module.help.addTopic({

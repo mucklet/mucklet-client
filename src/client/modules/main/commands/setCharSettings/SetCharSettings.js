@@ -32,7 +32,7 @@ class SetCharAttr {
 						maxLength: () => module.info.getCore().communicationMaxLength,
 						errTooLong: communicationTooLong,
 						spanLines: true,
-						errRequired: null
+						errRequired: null,
 					}),
 				}),
 				desc: l10n.l('setChar.dndDesc', "Do not disturb message. It may be formatted and span multiple paragraphs."),
@@ -41,7 +41,7 @@ class SetCharAttr {
 		];
 		for (let o of attr) {
 			this.module.set.addAttribute(Object.assign({
-				value: (ctx, p) => this.setCharSettings(ctx, Object.assign({ attr: o.key }, p))
+				value: (ctx, p) => this.setCharSettings(ctx, Object.assign({ attr: o.key }, p)),
 			}, o));
 		}
 	}

@@ -34,7 +34,7 @@ class Tooltip {
 	 */
 	open(open) {
 		this.elem = new Elem(n => n.elem('div', this.opt, [
-			n.component(this.txt)
+			n.component(this.txt),
 		]));
 		this.caret = new Elem(n => n.elem('div', { className: 'tooltip--caret' }));
 		this.elem.render(this.ref);

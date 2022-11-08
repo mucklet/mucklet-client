@@ -24,10 +24,10 @@ class Look {
 			key: 'look',
 			next: new ListStep('charId', this.module.cmdLists.getInRoomChars(), {
 				name: "character",
-				errRequired: () => ({ code: 'look.required', message: 'Who do you want to look at?' })
+				errRequired: () => ({ code: 'look.required', message: 'Who do you want to look at?' }),
 			}),
 			alias: [ 'l', 'lookat' ],
-			value: this.look.bind(this)
+			value: this.look.bind(this),
 		});
 
 		this.module.help.addTopic({

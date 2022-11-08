@@ -46,11 +46,11 @@ class Inspect {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "character",
-						errRequired: step => ({ code: 'inspect.characterRequired', message: "Which character?" })
+						errRequired: step => ({ code: 'inspect.characterRequired', message: "Which character?" }),
 					}),
-				})
+				}),
 			],
-			value: (ctx, p) => this._inspect(ctx, getObjectProperty(p, 'charId', 'charName'))
+			value: (ctx, p) => this._inspect(ctx, getObjectProperty(p, 'charId', 'charName')),
 		});
 
 		this.module.helpModerate.addTopic({
@@ -95,12 +95,12 @@ class Inspect {
 						n.component(new Txt(l10n.l('inspect.inspectionResult', "Inspection result"), { tagName: 'h4' })),
 						n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, rows.filter(m => !m[2] || !m[2].hide).map(m => n.elem('tr', [
 							n.elem('td', { className: 'charlog--strong' }, [
-								n.component(new Txt(m[0]))
+								n.component(new Txt(m[0])),
 							]),
 							n.elem('td', [
-								n.component(new Txt(m[1], { className: m[2] && m[2].className }))
+								n.component(new Txt(m[1], { className: m[2] && m[2].className })),
 							]),
-						])))
+						]))),
 					];
 					if (result.banMatches && result.banMatches.length) {
 						content.push(n.component(new Txt(l10n.l('inspect.matchingBannedIPs', "Matching IP of banned players"), { tagName: 'h4', className: 'charlog--pad' })));
@@ -109,19 +109,19 @@ class Inspect {
 								'<th class="charlog--strong">' + escapeHtml(l10n.t('inspect.character', "Associated character")) + '</th>' +
 								'<th class="charlog--strong">' + escapeHtml(l10n.t('inspect.banned', "Banned")) + '</th>' +
 								'<th class="charlog--strong">' + escapeHtml(l10n.t('inspect.reason', "Reason")) + '</th>' +
-								'</tr>', { tagName: 'thead' }
+								'</tr>', { tagName: 'thead' },
 							)),
 							n.component(new Html(result.banMatches.map(m => '<tr>' +
 								'<td>' + (m.char ? escapeHtml(m.char.name + ' ' + m.char.surname) : l10n.t(txtNoAssociatedChar)) + '</td>' +
 								'<td>' + escapeHtml(formatDateTime(new Date(m.banned), { showYear: true })) + '</td>' +
 								'<td>' + escapeHtml(l10n.t(banReasons.toLocaleString(m.banReason))) + '</td>' +
-								'</tr>'
-							).join(''), { tagName: 'tbody' }))
+								'</tr>',
+							).join(''), { tagName: 'tbody' })),
 						]));
 					}
 
 					return n.elem('div', { className: 'charlog--pad' }, [
-						n.elem('div', { className: 'charlog--code' }, content)
+						n.elem('div', { className: 'charlog--code' }, content),
 					]);
 				});
 

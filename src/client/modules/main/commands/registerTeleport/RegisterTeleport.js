@@ -28,12 +28,12 @@ class RegisterTeleport {
 				new TextStep('key', {
 					regex: /^[\w\s]*\w/,
 					name: "teleport destination keyword",
-				})
+				}),
 			],
 			value: (ctx, p) => this.registerTeleport(ctx.char, {
 				key: p.key,
-				roomId: ctx.char.inRoom.id
-			})
+				roomId: ctx.char.inRoom.id,
+			}),
 		});
 
 		this.module.help.addTopic({

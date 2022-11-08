@@ -23,10 +23,10 @@ class RequestRegisterPuppet {
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestRegisterPuppet.who', "Who"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.puppet, m => errString(m, m => (m.name + ' ' + m.surname).trim(), l10n.l('requestRegisterPuppet.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
-				])
-			]))
+						className: 'badge--info badge--strong',
+					})),
+				]),
+			])),
 		});
 	}
 

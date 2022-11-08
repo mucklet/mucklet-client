@@ -21,9 +21,9 @@ class PageCharSelectCharContent {
 					click: (c, ev) => {
 						this.module.pageCharSettings.open(this.char);
 						ev.stopPropagation();
-					}
+					},
 				}}, [
-					n.component(new FAIcon('cog'))
+					n.component(new FAIcon('cog')),
 				]),
 				n.elem('div', { className: 'badge--info small' }, [
 					n.component(new ModelTxt(
@@ -31,16 +31,16 @@ class PageCharSelectCharContent {
 						m => m.state == 'asleep'
 							? l10n.l('pageCharSelect.lastAwake', "Last awake")
 							: l10n.l('pageCharSelect.wokeUp', "Woke up"),
-						{ tagName: 'div', className: 'badge--text' }
+						{ tagName: 'div', className: 'badge--text' },
 					)),
 					n.component(new ModelTxt(
 						this.char,
 						m => m.lastAwake
 							? formatDateTime(new Date(m.lastAwake))
 							: l10n.l('pageCharSelect.never', "Never"),
-						{ tagName: 'div', className: 'badge--text' }
+						{ tagName: 'div', className: 'badge--text' },
 					)),
-				])
+				]),
 			]),
 			n.component(new ModelComponent(
 				this.char,
@@ -51,11 +51,11 @@ class PageCharSelectCharContent {
 						action = o.suspended || new Elem(n => n.elem('div', { className: 'badge--margin' }, [
 							n.elem('div', { className: 'badge--select' }, [
 								n.component(new Txt(l10n.l('pageCharSelect.suspended', "Suspend"), { className: 'badge--iconcol badge--subtitle' })),
-								n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.until', "Until {time}", { time: formatDateTime(new Date(m.suspended)) }), { className: 'badge--info badge--error' }))
+								n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.until', "Until {time}", { time: formatDateTime(new Date(m.suspended)) }), { className: 'badge--info badge--error' })),
 							]),
 							n.elem('div', { className: 'badge--select' }, [
 								n.component(new Txt(l10n.l('pageCharSelect.reason', "Reason"), { className: 'badge--iconcol badge--subtitle' })),
-								n.component(new ModelTxt(this.char, m => m.suspendReason, { className: 'badge--info badge--text' }))
+								n.component(new ModelTxt(this.char, m => m.suspendReason, { className: 'badge--info badge--text' })),
 							]),
 						]));
 						o.suspended = action;
@@ -65,19 +65,19 @@ class PageCharSelectCharContent {
 								click: (el, e) => {
 									this._wakeupChar();
 									e.stopPropagation();
-								}
+								},
 							}}, [
 								n.component(new FAIcon('sign-in')),
 								n.component(new ModelTxt(this.char, m => m.puppeteer
 									? l10n.l('pageCharSelect.control', "Control")
-									: l10n.l('pageCharSelect.wakeUp', "Wake up")
-								))
-							])
+									: l10n.l('pageCharSelect.wakeUp', "Wake up"),
+								)),
+							]),
 						]));
 						o.wakeup = action;
 					}
 					c.setComponent(action);
-				}
+				},
 			)),
 
 		]));

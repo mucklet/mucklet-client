@@ -30,8 +30,8 @@ class PageMailComponent {
 			n.text(" – "),
 			n.component(new ModelTxt(this.model, (m, c) => m.count
 				? m.offset + (m.count > defaultLimit ? defaultLimit : m.count)
-				: c.getText()
-			))
+				: c.getText(),
+			)),
 		]));
 
 		this.elem = new Elem(n => n.elem('div', { className: 'pagemail' }, [
@@ -47,33 +47,33 @@ class PageMailComponent {
 								? m.count || m.offset // If we have mail, or are on a later page.
 									? mailCountComponent
 									: noMailComponent
-								: null
-							)
+								: null,
+							),
 						)),
 						n.component(new ModelComponent(
 							this.model,
 							new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
-								click: () => this._loadMail(this.model.offset < defaultLimit ? 0 : this.model.offset - defaultLimit)
+								click: () => this._loadMail(this.model.offset < defaultLimit ? 0 : this.model.offset - defaultLimit),
 							}}, [
 								n.component(new FAIcon('angle-left')),
 							])),
-							(m, c) => c.setProperty('disabled', m.offset ? null : 'disabled')
+							(m, c) => c.setProperty('disabled', m.offset ? null : 'disabled'),
 						)),
 						n.component(new ModelComponent(
 							this.model,
 							new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
-								click: () => this._loadMail(this.model.offset + defaultLimit)
+								click: () => this._loadMail(this.model.offset + defaultLimit),
 							}}, [
 								n.component(new FAIcon('angle-right')),
 							])),
-							(m, c) => c.setProperty('disabled', m.count > defaultLimit ? null : 'disabled')
+							(m, c) => c.setProperty('disabled', m.count > defaultLimit ? null : 'disabled'),
 						)),
 					])),
-					(col, m) => this.model.set({ count: col ? col.length : null })
+					(col, m) => this.model.set({ count: col ? col.length : null }),
 				),
-				(m, c, change) => c.setCollection(m.mails)
+				(m, c, change) => c.setCollection(m.mails),
 			)),
-			n.component('list', new Transition(null))
+			n.component('list', new Transition(null)),
 		]));
 		this.elem.render(el);
 
@@ -121,9 +121,9 @@ class PageMailComponent {
 						mails => new CollectionList(
 							mails,
 							m => new PageMailMail(this.module, m, this.model),
-							{ className: 'pagemail--list' }
-						)
-					))
+							{ className: 'pagemail--list' },
+						),
+					)),
 				])));
 
 				this.loadingOffset = null;
@@ -147,7 +147,7 @@ class PageMailComponent {
 		let m = this.model;
 		c.setProperty('disabled', m && m.mails && m.mails.length > m.offset
 			? null
-			: 'disabled'
+			: 'disabled',
 		);
 	}
 }

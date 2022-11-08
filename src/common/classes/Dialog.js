@@ -24,7 +24,7 @@ class Dialog {
 			content: null,
 			title: null,
 			onClose: null,
-			animated: true
+			animated: true,
 		}, opt);
 
 		this.opt.className = (this.opt.className ? this.opt.className + ' ' : '') + 'dialog' + (this.opt.animated ? '' : ' dialog--noanim');
@@ -47,14 +47,14 @@ class Dialog {
 			n.elem('div', this.opt, [
 				n.elem('div', { className: 'dialog--head' }, [
 					n.elem('button', { className: 'dialog--close iconbtn medium', events: { click: () => this.close() }}, [
-						n.component(new FAIcon('close'))
+						n.component(new FAIcon('close')),
 					]),
-					n.component(new Txt(typeof this.opt.title == 'function' ? this.opt.title(this) : this.opt.title, { tagName: 'h2' }))
+					n.component(new Txt(typeof this.opt.title == 'function' ? this.opt.title(this) : this.opt.title, { tagName: 'h2' })),
 				]),
 				n.elem('div', { className: 'dialog--content' }, [
-					n.component(this.content)
-				])
-			])
+					n.component(this.content),
+				]),
+			]),
 		]));
 
 		setZ(this.comp, idx + 1);

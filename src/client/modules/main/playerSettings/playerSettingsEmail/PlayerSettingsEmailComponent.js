@@ -28,19 +28,19 @@ class PlayerSettingsEmailComponent {
 						let comp = null;
 						if (!this.identity.email) {
 							comp = components.setEmail = components.setEmail || new Elem(n => n.elem('button', { events: {
-								click: () => this.module.dialogChangeEmail.open({ setEmail: true })
+								click: () => this.module.dialogChangeEmail.open({ setEmail: true }),
 							}, className: 'btn medium light  full-width icon-left' }, [
 								n.component(new FAIcon('at')),
-								n.component(new Txt(l10n.l('playerSettingsEmail.setEmailAddress', "Set email address")))
+								n.component(new Txt(l10n.l('playerSettingsEmail.setEmailAddress', "Set email address"))),
 							]));
 						} else if (this.identity.hasOpenId && this.identity.emailVerified) {
 							comp = components.staticEmail = components.staticEmail || new ModelTxt(this.identity, m => m.email, { className: 'playersettingsemail--email' });
 						} else {
 							comp = components.changeEmail = components.changeEmail || new Elem(n => n.elem('button', {
 								events: {
-									click: () => this.module.dialogChangeEmail.open()
+									click: () => this.module.dialogChangeEmail.open(),
 								},
-								className: 'btn medium light  full-width icon-left'
+								className: 'btn medium light  full-width icon-left',
 							}, [
 								n.component(new FAIcon('pencil')),
 								n.component(new ModelComponent(
@@ -49,12 +49,12 @@ class PlayerSettingsEmailComponent {
 									(m, c) => {
 										c.setText(m.email);
 										c.setAttribute('title', m.email);
-									}
-								))
+									},
+								)),
 							]));
 						}
 						c.setComponent(comp);
-					}
+					},
 				)),
 				n.component(new ModelComponent(
 					this.identity,
@@ -65,10 +65,10 @@ class PlayerSettingsEmailComponent {
 							comp = components.sendVerify = components.sendVerify || new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
 								n.elem('div', { className: 'common--relative' }, [
 									n.component(new Txt(l10n.l('playerSettingsEmail.verificationRequired', "Address requires verification."), { tagName: 'div', className: 'common--error common--formmargin' })),
-									n.elem('alert', 'div', { className: 'counter small alert' })
+									n.elem('alert', 'div', { className: 'counter small alert' }),
 								]),
 								n.elem('button', { events: {
-									click: () => this.module.verifyEmail.sendVerification()
+									click: () => this.module.verifyEmail.sendVerification(),
 								}, className: 'btn small primary icon-left full-width' }, [
 									n.component(new ModelComponent(
 										this.module.verifyEmail.getModel(),
@@ -79,16 +79,16 @@ class PlayerSettingsEmailComponent {
 											}
 											c.setComponent(m.isSendingVerify
 												? new Elem(n => n.elem('div', { className: 'spinner small dark' }))
-												: new FAIcon('paper-plane')
+												: new FAIcon('paper-plane'),
 											);
-										}
+										},
 									)),
-									n.component(new Txt(l10n.l('playerSettingsEmail.sendNewVerification', "Send new verification")))
-								])
+									n.component(new Txt(l10n.l('playerSettingsEmail.sendNewVerification', "Send new verification"))),
+								]),
 							]));
 						}
 						c.setComponent(comp);
-					}
+					},
 				)),
 				n.component(new ModelComponent(
 					this.identity,
@@ -105,20 +105,20 @@ class PlayerSettingsEmailComponent {
 											c.setValue(this.identity.allowNewsletter, false);
 										}),
 										popupTip: l10n.l('notify.receiveNewsletterInfo', "Allow newsletters with game related info to be sent to you, at most once a month."),
-										popupTipClassName: 'popuptip--width-s'
+										popupTipClassName: 'popuptip--width-s',
 									}),
-									(m, c) => c.setValue(m.allowNewsletter, false)
+									(m, c) => c.setValue(m.allowNewsletter, false),
 								)),
 							]));
 						}
 						c.setComponent(comp);
-					}
-				))
+					},
+				)),
 			])),
 			{
 				className: 'common--sectionpadding',
-				noToggle: true
-			}
+				noToggle: true,
+			},
 		);
 		this.elem.render(el);
 	}

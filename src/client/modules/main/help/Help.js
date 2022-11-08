@@ -20,10 +20,10 @@ const defaultCategories = [
 			`<section class="charlog--pad">` +
 			`<div class="charlog--code"><code>help help</code></div>` +
 			`</section>` +
-			`<p>Below is a list of some basic commands:</p>`
+			`<p>Below is a list of some basic commands:</p>`,
 		),
 		sortOrder: 10,
-		alias: [ 'basics' ]
+		alias: [ 'basics' ],
 	},
 	{
 		id: 'communicate',
@@ -31,7 +31,7 @@ const defaultCategories = [
 		shortDesc: l10n.l('help.communicateShortDesc', "How to communicate in different ways"),
 		desc: l10n.l('help.communicateDesc', `<p>Commands for talking, whispering, messaging, and more.</p>`),
 		sortOrder: 20,
-		alias: [ 'communication', 'talk', 'communications' ]
+		alias: [ 'communication', 'talk', 'communications' ],
 	},
 	{
 		id: 'transport',
@@ -39,7 +39,7 @@ const defaultCategories = [
 		shortDesc: l10n.l('help.transportShortDesc', "How to move between rooms"),
 		desc: l10n.l('help.transportDesc', `<p>Commands for transporting between rooms, and manage teleport destinations.</p>`),
 		sortOrder: 30,
-		alias: [ 'transportation', 'move' ]
+		alias: [ 'transportation', 'move' ],
 	},
 	{
 		id: 'profile',
@@ -48,7 +48,7 @@ const defaultCategories = [
 		shortDesc: l10n.l('help.charShortDesc', "How to manage your character's appearance and profiles"),
 		desc: l10n.l('help.charDesc', `<p>Commands for managing your character's appearance and profiles.</p>`),
 		sortOrder: 40,
-		alias: [ 'manage profile', 'character', 'appearance' ]
+		alias: [ 'manage profile', 'character', 'appearance' ],
 	},
 	{
 		id: 'tags',
@@ -68,7 +68,7 @@ const defaultCategories = [
 			`<section class="charlog--pad">` +
 			`	<h4>Tag description</h4>` +
 			`	<p>Hovering over a tag will show a description of the tag, if available. A tag name written in <i>italics</i> indicates a custom tag or a custom description. Custom descriptions can be used to clarify the scope of the tag.</p>` +
-			`</section>`
+			`</section>`,
 		),
 		sortOrder: 45,
 		alias: [ 'tag', 'manage tags' ],
@@ -79,7 +79,7 @@ const defaultCategories = [
 		shortDesc: l10n.l('help.friendsShortDesc', "How to watch for friends and remember them"),
 		desc: l10n.l('help.friendsDesc', `<p>Commands for managing friends and remembering them.</p>`),
 		sortOrder: 50,
-		alias: [ 'friend' ]
+		alias: [ 'friend' ],
 	},
 	{
 		id: 'mute',
@@ -87,7 +87,7 @@ const defaultCategories = [
 		shortDesc: l10n.l('help.muteShortDesc', "How to mute unwanted messages"),
 		desc: l10n.l('help.muteDesc', `<p>Commands for muting unwanted messages.</p>`),
 		sortOrder: 60,
-		alias: [ 'muting' ]
+		alias: [ 'muting' ],
 	},
 	{
 		id: 'puppets',
@@ -117,10 +117,10 @@ const defaultCategories = [
 			`<section class="charlog--pad">` +
 			`	<h4>Reporting a puppet</h4>` +
 			`	<p>If a puppeteer breaks any rules while playing the puppet, you can report them as usual. Note that breaking character, not following the <em>How to play</em> guidelines, is not against the rules. To complain about how a puppet is played, contact the puppet's owner by sending a mail to the puppet. Mails sent to a puppet always lands in the owner's inbox.</p>` +
-			`</section>`
+			`</section>`,
 		),
 		sortOrder: 70,
-		alias: [ 'puppet' ]
+		alias: [ 'puppet' ],
 	},
 	{
 		id: 'buildRooms',
@@ -150,11 +150,11 @@ const defaultCategories = [
 			`	<section class="charlog--pad"><div class="charlog--code"><code>set room isteleport = yes</code></div></section>` +
 			`	<p class="common--formattext">When others visit your place, maybe through a <span class="cmd">summon</span>, they can register that room as a teleport destination:</p>` +
 			`	<section class="charlog--pad"><div class="charlog--code"><code>help register teleport</code></div></section>` +
-			`</section>`
+			`</section>`,
 		),
 		sortOrder: 80,
 		alias: [ 'build room', 'building rooms', 'building room' ],
-		categories: [ 'buildAreas' ]
+		categories: [ 'buildAreas' ],
 	},
 	{
 		id: 'buildAreas',
@@ -169,11 +169,11 @@ const defaultCategories = [
 			`	<section class="charlog--pad"><div class="charlog--code"><code>create area My place</code></div></section>` +
 			`	<p>Now you can go to all rooms that should be part of the area, and in each type:</p>` +
 			`	<section class="charlog--pad"><div class="charlog--code"><code>set room area = My place</code></div></section>` +
-			`</section>`
+			`</section>`,
 		),
 		sortOrder: 90,
 		alias: [ 'build area', 'building areas', 'building area' ],
-		categories: [ 'buildRooms' ]
+		categories: [ 'buildRooms' ],
 	},
 	{
 		id: 'request',
@@ -181,7 +181,7 @@ const defaultCategories = [
 		shortDesc: l10n.l('help.requestShortDesc', "How to make requests to other players' characters"),
 		desc: l10n.l('help.requestDesc', `<p>Commands for sending requests to other players' characters.</p>`),
 		sortOrder: 100,
-		alias: [ 'requests' ]
+		alias: [ 'requests' ],
 	},
 	{
 		id: 'regulate',
@@ -198,11 +198,11 @@ const defaultCategories = [
 			`<section class="charlog--pad">` +
 			`	<h4>Report a moderator</h4>` +
 			`	<p>It is completely fine to report moderators if you find them acting abusive or unjust. When reporting a moderator, <em>another</em> moderator will review the report and get in contact with you. Remember to keep your own language respectful.</p>` +
-			`</section>`
+			`</section>`,
 		),
 		sortOrder: 110,
-		alias: [ 'abuse' ]
-	}
+		alias: [ 'abuse' ],
+	},
 ];
 
 const usageText = 'help <span class="opt"><span class="param">Command</span></span>';
@@ -246,11 +246,11 @@ class Help {
 		this.categories = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.topics = new Model({
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		// Add all default categories
@@ -276,16 +276,16 @@ class Help {
 						// 	message: 'There is no help topic for "{topic}".',
 						// 	data: { topic: ((state.getParam('topic') || "") + " " + m).trim() }
 						// })
-					}
+					},
 				),
 				{
 					each: (state, step, idx) => {
 						let v = state.getParam('topic') || '';
 						state.setParam('topic', v + (v ? ' ' : '') + (state.getParam(step.id) || state.getParam('unknown')));
-					}
-				}
+					},
+				},
 			),
-			value: (ctx, p) => this._showHelp(ctx.char, p.topic)
+			value: (ctx, p) => this._showHelp(ctx.char, p.topic),
 		});
 
 		this.addTopic({
@@ -344,8 +344,8 @@ class Help {
 			topics: new Collection({
 				idAttribute: m => m.id,
 				compare: sortOrderCompare,
-				eventBus: this.app.eventBus
-			})
+				eventBus: this.app.eventBus,
+			}),
 		});
 		return this;
 	}
@@ -445,7 +445,7 @@ class Help {
 			this.module.charLog.logError(char, {
 				code: 'help.topicNotFound',
 				message: 'There is no help topic for "{topic}".',
-				data: { topic: cmd }
+				data: { topic: cmd },
 			});
 			return;
 		}
@@ -482,7 +482,7 @@ class Help {
 			isMatch: (t, key) => key === t ? { key, value: t } : false,
 			isPrefix: (t, prefix) => !prefix || t.substring(0, prefix.length) === prefix
 				? t
-				: null
+				: null,
 		});
 	}
 

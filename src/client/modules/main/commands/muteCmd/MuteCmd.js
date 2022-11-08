@@ -18,7 +18,7 @@ class MuteCmd {
 		this.module = module;
 
 		this.muteType = new ItemList('object', {
-			name: "message type"
+			name: "message type",
 		});
 
 		this.module.cmd.addCmd({
@@ -26,9 +26,9 @@ class MuteCmd {
 			next: new ListStep('object', this.muteType, {
 				name: "message type",
 				token: 'name',
-				errRequired: step => ({ code: 'muteCmd.messageTypeRequired', message: "What sort of messages do you want to mute?" })
+				errRequired: step => ({ code: 'muteCmd.messageTypeRequired', message: "What sort of messages do you want to mute?" }),
 			}),
-			value: this._exec
+			value: this._exec,
 		});
 	}
 

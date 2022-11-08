@@ -41,14 +41,14 @@ class PanelSection extends RootElem {
 						className: 'panelsection--popuptip ' + (opt.popupTipClassName || 'popuptip--width-m'),
 						position: opt.popupTipPosition || 'left',
 					})
-					: null
+					: null,
 				),
 				n.component(opt.noToggle
 					? null
-					: new FAIcon('caret-right', { className: 'panelsection--caret' })
-				)
+					: new FAIcon('caret-right', { className: 'panelsection--caret' }),
+				),
 			]),
-			n.component('content', new Collapser(null, { className: 'panelsection--content', duration: opt.duration }))
+			n.component('content', new Collapser(null, { className: 'panelsection--content', duration: opt.duration })),
 		]));
 
 		this._onToggle = opt.onToggle;

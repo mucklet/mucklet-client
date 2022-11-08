@@ -26,12 +26,12 @@ class UnregisterTeleport {
 			next: [
 				new DelimStep("=", { errRequired: null }),
 				new ListStep('nodeId', this.module.cmdLists.getTeleportNodes(), {
-					name: "teleport node to unregister"
-				})
+					name: "teleport node to unregister",
+				}),
 			],
 			value: (ctx, p) => this.unregisterTeleport(ctx.char, {
-				nodeId: p.nodeId
-			})
+				nodeId: p.nodeId,
+			}),
 		});
 
 		this.module.help.addTopic({

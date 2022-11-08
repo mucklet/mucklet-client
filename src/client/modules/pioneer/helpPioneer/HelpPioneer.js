@@ -20,7 +20,7 @@ class HelpPioneer {
 			title: l10n.l('help.pioneerTitle', "Pioneer information"),
 			shortDesc: l10n.l('help.pioneerShortDesc', "Info about the pioneer title"),
 			desc: () => new HelpPioneerComponent(this.module),
-			sortOrder: 1010
+			sortOrder: 1010,
 		});
 	}
 

@@ -20,7 +20,7 @@ class HelpOverseer {
 			title: l10n.l('help.overseerTitle', "Overseer commands"),
 			shortDesc: l10n.l('help.overseerTitle', "Info about the overseer role"),
 			desc: () => new HelpOverseerComponent(this.module),
-			sortOrder: 1000
+			sortOrder: 1000,
 		});
 	}
 

@@ -38,15 +38,15 @@ class CreateProfile {
 							name: "profile name",
 							maxLength: () => this.module.info.getCore().itemNameMaxLength,
 							errTooLong: itemNameTooLong,
-							errRequired: step => ({ code: 'createProfile.nameRequired', message: "What would the descriptive name of the profile be?" })
+							errRequired: step => ({ code: 'createProfile.nameRequired', message: "What would the descriptive name of the profile be?" }),
 						}),
-					]
-				})
+					],
+				}),
 			],
 			value: (ctx, p) => this.createProfile(ctx.char, {
 				key: p.key,
-				name: p.name
-			})
+				name: p.name,
+			}),
 		});
 
 		this.module.help.addTopic({

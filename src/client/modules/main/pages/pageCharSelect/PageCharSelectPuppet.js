@@ -23,7 +23,7 @@ class PageCharSelectPuppet {
 				new Elem(n =>
 					n.elem('div', { className: 'pagecharselect-puppet' }, [
 						n.elem('btn', 'div', { className: 'pagecharselect-puppet--btn badge btn large highlight', events: {
-							click: () => this._toggleActions()
+							click: () => this._toggleActions(),
 						}}, [
 							n.elem('div', { className: 'badge--select' }, [
 								n.component(this.module.avatar.newAvatar(this.puppet, { className: 'badge--icon' })),
@@ -31,31 +31,31 @@ class PageCharSelectPuppet {
 									n.elem('fullname', 'div', { className: 'pagecharselect-puppet--title badge--title badge--nowrap' }, [
 										n.component(new ModelTxt(this.puppet, c => c.name)),
 										n.text(' '),
-										n.component(new ModelTxt(this.puppet, c => c.surname))
+										n.component(new ModelTxt(this.puppet, c => c.surname)),
 									]),
 									n.elem('div', { className: 'badge--strong badge--nowrap' }, [
 										n.component(new ModelTxt(this.puppet, p => firstLetterUppercase(p.gender))),
 										n.text(' '),
-										n.component(new ModelTxt(this.puppet, p => firstLetterUppercase(p.species)))
+										n.component(new ModelTxt(this.puppet, p => firstLetterUppercase(p.species))),
 									]),
 									n.component(new ModelComponent(
 										this.puppeteer.char,
 										new Elem(n => n.elem('div', { className: 'badge--text badge--nowrap' }, [
 											n.component('name', new Txt()),
 											n.text(' '),
-											n.component('surname', new Txt())
+											n.component('surname', new Txt()),
 										])),
 										(m, c) => {
 											c[m.suspended ? 'addClass' : 'removeClass']('suspended');
 											c.getNode('name').setText(m.name);
 											c.getNode('surname').setText(m.surname);
-										}
+										},
 									)),
-								])
+								]),
 							]),
-							n.component('actions', new Collapser(null))
-						])
-					])
+							n.component('actions', new Collapser(null)),
+						]),
+					]),
 				),
 				(m, c) => {
 					c[m.state !== 'asleep' ? 'addNodeClass' : 'removeNodeClass']('btn', 'inactive');
@@ -63,7 +63,7 @@ class PageCharSelectPuppet {
 						let lvl = idleLevels[i];
 						c[m.state != 'asleep' && i == m.idle ? 'addNodeClass' : 'removeNodeClass']('fullname', lvl.className);
 					}
-				}
+				},
 			),
 			(m, c, change) => {
 				if (change && !change.hasOwnProperty('itemId')) return;
@@ -72,9 +72,9 @@ class PageCharSelectPuppet {
 				c.getComponent()[isOpen ? 'addNodeClass' : 'removeNodeClass']('btn', 'open');
 				c.getComponent().getNode('actions').setComponent(isOpen
 					? new PageCharSelectPuppetContent(this.module, this.puppeteer, (show) => this._toggleActions(show), this.close)
-					: null
+					: null,
 				);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

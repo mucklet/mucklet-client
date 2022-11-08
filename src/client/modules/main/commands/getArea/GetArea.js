@@ -30,17 +30,17 @@ class GetArea {
 		this.areaAttr = new ItemList({
 			items: [
 				{ key: 'id' },
-				{ key: 'owner' }
-			]
+				{ key: 'owner' },
+			],
 		});
 
 		this.module.cmd.addPrefixCmd('get', {
 			key: 'area',
 			next: new ListStep('attr', this.areaAttr, {
 				name: "area attribute",
-				token: 'attr'
+				token: 'attr',
 			}),
-			value: (ctx, p) => this.getArea(ctx.char, p.attr)
+			value: (ctx, p) => this.getArea(ctx.char, p.attr),
 		});
 
 		this.module.help.addTopic({

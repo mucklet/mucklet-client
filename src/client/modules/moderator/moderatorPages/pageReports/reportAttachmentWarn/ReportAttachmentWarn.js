@@ -40,9 +40,9 @@ class ReportAttachmentWarn {
 						n.component(new Txt(txtType, { className: 'badge--iconcol badge--subtitle' })),
 						n.component(new Txt(txtWarning, { className: 'badge--info badge--text' })),
 					]),
-					n.elem('div', { className: 'badge--text' }, text)
+					n.elem('div', { className: 'badge--text' }, text),
 				]);
-			})
+			}),
 		});
 	}
 

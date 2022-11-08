@@ -22,16 +22,16 @@ const defaultAttr = [
 			errTooLong: itemNameTooLong,
 		}),
 		desc: l10n.l('setTagGroup.nameDesc', "Name of the group."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'order',
 		stepFactory: () => new NumberStep('value', {
-			name: "sort order"
+			name: "sort order",
 		}),
 		desc: l10n.l('setTagGroup.orderDesc', "Sort order value. Must be 0 (zero) or greater."),
-		sortOrder: 20
-	}
+		sortOrder: 20,
+	},
 ];
 
 /**
@@ -47,7 +47,7 @@ class SetTagGroup {
 	_init(module) {
 		this.module = module;
 		this.groupAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -57,19 +57,19 @@ class SetTagGroup {
 			key: 'taggroup',
 			next: [
 				new ListStep('key', this.module.tags.getGroupsList(), {
-					name: "tag group"
+					name: "tag group",
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.groupAttr, {
 					name: "group attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
 			value: (ctx, p) => {
 				return this.setTagGroup(ctx.char, p.key, {
-					[p.attr]: p.value
+					[p.attr]: p.value,
 				});
-			}
+			},
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -89,8 +89,8 @@ class SetTagGroup {
 			attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
-				})
+					name: attr.name || attr.key,
+				}),
 		];
 		this.groupAttr.addItem(Object.assign({}, attr, { next }));
 		return this;

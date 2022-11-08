@@ -27,10 +27,10 @@ class PageInRoomComponent {
 					if (changed && !changed.hasOwnProperty('chars')) return;
 					c.setComponent(m.chars
 						? new CollectionList(m.chars, m => this.module.pageRoom.newRoomChar(this.ctrl, m), { className: 'pageinroom--chars' })
-						: new Txt(l10n.l('pageInRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' })
+						: new Txt(l10n.l('pageInRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }),
 					);
-				}
-			))
+				},
+			)),
 		]));
 
 		return this.elem.render(el);

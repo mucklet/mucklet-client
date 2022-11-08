@@ -30,7 +30,7 @@ class Avatar {
 		return new AvatarComponent(char, Object.assign({
 			pattern: this.charImgPattern,
 			usePlaceholder: true,
-			property: 'image'
+			property: 'image',
 		}, opt));
 	}
 

@@ -19,7 +19,7 @@ class RoomPages {
 
 		this.app.require([
 			'api',
-			'player'
+			'player',
 		], this._init.bind(this));
 	}
 
@@ -168,7 +168,7 @@ class RoomPages {
 		}
 		this.model.set(page
 			? { char: ctrl, inRoom: ctrl.inRoom, page, factory: c ? c.createFactory() : null }
-			: { char: null, inRoom: null, page: null, factory: null }
+			: { char: null, inRoom: null, page: null, factory: null },
 		);
 	}
 

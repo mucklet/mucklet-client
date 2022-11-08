@@ -33,13 +33,13 @@ class PageRequests {
 		this.model = new Model({ eventBus: this.app.eventBus });
 		this.requestTypes = new Collection({
 			idAttribute: m => m.id,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.module.login.getLoginPromise()
 			.then(user => Promise.all([
 				this.module.api.get('core.player.' + user.id + '.incoming.requests'),
-				this.module.api.get('core.player.' + user.id + '.outgoing.requests')
+				this.module.api.get('core.player.' + user.id + '.outgoing.requests'),
 			]))
 			.then(result => {
 				if (!this.model) return;
@@ -58,7 +58,7 @@ class PageRequests {
 						click: (c, e) => {
 							click();
 							e.stopPropagation();
-						}
+						},
 					}}, [
 						n.component(new FAIcon('bell')),
 						n.component(new Context(
@@ -67,14 +67,14 @@ class PageRequests {
 							requests => new CollectionComponent(
 								requests,
 								new Elem(n => n.elem('div', { className: 'counter alert' }, [
-									n.component('txt', new Txt(""))
+									n.component('txt', new Txt("")),
 								])),
 								(col, c) => {
 									c.getNode('txt').setText(counterString(col.length));
 									c[col.length ? 'removeClass' : 'addClass']('hide');
-								}
-							)
-						))
+								},
+							),
+						)),
 					])),
 					factory: (state, close, layoutId) => ({
 						component: new PageRequestsComponent(this.module, this.model.incoming, this.model.outgoing, state, close),
@@ -154,8 +154,8 @@ class PageRequests {
 						this.open();
 						window.focus();
 						ev.target.close();
-					}
-				}
+					},
+				},
 			);
 		}
 	}

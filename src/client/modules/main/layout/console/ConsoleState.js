@@ -140,7 +140,7 @@ class ConsoleState extends Model {
 		try {
 			localStorage.setItem(consoleStateStoragePrefix + this._ctrlId, JSON.stringify({
 				doc: this._doc,
-				historyIdx: this._historyIdx
+				historyIdx: this._historyIdx,
 			}));
 		} catch (ex) {
 			console.error(ex);

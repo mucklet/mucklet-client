@@ -47,16 +47,16 @@ class CreateExit {
 							return ((c && c.ownedRooms && c.ownedRooms.toArray()) || []).map(v => v.id);
 						},
 						else: new ListStep('targetRoom', module.cmdLists.getCharOwnedRooms(), {
-							name: "target room"
-						})
-					})
-				})
+							name: "target room",
+						}),
+					}),
+				}),
 			],
 			value: (ctx, p) => this.createExit(ctx.char, {
 				name: p.name.trim(),
 				keys: prepareKeys(p.name),
-				targetRoom: p.targetRoom
-			})
+				targetRoom: p.targetRoom,
+			}),
 		});
 
 		this.module.help.addTopic({

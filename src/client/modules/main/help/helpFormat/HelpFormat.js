@@ -20,7 +20,7 @@ class HelpFormat {
 			title: l10n.l('help.formatTitle', "Text formatting"),
 			shortDesc: l10n.l('help.formatSortDesc', "How to format communication and description texts"),
 			desc: () => new HelpFormatComponent(this.module),
-			sortOrder: 85
+			sortOrder: 85,
 		});
 	}
 

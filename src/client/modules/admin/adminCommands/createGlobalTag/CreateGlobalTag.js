@@ -37,26 +37,26 @@ class CreateGlobalTag {
 				}),
 				new DelimStep(":", {
 					next: new ListStep('group', this.module.tags.getGroupsList(), {
-						name: "tag group"
+						name: "tag group",
 					}),
-					errRequired: null
+					errRequired: null,
 				}),
 				new DelimStep("=", {
 					next: [
 						new TextStep('desc', {
 							maxLength: () => this.module.info.getTag().tagDescMaxLength,
 							errTooLong: descriptionTooLong,
-							errRequired: null
-						})
+							errRequired: null,
+						}),
 					],
-					errRequired: null
-				})
+					errRequired: null,
+				}),
 			],
 			value: (ctx, p) => this.createGlobalTag(ctx.char, {
 				key: p.key,
 				group: p.group || null,
-				desc: p.desc || null
-			})
+				desc: p.desc || null,
+			}),
 		});
 
 		this.module.helpAdmin.addTopic({

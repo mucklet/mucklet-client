@@ -32,10 +32,10 @@ class Whois {
 			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 				textId: 'charName',
 				name: "character",
-				errRequired: step => ({ code: 'whoisCmd.characterRequired', message: "Who do you want to show information about?" })
+				errRequired: step => ({ code: 'whoisCmd.characterRequired', message: "Who do you want to show information about?" }),
 			}),
 			alias: [ 'wi' ],
-			value: (ctx, p) => this.whois(ctx.char, p)
+			value: (ctx, p) => this.whois(ctx.char, p),
 		});
 
 		this.module.help.addTopic({
@@ -61,10 +61,10 @@ class Whois {
 							n.component(this.module.avatar.newAvatar(c, { className: 'badge--icon' })),
 							n.elem('div', { className: 'badge--info large' }, [
 								n.elem('div', { className: 'badge--title badge--nowrap' }, [
-									n.component(new Txt(charName))
+									n.component(new Txt(charName)),
 								]),
 								n.elem('div', { className: (genderSpecies ? 'badge--strong' : 'badge--text common--placeholder') + ' badge--nowrap' }, [
-									n.component(new Txt(genderSpecies || textNotSet))
+									n.component(new Txt(genderSpecies || textNotSet)),
 								]),
 								n.elem('div', { className: 'badge--text badge--nowrap' + (c.lastAwake
 									? c.awake
@@ -77,18 +77,18 @@ class Whois {
 											? idleLevels[c.idle].text
 											: c.lastAwake
 												? l10n.l('whois.lastSeen', "Last seen {time}", { time: formatDateTime(new Date(c.lastAwake)) })
-												: l10n.l('whois.neverSeen', "Never seen")
+												: l10n.l('whois.neverSeen', "Never seen"),
 									)),
-									n.component(c.status ? new Txt(' (' + c.status + ')') : null)
-								])
-							])
+									n.component(c.status ? new Txt(' (' + c.status + ')') : null),
+								]),
+							]),
 						]),
 						n.component(hasTags(c.tags)
 							? new Elem(n => n.elem('div', { className: 'badge--select badge--margin' }, [
-								n.component(new CharTagsList(c.tags, { eventBus: this.app.eventBus, static: true }))
+								n.component(new CharTagsList(c.tags, { eventBus: this.app.eventBus, static: true })),
 							]))
-							: null
-						)
+							: null,
+						),
 					]),
 				])));
 			});

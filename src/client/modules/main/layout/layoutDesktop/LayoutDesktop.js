@@ -19,8 +19,8 @@ class LayoutDesktop {
 			n.elem('div', { className: 'layoutdesktop' }, [
 				n.elem('div', { className: 'layoutdesktop--container' }, [
 					n.component('playerPanel', new Fader(null, { className: 'layoutdesktop--playerpanel' })),
-					n.component('activePanel', new Fader(null, { className: 'layoutdesktop--activepanel' }))
-				])
+					n.component('activePanel', new Fader(null, { className: 'layoutdesktop--activepanel' })),
+				]),
 			])
 		));
 

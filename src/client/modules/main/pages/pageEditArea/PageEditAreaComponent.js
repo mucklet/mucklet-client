@@ -27,7 +27,7 @@ class PageEditAreaComponent {
 		let eventBus = this.module.self.app.eventBus;
 		this.model = new ModifyModel(this.area, {
 			props: this.state.changes,
-			eventBus
+			eventBus,
 		});
 		this.elem = new Elem(n => n.elem('div', { className: 'pageeditarea' }, [
 			n.component(new PanelSection(
@@ -41,22 +41,22 @@ class PageEditAreaComponent {
 									if (!c.hasClass('placeholder')) {
 										new ImgModal(this.area.image.href).open();
 									}
-								}
+								},
 							}}),
 							(m, c, changed) => {
 								c.setSrc(m.image ? m.image.href + '?thumb=xl' : '/img/area-l.png');
 								c[m.image ? 'removeClass' : 'addClass']('placeholder');
-							}
+							},
 						)),
 					]),
 					n.elem('div', { className: 'pageeditarea--imagebtn flex-1' }, [
 						n.component(new FileButton(
 							new Elem(n => n.elem('div', [
 								n.component(new FAIcon('camera')),
-								n.component(new Txt(l10n.l('pageEditArea.upload', "Upload")))
+								n.component(new Txt(l10n.l('pageEditArea.upload', "Upload"))),
 							])),
 							(file, dataUrl) => this._setAreaImage(dataUrl),
-							{ className: 'btn medium icon-left' }
+							{ className: 'btn medium icon-left' },
 						)),
 						n.component(new ModelComponent(
 							this.area,
@@ -66,21 +66,21 @@ class PageEditAreaComponent {
 									click: () => this.module.confirm.open(() => this._deleteAreaImage(), {
 										title: l10n.l('pageEditArea.confirmDelete', "Confirm deletion"),
 										body: l10n.l('pageEditArea.deleteImageBody', "Do you really wish to delete the area map image?"),
-										confirm: l10n.l('pageEditArea.delete', "Delete")
-									})
-								}
+										confirm: l10n.l('pageEditArea.delete', "Delete"),
+									}),
+								},
 							}, [
 								n.component(new FAIcon('trash')),
-								n.component(new Txt(l10n.l('pageEditArea.delete', "Delete")))
+								n.component(new Txt(l10n.l('pageEditArea.delete', "Delete"))),
 							])),
-							(m, c) => c.setProperty('disabled', m.image ? null : 'disabled')
-						))
-					])
+							(m, c) => c.setProperty('disabled', m.image ? null : 'disabled'),
+						)),
+					]),
 				])),
 				{
 					className: 'common--sectionpadding',
-					noToggle: true
-				}
+					noToggle: true,
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditArea.area', "Area name"),
@@ -88,14 +88,14 @@ class PageEditAreaComponent {
 					this.model,
 					new Input(this.model.name, {
 						events: { input: c => this.model.set({ name: c.getValue() }) },
-						attributes: { spellcheck: 'false' }
+						attributes: { spellcheck: 'false' },
 					}),
-					(m, c) => c.setValue(m.name)
+					(m, c) => c.setValue(m.name),
 				),
 				{
 					className: 'common--sectionpadding',
-					noToggle: true
-				}
+					noToggle: true,
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditArea.shortDesc', "Short description"),
@@ -103,15 +103,15 @@ class PageEditAreaComponent {
 					this.model,
 					new Textarea(this.model.shortDesc, {
 						className: 'common--paneltextarea-small common--desc-size',
-						events: { input: c => this.model.set({ shortDesc: c.getValue() }) }
+						events: { input: c => this.model.set({ shortDesc: c.getValue() }) },
 					}),
-					(m, c) => c.setValue(m.shortDesc)
+					(m, c) => c.setValue(m.shortDesc),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('pageEditArea.shortDescInfo', "Short description of the area, shown in area listings.")
-				}
+					popupTip: l10n.l('pageEditArea.shortDescInfo', "Short description of the area, shown in area listings."),
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditArea.about', "About"),
@@ -121,13 +121,13 @@ class PageEditAreaComponent {
 						className: 'common--paneltextarea common--desc-size',
 						events: { input: c => this.model.set({ about: c.getValue() }) },
 					}),
-					(m, c) => c.setValue(m.about)
+					(m, c) => c.setValue(m.about),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('pageEditArea.aboutInfo', "Information about the area, such as setting and purpose. It may be formatted and span multiple paragraphs.")
-				}
+					popupTip: l10n.l('pageEditArea.aboutInfo', "Information about the area, such as setting and purpose. It may be formatted and span multiple paragraphs."),
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditArea.rules', "Rules"),
@@ -137,13 +137,13 @@ class PageEditAreaComponent {
 						className: 'common--paneltextarea common--desc-size',
 						events: { input: c => this.model.set({ rules: c.getValue() }) },
 					}),
-					(m, c) => c.setValue(m.rules)
+					(m, c) => c.setValue(m.rules),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('pageEditArea.rulesInfo', "Area specific rules that adds to the realm rules. It may be formatted and span multiple paragraphs.")
-				}
+					popupTip: l10n.l('pageEditArea.rulesInfo', "Area specific rules that adds to the realm rules. It may be formatted and span multiple paragraphs."),
+				},
 			)),
 			n.component('message', new Collapser(null)),
 			n.component(new ModelComponent(
@@ -151,30 +151,30 @@ class PageEditAreaComponent {
 				new Elem(n => n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
 					n.elem('div', { className: 'flex-1' }, [
 						n.elem('update', 'button', { events: {
-							click: () => this._save()
+							click: () => this._save(),
 						}, className: 'btn primary common--btnwidth' }, [
 							n.component(new ModelTxt(this.model, m => m.isModified
 								? l10n.l('pageEditArea.update', "Save edits")
-								: l10n.l('pageEditArea.close', "Close")))
-						])
+								: l10n.l('pageEditArea.close', "Close"))),
+						]),
 					]),
 					n.elem('setOwner', 'button', { events: {
-						click: () => this.module.dialogSetAreaOwner.open(this.ctrl, this.area)
+						click: () => this.module.dialogSetAreaOwner.open(this.ctrl, this.area),
 					}, className: 'iconbtn medium' }, [
-						n.component(new FAIcon('key'))
+						n.component(new FAIcon('key')),
 					]),
 					n.elem('delete', 'button', { events: {
-						click: () => this._deleteArea()
+						click: () => this._deleteArea(),
 					}, className: 'iconbtn medium' }, [
-						n.component(new FAIcon('trash'))
+						n.component(new FAIcon('trash')),
 					]),
 				])),
 				(m, c) => {
 					let prop = this._canDeleteArea() ? null : 'disabled';
 					c.setNodeProperty('delete', 'disabled', prop);
 					c.setNodeProperty('setOwner', 'disabled', prop);
-				}
-			))
+				},
+			)),
 		]));
 		return this.elem.render(el);
 	}
@@ -213,7 +213,7 @@ class PageEditAreaComponent {
 		if (!this.elem) return;
 		this.elem.getNode('message').setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
-			: null
+			: null,
 		);
 	}
 
@@ -229,26 +229,26 @@ class PageEditAreaComponent {
 	_setAreaImage(dataUrl) {
 		return this.ctrl.call('setAreaImage', {
 			areaId: this.area.id,
-			dataUrl
+			dataUrl,
 		}).then(() => this.module.toaster.open({
 			title: l10n.l('pageEditArea.mapImageUploaded', "Map image uploaded"),
 			content: new Txt(l10n.l('pageEditArea.mapImageUploadedBody', "Map image was uploaded and saved.")),
 			closeOn: 'click',
 			type: 'success',
-			autoclose: true
+			autoclose: true,
 		}));
 	}
 
 	_deleteAreaImage() {
 		return this.ctrl.call('deleteAreaImage', {
-			areaId: this.area.id
+			areaId: this.area.id,
 		})
 			.then(() => this.module.toaster.open({
 				title: l10n.l('pageEditArea.mapImageDeleted', "Map image deleted"),
 				content: new Txt(l10n.l('pageEditArea.mapImageDeletedBody', "Map image was successfully deleted.")),
 				closeOn: 'click',
 				type: 'success',
-				autoclose: true
+				autoclose: true,
 			}))
 			.catch(err => this.module.confirm.openError(err));
 	}
@@ -261,7 +261,7 @@ class PageEditAreaComponent {
 					content: new Txt(l10n.l('pageEditArea.mapImageDeletedBody', "Area was successfully deleted.")),
 					closeOn: 'click',
 					type: 'success',
-					autoclose: true
+					autoclose: true,
 				}))
 				.catch(err => this.module.confirm.openError(err)),
 			{
@@ -275,8 +275,8 @@ class PageEditAreaComponent {
 						n.component(new Txt(l10n.l('pageEditArea.deletionWarning', "Deletion cannot be undone."))),
 					]),
 				])),
-				confirm: l10n.l('pageEditArea.delete', "Delete")
-			}
+				confirm: l10n.l('pageEditArea.delete', "Delete"),
+			},
 		);
 	}
 

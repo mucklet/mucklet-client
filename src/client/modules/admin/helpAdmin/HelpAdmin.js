@@ -20,7 +20,7 @@ class HelpAdmin {
 			title: l10n.l('help.adminTitle', "Administrator commands"),
 			shortDesc: l10n.l('help.adminTitle', "Info about the administrator role"),
 			desc: () => new HelpAdminComponent(this.module),
-			sortOrder: 1100
+			sortOrder: 1100,
 		});
 	}
 

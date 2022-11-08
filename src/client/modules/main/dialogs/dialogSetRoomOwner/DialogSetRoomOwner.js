@@ -35,7 +35,7 @@ class DialogSetRoomOwner {
 			content: new Elem(n => n.elem('div', [
 				n.elem('div', [
 					n.component(new Txt(l10n.l('dialogSetRoomOwner.confirmBody', "Do you want to change room ownership?"), { tagName: 'p' })),
-					n.component(new ModelTxt(room, m => m.name, { tagName: 'p', className: 'dialog--strong' }))
+					n.component(new ModelTxt(room, m => m.name, { tagName: 'p', className: 'dialog--strong' })),
 				]),
 				n.component('owner', new PanelSection(
 					l10n.l('dialogSetRoomOwner.newOwner', "New owner"),
@@ -68,14 +68,14 @@ class DialogSetRoomOwner {
 							c.removeClass('dialog--incomplete');
 							model.set({ owner: item.value });
 							c.setProperty('value', item.label);
-						}
+						},
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
 						required: true,
 						popupTip: l10n.l('dialogSetRoomOwner.playerConsent', "If the character is owned by another player, a request will be sent to that player."),
-					}
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
@@ -83,21 +83,21 @@ class DialogSetRoomOwner {
 						model,
 						new Elem(n => n.elem('button', {
 							events: { click: () => this._setRoomOwner(ctrl, room, model) },
-							className: 'btn primary flex-1'
+							className: 'btn primary flex-1',
 						}, [
-							n.component(new Txt(l10n.l('dialogSetRoomOwner.setOwner', "Set owner")))
+							n.component(new Txt(l10n.l('dialogSetRoomOwner.setOwner', "Set owner"))),
 						])),
-						(m, c) => c.setProperty('disabled', (m.owner || '').trim() ? null : 'disabled')
+						(m, c) => c.setProperty('disabled', (m.owner || '').trim() ? null : 'disabled'),
 					)),
 					n.elem('button', {
 						className: 'btn secondary flex-1',
-						events: { click: () => this.close() }
+						events: { click: () => this.close() },
 					}, [
-						n.component(new Txt(l10n.l('dialogSetRoomOwner.cancel', "Cancel")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogSetRoomOwner.cancel', "Cancel"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -119,7 +119,7 @@ class DialogSetRoomOwner {
 
 		let params = {
 			roomId: room.id,
-			charId: model.owner
+			charId: model.owner,
 		};
 		this.setOwnerPromise = this.module.setRoomOwner.setRoomOwner(ctrl, params).then(() => {
 			this.close();

@@ -36,7 +36,7 @@ class PageAreaArea {
 	render(el) {
 		this.children = new AreaChildrenModel(this.ctrl, this.area, { eventBus: this.module.self.app.eventBus });
 		this.model = new Model({ data: {
-			selected: this.state.selected || null
+			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
 
 		let imgFader = new Fader();
@@ -45,26 +45,26 @@ class PageAreaArea {
 			new ModelComponent(
 				this.area,
 				new FormatTxt("", { className: 'common--desc-size', state: this.areaState.about }),
-				(m, c) => c.setFormatText(m.about)
+				(m, c) => c.setFormatText(m.about),
 			),
 			{
 				className: 'common--sectionpadding',
 				open: this.state.aboutOpen,
-				onToggle: (c, v) => this.state.aboutOpen = v
-			}
+				onToggle: (c, v) => this.state.aboutOpen = v,
+			},
 		);
 		let rules = new PanelSection(
 			l10n.l('pageArea.rules', "Rules"),
 			new ModelComponent(
 				this.area,
 				new FormatTxt("", { className: 'common--desc-size', state: this.areaState.rules }),
-				(m, c) => c.setFormatText(m.rules)
+				(m, c) => c.setFormatText(m.rules),
 			),
 			{
 				className: 'common--sectionpadding',
 				open: this.state.rulesOpen,
-				onToggle: (c, v) => this.state.rulesOpen = v
-			}
+				onToggle: (c, v) => this.state.rulesOpen = v,
+			},
 		);
 
 		this.elem = new Elem(n => n.elem('div', { className: 'pagearea-area' }, [
@@ -73,7 +73,7 @@ class PageAreaArea {
 				new Context(
 					() => new ModelToCollection(this.module.self.getTools(), {
 						filter: (k, v) => (v.type || 'area') == 'area' && (v.filter ? v.filter(this.ctrl, this.area, this._canEdit()) : true),
-						eventBus: this.module.self.eventBus
+						eventBus: this.module.self.eventBus,
 					}),
 					tools => tools.dispose(),
 					tools => new CollectionComponent(
@@ -94,24 +94,24 @@ class PageAreaArea {
 										className: 'pagearea-area--tools',
 										subClassName: t => t.className || null,
 										horizontal: true,
-									}
+									},
 								));
 							}
-						}
-					)
+						},
+					),
 				),
 				(m, c, change) => {
 					// Reset filtering of tools is ownership of the area changes.
 					if (change && change.hasOwnProperty('owner')) {
 						c.getContext().refresh();
 					}
-				}
+				},
 			)),
 			n.component(new ModelComponent(
 				this.area,
 				new NameSection('', null, {
 					open: this.state.areaImageOpen,
-					onToggle: (c, v) => this.state.areaImageOpen = v
+					onToggle: (c, v) => this.state.areaImageOpen = v,
 				}),
 				(m, c, change) => {
 					if (!change || change.hasOwnProperty('image')) {
@@ -123,16 +123,16 @@ class PageAreaArea {
 						}
 					}
 					c.setTitle((m && m.name) || '');
-				}
+				},
 			)),
 			n.component(new ModelComponent(
 				this.area,
 				new Elem(n => n.elem('div', { className: 'pagearea-area--population flex-row pad8' }, [
 					n.component(new Txt(l10n.l('pageArea.population', "Population"), {
 						tagName: 'div',
-						className: 'pagearea-area--population-title flex-1'
+						className: 'pagearea-area--population-title flex-1',
 					})),
-					n.component('pop', new Txt(null, { className: 'pagearea-area--population-count flex-auto', duration: 0 }))
+					n.component('pop', new Txt(null, { className: 'pagearea-area--population-count flex-auto', duration: 0 })),
 				])),
 				(m, c) => {
 					c.getNode('pop').setText((m.pop || "0") + (m.prv ? (' (+' + m.prv + ')') : ''));
@@ -142,9 +142,9 @@ class PageAreaArea {
 						(m.prv
 							? "\n" + l10n.t('pageArea.inPrivate', "{count} in private", { count: m.prv })
 							: ''
-						)
+						),
 					);
-				}
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageArea.locations', "Locations"),
@@ -155,26 +155,26 @@ class PageAreaArea {
 							let bv = b.value;
 							return (bv.pop - av.pop) || av.name.localeCompare(bv.name) || a.key.localeCompare(b.key);
 						},
-						eventBus: this.module.self.app.eventBus
+						eventBus: this.module.self.app.eventBus,
 					}),
 					col => col.dispose(),
-					col => new CollectionList(col, m => new PageAreaLocation(this.module, this.ctrl, m, this.model, this._onLocationClick))
+					col => new CollectionList(col, m => new PageAreaLocation(this.module, this.ctrl, m, this.model, this._onLocationClick)),
 				),
 				{
 					className: 'common--sectionpadding',
 					open: this.state.locationOpen,
-					onToggle: (c, v) => this.state.locationOpen = v
-				}
+					onToggle: (c, v) => this.state.locationOpen = v,
+				},
 			)),
 			n.component(new ModelComponent(
 				this.area,
 				new Collapser(),
-				(m, c) => c.setComponent(this.area.about ? about : null)
+				(m, c) => c.setComponent(this.area.about ? about : null),
 			)),
 			n.component(new ModelComponent(
 				this.area,
 				new Collapser(),
-				(m, c) => c.setComponent(this.area.rules ? rules : null)
+				(m, c) => c.setComponent(this.area.rules ? rules : null),
 			)),
 		]));
 		return this.elem.render(el);

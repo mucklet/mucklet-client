@@ -42,7 +42,7 @@ class DialogSetAreaOwner {
 			content: new Elem(n => n.elem('div', [
 				n.elem('div', [
 					n.component(new Txt(l10n.l('dialogSetAreaOwner.confirmBody', "Do you want to change area ownership?"), { tagName: 'p' })),
-					n.component(new ModelTxt(area, m => m.name, { tagName: 'p', className: 'dialog--strong' }))
+					n.component(new ModelTxt(area, m => m.name, { tagName: 'p', className: 'dialog--strong' })),
 				]),
 				n.component('owner', new PanelSection(
 					l10n.l('dialogSetAreaOwner.newOwner', "New owner"),
@@ -75,14 +75,14 @@ class DialogSetAreaOwner {
 							c.removeClass('dialog--incomplete');
 							model.set({ owner: item.value });
 							c.setProperty('value', item.label);
-						}
+						},
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
 						required: true,
 						popupTip: l10n.l('dialogSetAreaOwner.playerConsent', "If the character is owned by another player, a request will be sent to that player."),
-					}
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
@@ -90,21 +90,21 @@ class DialogSetAreaOwner {
 						model,
 						new Elem(n => n.elem('button', {
 							events: { click: () => this._setAreaOwner(ctrl, area, model) },
-							className: 'btn primary flex-1'
+							className: 'btn primary flex-1',
 						}, [
-							n.component(new Txt(l10n.l('dialogSetAreaOwner.setOwner', "Set owner")))
+							n.component(new Txt(l10n.l('dialogSetAreaOwner.setOwner', "Set owner"))),
 						])),
-						(m, c) => c.setProperty('disabled', (m.owner || '').trim() ? null : 'disabled')
+						(m, c) => c.setProperty('disabled', (m.owner || '').trim() ? null : 'disabled'),
 					)),
 					n.elem('button', {
 						className: 'btn secondary flex-1',
-						events: { click: () => this.close() }
+						events: { click: () => this.close() },
 					}, [
-						n.component(new Txt(l10n.l('dialogSetAreaOwner.cancel', "Cancel")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogSetAreaOwner.cancel', "Cancel"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -126,7 +126,7 @@ class DialogSetAreaOwner {
 
 		let params = {
 			areaId: area.id,
-			charId: model.owner
+			charId: model.owner,
 		};
 		this.setOwnerPromise = this.module.setAreaOwner.setAreaOwner(ctrl, params).then(() => {
 			this.close();

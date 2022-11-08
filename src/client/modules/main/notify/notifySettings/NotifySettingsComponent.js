@@ -22,9 +22,9 @@ class NotifySettingsComponent {
 						c.setValue(this.module.notify.getModel().enabled, false);
 					}),
 					popupTip: l10n.l('notify.enableNotificationsInfo', "Allow system notifications to show on certain events."),
-					popupTipClassName: 'popuptip--width-s'
+					popupTipClassName: 'popuptip--width-s',
 				}),
-				(m, c) => c.setValue(m.enabled, false)
+				(m, c) => c.setValue(m.enabled, false),
 			)),
 			n.component(new ModelComponent(
 				this.module.notify.getModel(),
@@ -42,9 +42,9 @@ class NotifySettingsComponent {
 										this.module.toaster.openError(err);
 									}),
 									popupTip: l10n.l('notify.notifyOnWakeupInfo', "Notify whenever any character wakes up."),
-									popupTipClassName: 'popuptip--width-s'
+									popupTipClassName: 'popuptip--width-s',
 								}),
-								(m, c) => c.setValue(m.notifyOnWakeup, false)
+								(m, c) => c.setValue(m.notifyOnWakeup, false),
 							)),
 							n.component(new ModelComponent(
 								this.player,
@@ -55,12 +55,12 @@ class NotifySettingsComponent {
 										this.module.toaster.openError(err);
 									}),
 									popupTip: l10n.l('notify.notifyOnWatchedInfo', "Notify whenever a watched character wakes up."),
-									popupTipClassName: 'popuptip--width-s'
+									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => {
 									c.setDisabled(m.notifyOnWakeup);
 									c.setValue(m.notifyOnWakeup || m.notifyOnWatched, false);
-								}
+								},
 							)),
 							n.component(new ModelComponent(
 								this.player,
@@ -71,12 +71,12 @@ class NotifySettingsComponent {
 										this.module.toaster.openError(err);
 									}),
 									popupTip: l10n.l('notify.notifyOnMatchedInfo', "Notify whenever a character wakes up that matches current filter."),
-									popupTipClassName: 'popuptip--width-s'
+									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => {
 									c.setDisabled(m.notifyOnWakeup);
 									c.setValue(m.notifyOnWakeup || m.notifyOnMatched, false);
-								}
+								},
 							)),
 							n.component(new ModelComponent(
 								this.player,
@@ -87,9 +87,9 @@ class NotifySettingsComponent {
 										this.module.toaster.openError(err);
 									}),
 									popupTip: l10n.l('notify.notifyOnEventInfo', "Notify on events targeting your character. Eg. whispers, summons, etc."),
-									popupTipClassName: 'popuptip--width-s'
+									popupTipClassName: 'popuptip--width-s',
 								}),
-								(m, c) => c.setValue(m.notifyOnEvent, false)
+								(m, c) => c.setValue(m.notifyOnEvent, false),
 							)),
 							n.component(new ModelComponent(
 								this.player,
@@ -100,9 +100,9 @@ class NotifySettingsComponent {
 										this.module.toaster.openError(err);
 									}),
 									popupTip: l10n.l('notify.notifyOnMentionInfo', "Notify whenever someone mentions the name of your character."),
-									popupTipClassName: 'popuptip--width-s'
+									popupTipClassName: 'popuptip--width-s',
 								}),
-								(m, c) => c.setValue(m.notifyOnMention, false)
+								(m, c) => c.setValue(m.notifyOnMention, false),
 							)),
 							n.component(new ModelComponent(
 								this.player,
@@ -113,15 +113,15 @@ class NotifySettingsComponent {
 										this.module.toaster.openError(err);
 									}),
 									popupTip: l10n.l('notify.notifyOnRequestsInfo', "Notify on new mail, requests, or other incoming events that may happen even if your character is asleep."),
-									popupTipClassName: 'popuptip--width-s'
+									popupTipClassName: 'popuptip--width-s',
 								}),
-								(m, c) => c.setValue(m.notifyOnRequests, false)
+								(m, c) => c.setValue(m.notifyOnRequests, false),
 							)),
 						]))
-						: null
+						: null,
 					);
-				}
-			))
+				},
+			)),
 		]));
 		this.elem.render(el);
 	}

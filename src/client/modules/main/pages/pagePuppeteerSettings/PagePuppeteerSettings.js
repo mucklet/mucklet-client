@@ -30,7 +30,7 @@ class PagePuppeteerSettings {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 	}
 
@@ -92,8 +92,8 @@ class PagePuppeteerSettings {
 				title: l10n.l('pagePuppeteerSettings.puppetSettings', "Puppet Settings"),
 			}),
 			{
-				onClose: () => this._onClose(puppeteer)
-			}
+				onClose: () => this._onClose(puppeteer),
+			},
 		);
 
 		d.close = close;

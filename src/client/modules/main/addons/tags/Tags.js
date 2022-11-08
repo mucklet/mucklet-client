@@ -3,13 +3,13 @@ import TokenList from 'classes/TokenList';
 import ItemList from 'classes/ItemList';
 import {
 	keyTokenRegex,
-	keyExpandRegex
+	keyExpandRegex,
 } from 'utils/regex';
 import l10n from 'modapp-l10n';
 
 const preferences = [
 	{ id: "like", name: l10n.l('tags.like', "Like") },
-	{ id: "dislike", name: l10n.l('tags.dislike', "Dislike") }
+	{ id: "dislike", name: l10n.l('tags.dislike', "Dislike") },
 ];
 
 /**
@@ -28,7 +28,7 @@ class Tags {
 	_init(module) {
 		this.module = module;
 		this.tags = new ModelWrapper(null, {
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.collection = new ModelToCollection(this.tags, {
 			compare: (a, b) => {
@@ -40,7 +40,7 @@ class Tags {
 			},
 			filter: (k, v) => (!v.role || this.module.player.hasAnyRole(v.role, 'admin'))
 				&& (!v.idRole || this.module.player.hasAnyIdRole(v.idRole, 'overseer')),
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.tagsList = new TokenList(() => this.collection, {
 			regex: keyTokenRegex,
@@ -48,28 +48,28 @@ class Tags {
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 		this.preferenceList = new ItemList({
 			items: [
 				{
 					key: "like",
 					value: "like",
-					alias: [ "yes" ]
+					alias: [ "yes" ],
 				},
 				{
 					key: "dislike",
 					value: "dislike",
-					alias: [ "no" ]
-				}
-			]
+					alias: [ "no" ],
+				},
+			],
 		});
 		this.groups = new ModelWrapper(null, {
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.groupsCollection = new ModelToCollection(this.groups, {
 			compare: (a, b) => a.value.order - b.value.order || a.key.localeCompare(b.key),
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.groupsList = new TokenList(() => this.groupsCollection, {
 			regex: keyTokenRegex,
@@ -77,13 +77,13 @@ class Tags {
 			isMatch: (t, key) => key === t.key ? { key, value: t.key } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 
 		this.module.login.getLoginPromise()
 			.then(() => Promise.all([
 				this.module.api.get('tag.tags'),
-				this.module.api.get('tag.groups')
+				this.module.api.get('tag.groups'),
 			]))
 			.then(result => {
 				if (this.tags) {

@@ -48,13 +48,13 @@ class Whisper {
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'whisper.messageRequired', message: "What do you want to whisper?" }),
-							completer: this.module.cmdLists.getInRoomChars()
-						})
-					]
-				})
+							completer: this.module.cmdLists.getInRoomChars(),
+						}),
+					],
+				}),
 			],
 			alias: [ 'w', 'wh' ],
-			value: (ctx, p) => this.whisper(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc })
+			value: (ctx, p) => this.whisper(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc }),
 		});
 
 		this.module.help.addTopic({

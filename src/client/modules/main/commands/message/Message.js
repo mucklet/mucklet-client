@@ -35,7 +35,7 @@ class Message {
 			next: [
 				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
 					name: "character",
-					errRequired: null
+					errRequired: null,
 				}),
 				new DelimStep("=", {
 					next: [
@@ -48,13 +48,13 @@ class Message {
 							errRequired: step => ({ code: 'message.messageRequired', message: "What do you want to message?" }),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getCharsAwake()
+							completer: this.module.cmdLists.getCharsAwake(),
 						}),
-					]
-				})
+					],
+				}),
 			],
 			alias: [ 'm', 'msg', 'p', 'page' ],
-			value: (ctx, p) => this.message(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc })
+			value: (ctx, p) => this.message(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc }),
 		});
 
 		this.module.help.addTopic({

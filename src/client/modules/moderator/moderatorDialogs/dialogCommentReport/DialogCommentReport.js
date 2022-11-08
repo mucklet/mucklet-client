@@ -38,26 +38,26 @@ class DialogCommentReport {
 					new Textarea(model.comment, {
 						className: 'dialogcommentreport--comment dialog--input common--paneltextarea-small common--desc-size',
 						events: {
-							input: c => model.set({ comment: c.getValue() })
+							input: c => model.set({ comment: c.getValue() }),
 						},
-						attributes: { name: 'dialogcommentreport-comment', spellcheck: 'true' }
+						attributes: { name: 'dialogcommentreport-comment', spellcheck: 'true' },
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-					}
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer' }, [
 					n.elem('submit', 'button', {
 						events: { click: () => this._commentReport(report, model) },
-						className: 'btn primary dialogcommentreport--submit'
+						className: 'btn primary dialogcommentreport--submit',
 					}, [
-						n.component(new Txt(l10n.l('dialogCommentReport.commentReport', "Add comment")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogCommentReport.commentReport', "Add comment"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -68,7 +68,7 @@ class DialogCommentReport {
 		if (this.closePromise) return this.closePromise;
 
 		report.call('comment', {
-			comment: model.comment.trim()
+			comment: model.comment.trim(),
 		}).then(() => {
 			if (this.dialog) {
 				this.dialog.close();

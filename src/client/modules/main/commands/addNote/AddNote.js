@@ -30,22 +30,22 @@ class AddNote {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'addNote.characterRequired', message: "Who do you want to add a note for?" })
+					errRequired: step => ({ code: 'addNote.characterRequired', message: "Who do you want to add a note for?" }),
 				}),
 				new DelimStep("=", {
 					next: [
 						new TextStep('text', {
 							spanLines: true,
 							errRequired: step => ({ code: 'addNote.noteRequired', message: "What is the note you want to add?" }),
-							completer: this.module.cmdLists.getAllChars()
+							completer: this.module.cmdLists.getAllChars(),
 						}),
-					]
-				})
+					],
+				}),
 			],
 			value: (ctx, p) => this.addNote(ctx.player, ctx.char, p.charId
 				? { charId: p.charId, text: p.text }
-				: { charName: p.charName, text: p.text }
-			)
+				: { charName: p.charName, text: p.text },
+			),
 		});
 
 		this.module.help.addTopic({
@@ -64,7 +64,7 @@ class AddNote {
 			? Promise.resolve({ id: params.charId })
 			: player.call('getChar', { charName: params.charName })
 		).then(c => this.module.api.call('note.player.' + player.id + '.note.' + c.id, 'append', {
-			text: params.text
+			text: params.text,
 		})).then(result => {
 			let c = result.char;
 			this.module.charLog.logInfo(char, l10n.l('addNote.addedNoteFor', "Added a note for {charName}.", { charName: (c.name + " " + c.surname).trim() }));

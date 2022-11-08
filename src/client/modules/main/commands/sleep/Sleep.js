@@ -28,10 +28,10 @@ class Sleep {
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
 				errRequired: null,
-				completer: this.module.cmdLists.getInRoomChars()
+				completer: this.module.cmdLists.getInRoomChars(),
 			}),
 			alias: [ 'quit' ],
-			value: this.sleep.bind(this)
+			value: this.sleep.bind(this),
 		});
 
 		this.module.help.addTopic({

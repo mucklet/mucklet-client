@@ -38,14 +38,14 @@ class AddPlayerRole {
 								{ key: "moderator" },
 								{ key: "builder" },
 								{ key: "admin" },
-							]
+							],
 						}), {
 							name: "player role",
-							token: 'text'
-						})
+							token: 'text',
+						}),
 					],
 				},
-			]
+			],
 		});
 
 		this.module.cmd.addPrefixCmd('add', {
@@ -56,16 +56,16 @@ class AddPlayerRole {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" })
+						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" }),
 					}),
 				}),
 				new DelimStep(":"),
 				new ListStep('attr', this.playerAttr, {
 					name: "player list attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
-			value: (ctx, p) => this["_addPlayer" + p.attr](ctx, p)
+			value: (ctx, p) => this["_addPlayer" + p.attr](ctx, p),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -82,7 +82,7 @@ class AddPlayerRole {
 		let player = this.module.player.getPlayer();
 		return player.call('getUser', p).then(user => player.call('addPlayerRole', {
 			playerId: user.id,
-			role: p.value
+			role: p.value,
 		})).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('addPlayerRole.addedRoleToPlayer', "Added role to player."));
 		});

@@ -29,18 +29,18 @@ class ConfirmScreenDialog {
 			n.elem('div', { className: 'confirmscreendialog--body' }, [
 				n.component(isComponent(opt.body)
 					? opt.body
-					: new Txt(opt.body || l10n.l('confirm.body', "Are you sure?"), { className: 'confirmscreendialog--content' })
+					: new Txt(opt.body || l10n.l('confirm.body', "Are you sure?"), { className: 'confirmscreendialog--content' }),
 				),
 			]),
 			n.elem('button', {
 				events: { click: () => this._confirm() },
-				className: 'btn large primary confirmscreendialog--btn pad-top-xl'
+				className: 'btn large primary confirmscreendialog--btn pad-top-xl',
 			}, [
-				n.component(new Txt(opt.confirm || l10n.l('confirmScreenDialog.okay', "Okay")))
-			])
+				n.component(new Txt(opt.confirm || l10n.l('confirmScreenDialog.okay', "Okay"))),
+			]),
 		])), {
 			title: opt.title || l10n.l('confirmScreenDialog.confirm', "Confirm"),
-			close: opt.onClose || null
+			close: opt.onClose || null,
 		});
 		this.elem.render(el);
 	}

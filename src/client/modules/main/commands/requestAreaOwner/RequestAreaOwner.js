@@ -31,13 +31,13 @@ class RequestAreaOwner {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "new owner",
-					errRequired: step => ({ code: 'requestAreaOwner.characterRequired', message: "Who do you want to transfer ownership to?" })
+					errRequired: step => ({ code: 'requestAreaOwner.characterRequired', message: "Who do you want to transfer ownership to?" }),
 				}),
 			],
 			value: (ctx, p) => this.requestAreaOwner(ctx.char, Object.assign({ areaId: p.areaId }, p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
-			))
+				: { charName: p.charName },
+			)),
 		});
 
 		this.module.help.addTopic({

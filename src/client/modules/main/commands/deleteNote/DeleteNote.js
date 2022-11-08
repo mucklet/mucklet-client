@@ -28,13 +28,13 @@ class DeleteNote {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'deleteNote.characterRequired', message: "Who do you want to delete the notes for?" })
-				})
+					errRequired: step => ({ code: 'deleteNote.characterRequired', message: "Who do you want to delete the notes for?" }),
+				}),
 			],
 			value: (ctx, p) => this.deleteNote(ctx.player, ctx.char, p.charId
 				? { charId: p.charId, text: p.text }
-				: { charName: p.charName, text: p.text }
-			)
+				: { charName: p.charName, text: p.text },
+			),
 		});
 
 		this.module.help.addTopic({

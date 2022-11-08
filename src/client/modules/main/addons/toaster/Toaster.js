@@ -21,13 +21,13 @@ class Toaster {
 	_init(module) {
 		this.module = module;
 		this.collection = new Collection({
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.autoclose = {};
 
 		this.component = new CollectionList(this.collection, m => new ToasterToast(m, () => this.close(m.id)), {
 			className: 'toaster',
-			subClassName: () => 'toaster--item'
+			subClassName: () => 'toaster--item',
 		});
 		this.component.render(document.body);
 	}
@@ -50,7 +50,7 @@ class Toaster {
 			content: null,
 			title: null,
 			onClose: null,
-			time: new Date()
+			time: new Date(),
 		}, opt);
 		if (!opt.id) {
 			while (true) {
@@ -75,7 +75,7 @@ class Toaster {
 		if (opt.autoclose) {
 			this.autoclose[opt.id] = setTimeout(closer, typeof opt.autoclose == 'number'
 				? opt.autoclose
-				: AUTOCLOSE_DURATION
+				: AUTOCLOSE_DURATION,
 			);
 		}
 
@@ -103,7 +103,7 @@ class Toaster {
 			content: new Txt(msg || l10n.l('toaster.bodyPlaceholder', "An unexpected error was encountered. That's all I know."), { className: 'toaster--error' }),
 			type: 'warn',
 			closeOn: 'click',
-			autoclose: true
+			autoclose: true,
 		});
 	}
 

@@ -44,12 +44,12 @@ class VerifyEmail {
 					content: new Txt(l10n.l('verifyEmail.emailSentBody', "Check your inbox for a verification mail.")),
 					closeOn: 'click',
 					type: 'success',
-					autoclose: true
+					autoclose: true,
 				});
 			})
 			.catch(err => {
 				this.module.toaster.openError(err, {
-					title: l10n.l('verifyEmail.verificationIssue', "Email verification issue")
+					title: l10n.l('verifyEmail.verificationIssue', "Email verification issue"),
 				});
 			})
 			.then(() => this.model.set({ isSendingVerify: false }));

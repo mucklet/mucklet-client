@@ -5,7 +5,7 @@ const txtRoles = {
 	helper: l10n.l('roles.helper', "Helper"),
 	moderator: l10n.l('roles.moderator', "Moderator"),
 	builder: l10n.l('roles.builder', "Builder"),
-	admin: l10n.l('roles.admin', "Administrator")
+	admin: l10n.l('roles.admin', "Administrator"),
 };
 
 /**

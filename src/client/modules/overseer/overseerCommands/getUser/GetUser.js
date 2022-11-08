@@ -35,16 +35,16 @@ class GetUser {
 					next: new TextStep('username', {
 						name: "username",
 						token: 'listitem',
-						spellcheck: false
+						spellcheck: false,
 					}),
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "user",
-						errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" })
+						errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),
 					}),
-				})
+				}),
 			],
-			value: (ctx, p) => this._getUser(ctx, p)
+			value: (ctx, p) => this._getUser(ctx, p),
 		});
 
 		this.module.helpOverseer.addTopic({
@@ -63,7 +63,7 @@ class GetUser {
 			? this.module.api.call('identity.overseer', 'getUserByUsername', { username: p.username.trim() })
 			: mod.getPlayer().call('getUser', p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
+				: { charName: p.charName },
 			).then(user => Promise.all([
 				this.module.api.get('identity.user.' + user.id),
 				this.module.api.call('identity.user.' + user.id, 'getIps'),
@@ -79,7 +79,7 @@ class GetUser {
 					'<td>' + escapeHtml(formatDateTime(new Date(m.firstUsed), { showYear: true })) + '</td>' +
 					'<td>' + escapeHtml(formatDateTime(new Date(m.lastUsed), { showYear: true })) + '</td>' +
 					'<td>' + escapeHtml(m.used) + '</td>' +
-					'</tr>'
+					'</tr>',
 				);
 			}
 
@@ -93,13 +93,13 @@ class GetUser {
 					[ "Email", identity.email || "-" ],
 					[ "Email verified", identity.emailVerified ? "Yes" : "No" ],
 					[ "Has OpenID", identity.hasOpenId ? "Yes" : "No" ],
-					[ "Registered", formatDateTime(new Date(identity.created)) ]
+					[ "Registered", formatDateTime(new Date(identity.created)) ],
 				].filter(m => m).map(m => n.elem('tr', [
 					n.elem('td', { className: 'charlog--strong' }, [
-						n.component(new Txt(m[0]))
+						n.component(new Txt(m[0])),
 					]),
 					n.elem('td', [
-						n.component(new Txt(m[1]))
+						n.component(new Txt(m[1])),
 					]),
 				]))),
 				n.component(new Txt(l10n.t('getUser.userIps', "User IPs"), { tagName: 'h4', className: 'charlog--pad' })),
@@ -110,11 +110,11 @@ class GetUser {
 							'<th class="charlog--strong">' + escapeHtml(l10n.t('getUser.firstSeen', "First seen")) + '</th>' +
 							'<th class="charlog--strong">' + escapeHtml(l10n.t('getUser.lastSeen', "Last seen")) + '</th>' +
 							'<th class="charlog--strong">' + escapeHtml(l10n.t('getUser.count', "Count")) + '</th>' +
-							'</tr>', { tagName: 'thead' }
+							'</tr>', { tagName: 'thead' },
 						)),
-						n.component(new Html(addrs.join(''), { tagName: 'tbody' }))
-					])
-				])
+						n.component(new Html(addrs.join(''), { tagName: 'tbody' })),
+					]),
+				]),
 			]));
 
 			this.module.charLog.logComponent(ctx.char, 'getUser', elem);

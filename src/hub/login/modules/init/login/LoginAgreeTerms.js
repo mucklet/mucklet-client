@@ -29,28 +29,28 @@ class LoginAgreeTerms {
 						tagName: 'a',
 						className: 'link',
 						attributes: {
-							href: 'javascript:;'
+							href: 'javascript:;',
 						},
 						events: {
 							click: (c, ev) => {
 								this.module.policies.openPolicy('privacy');
 								ev.preventDefault();
-							}
-						}
+							},
+						},
 					})),
 					n.component(new Txt(l10n.l('login.agreeMid', " and "))),
 					n.component(new Txt(l10n.l('login.terms', "terms"), {
 						tagName: 'a',
 						className: 'link',
 						attributes: {
-							href: 'javascript:;'
+							href: 'javascript:;',
 						},
 						events: {
 							click: (c, ev) => {
 								this.module.policies.openPolicy('terms');
 								ev.preventDefault();
-							}
-						}
+							},
+						},
 					})),
 					n.component(new Txt(l10n.l('login.agreeSuffix', "."))),
 				])),
@@ -58,26 +58,26 @@ class LoginAgreeTerms {
 				{
 					className: 'common--formmargin ',
 					onChange: v => this.model.set({ agree: v }),
-				}
+				},
 			)),
 			n.component('message', new Collapser(null)),
 			n.component('submit', new ModelComponent(
 				this.model,
 				new Elem(n => n.elem('button', {
 					events: { click: () => this._onContinue(this.model) },
-					className: 'btn large primary login--login pad-top-xl login--btn'
+					className: 'btn large primary login--login pad-top-xl login--btn',
 				}, [
 					n.elem('spinner', 'div', { className: 'spinner fade hide' }),
-					n.component(new Txt(l10n.l('login.continue', "Continue")))
+					n.component(new Txt(l10n.l('login.continue', "Continue"))),
 				])),
-				(m, c) => c.setProperty('disabled', m.agree ? null : 'disabled')
-			))
+				(m, c) => c.setProperty('disabled', m.agree ? null : 'disabled'),
+			)),
 		])), {
 			title: l10n.l('login.agreeToTerms', "Agree to Terms"),
 			close: () => {
 				this._clearState();
 				this.module.self.logout();
-			}
+			},
 		});
 		this.elem.render(el);
 	}

@@ -25,10 +25,10 @@ class Unwatch {
 			next: [
 				new ListStep('charId', this.module.cmdLists.getWatchedChars(), {
 					name: "watched character",
-					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to stop watching for?" })
-				})
+					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to stop watching for?" }),
+				}),
 			],
-			value: (ctx, p) => this.unwatch(ctx.player, ctx.char, { charId: p.charId })
+			value: (ctx, p) => this.unwatch(ctx.player, ctx.char, { charId: p.charId }),
 		});
 
 		this.module.help.addTopic({

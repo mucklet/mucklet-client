@@ -24,7 +24,7 @@ class ListTagGroups {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'taggroups',
 			alias: [ 'taggroup' ],
-			value: (ctx, p) => this.listTagGroups(ctx.char)
+			value: (ctx, p) => this.listTagGroups(ctx.char),
 		});
 
 		this.module.helpAdmin.addTopic({
@@ -45,7 +45,7 @@ class ListTagGroups {
 				'<td><code class="common--nowrap">' + escapeHtml(m.key) + '</code></td>' +
 				'<td>' + escapeHtml(m.name) + '</td>' +
 				'<td>' + (m.order ? String(m.order) : '') + '</td>' +
-				'</tr>'
+				'</tr>',
 			);
 		}
 		if (list.length) {
@@ -57,9 +57,9 @@ class ListTagGroups {
 						'<th>' + escapeHtml(l10n.t('listTagGroups.name', "Name")) + '</th>' +
 						'<th>' + escapeHtml(l10n.t('listTagGroups.sortOrder', "Sort order")) + '</th>' +
 						'</tr></thead>' +
-						'<tbody>' + list.join('') + '</tbody>'
-					))
-				])
+						'<tbody>' + list.join('') + '</tbody>',
+					)),
+				]),
 			])));
 		} else {
 			this.module.charLog.logInfo(char, l10n.l('listTagGroups.noTagGroups', "There are no tag groups."));

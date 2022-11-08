@@ -45,9 +45,9 @@ class CharLogComponent {
 				lockToBottom: true,
 				onAtBottom: this.onAtBottom,
 				events: {
-					click: this._onLogClick
-				}
-			}
+					click: this._onLogClick,
+				},
+			},
 		);
 		this.elem = new Elem(n => n.elem('div', { className: 'charlog' }, [
 			n.component('simpleBar', new ModelComponent(
@@ -57,7 +57,7 @@ class CharLogComponent {
 					c[m?.highlightTriggers ? 'addClass' : 'removeClass']('charlog--highlight-triggers');
 					c[m?.highlightMentionMessages ? 'addClass' : 'removeClass']('charlog--highlight-mention');
 					c[m?.highlightOwnMessages ? 'addClass' : 'removeClass']('charlog--highlight-own');
-				}
+				},
 			)),
 			n.component(new Context(
 				() => new CollectionWrapper(
@@ -65,7 +65,7 @@ class CharLogComponent {
 					{
 						filter: t => t.filter ? t.filter(this.char, layout) : true,
 						eventBus: this.module.self.app.eventBus,
-					}
+					},
 				),
 				overlays => overlays.dispose(),
 				overlays => new CollectionList(overlays,
@@ -76,9 +76,9 @@ class CharLogComponent {
 							this.overlayState[overlay.id] = state;
 						}
 						return overlay.componentFactory(this.char, state);
-					}
-				)
-			))
+					},
+				),
+			)),
 		]));
 
 		let elem = this.elem;

@@ -29,7 +29,7 @@ class PageReports {
 			'dialogCommentReport',
 			'dialogReopenReport',
 			'confirm',
-			'notify'
+			'notify',
 		], this._init.bind(this));
 	}
 
@@ -38,7 +38,7 @@ class PageReports {
 		this.model = new Model({ data: { reports: null }, eventBus: this.app.eventBus });
 		this.attachmentTypes = new Collection({
 			idAttribute: m => m.id,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.module.login.getLoginPromise()
@@ -58,7 +58,7 @@ class PageReports {
 						click: (c, e) => {
 							click();
 							e.stopPropagation();
-						}
+						},
 					}}, [
 						n.component(new FAIcon('flag')),
 						n.component(new Context(
@@ -69,13 +69,13 @@ class PageReports {
 								new CollectionComponent(
 									unassigned,
 									new Elem(n => n.elem('div', { className: 'counter' }, [
-										n.component('txt', new Txt(""))
+										n.component('txt', new Txt("")),
 									])),
-									(col, c) => this._setCounter(c, reports, unassigned)
+									(col, c) => this._setCounter(c, reports, unassigned),
 								),
-								(col, c) => this._setCounter(c.getComponent(), reports, unassigned)
-							)
-						))
+								(col, c) => this._setCounter(c.getComponent(), reports, unassigned),
+							),
+						)),
 					])),
 					factory: (state, close, layoutId) => ({
 						component: new PageReportsComponent(this.module, this.model.reports, state, close),
@@ -154,8 +154,8 @@ class PageReports {
 						this.open();
 						window.focus();
 						ev.target.close();
-					}
-				}
+					},
+				},
 			);
 		}
 	}

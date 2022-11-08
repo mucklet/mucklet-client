@@ -32,10 +32,10 @@ class PasswordInput extends RootElem {
 			n.component(this._input),
 			n.elem('div', {
 				className: 'passwordinput--eye iconbtn medium tinyicon',
-				events: { click: () => this.toggle() }
+				events: { click: () => this.toggle() },
 			}, [
 				n.component(this._eye),
-			])
+			]),
 		]));
 		this.toggle(false);
 	}

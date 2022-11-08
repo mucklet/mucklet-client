@@ -31,8 +31,8 @@ class PageReportsClosed {
 			n.text(" – "),
 			n.component(new ModelTxt(this.model, (m, c) => m.count
 				? m.offset + (m.count > defaultLimit ? defaultLimit : m.count)
-				: c.getText()
-			))
+				: c.getText(),
+			)),
 		]));
 
 		this.elem = new Elem(n => n.elem('div', { className: 'pagereports-closed' }, [
@@ -48,33 +48,33 @@ class PageReportsClosed {
 								? m.count || m.offset // If we have closed reports, or are on a later page.
 									? reportsCountComponent
 									: noReportsComponent = noReportsComponent || new Txt(l10n.l('pageReports.noReports', "No reports"), { className: 'common--placeholder' })
-								: null
-							)
+								: null,
+							),
 						)),
 						n.component(new ModelComponent(
 							this.model,
 							new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
-								click: () => this._loadMail(this.model.offset < defaultLimit ? 0 : this.model.offset - defaultLimit)
+								click: () => this._loadMail(this.model.offset < defaultLimit ? 0 : this.model.offset - defaultLimit),
 							}}, [
 								n.component(new FAIcon('angle-left')),
 							])),
-							(m, c) => c.setProperty('disabled', m.offset ? null : 'disabled')
+							(m, c) => c.setProperty('disabled', m.offset ? null : 'disabled'),
 						)),
 						n.component(new ModelComponent(
 							this.model,
 							new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
-								click: () => this._loadMail(this.model.offset + defaultLimit)
+								click: () => this._loadMail(this.model.offset + defaultLimit),
 							}}, [
 								n.component(new FAIcon('angle-right')),
 							])),
-							(m, c) => c.setProperty('disabled', m.count > defaultLimit ? null : 'disabled')
+							(m, c) => c.setProperty('disabled', m.count > defaultLimit ? null : 'disabled'),
 						)),
 					])),
-					(col, m) => this.model.set({ count: col ? col.length : null })
+					(col, m) => this.model.set({ count: col ? col.length : null }),
 				),
-				(m, c, change) => c.setCollection(m.reports)
+				(m, c, change) => c.setCollection(m.reports),
 			)),
-			n.component('list', new Transition(null))
+			n.component('list', new Transition(null)),
 		]));
 		this.elem.render(el);
 
@@ -122,9 +122,9 @@ class PageReportsClosed {
 						reports => new CollectionList(
 							reports,
 							m => new PageReportsReport(this.module, m, this.model, { isClosed: true }),
-							{ className: 'pagereports-closed--list' }
-						)
-					))
+							{ className: 'pagereports-closed--list' },
+						),
+					)),
 				])));
 
 				this.loadingOffset = null;
@@ -148,7 +148,7 @@ class PageReportsClosed {
 		let m = this.model;
 		c.setProperty('disabled', m && m.reports && m.reports.length > m.offset
 			? null
-			: 'disabled'
+			: 'disabled',
 		);
 	}
 }

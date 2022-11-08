@@ -20,37 +20,37 @@ class PageCharSelectChar {
 			new Elem(n =>
 				n.elem('div', { className: 'pagecharprofile-profile' }, [
 					n.elem('btn', 'div', { className: 'badge btn large', events: {
-						click: () => this._toggleActions()
+						click: () => this._toggleActions(),
 					}}, [
 						n.elem('div', { className: 'badge--select' }, [
 							n.component(this.module.avatar.newCharImg(this.profile, { className: 'badge--icon' })),
 							n.elem('div', { className: 'badge--info large' }, [
 								n.elem('div', { className: 'pagecharprofile-profile--title badge--title badge--nowrap' }, [
-									n.component(new ModelTxt(this.profile, p => p.name))
+									n.component(new ModelTxt(this.profile, p => p.name)),
 								]),
 								n.elem('div', { className: 'badge--strong badge--nowrap' }, [
 									n.component(new ModelTxt(this.profile, p => p.lastUsed
 										? l10n.l('pageWatch.lastUsed', "Last used {time}", { time: formatDateTime(new Date(p.lastUsed)) })
-										: l10n.l('pageWatch.neverUsed', "Never used")
-									))
+										: l10n.l('pageWatch.neverUsed', "Never used"),
+									)),
 								]),
 								n.elem('div', { className: 'badge--text badge--nowrap' }, [
-									n.component(new ModelTxt(this.profile, p => p.key))
+									n.component(new ModelTxt(this.profile, p => p.key)),
 								]),
-							])
+							]),
 						]),
-						n.component('actions', new Collapser(null))
-					])
-				])
+						n.component('actions', new Collapser(null)),
+					]),
+				]),
 			),
 			(m, c, change) => {
 				if (change && !change.hasOwnProperty('profileId')) return;
 
 				c.getNode('actions').setComponent(m.profileId === this.profile.id
 					? new PageCharProfileProfileContent(this.module, this.ctrl, this.profile, (show) => this._toggleActions(show), this.close)
-					: null
+					: null,
 				);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

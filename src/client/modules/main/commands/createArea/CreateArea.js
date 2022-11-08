@@ -31,8 +31,8 @@ class CreateArea {
 				}),
 			],
 			value: (ctx, p) => this.createArea(ctx.char, {
-				name: (p.name || '').trim()
-			})
+				name: (p.name || '').trim(),
+			}),
 		});
 
 		this.module.help.addTopic({

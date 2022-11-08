@@ -18,16 +18,16 @@ class PageAreaBadge {
 			new Elem(n => n.elem('div', Object.assign({}, this.opt, { className: 'pagearea-badge' + (this.opt.className ? ' ' + this.opt.className : '') }), [
 				n.elem('div', {
 					className: 'badge btn',
-					events: { click: () => this.module.self.open(this.ctrl) }
+					events: { click: () => this.module.self.open(this.ctrl) },
 				}, [
 					n.elem('div', { className: 'badge--select badge--select-margin flex-baseline' }, [
 						n.elem('div', { className: 'badge--symbol' }, [
-							n.component(new FAIcon('globe'))
+							n.component(new FAIcon('globe')),
 						]),
 						n.elem('div', { className: 'badge--info' }, [
 							n.component('name', new Txt("", {
 								tagName: 'div',
-								className: 'badge--text'
+								className: 'badge--text',
 							})),
 						]),
 						n.elem('div', { className: 'badge--counter' }, [
@@ -37,8 +37,8 @@ class PageAreaBadge {
 								duration: 0,
 							})),
 						]),
-					])
-				])
+					]),
+				]),
 			])),
 			(m, c) => {
 				c.getNode('name').setText(m.name);
@@ -49,9 +49,9 @@ class PageAreaBadge {
 					(m.prv
 						? "\n" + l10n.t('pageArea.inPrivate', "{count} in private", { count: m.prv })
 						: ''
-					)
+					),
 				);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

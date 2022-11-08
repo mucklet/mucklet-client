@@ -42,6 +42,7 @@
 			"before": false,
 			"after": true }
 		],
+		"comma-dangle": ["error", "always-multiline"],
 		"linebreak-style": ["error", "unix"],
 		"no-self-assign": ["error"],
 		"no-redeclare": ["error"],

@@ -21,7 +21,7 @@ class SetAreaLocation {
 			stepFactory: () => new ListStep('private', this.module.cmdLists.getBool(), { name: "private flag" }),
 			desc: l10n.l('setAreaLocation.privateDesc', "Flag telling if the area is private, preventing from being listed in the parent area. Requires parent area ownership. Value is <code>yes</code> or <code>no</code>."),
 			value: (ctx, p) => this.setAreaLocation(ctx.char, p.areaId, { private: p.private }),
-			sortOrder: 200
+			sortOrder: 200,
 		});
 		this.module.setArea.addAttribute({
 			key: 'position',
@@ -32,7 +32,7 @@ class SetAreaLocation {
 			]),
 			desc: l10n.l('setAreaLocation.positionDesc', "The X,Y pixel coordinates of the area's position on the parent area's map image, starting with 0,0 in the top-left corner. Requires parent area ownership."),
 			value: (ctx, p) => this.setAreaLocation(ctx.char, p.areaId, { mapX: p.mapx, mapY: p.mapy }),
-			sortOrder: 210
+			sortOrder: 210,
 		});
 	}
 

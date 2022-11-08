@@ -26,7 +26,7 @@ class ConsoleEditor {
 		let rel = this.elem.render(el);
 		this.cm = new EditorView({
 			state: this._newState(this.state?.doc || ''),
-			parent: rel
+			parent: rel,
 		});
 
 		return rel;
@@ -74,7 +74,7 @@ class ConsoleEditor {
 			extensions: [
 				placeholder(l10n.t(txtPlaceholder)),
 				tabCompletion({
-					complete: state => this.module.cmd.getCMTabComplete(state)
+					complete: state => this.module.cmd.getCMTabComplete(state),
 				}),
 				spellcheck,
 				keymap.of([
@@ -88,13 +88,13 @@ class ConsoleEditor {
 					{ key: 'Cmd-ArrowDown', run: this._cycleNext },
 					{ key: 'Ctrl-N', run: this._cycleNext },
 					{ key: 'Cmd-N', run: this._cycleNext },
-					...standardKeymap
+					...standardKeymap,
 				]),
 				this.module.cmd.getCMLanguage(),
 				this.module.cmd.getCMHighlightStyle(),
 				EditorView.lineWrapping,
 				EditorView.updateListener.of(this._onUpdate),
-			]
+			],
 		});
 		return state;
 	}
@@ -112,7 +112,7 @@ class ConsoleEditor {
 		let char = this.module.player.getActiveChar();
 		this.module.cmd.exec({
 			player: this.module.player.getPlayer(),
-			char
+			char,
 		}, token.state).catch(err => {
 			if (typeof err == 'object' && err) {
 				if (err.code) {
@@ -144,7 +144,7 @@ class ConsoleEditor {
 			? prev
 				? this.state.prevHistory()
 				: this.state.nextHistory()
-			: ''
+			: '',
 		);
 		if (ctx) {
 			cursorDocEnd(ctx);

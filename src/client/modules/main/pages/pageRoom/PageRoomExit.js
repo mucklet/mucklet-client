@@ -12,15 +12,15 @@ class PageRoomExit {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'pageroom-exit' }, [
 			n.elem('btn', 'div', { className: 'badge btn', events: {
-				click: () => this._useExit()
+				click: () => this._useExit(),
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.elem('div', { className: 'badge--info' }, [
 						n.component(new ModelTxt(this.exit, m => m.name, { tagName: 'div', className: 'badge--title' })),
 						n.component(new ModelTxt(this.exit, m => m.keys.join(", "), { tagName: 'div', className: 'badge--text' })),
-					])
-				])
-			])
+					]),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

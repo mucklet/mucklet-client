@@ -25,18 +25,18 @@ class HelpRelatedTopics {
 				n.component(new Txt(l10n.l('help.relatedHelpTopics', "Related help topics"), { tagName: 'h4', className: 'charlog--pad' })),
 				n.elem('div', { className: 'charlog--code' }, [
 					n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-						n.component(new Html(createTable(this.categories), { tagName: 'tbody' }))
-					])
-				])
+						n.component(new Html(createTable(this.categories), { tagName: 'tbody' })),
+					]),
+				]),
 			])) : null),
 			n.component(this.topics ? new Elem(n => n.elem('div', [
 				n.component(new Txt(l10n.l('help.relatedCommands', "Related commands"), { tagName: 'h4', className: 'charlog--pad' })),
 				n.elem('div', { className: 'charlog--code' }, [
 					n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-						n.component(new Html(createTable(this.topics), { tagName: 'tbody' }))
-					])
-				])
-			])) : null)
+						n.component(new Html(createTable(this.topics), { tagName: 'tbody' })),
+					]),
+				]),
+			])) : null),
 		]));
 		return this.elem.render(el);
 	}

@@ -64,7 +64,7 @@ class CmdState {
 			this.ctx,
 			Object.assign({}, this.params),
 			Object.assign({}, this.state),
-			this.error
+			this.error,
 		);
 	}
 

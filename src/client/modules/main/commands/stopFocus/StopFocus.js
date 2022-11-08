@@ -28,22 +28,22 @@ class StopFocus {
 				new DelimStep('@', {
 					next: [
 						new ListStep('at', new ItemList({
-							items: [{ key: 'all' }]
+							items: [{ key: 'all' }],
 						}), {
 							name: "stopFocus at",
 							errNotFound: step => ({ code: 'focus.atNotFound', message: "Did you mean to stopFocus @all?" }),
-							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to stopFocus @all?" })
-						})
+							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to stopFocus @all?" }),
+						}),
 					],
 					else: [
 						new ListStep('charId', this.module.charFocus.getFocusCharList(), {
 							name: "character being focused on",
-							errRequired: step => ({ code: 'stopFocus.characterRequired', message: "Who do you want to remove focus from?" })
-						})
-					]
-				})
+							errRequired: step => ({ code: 'stopFocus.characterRequired', message: "Who do you want to remove focus from?" }),
+						}),
+					],
+				}),
 			],
-			value: (ctx, p) => this.stopFocus(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.stopFocus(ctx.player, ctx.char, p),
 		};
 
 		this.module.cmd.addPrefixCmd('stop', Object.assign({ key: 'focus' }, opts));

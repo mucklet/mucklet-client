@@ -35,11 +35,11 @@ class Away {
 					spanLines: false,
 					maxLength: () => module.info.getCore().propertyMaxLength,
 					errTooLong: propertyTooLong,
-					errRequired: null
-				})
+					errRequired: null,
+				}),
 			],
 			alias: [ 'afk' ],
-			value: (ctx, p) => this.away(ctx.char, { status: p.withStatus ? (p.status || '') : (p.status || null) })
+			value: (ctx, p) => this.away(ctx.char, { status: p.withStatus ? (p.status || '') : (p.status || null) }),
 		});
 
 		this.module.help.addTopic({
@@ -61,9 +61,9 @@ class Away {
 					n.component(new Txt(setAsAwayClearStatus)),
 					n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.elem('code', [ n.text("status") ])
-						])
-					])
+							n.elem('code', [ n.text("status") ]),
+						]),
+					]),
 				])));
 			} else {
 				this.module.charLog.logInfo(char, txtSetAsAway);

@@ -26,10 +26,10 @@ class Follow {
 				new ListStep('charId', this.module.cmdLists.getInRoomCharsAwake(), {
 					name: "character",
 					errRequired: step => ({ code: 'follow.charRequired', message: "Who do you wish to follow?" }),
-				})
+				}),
 			],
 			alias: [ 'hopon' ],
-			value: (ctx, p) => this.follow(ctx.char, { charId: p.charId })
+			value: (ctx, p) => this.follow(ctx.char, { charId: p.charId }),
 		});
 
 		this.module.help.addTopic({

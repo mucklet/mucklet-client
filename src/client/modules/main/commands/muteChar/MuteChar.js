@@ -25,9 +25,9 @@ class MuteChar {
 			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 				textId: 'charName',
 				name: "character",
-				errRequired: step => ({ code: 'muteChar.characterRequired', message: "Who do you want to mute?" })
+				errRequired: step => ({ code: 'muteChar.characterRequired', message: "Who do you want to mute?" }),
 			}),
-			value: (ctx, p) => this.muteChar(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.muteChar(ctx.player, ctx.char, p),
 		};
 
 		this.module.muteCmd.addType(Object.assign({ key: 'char' }, opts));

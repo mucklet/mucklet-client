@@ -43,10 +43,10 @@ class HelpComponent {
 			n.elem('div', { className: 'charlog--pad' }, [
 				n.elem('div', { className: 'charlog--code' }, [
 					n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-						n.component(new Html(list.join(''), { tagName: 'tbody' }))
-					])
-				])
-			])
+						n.component(new Html(list.join(''), { tagName: 'tbody' })),
+					]),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

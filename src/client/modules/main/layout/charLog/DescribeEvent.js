@@ -6,7 +6,7 @@ class DescribeEvent extends Elem {
 		super(n => n.elem('div', { className: 'charlog--highlight' }, [
 			n.text('⌈'),
 			n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
-			n.text('⌋')
+			n.text('⌋'),
 		]));
 	}
 

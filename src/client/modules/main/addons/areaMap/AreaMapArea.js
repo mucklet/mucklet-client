@@ -23,14 +23,14 @@ class AreaMapArea {
 	render(el) {
 		this.model = new Model({ data: {
 			open: this.state.hasOwnProperty('open') ? this.state.open : true,
-			selected: this.state.selected || null
+			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
 
 		let btnComponent = new Elem(n => n.elem('button', { className: 'areamap--close iconbtn lighten ', events: {
 			click: (c, ev) => {
 				this._toggleArea(false);
 				ev.stopPropagation();
-			}
+			},
 		}}, [
 			n.component('btn', new FAIcon('times')),
 		]));
@@ -48,17 +48,17 @@ class AreaMapArea {
 									this.module.pageArea.open(this.ctrl, true);
 								}
 								ev.stopPropagation();
-							}
+							},
 						}}, [
 							n.elem('div', { className: 'areamap--badgecont' }, [
 								n.elem('div', { className: 'badge--select badge--select-margin flex-baseline' }, [
 									n.elem('div', { className: 'areamap--symbol' }, [
-										n.component(new FAIcon('globe'))
+										n.component(new FAIcon('globe')),
 									]),
 									n.elem('div', { className: 'badge--info' }, [
 										n.component('name', new Txt("", {
 											tagName: 'div',
-											className: 'badge--text badge--nowrap'
+											className: 'badge--text badge--nowrap',
 										})),
 									]),
 									n.elem('div', { className: 'areamap--counter' }, [
@@ -70,17 +70,17 @@ class AreaMapArea {
 									]),
 								]),
 							]),
-							n.component('btn', new Fader())
-						])
+							n.component('btn', new Fader()),
+						]),
 					]),
-					n.component('map', new Fader())
+					n.component('map', new Fader()),
 				])),
 				(m, c, change) => {
 					this._setBadge(m, c);
 					if (!change || change.hasOwnProperty('image')) {
 						this._setMap(m, c.getNode('map'));
 					}
-				}
+				},
 			),
 			(m, c, change) => {
 				c = c.getComponent();
@@ -89,7 +89,7 @@ class AreaMapArea {
 				if (!change || change.hasOwnProperty('open')) {
 					this._setMap(this.area, c.getNode('map'));
 				}
-			}
+			},
 		);
 
 		return this.elem.render(el);
@@ -126,7 +126,7 @@ class AreaMapArea {
 			(m.prv
 				? "\n" + l10n.t('areaMap.inPrivate', "{count} in private", { count: m.prv })
 				: ''
-			)
+			),
 		);
 	}
 
@@ -149,8 +149,8 @@ class AreaMapArea {
 				className: 'areamap--map',
 				vw: 156,
 				vh: 156,
-				size: 'small'
-			})
+				size: 'small',
+			}),
 		));
 	}
 

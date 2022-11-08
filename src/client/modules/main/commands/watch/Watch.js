@@ -27,14 +27,14 @@ class Watch {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'watch.characterRequired', message: "Who do you want to watch for?" })
-				})
+					errRequired: step => ({ code: 'watch.characterRequired', message: "Who do you want to watch for?" }),
+				}),
 			],
 			alias: [ 'watchfor', 'wf' ],
 			value: (ctx, p) => this.watch(ctx.player, ctx.char, p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
-			)
+				: { charName: p.charName },
+			),
 		});
 
 		this.module.help.addTopic({
@@ -54,7 +54,7 @@ class Watch {
 			? Promise.resolve({ id: params.charId })
 			: player.call('getChar', { charName: params.charName })
 		).then(c => this.module.api.call('note.player.' + player.id + '.watch.' + c.id, 'addWatcher', {
-			charId: char.id
+			charId: char.id,
 		})).then(result => {
 			let c = result.char;
 			this.module.charLog.logInfo(char, l10n.l('watch.addedWatchFor', "Added a watch for {charName}.", { charName: (c.name + " " + c.surname).trim() }));

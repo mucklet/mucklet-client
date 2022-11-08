@@ -11,7 +11,7 @@ class DndEvent extends Elem {
 					n.component(new Txt(l10n.l('charLog.notSentTo', "Not sent to {name}", { name: c && c.name }))),
 				]),
 				n.component(new Html(formatText(ev.msg), { tagName: 'span', className: 'common--formattext' })),
-			])
+			]),
 		]));
 	}
 }

@@ -8,19 +8,19 @@ const shortcuts = [
 		id: 'tabcompletion',
 		usage: '<kbd>Tab</kbd>',
 		desc: l10n.l('helpConsole.tabcompletionDesc', `<p>Complete the current command or name. Cycle through all options by pressing the key repeatedly.<p>`),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		id: 'linebreak',
 		usage: '<kbd>Shift</kbd> + <kbd>Enter</kbd>',
 		desc: l10n.l('helpConsole.linebreakDesc', `<p>Insert a line break in the console.<p>`),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		id: 'history',
 		usage: '<kbd>Ctrl</kbd> + <kbd>Up</kbd>/<kbd>Down</kbd>',
 		desc: l10n.l('helpConsole.historyDesc', `<p>Cycle through editor history. Any text currently in the console will be saved to history.<p>`),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	// {
 	// 	id: 'autocompletion',
@@ -46,7 +46,7 @@ class HelpConsole {
 		this.shortcuts = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		for (let shortcut of shortcuts) {
@@ -58,7 +58,7 @@ class HelpConsole {
 			title: l10n.l('help.consoleTitle', "Console tips and tricks"),
 			shortDesc: l10n.l('help.consoleTitle', "Learn about console features and keyboard shortcuts"),
 			desc: () => new HelpConsoleComponent(this.module, this.shortcuts),
-			sortOrder: 15
+			sortOrder: 15,
 		});
 	}
 

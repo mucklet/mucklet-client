@@ -26,11 +26,11 @@ class ForceSummon {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to summon?" })
+					errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to summon?" }),
 				}),
 			],
 			alias: [ 'msummon' ],
-			value: (ctx, p) => this.forceSummon(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.forceSummon(ctx.player, ctx.char, p),
 		});
 
 		this.module.help.addTopic({

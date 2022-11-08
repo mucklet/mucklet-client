@@ -42,7 +42,7 @@ class DialogDeleteChar {
 					if (!len) {
 						c.setComponent(new Elem(n => n.elem('div', [
 							n.elem('div', { className: 'common--formmargin' }, [
-								n.component(new Txt(l10n.l('dialogDeleteChar.noHeir1', "You cannot delete your last character as you need someone to inherit any room or item owned by the character.")))
+								n.component(new Txt(l10n.l('dialogDeleteChar.noHeir1', "You cannot delete your last character as you need someone to inherit any room or item owned by the character."))),
 							]),
 							n.elem('div', { className: 'pad-top-xl' }, [
 								n.elem('button', { className: 'btn primary', events: {
@@ -50,11 +50,11 @@ class DialogDeleteChar {
 										if (this.dialog) {
 											this.dialog.close();
 										}
-									}
+									},
 								}}, [
-									n.component(new Txt(l10n.l('dialogdeletechar.okay', "Okay")))
+									n.component(new Txt(l10n.l('dialogdeletechar.okay', "Okay"))),
 								]),
-							])
+							]),
 						])));
 						return;
 					}
@@ -63,7 +63,7 @@ class DialogDeleteChar {
 						c.setComponent(new Elem(n => n.elem('div', [
 							n.elem('div', [
 								n.component(new Txt(l10n.l('dialogDeleteChar.deleteCharBody', "Do you really wish to delete the character?"), { tagName: 'p' })),
-								n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogdeletechar--fullname' }))
+								n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogdeletechar--fullname' })),
 							]),
 							n.elem('p', { className: 'dialog--error' }, [
 								n.component(new FAIcon('exclamation-triangle')),
@@ -95,35 +95,35 @@ class DialogDeleteChar {
 										c.removeClass('dialog--incomplete');
 										model.set({ heir: item.value });
 										c.setProperty('value', item.label);
-									}
+									},
 								}),
 								{
 									className: 'common--sectionpadding',
 									noToggle: true,
 									required: true,
 									popupTip: l10n.l('dialogDeleteChar.characterHeirInfo', "The heir inherits any room or item owned by the deleted character."),
-								}
+								},
 							)),
 							n.component('message', new Collapser(null)),
 							n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
 								n.elem('button', {
 									events: { click: () => this._onDelete(char, model) },
-									className: 'btn primary flex-1'
+									className: 'btn primary flex-1',
 								}, [
-									n.component(new Txt(l10n.l('dialogDeleteChar.delete', "Delete character")))
+									n.component(new Txt(l10n.l('dialogDeleteChar.delete', "Delete character"))),
 								]),
 								n.elem('button', {
 									className: 'btn secondary flex-1',
-									events: { click: () => this.close() }
+									events: { click: () => this.close() },
 								}, [
-									n.component(new Txt(l10n.l('dialogDeleteChar.cancel', "Cancel")))
-								])
-							])
+									n.component(new Txt(l10n.l('dialogDeleteChar.cancel', "Cancel"))),
+								]),
+							]),
 						])));
 					}
-				}
+				},
 			),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -145,7 +145,7 @@ class DialogDeleteChar {
 
 		this.deletePromise = this.module.player.getPlayer().call('deleteChar', {
 			charId: char.id,
-			heir: model.heir
+			heir: model.heir,
 		}).then(() => {
 			this.close();
 		}).catch(err => {

@@ -22,7 +22,7 @@ class PageReportsMessage {
 			this.report,
 			new Elem(n => n.elem('div', { className: 'pagereports-report' }, [
 				n.elem('badge', 'div', { className: 'pagereports-report--badge badge btn margin4', events: {
-					click: () => this._toggleInfo()
+					click: () => this._toggleInfo(),
 				}}, [
 					n.elem('div', { className: 'badge--select' }, [
 						n.component(this.module.avatar.newAvatar(this.report.char, { size: 'small', className: 'badge--icon' })),
@@ -34,8 +34,8 @@ class PageReportsMessage {
 									(m, c) => {
 										c.setText((m.name + ' ' + m.surname).trim());
 										c[m.deleted ? 'addClass' : 'removeClass']('badge--strikethrough');
-									}
-								))
+									},
+								)),
 							]),
 							n.component(new ModelComponent(
 								this.report,
@@ -45,12 +45,12 @@ class PageReportsMessage {
 
 									c.setComponent(m.assigned
 										? new ModelTxt(m.assigned, m => errString(m, m => (m.name + ' ' + m.surname), txtUnknown), {
-											className: 'badge--strong'
+											className: 'badge--strong',
 										})
-										: new Txt(txtNotAssigned)
+										: new Txt(txtNotAssigned),
 									);
-								}
-							))
+								},
+							)),
 						]),
 					]),
 					n.component(new ModelComponent(
@@ -60,15 +60,15 @@ class PageReportsMessage {
 							if (change && !change.hasOwnProperty('reportId')) return;
 							c.setComponent(m.reportId === this.report.getResourceId()
 								? new PageReportsReportContent(this.module, this.report, (show) => this._toggleInfo(show), this.opt)
-								: null
+								: null,
 							);
-						}
-					))
-				])
+						},
+					)),
+				]),
 			])),
 			(m, c) => {
 				c[m.assigned ? 'removeNodeClass' : 'addNodeClass']('badge', 'unassigned');
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

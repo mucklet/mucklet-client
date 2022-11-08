@@ -17,7 +17,7 @@ class LoginComponent {
 		this.state = state;
 		state.login = Object.assign({
 			player: opt.player || '',
-			password: opt.pass || ''
+			password: opt.pass || '',
 		}, state.login);
 		this.autoLogin = !!opt.hasOwnProperty('auto');
 		this.realm = opt.realm || 'wolfery';
@@ -26,7 +26,7 @@ class LoginComponent {
 	render(el) {
 		this.elem = new ScreenDialog(new Elem(n => n.elem('div', { className: 'login' }, [
 			n.elem('label', [
-				n.component(new Txt(l10n.l('login.player', "Account name"), { tagName: 'h3' }))
+				n.component(new Txt(l10n.l('login.player', "Account name"), { tagName: 'h3' })),
 			]),
 			n.component('player', new Input(this.state.login.player, {
 				className: 'common--formmargin',
@@ -36,8 +36,8 @@ class LoginComponent {
 						if (e.keyCode == 13 && this.elem) {
 							this._getNode('password').getInput().getElement().focus();
 						}
-					}
-				}
+					},
+				},
 			})),
 			n.elem('label', [ n.component(new Txt(l10n.l('login.password', "Password"), { tagName: 'h3' })) ]),
 			n.component('password', new PasswordInput(this.state.login.password, {
@@ -48,77 +48,77 @@ class LoginComponent {
 						if (e.keyCode == 13) {
 							this._onLogin();
 						}
-					}
-				}
+					},
+				},
 			})),
 			n.elem('div', { className: 'login--forgotpass' }, [
 				n.component(new Txt(l10n.l('login.havingTroublesLoginIn', "Problems logging in?"), {
 					tagName: 'a',
 					className: 'link',
 					attributes: {
-						href: 'javascript:;'
+						href: 'javascript:;',
 					},
 					events: {
 						click: (c, ev) => {
 							this._onRecover();
 							ev.preventDefault();
-						}
-					}
+						},
+					},
 				})),
 			]),
 			n.component('message', new Collapser(null)),
 			n.elem('login', 'button', { events: {
-				click: () => this._onLogin()
+				click: () => this._onLogin(),
 			}, className: 'btn large primary login--login pad-top-xl login--btn' }, [
 				n.elem('loginSpinner', 'div', { className: 'spinner fade hide' }),
-				n.component(new Txt(l10n.l('login.login', "Login")))
+				n.component(new Txt(l10n.l('login.login', "Login"))),
 			]),
 			n.elem('div', { className: 'login--divider' }, [
-				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' }))
+				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
 			]),
 			n.elem('button', { events: {
-				click: () => this.module.self.googleOAuth2()
+				click: () => this.module.self.googleOAuth2(),
 			}, className: 'btn large google icon-left login--btn' }, [
 				n.component(new FAIcon('google')),
-				n.component(new Txt(l10n.l('login.signin', "Signin with Google")))
+				n.component(new Txt(l10n.l('login.signin', "Signin with Google"))),
 			]),
 			n.elem('div', { className: 'login--divider' }, [
-				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' }))
+				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
 			]),
 			n.elem('button', { events: {
-				click: () => this._onRegister()
+				click: () => this._onRegister(),
 			}, className: 'btn login--register icon-left login--btn' }, [
 				n.component(new FAIcon('pencil-square-o')),
-				n.component(new Txt(l10n.l('login.registerPlayer', "Register Player")))
+				n.component(new Txt(l10n.l('login.registerPlayer', "Register Player"))),
 			]),
 			n.elem('div', { className: 'login--policies' }, [
 				n.component(new Txt(l10n.l('login.privacyPolicy', "Privacy Policy"), {
 					tagName: 'a',
 					className: 'link',
 					attributes: {
-						href: 'javascript:;'
+						href: 'javascript:;',
 					},
 					events: {
 						click: (c, ev) => {
 							this.module.policies.openPolicy('privacy');
 							ev.preventDefault();
-						}
-					}
+						},
+					},
 				})),
 				n.component(new Txt(l10n.l('login.termsOfService', "Terms of Service"), {
 					tagName: 'a',
 					className: 'link',
 					attributes: {
-						href: 'javascript:;'
+						href: 'javascript:;',
 					},
 					events: {
 						click: (c, ev) => {
 							this.module.policies.openPolicy('terms');
 							ev.preventDefault();
-						}
-					}
+						},
+					},
 				})),
-			])
+			]),
 		])));
 		this.elem.render(el);
 
@@ -138,7 +138,7 @@ class LoginComponent {
 	_getState() {
 		return {
 			player: this._getNode('player').getValue(),
-			password: this._getNode('password').getValue()
+			password: this._getNode('password').getValue(),
 		};
 	}
 

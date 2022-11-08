@@ -24,8 +24,8 @@ class ConsoleComponent {
 					n.component(new CollectionList(
 						this.module.player.getControlled(),
 						m => new ConsoleControlledChar(this.module, m, { onClick: this._onClick, layout: this.layout }),
-						{ className: 'console--controlledlist', horizontal: true }
-					))
+						{ className: 'console--controlledlist', horizontal: true },
+					)),
 				]),
 				n.elem('div', { className: 'console--editorcont' }, [
 					n.component(new ModelComponent(
@@ -40,10 +40,10 @@ class ConsoleComponent {
 											this.editor.cyclePrev();
 											this.editor.focus();
 											e.stopPropagation();
-										}
-									}
+										},
+									},
 								}, [
-									n.component(new FAIcon('caret-up'))
+									n.component(new FAIcon('caret-up')),
 								]),
 								n.elem('cycleNext', 'button', {
 									className: 'console--toolbtn iconbtn small',
@@ -52,25 +52,25 @@ class ConsoleComponent {
 											this.editor.cycleNext();
 											this.editor.focus();
 											e.stopPropagation();
-										}
-									}
+										},
+									},
 								}, [
-									n.component(new FAIcon('caret-down'))
-								])
+									n.component(new FAIcon('caret-down')),
+								]),
 							])),
 							(m, c) => {
 								c.setNodeProperty('cyclePrev', 'disabled', m && m.historyIdx ? null : 'disabled');
 								c.setNodeProperty('cycleNext', 'disabled', !m || (m.historyIdx >= m.historyLength && m.isClean) ? 'disabled' : null);
-							}
+							},
 						),
 						(m, c) => {
 							c.setModel(m.state);
 							this.editor.setState(m.state);
-						}
+						},
 					)),
 					n.component('editor', new SimpleBar(this.editor, { className: 'console--editor', autoHide: false })),
-				])
-			])
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

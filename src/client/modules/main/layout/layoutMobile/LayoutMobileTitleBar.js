@@ -25,15 +25,15 @@ class LayoutMobileTitleBar {
 										m.page.close();
 									}
 									e.stopPropagation();
-								}
-							}
+								},
+							},
 						}, [
-							n.component('icon', new Fader())
+							n.component('icon', new Fader()),
 						]),
 					]),
 					n.elem('div', { className: 'layoutmobile-titlebar--title' }, [
-						n.component('txt', new Txt(null, { tagName: 'h3', className: 'layoutmobile-titlebar--titletxt' }))
-					])
+						n.component('txt', new Txt(null, { tagName: 'h3', className: 'layoutmobile-titlebar--titletxt' })),
+					]),
 				])
 			)),
 			(m, c) => {
@@ -49,7 +49,7 @@ class LayoutMobileTitleBar {
 					c.getNode('icon').setComponent(new FAIcon(icon));
 					currentIcon = icon;
 				}
-			}
+			},
 		);
 		this.elem.render(el);
 	}

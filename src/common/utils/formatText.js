@@ -148,7 +148,7 @@ const rules = [
 	// Line breaks
 	textReplace(/\n/m, (m, opt) => token_br),
 	// Escape HTML characters
-	escape
+	escape,
 ];
 
 function parseTokens(tokens, opt) {
@@ -335,7 +335,7 @@ function spliceTextToken(tokens, idx, start, end, token) {
 			type: 'text',
 			content: t.content.slice(end),
 			level: t.level,
-		}
+		},
 	);
 }
 
@@ -367,7 +367,7 @@ function formattedLinks(tokens, opt) {
 		let escapedUrl = escapeHtml(link.url);
 		spliceTextToken(tokens, start.idx, matchOffset(start, true), link.offset + link.url.length + end.index + end[0].length, {
 			type: 'anchor',
-			content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>'
+			content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>',
 		});
 		idx = start.idx + 2;
 		pos = 0;
@@ -385,7 +385,7 @@ function inlineLinks(tokens, opt) {
 				let escapedUrl = escapeHtml(link.url);
 				spliceTextToken(tokens, idx, link.offset, link.offset + link.url.length, {
 					type: 'anchor',
-					content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapedUrl + '</a>'
+					content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapedUrl + '</a>',
 				});
 				idx += 2;
 				pos = 0;

@@ -28,7 +28,7 @@ class RoomPanel {
 
 		this.model = new Model({
 			data: Object.assign({ pageInfo: null }, this.module.roomPages.getModel().props),
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 		this.component = new Panel("", null, { align: 'right', className: 'roompanel' });
 
@@ -62,7 +62,7 @@ class RoomPanel {
 			this.model.set(Object.assign({
 				pageInfo: factory
 					? factory('desktop')
-					: null
+					: null,
 			}, m.props));
 		}
 	}
@@ -99,7 +99,7 @@ class RoomPanel {
 					if (sb) {
 						page.state.scrollTop = sb.getScrollElement().scrollTop;
 					}
-				}
+				},
 			});
 	}
 

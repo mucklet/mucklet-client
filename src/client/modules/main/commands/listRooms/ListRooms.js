@@ -24,7 +24,7 @@ class ListRooms {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'rooms',
 			alias: [ 'room' ],
-			value: (ctx, p) => this.listRooms(ctx.char)
+			value: (ctx, p) => this.listRooms(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -56,11 +56,11 @@ class ListRooms {
 							escapeHtml(l10n.t('listRooms.room', "Room ID")) +
 							'</th><th class="charlog--strong">' +
 							escapeHtml(l10n.t('listRooms.id', "Room")) +
-							'</th></tr>', { tagName: 'thead' }
+							'</th></tr>', { tagName: 'thead' },
 						)),
-						n.component(new Html(owned.join(''), { tagName: 'tbody' }))
-					])
-				])
+						n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+					]),
+				]),
 			])));
 		} else {
 			this.module.charLog.logInfo(char, l10n.l('listRooms.noRooms', "You own no rooms yet."));

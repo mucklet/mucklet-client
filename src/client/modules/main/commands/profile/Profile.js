@@ -25,9 +25,9 @@ class Profile {
 		this.module.cmd.addCmd({
 			key: 'profile',
 			next: new ListStep('profileId', this.module.cmdLists.getCharProfiles(), {
-				name: "character profile"
+				name: "character profile",
 			}),
-			value: (ctx, p) => this.profile(ctx.char, p, true)
+			value: (ctx, p) => this.profile(ctx.char, p, true),
 		});
 
 		this.module.help.addTopic({
@@ -75,7 +75,7 @@ class Profile {
 								cb.resolve(false);
 							}
 							cb = null;
-						}
+						},
 					});
 				});
 			});

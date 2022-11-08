@@ -23,22 +23,22 @@ class RequestSetRoomOwner {
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetRoomOwner.room', "Room"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.room, m => errString(m, m => m.name, l10n.l('requestSetRoomOwner.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
+						className: 'badge--info badge--strong',
+					})),
 				]),
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetRoomOwner.from', "From"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.owner, m => errString(m, m => (m.name + ' ' + m.surname).trim(), l10n.l('requestSetRoomOwner.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
+						className: 'badge--info badge--strong',
+					})),
 				]),
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetRoomOwner.to', "To"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.to, m => errString(m, m => (m.name + ' ' + m.surname).trim(), l10n.l('requestSetRoomOwner.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
-				])
-			]))
+						className: 'badge--info badge--strong',
+					})),
+				]),
+			])),
 		});
 	}
 

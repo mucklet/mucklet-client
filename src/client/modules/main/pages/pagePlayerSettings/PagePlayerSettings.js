@@ -35,7 +35,7 @@ class PagePlayerSettings {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		// Add kebab menu tool
@@ -54,12 +54,12 @@ class PagePlayerSettings {
 			componentFactory: () => new ModelComponent(
 				this.model,
 				new Elem(n => n.elem('button', { className: 'iconbtn medium lighten pageplayersettings--tool-btn', events: {
-					click: this._onClick
+					click: this._onClick,
 				}}, [
 					n.component(new FAIcon('cog')),
 					n.elem('alert', 'div', { className: 'counter small alert' }),
 				])),
-				(m, c) => c[m.alert ? 'removeNodeClass' : 'addNodeClass']('alert', 'hide')
+				(m, c) => c[m.alert ? 'removeNodeClass' : 'addNodeClass']('alert', 'hide'),
 			),
 			className: 'pageplayersettings--tool',
 		});
@@ -131,7 +131,7 @@ class PagePlayerSettings {
 			}),
 			{
 				onClose: () => this.closer = null,
-			}
+			},
 		);
 
 		return this.closer;

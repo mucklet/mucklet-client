@@ -15,7 +15,7 @@ class PageTeleportCharNode {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'pageteleportchar-node' }, [
 			n.elem('btn', 'div', { className: 'badge btn', events: {
-				click: () => this._teleport()
+				click: () => this._teleport(),
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.elem('div', { className: 'badge--info' }, [
@@ -28,15 +28,15 @@ class PageTeleportCharNode {
 								click: (c, ev) => {
 									this._edit();
 									ev.stopPropagation();
-								}
+								},
 							}}, [
 								n.component(new FAIcon('pencil')),
-							])
+							]),
 						]))
-						: null
-					)
-				])
-			])
+						: null,
+					),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

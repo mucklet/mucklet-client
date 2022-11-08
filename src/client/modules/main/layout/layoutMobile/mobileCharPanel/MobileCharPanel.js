@@ -28,14 +28,14 @@ class MobileCharPanel {
 
 		this.model = new Model({
 			data: Object.assign({ pageInfo: null }, this.module.charPages.getModel().props),
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 		this.activePanelModel = this.module.mobileActivePanel.getModel();
 		this.component = new MobilePanel("", null, {
 			closed: !this.activePanelModel.charPanelOpen,
 			align: 'left',
 			className: 'mobilecharpanel',
-			onClose: () => this.module.mobileActivePanel.toggleCharPanel(false)
+			onClose: () => this.module.mobileActivePanel.toggleCharPanel(false),
 		});
 
 		this.module.mobileActivePanel.setNode('charPanel', this.component);
@@ -68,7 +68,7 @@ class MobileCharPanel {
 			this.model.set(Object.assign({
 				pageInfo: factory
 					? factory('mobile')
-					: null
+					: null,
 			}, m.props));
 		}
 	}
@@ -106,7 +106,7 @@ class MobileCharPanel {
 					if (sb) {
 						page.state.scrollTop = sb.getScrollElement().scrollTop;
 					}
-				}
+				},
 			});
 	}
 

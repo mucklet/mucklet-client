@@ -21,7 +21,7 @@ class MobileRoomBadge {
 		this.module.charLog.addOverlay({
 			id: 'mobileRoomBadge',
 			componentFactory: (char, state, layoutId) => new MobileRoomBadgeComponent(this.module, char, state),
-			filter: (char, layoutId) => layoutId == 'mobile'
+			filter: (char, layoutId) => layoutId == 'mobile',
 		});
 	}
 

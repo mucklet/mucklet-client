@@ -28,7 +28,7 @@ class PageReportsReportContent {
 				click: (el, e) => {
 					this._comment();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('comment')),
 			])),
@@ -36,28 +36,28 @@ class PageReportsReportContent {
 				click: (el, e) => {
 					this._reopen();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('refresh')),
-				n.component(new Txt(txtReopen))
+				n.component(new Txt(txtReopen)),
 			])),
 			assign: this.isClosed ? null : new Elem(n => n.elem('button', { className: 'btn icon-left tiny primary flex-1' + (this.isClosed ? ' hide' : ''), events: {
 				click: (el, e) => {
 					this._assign();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component('icon', new FAIcon('user-plus')),
-				n.component('txt', new Txt(txtAssign))
+				n.component('txt', new Txt(txtAssign)),
 			])),
 			close: this.isClosed ? null : new Elem(n => n.elem('button', { className: 'btn icon-left tiny flex-1 warning', events: {
 				click: (el, e) => {
 					this._close();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('times')),
-				n.component(new Txt(txtClose))
+				n.component(new Txt(txtClose)),
 			])),
 		};
 
@@ -69,7 +69,7 @@ class PageReportsReportContent {
 					n.component('puppeteer', new Collapser()),
 					n.component(new CollectionList(
 						this.report.reporters,
-						m => new PageReportsReporter(this.module, m)
+						m => new PageReportsReporter(this.module, m),
 					)),
 					n.elem('div', { className: 'badge--divider' }),
 					n.elem('div', { className: 'flex-row margin4' }, [
@@ -79,7 +79,7 @@ class PageReportsReportContent {
 						n.component(subcomponents.close),
 					]),
 				])),
-				(m, c) => this._setButtons(subcomponents)
+				(m, c) => this._setButtons(subcomponents),
 			),
 			(m, c, change) => {
 				this._setButtons(subcomponents);
@@ -88,13 +88,13 @@ class PageReportsReportContent {
 						? new Elem(n => n.elem('div', { className: 'flex-row badge--margin' }, [
 							n.component(new Txt(l10n.l('pageReports.ctrl', "Ctrl"), { className: 'badge--iconcol badge--subtitle' })),
 							n.component(new ModelTxt(m.puppeteer, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
-								className: 'badge--info badge--text'
-							}))
+								className: 'badge--info badge--text',
+							})),
 						]))
-						: null
+						: null,
 					);
 				}
-			}
+			},
 		);
 		return this.elem.render(el);
 	}
@@ -113,19 +113,19 @@ class PageReportsReportContent {
 				? isAssigned
 					? 'user-times'
 					: 'user-plus'
-				: 'user-plus'
+				: 'user-plus',
 			);
 			c.assign.getNode('txt').setText(this.report.assigned
 				? isAssigned
 					? txtDeassign
 					: txtReassign
-				: txtAssign
+				: txtAssign,
 			);
 		}
 		if (c.close) {
 			c.close.setProperty('disabled', isAssigned
 				? null
-				: 'disabled'
+				: 'disabled',
 			);
 		}
 	}
@@ -141,7 +141,7 @@ class PageReportsReportContent {
 			? this._isAssigned()
 				? this.report.call('deassign')
 				: this._reassign()
-			: this.report.call('assign')
+			: this.report.call('assign'),
 		).catch(err => this.module.toaster.openError(err));
 	}
 
@@ -156,13 +156,13 @@ class PageReportsReportContent {
 					new Elem(n => n.elem('div', [
 						n.component(new Txt(l10n.l('pageReports.reassignBody', "You wish to reassign the report to you from current moderator?"), { tagName: 'p' })),
 						n.elem('p', [
-							n.component('assigned', new ModelTxt(null, m => m ? (m.name + ' ' + m.surname).trim() : '', { className: 'dialog--strong' }))
-						])
+							n.component('assigned', new ModelTxt(null, m => m ? (m.name + ' ' + m.surname).trim() : '', { className: 'dialog--strong' })),
+						]),
 					])),
-					(m, c) => c.getNode('assigned').setModel(m.assigned)
+					(m, c) => c.getNode('assigned').setModel(m.assigned),
 				),
-				confirm: l10n.l('pageReports.delete', "Reassign")
-			}
+				confirm: l10n.l('pageReports.delete', "Reassign"),
+			},
 		);
 	}
 

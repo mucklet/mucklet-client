@@ -24,11 +24,11 @@ class PageEditExitsExit {
 								events: { click: (c, e) => {
 									this._move(-1);
 									e.stopPropagation();
-								} }
+								} },
 							}, [
-								n.component(new FAIcon('caret-up'))
+								n.component(new FAIcon('caret-up')),
 							])),
-							(col, c) => c.setProperty('disabled', col.atIndex(0) == this.exit ? 'disabled' : null)
+							(col, c) => c.setProperty('disabled', col.atIndex(0) == this.exit ? 'disabled' : null),
 						)),
 						n.component(new CollectionComponent(
 							this.room.exits,
@@ -37,12 +37,12 @@ class PageEditExitsExit {
 								events: { click: (c, e) => {
 									this._move(1);
 									e.stopPropagation();
-								} }
+								} },
 							}, [
-								n.component(new FAIcon('caret-down'))
+								n.component(new FAIcon('caret-down')),
 							])),
-							(col, c) => c.setProperty('disabled', col.atIndex(col.length - 1) == this.exit ? 'disabled' : null)
-						))
+							(col, c) => c.setProperty('disabled', col.atIndex(col.length - 1) == this.exit ? 'disabled' : null),
+						)),
 					]))),
 					n.elem('div', { className: 'badge--info' }, [
 						n.component(new ModelTxt(this.exit, m => m.name, { tagName: 'div', className: 'badge--title' })),
@@ -53,13 +53,13 @@ class PageEditExitsExit {
 							click: (c, ev) => {
 								this._edit();
 								ev.stopPropagation();
-							}
+							},
 						}}, [
 							n.component(new FAIcon('pencil')),
-						])
-					])
-				])
-			])
+						]),
+					]),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

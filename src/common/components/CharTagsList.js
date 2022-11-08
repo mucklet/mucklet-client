@@ -77,7 +77,7 @@ class CharTagsList {
 						bt.custom - at.custom ||
 						at.key.localeCompare(bt.key) ||
 						at.id.localeCompare(bt.id);
-				}
+				},
 			}),
 			col => {
 				col.getModel().dispose();
@@ -95,7 +95,7 @@ class CharTagsList {
 									click: (c, ev) => {
 										onEdit(cont.tag, cont.pref, this.tags);
 										ev.stopPropagation();
-									}
+									},
 								}
 								: {
 									click: (c, ev) => {
@@ -107,7 +107,7 @@ class CharTagsList {
 									mouseleave: (c, ev) => {
 										this.tooltip = tooltip.mouseLeave(ev.currentTarget.parentElement, cont.tag.desc);
 									},
-								}
+								},
 						}, [
 							n.component(new ModelTxt(cont.tag, m => m.key)),
 							n.component(onDelete ? new Elem(n => n.elem('button', {
@@ -116,24 +116,24 @@ class CharTagsList {
 									click: (c, e) => {
 										onDelete(cont.tag, cont.pref, this.tags);
 										e.stopPropagation();
-									}
-								}
+									},
+								},
 							}, [
-								n.component(new FAIcon('times'))
-							])) : null)
+								n.component(new FAIcon('times')),
+							])) : null),
 						])),
 						(m, c) => {
 							c[m.desc ? 'addClass' : 'removeClass']('hasdesc');
 							c[m.custom ? 'addClass' : 'removeClass']('custom');
-						}
+						},
 					),
 					{
 						className: 'chartagslist--list',
 						subClassName: () => 'chartagslist--item',
-						horizontal: true
-					}
-				))
-			]))
+						horizontal: true,
+					},
+				)),
+			])),
 		);
 		return this.elem.render(el);
 	}

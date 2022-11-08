@@ -26,9 +26,9 @@ class TagsCmd {
 			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 				textId: 'charName',
 				name: "character",
-				errRequired: step => ({ code: 'tagsCmd.characterRequired', message: "Who do you want to list tags for?" })
+				errRequired: step => ({ code: 'tagsCmd.characterRequired', message: "Who do you want to list tags for?" }),
 			}),
-			value: (ctx, p) => this.tags(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.tags(ctx.player, ctx.char, p),
 		});
 
 		// this.module.help.addTopic({
@@ -51,9 +51,9 @@ class TagsCmd {
 				this.module.charLog.logComponent(char, 'tags', new Elem(n => n.elem('div', { className: 'tagscmd charlog--pad' }, [
 					n.component(new Txt(
 						l10n.l('tagsCmd.tagsFor', "Tags for {charName}", { charName: (c.name + ' ' + c.surname).trim() }),
-						{ tagName: 'h4', className: 'charlog--pad' }
+						{ tagName: 'h4', className: 'charlog--pad' },
 					)),
-					n.component(new CharTagsList(c.tags, { eventBus: this.app.eventBus, static: true }))
+					n.component(new CharTagsList(c.tags, { eventBus: this.app.eventBus, static: true })),
 				])));
 			} else {
 				this.module.charLog.logInfo(char, l10n.l('listTags.noTagsSet', "{charName} has no tags set.", { charName: c.name }));

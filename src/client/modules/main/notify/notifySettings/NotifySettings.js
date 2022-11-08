@@ -16,7 +16,7 @@ class NotifySettings {
 		this.module.pagePlayerSettings.addTool({
 			id: 'notify',
 			sortOrder: 10,
-			componentFactory: (user, player, state) => new NotifySettingsComponent(this.module, user, player, state)
+			componentFactory: (user, player, state) => new NotifySettingsComponent(this.module, user, player, state),
 		});
 	}
 

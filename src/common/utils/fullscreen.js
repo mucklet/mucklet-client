@@ -19,7 +19,7 @@ export function requestFullscreen(element, opt) {
 			? element.mozRequestFullScreen(opt)
 			: element.webkitRequestFullScreen
 				? element.webkitRequestFullScreen(opt)
-				: Promise.reject(new Error("requestFullscreen not supported"))
+				: Promise.reject(new Error("requestFullscreen not supported")),
 	);
 }
 
@@ -36,7 +36,7 @@ export function exitFullscreen() {
 				: document.webkitExitFullscreen
 					? document.webkitExitFullscreen()
 					: Promise.reject(new Error("exitFullscreen not supported"))
-		: null
+		: null,
 	);
 }
 

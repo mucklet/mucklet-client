@@ -57,7 +57,7 @@ class Screen {
 		let l = this.subcomponents.length;
 		this.fader.setComponent(l
 			? this.subcomponents[l - 1].component
-			: this.component
+			: this.component,
 		);
 	}
 

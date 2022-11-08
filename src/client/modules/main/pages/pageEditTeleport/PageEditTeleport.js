@@ -35,9 +35,9 @@ class PageEditTeleport {
 			(ctrl, char, state, close) => ({
 				component: new PageEditTeleportComponent(this.module, ctrl, node, isGlobal, state, close),
 				title: l10n.l('pageEditTeleport.editTeleportNode', "Edit teleport node"),
-				onClose: close
+				onClose: close,
 			}),
-			() => this._onClose(node)
+			() => this._onClose(node),
 		);
 
 		// Close the page if the node gets deleted

@@ -28,10 +28,10 @@ class Describe {
 				errRequired: step => ({ code: 'describe.messageRequired', message: "What do you wish to describe?" }),
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
-				completer: this.module.cmdLists.getInRoomChars()
+				completer: this.module.cmdLists.getInRoomChars(),
 			}),
 			alias: [ 'desc', 'spoof' ],
-			value: (ctx, p) => this.describe(ctx.char, { msg: p.msg })
+			value: (ctx, p) => this.describe(ctx.char, { msg: p.msg }),
 		});
 
 		this.module.help.addTopic({

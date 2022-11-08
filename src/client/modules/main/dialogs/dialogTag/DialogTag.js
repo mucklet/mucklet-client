@@ -41,7 +41,7 @@ class DialogTag {
 		let global = this.module.tags.getTag(key);
 		let props = {
 			pref: opt.pref || prefs[0].id,
-			custom: !global || (isEdit && tag.id != global.id)
+			custom: !global || (isEdit && tag.id != global.id),
 		};
 		let isRoleTag = global && (global.role || global.idRole);
 
@@ -56,7 +56,7 @@ class DialogTag {
 				() => new ModifyModel(isEdit ? tag : (global || { key, desc: '' }), {
 					props,
 					modifiedOnNew: true,
-					eventBus: this.app.eventBus
+					eventBus: this.app.eventBus,
 				}),
 				model => model.dispose(),
 				model => new Elem(n => n.elem('div', [
@@ -75,30 +75,30 @@ class DialogTag {
 												let v = c.getValue().replace(/\r?\n/gi, '');
 												c.setValue(v);
 												model.set({ desc: v });
-											}
+											},
 										},
-										attributes: { name: 'dialogtag-desc', spellcheck: 'true' }
+										attributes: { name: 'dialogtag-desc', spellcheck: 'true' },
 									}),
 									(m, c) => {
 										c.setValue(m.custom ? m.desc : global.desc);
 										c.setProperty('disabled', m.custom ? null : 'disabled');
-									}
+									},
 								),
 								(m, c) => {
 									if (m && !model.custom) {
 										c.getComponent().setValue(m.desc);
 									}
-								}
+								},
 							)),
 							n.component(global && !isRoleTag ? new LabelToggleBox(l10n.l('dialogTag.customDescription', "Custom description"), !!model.custom, {
 								className: 'pad-top-l',
-								onChange: v => model.set({ custom: v })
+								onChange: v => model.set({ custom: v }),
 							}) : null),
 						])),
 						{
 							className: 'common--sectionpadding',
-							noToggle: true
-						}
+							noToggle: true,
+						},
 					)),
 					n.component(isRoleTag ? null : new PanelSection(
 						l10n.l('pageAddTag.preference', "Preference"),
@@ -112,40 +112,40 @@ class DialogTag {
 										click: (c, e) => {
 											model.set({ pref: p.id });
 											e.stopPropagation();
-										}
+										},
 									},
-									disableClick: true
+									disableClick: true,
 								}),
-								(m, c) => c.setValue(m.pref == p.id, false)
+								(m, c) => c.setValue(m.pref == p.id, false),
 							),
 							{
 								className: 'pad-top-s flex-row pad16',
-								horizontal: true
-							}
+								horizontal: true,
+							},
 						),
 						{
 							className: 'common--sectionpadding',
-							noToggle: true
-						}
+							noToggle: true,
+						},
 					)),
 					n.component('message', new Collapser(null)),
 					n.elem('div', { className: 'pad-top-xl' }, [
 						n.elem('add', 'button', {
 							events: { click: () => this._onSubmit(ctrl, model, isEdit, global) },
-							className: 'dialogtag--btn btn primary common--btnwidth'
+							className: 'dialogtag--btn btn primary common--btnwidth',
 						}, [
 							n.component(isEdit
 								? new ModelTxt(model, m => (m.getModel().desc != m.desc && m.custom) || props.custom != m.custom || props.pref != m.pref
 									? l10n.l('dialogTag.update', "Update")
-									: l10n.l('dialogTag.close', "Close")
+									: l10n.l('dialogTag.close', "Close"),
 								)
-								: new Txt(l10n.l('dialogTag.addTag', "Add tag"))
-							)
-						])
-					])
-				]))
+								: new Txt(l10n.l('dialogTag.addTag', "Add tag")),
+							),
+						]),
+					]),
+				])),
 			),
-			onClose: this._onClose
+			onClose: this._onClose,
 		});
 
 		this.dialog.open();
@@ -213,7 +213,7 @@ class DialogTag {
 		return this.module.api.call('tag.char.' + ctrl.id + '.tags', 'create', {
 			key: model.key,
 			desc: model.desc,
-			pref: model.pref
+			pref: model.pref,
 		});
 	}
 

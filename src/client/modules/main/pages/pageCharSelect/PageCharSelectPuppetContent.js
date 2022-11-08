@@ -29,9 +29,9 @@ class PageCharSelectPuppetContent {
 								click: (c, ev) => {
 									this.module.pagePuppeteerSettings.open(this.puppeteer);
 									ev.stopPropagation();
-								}
+								},
 							}}, [
-								n.component(new FAIcon('cog'))
+								n.component(new FAIcon('cog')),
 							]),
 							n.elem('div', { className: 'badge--info small' }, [
 								n.component(new ModelTxt(
@@ -39,32 +39,32 @@ class PageCharSelectPuppetContent {
 									m => m.puppeteer && m.puppeteer.id == this.char.id
 										? l10n.l('pageCharSelect.controlledSince', "Controlled since")
 										: l10n.l('pageCharSelect.lastControlled', "Last controlled"),
-									{ tagName: 'div', className: 'badge--text' }
+									{ tagName: 'div', className: 'badge--text' },
 								)),
 								n.component(new ModelTxt(
 									this.puppeteer,
 									m => m.lastUsed
 										? formatDateTime(new Date(m.lastUsed))
 										: l10n.l('pageCharSelect.never', "Never"),
-									{ tagName: 'div', className: 'badge--text' }
+									{ tagName: 'div', className: 'badge--text' },
 								)),
 								n.component('controlledBy', new ModelTxt(
 									null,
 									m => m ? '(' + (m.name + ' ' + m.surname).trim() + ')' : '',
-									{ tagName: 'div', className: 'badge--text' }
+									{ tagName: 'div', className: 'badge--text' },
 								)),
-							])
+							]),
 						]),
-						n.component('action', new Collapser())
+						n.component('action', new Collapser()),
 					])),
-					(m, c) => this._setAction(c, o)
+					(m, c) => this._setAction(c, o),
 				),
 				(m, c) => {
 					this._setAction(c.getComponent(), o);
 					c.getComponent().getNode('controlledBy').setModel(m.puppeteer && m.puppeteer.id != this.char.id ? m.puppeteer : null);
-				}
+				},
 			),
-			(m, c) => this._setAction(c.getComponent().getComponent(), o)
+			(m, c) => this._setAction(c.getComponent().getComponent(), o),
 		);
 		return this.elem.render(el);
 	}
@@ -82,11 +82,11 @@ class PageCharSelectPuppetContent {
 			action = o.suspended || new Elem(n => n.elem('div', { className: 'badge--margin' }, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('pageCharSelect.suspended', "Suspend"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.until', "Until {time}", { time: formatDateTime(new Date(m.suspended)) }), { className: 'badge--info badge--error' }))
+					n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.until', "Until {time}", { time: formatDateTime(new Date(m.suspended)) }), { className: 'badge--info badge--error' })),
 				]),
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('pageCharSelect.reason', "Reason"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.char, m => m.suspendReason, { className: 'badge--info badge--text' }))
+					n.component(new ModelTxt(this.char, m => m.suspendReason, { className: 'badge--info badge--text' })),
 				]),
 			]));
 			o.suspended = action;
@@ -100,14 +100,14 @@ class PageCharSelectPuppetContent {
 							click: (el, e) => {
 								this._wakeupPuppet();
 								e.stopPropagation();
-							}
+							},
 						}}, [
 							n.component(new FAIcon('sign-in')),
 							n.component(new ModelTxt(this.puppet, m => this.puppet.state == 'awake'
 								? l10n.l('pageCharSelect.control', "Control")
-								: l10n.l('pageCharSelect.wakeUp', "Wake up")
-							))
-						])
+								: l10n.l('pageCharSelect.wakeUp', "Wake up"),
+							)),
+						]),
 					]));
 					o.wakeup = action;
 				} else if (!reqStatus) {
@@ -116,34 +116,34 @@ class PageCharSelectPuppetContent {
 							click: (el, e) => {
 								this._requestControl();
 								e.stopPropagation();
-							}
+							},
 						}}, [
 							n.component(new FAIcon('refresh')),
-							n.component(new Txt(l10n.l('pageCharSelect.requestControl', "Request control")))
-						])
+							n.component(new Txt(l10n.l('pageCharSelect.requestControl', "Request control"))),
+						]),
 					]));
 					o.requestControl = action;
 				} else if (reqStatus == 'pending') {
 					action = o.pending || new Elem(n => n.elem('div', { className: 'badge--margin' }, [
 						n.elem('div', { className: 'badge--select' }, [
 							n.component(new Txt(l10n.l('pageCharSelect.status', "Status"), { className: 'badge--iconcol badge--subtitle' })),
-							n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.pendingControlRequest', "Pending control request"), { className: 'badge--info badge--strong' }))
-						])
+							n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.pendingControlRequest', "Pending control request"), { className: 'badge--info badge--strong' })),
+						]),
 					]));
 					o.pending = action;
 				} else if (reqStatus == 'rejected') {
 					action = o.rejected || new Elem(n => n.elem('div', { className: 'badge--margin' }, [
 						n.elem('div', { className: 'badge--select' }, [
 							n.component(new Txt(l10n.l('pageCharSelect.status', "Status"), { className: 'badge--iconcol badge--subtitle' })),
-							n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.rejected', "Control request denied"), { className: 'badge--info badge--error' }))
+							n.component(new ModelTxt(this.char, m => l10n.l('pageCharSelect.rejected', "Control request denied"), { className: 'badge--info badge--error' })),
 						]),
 						n.component(this.puppeteer.requestAnswer
 							? new Elem(n => n.elem('div', { className: 'badge--select' }, [
 								n.component(new Txt(l10n.l('pageCharSelect.reason', "Reason"), { className: 'badge--iconcol badge--subtitle' })),
-								n.component(new Txt(this.puppeteer.requestAnswer, { className: 'badge--info badge--text' }))
+								n.component(new Txt(this.puppeteer.requestAnswer, { className: 'badge--info badge--text' })),
 							]))
-							: null
-						)
+							: null,
+						),
 					]));
 				}
 			}

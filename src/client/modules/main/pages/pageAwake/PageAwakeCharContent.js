@@ -15,25 +15,25 @@ class PageAwakeCharContent {
 		this.elem = new Elem(n => n.elem('div', [
 			n.elem('div', { className: 'badge--select badge--margin' }, [
 				n.elem('div', { className: 'badge--faicon' }, [
-					n.component(new FAIcon('info'))
+					n.component(new FAIcon('info')),
 				]),
 				n.elem('div', { className: 'badge--info small' }, [
 					n.component(new Txt(l10n.l('pageAwake.lastAwake', "Woke up"), { tagName: 'div', className: 'badge--text' })),
 					n.component(new ModelTxt(
 						this.char,
 						m => formatDateTime(new Date(m.lastAwake)),
-						{ tagName: 'div', className: 'badge--text' }
-					))
+						{ tagName: 'div', className: 'badge--text' },
+					)),
 				]),
 				n.elem('button', { className: 'iconbtn medium tinyicon', events: {
 					click: (c, ev) => {
 						this.module.dialogAboutChar.open(this.char);
 						ev.stopPropagation();
-					}
+					},
 				}}, [
-					n.component(new FAIcon('user-circle'))
+					n.component(new FAIcon('user-circle')),
 				]),
-			])
+			]),
 		]));
 		return this.elem.render(el);
 	}

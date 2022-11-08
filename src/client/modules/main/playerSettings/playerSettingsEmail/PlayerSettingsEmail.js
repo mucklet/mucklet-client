@@ -42,7 +42,7 @@ class PlayerSettingsEmail {
 			componentFactory: (user, player, state) => user.identity && !this.module.api.isError(user.identity)
 				? new PlayerSettingsEmailComponent(this.module, user, player, state)
 				: null,
-			alertModel: this.model
+			alertModel: this.model,
 		});
 	}
 

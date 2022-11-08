@@ -3,7 +3,7 @@ const escapeMap = {
 	'<': '&lt;',
 	'>': '&gt;',
 	'"': '&#34;',
-	"'": '&#39;'
+	"'": '&#39;',
 };
 
 const repl = function(c) {

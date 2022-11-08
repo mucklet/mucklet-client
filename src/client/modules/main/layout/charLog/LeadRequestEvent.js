@@ -23,11 +23,11 @@ class LeadRequestEvent extends Elem {
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Txt("follow " + (c.name + " " + c.surname).trim(), { tagName: 'code' }))
-						])
-					]))
-				)
-			])
+							n.component(new Txt("follow " + (c.name + " " + c.surname).trim(), { tagName: 'code' })),
+						]),
+					])),
+				),
+			]),
 		]));
 	}
 }

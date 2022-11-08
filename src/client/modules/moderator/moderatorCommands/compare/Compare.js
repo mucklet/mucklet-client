@@ -46,7 +46,7 @@ class Compare {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "character",
-						errRequired: step => ({ code: 'compare.characterRequired', message: "Which character?" })
+						errRequired: step => ({ code: 'compare.characterRequired', message: "Which character?" }),
 					}),
 				}),
 				new DelimStep("=", {
@@ -56,13 +56,13 @@ class Compare {
 							else: new ListStep('compareCharId', this.module.cmdLists.getAllChars(), {
 								textId: 'compareCharName',
 								name: "compare character",
-								errRequired: step => ({ code: 'compare.compateCharacterRequired', message: "Which character to compare with?" })
+								errRequired: step => ({ code: 'compare.compateCharacterRequired', message: "Which character to compare with?" }),
 							}),
 						}),
-					]
-				})
+					],
+				}),
 			],
-			value: (ctx, p) => this._compare(ctx, p)
+			value: (ctx, p) => this._compare(ctx, p),
 		});
 
 		this.module.helpModerate.addTopic({
@@ -100,13 +100,13 @@ class Compare {
 							n.component(new Txt(l10n.l('compare.comparison', "Comparison result"), { tagName: 'h4' })),
 							n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, rows.filter(m => !m[2] || !m[2].hide).map(m => n.elem('tr', [
 								n.elem('td', { className: 'charlog--strong' }, [
-									n.component(new Txt(m[0]))
+									n.component(new Txt(m[0])),
 								]),
 								n.elem('td', [
-									n.component(new Html(m[1], { className: m[2] && m[2].className }))
+									n.component(new Html(m[1], { className: m[2] && m[2].className })),
 								]),
-							])))
-						])
+							]))),
+						]),
 					]);
 				});
 

@@ -77,7 +77,7 @@ class FormatTxt extends Fader {
 				open: this.noInteraction ? true : this.state['section_' + sidx] || false,
 				className: 'formattxt--section',
 				onToggle: this.noInteraction ? null : this._setState.bind(this, sidx),
-				noToggle: this.noInteraction
+				noToggle: this.noInteraction,
 			}).render(div);
 			match = next;
 			sidx++;

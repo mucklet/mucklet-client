@@ -43,7 +43,7 @@ class CharPagesStore {
 				.objectStore(charStore)
 				.put({ ctrlId, charId: char.id, char }),
 			(req, ev) => true,
-			(req, ev) => console.error("Failed to store char: ", char, ev)
+			(req, ev) => console.error("Failed to store char: ", char, ev),
 		)).catch(ev => {
 			if (localStorage) {
 				localStorage.setItem(charPagesDBPrefix + ctrlId + '.' + char.id, JSON.stringify(char));
@@ -65,7 +65,7 @@ class CharPagesStore {
 				.objectStore(charStore)
 				.get([ ctrlId, charId ]),
 			(r, ev) => r.result ? r.result.char : { id: charId },
-			(r, ev) => console.error("Error getting char: ", ev)
+			(r, ev) => console.error("Error getting char: ", ev),
 		)).catch(() => {
 			let data = localStorage ? localStorage.getItem(charPagesDBPrefix + ctrlId + '.' + charId) : null;
 			return data ? JSON.parse(data) : { id: charId };
@@ -87,7 +87,7 @@ class CharPagesStore {
 			(r, ev) => {
 				console.log("Error opening " + charPagesDB + ": ", ev);
 				this.useLocalStorage = true;
-			}
+			},
 		);
 	}
 

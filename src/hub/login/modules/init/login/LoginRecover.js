@@ -33,7 +33,7 @@ class LoginRecover {
 						n.component(new Txt(l10n.l('login.accountName', "Account name"))),
 					]),
 				]),
-				n.component(new PopupTip(l10n.l('login.accountNameInfo', "Account name is your login name."), { className: 'popuptip--width-m flex-auto' }))
+				n.component(new PopupTip(l10n.l('login.accountNameInfo', "Account name is your login name."), { className: 'popuptip--width-m flex-auto' })),
 			]),
 			n.component('player', new Input(this.model.username, {
 				className: 'common--formmargin',
@@ -44,11 +44,11 @@ class LoginRecover {
 						if (e.keyCode == 13 && this.elem) {
 							this._onRecover(this.model);;
 						}
-					}
-				}
+					},
+				},
 			})),
 			n.elem('div', { className: 'login--divider small-margin' }, [
-				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' }))
+				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
 			]),
 			n.component(new Txt(l10n.l('login.recoverByCharacterDisclaimer', "Enter full name of your character at Wolfery."), { tagName: 'div', className: 'login-register--disclaimer' })),
 			n.elem('div', { className: 'flex-row flex-baseline' }, [
@@ -57,7 +57,7 @@ class LoginRecover {
 						n.component(new Txt(l10n.l('login.characterName', "Character name"))),
 					]),
 				]),
-				n.component(new PopupTip(l10n.l('login.characterNameInfo', "Full name of one of your characters from the realm Wolfery."), { className: 'popuptip--width-m flex-auto' }))
+				n.component(new PopupTip(l10n.l('login.characterNameInfo', "Full name of one of your characters from the realm Wolfery."), { className: 'popuptip--width-m flex-auto' })),
 			]),
 			n.component('charName', new Input(this.model.charName, {
 				className: 'common--formmargin',
@@ -68,20 +68,20 @@ class LoginRecover {
 						if (e.keyCode == 13 && this.elem) {
 							this._onRecover(this.model);;
 						}
-					}
-				}
+					},
+				},
 			})),
 			n.component('message', new Collapser(null)),
 			n.component('submit', new ModelComponent(
 				this.model,
 				new Elem(n => n.elem('button', {
 					events: { click: () => this._onRecover(this.model) },
-					className: 'btn large primary login--login pad-top-xl login--btn'
+					className: 'btn large primary login--login pad-top-xl login--btn',
 				}, [
 					n.elem('spinner', 'div', { className: 'spinner fade hide' }),
-					n.component(new Txt(l10n.l('login.recoverAccount', "Recover account")))
+					n.component(new Txt(l10n.l('login.recoverAccount', "Recover account"))),
 				])),
-				(m, c) => c.setProperty('disabled', true ? null : 'disabled')
+				(m, c) => c.setProperty('disabled', true ? null : 'disabled'),
 			)),
 			n.elem('div', { className: 'login--policies' }, [
 				n.component(new Txt(l10n.l('login.visitForum', "Ask forum for help"), {
@@ -89,7 +89,7 @@ class LoginRecover {
 					className: 'link',
 					attributes: {
 						href: 'https://forum.wolfery.com',
-						target: '_blank'
+						target: '_blank',
 					},
 				})),
 			]),
@@ -98,7 +98,7 @@ class LoginRecover {
 			close: () => {
 				this._clearState();
 				this.close();
-			}
+			},
 		});
 		this.elem.render(el);
 	}
@@ -116,7 +116,7 @@ class LoginRecover {
 		return {
 			username: "",
 			realm: this.realm,
-			charName: ""
+			charName: "",
 		};
 	}
 

@@ -18,11 +18,11 @@ const defaultAttr = [
 			name: "how to play puppet",
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setPuppet.howToPlayDesc', "Information on how to play the puppet. It may be formatted and span multiple paragraphs."),
-		sortOrder: 10
-	}
+		sortOrder: 10,
+	},
 ];
 
 /**
@@ -38,7 +38,7 @@ class SetPuppet {
 	_init(module) {
 		this.module = module;
 		this.puppetAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -48,9 +48,9 @@ class SetPuppet {
 			key: 'puppet',
 			next: new ListStep('attr', this.puppetAttr, {
 				name: "puppet attribute",
-				token: 'attr'
+				token: 'attr',
 			}),
-			value: this.setPuppet.bind(this)
+			value: this.setPuppet.bind(this),
 		});
 
 		this.module.help.addTopic({
@@ -70,7 +70,7 @@ class SetPuppet {
 			next = attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
+					name: attr.name || attr.key,
 				});
 			next = Array.isArray(next) ? next : [ next ];
 			next.unshift(new DelimStep("=", { errRequired: null }));
@@ -81,7 +81,7 @@ class SetPuppet {
 
 	setPuppet(ctx, p) {
 		return ctx.char.call('setPuppet', {
-			[p.attr]: p.value
+			[p.attr]: p.value,
 		}).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('setPuppet.updatedPuppet', "Puppet attribute was successfully set."));
 		});

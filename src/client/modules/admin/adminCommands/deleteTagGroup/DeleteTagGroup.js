@@ -24,10 +24,10 @@ class DeleteTagGroup {
 			key: 'taggroup',
 			next: [
 				new ListStep('key', this.module.tags.getGroupsList(), {
-					name: "group to delete"
-				})
+					name: "group to delete",
+				}),
 			],
-			value: (ctx, p) => this.deleteTagGroup(ctx.char, p.key)
+			value: (ctx, p) => this.deleteTagGroup(ctx.char, p.key),
 		});
 
 		this.module.helpAdmin.addTopic({

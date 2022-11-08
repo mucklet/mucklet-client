@@ -18,7 +18,7 @@ class HelpCategory {
 		this.elem = new Elem(n => n.elem('div', { className: 'help-category' }, [
 			n.component(new Txt(c.title, { tagName: 'h3', className: 'margin-bottom-m' })),
 			n.component(isComponent(desc) ? desc : new Html(desc, { className: 'help-category--desc' })),
-			n.component(new HelpRelatedTopics(this._getRelatedCategories(), this.category.topics))
+			n.component(new HelpRelatedTopics(this._getRelatedCategories(), this.category.topics)),
 		]));
 		return this.elem.render(el);
 	}

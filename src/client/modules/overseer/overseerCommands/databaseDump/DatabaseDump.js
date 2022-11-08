@@ -20,7 +20,7 @@ class DatabaseDump {
 
 		this.module.cmd.addPrefixCmd('database', {
 			key: 'dump',
-			value: (ctx, p) => this._backup(ctx, p)
+			value: (ctx, p) => this._backup(ctx, p),
 		});
 
 		this.module.helpOverseer.addTopic({

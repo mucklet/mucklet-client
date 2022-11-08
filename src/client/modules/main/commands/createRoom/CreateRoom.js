@@ -31,8 +31,8 @@ class CreateRoom {
 				}),
 			],
 			value: (ctx, p) => this.createRoom(ctx.char, {
-				name: (p.name || '').trim()
-			})
+				name: (p.name || '').trim(),
+			}),
 		});
 
 		this.module.help.addTopic({

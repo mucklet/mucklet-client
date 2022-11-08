@@ -29,12 +29,12 @@ class MobileAreaBadge {
 					if (!change || change.hasOwnProperty('area')) {
 						c.setComponent(m.area
 							? this.module.pageArea.newBadge(ctrl, m.area)
-							: null
+							: null,
 						);
 					}
-				}
+				},
 			),
-			filter: (ctrl, room, canEdit, canDelete, layoutId) => layoutId == 'mobile'
+			filter: (ctrl, room, canEdit, canDelete, layoutId) => layoutId == 'mobile',
 		});
 	}
 

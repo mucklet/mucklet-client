@@ -24,7 +24,7 @@ class ListExits {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'exits',
 			alias: [ 'exit' ],
-			value: (ctx, p) => this.listExits(ctx.char)
+			value: (ctx, p) => this.listExits(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -49,9 +49,9 @@ class ListExits {
 				n.component(new Txt(l10n.l('listExits.roomExits', "Room exits"), { tagName: 'h4', className: 'charlog--pad' })),
 				n.elem('div', { className: 'charlog--code' }, [
 					n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-						n.component(new Html(list.join(''), { tagName: 'tbody' }))
-					])
-				])
+						n.component(new Html(list.join(''), { tagName: 'tbody' })),
+					]),
+				]),
 			])));
 		} else {
 			this.module.charLog.logInfo(char, l10n.l('listExits.noExits', "This room has no exits."));

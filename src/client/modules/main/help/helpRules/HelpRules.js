@@ -20,7 +20,7 @@ class HelpRules {
 			title: l10n.l('help.rulesTitle', "Realm rules and etiquette"),
 			shortDesc: l10n.l('help.rulesShortDesc', "Learn about realm rules and etiquette"),
 			desc: () => new HelpRulesComponent(this.module),
-			sortOrder: 5
+			sortOrder: 5,
 		});
 	}
 

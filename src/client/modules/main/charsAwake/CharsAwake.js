@@ -29,27 +29,27 @@ class CharsAwake {
 			map: (k, v) => new ModifyModel(v, {
 				props: { match: this.filter.match(v), watch: this._isWatched(k) },
 				isModifiedProperty: null,
-				onChange: m => m.set({ match: this.filter.match(m.getModel()) })
+				onChange: m => m.set({ match: this.filter.match(m.getModel()) }),
 			}),
-			dispose: (k, m) => m.dispose()
+			dispose: (k, m) => m.dispose(),
 		});
 		this.collection = new ModelToCollection(this.charsAwake, {
 			compare: (a, b) => (b.value.match - a.value.match) || (b.value.lastAwake - a.value.lastAwake) || a.key.localeCompare(b.key),
 			filter: (k, v) => v.awake == true,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.watchedAwake = new ModelToCollection(this.charsAwake, {
 			compare: (a, b) => (b.value.match - a.value.match) || (b.value.lastAwake - a.value.lastAwake) || a.key.localeCompare(b.key),
 			filter: (k, v) => v.watch && v.awake,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.unwatchedAwake = new ModelToCollection(this.charsAwake, {
 			compare: (a, b) => (b.value.match - a.value.match) || (b.value.lastAwake - a.value.lastAwake) || a.key.localeCompare(b.key),
 			filter: (k, v) => !v.watch && v.awake,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.notes = new ModelWrapper(null, {
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.user = null;
@@ -112,13 +112,13 @@ class CharsAwake {
 		Promise.all([
 			this.module.api.get('core.chars.awake'),
 			this.module.api.get('note.player.' + user.id + '.watches'),
-			this.module.api.get('note.player.' + user.id + '.notes')
+			this.module.api.get('note.player.' + user.id + '.notes'),
 		]).then(result => {
 			let charsAwake = result[0];
 			let watches = new ModelWrapper(result[1], {
 				// Filter out delete characters
 				filter: (k, v) => v.char && !isResError(v.char) && !v.char.deleted,
-				eventBus: this.app.eventBus
+				eventBus: this.app.eventBus,
 			});
 			let notes = result[2];
 			this.model.set({ charsAwake, watches, notes });
@@ -144,7 +144,7 @@ class CharsAwake {
 			) {
 				this.module.notify.send(
 					l10n.l('charsAwake.charWokeUp', "{name} woke up.", { name: (char.name + ' ' + char.surname).trim() }),
-					{ char: char.getModel() }
+					{ char: char.getModel() },
 				);
 			}
 		}
@@ -208,7 +208,7 @@ class CharsAwake {
 		if (localStorage && this.user) {
 			localStorage.setItem(charsAwakeStoragePrefix + this.user.id, JSON.stringify({
 				showAll: this.model.showAll,
-				filter: this.model.filter
+				filter: this.model.filter,
 			}));
 		}
 	}

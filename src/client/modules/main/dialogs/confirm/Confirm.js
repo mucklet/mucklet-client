@@ -64,15 +64,15 @@ class Confirm {
 								} else {
 									this.close();
 								}
-							}
-						}
+							},
+						},
 					}, [
 						n.component(opt.spinner ? 'spinner' : null, opt.spinner ? new Elem(n => n.elem('div', { className: 'spinner fade hide' })) : null),
 						n.component(isComponent(opt.confirm)
 							? opt.confirm
-							: new Txt(opt.confirm || l10n.l('confirm.confirm', "Okay"))
-						)
-					])
+							: new Txt(opt.confirm || l10n.l('confirm.confirm', "Okay")),
+						),
+					]),
 				];
 				if (opt.cancel !== null) {
 					footer.push(n.elem('cancel', 'button', {
@@ -83,13 +83,13 @@ class Confirm {
 									opt.onCancel();
 								}
 								this.close();
-							}
-						}
+							},
+						},
 					}, [
 						n.component(isComponent(opt.cancel)
 							? opt.cancel
-							: new Txt(opt.cancel || l10n.l('confirm.cancel', "Cancel"))
-						)
+							: new Txt(opt.cancel || l10n.l('confirm.cancel', "Cancel")),
+						),
 					]));
 				}
 				return n.elem('div', { className: 'confirm--content' }, [
@@ -97,9 +97,9 @@ class Confirm {
 						? opt.body
 						: Array.isArray(opt.body)
 							? new Elem(n => n.elem('div', { className: 'confirm--body' }, opt.body.map(b => n.component(new Txt(b, { tagName: 'p' })))))
-							: new Txt(opt.body || l10n.l('confirm.body', "Are you sure?"), { className: 'confirm--body' })
+							: new Txt(opt.body || l10n.l('confirm.body', "Are you sure?"), { className: 'confirm--body' }),
 					),
-					n.elem('div', { className: 'confirm--footer' }, footer)
+					n.elem('div', { className: 'confirm--footer' }, footer),
 				]);
 			}),
 			onClose: () => {
@@ -107,7 +107,7 @@ class Confirm {
 					opt.onClose();
 				}
 				this.dialog = null;
-			}
+			},
 		});
 
 		this.dialog.open();

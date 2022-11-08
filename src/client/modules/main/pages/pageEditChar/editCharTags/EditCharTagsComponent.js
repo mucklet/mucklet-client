@@ -24,7 +24,7 @@ class EditCharTagsComponent {
 				n.component(new Txt(l10n.l('editCharTags.tags', "Tags"), { tagName: 'h3' })),
 				n.component(new Context(
 					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => (!t.type || t.type == 'title') && (t.filter ? t.filter(this.ctrl) : true)
+						filter: t => (!t.type || t.type == 'title') && (t.filter ? t.filter(this.ctrl) : true),
 					}),
 					tools => tools.dispose(),
 					tools => new CollectionList(
@@ -34,9 +34,9 @@ class EditCharTagsComponent {
 							className: 'editchartags--tools',
 							subClassName: t => t.className || null,
 							horizontal: true,
-						}
-					)
-				))
+						},
+					),
+				)),
 			])),
 			new Elem(n => n.elem('div', [
 				n.elem('div', { className: 'common--sectionpadding' }, [
@@ -44,7 +44,7 @@ class EditCharTagsComponent {
 						n.component('tag', new AutoComplete(this.state.tag, {
 							attributes: {
 								placeholder: l10n.t('editCharTags.typeTagKey', "Enter tag keyword to add"),
-								spellcheck: 'false'
+								spellcheck: 'false',
 							},
 							fetch: (text, update, c) => {
 								let tags = this.module.tags.getTagsCollection();
@@ -52,7 +52,7 @@ class EditCharTagsComponent {
 									.filter(m => patternMatch(m.key, text) && this._tagIsValid(m.key))
 									.map(m => ({ value: m.id, label: m.key }))
 									.sort(labelCompare)
-									.slice(0, 10)
+									.slice(0, 10),
 								);
 							},
 							events: {
@@ -63,7 +63,7 @@ class EditCharTagsComponent {
 										e.stopPropagation();
 										this._addTag();
 									}
-								}
+								},
 							},
 							render: patternMatchRender,
 							minLength: 1,
@@ -72,7 +72,7 @@ class EditCharTagsComponent {
 								this._setTag(item.label);
 								c.setProperty('value', item.label);
 								this._addTag();
-							}
+							},
 						})),
 						n.elem('add', 'button', {
 							className: 'editchartags--add iconbtn medium tinyicon',
@@ -81,12 +81,12 @@ class EditCharTagsComponent {
 								click: (c, e) => {
 									this._addTag();
 									e.preventDefault();
-								}
-							}
+								},
+							},
 						}, [
 							n.component(new FAIcon('plus')),
-						])
-					])
+						]),
+					]),
 				]),
 				n.component(new CharTagsList(this.ctrl.tags, {
 					eventBus: this.module.self.app.eventBus,
@@ -99,19 +99,19 @@ class EditCharTagsComponent {
 									n.component(new Txt(l10n.l('editCharTags.deleteCustomTagBody', "Do you wish to delete the custom tag?"), { tagName: 'p' })),
 									n.elem('p', [ n.component(new ModelTxt(tag, m => m.key, { className: 'dialog--strong' })) ]),
 								])),
-								confirm: l10n.l('editCharTags.delete', "Delete")
+								confirm: l10n.l('editCharTags.delete', "Delete"),
 							});
 						} else {
 							this._deleteTag(tag);
 						}
 					},
-				}))
+				})),
 			])),
 			{
 				className: 'editchartags common--sectionpadding',
 				noToggle: true,
-				popupTip: l10n.l('editCharTags.tagsInfo', "Tags are searchable keywords describing a character/player's likes and dislikes, or other properties.")
-			}
+				popupTip: l10n.l('editCharTags.tagsInfo', "Tags are searchable keywords describing a character/player's likes and dislikes, or other properties."),
+			},
 		);
 		this._setTag(this.state.tag);
 		return this.elem.render(el);

@@ -61,8 +61,8 @@ class PageEditExit {
 					if (exitDetails) {
 						exitDetails.off('delete', onDelete);
 					}
-				}
-			}
+				},
+			},
 		);
 		return closer;
 	}

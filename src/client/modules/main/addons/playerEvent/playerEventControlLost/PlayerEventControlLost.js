@@ -27,11 +27,11 @@ class PlayerEventControlLost {
 				n.component(new Txt(l10n.l('puppetWakeup.roleGranted', "Someone else took control of puppet."), { tagName: 'p' })),
 				n.elem('div', { className: 'common--sectionpadding' }, [
 					n.component(new Txt((ev.puppet.name + ' ' + ev.puppet.surname).trim(), { tagName: 'div', className: 'dialog--strong' })),
-					n.component(new Txt("(" + (ev.puppeteer.name + ' ' + ev.puppeteer.surname).trim() + ")", { tagName: 'div', className: 'dialog--small' }))
+					n.component(new Txt("(" + (ev.puppeteer.name + ' ' + ev.puppeteer.surname).trim() + ")", { tagName: 'div', className: 'dialog--small' })),
 				]),
 			])),
 			closeOn: 'click',
-			onClose
+			onClose,
 		});
 	}
 

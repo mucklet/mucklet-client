@@ -11,7 +11,7 @@ class ConsoleControlledChar extends Elem {
 		let playerModel = this.module.player.getModel();
 		this.setRootNode(n => n.component(new ModelComponent(playerModel, new Elem(n => n.elem('div', { className: 'console-controlledchar' }, [
 			n.elem('button', { className: 'btn medium', events: {
-				click: () => this._onClick()
+				click: () => this._onClick(),
 			}}, [
 				n.component(this.module.avatar.newAvatar(this.char, { size: 'tiny', className: 'console-controlledchar--avatar' })),
 				n.component(opt.layout == 'mobile' ? null : new ModelTxt(this.char, m => m.name)),
@@ -20,17 +20,17 @@ class ConsoleControlledChar extends Elem {
 					new ModelComponent(
 						this.module.charLog.getUnseen(),
 						new Elem(n => n.elem('div', { className: 'console-controlledchar--counter counter' }, [
-							n.component('txt', new Txt(""))
+							n.component('txt', new Txt("")),
 						])),
 						(m, c) => {
 							let l = m.props[char.id];
 							c.getNode('txt').setText(counterString(l));
 							c[l ? 'removeClass' : 'addClass']('hide');
-						}
+						},
 					),
-					(m, c) => c.getComponent()[m.props[char.id] ? 'addClass' : 'removeClass']('alert')
-				))
-			])
+					(m, c) => c.getComponent()[m.props[char.id] ? 'addClass' : 'removeClass']('alert'),
+				)),
+			]),
 		])), (m, c) => {
 			if (this.char === m.activeChar) {
 				c.addClass('active');

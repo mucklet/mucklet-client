@@ -35,7 +35,7 @@ class PageEditExitComponent {
 			(m, c, change) => {
 				if (change && !change.hasOwnProperty('exit')) return;
 				this._setComponent(c, m.exit);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}
@@ -56,12 +56,12 @@ class PageEditExitComponent {
 			() => ({
 				model: new Model({
 					data: { keys: this.state.hasOwnProperty('keys') ? this.state.keys : exit.keys.join(", ") },
-					eventBus: this.module.self.app.eventbus
+					eventBus: this.module.self.app.eventbus,
 				}),
 				exit: new ModifyModel(exit, {
 					props: this.state.exit,
-					eventBus: this.module.self.app.eventBus
-				})
+					eventBus: this.module.self.app.eventBus,
+				}),
 			}),
 			ctx => {
 				this.state.exit = ctx.exit.getModifications() || {};
@@ -73,16 +73,16 @@ class PageEditExitComponent {
 					new ModelTxt(this.room, m => m.name),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.targetRoom', "Destination"),
 					new ModelTxt(exit.targetRoom, m => m.name),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.exitName', "Exit name"),
@@ -90,26 +90,26 @@ class PageEditExitComponent {
 						ctx.exit,
 						new Input(ctx.exit.name, {
 							events: { input: c => ctx.exit.set({ name: c.getValue() }) },
-							attributes: { spellcheck: 'false' }
+							attributes: { spellcheck: 'false' },
 						}),
-						(m, c) => c.setValue(m.name)
+						(m, c) => c.setValue(m.name),
 					),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.exitName', "Keywords"),
 					new Input(ctx.model.keys, {
 						events: { input: c => ctx.model.set({ keys: c.getValue() }) },
-						attributes: { spellcheck: 'false' }
+						attributes: { spellcheck: 'false' },
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditExit.keysInfo', "Comma-separated list of case-insensitive keywords used for identifying the exit.")
-					}
+						popupTip: l10n.l('pageEditExit.keysInfo', "Comma-separated list of case-insensitive keywords used for identifying the exit."),
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.leaveMessage', "Leave message"),
@@ -117,15 +117,15 @@ class PageEditExitComponent {
 						ctx.exit,
 						new Textarea(ctx.exit.leaveMsg, {
 							className: 'common--paneltextarea-small',
-							events: { input: c => ctx.exit.set({ leaveMsg: c.getValue() }) }
+							events: { input: c => ctx.exit.set({ leaveMsg: c.getValue() }) },
 						}),
-						(m, c) => c.setValue(m.leaveMsg)
+						(m, c) => c.setValue(m.leaveMsg),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditExit.leaveMessageInfo', "Message seen by the origin room. Usually starts with \"leaves ...\".")
-					}
+						popupTip: l10n.l('pageEditExit.leaveMessageInfo', "Message seen by the origin room. Usually starts with \"leaves ...\"."),
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.arriveMessage', "Arrival message"),
@@ -135,13 +135,13 @@ class PageEditExitComponent {
 							className: 'common--paneltextarea-small',
 							events: { input: c => ctx.exit.set({ arriveMsg: c.getValue() }) },
 						}),
-						(m, c) => c.setValue(m.arriveMsg)
+						(m, c) => c.setValue(m.arriveMsg),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditExit.arriveMessageInfo', "Message seen by the destination room. Usually starts with \"arrives from ...\".")
-					}
+						popupTip: l10n.l('pageEditExit.arriveMessageInfo', "Message seen by the destination room. Usually starts with \"arrives from ...\"."),
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.travelMessage', "Travel message"),
@@ -151,13 +151,13 @@ class PageEditExitComponent {
 							className: 'common--paneltextarea-small',
 							events: { input: c => ctx.exit.set({ travelMsg: c.getValue() }) },
 						}),
-						(m, c) => c.setValue(m.travelMsg)
+						(m, c) => c.setValue(m.travelMsg),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditExit.travelMessageInfo', "Message seen by the exit user. Usually starts with \"goes ...\".")
-					}
+						popupTip: l10n.l('pageEditExit.travelMessageInfo', "Message seen by the exit user. Usually starts with \"goes ...\"."),
+					},
 				)),
 				n.elem('div', { className: 'pageeditexit--flags' }, [
 					n.component(new ModelComponent(
@@ -165,9 +165,9 @@ class PageEditExitComponent {
 						new LabelToggleBox(l10n.l('pageEditExit.hidden', "Is hidden"), false, {
 							className: 'common--formmargin',
 							onChange: v => ctx.exit.set({ hidden: v }),
-							popupTip: l10n.l('pageEditExit.hiddenInfo', "A hidden exit is not listed among room exits, but characters might still use it if they know the keyword(s).")
+							popupTip: l10n.l('pageEditExit.hiddenInfo', "A hidden exit is not listed among room exits, but characters might still use it if they know the keyword(s)."),
 						}),
-						(m, c) => c.setValue(m.hidden, false)
+						(m, c) => c.setValue(m.hidden, false),
 					)),
 				]),
 				n.component(this._message),
@@ -178,33 +178,33 @@ class PageEditExitComponent {
 							new ModelComponent(
 								ctx.exit,
 								new Elem(n => n.elem('update', 'button', { events: {
-									click: () => this._save(ctx)
+									click: () => this._save(ctx),
 								}, className: 'btn primary common--btnwidth' }, [
-									n.component('text', new Txt())
+									n.component('text', new Txt()),
 								])),
-								(m, c) => this._setSaveText(ctx, c)
+								(m, c) => this._setSaveText(ctx, c),
 							),
-							(m, c) => this._setSaveText(ctx, c.getComponent())
+							(m, c) => this._setSaveText(ctx, c.getComponent()),
 						)),
 					]),
 					n.elem('button', { events: {
 						click: () => this.module.confirm.open(() => this._delete(), {
 							title: l10n.l('pageEditExit.confirmDelete', "Confirm deletion"),
 							body: l10n.l('pageEditExit.deleteExitBody', "Do you really wish to delete this exit?"),
-							confirm: l10n.l('pageEditExit.delete', "Delete")
-						})
+							confirm: l10n.l('pageEditExit.delete', "Delete"),
+						}),
 					}, className: 'iconbtn medium' }, [
-						n.component(new FAIcon('trash'))
+						n.component(new FAIcon('trash')),
 					]),
-				])
-			]))
+				]),
+			])),
 		));
 	}
 
 	_setSaveText(ctx, c) {
 		c.getNode('text').setText(this._isModified(ctx)
 			? l10n.l('pageEditExit.update', "Save edits")
-			: l10n.l('pageEditExit.close', "Close")
+			: l10n.l('pageEditExit.close', "Close"),
 		);
 	}
 
@@ -252,7 +252,7 @@ class PageEditExitComponent {
 	_setMessage(msg) {
 		this._message.setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
-			: null
+			: null,
 		);
 	}
 

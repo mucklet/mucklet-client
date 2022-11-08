@@ -24,28 +24,28 @@ class PageCharProfileComponent {
 		let createProfile = new Elem(n => n.elem('div', { className: 'common--addpadding' }, [
 			n.elem('button', { events: { click: this._onCreate }, className: 'btn icon-left common--addbtn' }, [
 				n.component(new FAIcon('plus')),
-				n.component(new Txt(l10n.l('pageCharProfile.createProfile', "Create new profile")))
-			])
+				n.component(new Txt(l10n.l('pageCharProfile.createProfile', "Create new profile"))),
+			]),
 		]));
 		this.elem = new Elem(n => n.elem('div', { className: 'pagecharprofile' }, [
 			n.component('charlist', new CollectionList(
 				this.ctrl.profiles,
 				profile => new PageCharProfileProfile(this.module, this.ctrl, profile, this.model, this.close),
-				{ className: 'pagecharprofile--profiles' }
+				{ className: 'pagecharprofile--profiles' },
 			)),
 			n.component(new CollectionComponent(
 				this.ctrl.profiles,
 				new Collapser(),
 				(col, c, ev) => c.setComponent(col.length
 					? null
-					: new Txt(l10n.l('pageCharProfile.noProfiles', "There are no stored profiles"), { className: 'common--nolistplaceholder' })
-				)
+					: new Txt(l10n.l('pageCharProfile.noProfiles', "There are no stored profiles"), { className: 'common--nolistplaceholder' }),
+				),
 			)),
 			n.component(new ModelComponent(
 				this.ctrl,
 				new Collapser(),
-				(m, c) => c.setComponent(m.puppeteer ? null : createProfile)
-			))
+				(m, c) => c.setComponent(m.puppeteer ? null : createProfile),
+			)),
 		]));
 		this.elem.render(el);
 	}

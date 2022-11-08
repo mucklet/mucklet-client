@@ -19,9 +19,9 @@ class RequestRoom {
 			key: 'room',
 			next: new ListStep('attr', this.roomAttr, {
 				name: "room attribute",
-				token: 'attr'
+				token: 'attr',
 			}),
-			value: this._exec.bind(this)
+			value: this._exec.bind(this),
 		});
 	}
 

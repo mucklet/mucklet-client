@@ -29,10 +29,10 @@ class Say {
 				errRequired: step => ({ code: 'say.messageRequired', message: "What do you want to say?" }),
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
-				completer: this.module.cmdLists.getInRoomChars()
+				completer: this.module.cmdLists.getInRoomChars(),
 			}),
 			symbol: '"',
-			value: this.say.bind(this)
+			value: this.say.bind(this),
 		});
 
 		this.module.help.addTopic({

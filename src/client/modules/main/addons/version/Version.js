@@ -95,7 +95,7 @@ class Version {
 		if (level == 0) {
 			this._confirm(
 				l10n.l('version.majorUpdate', "Major update"),
-				l10n.l('version.majorUpdateBody2', "It is recommended that you update your client for things to continue to work properly.")
+				l10n.l('version.majorUpdateBody2', "It is recommended that you update your client for things to continue to work properly."),
 			);
 			return;
 		}
@@ -103,7 +103,7 @@ class Version {
 		if (level == 1) {
 			this._confirm(
 				l10n.l('version.minorUpdate', "Minor update"),
-				l10n.l('version.minorUpdateBody2', "You may continue playing. But updating your client can give you access to new features.")
+				l10n.l('version.minorUpdateBody2', "You may continue playing. But updating your client can give you access to new features."),
 			);
 			return;
 		}
@@ -111,7 +111,7 @@ class Version {
 		if (level >= 2) {
 			this._confirm(
 				l10n.l('version.patchUpdate', "Patch update"),
-				l10n.l('version.patchUpdateBody2', "You may continue playing. But if you have experienced some issues, updating your client may solve them.")
+				l10n.l('version.patchUpdateBody2', "You may continue playing. But if you have experienced some issues, updating your client may solve them."),
 			);
 			return;
 		}
@@ -127,20 +127,20 @@ class Version {
 				n.elem('div', { className: 'flex-row margin8' }, [
 					n.elem('button', {
 						className: 'btn primary',
-						events: { click: () => reload(true) }
+						events: { click: () => reload(true) },
 					}, [
-						n.component(new Txt(l10n.l('version.update', "Update")))
+						n.component(new Txt(l10n.l('version.update', "Update"))),
 
 					]),
 					n.elem('button', {
 						className: 'btn secondary',
-						events: { click: close }
+						events: { click: close },
 					}, [
-						n.component(new Txt(l10n.l('version.later', "Later")))
-					])
-				])
+						n.component(new Txt(l10n.l('version.later', "Later"))),
+					]),
+				]),
 			])),
-			closeOn: 'button'
+			closeOn: 'button',
 		});
 	}
 

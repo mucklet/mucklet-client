@@ -37,7 +37,7 @@ class RepeatStep {
 		let step = this._setStep(state, st.idx + 1);
 		state.addStep(this.delim
 			? new DelimStep(this.delim, { errRequired: null, next: step })
-			: step
+			: step,
 		);
 		return false;
 	}

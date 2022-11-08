@@ -31,8 +31,8 @@ class PageCharComponent {
 	render(el) {
 		let image = new Elem(n => n.elem('div', { className: 'pagechar--image-cont' }, [
 			n.component('img', new Img('', { className: 'pagechar--image', events: {
-				click: () => new ImgModal(this.char.image.href).open()
-			}}))
+				click: () => new ImgModal(this.char.image.href).open(),
+			}})),
 		]));
 		let about = new PanelSection(
 			l10n.l('pageChar.about', "About"),
@@ -40,7 +40,7 @@ class PageCharComponent {
 				this.char,
 				new Elem(n => n.elem('div', [
 					n.component('about', new FormatTxt("", { className: 'common--desc-size', state: this.charState.about })),
-					n.component('tags', new Collapser())
+					n.component('tags', new Collapser()),
 				])),
 				(m, c, change) => {
 					c.getNode('about').setFormatText(m.about);
@@ -49,22 +49,22 @@ class PageCharComponent {
 							className: 'pagechar--tags',
 							static: false,
 							eventBus: this.module.self.app.eventBus,
-							tooltipMargin: 'm'
+							tooltipMargin: 'm',
 						}) : null);
 					}
-				}
+				},
 			),
 			{
 				className: 'common--sectionpadding',
 				open: this.state.aboutOpen || false,
-				onToggle: (c, v) => this.state.aboutOpen = v
-			}
+				onToggle: (c, v) => this.state.aboutOpen = v,
+			},
 		);
 		let o = {};
 		let elem = new Elem(n => n.elem('div', [
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.filter ? t.filter(this.ctrl, this.char) : true
+					filter: t => t.filter ? t.filter(this.ctrl, this.char) : true,
 				}),
 				tools => tools.dispose(),
 				tools => new CollectionComponent(
@@ -85,17 +85,17 @@ class PageCharComponent {
 									className: 'pagechar--tools',
 									subClassName: t => t.className || null,
 									horizontal: true,
-								}
+								},
 							));
 						}
-					}
-				)
+					},
+				),
 			)),
 			n.component(new ModelComponent(
 				this.char,
 				new NameSection(new ModelTxt(this.char, c => c.name + ' ' + c.surname), null, {
 					open: this.state.charImageOpen,
-					onToggle: (c, v) => this.state.charImageOpen = v
+					onToggle: (c, v) => this.state.charImageOpen = v,
 				}),
 				(m, c, changed) => {
 					if (m.image) {
@@ -104,7 +104,7 @@ class PageCharComponent {
 					} else {
 						c.setComponent(null);
 					}
-				}
+				},
 			)),
 			n.elem('div', { className: 'pagechar--details flex-row pad8 common--sectionpadding' }, [
 				n.elem('div', { className: 'flex-1' }, [
@@ -116,8 +116,8 @@ class PageCharComponent {
 							(m, c) => {
 								c.setText(m.gender ? firstLetterUppercase(m.gender) : textNotSet);
 								c[m.gender ? 'removeClass' : 'addClass']('pagechar--notset');
-							}
-						))
+							},
+						)),
 					]),
 				]),
 				n.elem('div', { className: 'flex-1' }, [
@@ -129,9 +129,9 @@ class PageCharComponent {
 							(m, c) => {
 								c.setText(m.species ? firstLetterUppercase(m.species) : textNotSet);
 								c[m.species ? 'removeClass' : 'addClass']('pagechar--notset');
-							}
-						))
-					])
+							},
+						)),
+					]),
 				]),
 			]),
 			n.component(new PanelSection(
@@ -142,13 +142,13 @@ class PageCharComponent {
 					(m, c) => {
 						c.setFormatText(m.desc ? m.desc : l10n.t(textNotSet));
 						c[m.desc ? 'removeClass' : 'addClass']('pagechar--notset');
-					}
+					},
 				),
 				{
 					className: 'common--sectionpadding',
 					open: this.state.descriptionOpen,
-					onToggle: (c, v) => this.state.descriptionOpen = v
-				}
+					onToggle: (c, v) => this.state.descriptionOpen = v,
+				},
 			)),
 			n.component(new ModelComponent(
 				this.char,
@@ -165,29 +165,29 @@ class PageCharComponent {
 									(m, c) => {
 										c.setFormatText(m.howToPlay ? m.howToPlay : l10n.t(textNotSet));
 										c[m.howToPlay ? 'removeClass' : 'addClass']('pagechar--notset');
-									}
+									},
 								),
 								{
 									className: 'common--sectionpadding',
 									open: this.state.howToPlayOpen,
-									onToggle: (c, v) => this.state.howToPlayOpen = v
-								}
+									onToggle: (c, v) => this.state.howToPlayOpen = v,
+								},
 							)
 							: null;
 						c.setComponent(o.howToPlay);
-					}
+					},
 				),
-				(m, c) => c.setModel(m.puppetInfo)
+				(m, c) => c.setModel(m.puppetInfo),
 			)),
 			n.component(new ModelComponent(
 				this.char,
 				new ModelComponent(
 					this.char.tags,
 					new Collapser(null),
-					(m, c) => this._showAbout(c, about)
+					(m, c) => this._showAbout(c, about),
 				),
-				(m, c) => this._showAbout(c.getComponent(), about)
-			))
+				(m, c) => this._showAbout(c.getComponent(), about),
+			)),
 		]));
 
 		this.elem = new ModelComponent(
@@ -195,8 +195,8 @@ class PageCharComponent {
 			new Fader(null, { className: 'pagechar' }),
 			(m, c) => c.setComponent(m.hasOwnProperty('name')
 				? elem
-				: new Txt(l10n.l('pageChar.whoWasIt', "... Who was I looking at?"), { className: 'common--nolistplaceholder' })
-			)
+				: new Txt(l10n.l('pageChar.whoWasIt', "... Who was I looking at?"), { className: 'common--nolistplaceholder' }),
+			),
 		);
 
 		return this.elem.render(el);
@@ -239,7 +239,7 @@ class PageCharComponent {
 	_showAbout(c, about) {
 		c.setComponent(this.char.about || hasTags(this.char.tags)
 			? about
-			: null
+			: null,
 		);
 	}
 }

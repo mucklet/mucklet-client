@@ -10,7 +10,7 @@ class PlayerPanelFooter {
 	render(el) {
 		this.elem = new Context(
 			() => new CollectionWrapper(this.module.playerTools.getFooterTools(), {
-				filter: t => t.filter ? t.filter() : true
+				filter: t => t.filter ? t.filter() : true,
 			}),
 			tools => tools.dispose(),
 			tools => new CollectionList(
@@ -20,8 +20,8 @@ class PlayerPanelFooter {
 					className: 'playerpanel-footer flex-row flex-center',
 					subClassName: t => t.className || null,
 					horizontal: true,
-				}
-			)
+				},
+			),
 		);
 		return this.elem.render(el);
 	}

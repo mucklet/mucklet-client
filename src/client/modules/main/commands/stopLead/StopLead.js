@@ -25,9 +25,9 @@ class Lead {
 				new ListStep('charId', this.module.cmdLists.getInRoomCharsAwake(), {
 					name: "character",
 					errRequired: null,
-				})
+				}),
 			],
-			value: (ctx, p) => this.stopLead(ctx.char, p.charId ? { charId: p.charId } : null)
+			value: (ctx, p) => this.stopLead(ctx.char, p.charId ? { charId: p.charId } : null),
 		};
 		this.module.cmd.addPrefixCmd('stop', Object.assign({ key: 'lead' }, opts));
 		this.module.cmd.addCmd(Object.assign({ key: 'dropoff' }, opts));

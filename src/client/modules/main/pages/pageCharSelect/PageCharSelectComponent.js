@@ -28,11 +28,11 @@ class PageCharSelectComponent {
 			new CollectionList(
 				this.module.player.getPuppets(),
 				m => new PageCharSelectPuppet(this.module, m, this.model, this.close),
-				{ className: 'pagecharselect--puppets' }
+				{ className: 'pagecharselect--puppets' },
 			),
 			{
-				className: 'common--sectionpadding'
-			}
+				className: 'common--sectionpadding',
+			},
 		);
 
 		let chars = this.module.player.getChars();
@@ -42,7 +42,7 @@ class PageCharSelectComponent {
 				new CollectionList(
 					chars,
 					char => new PageCharSelectChar(this.module, char, this.model, this.close),
-					{ className: 'pagecharselect--chars' }
+					{ className: 'pagecharselect--chars' },
 				),
 				(col, c, ev) => {
 					if (ev) {
@@ -52,22 +52,22 @@ class PageCharSelectComponent {
 							this._openPopupTip();
 						}
 					}
-				}
+				},
 			)),
 			n.elem('div', { className: 'pagecharselect--add' }, [
 				n.elem('add', 'button', { events: { click: this._onCreate }, className: 'btn icon-left' }, [
 					n.component(new FAIcon('plus')),
-					n.component(new Txt(l10n.l('pageCharSelect.createNew', "Create New")))
-				])
+					n.component(new Txt(l10n.l('pageCharSelect.createNew', "Create New"))),
+				]),
 			]),
 			n.component(new CollectionComponent(
 				this.module.player.getPuppets(),
 				new Collapser(),
 				(col, c) => c.setComponent(col.length
 					? puppetsComponent
-					: null
-				)
-			))
+					: null,
+				),
+			)),
 		]));
 		let rel = this.elem.render(el);
 		if (chars.length == 0) {
@@ -105,15 +105,15 @@ class PageCharSelectComponent {
 
 		this.popupTip = new PopupTip(new Elem(n => n.elem('div', { className: 'pagecharselect--add-tip-body' }, [
 			n.component(new Txt(l10n.l('pageCharSelect.getStarted', "Get started"), { tagName: 'h3' })),
-			n.component(new Txt(l10n.l('pageCharSelect.clickCreateNew', "You have no characters yet. Click \"Create New\" to create your first.")))
+			n.component(new Txt(l10n.l('pageCharSelect.clickCreateNew', "You have no characters yet. Click \"Create New\" to create your first."))),
 		])), {
 			noIcon: true,
 			noToggle: true,
 			position: 'right',
 			className: 'pagecharselect--add-tip popuptip--width-m',
 			attributes: {
-				style: "top:" + (rect.top + rect.bottom) / 2 + "px; left: " + rect.right + "px"
-			}
+				style: "top:" + (rect.top + rect.bottom) / 2 + "px; left: " + rect.right + "px",
+			},
 		});
 
 		this.popupTip.render(el);

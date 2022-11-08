@@ -12,7 +12,7 @@ class LayoutMobile {
 		this.app.require([
 			'layout',
 			'playerTabs',
-			'playerTools'
+			'playerTools',
 		], this._init.bind(this));
 	}
 

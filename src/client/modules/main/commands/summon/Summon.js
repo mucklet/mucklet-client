@@ -26,10 +26,10 @@ class Summon {
 				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
 					name: "character",
 					errRequired: step => ({ code: 'summon.charRequired', message: "Who do you wish to summon?" }),
-				})
+				}),
 			],
 			alias: [ 'msummon' ],
-			value: (ctx, p) => this.summon(ctx.char, { charId: p.charId })
+			value: (ctx, p) => this.summon(ctx.char, { charId: p.charId }),
 		});
 
 		this.module.help.addTopic({

@@ -15,7 +15,7 @@ const helpText =
 <p><code class="param">@Username</code> is the username of the player. Admins only.</p>
 <p><code class="param">Character</code> is the name of a character owned by the player.</p>`;
 const examples = [
-	`<code>ban player Jane Mischief = underaged</code></p>`
+	`<code>ban player Jane Mischief = underaged</code></p>`,
 ];
 
 /**
@@ -34,7 +34,7 @@ class BanPlayer {
 
 		this.reasons = new ItemList({
 			items: Object.keys(banReasons).map((key, i) => ({ key, desc: banReasons[key], order: i })),
-			compare: (a, b) => a - b
+			compare: (a, b) => a - b,
 		});
 
 
@@ -45,24 +45,24 @@ class BanPlayer {
 					next: new TextStep('username', {
 						name: "username",
 						token: 'listitem',
-						spellcheck: false
+						spellcheck: false,
 					}),
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'banPlayer.characterRequired', message: "Which player?" })
+						errRequired: step => ({ code: 'banPlayer.characterRequired', message: "Which player?" }),
 					}),
 				}),
 				new DelimStep("=", {
 					next: [
 						new ListStep('reason', this.reasons, {
 							name: "ban reasons",
-							token: 'attr'
+							token: 'attr',
 						}),
-					]
-				})
+					],
+				}),
 			],
-			value: (ctx, p) => this._banPlayer(ctx, p)
+			value: (ctx, p) => this._banPlayer(ctx, p),
 		});
 
 		this.module.helpModerate.addTopic({
@@ -72,7 +72,7 @@ class BanPlayer {
 			shortDesc: l10n.l('banPlayer.shortDesc', shortDesc),
 			desc: () => helpAttribDesc(l10n.t('banPlayer.helpText', helpText), this.reasons.getItems(), {
 				attribute: l10n.l('banPlayer.reasonParams', `<code class="param">Reason</code>`),
-				value: ""
+				value: "",
 			}),
 			examples,
 			sortOrder: 100,
@@ -93,7 +93,7 @@ class BanPlayer {
 				body: new Elem(n => n.elem('div', [
 					n.component(new Txt(l10n.l('banPlayer.banPlayerBody', "Do you wish to ban the player?"), { tagName: 'p' })),
 				])),
-				confirm: l10n.l('banPlayer.ban', "Ban")
+				confirm: l10n.l('banPlayer.ban', "Ban"),
 			});
 		});
 	}

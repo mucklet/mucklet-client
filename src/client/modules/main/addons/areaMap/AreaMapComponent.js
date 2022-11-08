@@ -32,9 +32,9 @@ class AreaMapComponent {
 						areaMap = null;
 					}
 					c.setComponent(areaMap);
-				}
+				},
 			),
-			(m, c) => c.setModel(m && m.inRoom)
+			(m, c) => c.setModel(m && m.inRoom),
 		);
 
 		return this.elem.render(el);

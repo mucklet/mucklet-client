@@ -19,7 +19,7 @@ class PageEditRoom {
 			'pageEditExit',
 			'dialogCreateExit',
 			'toaster',
-			'api'
+			'api',
 		], this._init.bind(this));
 	}
 
@@ -34,11 +34,11 @@ class PageEditRoom {
 				click: (c, e) => {
 					this.open(ctrl, room);
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('pencil')),
 			])),
-			filter: (ctrl, room, canEdit, canDelete) => canEdit
+			filter: (ctrl, room, canEdit, canDelete) => canEdit,
 		});
 	}
 
@@ -79,8 +79,8 @@ class PageEditRoom {
 					if (model.hiddenExits) {
 						model.hiddenExits.off();
 					}
-				}
-			}
+				},
+			},
 		);
 	}
 

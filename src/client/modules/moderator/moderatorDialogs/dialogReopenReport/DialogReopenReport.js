@@ -37,27 +37,27 @@ class DialogReopenReport {
 					new Textarea(model.comment, {
 						className: 'dialogreopenreport--comment dialog--input common--paneltextarea-small common--desc-size',
 						events: {
-							input: c => model.set({ comment: c.getValue() })
+							input: c => model.set({ comment: c.getValue() }),
 						},
-						attributes: { name: 'dialogreopenreport-comment', spellcheck: 'true' }
+						attributes: { name: 'dialogreopenreport-comment', spellcheck: 'true' },
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogReopenReport.commentInfo', "Short comment on why the report is getting reopened.")
-					}
+						popupTip: l10n.l('dialogReopenReport.commentInfo', "Short comment on why the report is getting reopened."),
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'dialog--footer' }, [
 					n.elem('submit', 'button', {
 						events: { click: () => this._reopenReport(report, model) },
-						className: 'btn primary dialogreopenreport--submit'
+						className: 'btn primary dialogreopenreport--submit',
 					}, [
-						n.component(new Txt(l10n.l('dialogReopenReport.reopenReport', "Reopen report")))
-					])
-				])
+						n.component(new Txt(l10n.l('dialogReopenReport.reopenReport', "Reopen report"))),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -68,7 +68,7 @@ class DialogReopenReport {
 		if (this.closePromise) return this.closePromise;
 
 		report.call('open', {
-			comment: model.comment.trim()
+			comment: model.comment.trim(),
 		}).then(() => {
 			if (this.dialog) {
 				this.dialog.close();
@@ -78,7 +78,7 @@ class DialogReopenReport {
 				content: new Txt(l10n.l('dialogReopenReport.reportReopenedInfo', "The report was reopened.", char)),
 				closeOn: 'click',
 				type: 'success',
-				autoclose: true
+				autoclose: true,
 			});
 		}).catch(err => {
 			if (!this.dialog) return;

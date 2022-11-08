@@ -11,8 +11,8 @@ class MobileActivePanelPlaceholder {
 		this.elem = new Elem(n => n.elem('div', { className: 'mobileactivepanel-placeholder' }, [
 			n.component(new ModelHtml(this.info, m => typeof m.greeting == 'undefined'
 				? '<p>All characters are asleep.<br>Maybe we should wake someone up?</p>'
-				: m.greeting
-			))
+				: m.greeting,
+			)),
 		]));
 		return this.elem.render(el);
 	}

@@ -34,15 +34,15 @@ class RequestExit {
 				}),
 				new DelimStep("=", {
 					next: new IDStep('targetRoom', {
-						name: "target room ID"
-					})
-				})
+						name: "target room ID",
+					}),
+				}),
 			],
 			value: (ctx, p) => this.requestExit(ctx.char, {
 				name: p.name.trim(),
 				keys: prepareKeys(p.name),
-				targetRoom: p.targetRoom
-			})
+				targetRoom: p.targetRoom,
+			}),
 		});
 
 		this.module.help.addTopic({

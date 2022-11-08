@@ -18,18 +18,18 @@ class PageWatchCharContent {
 		this.elem = new Elem(n => n.elem('div', [
 			n.elem('div', { className: 'badge--select badge--margin' }, [
 				n.elem('div', { className: 'badge--faicon' }, [
-					n.component(new FAIcon('info'))
+					n.component(new FAIcon('info')),
 				]),
 				n.elem('div', { className: 'badge--info small' }, [
 					n.elem('div', { className: 'badge--text badge--nowrap' }, [
 						n.component(new ModelTxt(this.char, p => firstLetterUppercase(p.gender))),
 						n.text(' '),
-						n.component(new ModelTxt(this.char, p => firstLetterUppercase(p.species)))
+						n.component(new ModelTxt(this.char, p => firstLetterUppercase(p.species))),
 					]),
 					n.component(new ModelTxt(
 						this.watch,
 						m => l10n.l('pageWatch.addedTime', "Added {time}", { time: formatDateTime(new Date(m.created)) }),
-						{ tagName: 'div', className: 'badge--text' }
+						{ tagName: 'div', className: 'badge--text' },
 					)),
 				]),
 				n.elem('button', { className: 'iconbtn medium tinyicon', events: {
@@ -38,14 +38,14 @@ class PageWatchCharContent {
 							title: l10n.l('pageWatch.confirmDelete', "Confirm delete"),
 							body: new Elem(n => n.elem('div', [
 								n.component(new Txt(l10n.l('pageWatch.deleteWatchBody', "Do you really wish delete this watch?"), { tagName: 'p' })),
-								n.elem('p', [ n.component(new ModelTxt(this.char, m => (m.name + ' ' + m.surname).trim(), { className: 'dialog--strong' })) ])
+								n.elem('p', [ n.component(new ModelTxt(this.char, m => (m.name + ' ' + m.surname).trim(), { className: 'dialog--strong' })) ]),
 							])),
-							confirm: l10n.l('pageWatch.delete', "Delete")
+							confirm: l10n.l('pageWatch.delete', "Delete"),
 						});
 						ev.stopPropagation();
-					}
+					},
 				}}, [
-					n.component(new FAIcon('trash'))
+					n.component(new FAIcon('trash')),
 				]),
 			]),
 		]));

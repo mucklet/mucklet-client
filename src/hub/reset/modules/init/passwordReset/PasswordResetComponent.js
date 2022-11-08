@@ -16,7 +16,7 @@ class PasswordResetComponent {
 		this.code = code;
 		this.state = state;
 		state.reset = Object.assign({
-			pass: ''
+			pass: '',
 		}, state.reset);
 		this.autoLogin = !!opt.hasOwnProperty('auto');
 	}
@@ -28,8 +28,8 @@ class PasswordResetComponent {
 			n.elem('label', { className: 'flex-1', attributes: { for: 'password' }}, [
 				n.elem('h3', [
 					n.component(new Txt(l10n.l('login.newPassword', "New password"))),
-					n.component(new Txt(" *", { className: 'common--error' }))
-				])
+					n.component(new Txt(" *", { className: 'common--error' })),
+				]),
 			]),
 			n.component('password', new PasswordInput(this.model.pass, {
 				className: 'common--formmargin',
@@ -41,15 +41,15 @@ class PasswordResetComponent {
 				this.model,
 				new Elem(n => n.elem('button', {
 					events: { click: () => this._onReset(this.model) },
-					className: 'btn large primary passwordreset--login pad-top-xl passwordreset--btn'
+					className: 'btn large primary passwordreset--login pad-top-xl passwordreset--btn',
 				}, [
 					n.elem('spinner', 'div', { className: 'spinner fade hide' }),
-					n.component(new Txt(l10n.l('passwordReset.resetPassword', "Reset password")))
+					n.component(new Txt(l10n.l('passwordReset.resetPassword', "Reset password"))),
 				])),
-				(m, c) => c.setProperty('disabled', m && m.pass.trim().length >= 4 ? null : 'disabled')
-			))
+				(m, c) => c.setProperty('disabled', m && m.pass.trim().length >= 4 ? null : 'disabled'),
+			)),
 		])), {
-			title: l10n.l('passwordReset.resetPassword', "Reset password")
+			title: l10n.l('passwordReset.resetPassword', "Reset password"),
 		});
 		this.elem.render(el);
 	}
@@ -65,7 +65,7 @@ class PasswordResetComponent {
 	_getState() {
 		let c = this.elem.getComponent();
 		return {
-			password: c.getNode('password').getValue()
+			password: c.getNode('password').getValue(),
 		};
 	}
 

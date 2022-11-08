@@ -25,10 +25,10 @@ class Whereis {
 			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 				textId: 'charName',
 				name: "character",
-				errRequired: step => ({ code: 'whereisCmd.characterRequired', message: "Who do you want to locate?" })
+				errRequired: step => ({ code: 'whereisCmd.characterRequired', message: "Who do you want to locate?" }),
 			}),
 			alias: [ 'where' ],
-			value: (ctx, p) => this.whereis(ctx.player, ctx.char, p)
+			value: (ctx, p) => this.whereis(ctx.player, ctx.char, p),
 		});
 
 

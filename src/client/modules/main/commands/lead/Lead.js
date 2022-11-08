@@ -26,10 +26,10 @@ class Lead {
 				new ListStep('charId', this.module.cmdLists.getInRoomCharsAwake(), {
 					name: "character",
 					errRequired: step => ({ code: 'lead.charRequired', message: "Who do you wish to lead?" }),
-				})
+				}),
 			],
 			alias: [ 'carry' ],
-			value: (ctx, p) => this.lead(ctx.char, { charId: p.charId })
+			value: (ctx, p) => this.lead(ctx.char, { charId: p.charId }),
 		});
 
 		this.module.help.addTopic({

@@ -34,31 +34,31 @@ class DialogRequestControl {
 			content: new Elem(n => n.elem('div', [
 				n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 					n.elem('div', { className: 'flex-auto' }, [
-						n.component(this.module.avatar.newAvatar(puppeteer.puppet, { size: 'large' }))
+						n.component(this.module.avatar.newAvatar(puppeteer.puppet, { size: 'large' })),
 					]),
 					n.elem('div', { className: 'flex-1' }, [
 						n.component(new ModelTxt(puppeteer.puppet, m => (m.name + " " + m.surname).trim(), {
 							tagName: 'div',
-							className: 'dialogrequestcontrol--fullname'
+							className: 'dialogrequestcontrol--fullname',
 						})),
 						n.component(new ModelComponent(
 							puppeteer.puppet,
 							new Txt('', {
 								tagName: 'div',
-								className: 'dialogrequestcontrol--genderspecies'
+								className: 'dialogrequestcontrol--genderspecies',
 							}),
 							(m, c) => {
 								let genderSpecies = (firstLetterUppercase(m.gender) + ' ' + firstLetterUppercase(m.species)).trim();
 								c[genderSpecies ? 'removeClass' : 'addClass']('common--placeholder')
 									.setText(genderSpecies || txtNotSet);
-							}
+							},
 						)),
 						n.component(new ModelComponent(
 							puppeteer.puppet,
 							new ModelComponent(
 								null,
 								new Txt("", { tagName: 'div', className: 'dialogrequestcontrol--controlledby' }),
-								(m, c) => this._setControlledBy(c, puppeteer.puppet)
+								(m, c) => this._setControlledBy(c, puppeteer.puppet),
 							),
 							(m, c, change) => {
 								if (!change || change.hasOwnProperty('puppeteer')) {
@@ -66,7 +66,7 @@ class DialogRequestControl {
 								} else {
 									this._setControlledBy(c.getComponent(), m);
 								}
-							}
+							},
 						)),
 					]),
 				]),
@@ -81,29 +81,29 @@ class DialogRequestControl {
 									let v = c.getValue().replace(/\r?\n/gi, '');
 									c.setValue(v);
 									model.set({ msg: v });
-								}
+								},
 							},
-							attributes: { name: 'dialogtag-msg', spellcheck: 'true' }
+							attributes: { name: 'dialogtag-msg', spellcheck: 'true' },
 						}),
-						(m, c) => c.setValue(m.msg, false)
+						(m, c) => c.setValue(m.msg, false),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogRequestControl.msgInfo', "An optional message to include in the request to the current puppeteer.")
-					}
+						popupTip: l10n.l('dialogRequestControl.msgInfo', "An optional message to include in the request to the current puppeteer."),
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('create', 'button', {
 						events: { click: () => this._onRequestControl(puppeteer, model) },
-						className: 'btn primary dialog--btn'
+						className: 'btn primary dialog--btn',
 					}, [
-						n.component(new Txt(l10n.l('dialogrequestcontrol.requestControl', "Request control")))
+						n.component(new Txt(l10n.l('dialogrequestcontrol.requestControl', "Request control"))),
 					]),
-				])
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -116,7 +116,7 @@ class DialogRequestControl {
 			? l10n.l('dialogRequestControl.controlledBy', "Controlled by {fullName}", { fullName: (puppeteer.name + ' ' + puppeteer.surname).trim() })
 			: puppet.state == 'awake'
 				? l10n.l('dialogRequestControl.controlledByOwner', "Controlled by owner")
-				: l10n.l('dialogRequestControl.notControlled', "Not controlled")
+				: l10n.l('dialogRequestControl.notControlled', "Not controlled"),
 		);
 	}
 
@@ -126,7 +126,7 @@ class DialogRequestControl {
 		this.requestPromise = this.module.player.getPlayer().call('requestControl', {
 			charId: puppeteer.char.id,
 			puppetId: puppeteer.puppet.id,
-			msg: model.msg.trim() || null
+			msg: model.msg.trim() || null,
 		}).then(() => {
 			if (this.dialog) {
 				this.dialog.close();

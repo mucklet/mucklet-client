@@ -27,10 +27,10 @@ class SetMain {
 				new DelimStep("=", { errRequired: null }),
 				new ListStep('charId', module.cmdLists.getOwnedChars(), {
 					name: "main character",
-					errRequired: null
-				})
+					errRequired: null,
+				}),
 			],
-			value: (ctx, p) => this.setMain(ctx, p)
+			value: (ctx, p) => this.setMain(ctx, p),
 		});
 
 		this.module.help.addTopic({
@@ -50,7 +50,7 @@ class SetMain {
 			.then(() => {
 				this.module.charLog.logInfo(ctx.char, mainChar
 					? l10n.l('setMain.mainCharacterSet', "Main character set.")
-					: l10n.l('setMain.mainCharacterCleared', "Main character cleared.")
+					: l10n.l('setMain.mainCharacterCleared', "Main character cleared."),
 				);
 			});
 	}

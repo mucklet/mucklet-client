@@ -23,7 +23,7 @@ class PageAreaImage {
 			focus: 'current',
 			scale: 0.5,
 			x: this.image.width / 2,
-			y: this.image.height / 2
+			y: this.image.height / 2,
 		});
 		this.className = opt.className ? ' ' + opt.className : '';
 		this.size = opt.size || '';
@@ -42,9 +42,9 @@ class PageAreaImage {
 			data: {
 				current: this._getLocation(),
 				selected: this._getSelected(),
-				focus: this.state.focus
+				focus: this.state.focus,
 			},
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 		this._listen(true);
 
@@ -57,8 +57,8 @@ class PageAreaImage {
 				new Elem(n => n.elem('div', {
 					className: 'pagearea-image' + this.className + (this.size ? ' ' + this.size : ''),
 					attributes: {
-						style: 'width:' + this.vw + 'px; height:' + this.vh + 'px;'
-					}
+						style: 'width:' + this.vw + 'px; height:' + this.vh + 'px;',
+					},
 				}, [
 					n.elem('body', 'div', { className: 'pagearea-image--body transition' }, [
 						n.component('img', new Img(this.image.href, { className: 'pagearea-image--img', events: {
@@ -73,7 +73,7 @@ class PageAreaImage {
 							wheel: (c, ev) => {
 								this._zoom(0.98 ** (ev.deltaY / 10));
 								ev.preventDefault();
-							}
+							},
 						}})),
 						n.component(new ModelFragment(
 							this.children,
@@ -85,12 +85,12 @@ class PageAreaImage {
 									(m, c) => {
 										c.setStyle('left', String(m.mapX) + 'px');
 										c.setStyle('top', String(m.mapY) + 'px');
-									}
+									},
 								),
 								(m, c) => {
 									c.getComponent()[(m.current && m.current.id) === v.id ? 'addClass' : 'removeClass']('current');
 									c.getComponent()[(m.selected && m.selected.id) === v.id ? 'addClass' : 'removeClass']('selected');
-								}
+								},
 							),
 							{
 								onAdd: (c, el) => {
@@ -108,33 +108,33 @@ class PageAreaImage {
 										}
 										resolve();
 									}, 2100);
-								})
-							}
+								}),
+							},
 						)),
 					]),
 					n.elem('button', { className: 'pagearea-image--zoomout pagearea-image--btn iconbtn' + btnSize, events: {
 						mousedown: (c, ev) => {
 							this._clickZoom(0.98);
 							ev.stopPropagation();
-						}
+						},
 					}}, [
-						n.component(new FAIcon('search-minus'))
+						n.component(new FAIcon('search-minus')),
 					]),
 					n.elem('button', { className: 'pagearea-image--zoomin pagearea-image--btn iconbtn' + btnSize, events: {
 						mousedown: (c, ev) => {
 							this._clickZoom(1 / 0.98);
 							ev.stopPropagation();
-						}
+						},
 					}}, [
-						n.component(new FAIcon('search-plus'))
+						n.component(new FAIcon('search-plus')),
 					]),
 					n.elem('button', { className: 'pagearea-image--center pagearea-image--btn iconbtn' + btnSize, events: {
 						click: (c, ev) => {
 							this._center();
 							ev.stopPropagation();
-						}
+						},
 					}}, [
-						n.component(new FAIcon('dot-circle-o'))
+						n.component(new FAIcon('dot-circle-o')),
 					]),
 				])),
 				(m, c, change) => {
@@ -144,14 +144,14 @@ class PageAreaImage {
 						this.state.y = m.mapY;
 						this._setTransform();
 					}
-				}
+				},
 			),
 			(m, c) => c.setModel(m.focus == 'current'
 				? m.current
 				: m.focus == 'selected'
 					? m.selected
-					: null
-			)
+					: null,
+			),
 		);
 
 		this._setTransform();
@@ -191,7 +191,7 @@ class PageAreaImage {
 				? 'selected'
 				: this.state.focus == 'selected'
 					? null
-					: this.state.focus
+					: this.state.focus,
 		});
 		return this;
 	}

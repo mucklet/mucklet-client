@@ -54,7 +54,7 @@ class Login {
 		return fetch(this.params.authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -103,7 +103,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -121,7 +121,7 @@ class Login {
 		fetch(this.params.logoutUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => this._afterFade(reload));
 	}
 
@@ -145,7 +145,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -178,7 +178,7 @@ class Login {
 		return fetch(this.params.agreeUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -212,7 +212,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json()
@@ -251,7 +251,7 @@ class Login {
 					}
 					this.model.set({
 						loggedIn: true,
-						user
+						user,
 					});
 					if (this.loginResolve) {
 						this.loginResolve(user);
@@ -289,7 +289,7 @@ class Login {
 		}
 		this.model.set({
 			loggedIn: false,
-			user: null
+			user: null,
 		});
 		this.userPromise = null;
 	}
@@ -312,7 +312,7 @@ class Login {
 	_afterFade(cb) {
 		this.module.screen.setComponent({
 			render: () => cb(),
-			unrender: () => {}
+			unrender: () => {},
 		});
 	}
 

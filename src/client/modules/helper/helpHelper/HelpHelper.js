@@ -20,7 +20,7 @@ class HelpHelper {
 			title: l10n.l('help.helperTitle', "Helper information"),
 			shortDesc: l10n.l('help.helperShortDesc', "Info about the helper title"),
 			desc: () => new HelpHelperComponent(this.module),
-			sortOrder: 1010
+			sortOrder: 1010,
 		});
 	}
 

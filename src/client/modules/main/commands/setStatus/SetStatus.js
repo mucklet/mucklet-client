@@ -33,10 +33,10 @@ class SetStatus {
 					spanLines: false,
 					maxLength: () => module.info.getCore().propertyMaxLength,
 					errTooLong: propertyTooLong,
-					errRequired: null
-				})
+					errRequired: null,
+				}),
 			],
-			value: (ctx, p) => this.status(ctx.char, { status: p.status ? p.status.trim() : '' })
+			value: (ctx, p) => this.status(ctx.char, { status: p.status ? p.status.trim() : '' }),
 		});
 		this.module.cmd.addCmd({
 			key: 'status',
@@ -46,10 +46,10 @@ class SetStatus {
 					spanLines: false,
 					maxLength: () => module.info.getCore().propertyMaxLength,
 					errTooLong: propertyTooLong,
-					errRequired: null
-				})
+					errRequired: null,
+				}),
 			],
-			value: (ctx, p) => this.status(ctx.char, { status: p.status ? p.status.trim() : '' })
+			value: (ctx, p) => this.status(ctx.char, { status: p.status ? p.status.trim() : '' }),
 		});
 
 		this.module.help.addTopic({
@@ -67,7 +67,7 @@ class SetStatus {
 		return char.call('set', params).then(() => {
 			this.module.charLog.logInfo(char, params.status
 				? txtStatusSet
-				: txtStatusCleared
+				: txtStatusCleared,
 			);
 	   });
 	}

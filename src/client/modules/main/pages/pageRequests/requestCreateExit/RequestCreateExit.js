@@ -22,7 +22,7 @@ class RequestCreateExit {
 			componentFactory: r => new Elem(n => n.elem('div', { className: 'requestcreateexit' }, [
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestCreateExit.from', "From"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(r.params.room, m => errString(m, m => m.name, l10n.l('requestCreateExit.unknown', "(Unknown)")), { className: 'badge--info badge--strong' }))
+					n.component(new ModelTxt(r.params.room, m => errString(m, m => m.name, l10n.l('requestCreateExit.unknown', "(Unknown)")), { className: 'badge--info badge--strong' })),
 				]),
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestCreateExit.to', "To"), { className: 'badge--iconcol badge--subtitle' })),
@@ -31,11 +31,11 @@ class RequestCreateExit {
 						n.component(new ModelTxt(
 							r.to,
 							m => l10n.l('requestCreateExit.ownedBy', "owned by {fullname}.", { fullname: errString(m, m => (m.name + ' ' + m.surname), l10n.l('requestCreateExit.unknown', "unknown")).trim() }),
-							{ tagName: 'div', className: 'badge--text' }
+							{ tagName: 'div', className: 'badge--text' },
 						)),
-					])
-				])
-			]))
+					]),
+				]),
+			])),
 		});
 	}
 

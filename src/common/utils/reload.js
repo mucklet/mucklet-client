@@ -45,8 +45,8 @@ export default function reload(clearCache, clearQuery) {
 			headers: {
 				"Pragma": "no-cache",
 				"Expires": -1,
-				"Cache-Control": "no-cache"
-			}
+				"Cache-Control": "no-cache",
+			},
 		}).then(() => locationReload(clearQuery));
 	} else {
 		locationReload(clearQuery);

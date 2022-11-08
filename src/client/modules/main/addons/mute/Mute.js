@@ -7,7 +7,7 @@ const travelEvents = {
 	arrive: true,
 	leave: true,
 	wakeup: true,
-	sleep: true
+	sleep: true,
 };
 
 const unmutableEvents = {
@@ -37,7 +37,7 @@ class Mute {
 		this.module.charLog.addEventModifier({
 			id: 'mute',
 			sortOrder: 0,
-			callback: this._applyModifications.bind(this)
+			callback: this._applyModifications.bind(this),
 		});
 
 		// Load muted

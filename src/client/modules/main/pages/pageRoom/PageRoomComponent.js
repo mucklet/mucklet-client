@@ -33,20 +33,20 @@ class PageRoomComponent {
 	render(el) {
 		let image = new Elem(n => n.elem('div', { className: 'pageroom--image-cont' }, [
 			n.component('img', new Img('', { className: 'pageroom--image', events: {
-				click: () => new ImgModal(this.room.image.href).open()
-			}}))
+				click: () => new ImgModal(this.room.image.href).open(),
+			}})),
 		]));
 		this.elem = new ModelComponent(
 			this.room,
 			new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.filter ? t.filter(this.ctrl, this.room, this._canEdit(), this._canDelete(), this.layout) : true
+					filter: t => t.filter ? t.filter(this.ctrl, this.room, this._canEdit(), this._canDelete(), this.layout) : true,
 				}),
 				allTools => allTools.dispose(),
 				allTools => new Elem(n => n.elem('div', { className: 'pageroom' }, [
 					n.component(new Context(
 						() => new CollectionWrapper(allTools, {
-							filter: t => (t.type || 'room') == 'room'
+							filter: t => (t.type || 'room') == 'room',
 						}),
 						tools => tools.dispose(),
 						tools => new CollectionComponent(
@@ -67,17 +67,17 @@ class PageRoomComponent {
 											className: 'pageroom--tools',
 											subClassName: t => t.className || null,
 											horizontal: true,
-										}
+										},
 									));
 								}
-							}
-						)
+							},
+						),
 					)),
 					n.component(new ModelComponent(
 						this.room,
 						new NameSection(new ModelTxt(this.room, c => c.name), null, {
 							open: this.state.roomImageOpen,
-							onToggle: (c, v) => this.state.roomImageOpen = v
+							onToggle: (c, v) => this.state.roomImageOpen = v,
 						}),
 						(m, c, changed) => {
 							if (m.image) {
@@ -86,11 +86,11 @@ class PageRoomComponent {
 							} else {
 								c.setComponent(null);
 							}
-						}
+						},
 					)),
 					n.component(new Context(
 						() => new CollectionWrapper(allTools, {
-							filter: t => t.type == 'section'
+							filter: t => t.type == 'section',
 						}),
 						tools => tools.dispose(),
 						tools => new CollectionList(
@@ -98,9 +98,9 @@ class PageRoomComponent {
 							t => t.componentFactory(this.ctrl, this.room),
 							{
 								className: 'pageroom--sections',
-								subClassName: t => t.className || null
-							}
-						)
+								subClassName: t => t.className || null,
+							},
+						),
 					)),
 					n.component(new PanelSection(
 						l10n.l('pageRoom.description', "Description"),
@@ -110,20 +110,20 @@ class PageRoomComponent {
 							(m, c) => {
 								c.setFormatText(m.desc ? m.desc : textNotSet);
 								c[m.desc ? 'removeClass' : 'addClass']('pagechar--notset');
-							}
+							},
 						),
 						{
 							className: 'common--sectionpadding',
 							open: this.state.descriptionOpen,
-							onToggle: (c, v) => this.state.descriptionOpen = v
-						}
+							onToggle: (c, v) => this.state.descriptionOpen = v,
+						},
 					)),
 					n.component(new PanelSection(
 						new Elem(n => n.elem('div', { className: 'pageroom--exitsheader' }, [
 							n.component(new Txt(l10n.l('pageRoom.exits', "Exits"), { tagName: 'h3' })),
 							n.component(new Context(
 								() => new CollectionWrapper(allTools, {
-									filter: t => t.type == 'exit'
+									filter: t => t.type == 'exit',
 								}),
 								tools => tools.dispose(),
 								tools => new CollectionList(
@@ -133,9 +133,9 @@ class PageRoomComponent {
 										className: 'pageroom--exitstools',
 										subClassName: t => t.className || null,
 										horizontal: true,
-									}
-								)
-							))
+									},
+								),
+							)),
 						])),
 						new CollectionComponent(
 							this.room.exits,
@@ -148,23 +148,23 @@ class PageRoomComponent {
 								if (!e || (col.length == 1 && e.event == 'add')) {
 									c.setComponent(new CollectionList(
 										col,
-										m => new PageRoomExit(this.module, this.ctrl, this.room, m)
+										m => new PageRoomExit(this.module, this.ctrl, this.room, m),
 									));
 								}
-							}
+							},
 						),
 						{
 							className: 'pageroom--exits common--sectionpadding',
 							open: this.state.exitsOpen,
-							onToggle: (c, v) => this.state.exitsOpen = v
-						}
+							onToggle: (c, v) => this.state.exitsOpen = v,
+						},
 					)),
 					n.component(new PanelSection(
 						new Elem(n => n.elem('div', { className: 'pageroom--inroomheader' }, [
 							n.component(new Txt(l10n.l('pageRoom.inRoom', "In room"), { tagName: 'h3' })),
 							n.component(new Context(
 								() => new CollectionWrapper(allTools, {
-									filter: t => t.type == 'inRoom'
+									filter: t => t.type == 'inRoom',
 								}),
 								tools => tools.dispose(),
 								tools => new CollectionList(
@@ -174,9 +174,9 @@ class PageRoomComponent {
 										className: 'pageroom--inroomtools',
 										subClassName: t => t.className || null,
 										horizontal: true,
-									}
-								)
-							))
+									},
+								),
+							)),
 						])),
 						new ModelComponent(
 							this.room,
@@ -185,24 +185,24 @@ class PageRoomComponent {
 								if (changed && !changed.hasOwnProperty('chars')) return;
 								c.setComponent(m.chars
 									? new CollectionList(m.chars, m => new PageRoomChar(this.module, this.ctrl, m))
-									: new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' })
+									: new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }),
 								);
-							}
+							},
 						),
 						{
 							className: 'pageroom--chars common--sectionpadding',
 							open: this.state.inRoomOpen,
-							onToggle: (c, v) => this.state.inRoomOpen = v
-						}
-					))
-				]))
+							onToggle: (c, v) => this.state.inRoomOpen = v,
+						},
+					)),
+				])),
 			),
 			(m, c, change) => {
 				// Reset filtering of tools is ownership of the room changes.
 				if (change && change.hasOwnProperty('owner')) {
 					c.getContext().refresh();
 				}
-			}
+			},
 		);
 
 		return this.elem.render(el);

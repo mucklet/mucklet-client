@@ -23,7 +23,7 @@ class PageEditCharComponent {
 	render(el) {
 		this.model = new ModifyModel(this.ctrl, {
 			props: this.state.changes,
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 		this.elem = new Elem(n => n.elem('div', { className: 'pageeditchar' }, [
 			n.component(new PanelSection(
@@ -37,29 +37,29 @@ class PageEditCharComponent {
 									if (!c.hasClass('placeholder')) {
 										new ImgModal(this.ctrl.image.href).open();
 									}
-								}
+								},
 							}}),
 							(m, c, changed) => {
 								c.setSrc(m.image ? m.image.href + '?thumb=xl' : '/img/avatar-l.png');
 								c[m.image ? 'removeClass' : 'addClass']('placeholder');
-							}
+							},
 						)),
 					]),
 					n.elem('div', { className: 'pageeditchar--imagebtn flex-1' }, [
 						n.component(new FileButton(
 							new Elem(n => n.elem('div', [
 								n.component(new FAIcon('camera')),
-								n.component(new Txt(l10n.l('pageEditChar.upload', "Upload")))
+								n.component(new Txt(l10n.l('pageEditChar.upload', "Upload"))),
 							])),
 							(file, dataUrl) => {
 								let footer = new LabelToggleBox(l10n.l('pageEditChar.useThumbAsAvatar', "Use thumbnail as avatar"), !this.ctrl.avatar);
 								this.module.dialogCropImage.open(
 									dataUrl,
 									(dataUrl, points) => this._setCharImage(dataUrl, points, footer.getValue()),
-									{ footer }
+									{ footer },
 								);
 							},
-							{ className: 'btn medium icon-left' }
+							{ className: 'btn medium icon-left' },
 						)),
 						n.component(new ModelComponent(
 							this.ctrl,
@@ -69,39 +69,39 @@ class PageEditCharComponent {
 									click: () => this.module.confirm.open(() => this._deleteCharImage(), {
 										title: l10n.l('pageEditChar.confirmDelete', "Confirm deletion"),
 										body: l10n.l('pageEditChar.deleteImageBody', "Do you really wish to delete the image?"),
-										confirm: l10n.l('pageEditChar.delete', "Delete")
-									})
-								}
+										confirm: l10n.l('pageEditChar.delete', "Delete"),
+									}),
+								},
 							}, [
 								n.component(new FAIcon('trash')),
-								n.component(new Txt(l10n.l('pageEditChar.delete', "Delete")))
+								n.component(new Txt(l10n.l('pageEditChar.delete', "Delete"))),
 							])),
-							(m, c) => c.setProperty('disabled', m.image ? null : 'disabled')
-						))
-					])
+							(m, c) => c.setProperty('disabled', m.image ? null : 'disabled'),
+						)),
+					]),
 				])),
 				{
 					className: 'common--sectionpadding pageeditchar--imagesection',
-					noToggle: true
-				}
+					noToggle: true,
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditChar.avatar', "Avatar"),
 				new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 					n.elem('div', { className: 'flex-auto' }, [
-						n.component(this.module.avatar.newAvatar(this.ctrl, { size: 'large' }))
+						n.component(this.module.avatar.newAvatar(this.ctrl, { size: 'large' })),
 					]),
 					n.elem('div', { className: 'pageeditchar--avatarbtn flex-1' }, [
 						n.component(new FileButton(
 							new Elem(n => n.elem('div', [
 								n.component(new FAIcon('camera')),
-								n.component(new Txt(l10n.l('pageEditChar.upload', "Upload")))
+								n.component(new Txt(l10n.l('pageEditChar.upload', "Upload"))),
 							])),
 							(file, dataUrl) => this.module.dialogCropImage.open(
 								dataUrl,
-								(dataUrl, points) => this._setCharAvatar(dataUrl, points)
+								(dataUrl, points) => this._setCharAvatar(dataUrl, points),
 							),
-							{ className: 'btn small icon-left' }
+							{ className: 'btn small icon-left' },
 						)),
 						n.component(new ModelComponent(
 							this.ctrl,
@@ -111,22 +111,22 @@ class PageEditCharComponent {
 									click: () => this.module.confirm.open(() => this._deleteCharAvatar(), {
 										title: l10n.l('pageEditChar.confirmDelete', "Confirm deletion"),
 										body: l10n.l('pageEditChar.deleteImageBody', "Do you really wish to delete the avatar?"),
-										confirm: l10n.l('pageEditChar.delete', "Delete")
-									})
-								}
+										confirm: l10n.l('pageEditChar.delete', "Delete"),
+									}),
+								},
 							}, [
 								n.component(new FAIcon('trash')),
-								n.component(new Txt(l10n.l('pageEditChar.delete', "Delete")))
+								n.component(new Txt(l10n.l('pageEditChar.delete', "Delete"))),
 							])),
-							(m, c) => c.setProperty('disabled', m.avatar ? null : 'disabled')
-						))
-					])
+							(m, c) => c.setProperty('disabled', m.avatar ? null : 'disabled'),
+						)),
+					]),
 				])),
 				{
 					className: 'common--sectionpadding pageeditchar--imagesection',
 					noToggle: true,
-					popupTip: l10n.l('pageEditChar.avatarInfo', "Avatar is a small image used to represent the character. Others can see it without having to look at the character. Optimal size is 192x192.")
-				}
+					popupTip: l10n.l('pageEditChar.avatarInfo', "Avatar is a small image used to represent the character. Others can see it without having to look at the character. Optimal size is 192x192."),
+				},
 			)),
 			n.elem('div', { className: 'pageeditchar--editname flex-row pad8' }, [
 				n.component(new PanelSection(
@@ -135,16 +135,16 @@ class PageEditCharComponent {
 						this.model,
 						new Input(this.model.name, {
 							events: { input: c => this.model.set({ name: c.getValue() }) },
-							attributes: { name: 'editchar-name', spellcheck: 'false' }
+							attributes: { name: 'editchar-name', spellcheck: 'false' },
 						}),
-						(m, c) => c.setValue(m.name)
+						(m, c) => c.setValue(m.name),
 					),
 					{
 						className: 'flex-1 common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('pageEditChar.nameInfo', "Character name may contain numbers, letters, dash (-), and apostrophe (')."),
-						popupTipPosition: 'top'
-					}
+						popupTipPosition: 'top',
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditChar.surname', "Surname"),
@@ -152,15 +152,15 @@ class PageEditCharComponent {
 						this.model,
 						new Input(this.model.surname, {
 							events: { input: c => this.model.set({ surname: c.getValue() }) },
-							attributes: { name: 'editchar-surname', spellcheck: 'false' }
+							attributes: { name: 'editchar-surname', spellcheck: 'false' },
 						}),
-						(m, c) => c.setValue(m.surname)
+						(m, c) => c.setValue(m.surname),
 					),
 					{
 						className: 'flex-1 common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditChar.surnameInfo', "Surname is used for unique identification, and may contain numbers, letters, dash (-), apostrophe ('), and spaces. It may also be titles (eg. \"the Beast\") or other creative name endings.")
-					}
+						popupTip: l10n.l('pageEditChar.surnameInfo', "Surname is used for unique identification, and may contain numbers, letters, dash (-), apostrophe ('), and spaces. It may also be titles (eg. \"the Beast\") or other creative name endings."),
+					},
 				)),
 			]),
 			n.elem('div', { className: 'pageeditchar--details flex-row pad8' }, [
@@ -170,14 +170,14 @@ class PageEditCharComponent {
 						this.model,
 						new Input(this.model.gender, {
 							events: { input: c => this.model.set({ gender: c.getValue() }) },
-							attributes: { name: 'editchar-gender', spellcheck: 'false' }
+							attributes: { name: 'editchar-gender', spellcheck: 'false' },
 						}),
-						(m, c) => c.setValue(m.gender)
+						(m, c) => c.setValue(m.gender),
 					),
 					{
 						className: 'flex-1 common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('pageEditChar.species', "Species"),
@@ -185,14 +185,14 @@ class PageEditCharComponent {
 						this.model,
 						new Input(this.model.species, {
 							events: { input: c => this.model.set({ species: c.getValue() }) },
-							attributes: { name: 'editchar-species', spellcheck: 'false' }
+							attributes: { name: 'editchar-species', spellcheck: 'false' },
 						}),
-						(m, c) => c.setValue(m.species)
+						(m, c) => c.setValue(m.species),
 					),
 					{
 						className: 'flex-1 common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 			]),
 			n.component(new PanelSection(
@@ -202,15 +202,15 @@ class PageEditCharComponent {
 					new Textarea(this.model.desc, {
 						className: 'common--paneltextarea common--desc-size',
 						events: { input: c => this.model.set({ desc: c.getValue() }) },
-						attributes: { name: 'editchar-desc', spellcheck: 'true' }
+						attributes: { name: 'editchar-desc', spellcheck: 'true' },
 					}),
-					(m, c) => c.setValue(m.desc)
+					(m, c) => c.setValue(m.desc),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('pageEditChar.descInfo', "Description of the character's appearance as percieved by other characters.")
-				}
+					popupTip: l10n.l('pageEditChar.descInfo', "Description of the character's appearance as percieved by other characters."),
+				},
 			)),
 			n.component(new ModelComponent(
 				this.ctrl,
@@ -224,7 +224,7 @@ class PageEditCharComponent {
 					this.puppetInfoModel = puppetInfo
 						? new ModifyModel(puppetInfo, {
 							props: this.state.puppetInfoChanges,
-							eventBus: this.module.self.app.eventBus
+							eventBus: this.module.self.app.eventBus,
 						})
 						: null;
 					c.setComponent(puppetInfo
@@ -235,24 +235,24 @@ class PageEditCharComponent {
 								new Textarea(this.puppetInfoModel.howToPlay, {
 									className: 'common--paneltextarea common--desc-size',
 									events: { input: c => this.puppetInfoModel.set({ howToPlay: c.getValue() }) },
-									attributes: { name: 'editchar-desc', spellcheck: 'true' }
+									attributes: { name: 'editchar-desc', spellcheck: 'true' },
 								}),
 								{
 									className: 'common--sectionpadding',
 									noToggle: true,
-									popupTip: l10n.l('pageEditChar.howToPlayInfo', "Suggestions and guidelines on how to play and act with this puppet.")
-								}
+									popupTip: l10n.l('pageEditChar.howToPlayInfo', "Suggestions and guidelines on how to play and act with this puppet."),
+								},
 							),
 							(m, c, change) => {
 								this._setSaveButton();
 								if (change && change.hasOwnProperty('howToPlay')) {
 									c.getComponent().setValue(m.howToPlay);
 								}
-							}
+							},
 						)
-						: null
+						: null,
 					);
-				}
+				},
 			)),
 			n.component(new PanelSection(
 				l10n.l('pageEditChar.about', "About"),
@@ -261,19 +261,19 @@ class PageEditCharComponent {
 					new Textarea(this.model.about, {
 						className: 'common--paneltextarea common--desc-size',
 						events: { input: c => this.model.set({ about: c.getValue() }) },
-						attributes: { name: 'editchar-about', spellcheck: 'true' }
+						attributes: { name: 'editchar-about', spellcheck: 'true' },
 					}),
-					(m, c) => c.setValue(m.about)
+					(m, c) => c.setValue(m.about),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('pageEditChar.aboutInfo', "Information about the character, such as background story or player preferences.")
-				}
+					popupTip: l10n.l('pageEditChar.aboutInfo', "Information about the character, such as background story or player preferences."),
+				},
 			)),
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => (!t.type || t.type == 'section') && (t.filter ? t.filter(this.ctrl) : true)
+					filter: t => (!t.type || t.type == 'section') && (t.filter ? t.filter(this.ctrl) : true),
 				}),
 				tools => tools.dispose(),
 				tools => new CollectionList(
@@ -281,22 +281,22 @@ class PageEditCharComponent {
 					t => t.componentFactory(this.ctrl, this.state),
 					{
 						className: 'pageeditchar--sections',
-						subClassName: t => t.className || null
-					}
-				)
+						subClassName: t => t.className || null,
+					},
+				),
 			)),
 			n.component('message', new Collapser(null)),
 			n.elem('div', { className: 'pad-top-xl' }, [
 				n.elem('button', { events: {
-					click: () => this._save()
+					click: () => this._save(),
 				}, className: 'btn primary common--btnwidth' }, [
 					n.component('save', new ModelComponent(
 						this.model,
 						new Txt(),
-						(m, c) => this._setSaveButton()
-					))
-				])
-			])
+						(m, c) => this._setSaveButton(),
+					)),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}
@@ -347,7 +347,7 @@ class PageEditCharComponent {
 		if (!this.elem) return;
 		this.elem.getNode('message').setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
-			: null
+			: null,
 		);
 	}
 
@@ -370,7 +370,7 @@ class PageEditCharComponent {
 		let save = this.elem.getNode('save').getComponent();
 		save.setText((this.model && this.model.isModified) || (this.puppetInfoModel && this.puppetInfoModel.isModified)
 			? l10n.l('pageEditChar.update', "Save edits")
-			: l10n.l('pageEditChar.close', "Close")
+			: l10n.l('pageEditChar.close', "Close"),
 		);
 	}
 
@@ -381,13 +381,13 @@ class PageEditCharComponent {
 			y1: parseInt(points[1]),
 			x2: parseInt(points[2]),
 			y2: parseInt(points[3]),
-			thumbAsAvatar
+			thumbAsAvatar,
 		}).then(() => this.module.toaster.open({
 			title: l10n.l('pageEditChar.imageUploaded', "Image uploaded"),
 			content: new Txt(l10n.l('pageEditChar.imageUploadedBody', "Image was uploaded and saved.")),
 			closeOn: 'click',
 			type: 'success',
-			autoclose: true
+			autoclose: true,
 		}));
 	}
 
@@ -398,7 +398,7 @@ class PageEditCharComponent {
 				content: new Txt(l10n.l('pageEditChar.imageDeletedBody', "Image was successfully deleted.")),
 				closeOn: 'click',
 				type: 'success',
-				autoclose: true
+				autoclose: true,
 			}))
 			.catch(err => this.module.confirm.openError(err));
 	}
@@ -409,13 +409,13 @@ class PageEditCharComponent {
 			x1: parseInt(points[0]),
 			y1: parseInt(points[1]),
 			x2: parseInt(points[2]),
-			y2: parseInt(points[3])
+			y2: parseInt(points[3]),
 		}).then(() => this.module.toaster.open({
 			title: l10n.l('pageEditChar.avatarUploaded', "Avatar uploaded"),
 			content: new Txt(l10n.l('pageEditChar.avatarUploadedBody', "The avatar was uploaded and saved.")),
 			closeOn: 'click',
 			type: 'success',
-			autoclose: true
+			autoclose: true,
 		}));
 	}
 
@@ -426,7 +426,7 @@ class PageEditCharComponent {
 				content: new Txt(l10n.l('pageEditChar.avatarDeletedBody', "The avatar was successfully deleted.")),
 				closeOn: 'click',
 				type: 'success',
-				autoclose: true
+				autoclose: true,
 			}))
 			.catch(err => this.module.confirm.openError(err));
 	}

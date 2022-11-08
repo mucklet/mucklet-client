@@ -44,8 +44,8 @@ class CharPing {
 					serviceUri: this.module.api.getWebResourceUri('core'),
 					duration: this.duration,
 					threshold: this.threshold,
-					retry: this.retry
-				}
+					retry: this.retry,
+				},
 			});
 		}
 	}
@@ -109,8 +109,8 @@ class CharPing {
 				cmd: 'addCtrl',
 				params: {
 					charId: char.id,
-					puppeteerId: char.puppeteer ? char.puppeteer.id : null
-				}
+					puppeteerId: char.puppeteer ? char.puppeteer.id : null,
+				},
 			});
 		}
 	}
@@ -125,8 +125,8 @@ class CharPing {
 				cmd: 'removeCtrl',
 				params: {
 					charId: char.id,
-					puppeteerId: char.puppeteer ? char.puppeteer.id : null
-				}
+					puppeteerId: char.puppeteer ? char.puppeteer.id : null,
+				},
 			});
 		}
 	}

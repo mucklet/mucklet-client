@@ -29,14 +29,14 @@ class MobileRoomBadgeComponent {
 									click: (c, ev) => {
 										this.module.roomPages.openPanel();
 										ev.stopPropagation();
-									}
+									},
 								}}, [
 									n.elem('div', { className: 'mobileroombadge--badgecont' }, [
 										n.elem('div', { className: 'badge--select badge--select-margin flex-baseline' }, [
 											n.elem('div', { className: 'badge--info' }, [
 												n.component('name', new Txt("", {
 													tagName: 'div',
-													className: 'badge--text badge--nowrap mobileroombadge--name'
+													className: 'badge--text badge--nowrap mobileroombadge--name',
 												})),
 											]),
 											n.elem('div', { className: 'mobileroombadge--counter' }, [
@@ -48,15 +48,15 @@ class MobileRoomBadgeComponent {
 											]),
 										]),
 									]),
-								])
+								]),
 							]),
 						]))
-						: null
+						: null,
 					);
 					this._setBadge(m, roomComponent);
-				}
+				},
 			),
-			(m, c) => c.setModel(m && m.inRoom)
+			(m, c) => c.setModel(m && m.inRoom),
 		);
 
 		return this.elem.render(el);

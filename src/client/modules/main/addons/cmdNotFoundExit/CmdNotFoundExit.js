@@ -36,7 +36,7 @@ class CmdNotFoundExit {
 				if (key == str) {
 					return new Html(
 						l10n.t('cmdNotFoundExit.exitUsage', 'To use the exit, type <span class="cmd">go {key}</span> instead, or type <span class="cmd">help go</span> to learn more.', { key: escapeHtml(key) }),
-						{ className: 'common--formattext' }
+						{ className: 'common--formattext' },
 					);
 				}
 			}

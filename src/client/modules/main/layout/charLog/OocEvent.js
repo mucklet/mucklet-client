@@ -11,8 +11,8 @@ class OocEvent extends Elem {
 			n.elem('span', { className: 'charlog--ooc' }, [
 				n.text(ev.pose ? poseSpacing(ev.msg) : ' says, "'),
 				n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
-				n.text(ev.pose ? '' : '"')
-			])
+				n.text(ev.pose ? '' : '"'),
+			]),
 		]));
 	}
 

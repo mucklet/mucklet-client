@@ -10,14 +10,14 @@ const stateIcons = {
 	pending: 'question',
 	accepted: 'check',
 	rejected: 'times',
-	failed: 'check'
+	failed: 'check',
 };
 
 const stateTime = {
 	pending: m => l10n.l('pageRequest.expires', "Expires {time}", { time: formatDateTime(new Date(m.expires)) }),
 	accepted: m => l10n.l('pageRequest.accepted', "Accepted {time}", { time: formatDateTime(new Date(m.answered)) }),
 	rejected: m => l10n.l('pageRequest.rejected', "Rejected {time}", { time: formatDateTime(new Date(m.answered)) }),
-	failed: m => l10n.l('pageRequest.failed', "Failed {time}", { time: formatDateTime(new Date(m.answered)) })
+	failed: m => l10n.l('pageRequest.failed', "Failed {time}", { time: formatDateTime(new Date(m.answered)) }),
 };
 
 class PageRequestsRequest {
@@ -41,27 +41,27 @@ class PageRequestsRequest {
 				this.request,
 				new Elem(n => n.elem('div', { className: 'pagerequests-request' }, [
 					n.elem('btn', 'div', { className: 'badge btn margin4', events: {
-						click: () => this._toggleActions()
+						click: () => this._toggleActions(),
 					}}, [
 						n.elem('div', { className: 'badge--select' }, [
 							n.elem('icon', 'div', { className: 'pagerequests-request--icon badge--faicon' }, [
-								n.component('faicon', new FAIcon())
+								n.component('faicon', new FAIcon()),
 							]),
 							n.elem('div', { className: 'badge--info' }, [
 								n.elem('div', { className: 'badge--title badge--nowrap' }, [
 									n.component(new ModelTxt(this.request.from, c => errString(
 										c,
 										c => (c.name + ' ' + c.surname).trim(),
-										l10n.l('pageRequests.unknown', "(Unknown)")
+										l10n.l('pageRequests.unknown', "(Unknown)"),
 									))),
 								]),
 								n.elem('div', { className: 'badge--text badge--nowrap' }, [
-									n.component(new ModelTxt(this.request, m => (this.type.titleFactory ? this.type.titleFactory(this.request) : null) || m.type))
+									n.component(new ModelTxt(this.request, m => (this.type.titleFactory ? this.type.titleFactory(this.request) : null) || m.type)),
 								]),
-							])
+							]),
 						]),
-						n.component('actions', new Collapser(null))
-					])
+						n.component('actions', new Collapser(null)),
+					]),
 				])),
 				(m, c) => {
 					c[m.state == 'pending' ? 'removeNodeClass' : 'addNodeClass']('btn', 'inactive');
@@ -69,7 +69,7 @@ class PageRequestsRequest {
 						c[m.state == state ? 'addNodeClass' : 'removeNodeClass']('icon', state);
 					}
 					c.getNode('faicon').setIcon(stateIcons[m.state] || 'question');
-				}
+				},
 			),
 			(m, c, change) => {
 				let prop = this.stateProp;
@@ -78,7 +78,7 @@ class PageRequestsRequest {
 					? new Elem(n => n.elem('div', { className: 'badge--actions' }, [
 						n.component(this.type.componentFactory
 							? this.type.componentFactory(this.request)
-							: null
+							: null,
 						),
 						n.elem('div', { className: 'flex-row badge--margin' }, [
 							n.component(new Txt(l10n.l('pageRequest.expires', "Time"), { tagName: 'div', className: 'pagerequests-request--expire badge--iconcol badge--subtitle' })),
@@ -86,7 +86,7 @@ class PageRequestsRequest {
 								n.component(new ModelTxt(
 									this.request,
 									m => stateTime[m.state](m),
-									{ tagName: 'div', className: 'badge--text' }
+									{ tagName: 'div', className: 'badge--text' },
 								)),
 								n.component(new ModelComponent(
 									this.request,
@@ -96,11 +96,11 @@ class PageRequestsRequest {
 										let err = m.error;
 										c.setComponent(err
 											? new Txt(l10n.l(err.code, err.message, err.data), { tagName: 'div', className: 'badge--error' })
-											: null
+											: null,
 										);
-									}
-								))
-							])
+									},
+								)),
+							]),
 						]),
 						n.component(new ModelComponent(
 							this.request,
@@ -116,12 +116,12 @@ class PageRequestsRequest {
 													click: (el, e) => {
 														this._revoke();
 														e.stopPropagation();
-													}
+													},
 												}}, [
 													n.component(new FAIcon('trash')),
-													n.component(new Txt(l10n.l('pageRequest.revoke', "Revoke")))
-												])
-											])
+													n.component(new Txt(l10n.l('pageRequest.revoke', "Revoke"))),
+												]),
+											]),
 										]))
 										: new Elem(n => n.elem('div', [
 											n.elem('div', { className: 'flex-row margin4 badge--margin' }, [
@@ -129,30 +129,30 @@ class PageRequestsRequest {
 													click: (el, e) => {
 														this._accept();
 														e.stopPropagation();
-													}
+													},
 												}}, [
 													n.component(new FAIcon('check')),
-													n.component(new Txt(l10n.l('pageRequest.reject', "Accept")))
+													n.component(new Txt(l10n.l('pageRequest.reject', "Accept"))),
 												]),
 												n.elem('button', { className: 'btn icon-left medium warning flex-1', events: {
 													click: (el, e) => {
 														this._reject();
 														e.stopPropagation();
-													}
+													},
 												}}, [
 													n.component(new FAIcon('times')),
-													n.component(new Txt(l10n.l('pageRequest.reject', "Reject")))
-												])
-											])
+													n.component(new Txt(l10n.l('pageRequest.reject', "Reject"))),
+												]),
+											]),
 										]))
-									: null
+									: null,
 								);
-							}
-						))
+							},
+						)),
 					]))
-					: null
+					: null,
 				);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}
@@ -175,7 +175,7 @@ class PageRequestsRequest {
 
 	_accept() {
 		this.module.player.getPlayer().call('acceptRequest', {
-			requestId: this.request.id
+			requestId: this.request.id,
 		})
 			.then(result => {
 				if (result.error) {
@@ -185,7 +185,7 @@ class PageRequestsRequest {
 						confirm: l10n.l('confirm.ok', "Okay"),
 						body: new Elem(n => n.elem('div', [
 							n.component(new Txt(l10n.l('pageRequest.errorBody', "Something went wrong when trying to fulfil the request."), { tagName: 'p' })),
-							n.component(new Txt(l10n.l(err.code, err.message, err.data), { tagName: 'i' }))
+							n.component(new Txt(l10n.l(err.code, err.message, err.data), { tagName: 'i' })),
 						])),
 						cancel: null,
 					});
@@ -197,7 +197,7 @@ class PageRequestsRequest {
 
 	_reject() {
 		this.module.player.getPlayer().call('rejectRequest', {
-			requestId: this.request.id
+			requestId: this.request.id,
 		})
 			.then(() => this._close())
 			.catch(err => this.module.confirm.openError(err));
@@ -211,7 +211,7 @@ class PageRequestsRequest {
 		{
 			title: l10n.l('pageRequests.confirmRevocation', "Confirm revocation"),
 			body: l10n.l('pageRequests.revokeBody', "Do you really wish to revoke the request?"),
-			confirm: l10n.l('pageRequests.revoke', "Revoke")
+			confirm: l10n.l('pageRequests.revoke', "Revoke"),
 		});
 	}
 

@@ -19,16 +19,16 @@ class WhisperEvent extends Elem {
 							: l10n.l('charLog.whisperTo', "Whisper to {name}", { name: t && t.name })
 						: ev.ooc
 							? txtWhisperOoc
-							: txtWhisper
+							: txtWhisper,
 					)),
 				]),
 				n.component(new Txt(c && c.name, { className: 'charlog--char' })),
 				n.elem('span', { className: ev.ooc ? 'charlog--ooc' : 'charlog--comm' }, [
 					n.text(ev.pose ? poseSpacing(ev.msg) : ' whispers, "'),
 					n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
-					n.text(ev.pose ? '' : '"')
-				])
-			])
+					n.text(ev.pose ? '' : '"'),
+				]),
+			]),
 		]));
 	}
 

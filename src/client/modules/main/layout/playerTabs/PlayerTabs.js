@@ -29,7 +29,7 @@ class PlayerTabs {
 		this.tabs = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.model = new Model({
@@ -40,7 +40,7 @@ class PlayerTabs {
 				factory: null,
 				defaultTab: null,
 			},
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 
 		this.state = {};

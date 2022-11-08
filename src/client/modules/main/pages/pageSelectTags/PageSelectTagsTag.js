@@ -19,7 +19,7 @@ class PageSelectTagsTag {
 			this.model,
 			new Elem(n => n.elem('div', { className: 'flex-row pad12 pad-bottom-m' }, [
 				n.elem('label', {
-					className: 'pageselecttags-tag--label flex-1 flex-row pad12' + (isRoleTag ? ' roletag' : '')
+					className: 'pageselecttags-tag--label flex-1 flex-row pad12' + (isRoleTag ? ' roletag' : ''),
 				}, [
 					n.elem('div', { className: 'flex-auto' }, [
 						n.component('toggle', new ToggleBox(this._getValue(), {
@@ -28,7 +28,7 @@ class PageSelectTagsTag {
 								click: (c, e) => {
 									c.toggleNext();
 									e.stopPropagation();
-								}
+								},
 							},
 							values: isRoleTag ? [ null, 'like' ] : [ null, 'like', 'dislike' ],
 							disableClick: true,
@@ -40,7 +40,7 @@ class PageSelectTagsTag {
 										: undefined;
 								}
 								this.model.set(o);
-							}
+							},
 						})),
 					]),
 					n.component(new ModelTxt(this.tag, m => m.key, { className: 'flex-1 pageselecttags-tag--key' })),
@@ -52,15 +52,15 @@ class PageSelectTagsTag {
 						(m, c) => {
 							popupTip.setTip(m.desc);
 							c.setComponent(m.desc ? popupTip : null);
-						}
-					))
-				])
+						},
+					)),
+				]),
 			])),
 			(m, c, change) => {
 				if (change) {
 					c.getNode('toggle').setValue(this._getValue(), false);
 				}
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

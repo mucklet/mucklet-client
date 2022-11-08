@@ -24,7 +24,7 @@ class ListAreas {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'areas',
 			alias: [ 'area' ],
-			value: (ctx, p) => this.listAreas(ctx.char)
+			value: (ctx, p) => this.listAreas(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -56,11 +56,11 @@ class ListAreas {
 							escapeHtml(l10n.t('listAreas.area', "Area ID")) +
 							'</th><th class="charlog--strong">' +
 							escapeHtml(l10n.t('listAreas.id', "Area")) +
-							'</th></tr>', { tagName: 'thead' }
+							'</th></tr>', { tagName: 'thead' },
 						)),
-						n.component(new Html(owned.join(''), { tagName: 'tbody' }))
-					])
-				])
+						n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+					]),
+				]),
 			])));
 		} else {
 			this.module.charLog.logInfo(char, l10n.l('listAreas.noAreas', "You own no areas yet."));

@@ -24,10 +24,10 @@ class DeleteGlobalTag {
 			key: 'globaltag',
 			next: [
 				new ListStep('tagId', this.module.tags.getTagsList(), {
-					name: "global tag to delete"
-				})
+					name: "global tag to delete",
+				}),
 			],
-			value: (ctx, p) => this.deleteGlobalTag(ctx.char, p.tagId)
+			value: (ctx, p) => this.deleteGlobalTag(ctx.char, p.tagId),
 		});
 
 		this.module.helpAdmin.addTopic({

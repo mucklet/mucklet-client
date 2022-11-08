@@ -2,7 +2,7 @@ import {
 	appendCharName,
 	appendPoseSpacing,
 	appendFormatText,
-	toComponent
+	toComponent,
 } from './charLogUtils';
 
 // Msg event (for any type of pose like character event)

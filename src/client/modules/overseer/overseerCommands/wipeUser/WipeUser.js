@@ -29,7 +29,7 @@ class WipeUser {
 			'cmdLists',
 			'helpOverseer',
 			'api',
-			'confirm'
+			'confirm',
 		], this._init.bind(this));
 	}
 
@@ -45,17 +45,17 @@ class WipeUser {
 						next: new TextStep('username', {
 							name: "username",
 							token: 'listitem',
-							spellcheck: false
+							spellcheck: false,
 						}),
 						else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 							textId: 'charName',
 							name: "user",
-							errRequired: step => ({ code: 'wipeUser.userRequired', message: "Which user do you want to wipe?" })
+							errRequired: step => ({ code: 'wipeUser.userRequired', message: "Which user do you want to wipe?" }),
 						}),
 					}),
 				}),
 			],
-			value: (ctx, p) => this._wipeUser(ctx, p)
+			value: (ctx, p) => this._wipeUser(ctx, p),
 		});
 
 		this.module.helpOverseer.addTopic({
@@ -76,7 +76,7 @@ class WipeUser {
 				? Promise.resolve({ id: p.userId })
 				: mod.getPlayer().call('getUser', p.charId
 					? { charId: p.charId }
-					: { charName: p.charName }
+					: { charName: p.charName },
 				)
 			).then(user => this.module.api.get('identity.user.' + user.id))
 		).then(identity => {
@@ -96,7 +96,7 @@ class WipeUser {
 						n.component(new Txt(l10n.l('wipeUser.wipeWarning', "All identifiable data will be cleared."))),
 					]),
 				])),
-				confirm: l10n.l('wipeUser.wipeUser', "Wipe user")
+				confirm: l10n.l('wipeUser.wipeUser', "Wipe user"),
 			});
 		});
 	}

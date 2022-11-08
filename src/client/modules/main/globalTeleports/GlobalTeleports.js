@@ -20,7 +20,7 @@ class GlobalTeleports {
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 	}
 

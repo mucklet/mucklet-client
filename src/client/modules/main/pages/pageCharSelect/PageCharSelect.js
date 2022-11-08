@@ -40,7 +40,7 @@ class PageCharSelect {
 				click: (c, e) => {
 					click();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('user-plus')),
 			])),

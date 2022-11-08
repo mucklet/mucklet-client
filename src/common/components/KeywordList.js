@@ -40,8 +40,8 @@ class KeywordList {
 								onEdit(keyword, this.keywords);
 								ev.stopPropagation();
 							}
-						}
-					}
+						},
+					},
 				}, [
 					n.component(new ModelTxt(keyword, keywordCallback)),
 					n.component(onDelete ? new Elem(n => n.elem('button', {
@@ -50,18 +50,18 @@ class KeywordList {
 							click: (c, e) => {
 								onDelete(keyword, this.keywords);
 								e.stopPropagation();
-							}
-						}
+							},
+						},
 					}, [
-						n.component(new FAIcon('times'))
-					])) : null)
+						n.component(new FAIcon('times')),
+					])) : null),
 				])),
 				{
 					className: 'keywordlist--list',
 					subClassName: () => 'keywordlist--item',
-					horizontal: true
-				}
-			))
+					horizontal: true,
+				},
+			)),
 		]));
 		return this.elem.render(el);
 	}

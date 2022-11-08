@@ -32,9 +32,9 @@ class HelpConsoleComponent {
 			n.component(new Txt(l10n.l('help.helpShortcuts', "Keyboard shortcuts"), { tagName: 'h4', className: 'charlog--pad' })),
 			n.elem('div', { className: 'charlog--pad' }, [
 				n.elem('table', { className: 'tbl tbl-nomargin' }, [
-					n.component(new Html(list.join(''), { tagName: 'tbody' }))
-				])
-			])
+					n.component(new Html(list.join(''), { tagName: 'tbody' })),
+				]),
+			]),
 		]));
 		return this.elem.render(el);
 	}

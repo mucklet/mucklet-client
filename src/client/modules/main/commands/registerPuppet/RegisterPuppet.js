@@ -31,8 +31,8 @@ class RegisterPuppet {
 				}),
 			],
 			value: (ctx, p) => this.registerPuppet(ctx.char, {
-				charId: p.charId
-			})
+				charId: p.charId,
+			}),
 		});
 
 		this.module.help.addTopic({

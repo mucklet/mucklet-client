@@ -18,10 +18,10 @@ const defaultAttr = [
 		stepFactory: module => new TextStep('value', {
 			name: "profile name",
 			maxLength: () => module.info.getCore().itemNameMaxLength,
-			errTooLong: itemNameTooLong
+			errTooLong: itemNameTooLong,
 		}),
 		desc: l10n.l('setProfile.nameDesc', "A descriptive profile name."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'keyword',
@@ -33,7 +33,7 @@ const defaultAttr = [
 			errTooLong: keyTooLong,
 		}),
 		desc: l10n.l('setProfile.keywordDesc', "Profile keyword."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'desc',
@@ -41,30 +41,30 @@ const defaultAttr = [
 			name: "profile's character description",
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			spanLines: true
+			spanLines: true,
 		}),
 		desc: l10n.l('setProfile.descDesc', "Description of the character's appearance. It may be formatted and span multiple paragraphs."),
-		sortOrder: 30
+		sortOrder: 30,
 	},
 	{
 		key: 'gender',
 		stepFactory: module => new TextStep('value', {
 			name: "profile's character gender",
 			maxLength: () => module.info.getCore().propertyMaxLength,
-			errTooLong: propertyTooLong
+			errTooLong: propertyTooLong,
 		}),
 		desc: l10n.l('setProfile.genderDesc', "Gender of the character."),
-		sortOrder: 40
+		sortOrder: 40,
 	},
 	{
 		key: 'species',
 		stepFactory: module => new TextStep('value', {
 			name: "profile's character species",
 			maxLength: () => module.info.getCore().propertyMaxLength,
-			errTooLong: propertyTooLong
+			errTooLong: propertyTooLong,
 		}),
 		desc: l10n.l('setProfile.speciesDesc', "Species of the character."),
-		sortOrder: 50
+		sortOrder: 50,
 	},
 ];
 
@@ -81,7 +81,7 @@ class SetProfile {
 	_init(module) {
 		this.module = module;
 		this.profileAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -91,20 +91,20 @@ class SetProfile {
 			key: 'profile',
 			next: [
 				new ListStep('profileId', this.module.cmdLists.getCharProfiles(), {
-					name: "character profile"
+					name: "character profile",
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.profileAttr, {
 					name: "character profile attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
 			value: (ctx, p) => typeof p.attr == 'function'
 				? p.attr(ctx, p)
 				: this.setProfile(ctx.char, {
 					profileId: p.profileId,
-					[p.attr]: p.value
-				})
+					[p.attr]: p.value,
+				}),
 		});
 
 		this.module.help.addTopic({
@@ -126,8 +126,8 @@ class SetProfile {
 				attr.stepFactory
 					? attr.stepFactory(this.module)
 					: new TextStep('value', {
-						name: attr.name || attr.key
-					})
+						name: attr.name || attr.key,
+					}),
 			]
 			: next;
 		this.profileAttr.addItem(Object.assign({}, attr, { next }));

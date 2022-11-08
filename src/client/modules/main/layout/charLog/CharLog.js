@@ -7,7 +7,7 @@ import {
 	sayEvent,
 	travelEvent,
 	stopFollowEvent,
-	stopLeadEvent
+	stopLeadEvent,
 } from './charLogEvents';
 import CharLogEvent from './CharLogEvent';
 import ErrorEvent from './ErrorEvent';
@@ -65,7 +65,7 @@ const componentFactories = {
 // Event types that should not increase unseen counter.
 const ignoreUnseen = {
 	control: true,
-	release: true
+	release: true,
 };
 
 /**
@@ -111,17 +111,17 @@ class CharLog {
 		this.menuItems = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.overlays = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.modifiers = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		for (let k in componentFactories) {
@@ -243,7 +243,7 @@ class CharLog {
 			id: this._getLogId(),
 			type,
 			time: this._getTimestamp(l, time),
-			component
+			component,
 		}));
 	}
 
@@ -258,7 +258,7 @@ class CharLog {
 			id: this._getLogId(),
 			type: 'info',
 			time: this._getTimestamp(l, time),
-			msg
+			msg,
 		}));
 	}
 
@@ -273,7 +273,7 @@ class CharLog {
 			id: this._getLogId(),
 			type: 'error',
 			time: this._getTimestamp(l, time),
-			error: err
+			error: err,
 		}));
 	}
 
@@ -473,7 +473,7 @@ class CharLog {
 	_onCtrlAdd(ev) {
 		let char = ev.char;
 		this.charComponents[char.id] = new CharLogComponent(this.module, char, {
-			onAtBottom: this._onAtBottom.bind(this, char.id)
+			onAtBottom: this._onAtBottom.bind(this, char.id),
 		});
 		char.on('out', this._onOut);
 		this.unseen.set({ [char.id]: 0 });
@@ -498,7 +498,7 @@ class CharLog {
 					id: char.id,
 					name: char.name,
 					surname: char.surname,
-				}
+				},
 			}, char);
 		});
 	}
@@ -517,7 +517,7 @@ class CharLog {
 			this.addEvent({
 				id: this._getLogId(),
 				type: 'release',
-				time: this._getTimestamp(l)
+				time: this._getTimestamp(l),
 			}, char);
 		});
 	}

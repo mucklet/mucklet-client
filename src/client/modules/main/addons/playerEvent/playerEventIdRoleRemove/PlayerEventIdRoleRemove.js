@@ -29,7 +29,7 @@ class PlayerEventIdRoleRemove {
 				n.component(new Txt(idroles.toLocaleString(ev.idRole), { tagName: 'p', className: 'dialog--strong' })),
 			])),
 			closeOn: 'click',
-			onClose
+			onClose,
 		});
 	}
 

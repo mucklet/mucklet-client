@@ -39,26 +39,26 @@ class CreateTag {
 				new DelimStep(":", {
 					next: new ListStep('pref', this.module.tags.getPreferenceList(), {
 						name: "preference flag",
-						else: new ValueStep('pref', "like")
+						else: new ValueStep('pref', "like"),
 					}),
-					errRequired: null
+					errRequired: null,
 				}),
 				new DelimStep("=", {
 					next: [
 						new TextStep('desc', {
 							maxLength: () => this.module.info.getTag().tagDescMaxLength,
 							errTooLong: descriptionTooLong,
-							errRequired: null
-						})
+							errRequired: null,
+						}),
 					],
-					errRequired: null
-				})
+					errRequired: null,
+				}),
 			],
 			value: (ctx, p) => this.createTag(ctx.char, {
 				key: p.key,
 				desc: p.desc,
-				pref: p.pref
-			})
+				pref: p.pref,
+			}),
 		});
 
 		this.module.help.addTopic({

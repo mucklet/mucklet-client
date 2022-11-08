@@ -36,7 +36,7 @@ class DialogChangeEmail {
 		let model = new Model({ data: {
 			email: "",
 			pass: "",
-			showPass: false
+			showPass: false,
 		}, eventBus: this.app.eventBus });
 
 		this.dialog = new Dialog({
@@ -55,21 +55,21 @@ class DialogChangeEmail {
 					}),
 					{
 						className: 'common--sectionpadding',
-						noToggle: true
-					}
+						noToggle: true,
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('dialogChangeEmail.passwordVerification', "Password verification"),
 					new PasswordInput(model.pass, {
 						onInput: c => model.set({ pass: c.getValue() }),
 						inputOpt: { className: 'dialog--input' },
-						className: 'darkeye'
+						className: 'darkeye',
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogChangeEmail.passwordVerificationInfo', "Verify yourself with your game account password.\nNever share your email account password.")
-					}
+						popupTip: l10n.l('dialogChangeEmail.passwordVerificationInfo', "Verify yourself with your game account password.\nNever share your email account password."),
+					},
 				)),
 				n.elem('p', { className: 'dialog--error' }, [
 					n.component(new FAIcon('exclamation-triangle')),
@@ -80,16 +80,16 @@ class DialogChangeEmail {
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('button', {
 						events: { click: () => this._changeEmail(model) },
-						className: 'btn primary dialog--btn'
+						className: 'btn primary dialog--btn',
 					}, [
 						n.component(new Txt(opt.setEmail
 							? l10n.l('dialogChangeEmail.setEmail', "Set email")
-							: l10n.l('dialogChangeEmail.changeEmail', "Change email")
-						))
-					])
-				])
+							: l10n.l('dialogChangeEmail.changeEmail', "Change email"),
+						)),
+					]),
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();

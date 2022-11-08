@@ -31,7 +31,7 @@ class DialogEditDndMsg {
 					n.elem('div', { className: 'common--sectionpadding' }, [
 						n.elem('div', { className: 'flex-row' }, [
 							n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogeditdndmsg--fullname flex-1' })),
-							n.component(new PopupTip(l10n.l('dialogEditDndMsg.dndMsgInfo', "The do not disturb message is sent to any character trying to message you while set as do not disturb.\nA default message will be sent if empty."), { className: 'popuptip--width-m flex-auto' }))
+							n.component(new PopupTip(l10n.l('dialogEditDndMsg.dndMsgInfo', "The do not disturb message is sent to any character trying to message you while set as do not disturb.\nA default message will be sent if empty."), { className: 'popuptip--width-m flex-auto' })),
 						]),
 						n.component('dndMsg', new ModelComponent(
 							model,
@@ -39,30 +39,30 @@ class DialogEditDndMsg {
 								events: { input: c => model.set({ dndMsg: c.getValue() }) },
 								attributes: {
 									spellcheck: 'true',
-									placeholder: l10n.t('dialogEditDndMsg.textPlaceholder', "Use default message.")
+									placeholder: l10n.t('dialogEditDndMsg.textPlaceholder', "Use default message."),
 								},
 								className: 'dialog--input common--paneltextarea-small',
 							}),
-							(m, c) => c.setValue(m.dndMsg)
+							(m, c) => c.setValue(m.dndMsg),
 						)),
 					]),
 					n.component('message', new Collapser(null)),
 					n.elem('div', { className: 'pad-top-xl pad-bottom-m' }, [
 						n.elem('submit', 'button', {
 							events: { click: () => this._onSave(char, puppeteer, model) },
-							className: 'btn primary dialogeditdndmsg--submit'
+							className: 'btn primary dialogeditdndmsg--submit',
 						}, [
 							n.component(new ModelTxt(model, m => m.isModified
 								? model.dndMsg.trim()
 									? l10n.l('dialogEditDndMsg.saveMessage', "Save message")
 									: l10n.l('dialogEditDndMsg.clearMessage', "Clear message")
-								: l10n.l('dialogEditDndMsg.close', "Close")
-							))
+								: l10n.l('dialogEditDndMsg.close', "Close"),
+							)),
 						]),
-					])
-				]))
+					]),
+				])),
 			),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();

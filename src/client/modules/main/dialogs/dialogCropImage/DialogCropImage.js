@@ -27,7 +27,7 @@ class DialogCropImage {
 
 		let croppie = new Croppie(Object.assign({
 			viewport: { width: 200, height: 200, type: 'square' },
-			boundary: { width: 400, height: 400 }
+			boundary: { width: 400, height: 400 },
 		}, opt));
 		this.dialog = new Dialog({
 			title: opt.title || l10n.l('dialogCropImage.dialogCropImage', "Crop image"),
@@ -47,13 +47,13 @@ class DialogCropImage {
 									this.dialog.close();
 								}
 							})
-							.catch(err => this._setMessage(err))
+							.catch(err => this._setMessage(err)),
 					}, className: 'btn primary form' }, [
-						n.component(new Txt(opt.submit || l10n.l('dialogCropImage.uploadImage', "Upload image")))
-					])
-				])
+						n.component(new Txt(opt.submit || l10n.l('dialogCropImage.uploadImage', "Upload image"))),
+					]),
+				]),
 			])),
-			onClose: () => this._onClose()
+			onClose: () => this._onClose(),
 		});
 
 		this.dialog.open();

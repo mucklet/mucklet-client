@@ -32,15 +32,15 @@ class Layout {
 		this.layouts = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.elem = new Elem(n => (
 			n.elem('div', { className: 'layout' }, [
 				n.elem('div', { className: 'layout--container' }, [
 					n.component('playerPanel', new Fader(null, { className: 'layout--playerpanel' })),
-					n.component('activePanel', new Fader(null, { className: 'layout--activepanel' }))
-				])
+					n.component('activePanel', new Fader(null, { className: 'layout--activepanel' })),
+				]),
 			])
 		));
 		this.playerModel = this.module.player.getModel();

@@ -27,7 +27,7 @@ class PageWatchComponent {
 						let bc = b.value.char;
 						return (bc.awake - ac.awake) || (bc.lastAwake - ac.lastAwake) || a.key.localeCompare(b.key);
 					},
-					eventBus: this.module.self.app.eventBus
+					eventBus: this.module.self.app.eventBus,
 				}),
 				col => col.dispose(),
 				col => new Elem(n => n.elem('div', [
@@ -41,17 +41,17 @@ class PageWatchComponent {
 								if (change && (change.hasOwnProperty('awake') || change.hasOwnProperty('lastAwake'))) {
 									col.refresh(m.id);
 								}
-							}
+							},
 						),
-						{ className: 'pagewatch--chars' }
+						{ className: 'pagewatch--chars' },
 					)),
 					n.component(new CollectionComponent(
 						col,
 						new Collapser(),
-						(col, c, ev) => c.setComponent(col.length ? null : new PageWatchNoWatch(this.module))
+						(col, c, ev) => c.setComponent(col.length ? null : new PageWatchNoWatch(this.module)),
 					)),
-				]))
-			))
+				])),
+			)),
 		]));
 		this.elem.render(el);
 	}

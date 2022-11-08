@@ -46,12 +46,12 @@ class ReportAttachmentCompare {
 					n.elem('div', { className: 'flex-row' }, [
 						n.component(new Txt(txtWith, { className: 'badge--iconcol badge--subtitle' })),
 						n.component(new Txt((c.name + ' ' + c.surname).trim(), {
-							className: 'badge--info badge--text' + (c.deleted ? ' badge--strikethrough' : '')
+							className: 'badge--info badge--text' + (c.deleted ? ' badge--strikethrough' : ''),
 						})),
 					]),
-					n.elem('div', { className: 'badge--text' }, matches)
+					n.elem('div', { className: 'badge--text' }, matches),
 				]);
-			})
+			}),
 		});
 	}
 

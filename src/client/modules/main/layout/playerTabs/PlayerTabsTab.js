@@ -11,9 +11,9 @@ class PlayerTabsTab {
 	render(el) {
 		this.elem = new ModelComponent(this.module.self.getModel(),
 			new Elem(n => n.elem('div', { className: 'playertabs-tab' }, [
-				n.component(this.tab.tabFactory(() => this.onClick(this.tab)))
+				n.component(this.tab.tabFactory(() => this.onClick(this.tab))),
 			])),
-			(m, c) => c[this.tab.id === m.tabId ? 'addClass' : 'removeClass']('active')
+			(m, c) => c[this.tab.id === m.tabId ? 'addClass' : 'removeClass']('active'),
 		);
 		this.elem.render(el);
 	}

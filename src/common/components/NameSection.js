@@ -30,7 +30,7 @@ class NameSection extends RootElem {
 			n.component('content', new Collapser(null, { className: 'namesection--content', duration: opt.duration })),
 			n.elem('div', { className: 'namesection--head', events: opt.noToggle ? null : { click: () => this.toggle() }}, [
 				n.component('title', new Fader(null, { className: 'namesection--title' })),
-				n.component('caret', new FAIcon('caret-right', { className: 'namesection--caret' }))
+				n.component('caret', new FAIcon('caret-right', { className: 'namesection--caret' })),
 			]),
 		]));
 

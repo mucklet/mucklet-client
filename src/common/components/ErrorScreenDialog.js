@@ -32,11 +32,11 @@ class ErrorScreen {
 				n.component(new Txt(opt.infoTxt || l10n.l('errorScreenDialog.errorOccured', "We got this error message:"), { tagName: 'p' })),
 				n.component(this.err
 					? new Txt(l10n.l(this.err.code, this.err.message, this.err.data), { tagName: 'p', className: 'errorscreendialog--message' })
-					: null
+					: null,
 				),
 			])),
 			onConfirm: () => this._redirect(),
-			onClose: () => this._redirect()
+			onClose: () => this._redirect(),
 		});
 		this.elem.render(el);
 	}

@@ -18,7 +18,7 @@ class SetProfileAvatar {
 			desc: l10n.l('setProfileAvatar.avatarDesc', "Value is omitted. Set profile avatar to character's current avatar."),
 			value: this._setProfileAvatar.bind(this),
 			next: null,
-			sortOrder: 100
+			sortOrder: 100,
 		});
 	}
 

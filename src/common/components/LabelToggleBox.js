@@ -34,7 +34,7 @@ class LabelToggleBox extends RootElem {
 			onChange: opt.onChange,
 			events: opt.toggleBoxEvents || null,
 			disableClick: opt.disableClick,
-			className: opt.toggleBoxClassName || null
+			className: opt.toggleBoxClassName || null,
 		});
 		this._popupTip = opt.popupTip
 			? new PopupTip(opt.popupTip, { position: 'left', className: 'labeltogglebox--popuptip' + (opt.popupTipClassName ? ' ' + opt.popupTipClassName : '') })

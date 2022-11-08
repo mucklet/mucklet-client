@@ -35,7 +35,7 @@ class DialogEditNote {
 						model => new Elem(n => n.elem('div', [
 							n.elem('div', { className: 'flex-row' }, [
 								n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogeditnote--fullname flex-1' })),
-								n.component(new PopupTip(l10n.l('dialogEditNote.notesInfo', "The notes are your personal records about a character. No one else can read them."), { className: 'popuptip--width-m flex-auto' }))
+								n.component(new PopupTip(l10n.l('dialogEditNote.notesInfo', "The notes are your personal records about a character. No one else can read them."), { className: 'popuptip--width-m flex-auto' })),
 							]),
 							n.component('notes', new ModelComponent(
 								model,
@@ -43,29 +43,29 @@ class DialogEditNote {
 									events: { input: c => model.set({ text: c.getValue() }) },
 									attributes: {
 										spellcheck: 'false',
-										placeholder: l10n.t('dialogEditNote.textPlaceholder', "Enter some notes")
+										placeholder: l10n.t('dialogEditNote.textPlaceholder', "Enter some notes"),
 									},
-									className: 'dialog--input common--paneltextarea'
+									className: 'dialog--input common--paneltextarea',
 								}),
-								(m, c) => c.setValue(m.text)
+								(m, c) => c.setValue(m.text),
 							)),
 							n.component('message', new Collapser(null)),
 							n.elem('div', { className: 'dialog--footer' }, [
 								n.elem('submit', 'button', {
 									events: { click: () => this._onSave(model) },
-									className: 'btn primary dialogeditnote--submit'
+									className: 'btn primary dialogeditnote--submit',
 								}, [
 									n.component(new ModelTxt(model, m => m.isModified
 										? model.text.trim()
 											? l10n.l('dialogEditNote.saveNotes', "Save notes")
 											: l10n.l('dialogEditNote.clearNotes', "Clear notes")
-										: l10n.l('dialogEditNote.closeNotes', "Close notes")
-									))
+										: l10n.l('dialogEditNote.closeNotes', "Close notes"),
+									)),
 								]),
-							])
-						]))
+							]),
+						])),
 					),
-					onClose: () => { this.dialog = null; }
+					onClose: () => { this.dialog = null; },
 				});
 
 				this.dialog.open();

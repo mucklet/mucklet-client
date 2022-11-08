@@ -23,9 +23,9 @@ class DeleteExit {
 		this.module.cmd.addPrefixCmd('delete', {
 			key: 'exit',
 			next: new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
-				name: "exit"
+				name: "exit",
 			}),
-			value: (ctx, p) => this.deleteExit(ctx.char, { exitId: p.exitId })
+			value: (ctx, p) => this.deleteExit(ctx.char, { exitId: p.exitId }),
 		});
 
 		this.module.help.addTopic({

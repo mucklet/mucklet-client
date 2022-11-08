@@ -22,13 +22,13 @@ class CharCycle {
 			id: 'charCycle',
 			usage: '<kbd>Shift</kbd> + <kbd>Tab</kbd>',
 			desc: l10n.l('charCycle.charCycleDesc', `<p>Cycle active character among currently awake characters.<p>`),
-			sortOrder: 55
+			sortOrder: 55,
 		});
 		this.module.helpConsole.addShortcut({
 			id: 'charSelect',
 			usage: '<kbd>Ctrl</kbd> + <kbd>1</kbd><kbd>2</kbd>...<kbd>9</kbd><kbd>0</kbd>',
 			desc: l10n.l('charCycle.charSelectDesc', `<p>Select active character among currently awake characters.<p>`),
-			sortOrder: 65
+			sortOrder: 65,
 		});
 
 		document.addEventListener('keydown', this._onKeydown);

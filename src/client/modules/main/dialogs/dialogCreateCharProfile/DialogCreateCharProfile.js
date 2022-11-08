@@ -23,7 +23,7 @@ class DialogCreateCharProfile {
 
 		let model = new Model({ data: {
 			name: "",
-			key: ""
+			key: "",
 		}, eventBus: this.app.eventBus });
 
 		this.dialog = new Dialog({
@@ -35,38 +35,38 @@ class DialogCreateCharProfile {
 					new Input("", {
 						events: { input: c => model.set({ name: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
-						className: 'dialog--input'
+						className: 'dialog--input',
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateCharProfile.nameInfo', "A short but descriptive name for the profile.")
-					}
+						popupTip: l10n.l('dialogCreateCharProfile.nameInfo', "A short but descriptive name for the profile."),
+					},
 				)),
 				n.component(new PanelSection(
 					l10n.l('dialogCreateCharProfile.keyword', "Keyword"),
 					new Input(model.key, {
 						events: { input: c => model.set({ key: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
-						className: 'dialog--input'
+						className: 'dialog--input',
 					}),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateCharProfile.keyInfo', "Keyword is used to identify the character profile in console commands.")
-					}
+						popupTip: l10n.l('dialogCreateCharProfile.keyInfo', "Keyword is used to identify the character profile in console commands."),
+					},
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('create', 'button', {
 						events: { click: () => this._onCreate(ctrl, model) },
-						className: 'btn primary dialog--btn'
+						className: 'btn primary dialog--btn',
 					}, [
-						n.component(new Txt(l10n.l('dialogcreatecharprofile.create', "Create")))
+						n.component(new Txt(l10n.l('dialogcreatecharprofile.create', "Create"))),
 					]),
-				])
+				]),
 			])),
-			onClose: () => { this.dialog = null; }
+			onClose: () => { this.dialog = null; },
 		});
 
 		this.dialog.open();
@@ -78,7 +78,7 @@ class DialogCreateCharProfile {
 
 		this.createPromise = ctrl.call('createProfile', {
 			name: model.name,
-			key: model.key
+			key: model.key,
 		}).then(char => {
 			if (this.dialog) {
 				this.dialog.close();

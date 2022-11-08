@@ -24,7 +24,7 @@ class FollowEvent extends Elem {
 					? "."
 					: self
 						? txtHowToStopFollow
-						: txtHowToStopLead
+						: txtHowToStopLead,
 				)),
 				n.component(opt.noCode
 					? null
@@ -34,11 +34,11 @@ class FollowEvent extends Elem {
 								self || opt.noCode
 									? "stop follow"
 									: "stop lead " + (c.name + " " + c.surname).trim()
-								, { tagName: 'code' }))
-						])
-					]))
-				)
-			])
+								, { tagName: 'code' })),
+						]),
+					])),
+				),
+			]),
 		]));
 	}
 }

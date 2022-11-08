@@ -31,7 +31,7 @@ class HighlightTriggers {
 		this.module.charLog.addEventModifier({
 			id: 'highlightTriggers',
 			sortOrder: 10,
-			callback: this._applyModifications.bind(this)
+			callback: this._applyModifications.bind(this),
 		});
 	}
 

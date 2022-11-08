@@ -18,7 +18,7 @@ class PageEditRoom {
 			'deleteRoom',
 			'dialogSetRoomOwner',
 			'player',
-			'toaster'
+			'toaster',
 		], this._init.bind(this));
 	}
 
@@ -29,11 +29,11 @@ class PageEditRoom {
 			id: 'editRoom',
 			sortOrder: 10,
 			componentFactory: (ctrl, room) => new Elem(n => n.elem('button', { className: 'iconbtn small', events: {
-				click: () => this.open(ctrl, room)
+				click: () => this.open(ctrl, room),
 			}}, [
 				n.component(new FAIcon('pencil')),
 			])),
-			filter: (ctrl, room, canEdit, canDelete) => canEdit
+			filter: (ctrl, room, canEdit, canDelete) => canEdit,
 		});
 	}
 
@@ -51,7 +51,7 @@ class PageEditRoom {
 			(ctrl, room, state, close) => ({
 				component: new PageEditRoomComponent(this.module, ctrl, room, state, close),
 				title: l10n.l('pageEditRoom.editRoom', "Edit Room"),
-			})
+			}),
 		);
 	}
 

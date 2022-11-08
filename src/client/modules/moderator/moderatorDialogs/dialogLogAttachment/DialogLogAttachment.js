@@ -37,17 +37,17 @@ class DialogLogAttachment {
 					content: new Elem(n => n.elem('div', [
 						n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 							n.elem('div', { className: 'flex-auto' }, [
-								n.component(this.module.avatar.newAvatar(log.char, { size: 'large' }))
+								n.component(this.module.avatar.newAvatar(log.char, { size: 'large' })),
 							]),
 							n.elem('div', { className: 'flex-1' }, [
 								n.component(new ModelTxt(log.char, m => errString(m, m => (m.name + ' ' + m.surname).trim(), txtUnknown), { tagName: 'div', className: 'dialoglogattachment--fullname' })),
 								n.component(log.puppeteer
 									? new ModelTxt(log.puppeteer, m => errString(m, m => '(' + (m.name + ' ' + m.surname).trim() + ')', txtUnknown), { tagName: 'div', className: 'dialoglogattachment--puppeteer' })
-									: null
+									: null,
 								),
 								n.elem('div', { className: 'dialoglogattachment--interval flex-1' }, [
 									n.component(new ModelTxt(log, m => formatTimeSpan(new Date(m.startTime), new Date(m.endTime)))),
-								])
+								]),
 							]),
 						]),
 						n.elem('div', { className: 'dialoglogattachment--eventscont' }, [
@@ -55,14 +55,14 @@ class DialogLogAttachment {
 								new CollectionList(log.events, ev => {
 									return this.module.charLog.getLogEventComponent(log.char.id, ev, { noCode: true, noButton: true, noMenu: true });
 								}, {
-									className: 'dialoglogattachment--eventlist'
+									className: 'dialoglogattachment--eventlist',
 								}),
 								{
 									className: 'dialoglogattachment--events',
-									autoHide: false
-								}
+									autoHide: false,
+								},
 							)),
-						])
+						]),
 					])),
 					onClose: () => this.dialog = null,
 				});

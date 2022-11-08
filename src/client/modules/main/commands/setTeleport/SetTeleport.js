@@ -23,7 +23,7 @@ const defaultAttr = [
 			errTooLong: keyTooLong,
 		}),
 		desc: l10n.l('setTeleportDesc', "A new destination keyword."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 ];
 
@@ -40,7 +40,7 @@ class SetTeleport {
 	_init(module) {
 		this.module = module;
 		this.nodeAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -50,18 +50,18 @@ class SetTeleport {
 			key: 'teleport',
 			next: [
 				new ListStep('nodeId', this.module.cmdLists.getTeleportNodes(), {
-					name: "teleport node"
+					name: "teleport node",
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.nodeAttr, {
 					name: "teleport node attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
 			value: (ctx, p) => this.setTeleport(ctx.char, {
 				nodeId: p.nodeId,
-				[p.attr]: p.value
-			})
+				[p.attr]: p.value,
+			}),
 		});
 
 		this.module.help.addTopic({
@@ -82,8 +82,8 @@ class SetTeleport {
 			attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
-				})
+					name: attr.name || attr.key,
+				}),
 		];
 		this.nodeAttr.addItem(Object.assign({}, attr, { next }));
 		return this;

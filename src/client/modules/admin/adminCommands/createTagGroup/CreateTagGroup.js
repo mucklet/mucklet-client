@@ -37,22 +37,22 @@ class CreateTagGroup {
 				}),
 				new DelimStep(":", {
 					next: new NumberStep('order', { name: "sort order" }),
-					errRequired: null
+					errRequired: null,
 				}),
 				new DelimStep("=", {
 					next: [
 						new TextStep('name', {
 							maxLength: () => module.info.getTag().groupNameMaxLength,
 							errTooLong: itemNameTooLong,
-						})
-					]
-				})
+						}),
+					],
+				}),
 			],
 			value: (ctx, p) => this.createTagGroup(ctx.char, {
 				key: p.key,
 				name: p.name || "",
-				order: p.order || 0
-			})
+				order: p.order || 0,
+			}),
 		});
 
 		this.module.helpAdmin.addTopic({

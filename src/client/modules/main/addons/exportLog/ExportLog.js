@@ -51,8 +51,8 @@ class ExportLog {
 				converter: (charId, ev) => this._charLogConverter(charId, ev, { noButton: true }),
 				style: {
 					'.ev-control': controlStyle,
-					'.ev-control--border': controlBorderStyle
-				}
+					'.ev-control--border': controlBorderStyle,
+				},
 			},
 			say: { style: sayStyle },
 			pose: { style: sayStyle },
@@ -62,7 +62,7 @@ class ExportLog {
 			arrive: { style: actionStyle },
 			travel: { style: {
 				'.ev-travel': actionStyle,
-				'.ev-travel--room': travelRoomStyle
+				'.ev-travel--room': travelRoomStyle,
 			}},
 			whisper: { style: whisperStyle },
 			message: { style: whisperStyle },
@@ -93,7 +93,7 @@ class ExportLog {
 			warn: { style: {
 				'.ev-warn': warnStyle,
 				'.ev-warn .charlog--fieldset': warnFieldsetStyle,
-				'.ev-warn .charlog--fieldset-label': warnFieldsetLabelStyle
+				'.ev-warn .charlog--fieldset-label': warnFieldsetLabelStyle,
 			}},
 			action: { style: actionStyle },
 			mail: { style: whisperStyle },
@@ -105,7 +105,7 @@ class ExportLog {
 			let t = eventTypes[k];
 			this.addEventType(Object.assign({ id: k }, {
 				converter: t.converter || this._createCharLogConverter,
-				style: t.style
+				style: t.style,
 			}));
 		}
 	}
@@ -125,7 +125,7 @@ class ExportLog {
 		this.eventTypes[type.id] = {
 			id: type.id,
 			converter: type.converter || this._charLogConverter,
-			style: type.style
+			style: type.style,
 		};
 		return this;
 	}
@@ -143,7 +143,7 @@ class ExportLog {
 				let a = [
 					htmlStart,
 					headStart,
-					titleStart
+					titleStart,
 				];
 
 				// Add title
@@ -173,7 +173,7 @@ class ExportLog {
 										: ''
 								) + ">" +
 								v +
-								"</div>"
+								"</div>",
 							);
 							usedTypes[ev.type] = true;
 						}

@@ -22,19 +22,19 @@ class PageCharSleep {
 
 				c.setComponent(m.state != 'awake'
 					? new Elem(n => n.elem('button', { className: 'btn medium primary', events: {
-						click: () => this._wakeupChar()
+						click: () => this._wakeupChar(),
 					}}, [
 						n.component(new FAIcon('sign-in')),
-						n.component(new Txt(l10n.l('pageChar.wakeUp', "Wake up")))
+						n.component(new Txt(l10n.l('pageChar.wakeUp', "Wake up"))),
 					]))
 					: new Elem(n => n.elem('button', { className: 'btn small', events: {
-						click: () => this._releaseChar()
+						click: () => this._releaseChar(),
 					}}, [
 						n.component(new FAIcon('sign-out')),
-						n.component(new Txt(l10n.l('pageChar.sleep', "Sleep")))
-					]))
+						n.component(new Txt(l10n.l('pageChar.sleep', "Sleep"))),
+					])),
 				);
-			}
+			},
 		);
 		return this.elem.render(el);
 	}

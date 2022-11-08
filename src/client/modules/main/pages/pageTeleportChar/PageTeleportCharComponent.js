@@ -34,27 +34,27 @@ class PageTeleportCharComponent {
 										col,
 										m => new PageTeleportCharNode(this.module, this.ctrl, m, {
 											closePage: this.close,
-											isGlobal: true
-										})
+											isGlobal: true,
+										}),
 									)
-									: null
+									: null,
 								);
-							}
+							},
 						),
-						(m, c) => c.setCollection(m.globalTeleports)
+						(m, c) => c.setCollection(m.globalTeleports),
 					)),
 					n.component(new CollectionList(
 						this.ctrl.nodes,
 						m => new PageTeleportCharNode(this.module, this.ctrl, m, {
-							closePage: this.close
-						})
-					))
+							closePage: this.close,
+						}),
+					)),
 				])),
 				{
 					className: 'pageteleportchar--ownedrooms common--sectionpadding',
 					open: this.state.nodes,
-					onToggle: (c, v) => this.state.nodes = v
-				}
+					onToggle: (c, v) => this.state.nodes = v,
+				},
 			)),
 			n.component(new ModelComponent(
 				this.ctrl,
@@ -75,20 +75,20 @@ class PageTeleportCharComponent {
 									if (!ev || (col.length == 1 && ev.event == 'add')) {
 										c.setComponent(new CollectionList(
 											col,
-											m => new PageTeleportCharRoom(this.module, this.ctrl, m, this.close)
+											m => new PageTeleportCharRoom(this.module, this.ctrl, m, this.close),
 										));
 									}
-								}
+								},
 							),
 							{
 								className: 'pageteleportchar--ownedrooms common--sectionpadding',
 								open: this.state.inRoomOpen,
-								onToggle: (c, v) => this.state.inRoomOpen = v
-							}
+								onToggle: (c, v) => this.state.inRoomOpen = v,
+							},
 						) : null);
 					}
-				}
-			))
+				},
+			)),
 		]));
 		return this.elem.render(el);
 	}

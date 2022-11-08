@@ -28,7 +28,7 @@ class ActivePanel {
 		this.overlays = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 		this.renderedOverlays = {};
 
@@ -40,7 +40,7 @@ class ActivePanel {
 				n.component('logPanel', new Fader(null, { className: 'activepanel--logpanel' })),
 				n.component('consolePanel', new Fader(null, { className: 'activepanel--consolepanel' })),
 			]),
-			n.component('roomPanel', new Fader(null, { className: 'activepanel--roompanel' }))
+			n.component('roomPanel', new Fader(null, { className: 'activepanel--roompanel' })),
 		]));
 
 		this._setListeners(true);

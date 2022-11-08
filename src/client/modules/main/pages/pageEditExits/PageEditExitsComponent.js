@@ -31,30 +31,30 @@ class PageEditExitsComponent {
 				new Elem(n => n.elem('div', [
 					n.component(new CollectionList(
 						this.room.exits,
-						m => new PageEditExitsExit(this.module, this.ctrl, this.room, m)
+						m => new PageEditExitsExit(this.module, this.ctrl, this.room, m),
 					)),
 					n.component(new CollectionComponent(
 						this.room.exits,
 						new Collapser(),
 						(col, c, ev) => c.setComponent(col.length
 							? null
-							: new Txt(l10n.l('pageEditExits.noExits', "There are no exits"), { className: 'common--nolistplaceholder' })
-						)
+							: new Txt(l10n.l('pageEditExits.noExits', "There are no exits"), { className: 'common--nolistplaceholder' }),
+						),
 					)),
 					n.elem('div', { className: 'common--addpadding' }, [
 						n.elem('button', { events: {
-							click: () => this._onCreate(false)
+							click: () => this._onCreate(false),
 						}, className: 'btn icon-left common--addbtn' }, [
 							n.component(new FAIcon('plus')),
-							n.component(new Txt(l10n.l('pageEditExits.createExit', "Create new exit")))
-						])
-					])
+							n.component(new Txt(l10n.l('pageEditExits.createExit', "Create new exit"))),
+						]),
+					]),
 				])),
 				{
 					className: 'pageeditexits--exits common--sectionpadding',
 					open: this.roomState.exitsOpen,
-					onToggle: (c, v) => this.roomState.exitsOpen = v
-				}
+					onToggle: (c, v) => this.roomState.exitsOpen = v,
+				},
 			)),
 			n.component(new PanelSection(
 				new Elem(n => n.elem('div', { className: 'pageeditexits--exitsheader' }, [
@@ -69,39 +69,39 @@ class PageEditExitsComponent {
 						c.setComponent(m.hiddenExits ? new Context(
 							() => new ModelToCollection(m.hiddenExits, {
 								compare: (a, b) => a.value.name.localeCompare(b.value.name) || a.key.localeCompare(b.key),
-								eventBus: this.module.self.app.eventBus
+								eventBus: this.module.self.app.eventBus,
 							}),
 							exits => exits.dispose(),
 							exits => new Elem(n => n.elem('div', [
 								n.component(new CollectionList(
 									exits,
-									m => new PageEditExitsExit(this.module, this.ctrl, this.room, m, { hidden: true })
+									m => new PageEditExitsExit(this.module, this.ctrl, this.room, m, { hidden: true }),
 								)),
 								n.component(new CollectionComponent(
 									exits,
 									new Collapser(),
 									(col, c, ev) => c.setComponent(col.length
 										? null
-										: new Txt(l10n.l('pageEditExits.noHiddenExits', "There are no hidden exits"), { className: 'common--nolistplaceholder' })
-									)
+										: new Txt(l10n.l('pageEditExits.noHiddenExits', "There are no hidden exits"), { className: 'common--nolistplaceholder' }),
+									),
 								)),
 								n.elem('div', { className: 'common--addpadding' }, [
 									n.elem('button', { events: {
-										click: () => this._onCreate(true)
+										click: () => this._onCreate(true),
 									}, className: 'btn icon-left common--addbtn' }, [
 										n.component(new FAIcon('plus')),
-										n.component(new Txt(l10n.l('pageEditExits.createHiddenExit', "Create hidden exit")))
-									])
-								])
-							]))
+										n.component(new Txt(l10n.l('pageEditExits.createHiddenExit', "Create hidden exit"))),
+									]),
+								]),
+							])),
 						) : null);
-					}
+					},
 				),
 				{
 					className: 'pageeditexits--exits common--sectionpadding',
 					open: this.roomState.hiddenExitsOpen,
-					onToggle: (c, v) => this.roomState.hiddenExitsOpen = v
-				}
+					onToggle: (c, v) => this.roomState.hiddenExitsOpen = v,
+				},
 			)),
 		]));
 
@@ -117,7 +117,7 @@ class PageEditExitsComponent {
 
 	_onCreate(hidden) {
 		this.module.dialogCreateExit.open(this.ctrl, this.room, {
-			hidden
+			hidden,
 		});
 	}
 }

@@ -26,9 +26,9 @@ class MessageEvent extends Elem {
 				n.elem('span', { className: ev.ooc ? 'charlog--ooc' : 'charlog--comm' }, [
 					n.text(ev.pose ? poseSpacing(ev.msg) : ' writes, "'),
 					n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
-					n.text(ev.pose ? '' : '"')
-				])
-			])
+					n.text(ev.pose ? '' : '"'),
+				]),
+			]),
 		]));
 	}
 

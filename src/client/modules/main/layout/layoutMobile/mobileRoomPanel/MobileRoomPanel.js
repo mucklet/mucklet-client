@@ -28,14 +28,14 @@ class MobileRoomPanel {
 
 		this.model = new Model({
 			data: Object.assign({ pageInfo: null }, this.module.roomPages.getModel().props),
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 		this.activePanelModel = this.module.mobileActivePanel.getModel();
 		this.component = new MobilePanel("", null, {
 			closed: !this.activePanelModel.roomPanelOpen,
 			align: 'right',
 			className: 'mobileroompanel',
-			onClose: () => this.module.mobileActivePanel.toggleRoomPanel(false)
+			onClose: () => this.module.mobileActivePanel.toggleRoomPanel(false),
 		});
 
 		this.module.mobileActivePanel.setNode('roomPanel', this.component);
@@ -68,7 +68,7 @@ class MobileRoomPanel {
 			this.model.set(Object.assign({
 				pageInfo: factory
 					? factory('mobile')
-					: null
+					: null,
 			}, m.props));
 		}
 	}
@@ -106,7 +106,7 @@ class MobileRoomPanel {
 					if (sb) {
 						page.state.scrollTop = sb.getScrollElement().scrollTop;
 					}
-				}
+				},
 			});
 	}
 

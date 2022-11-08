@@ -20,7 +20,7 @@ class PagePuppeteerSettingsComponent {
 	render(el) {
 		this.model = new ModifyModel(this.ctrl, {
 			props: this.state.changes,
-			eventBus: this.module.self.app.eventBus
+			eventBus: this.module.self.app.eventBus,
 		});
 
 		this.elem = new CollectionComponent(
@@ -38,12 +38,12 @@ class PagePuppeteerSettingsComponent {
 						m => m.lastUsed
 							? formatDateTime(new Date(m.lastUsed))
 							: l10n.l('pagePuppeteerSettings.never', "Never"),
-						{ tagName: 'div', className: 'common--font-small' }
+						{ tagName: 'div', className: 'common--font-small' },
 					)),
 				]),
 				n.component(new Context(
 					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => t.type == 'topSection'
+						filter: t => t.type == 'topSection',
 					}),
 					tools => tools.dispose(),
 					tools => new CollectionList(
@@ -51,13 +51,13 @@ class PagePuppeteerSettingsComponent {
 						t => t.componentFactory(this.puppeteer, this.charSettings, this.state),
 						{
 							className: 'common--sectionpadding',
-							subClassName: t => t.className || null
-						}
-					)
+							subClassName: t => t.className || null,
+						},
+					),
 				)),
 				n.component(new Context(
 					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => t.type == 'sections'
+						filter: t => t.type == 'sections',
 					}),
 					tools => tools.dispose(),
 					tools => new CollectionList(
@@ -65,9 +65,9 @@ class PagePuppeteerSettingsComponent {
 						t => t.componentFactory(this.puppeteer, this.charSettings, this.state),
 						{
 							className: 'common--sectionpadding',
-							subClassName: t => t.className || null
-						}
-					)
+							subClassName: t => t.className || null,
+						},
+					),
 				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
@@ -75,22 +75,22 @@ class PagePuppeteerSettingsComponent {
 						n.component(new ModelComponent(
 							this.model,
 							new Elem(n => n.elem('update', 'button', { events: {
-								click: () => this._save(this.model)
+								click: () => this._save(this.model),
 							}, className: 'btn primary flex-1' }, [
-								n.component('text', new Txt())
+								n.component('text', new Txt()),
 							])),
 							(m, c) => c.getNode('text').setText(m.isModified
 								? l10n.l('pagePuppeteerSettings.update', "Save edits")
-								: l10n.l('pagePuppeteerSettings.close', "Close")
-							)
+								: l10n.l('pagePuppeteerSettings.close', "Close"),
+							),
 						)),
 					]),
 					n.elem('button', { events: {
-						click: () => this.module.dialogUnregisterPuppet.open(this.puppeteer)
+						click: () => this.module.dialogUnregisterPuppet.open(this.puppeteer),
 					}, className: 'iconbtn medium light' }, [
-						n.component(new FAIcon('trash'))
+						n.component(new FAIcon('trash')),
 					]),
-				])
+				]),
 			])),
 			(col, c) => {
 				// Close if we are no longer puppeteers
@@ -98,7 +98,7 @@ class PagePuppeteerSettingsComponent {
 					if (puppeteer.char.id == this.puppeteer.char.id && puppeteer.puppet.id == this.puppeteer.puppet.id) return;
 				}
 				setTimeout(() => this.close(), 0);
-			}
+			},
 		);
 		this.elem.render(el);
 	}
@@ -132,7 +132,7 @@ class PagePuppeteerSettingsComponent {
 		if (!this.elem) return;
 		this.elem.getNode('message').setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
-			: null
+			: null,
 		);
 	}
 

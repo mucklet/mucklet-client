@@ -21,7 +21,7 @@ class SetRoomLocation {
 			stepFactory: () => new ListStep('private', this.module.cmdLists.getBool(), { name: "private flag" }),
 			desc: l10n.l('setRoomLocation.privateDesc', "Flag telling if the room is private, preventing it from being listed in the area. Requires area ownership. Value is <code>yes</code> or <code>no</code>."),
 			value: (ctx, p) => this.setRoomLocation(ctx.char, { private: p.private }),
-			sortOrder: 200
+			sortOrder: 200,
 		});
 		this.module.setRoom.addAttribute({
 			key: 'position',
@@ -32,7 +32,7 @@ class SetRoomLocation {
 			]),
 			desc: l10n.l('setRoomLocation.positionDesc', "The X,Y pixel coordinates of the room's position on the area's map image, starting with 0,0 in the top-left corner. Requires area ownership."),
 			value: (ctx, p) => this.setRoomLocation(ctx.char, { mapX: p.mapx, mapY: p.mapy }),
-			sortOrder: 210
+			sortOrder: 210,
 		});
 	}
 

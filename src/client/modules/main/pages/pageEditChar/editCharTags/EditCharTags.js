@@ -17,13 +17,13 @@ class EditCharTags {
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
-			eventBus: this.app.eventBus
+			eventBus: this.app.eventBus,
 		});
 
 		this.module.pageEditChar.addTool({
 			id: 'editCharTags',
 			sortOrder: 10,
-			componentFactory: (ctrl, state) => new EditCharTagsComponent(this.module, ctrl, state)
+			componentFactory: (ctrl, state) => new EditCharTagsComponent(this.module, ctrl, state),
 		});
 	}
 

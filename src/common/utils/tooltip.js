@@ -58,7 +58,7 @@ function createTooltip(ref, text, opt) {
 				ctx.timeout = null;
 				setListeners(ctx, false);
 			}
-		}
+		},
 	});
 	ctx.close = (ev) => tryClose(ev, ref, opt);
 	setListeners(ctx, true);

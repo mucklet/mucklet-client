@@ -36,9 +36,9 @@ class PageAreaComponent {
 					if (!change || change.hasOwnProperty('area')) {
 						this._updateModel();
 					}
-				}
+				},
 			),
-			(m, c) => c.setModel(m.inRoom)
+			(m, c) => c.setModel(m.inRoom),
 		);
 		return this.elem.render(el);
 	}

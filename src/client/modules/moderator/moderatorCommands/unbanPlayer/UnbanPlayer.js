@@ -31,16 +31,16 @@ class BanPlayer {
 					next: new TextStep('username', {
 						name: "username",
 						token: 'listitem',
-						spellcheck: false
+						spellcheck: false,
 					}),
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'unbanPlayer.characterRequired', message: "Which player?" })
+						errRequired: step => ({ code: 'unbanPlayer.characterRequired', message: "Which player?" }),
 					}),
-				})
+				}),
 			],
-			value: (ctx, p) => this._unbanPlayer(ctx, p)
+			value: (ctx, p) => this._unbanPlayer(ctx, p),
 		});
 
 		this.module.helpModerate.addTopic({
@@ -58,7 +58,7 @@ class BanPlayer {
 			? this.module.api.call('identity.overseer', 'getUserByUsername', { username: p.username.trim() }).then(user => ({ playerId: user.id }))
 			: Promise.resolve(p.charId
 				? { charId: p.charId }
-				: { charName: p.charName }
+				: { charName: p.charName },
 			)
 		).then(params => ctx.player.call('unbanPlayer', params).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('unbanPlayer.unbanSuccessful', "Successfully unbanned player."));

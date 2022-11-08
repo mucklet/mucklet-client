@@ -27,7 +27,7 @@ class CharSettingsTriggersComponent {
 			l10n.l('charSettingsTriggers.mentionTriggers', "Mention triggers"),
 			new Context(
 				() => new ModifyModel(this.charSettings, {
-					eventBus: this.module.self.app.eventBus
+					eventBus: this.module.self.app.eventBus,
 				}),
 				charSettings => charSettings.dispose(),
 				charSettings => new ModelComponent(
@@ -45,7 +45,7 @@ class CharSettingsTriggersComponent {
 									n.component('trigger', new Input(this.state.trigger, {
 										attributes: {
 											placeholder: l10n.t('charSettingsTriggers.typeTrigger', "Enter trigger to add"),
-											spellcheck: 'false'
+											spellcheck: 'false',
 										},
 										events: {
 											input: c => this._setTrigger(c.getProperty('value')),
@@ -55,7 +55,7 @@ class CharSettingsTriggersComponent {
 													e.stopPropagation();
 													this._addTrigger();
 												}
-											}
+											},
 										},
 									})),
 									n.elem('add', 'button', {
@@ -65,12 +65,12 @@ class CharSettingsTriggersComponent {
 											click: (c, e) => {
 												this._addTrigger();
 												e.preventDefault();
-											}
-										}
+											},
+										},
 									}, [
 										n.component(new FAIcon('plus')),
-									])
-								])
+									]),
+								]),
 							]),
 							n.component(new KeywordList(this.charSettings.triggers, {
 								keywordCallback: k => k.key,
@@ -82,26 +82,26 @@ class CharSettingsTriggersComponent {
 											n.component(new Txt(l10n.l('charSettingsTriggers.deleteCustomTagBody', "Do you wish to delete the trigger?"), { tagName: 'p' })),
 											n.component(new Txt(trigger.key, { tagName: 'p', className: 'dialog--strong' })),
 										])),
-										confirm: l10n.l('charSettingsTriggers.delete', "Delete")
+										confirm: l10n.l('charSettingsTriggers.delete', "Delete"),
 									});
 								},
-							}))
-						])
+							})),
+						]),
 					])),
 					(m, c, change) => {
 						if (!change) {
 							this._setTrigger(this.state.trigger);
 						}
 						// c.getNode('highlightTriggers').setValue(m.highlightTriggers, false);
-					}
-				)
+					},
+				),
 			),
 			{
 				className: 'common--sectionpadding',
 				noToggle: true,
 				popupTip: l10n.l('charSettingsTriggers.triggersInfo', "Keywords or phrases, such as character name, nick names, or alternate spelling, used to notify you when someone mentions your character."),
-				popupTipClassName: 'popuptip--width-s'
-			}
+				popupTipClassName: 'popuptip--width-s',
+			},
 		);
 		this.elem.render(el);
 	}
@@ -152,7 +152,7 @@ class CharSettingsTriggersComponent {
 		return this.module.player.getPlayer().call('setCharSettings', {
 			charId: this.char.id,
 			puppeteerId: this.puppeteer ? this.puppeteer.id : undefined,
-			triggers: { [trigger.key]: false }
+			triggers: { [trigger.key]: false },
 		}).catch(err => this.module.toaster.openError(err));
 	}
 
@@ -165,12 +165,12 @@ class CharSettingsTriggersComponent {
 			this.module.player.getPlayer().call('setCharSettings', {
 				charId: this.char.id,
 				puppeteerId: this.puppeteer ? this.puppeteer.id : undefined,
-				triggers: { [v]: true }
+				triggers: { [v]: true },
 			}).then(() => {
 				n.setProperty('value', '');
 				this._setTrigger('');
 			}).catch(err => this.module.toaster.openError(err, {
-				title: txtErrorAddingTrigger
+				title: txtErrorAddingTrigger,
 			}));
 		}
 	}

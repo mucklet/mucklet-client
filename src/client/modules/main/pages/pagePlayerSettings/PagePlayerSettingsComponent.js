@@ -22,22 +22,22 @@ class PagePlayerSettingsComponent {
 			new ModelTxt(this.identity, m => m.name, { className: 'pageplayersettings--name' }),
 			{
 				className: 'common--sectionpadding',
-				noToggle: true
-			}
+				noToggle: true,
+			},
 		);
 		let usernameComponent = this.identity && new PanelSection(
 			l10n.l('pagePlayerSettings.username', "Login name"),
 			new ModelTxt(this.identity, m => m.username, { className: 'pageplayersettings--username' }),
 			{
 				className: 'common--sectionpadding',
-				noToggle: true
-			}
+				noToggle: true,
+			},
 		);
 		this.elem = new Elem(n => n.elem('div', { className: 'pageplayersettings' }, [
 			n.component(new ModelComponent(
 				this.identity,
 				new Collapser(),
-				(m, c, change) => c.setComponent(m && m.name ? playernameComponent : null)
+				(m, c, change) => c.setComponent(m && m.name ? playernameComponent : null),
 			)),
 			n.component(new ModelComponent(
 				this.identity,
@@ -48,44 +48,44 @@ class PagePlayerSettingsComponent {
 					}
 					c.setComponent(m && m.username && m.name.toLowerCase() != m.username
 						? usernameComponent
-						: null
+						: null,
 					);
-				}
+				},
 			)),
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.type == 'topSection'
+					filter: t => t.type == 'topSection',
 				}),
 				tools => tools.dispose(),
 				tools => new CollectionList(
 					tools,
 					t => t.componentFactory(this.user, this.player, this.state),
 					{
-						subClassName: t => t.className || null
-					}
-				)
+						subClassName: t => t.className || null,
+					},
+				),
 			)),
 			n.component(new PanelSection(
 				l10n.l('pagePlayerSettings.preferences', "Preferences"),
 				new Elem(n => n.elem('div', [
 					n.component(new Context(
 						() => new CollectionWrapper(this.module.self.getTools(), {
-							filter: t => !t.type || t.type == 'preference'
+							filter: t => !t.type || t.type == 'preference',
 						}),
 						tools => tools.dispose(),
 						tools => new CollectionList(
 							tools,
 							t => t.componentFactory(this.user, this.player, this.state),
 							{
-								subClassName: t => t.className || null
-							}
-						)
-					))
+								subClassName: t => t.className || null,
+							},
+						),
+					)),
 				])),
 				{
 					className: 'common--sectionpadding',
-					noToggle: true
-				}
+					noToggle: true,
+				},
 			)),
 			n.component(new ModelComponent(
 				this.identity,
@@ -98,23 +98,23 @@ class PagePlayerSettingsComponent {
 						? new PanelSection(
 							l10n.l('pagePlayerSettings.security', "Security"),
 							new Elem(n => n.elem('button', { events: {
-								click: () => this.module.dialogChangePassword.open()
+								click: () => this.module.dialogChangePassword.open(),
 							}, className: 'btn medium light full-width icon-left' }, [
 								n.component(new FAIcon('key')),
-								n.component(new Txt(l10n.l('pagePlayerSettings.changePassword', "Change password")))
+								n.component(new Txt(l10n.l('pagePlayerSettings.changePassword', "Change password"))),
 							])),
 							{
 								className: 'common--sectionpadding',
-								noToggle: true
-							}
+								noToggle: true,
+							},
 						)
-						: null
+						: null,
 					);
-				}
+				},
 			)),
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.type == 'section'
+					filter: t => t.type == 'section',
 				}),
 				tools => tools.dispose(),
 				tools => new CollectionList(
@@ -122,10 +122,10 @@ class PagePlayerSettingsComponent {
 					t => t.componentFactory(this.user, this.player, this.state),
 					{
 						className: 'pageplayersettings--preferences',
-						subClassName: t => t.className || null
-					}
-				)
-			))
+						subClassName: t => t.className || null,
+					},
+				),
+			)),
 		]));
 		this.elem.render(el);
 	}

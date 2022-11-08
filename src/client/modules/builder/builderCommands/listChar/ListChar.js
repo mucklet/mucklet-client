@@ -29,15 +29,15 @@ class ListChar {
 				new ListStep('charId', this.module.cmdLists.getAllChars(), {
 					textId: 'charName',
 					name: "character",
-					errRequired: step => ({ code: 'listChar.characterRequired', message: "Who do you want to list things for?" })
+					errRequired: step => ({ code: 'listChar.characterRequired', message: "Who do you want to list things for?" }),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('item', this.itemList, {
 					name: "item type",
-					token: 'item'
-				})
+					token: 'item',
+				}),
 			],
-			value: this._exec.bind(this)
+			value: this._exec.bind(this),
 		});
 
 		this.module.helpBuilder.addTopic({

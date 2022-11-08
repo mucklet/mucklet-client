@@ -23,9 +23,9 @@ class Sweep {
 			key: 'sweep',
 			next: new ListStep('charId', this.module.cmdLists.getInRoomChars(), {
 				name: "character",
-				errRequired: null
+				errRequired: null,
 			}),
-			value: (ctx, p) => this.sweep(ctx.char, p.charId ? { charId: p.charId } : null)
+			value: (ctx, p) => this.sweep(ctx.char, p.charId ? { charId: p.charId } : null),
 		});
 
 		this.module.help.addTopic({

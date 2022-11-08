@@ -25,7 +25,7 @@ class ImgModal {
 		document.addEventListener('keydown', this._onEsc);
 
 		let elem = new Elem(n => n.elem('div', this.opt, [
-			n.component(new Img(this.src, { className: 'imgmodal--img' }))
+			n.component(new Img(this.src, { className: 'imgmodal--img' })),
 		]));
 		elem.render(document.body);
 		this.comp = elem;

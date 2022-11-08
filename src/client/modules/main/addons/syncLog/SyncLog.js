@@ -19,7 +19,7 @@ class SyncLog {
 			'charLog',
 			'charLogStore',
 			'player',
-			'api'
+			'api',
 		], this._init.bind(this));
 	}
 
@@ -73,7 +73,7 @@ class SyncLog {
 			.then(evs => this.module.api.call('log.events', 'get', {
 				charId: char.id,
 				puppeteerId: char.puppeteer ? char.puppeteer.id : undefined,
-				startTime: evs.length ? evs[0].time : 0
+				startTime: evs.length ? evs[0].time : 0,
 			}).then(result => {
 				for (let ev of result.events) {
 					// If we don't have the event already, add it to charLog

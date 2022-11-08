@@ -257,7 +257,7 @@ class Player {
 		if (!this.playerPromise) {
 			this.playerPromise = Promise.all([
 				this.module.api.call('core', 'getPlayer'),
-				this.module.api.call('core', 'getRoles')
+				this.module.api.call('core', 'getRoles'),
 			]).then(result => {
 				let player = result[0];
 				let roles = result[1].roles || [];
@@ -276,7 +276,7 @@ class Player {
 				this.ctrlModel = new CollectionToModel(player.controlled, c => c.id);
 				this.availableChars = new CollectionWrapper(player.chars, {
 					filter: c => c.state == 'asleep',
-					eventBus: this.app.eventBus
+					eventBus: this.app.eventBus,
 				});
 				return player;
 			}).catch(err => {

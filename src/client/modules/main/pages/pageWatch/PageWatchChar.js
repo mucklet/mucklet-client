@@ -17,7 +17,7 @@ class PageWatchChar {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'pagewatch-char' }, [
 			n.elem('div', { className: 'pagewatch-char--badge badge btn margin4', events: {
-				click: () => this.module.dialogAboutChar.open(this.char) // this._toggleInfo()
+				click: () => this.module.dialogAboutChar.open(this.char), // this._toggleInfo()
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(this.module.avatar.newAvatar(this.char, { size: 'small', className: 'badge--icon' })),
@@ -25,7 +25,7 @@ class PageWatchChar {
 						n.elem('div', { className: 'badge--title badge--nowrap' }, [
 							n.component(new ModelTxt(this.char, c => c.name)),
 							n.text(' '),
-							n.component(new ModelTxt(this.char, c => c.surname))
+							n.component(new ModelTxt(this.char, c => c.surname)),
 						]),
 						n.elem('div', { className: 'badge--text badge--nowrap' }, [
 							n.component(new ModelComponent(
@@ -34,12 +34,12 @@ class PageWatchChar {
 								(m, c) => {
 									c.setText(m.awake
 										? l10n.l('pageWatch.currentlyAwake', "Currently awake")
-										: l10n.l('pageWatch.lastSeen', "Seen {time}", { time: formatDateTime(new Date(m.lastAwake)) })
+										: l10n.l('pageWatch.lastSeen', "Seen {time}", { time: formatDateTime(new Date(m.lastAwake)) }),
 									);
 									c[m.awake ? 'addClass' : 'removeClass']('badge--strong');
 									c[m.awake ? 'removeClass' : 'addClass']('badge--text');
-								}
-							))
+								},
+							)),
 						]),
 					]),
 					n.component(new ModelComponent(
@@ -49,13 +49,13 @@ class PageWatchChar {
 								click: (c, ev) => {
 									this.module.dialogEditNote.open(this.char);
 									ev.stopPropagation();
-								}
+								},
 							}}, [
 								n.component(new FAIcon('file-text')),
-							])
+							]),
 						])),
-						(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote')
-					))
+						(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote'),
+					)),
 				]),
 				// n.component(new ModelComponent(
 				// 	this.model,
@@ -68,7 +68,7 @@ class PageWatchChar {
 				// 		);
 				// 	}
 				// ))
-			])
+			]),
 		]));
 		return this.elem.render(el);
 	}

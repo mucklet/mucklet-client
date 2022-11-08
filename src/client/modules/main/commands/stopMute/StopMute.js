@@ -18,7 +18,7 @@ class StopMuteTravel {
 		this.module = module;
 
 		this.stopMuteType = new ItemList('object', {
-			name: "message type"
+			name: "message type",
 		});
 
 		let opts = {
@@ -26,10 +26,10 @@ class StopMuteTravel {
 				new ListStep('object', this.stopMuteType, {
 					name: "message type",
 					token: 'name',
-					errRequired: step => ({ code: 'stopMuteTravel.messageTypeRequired', message: "What sort of messages do you want to stop muting?" })
-				})
+					errRequired: step => ({ code: 'stopMuteTravel.messageTypeRequired', message: "What sort of messages do you want to stop muting?" }),
+				}),
 			],
-			value: this._exec
+			value: this._exec,
 		};
 		this.module.cmd.addPrefixCmd('stop', Object.assign({ key: 'mute' }, opts));
 		this.module.cmd.addCmd(Object.assign({ key: 'unmute' }, opts));

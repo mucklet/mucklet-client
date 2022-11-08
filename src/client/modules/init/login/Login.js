@@ -64,7 +64,7 @@ class Login {
 		return fetch(url, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -114,7 +114,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -137,7 +137,7 @@ class Login {
 			this._afterFade(() => fetch(this.params.logoutUrl, {
 				method: 'POST',
 				mode: 'cors',
-				credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+				credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 			}).then(reload));
 		}
 	}
@@ -162,7 +162,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -195,7 +195,7 @@ class Login {
 		return fetch(this.params.agreeUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin'
+			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -235,7 +235,7 @@ class Login {
 					}
 					this.model.set({
 						loggedIn: true,
-						user
+						user,
 					});
 					if (this.loginResolve) {
 						this.loginResolve(user);
@@ -268,7 +268,7 @@ class Login {
 			? this.module.api.authenticate('auth', 'authenticate')
 			: this.module.api.authenticate('auth', 'login', {
 				name: this.params.player,
-				hash: hmacsha256(this.params.pass.trim(), publicPepper)
+				hash: hmacsha256(this.params.pass.trim(), publicPepper),
 			})
 		).catch(err => {
 			return this.model.set({ authError: err });
@@ -283,7 +283,7 @@ class Login {
 		}
 		this.model.set({
 			loggedIn: false,
-			user: null
+			user: null,
 		});
 		this.userPromise = null;
 	}
@@ -306,7 +306,7 @@ class Login {
 	_afterFade(cb) {
 		this.module.screen.setComponent({
 			render: () => cb(),
-			unrender: () => {}
+			unrender: () => {},
 		});
 	}
 

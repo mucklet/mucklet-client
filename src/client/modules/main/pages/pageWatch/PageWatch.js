@@ -18,7 +18,7 @@ class PageWatch {
 			'avatar',
 			'charsAwake',
 			'dialogEditNote',
-			'dialogAboutChar'
+			'dialogAboutChar',
 		], this._init.bind(this));
 	}
 
@@ -33,7 +33,7 @@ class PageWatch {
 				click: (c, e) => {
 					click();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('eye')),
 			])),

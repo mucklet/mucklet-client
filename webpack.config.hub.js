@@ -31,7 +31,7 @@ module.exports = function(ctx) {
 					target: 'http://localhost:8080',
 					// logLevel: 'debug'
 				},
-			}
+			},
 		},
 		plugins: [
 			new CleanWebpackPlugin(),
@@ -39,13 +39,13 @@ module.exports = function(ctx) {
 				exclude: [
 					'node_modules/',
 				],
-				emitWarning: true
+				emitWarning: true,
 			}),
 			new CopyWebpackPlugin({
 				patterns: [
 					{ from: path.resolve(ctx.commonPath, 'static') },
-					{ from: path.resolve(ctx.srcPath, 'static') }
-				]
+					{ from: path.resolve(ctx.srcPath, 'static') },
+				],
 			}),
 			new HtmlWebpackPlugin({
 				template: path.resolve(ctx.srcPath, 'index.html'),
@@ -72,10 +72,10 @@ module.exports = function(ctx) {
 			}),
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
-				chunkFilename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css'
+				chunkFilename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
 			}),
 			new Webpack.DefinePlugin(Object.assign(ctx.jsonEncodeObject(ctx.siteConfig), {
-				APP_VERSION: JSON.stringify(ctx.pkg.version)
+				APP_VERSION: JSON.stringify(ctx.pkg.version),
 			})),
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,

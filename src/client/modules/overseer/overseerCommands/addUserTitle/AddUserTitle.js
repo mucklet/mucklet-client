@@ -39,14 +39,14 @@ class AddUserTitle {
 								{ key: "overseer" },
 								{ key: "pioneer" },
 								{ key: "supporter" },
-							]
+							],
 						}), {
 							name: "user title",
-							token: 'text'
-						})
+							token: 'text',
+						}),
 					],
 				},
-			]
+			],
 		});
 
 		this.module.cmd.addPrefixCmd('add', {
@@ -56,24 +56,24 @@ class AddUserTitle {
 					next: new TextStep('username', {
 						name: "username",
 						token: 'listitem',
-						spellcheck: false
+						spellcheck: false,
 					}),
 					else: new IDStep('userId', {
 						name: "user's character name or user ID",
 						else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 							textId: 'charName',
 							name: "user",
-							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" })
+							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),
 						}),
 					}),
 				}),
 				new DelimStep(":"),
 				new ListStep('attr', this.userAttr, {
 					name: "user list attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
-			value: (ctx, p) => this["_addUser" + p.attr](ctx, p)
+			value: (ctx, p) => this["_addUser" + p.attr](ctx, p),
 		});
 
 		this.module.helpOverseer.addTopic({
@@ -94,13 +94,13 @@ class AddUserTitle {
 				? this.module.api.call('identity.overseer', 'getUserById', { userId: p.userId })
 				: mod.getPlayer().call('getUser', p.charId
 					? { charId: p.charId }
-					: { charName: p.charName }
+					: { charName: p.charName },
 				).then(user => this.module.api.get('identity.user.' + user.id))
 			)
 		).then(user => {
 			return this.module.api.call('identity.overseer', 'addUserIdRole', {
 				userId: user.id,
-				idRole: p.value
+				idRole: p.value,
 			}).then(() => {
 				this.module.charLog.logInfo(ctx.char, l10n.l('addUserTitle.addedTitleToUserName', "Added title to user {name}.", { name: user.name }));
 			});

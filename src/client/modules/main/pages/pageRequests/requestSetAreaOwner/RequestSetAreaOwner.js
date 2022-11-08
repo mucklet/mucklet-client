@@ -23,22 +23,22 @@ class RequestSetAreaOwner {
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetAreaOwner.area', "Area"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.area, m => errString(m, m => m.name, l10n.l('requestSetAreaOwner.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
+						className: 'badge--info badge--strong',
+					})),
 				]),
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetAreaOwner.from', "From"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.params.owner, m => errString(m, m => (m.name + ' ' + m.surname).trim(), l10n.l('requestSetAreaOwner.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
+						className: 'badge--info badge--strong',
+					})),
 				]),
 				n.elem('div', { className: 'flex-row' }, [
 					n.component(new Txt(l10n.l('requestSetAreaOwner.to', "To"), { className: 'badge--iconcol badge--subtitle' })),
 					n.component(new ModelTxt(r.to, m => errString(m, m => (m.name + ' ' + m.surname).trim(), l10n.l('requestSetAreaOwner.unknown', "(Unknown)")), {
-						className: 'badge--info badge--strong'
-					}))
-				])
-			]))
+						className: 'badge--info badge--strong',
+					})),
+				]),
+			])),
 		});
 	}
 

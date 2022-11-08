@@ -32,10 +32,10 @@ class Suspend {
 					spanLines: false,
 					regex: /^([\p{L}\p{N}'-]*)\s*/u,
 					token: 'listitem',
-					errRequired: step => ({ code: 'lookup.nameRequired', message: "What is the first name of the characters to lookup?" })
+					errRequired: step => ({ code: 'lookup.nameRequired', message: "What is the first name of the characters to lookup?" }),
 				}),
 			],
-			value: (ctx, p) => this.lookup(ctx.char, { name: p.name })
+			value: (ctx, p) => this.lookup(ctx.char, { name: p.name }),
 		});
 
 		this.module.helpModerate.addTopic({
@@ -64,7 +64,7 @@ class Suspend {
 						: m.lastAwake
 							? formatDateTime(new Date(m.lastAwake))
 							: l10n.t('lookup.neverSeen', "Never seen")) + '</td>' +
-					'</tr>'
+					'</tr>',
 				);
 			}
 			if (chars.length) {
@@ -80,11 +80,11 @@ class Suspend {
 								'</th><th class="charlog--strong">' +
 								escapeHtml(l10n.t('lookupChars.lastSeen', "Last seen")) +
 								'</th><th class="charlog--strong">' +
-								'</th></tr>', { tagName: 'thead' }
+								'</th></tr>', { tagName: 'thead' },
 							)),
-							n.component(new Html(chars.join(''), { tagName: 'tbody' }))
-						])
-					])
+							n.component(new Html(chars.join(''), { tagName: 'tbody' })),
+						]),
+					]),
 				])));
 			} else {
 				this.module.charLog.logInfo(char, l10n.l('lookupChars.noCharsFound', "Found no characters with that name."));

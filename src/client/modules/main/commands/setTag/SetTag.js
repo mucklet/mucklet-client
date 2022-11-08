@@ -28,7 +28,7 @@ const defaultAttr = [
 			errTooLong: keyTooLong,
 		}),
 		desc: l10n.l('setTag.keywordDesc', "Tag keyword. Only allowed for custom tags."),
-		sortOrder: 10
+		sortOrder: 10,
 	},
 	{
 		key: 'desc',
@@ -37,21 +37,21 @@ const defaultAttr = [
 				name: "tag description",
 				maxLength: () => module.info.getTag().tagDescMaxLength,
 				errTooLong: descriptionTooLong,
-				errRequired: null
-			})
+				errRequired: null,
+			}),
 		}),
 		desc: l10n.l('setTag.descDesc', "Description of the tag. Only allowed for custom tags."),
-		sortOrder: 20
+		sortOrder: 20,
 	},
 	{
 		key: 'preference',
 		value: 'pref',
 		stepFactory: module => new ListStep('value', module.tags.getPreferenceList(), {
-			name: "preference"
+			name: "preference",
 		}),
 		desc: l10n.l('setTag.prefDesc', "Tag preference. May be <code>like</code> or <code>dislike</code>"),
-		sortOrder: 30
-	}
+		sortOrder: 30,
+	},
 ];
 
 /**
@@ -67,7 +67,7 @@ class SetTag {
 	_init(module) {
 		this.module = module;
 		this.tagAttr = new ItemList({
-			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key)
+			compare: (a, b) => (a.sortOrder - b.sortOrder) || a.key.localeCompare(b.key),
 		});
 		for (let o of defaultAttr) {
 			this.addAttribute(o);
@@ -86,26 +86,26 @@ class SetTag {
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 
 		this.module.cmd.addPrefixCmd('set', {
 			key: 'tag',
 			next: [
 				new ListStep('tagId', this.tagsList, {
-					name: "tag"
+					name: "tag",
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.tagAttr, {
 					name: "tag attribute",
-					token: 'attr'
+					token: 'attr',
 				}),
 			],
 			value: (ctx, p) => p.attr == 'pref'
 				? this.setTagPref(ctx.char, p.tagId, p.value)
 				: this.setTag(ctx.char, p.tagId, {
-					[p.attr]: p.value
-				})
+					[p.attr]: p.value,
+				}),
 		});
 
 		this.module.help.addTopic({
@@ -126,8 +126,8 @@ class SetTag {
 			attr.stepFactory
 				? attr.stepFactory(this.module)
 				: new TextStep('value', {
-					name: attr.name || attr.key
-				})
+					name: attr.name || attr.key,
+				}),
 		];
 		this.tagAttr.addItem(Object.assign({}, attr, { next }));
 		return this;

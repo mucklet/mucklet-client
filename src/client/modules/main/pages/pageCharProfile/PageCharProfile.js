@@ -18,7 +18,7 @@ class PageCharProfile {
 			'confirm',
 			'profile',
 			'updateProfile',
-			'pageEditCharProfile'
+			'pageEditCharProfile',
 		], this._init.bind(this));
 	}
 
@@ -28,11 +28,11 @@ class PageCharProfile {
 			id: 'profile',
 			sortOrder: 20,
 			componentFactory: (ctrl, char) => new Elem(n => n.elem('button', { className: 'iconbtn small', events: {
-				click: () => this.open(ctrl)
+				click: () => this.open(ctrl),
 			}}, [
 				n.component(new FAIcon('id-card-o')),
 			])),
-			filter: (ctrl, char) => ctrl.id == char.id
+			filter: (ctrl, char) => ctrl.id == char.id,
 		});
 	}
 
@@ -49,7 +49,7 @@ class PageCharProfile {
 				component: new PageCharProfileComponent(this.module, ctrl, state, close),
 				onClose: close,
 				title: l10n.l('pageCharProfile.characterProfiles', "Character Profiles"),
-			})
+			}),
 		);
 	}
 

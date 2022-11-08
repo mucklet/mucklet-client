@@ -24,7 +24,7 @@ class ListTeleports {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'teleports',
 			alias: [ 't', 'tp', 'teleport' ],
-			value: (ctx, p) => this.listTeleports(ctx.char)
+			value: (ctx, p) => this.listTeleports(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -60,16 +60,16 @@ class ListTeleports {
 					children.push(n.component(new Txt(l10n.l('listTeleports.teleportDestinations', "Teleport destinations"), { tagName: 'h4', className: 'charlog--pad' })));
 					children.push(n.elem('div', { className: 'charlog--code' }, [
 						n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-							n.component(new Html(list.join(''), { tagName: 'tbody' }))
-						])
+							n.component(new Html(list.join(''), { tagName: 'tbody' })),
+						]),
 					]));
 				};
 				if (owned.length) {
 					children.push(n.component(new Txt(l10n.l('listTeleports.ownedRooms', "Owned rooms"), { tagName: 'h4', className: 'charlog--pad' })));
 					children.push(n.elem('div', { className: 'charlog--code' }, [
 						n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-							n.component(new Html(owned.join(''), { tagName: 'tbody' }))
-						])
+							n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+						]),
 					]));
 				}
 				return n.elem('div', { className: 'listteleports charlog--pad' }, children);

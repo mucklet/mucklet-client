@@ -24,7 +24,7 @@ class ListTags {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'tags',
 			alias: [ 'tag' ],
-			value: (ctx, p) => this.listTags(ctx.char)
+			value: (ctx, p) => this.listTags(ctx.char),
 		});
 
 		this.module.help.addTopic({
@@ -48,21 +48,21 @@ class ListTags {
 		this._addSection(
 			{ name: l10n.t('listTags.other', "Other") },
 			sections,
-			skipHeader
+			skipHeader,
 		);
 		this._addSection(
 			{ name: l10n.t('listTags.titles', "Titles") },
 			sections,
 			skipHeader,
-			true
+			true,
 		);
 
 		if (sections.length) {
 			this.module.charLog.logComponent(char, 'listTags', new Elem(n => n.elem('div', { className: 'listtags charlog--pad' }, [
 				n.component(new Txt(l10n.l('listTags.tags', "Tags"), { tagName: 'h4', className: 'charlog--pad' })),
 				n.elem('div', { className: 'charlog--code' }, [
-					n.html('<table class="tbl-small' + (skipHeader ? ' tbl-nomargin' : '') + '"><tbody>' + sections.join('') + '</tbody></table>')
-				])
+					n.html('<table class="tbl-small' + (skipHeader ? ' tbl-nomargin' : '') + '"><tbody>' + sections.join('') + '</tbody></table>'),
+				]),
 			])));
 		} else {
 			this.module.charLog.logInfo(char, l10n.l('listTags.noTags', "There are no tags defined."));
@@ -86,7 +86,7 @@ class ListTags {
 		if (list.length) {
 			sections.push(
 				(skipHeader ? '' : '<tr class="tbl-hr tbl-header' + (sections.length ? ' tbl-padtop' : '') + '"><td colspan="2">' + escapeHtml(group.name) + '</td></tr>') +
-				list.join('')
+				list.join(''),
 			);
 		}
 	}

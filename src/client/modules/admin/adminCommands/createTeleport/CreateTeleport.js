@@ -30,13 +30,13 @@ class CreateTeleport {
 					regex: /^[\w\s]*\w/,
 					maxLength: () => this.module.info.getCore().keyMaxLength,
 					errTooLong: keyTooLong,
-					name: "global teleport destination keyword"
-				})
+					name: "global teleport destination keyword",
+				}),
 			],
 			value: (ctx, p) => this.createTeleport(ctx.char, {
 				roomId: ctx.char.inRoom.id,
-				key: p.key
-			})
+				key: p.key,
+			}),
 		});
 
 		this.module.helpAdmin.addTopic({

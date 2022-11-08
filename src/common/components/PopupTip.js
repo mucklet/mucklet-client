@@ -30,7 +30,7 @@ class PopupTip extends RootElem {
 				this.toggle();
 				ev.stopPropagation();
 				ev.preventDefault();
-			}
+			},
 		});
 
 		// Bind callbacks
@@ -44,14 +44,14 @@ class PopupTip extends RootElem {
 		this._open = !!opt.noIcon;
 		super.setRootNode(n => n.elem('div', opt, opt.noIcon
 			? [
-				n.component('tip', new Fader())
+				n.component('tip', new Fader()),
 			]
 			: [
 				n.elem('div', { className: 'popuptip--btn' }, [
 					n.component(new FAIcon(opt.icon || 'info-circle', { className: 'popuptip--icon' })),
 				]),
-				n.component('tip', new Fader())
-			]
+				n.component('tip', new Fader()),
+			],
 		));
 		this.setTip(tip || null);
 	}
@@ -74,7 +74,7 @@ class PopupTip extends RootElem {
 	setTip(tip) {
 		if (tip !== this._tip) {
 			this._tip = new Elem(n => n.elem('div', { className: 'popuptip--tip' }, [
-				n.component(isComponent(tip) ? tip : new Txt(tip, { className: 'popuptip--text' }))
+				n.component(isComponent(tip) ? tip : new Txt(tip, { className: 'popuptip--text' })),
 			]));
 			this._setComponent();
 		}

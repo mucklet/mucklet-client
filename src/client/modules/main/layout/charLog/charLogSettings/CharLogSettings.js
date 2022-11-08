@@ -19,9 +19,9 @@ class CharLogSettings {
 
 		// Settings
 		this.settingsPromise = this.module.settings.loadSettings('charLog', {
-			useLocalStorage: true
+			useLocalStorage: true,
 		}, {
-			'charLog.useLocalStorage': 'useLocalStorage'
+			'charLog.useLocalStorage': 'useLocalStorage',
 		});
 
 		this.settingsPromise.then(settings => {
@@ -48,21 +48,21 @@ class CharLogSettings {
 										n.html("&nbsp;&nbsp;"),
 										n.component(new Txt(v
 											? l10n.l('charLogSettings.storeLogsWarning', "Others using the same computer may be able to access your logs.")
-											: l10n.l('charLogSettings.discardLogsWarning', "Any logs stored on this browser will be irretrievably lost.")
+											: l10n.l('charLogSettings.discardLogsWarning', "Any logs stored on this browser will be irretrievably lost."),
 										)),
 									]),
 								])),
 								confirm: v
 									? l10n.l('charLogSettings.storeLogs', "Store logs")
 									: l10n.l('charLogSettings.discardLogs', "Discard logs"),
-								onClose: () => c.setValue(settings.useLocalStorage, false)
+								onClose: () => c.setValue(settings.useLocalStorage, false),
 							});
 						},
 						popupTip: l10n.l('charLogSettings.storeLogInfo', "Keep the chat logs between sessions, even if you close the tab or browser.\nBeware that others using the same computer may be able to access them."),
-						popupTipClassName: 'popuptip--width-s'
+						popupTipClassName: 'popuptip--width-s',
 					}),
-					(m, c) => c.setValue(settings.useLocalStorage, false)
-				)
+					(m, c) => c.setValue(settings.useLocalStorage, false),
+				),
 			});
 		});
 	}

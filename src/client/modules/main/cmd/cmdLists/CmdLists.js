@@ -8,7 +8,7 @@ import {
 	colonDelimTokenRegex,
 	colonDelimExpandRegex,
 	anyTokenRegex,
-	anyExpandRegex
+	anyExpandRegex,
 } from 'utils/regex';
 
 
@@ -35,7 +35,7 @@ class CmdLists {
 		}, {
 			validation: (key, char) => char.state != 'awake'
 				? { code: 'cmdLists.charNotAwake', message: "Character is not awake." }
-				: null
+				: null,
 		});
 		this.inRoomPuppets = new CharList(() => {
 			let c = this.module.player.getActiveChar();
@@ -43,10 +43,10 @@ class CmdLists {
 		}, {
 			validation: (key, char) => char.type != 'puppet'
 				? { code: 'cmdLists.charNotAPuppet', message: "Character is not a puppet." }
-				: null
+				: null,
 		});
 		this.charsAwake = new CharList(() => this.module.charsAwake.getCollection(), {
-			errNotFound: (l, m) => ({ code: 'cmdList.awakeCharNotFound', message: 'There is no character awake named {match}.', data: { match: m }})
+			errNotFound: (l, m) => ({ code: 'cmdList.awakeCharNotFound', message: 'There is no character awake named {match}.', data: { match: m }}),
 		});
 		this.watchedChars = new CharList(() => {
 			let m = this.module.charsAwake.getWatches();
@@ -60,7 +60,7 @@ class CmdLists {
 				this.module.player.getChars(),
 				c && c.inRoom.chars,
 				this.module.charsAwake.getCollection(),
-				watches && Object.keys(watches.props).map(k => watches[k].char)
+				watches && Object.keys(watches.props).map(k => watches[k].char),
 			]);
 		});
 		this.teleportNodes = new TokenList(() => {
@@ -73,7 +73,7 @@ class CmdLists {
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 		this.inRoomExits = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -97,7 +97,7 @@ class CmdLists {
 					}
 				}
 				return null;
-			}
+			},
 		});
 		this.charProfiles = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -108,7 +108,7 @@ class CmdLists {
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
-				: null
+				: null,
 		});
 		this.charOwnedAreas = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -119,7 +119,7 @@ class CmdLists {
 			isMatch: (t, key) => key === t.name.toLowerCase().replace(/\s+/g, ' ') ? { key: t.name, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.name.toLowerCase().replace(/\s+/g, ' ').substring(0, prefix.length) === prefix
 				? t.name
-				: null
+				: null,
 		});
 		this.charOwnedAreasOrNone = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -132,7 +132,7 @@ class CmdLists {
 			isMatch: (t, key) => key === t.name.toLowerCase().replace(/\s+/g, ' ') ? { key: t.name, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.name.toLowerCase().replace(/\s+/g, ' ').substring(0, prefix.length) === prefix
 				? t.name
-				: null
+				: null,
 		});
 		this.charOwnedRooms = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -143,21 +143,21 @@ class CmdLists {
 			isMatch: (t, key) => key === t.name.toLowerCase().replace(/\s+/g, ' ') ? { key: t.name, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.name.toLowerCase().replace(/\s+/g, ' ').substring(0, prefix.length) === prefix
 				? t.name
-				: null
+				: null,
 		});
 		this.bool = new ItemList({
 			items: [
 				{
 					key: "true",
 					value: true,
-					alias: [ "yes" ]
+					alias: [ "yes" ],
 				},
 				{
 					key: "false",
 					value: false,
-					alias: [ "no" ]
-				}
-			]
+					alias: [ "no" ],
+				},
+			],
 		});
 	}
 

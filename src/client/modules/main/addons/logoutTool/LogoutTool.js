@@ -48,9 +48,9 @@ class LogoutTool {
 				title: l10n.l('playerPanel.confirmLogout', "Confirm logout"),
 				body: [
 					l10n.l('playerPanel.logoutBody1', "Some characters are still awake."),
-					l10n.l('playerPanel.logoutBody2', "Do you still wish to logout?")
+					l10n.l('playerPanel.logoutBody2', "Do you still wish to logout?"),
 				],
-				confirm: l10n.l('playerPanel.logout', "Logout")
+				confirm: l10n.l('playerPanel.logout', "Logout"),
 			})
 			: this.module.login.logout();
 	}

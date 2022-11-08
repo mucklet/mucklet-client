@@ -17,15 +17,15 @@ class ToasterToast {
 				children.push(n.elem('button', {
 					className: 'toaster-toast--close iconbtn small',
 					events: {
-						click: () => this.close()
-					}
+						click: () => this.close(),
+					},
 				}, [
-					n.component(new FAIcon('close'))
+					n.component(new FAIcon('close')),
 				]));
 			}
 			if (opt.title) {
 				children.push(n.elem('div', { className: 'toaster-toast--head' }, [
-					n.component(new Txt(typeof opt.title == 'function' ? opt.title(this) : opt.title, { tagName: 'h3' }))
+					n.component(new Txt(typeof opt.title == 'function' ? opt.title(this) : opt.title, { tagName: 'h3' })),
 				]));
 			}
 			if (opt.content) {
@@ -35,8 +35,8 @@ class ToasterToast {
 						? opt.content(this.close)
 						: ct == 'string'
 							? new Html(formatText(opt.content), { className: 'common--formattext' })
-							: opt.content
-					)
+							: opt.content,
+					),
 				]));
 			}
 			return n.elem('div', { className: 'toaster-toast' }, [
@@ -46,9 +46,9 @@ class ToasterToast {
 						? { click: () => this.close() }
 						: null,
 					attributes: {
-						title: formatDateTime(opt.time)
-					}
-				}, children)
+						title: formatDateTime(opt.time),
+					},
+				}, children),
 			]);
 		});
 

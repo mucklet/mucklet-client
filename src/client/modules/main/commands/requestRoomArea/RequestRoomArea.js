@@ -31,10 +31,10 @@ class RequestRoomArea {
 					list: () => {
 						let c = module.player.getActiveChar();
 						return ((c && c.ownedAreas && c.ownedAreas.toArray()) || []).map(v => v.id);
-					}
-				})
+					},
+				}),
 			],
-			value: (ctx, p) => this.requestRoomArea(ctx.char, Object.assign({ roomId: ctx.char.inRoom.id, areaId: p.areaId }))
+			value: (ctx, p) => this.requestRoomArea(ctx.char, Object.assign({ roomId: ctx.char.inRoom.id, areaId: p.areaId })),
 		});
 
 		this.module.help.addTopic({

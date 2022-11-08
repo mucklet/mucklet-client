@@ -24,7 +24,7 @@ class PageMail {
 			'login',
 			'api',
 			'avatar',
-			'notify'
+			'notify',
 		], this._init.bind(this));
 	}
 
@@ -41,20 +41,20 @@ class PageMail {
 				click: (c, e) => {
 					click();
 					e.stopPropagation();
-				}
+				},
 			}}, [
 				n.component(new FAIcon('envelope')),
 				n.component(new ModelComponent(
 					this.unread,
 					new Elem(n => n.elem('div', { className: 'counter alert' }, [
-						n.component('txt', new Txt(""))
+						n.component('txt', new Txt("")),
 					])),
 					(m, c) => {
 						let l = Object.keys(m.props).length;
 						c.getNode('txt').setText(counterString(l));
 						c[l ? 'removeClass' : 'addClass']('hide');
-					}
-				))
+					},
+				)),
 			])),
 			factory: (state, close, layoutId) => ({
 				component: new PageMailComponent(this.module, this.state, close),
@@ -115,8 +115,8 @@ class PageMail {
 					this.open();
 					window.focus();
 					ev.target.close();
-				}
-			}
+				},
+			},
 		);
 	}
 
