@@ -52,6 +52,8 @@ class BundleLoader {
 					this._loadAdminModules();
 					this._loadModModules();
 					this._loadBuildModules();
+					this._loadAssistantModules();
+					this._loadHelperModules();
 				}
 			}
 		}

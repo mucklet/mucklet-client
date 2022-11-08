@@ -37,7 +37,7 @@ module.exports = function(ctx) {
 			new CleanWebpackPlugin(),
 			new ESLintPlugin({
 				exclude: [
-					'/node_modules/',
+					'node_modules/',
 				],
 				emitWarning: true
 			}),
