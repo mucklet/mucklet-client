@@ -15,10 +15,24 @@ class Screen {
 		return this.fader;
 	}
 
+	/**
+	 * Get current component.
+	 * @returns {Component} Current component.
+	 */
+	getComponent() {
+		return this.component;
+	}
+
+	/**
+	 * Set component.
+	 * @param {Component?} component Component to set.
+	 * @returns {this}
+	 */
 	setComponent(component) {
-		this.component = component;
+		this.component = component || null;
 		this.subcomponents = [];
 		this.fader.setComponent(component);
+		return this;
 	}
 
 

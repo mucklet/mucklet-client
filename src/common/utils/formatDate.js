@@ -7,7 +7,7 @@ const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
  * @param {boolean} [opt.showYear] Flag to always show year.
  * @returns {string} Formatted string.
  */
-export default function(date, opt) {
+export default function formatDate(date, opt) {
 	opt = opt || {};
 	let n = new Date();
 	// Add year if older than a year
