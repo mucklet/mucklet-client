@@ -11,24 +11,21 @@ Mucklet Client is structured into what we call _modules_, using
 
 ## Quick example
 
-To create a very simple module that only logs the API version to the browser, create the file:
+To create a very simple module that only logs the server's API version to the
+browser console, create the file:
 
 `mucklet-client/src/client/modules/main/addon/apiVersion/ApiVersion.js`
 
 ```javascript
-// Module class for our apiVerion module
+// Module class for our apiVersion module
 class ApiVersion {
 	constructor(app, params) {
-		this.app = app;
-		this.app.require([ 'api' ], this._init.bind(this));
+		app.require([ 'api' ], this._init.bind(this));
 	}
-
 	_init(module) {
-		this.module = module;
-		this.module.api.get('core.info').then(info => console.log("API Version: ", info.version))
+		module.api.get('core.info').then(info => console.log("API Version: ", info.version))
 	}
 }
-
 export default ApiVersion;
 ```
 
@@ -37,38 +34,68 @@ of the _main_  module bundle (loaded for all users).
 Reload the client (unless webpack dev server already has done so) and notice how
 the API version is now logged to the browsers Developer console.
 
-## Reversed dependency structure
-
-Modules should, as far as possible, use a reversed dependency structure.
-
-Let's say we have a module that holds options for a tab menu: `playerTabs`
-And we have one module for each tab option: `pageCharSelect`, `pageWatch`, `pageMail`, etc.
-
-    playerTabs                     # Holds all player tab options
-    ├─> pageCharSelect             # Renders the Character Select page
-    ├─> pageWatch                  # Renders the Watch page
-    ├─> ...
-    └─> pageMail                   # Renders the Mail Inbox page
-
-The "higher" module, `playerTabs`, should NOT depend on the "lower" modules
-(`page*`). Instead, the "higher" module should provide a way for the other
-modules to _add_ and _remove_ themselves from the menu.
-
 > **Tip**
 >
-> The common way of implementing these sort of "hooks" is by using a Collection,
-> and to have an _add_ and _remove_ method.
->
-> See
-> [PlayerTabs.js](../src/client/modules/main/layout/playerTabs/PlayerTabs.js)
-> for the `this.tabs` collection storing the tabs, and `addTab` / `removeTab`
-> methods used by other modules.
+> See [Style Guide - Module bundles](./style-guide.md#module-bundles) for an
+> explanation on the available module bundles.
+
+## App instance
+
+All modules instances are created and managed by a single modapp App instance.
+
+The `app` instance is passed on to each module constructor as the first parameter. This `app` instance is then used to tell what other modules are required by the module. Once the required modules have loaded, they will be passed back to the module in a callback usually named `_init`:
+
+```javascript
+class Example {
+	constructor(app) {
+		this.app = app;  // The app instance should be stored in this.app
+		this.app.require([
+			'api', // This example module requires the 'api' module.
+		], this._init.bind(this));
+	}
+
+	_init(module) {
+		// The callback gets an object: { api: <Api module instance> }
+		this.module = module; // The modules should be stored in this.module
+	}
+}
+```
+
+### App global scope
+
+The app instance is also stored in the global/window scope, and can be accessed
+from the browser console:
+
+```javascript
+// Get a module instance
+app.getModule('api').get('core.info').then(info => console.log(info.version));
+// Deactivate/disable a module
+app.deactivate('pageMail');
+// Activate/enable a module
+app.deactivate('pageMail');
+```
 
 ## Parameters
 
-From file or URL.
+A module may take external parameters as configuration.
+These are passed on to the module constructor as the second parameter:
+```javascript
+class Example {
+	constructor(app, params) {
+		this.params = Object.assign({
+			greeting: 'Hello',
+		}, params);
+		/* ... */
+	}
+	/* ... */
+}
+```
 
-## Exposing subclasses
+The configuration either comes from:
+* The module configuration file (Found at `cfg/client/module.config.*` for the client)
+* URL parameters: `http://localhost:6450/?example.greeting=Hejsan`
+
+## Requiring
 
 If a module has a component or other class that other modules may create
 instances of, other modules should NOT import these classes directly.
@@ -87,3 +114,46 @@ Instead, the "host" module should expose these subclasses through methods.
 > ```
 
 
+## Disposing
+
+When a module is deactivated, its `dispose` method will be called, if it exists.
+This allows a module to remove any event listener, callback or item it has
+previously registered.
+
+```javascript
+class ResizeLogger {
+	constructor(app, params) {
+		this._onResize = e => console.log(e.target.outerWidth, e.target.outerHeight);
+		window.addEventListener('resize', this._onResize);
+	}
+
+	dispose() {
+		window.removeEventListener('resize', this._onResize);
+	}
+}
+export default ResizeLogger;
+```
+
+## Reversed dependency structure
+
+Modules should, as far as possible, use a reversed dependency structure.
+
+As an example, lets look at the module that holds options for the player's tab menu: `playerTabs`  
+And we have one module for each tab option: `pageCharSelect`, `pageWatch`, `pageMail`, etc.
+
+    playerTabs                     # Holds all player tab options
+    ├─> pageCharSelect             # Renders the Character Select page
+    ├─> pageWatch                  # Renders the Watch page
+    ├─> ...
+    └─> pageMail                   # Renders the Mail Inbox page
+
+The "higher" module, `playerTabs`, is unaware of the "lower" modules (`page*`).
+PlayerTabs only provides ways for the other modules to _add_ and _remove_
+themselves from the menu. The "lower" modules (`page*`) all require
+`playerTabs`.
+
+> **Tip**
+>
+> See [Style Guide - Module hooks](./style-guide.md#module-hooks) as a reference
+> on how to implement such "hooks", allowing other modules to add/remove
+> themselves.

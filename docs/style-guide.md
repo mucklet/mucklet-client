@@ -171,7 +171,7 @@ Module bundle folder | Bundle description
 `modules/moderator/` | Modules loading for _moderators_, _admins_, and _overseers_.
 `modules/helper/` | Modules loading for _helpers_, _admins_, and _overseers_.
 `modules/admin/` | Modules loading for _admins_ and _overseers_.
-`modules/poioneer/` | Modules loading for _pioneers_ and _overseers_.
+`modules/pioneer/` | Modules loading for _pioneers_ and _overseers_.
 `modules/overseer/` | Modules loading for _overseers_.
 
 ### Module file structure
