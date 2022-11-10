@@ -1,6 +1,5 @@
 import { Model } from 'modapp-resource';
 
-const legacySettingStoragePrefix = 'setting.user.';
 const settingsStoragePrefix = 'settings.user.';
 
 /**
@@ -38,7 +37,6 @@ class Settings {
 			.then(user => {
 				c.user = user;
 				return m.set(Object.assign({},
-					this._legacySettings(user, legacyMap),
 					this._storedSettings(user, id),
 					this._paramSettings(id)
 				));
@@ -50,42 +48,6 @@ class Settings {
 				c.cb();
 				return m;
 			});
-	}
-
-	// [TODO] Remove after 2021-09-07
-	_legacySettings(user, map) {
-		if (!map) return null;
-
-		let key = legacySettingStoragePrefix + user.id;
-		if (!this.legacyData) {
-			if (!localStorage) return null;
-
-			// Load settings
-			let data = localStorage.getItem(key);
-			let leg = data ? JSON.parse(data) : null;
-			this.legacyData = leg != null && typeof leg == 'object' ? leg : {};
-		}
-
-		let o = {};
-		for (let k in map) {
-			if (this.legacyData.hasOwnProperty(k)) {
-				o[map[k]] = this.legacyData[k];
-				delete this.legacyData[k];
-			}
-		}
-
-		if (!Object.keys(o).length) {
-			return null;
-		}
-
-		// Store deleted legacyData
-		if (Object.keys(this.legacyData).length) {
-			localStorage.setItem(key, JSON.stringify(this.legacyData));
-		} else {
-			localStorage.removeItem(key);
-		}
-
-		return o;
 	}
 
 	_storedSettings(user, id) {
