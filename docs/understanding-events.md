@@ -103,7 +103,6 @@ class Example {
 }
 ```
 
-
 ## Model/Collection implementations
 
 Above examples uses basic implementations found in the `modapp-resource` package:
