@@ -117,11 +117,11 @@ Renders a text based on a model, and updates that text on model change.
 import { Model } from 'modapp-resource';
 import { ModelTxt } from 'modapp-resource-component';
 
-let model = new Model({ data: { greeting: "Hello, world!" }});
-let txt = new ModelTxt(model, m => m.greeting, { tagName: 'h1' });
+let model = new Model({ data: { place: "world" }});
+let txt = new ModelTxt(model, m => "Hello, " + m.place + "!", { tagName: 'h1' });
 txt.render(document.body);
 
-setTimeout(() => model.set({ greeting: "Hejsan, världen!" }), 5000);
+setTimeout(() => model.set({ place: "Mucklet" }), 5000);
 ```
 
 Renders initially:
@@ -131,7 +131,7 @@ Renders initially:
 
 After 5 seconds, the model is updated, which updates the text to:
 ```html
-<h1>Hejsan, världen!</h1>
+<h1>Hello, Mucklet!</h1>
 ```
 
 See [ModelTxt.js](https://github.com/jirenius/modapp-resource-component/blob/master/src/ModelTxt.js) for usage.
