@@ -20,8 +20,6 @@ class CharLogSettings {
 		// Settings
 		this.settingsPromise = this.module.settings.loadSettings('charLog', {
 			useLocalStorage: true,
-		}, {
-			'charLog.useLocalStorage': 'useLocalStorage',
 		});
 
 		this.settingsPromise.then(settings => {

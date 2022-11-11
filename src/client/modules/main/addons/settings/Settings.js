@@ -19,7 +19,7 @@ class Settings {
 		this.settings = {};
 	}
 
-	loadSettings(id, defaultSettings, legacyMap) {
+	loadSettings(id, defaultSettings) {
 		if (this.settings[id]) {
 			throw new Error("Settings loaded registered for: " + id);
 		}

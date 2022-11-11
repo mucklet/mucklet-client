@@ -15,7 +15,13 @@ class ListTeleports {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'help', 'globalTeleports', 'settings' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'charLog',
+			'help',
+			'globalTeleports',
+			'teleportSettings',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -40,43 +46,45 @@ class ListTeleports {
 	}
 
 	listTeleports(char) {
-		let list = [];
-		let owned = [];
-		for (let m of (this.module.globalTeleports.getGlobalTeleports() || [])) {
-			list.push('<tr><td><code>t ' + escapeHtml(m.key) + '</code></td><td class="charlog--strong">' + escapeHtml(m.room.name) + '.</td></tr>');
-		}
-		for (let m of char.nodes) {
-			list.push('<tr><td><code>t ' + escapeHtml(m.key) + '</code></td><td>' + escapeHtml(m.room.name) + '</td></tr>');
-		}
-		if (this.module.settings.settings.teleport?.m?.showOwnRoomsInTeleports && !char.puppeteer) {
-			for (let m of char.ownedRooms) {
-				owned.push('<tr><td><code>t #' + escapeHtml(m.id) + '</code></td><td>' + escapeHtml(m.name) + '</td></tr>');
+		return this.module.teleportSettings.getSettingsPromise().then(teleportSettings => {
+			let list = [];
+			let owned = [];
+			for (let m of (this.module.globalTeleports.getGlobalTeleports() || [])) {
+				list.push('<tr><td><code>t ' + escapeHtml(m.key) + '</code></td><td class="charlog--strong">' + escapeHtml(m.room.name) + '.</td></tr>');
 			}
-		}
-		if (list.length || owned.length) {
-			this.module.charLog.logComponent(char, 'listTeleports', new Elem(n => {
-				let children = [];
-				if (list.length) {
-					children.push(n.component(new Txt(l10n.l('listTeleports.teleportDestinations', "Teleport destinations"), { tagName: 'h4', className: 'charlog--pad' })));
-					children.push(n.elem('div', { className: 'charlog--code' }, [
-						n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-							n.component(new Html(list.join(''), { tagName: 'tbody' })),
-						]),
-					]));
-				};
-				if (owned.length) {
-					children.push(n.component(new Txt(l10n.l('listTeleports.ownedRooms', "Owned rooms"), { tagName: 'h4', className: 'charlog--pad' })));
-					children.push(n.elem('div', { className: 'charlog--code' }, [
-						n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-							n.component(new Html(owned.join(''), { tagName: 'tbody' })),
-						]),
-					]));
+			for (let m of char.nodes) {
+				list.push('<tr><td><code>t ' + escapeHtml(m.key) + '</code></td><td>' + escapeHtml(m.room.name) + '</td></tr>');
+			}
+			if (teleportSettings.showOwnRoomsInTeleports && !char.puppeteer) {
+				for (let m of char.ownedRooms) {
+					owned.push('<tr><td><code>t #' + escapeHtml(m.id) + '</code></td><td>' + escapeHtml(m.name) + '</td></tr>');
 				}
-				return n.elem('div', { className: 'listteleports charlog--pad' }, children);
-			}));
-		} else {
-			this.module.charLog.logInfo(char, l10n.l('listTeleports.noTeleports', "There are no teleport destinations."));
-		}
+			}
+			if (list.length || owned.length) {
+				this.module.charLog.logComponent(char, 'listTeleports', new Elem(n => {
+					let children = [];
+					if (list.length) {
+						children.push(n.component(new Txt(l10n.l('listTeleports.teleportDestinations', "Teleport destinations"), { tagName: 'h4', className: 'charlog--pad' })));
+						children.push(n.elem('div', { className: 'charlog--code' }, [
+							n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
+								n.component(new Html(list.join(''), { tagName: 'tbody' })),
+							]),
+						]));
+					};
+					if (owned.length) {
+						children.push(n.component(new Txt(l10n.l('listTeleports.ownedRooms', "Owned rooms"), { tagName: 'h4', className: 'charlog--pad' })));
+						children.push(n.elem('div', { className: 'charlog--code' }, [
+							n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
+								n.component(new Html(owned.join(''), { tagName: 'tbody' })),
+							]),
+						]));
+					}
+					return n.elem('div', { className: 'listteleports charlog--pad' }, children);
+				}));
+			} else {
+				this.module.charLog.logInfo(char, l10n.l('listTeleports.noTeleports', "There are no teleport destinations."));
+			}
+		});
 	}
 }
 
