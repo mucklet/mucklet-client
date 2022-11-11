@@ -134,7 +134,44 @@ After 5 seconds, the model is updated, which updates the text to:
 <h1>Hello, Mucklet!</h1>
 ```
 
-See [ModelTxt.js](https://github.com/jirenius/modapp-resource-component/blob/master/src/ModelTxt.js) for usage.
+
+### CollectionList
+
+Renders a list of items based on a collection.
+
+```javascript
+import { Txt } from 'modapp-base-component';
+import { Collection } from 'modapp-resource';
+import { CollectionList } from 'modapp-resource-component';
+
+let collection = new Collection({ data: [
+	{ id: 10, greeting: "Hello" },
+	{ id: 20, greeting: "Hejsan" },
+] });
+let list = new CollectionList(collection, item => new Txt(item.greeting));
+list.render(document.body);
+
+setTimeout(() => collection.add({ id: 30, greeting: "こんにちは" }), 5000);
+```
+
+Renders initially:
+```html
+<div>
+	<div><span>Hello</span></div>
+	<div><span>Hejsan</span></div>
+</div>
+```
+
+After 5 seconds, the collection is updated, which animates in a new item:
+```html
+<div>
+	<div><span>Hello</span></div>
+	<div><span>Hejsan</span></div>
+	<div><span>こんにちは</span></div>
+</div>
+```
+
+See [CollectionList.js](https://github.com/jirenius/modapp-resource-component/blob/master/src/CollectionList.js) for usage.
 
 ## ModelComponent
 
