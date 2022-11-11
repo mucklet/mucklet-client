@@ -20,8 +20,26 @@ username and password of your Mucklet developer account:
 http://localhost:6450/?login.player=<USER>&login.pass=<PASS>
 ```
 
+# About
+
+The Mucklet Client is a Single Page Application, written in pure Javascript,
+compiled into a bundle using Webpack.
+
+## Understanding the application
+
+The application uses multiple experimental technologies, unfamiliar to most
+developers. So, when working with this client, make sure to read the overviews:
+
+* [Understanding modules](./docs/understanding-modules.md)
+* [Understanding events](./docs/understanding-events.md)
+* [Understanding the API](./docs/understanding-api.md)
+* [Understanding components](./docs/understanding-components.md)
+* [Understanding the folder structure](./docs/understanding-folders.md)
 
 # Contributing
 
-To learn how to contribute to the project, start by reading the
-[about](./docs/about.md) documentation.
+To learn how to contribute to the project, read the [How to contribute](./docs/CONTRIBUTE.md) guide.
+
+## Style guide
+
+All contributed code should follow the [style guide](./docs/style-guide.md).
