@@ -42,3 +42,7 @@ app.getModule('player').getActiveChar().call('say', {
 	msg: "Hello",
 });
 ```
+
+## API resources
+
+There is no documentation on the available API resources. At the moment, the source code is the best place to learn about the API resources.

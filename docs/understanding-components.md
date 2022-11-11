@@ -34,6 +34,7 @@ Renders a text.
 
 ```javascript
 import { Txt } from 'modapp-base-component';
+
 let txt = new Txt("Hello, world!", { tagName: 'h1' });
 txt.render(document.body);
 ```
@@ -51,6 +52,7 @@ Renders a DOM structure that may contain subcomponents.
 
 ```javascript
 import { Elem, Txt } from 'modapp-base-component';
+
 let elem = new Elem(n => n.elem('ul', { className: 'example' }, [
 	n.elem('li', [
 		n.text("First item"),
@@ -80,6 +82,7 @@ disposed on unrender.
 
 ```javascript
 import { Context, Txt } from 'modapp-base-component';
+
 let txt = new Context(
 	// Called prior to render
 	context => setTimeout(() => context.getComponent()?.setText("Timeout!"), 5000),
@@ -105,8 +108,8 @@ See [Context.js](https://github.com/jirenius/modapp-base-component/blob/master/s
 
 ## Modapp Resource Components
 
-Resource components are components that starts listening to events on Models or
-Collections on render, updating themselves on events, and stops listening on
+Resource components are components that starts listening to events on [Models](./understanding-events.md#models) or
+[Collections](./understanding-events.md#collections) on render, updating themselves on events, and stops listening on
 unrender.
 
 ### ModelTxt

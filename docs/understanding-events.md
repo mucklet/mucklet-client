@@ -41,7 +41,7 @@ model properties, as shown in above example.
 
 ## Collections
 
-_Collection_ are iterable lists that contain ordered values, and implements the
+_Collections_ are iterable lists that contain ordered values, and implements the
 [Collection interface](https://github.com/jirenius/modapp/blob/master/docs/docs.md#Collection).
 
 The interface defines how we can add listeners using `on` and `off` methods, and
