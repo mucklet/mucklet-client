@@ -15,7 +15,7 @@ class ListTeleports {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'help', 'globalTeleports' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'charLog', 'help', 'globalTeleports', 'settings' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -48,7 +48,7 @@ class ListTeleports {
 		for (let m of char.nodes) {
 			list.push('<tr><td><code>t ' + escapeHtml(m.key) + '</code></td><td>' + escapeHtml(m.room.name) + '</td></tr>');
 		}
-		if (!char.puppeteer) {
+		if (this.module.settings.settings.teleport?.m?.showOwnRoomsInTeleports && !char.puppeteer) {
 			for (let m of char.ownedRooms) {
 				owned.push('<tr><td><code>t #' + escapeHtml(m.id) + '</code></td><td>' + escapeHtml(m.name) + '</td></tr>');
 			}
