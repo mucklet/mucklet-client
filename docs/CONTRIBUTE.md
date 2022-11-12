@@ -13,7 +13,7 @@ Did it work? Great! Now we are ready to contribute.
 
 ## Issues
 
-While there are thousands of great ideas that would make the game better, for now we ask that you focus on the ones that has been added to the list of [issues](). If you see a suitable one, drop a comment on it to let others know you are planning on working on it.
+While there are thousands of great ideas that would make the game better, for now we ask that you focus on the ones that has been added to the list of [issues](https://github.com/mucklet/mucklet-client/issues). If you see a suitable one, drop a comment on it to let others know you are planning on working on it.
 
 If you have a feature idea not listed, use the below steps:
 
