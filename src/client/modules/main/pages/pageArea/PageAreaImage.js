@@ -19,16 +19,16 @@ class PageAreaImage {
 		this.image = image;
 		this.children = children;
 		this.selectedModel = selectedModel;
+		this.vw = opt.vw || 286;
+		this.vh = opt.vh || 286;
 		this.state = objectDefault(state, {
 			focus: 'current',
-			scale: 0.5,
+			scale: Math.max(0.5, this.vw / this.image.width, this.vh / this.image.height),
 			x: this.image.width / 2,
 			y: this.image.height / 2,
 		});
 		this.className = opt.className ? ' ' + opt.className : '';
 		this.size = opt.size || '';
-		this.vw = opt.vw || 286;
-		this.vh = opt.vh || 286;
 
 		// Bind callback
 		this._endAction = this._endAction.bind(this);
@@ -233,7 +233,7 @@ class PageAreaImage {
 		if (y < 0) {
 			y = 0;
 		} else if (y > (h - vh)) {
-			y = w - vw;
+			y = h - vh;
 		}
 
 		let s = 'scale(' + st.scale + ') translateX(-' + x + 'px) translateY(-' + y + 'px)';
