@@ -8,7 +8,7 @@ Install [Git](https://git-scm.com/downloads) and
 [NodeJS](https://nodejs.org/en/download/), and run the following commands:
 
 ```text
-git clone https://bitbucket.org/anisus/mucklet-client
+git clone https://github.com/mucklet/mucklet-client.git
 cd mucklet-client
 npm install
 npm run client:realm:test

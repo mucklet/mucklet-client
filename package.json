@@ -4,10 +4,10 @@
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/anisus/mucklet-client.git"
+    "url": "git+https://github.com/mucklet/mucklet-client.git"
   },
   "author": "Accipiter Nisus <accipiter@gmail.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "start": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
     "client": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
