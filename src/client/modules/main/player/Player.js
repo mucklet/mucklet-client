@@ -22,7 +22,7 @@ class Player {
 	_init(module) {
 		this.module = module;
 		this.model = new Model({ data: { player: null, roles: null, idRoles: null, activeChar: null, activeCharIdx: null }, eventBus: this.app.eventBus });
-		this.ctrlModel = null;
+		this.ctrlModel = new CollectionToModel(null, c => c.id, { eventBus: this.app.eventBus });;
 		this.availableChars = null;
 		this.model.on('change', this._onModelChange);
 		this.user = null;
@@ -259,6 +259,10 @@ class Player {
 				this.module.api.call('core', 'getPlayer'),
 				this.module.api.call('core', 'getRoles'),
 			]).then(result => {
+				// Check if disposed
+				if (!this.ctrlModel) {
+					return;
+				}
 				let player = result[0];
 				let roles = result[1].roles || [];
 				let idRoles = result[1].idRoles || [];
@@ -273,7 +277,7 @@ class Player {
 					this.app.eventBus.emit(this, namespace + '.ctrlAdd', { char });
 				}
 				this.model.set(Object.assign({ player, roles, idRoles }, this._ctrlChange(c, null)));
-				this.ctrlModel = new CollectionToModel(player.controlled, c => c.id);
+				this.ctrlModel.setCollection(player.controlled);
 				this.availableChars = new CollectionWrapper(player.chars, {
 					filter: c => c.state == 'asleep',
 					eventBus: this.app.eventBus,
@@ -365,6 +369,8 @@ class Player {
 	dispose() {
 		this._listenUser(false);
 		this.user = false;
+		this.ctrlModel.dispose();
+		this.ctrlModel = null;
 	}
 }
 

@@ -15,7 +15,11 @@ class ListProfiles {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'charLog',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
