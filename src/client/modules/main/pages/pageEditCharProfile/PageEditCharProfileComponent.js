@@ -329,7 +329,7 @@ class PageEditCharProfileComponent {
 
 	_setMessage(msg) {
 		if (!this.elem) return;
-		this.elem.getNode('message').setComponent(msg
+		this.elem.getComponent().getNode('message').setComponent(msg
 			? new Txt(msg, { className: 'dialog--error' })
 			: null,
 		);

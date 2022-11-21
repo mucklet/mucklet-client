@@ -1,7 +1,7 @@
 import expandSelection from 'utils/expandSelection';
 
 /**
- * TokenList is a generic list of tokens from an external source, such as a collection..
+ * TokenList is a generic list of tokens from an external source, such as a collection.
  */
 class TokenList {
 

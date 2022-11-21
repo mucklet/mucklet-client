@@ -1,4 +1,4 @@
-# Understanding folder structure
+# Understanding the folder structure
 
 A general overview of the folders:
 

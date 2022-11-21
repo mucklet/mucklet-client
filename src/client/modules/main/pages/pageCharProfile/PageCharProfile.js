@@ -5,7 +5,7 @@ import PageCharProfileComponent from './PageCharProfileComponent';
 import './pageCharProfile.scss';
 
 /**
- * PageCharProfile opens an in-panel teleport char page in the char panel.
+ * PageCharProfile opens an page in the char panel listing the characters's profiles.
  */
 class PageCharProfile {
 	constructor(app, params) {
@@ -54,7 +54,7 @@ class PageCharProfile {
 	}
 
 	dispose() {
-		this.module.pageChar.removeTool('teleport');
+		this.module.pageChar.removeTool('profile');
 	}
 }
 

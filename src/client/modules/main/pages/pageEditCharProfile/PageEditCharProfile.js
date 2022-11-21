@@ -27,7 +27,7 @@ class PageEditCharProfile {
 	/**
 	 * Opens an in-panel edit char page in the char panel.
 	 * @param {Model} ctrl Controlled char model.
-	 * @param {Model} profileId Profile ID of the controlled character.
+	 * @param {string} profileId Profile ID of the controlled character.
 	 * @returns {Promise.<function>} Promise of a close function.
 	 */
 	open(ctrl, profileId) {

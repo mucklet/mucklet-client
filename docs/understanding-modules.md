@@ -32,7 +32,7 @@ export default ApiVersion;
 Once created, Webpack will automatically find the module and include it as part
 of the _main_  module bundle (loaded for all users).  
 Reload the client (unless webpack dev server already has done so) and notice how
-the API version is now logged to the browsers Developer console.
+the API version is now logged to the browser's Developer console.
 
 > **Tip**
 >

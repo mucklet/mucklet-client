@@ -1,15 +1,17 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-resource-component';
+import { CollectionList, CollectionComponent, ModelComponent, ModelTxt } from 'modapp-resource-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
-import PageCharProfileProfile from './PageCharProfileProfile';
+import PageRoomProfileProfile from './PageRoomProfileProfile';
 
-class PageCharProfileComponent {
-	constructor(module, ctrl, state, close) {
+class PageRoomProfileComponent {
+	constructor(module, profiles, ctrl, room, state, close) {
 		this.module = module;
+		this.profiles = profiles;
 		this.ctrl = ctrl;
+		this.room = room;
 		state.profileId = state.profileId || null;
 		this.state = state;
 		this.close = close;
@@ -24,21 +26,22 @@ class PageCharProfileComponent {
 		let createProfile = new Elem(n => n.elem('div', { className: 'common--addpadding' }, [
 			n.elem('button', { events: { click: this._onCreate }, className: 'btn icon-left common--addbtn' }, [
 				n.component(new FAIcon('plus')),
-				n.component(new Txt(l10n.l('pageCharProfile.createProfile', "Create new profile"))),
+				n.component(new Txt(l10n.l('pageRoomProfile.createProfile', "Create new profile"))),
 			]),
 		]));
-		this.elem = new Elem(n => n.elem('div', { className: 'pagecharprofile' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'pageroomprofile' }, [
+			n.component(new ModelTxt(this.room, m => m.name, { tagName: 'div', className: 'common--itemtitle common--sectionpadding' })),
 			n.component(new CollectionList(
-				this.ctrl.profiles,
-				profile => new PageCharProfileProfile(this.module, this.ctrl, profile, this.model, this.close),
-				{ className: 'pagecharprofile--profiles' },
+				this.profiles,
+				profile => new PageRoomProfileProfile(this.module, this.ctrl, this.room, profile, this.model, this.close),
+				{ className: 'pageroomprofile--profiles' },
 			)),
 			n.component(new CollectionComponent(
 				this.ctrl.profiles,
 				new Collapser(),
 				(col, c, ev) => c.setComponent(col.length
 					? null
-					: new Txt(l10n.l('pageCharProfile.noProfiles', "There are no stored profiles"), { className: 'common--nolistplaceholder' }),
+					: new Txt(l10n.l('pageRoomProfile.noProfiles', "There are no stored profiles"), { className: 'common--nolistplaceholder' }),
 				),
 			)),
 			n.component(new ModelComponent(
@@ -60,8 +63,8 @@ class PageCharProfileComponent {
 	}
 
 	_onCreate() {
-		this.module.dialogCreateCharProfile.open(this.ctrl);
+		this.module.dialogCreateRoomProfile.open(this.ctrl);
 	}
 }
 
-export default PageCharProfileComponent;
+export default PageRoomProfileComponent;
