@@ -6,6 +6,7 @@ const config = {
 	avatar: {
 		avatarPattern: "https://wolfery.com/file/core/char/avatar/{0}",
 		charImgPattern: "https://wolfery.com/file/core/char/img/{0}",
+		roomImgPattern: "https://wolfery.com/file/core/room/img/{0}",
 	},
 };
 
