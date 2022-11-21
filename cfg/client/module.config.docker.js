@@ -14,6 +14,7 @@ const config = {
 	avatar: {
 		avatarPattern: "http://file.mucklet.localhost/core/char/avatar/{0}",
 		charImgPattern: "http://file.mucklet.localhost/core/char/img/{0}",
+		roomImgPattern: "http://file.mucklet.localhost/core/room/img/{0}",
 	},
 };
 

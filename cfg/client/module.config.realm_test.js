@@ -10,6 +10,7 @@ const config = {
 	avatar: {
 		avatarPattern: "https://file.test.mucklet.com/core/char/avatar/{0}",
 		charImgPattern: "https://file.test.mucklet.com/core/char/img/{0}",
+		roomImgPattern: "https://file.test.mucklet.com/core/room/img/{0}",
 	},
 	confirmClose: { active: false },
 };
