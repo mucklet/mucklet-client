@@ -62,7 +62,7 @@ class RoomProfile {
 				return this.module.api.get('core.roomprofile.' + profileId).then(profile => new Promise((resolve, reject) => {
 					let cb = { resolve, reject };
 					// Confirm to overwrite current appearance
-					this.module.confirm.open(() => this.roomProfile(char, p, false).then(result => {
+					this.module.confirm.open(() => this.roomProfile(char, profileId, false).then(result => {
 						cb && cb.resolve(result);
 					}, err => cb && cb.reject(err)).then(() => cb = null), {
 						title: l10n.l('roomProfile.discardChanges', "Discard changes"),

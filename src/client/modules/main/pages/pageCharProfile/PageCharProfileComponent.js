@@ -28,7 +28,7 @@ class PageCharProfileComponent {
 			]),
 		]));
 		this.elem = new Elem(n => n.elem('div', { className: 'pagecharprofile' }, [
-			n.component('charlist', new CollectionList(
+			n.component(new CollectionList(
 				this.ctrl.profiles,
 				profile => new PageCharProfileProfile(this.module, this.ctrl, profile, this.model, this.close),
 				{ className: 'pagecharprofile--profiles' },

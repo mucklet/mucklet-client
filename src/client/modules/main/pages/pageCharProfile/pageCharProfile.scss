@@ -6,15 +6,4 @@
 
 .pagecharprofile-profile {
 	padding-bottom: 6px;
-
-	&--tools i {
-		color: $color1;
-		transition: color 0.3s;
-	}
-
-	&:hover {
-		.pagecharprofile-profile--tools i {
-			color: $color4-light;
-		}
-	}
 }
