@@ -9,6 +9,11 @@ import {
 /**
  * RoomProfiles listens to controlled character models and their rooms, fetching
  * a list of available room profiles.
+ *
+ * The overly complex code of this module is because the access to room profiles
+ * is based on controlled character, current room owner, and player role. So in
+ * order to access room profiles available, we need to listen to all of that,
+ * and update accordingly.
  */
 class RoomProfiles {
 	constructor(app, params) {

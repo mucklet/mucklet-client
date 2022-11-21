@@ -34,7 +34,7 @@ class RoomProfile {
 			next: new ListStep('profileId', this.module.roomProfiles.getInRoomProfileTokens(), {
 				name: "room profile",
 			}),
-			value: (ctx, p) => this.profile(ctx.char, p, true),
+			value: (ctx, p) => this.roomProfile(ctx.char, p.profileId, true),
 		});
 
 		this.module.help.addTopic({
@@ -48,22 +48,22 @@ class RoomProfile {
 		});
 	}
 
-	profile(char, p, safe) {
-		return char.call('useRoomProfile', { profileId: p.profileId, safe })
+	roomProfile(char, profileId, safe) {
+		return char.call('useRoomProfile', { profileId, safe })
 			.then(result => {
 				this.module.charLog.logInfo(char, l10n.l('roomProfile.changedToRoomProfile', "Changed room to profile \"{profileName}\".", { profileName: result.profile.name }));
-				return true;
+				return result;
 			})
 			.catch(err => {
 				if (err.code != 'core.roomProfileNotStored') {
 					return Promise.reject(err);
 				}
 
-				return this.module.api.get('core.roomprofile.' + p.profileId).then(profile => new Promise((resolve, reject) => {
+				return this.module.api.get('core.roomprofile.' + profileId).then(profile => new Promise((resolve, reject) => {
 					let cb = { resolve, reject };
 					// Confirm to overwrite current appearance
-					this.module.confirm.open(() => this.profile(char, p, false).then(applied => {
-						cb && cb.resolve(applied);
+					this.module.confirm.open(() => this.roomProfile(char, p, false).then(result => {
+						cb && cb.resolve(result);
 					}, err => cb && cb.reject(err)).then(() => cb = null), {
 						title: l10n.l('roomProfile.discardChanges', "Discard changes"),
 						body: new Elem(n => n.elem('div', [
@@ -78,7 +78,7 @@ class RoomProfile {
 						confirm: l10n.l('roomProfile.applyRoomProfile', "Apply profile"),
 						onClose: () => {
 							if (cb) {
-								cb.resolve(false);
+								cb.resolve(null);
 							}
 							cb = null;
 						},
