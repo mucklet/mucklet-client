@@ -10,6 +10,7 @@ class Avatar {
 		this.app = app;
 		this.avatarPattern = params.avatarPattern || 'http://localhost:6452/core/char/avatar/{0}';
 		this.charImgPattern = params.charImgPattern || 'http://localhost:6452/core/char/img/{0}';
+		this.roomImgPattern = params.roomImgPattern || 'http://localhost:6452/core/room/img/{0}';
 
 		this.app.require([], this._init.bind(this));
 	}
@@ -29,7 +30,15 @@ class Avatar {
 	newCharImg(char, opt) {
 		return new AvatarComponent(char, Object.assign({
 			pattern: this.charImgPattern,
-			usePlaceholder: true,
+			placeholder: 'avatar',
+			property: 'image',
+		}, opt));
+	}
+
+	newRoomImg(room, opt) {
+		return new AvatarComponent(room, Object.assign({
+			pattern: this.roomImgPattern,
+			placeholder: 'room',
 			property: 'image',
 		}, opt));
 	}
@@ -40,6 +49,10 @@ class Avatar {
 
 	avatarHref(char) {
 		return char.avatar ? this.avatarPattern.replace("{0}", char.avatar) : null;
+	}
+
+	roomImgHref(room) {
+		return room.image ? this.roomImgPattern.replace("{0}", room.image) : null;
 	}
 
 }

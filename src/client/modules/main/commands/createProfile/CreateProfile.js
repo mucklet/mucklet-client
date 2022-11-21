@@ -17,7 +17,12 @@ class CreateProfile {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help', 'info' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'charLog',
+			'help',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {

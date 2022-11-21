@@ -5,19 +5,30 @@ import l10n from 'modapp-l10n';
 import Dialog from 'classes/Dialog';
 import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
-import './dialogCreateCharProfile.scss';
+import './dialogCreateRoomProfile.scss';
 
-class DialogCreateCharProfile {
+/**
+ * Opens a dialog to create a room profile for the room the controlled character
+ * is currently in.
+ */
+class DialogCreateRoomProfile {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'player' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'player',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 	}
 
+	/**
+	 * Opens a create room profile dialog.
+	 * @param {Model} ctrl Controlled character.
+	 */
 	open(ctrl) {
 		if (this.dialog) return;
 
@@ -27,11 +38,11 @@ class DialogCreateCharProfile {
 		}, eventBus: this.app.eventBus });
 
 		this.dialog = new Dialog({
-			title: l10n.l('dialogCreateCharProfile.createNewProfile', "Create new profile"),
-			className: 'dialogcreatecharprofile',
+			title: l10n.l('dialogCreateRoomProfile.createNewRoomProfile', "Create new room profile"),
+			className: 'dialogcreateroomprofile',
 			content: new Elem(n => n.elem('div', [
 				n.component('name', new PanelSection(
-					l10n.l('dialogCreateCharProfile.profileName', "Profile name"),
+					l10n.l('dialogCreateRoomProfile.profileName', "Profile name"),
 					new Input("", {
 						events: { input: c => model.set({ name: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
@@ -40,11 +51,11 @@ class DialogCreateCharProfile {
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateCharProfile.nameInfo', "A short but descriptive name for the profile."),
+						popupTip: l10n.l('dialogCreateRoomProfile.nameInfo', "A short but descriptive name for the profile."),
 					},
 				)),
 				n.component(new PanelSection(
-					l10n.l('dialogCreateCharProfile.keyword', "Keyword"),
+					l10n.l('dialogCreateRoomProfile.keyword', "Keyword"),
 					new Input(model.key, {
 						events: { input: c => model.set({ key: c.getValue() }) },
 						attributes: { spellcheck: 'false' },
@@ -53,7 +64,7 @@ class DialogCreateCharProfile {
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('dialogCreateCharProfile.keyInfo', "Keyword is used to identify the character profile in console commands."),
+						popupTip: l10n.l('dialogCreateRoomProfile.keyInfo', "Keyword is used to identify the room profile in console commands."),
 					},
 				)),
 				n.component('message', new Collapser(null)),
@@ -62,7 +73,7 @@ class DialogCreateCharProfile {
 						events: { click: () => this._onCreate(ctrl, model) },
 						className: 'btn primary dialog--btn',
 					}, [
-						n.component(new Txt(l10n.l('dialogCreateCharProfile.create', "Create"))),
+						n.component(new Txt(l10n.l('dialogCreateRoomProfile.create', "Create"))),
 					]),
 				]),
 			])),
@@ -76,10 +87,10 @@ class DialogCreateCharProfile {
 	_onCreate(ctrl, model) {
 		if (this.createPromise) return this.createPromise;
 
-		this.createPromise = ctrl.call('createProfile', {
+		this.createPromise = ctrl.call('createRoomProfile', {
 			name: model.name,
 			key: model.key,
-		}).then(char => {
+		}).then(() => {
 			if (this.dialog) {
 				this.dialog.close();
 			}
@@ -100,4 +111,4 @@ class DialogCreateCharProfile {
 	}
 }
 
-export default DialogCreateCharProfile;
+export default DialogCreateRoomProfile;

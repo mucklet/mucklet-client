@@ -4,10 +4,11 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
 
-class PageCharProfileProfileContent {
-	constructor(module, ctrl, profile, toggle, close) {
+class PageRoomProfileProfileContent {
+	constructor(module, ctrl, room, profile, toggle, close) {
 		this.module = module;
 		this.ctrl = ctrl;
+		this.room = room;
 		this.profile = profile;
 		this.toggle = toggle;
 		this.close = close;
@@ -25,7 +26,7 @@ class PageCharProfileProfileContent {
 			]),
 			n.elem('button', { className: 'iconbtn medium solid smallicon', events: {
 				click: (c, ev) => {
-					this.module.pageEditCharProfile.open(this.ctrl, this.profile.id);
+					this.module.pageEditRoomProfile.open(this.ctrl, this.room, this.profile.id);
 					ev.stopPropagation();
 				},
 			}}, [
@@ -41,7 +42,7 @@ class PageCharProfileProfileContent {
 					},
 				}}, [
 					n.component(new FAIcon('user')),
-					n.component(new Txt(l10n.l('pageCharProfile.apply', "Apply"))),
+					n.component(new Txt(l10n.l('pageRoomProfile.apply', "Apply"))),
 				]),
 				n.component(new ModelComponent(
 					this.ctrl,
@@ -61,28 +62,28 @@ class PageCharProfileProfileContent {
 	}
 
 	_updateProfile() {
-		this.module.confirm.open(() => this.module.updateProfile.updateProfile(this.ctrl, { profileId: this.profile.id })
-			.catch(err => this.module.confirm.openError(err)),
+		this.module.confirm.open(() => this.module.updateRoomProfile.updateRoomProfile(this.ctrl, { profileId: this.profile.id })
+			.catch(err => this.module.toaster.openError(err)),
 		{
-			title: l10n.l('pageCharProfile.confirmProfileUpdate', "Confirm profile update"),
+			title: l10n.l('pageRoomProfile.confirmRoomProfileUpdate', "Confirm room profile update"),
 			body: new Elem(n => n.elem('div', [
-				n.component(new Txt(l10n.l('pageCharProfile.profileUpdateBody', "Do you really wish to overwrite the profile with the character's current appearance?"), { tagName: 'p' })),
+				n.component(new Txt(l10n.l('pageRoomProfile.roomProfileUpdateBody', "Do you really wish to overwrite the profile with the room's current appearance?"), { tagName: 'p' })),
 				n.elem('p', [ n.component(new ModelTxt(this.profile, m => m.name, { className: 'dialog--strong' })) ]),
 			])),
-			confirm: l10n.l('pageCharProfile.update', "Update"),
+			confirm: l10n.l('pageRoomProfile.update', "Update"),
 		});
 	}
 
 	_useProfile() {
-		this.module.profile.profile(this.ctrl, { profileId: this.profile.id }, true)
-			.then(applied => {
-				if (applied) {
+		this.module.roomProfile.roomProfile(this.ctrl, this.profile.id, true)
+			.then(result => {
+				if (result) {
 					this.close();
 				}
 			})
-			.catch(err => this.module.confirm.openError(err));
+			.catch(err => this.module.toaster.openError(err));
 	}
 
 }
 
-export default PageCharProfileProfileContent;
+export default PageRoomProfileProfileContent;

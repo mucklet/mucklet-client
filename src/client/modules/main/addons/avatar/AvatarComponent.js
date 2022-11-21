@@ -20,6 +20,12 @@ const sizeMap = {
 	tiny: '?thumb=m',
 };
 
+const placeholderMap = {
+	avatar: '/img/avatar-l.png',
+	room: '/img/room-l.png',
+	area: '/img/area-l.png',
+};
+
 /**
  * AvatarComponent is a character avatar component.
  */
@@ -34,7 +40,7 @@ class AvatarComponent extends Fader {
 	 * @param {string} [opt.pattern] URL pattern for the avatar. Should contain "{0}" to replace with the avatar ID.
 	 * @param {string} [opt.property] Char property to get the image ID. Defaults to 'avatar'.
 	 * @param {string} [opt.resolve] Resolves the image ID from the property. Defaults to v => v.
-	 * @param {boolean} [opt.usePlaceholder] Flag if a placeholder image is to be used instead of initials. Defaults to false.
+	 * @param {string} [opt.placeholder] Placeholder image to use instead of initials. May be 'avatar', 'room', or 'area'.
 	 * @param {boolean} [opt.modalOnClick] Flag if clicking on the image should show the full image in a modal.
 	 */
 	constructor(profile, opt) {
@@ -46,7 +52,7 @@ class AvatarComponent extends Fader {
 		this.lightness = opt.lightness || 0.33;
 		this.pattern = opt.pattern || defaultPattern;
 		this.property = opt.property || 'avatar';
-		this.usePlaceholder = !!opt.usePlaceholder;
+		this.placeholder = (opt.placeholder && placeholderMap[opt.placeholder]) || null;
 		this.modalOnClick = !!opt.modalOnClick;
 		this.query = sizeMap[opt.size] || sizeMap['medium'];
 		this.resolve = opt.resolve || (v => this.pattern.replace("{0}", v));
@@ -80,9 +86,7 @@ class AvatarComponent extends Fader {
 		let imageId = m ? m[this.property] : null;
 		let src = imageId
 			? this.resolve(imageId) + this.query
-			: this.usePlaceholder
-				? '/img/avatar-l.png'
-				: null;
+			: this.placeholder;
 
 		c.setComponent(m
 			? this.isError
@@ -104,7 +108,7 @@ class AvatarComponent extends Fader {
 	}
 
 	_setHue(char) {
-		if (this.usePlaceholder) return;
+		if (this.placeholder) return;
 
 		let h = 0;
 		if (!this.isError) {
