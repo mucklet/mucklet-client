@@ -163,11 +163,12 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnFocus(charId, ev, title) {
-		// Verify we should send event
-		if (!this.focusAll.props[charId] && !this.hasFocus(charId, ev.char?.id)) {
-			return false;
+		if (!this.hasFocus(charId, ev.char?.id)) {
+			// Check if muted event
+			if (ev.mod?.muted || !this.focusAll.props[charId]) {
+				return false;
+			}
 		}
-
 		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject(ev)), {
 			tag: ev ? ev.id : undefined,
 			onClick: (ev) => {
@@ -203,8 +204,13 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnMention(charId, ev, title) {
+		// Unfocused muted events does not trigger
+		if (!this.hasFocus(charId, ev.char?.id) && ev.mod?.muted) {
+			return false;
+		}
+
 		let p = this.module.player.getPlayer();
-		if (!p || !p.notifyOnMention || !ev.mod || !ev.mod.triggers) {
+		if (!p || !p.notifyOnMention || !ev.mod?.triggers) {
 			return false;
 		}
 
@@ -227,12 +233,15 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnTargetEvent(charId, ev, title) {
-		// Check if we should not send event
-		if (!this.focusAll.props[charId]) { // Focused on all
-			let f = this.focus[charId];
-			if (!f || !ev.charId || !f[ev.charId]) { // Focus on character
+		if (!this.hasFocus(charId, ev.char?.id)) {
+			// Check if muted event
+			if (ev.mod?.muted) {
+				return false;
+			}
+			// Check if we should not send event
+			if (!this.focusAll.props[charId]) { // Focus
 				let p = this.module.player.getPlayer();
-				if (!p || !p.notifyOnEvent || !ev.target || ev.target.id !== charId) { // Targeted event
+				if (!p || !p.notifyOnEvent || ev.target?.id !== charId) { // Targeted event
 					return false;
 				}
 			}
