@@ -5,11 +5,18 @@ import ListStep from 'classes/ListStep';
 import ItemList from 'classes/ItemList';
 import StateStep from 'classes/StateStep';
 
-const usageText = 'roll <span class="opt"><span class="param">Dices</span></span>';
+const usageText = 'roll <span class="opt"><span class="param">Roll</span></span>';
 const shortDesc = 'Roll dice shown to the room';
 const helpText =
-`<p>Roll dice and display the results for all characters in the room.</p>
-<p><code class="param">Dices</code> is the notation of dice. If omitted, a roll between 1 and 100 will be made.</p>`;
+`<p>Roll dice and display the result for all characters in the room.</p>
+<p><code class="param">Roll</code> is the xdy±c notation of dice. If omitted, a roll between 1 and 100 will be made.</p>`;
+const examples = [
+	{ cmd: 'roll', desc: l10n.l('roll.rollDesc', "Rolls between 1 - 100.") },
+	{ cmd: 'roll 6', desc: l10n.l('roll.roll6Desc', "Rolls one six sided die.") },
+	{ cmd: 'roll 5d6', desc: l10n.l('roll.roll5d6Desc', "Rolls five six sided dice.") },
+	{ cmd: 'roll 2d10 + 3', desc: l10n.l('roll.roll2d10+3Desc', "Rolls two ten sided dice and adds 3.") },
+	{ cmd: 'roll 10 - 1d10', desc: l10n.l('roll.roll10-1d10Desc', "Rolls a ten sided die and subtracts the result from 10.") },
+];
 
 /**
  * Roll adds the roll command.
@@ -108,6 +115,7 @@ class Roll {
 			usage: l10n.l('roll.usage', usageText),
 			shortDesc: l10n.l('roll.shortDesc', shortDesc),
 			desc: l10n.l('roll.helpText', helpText),
+			examples,
 			sortOrder: 0,
 		});
 	}
