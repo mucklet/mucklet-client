@@ -15,7 +15,7 @@ const helpText =
 <p><code class="param">@Username</code> is the username of the player. Admins only.</p>
 <p><code class="param">Character</code> is the name of a character owned by the player.</p>`;
 const examples = [
-	`<code>ban player Jane Mischief = underaged</code></p>`,
+	{ cmd: `ban player Jane Mischief = underaged` },
 ];
 
 /**
