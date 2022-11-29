@@ -11,7 +11,7 @@ const helpText =
 <p>When using the <code>"</code> alias, the message may optionally end with a closing quote.</p>`;
 
 /**
- * Say holds available commands.
+ * Say adds the say command.
  */
 class Say {
 	constructor(app) {

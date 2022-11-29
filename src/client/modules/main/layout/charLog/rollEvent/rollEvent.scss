@@ -1,0 +1,15 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.ev-roll {
+	white-space: pre-wrap;
+	padding: 4px 0 0 0;
+
+	sub {
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+		bottom: -0.25em;
+	}
+}
