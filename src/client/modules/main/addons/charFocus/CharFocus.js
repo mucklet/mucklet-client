@@ -30,7 +30,13 @@ class CharFocus {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'login', 'player', 'notify', 'api', 'charLog' ], this._init.bind(this));
+		this.app.require([
+			'login',
+			'player',
+			'notify',
+			'api',
+			'charLog',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -66,6 +72,7 @@ class CharFocus {
 			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}")),
 			action: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.newAction', "{char.name} {msg}")),
 			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}")),
+			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charRolled', "{char.name} rolled")),
 		};
 		for (let k in notificationHandlers) {
 			this.module.charLog.addEventHandler(k, notificationHandlers[k]);
@@ -157,7 +164,7 @@ class CharFocus {
 	 */
 	notifyOnFocus(charId, ev, title) {
 		// Verify we should send event
-		if (!this.focusAll.props[charId] && !this.hasFocus(charId, ev.charId)) {
+		if (!this.focusAll.props[charId] && !this.hasFocus(charId, ev.char?.id)) {
 			return false;
 		}
 
