@@ -65,7 +65,7 @@ class Roll {
 							delimToken: 'name',
 							trimSpace: false,
 							errRequired: null,
-							errNotFound: (step, match) => ({ code: 'roll.typeNotFound', message: 'There is no dice type "{match}". The supported dice types are d (normal multi-sided die) and f (fate die).', data: { name: step.name, match: match }}),
+							errNotFound: (step, match) => ({ code: 'roll.typeNotFound', message: 'There is no dice type "{match}". The supported dice type is d (standard multi-sided die).', data: { name: step.name, match: match }}),
 							else: new StateStep(state => state.setParam('part-' + idx, state.getParam('count-' + idx)), { next }),
 						}),
 					});
