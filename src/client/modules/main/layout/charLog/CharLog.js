@@ -28,7 +28,6 @@ import ControlRequestEvent from './ControlRequestEvent';
 import DndEvent from './DndEvent';
 import './charLog.scss';
 import './charLogEvent.scss';
-import './charLogMutedEvent.scss';
 import './charLogHighlight.scss';
 
 

@@ -12,4 +12,15 @@
 		vertical-align: baseline;
 		bottom: -0.25em;
 	}
+
+	&--pill {
+		display: inline-block;
+		margin-left: 6px;
+		padding-bottom: 1px;
+
+		.popuppill--tip {
+			left: 6px;
+			padding: 14px 14px 14px 16px;
+		}
+	}
 }

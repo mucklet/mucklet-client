@@ -1,4 +1,5 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
+import PopupPill from 'components/PopupPill';
 
 class RollEventComponent extends Elem {
 	constructor(charId, ev, opt) {
@@ -15,12 +16,12 @@ class RollEventComponent extends Elem {
 			}
 			switch (p.type) {
 				case "mod":
-					s += '<span>' + Number(p.value) + '</span>';
+					s += '<span class="charlog--default">' + Number(p.value) + '</span>';
 					break;
 				case "std":
-					s += '<span>' + Number(p.count) + '</span>'
+					s += '<span class="charlog--default">' + Number(p.count) + '</span>'
 						+ '<span class="charlog--cmd">d</span>'
-						+ '<span>' + Number(p.sides) + '</span>';
+						+ '<span class="charlog--default">' + Number(p.sides) + '</span>';
 					showDetails |= p.count > 1;
 					break;
 				default:
@@ -29,7 +30,7 @@ class RollEventComponent extends Elem {
 		}
 
 		let d = "";
-		if (c && c.id === charId && showDetails) {
+		if (showDetails) {
 			for (let p of ev.result) {
 				if (d) {
 					d += '<span> ' + (p.op || "+") + ' </span>';
@@ -56,13 +57,21 @@ class RollEventComponent extends Elem {
 		super(n => n.elem('div', { className: 'charlog--highlight' }, [
 			n.component(new Txt(c && c.name, { className: 'charlog--char' })),
 			n.elem('span', { className: 'charlog--tag' }, [ n.text(" roll") ]),
-			n.elem('span', { className: 'charlog--oocs' }, [
+			n.elem('span', { className: 'charlog--ooc' }, [
 				n.text(' rolls '),
 				n.component(new Html(s, { tagName: 'span' })),
 				n.text('. Result: '),
 				n.elem('span', { className: 'charlog--comm' }, [ n.text(ev.total) ]),
 				n.text('.'),
-				n.component(d ? new Html(" " + d, { tagName: 'span', className: 'charlog--ooc' }) : null),
+				n.component(d
+					? c.id === charId || ev.mod?.muted
+						? new Html(" " + d, { tagName: 'span', className: 'charlog--ooc' })
+						: new PopupPill(() => new Html(d, { tagName: 'span', className: 'charlog--ooc' }), {
+							type: 'dark',
+							className: 'ev-roll--pill',
+						})
+					: null,
+				),
 			]),
 		]));
 	}
