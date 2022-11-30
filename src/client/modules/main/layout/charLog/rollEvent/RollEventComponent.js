@@ -1,5 +1,8 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
+import l10n from 'modapp-l10n';
 import PopupPill from 'components/PopupPill';
+
+const txtQuietRoll = l10n.l('rollEvent.quiet roll', "Quiet roll");
 
 class RollEventComponent extends Elem {
 	constructor(charId, ev, opt) {
@@ -54,26 +57,39 @@ class RollEventComponent extends Elem {
 			}
 		}
 
-		super(n => n.elem('div', { className: 'charlog--highlight' }, [
-			n.component(new Txt(c && c.name, { className: 'charlog--char' })),
-			n.elem('span', { className: 'charlog--tag' }, [ n.text(" roll") ]),
-			n.elem('span', { className: 'charlog--ooc' }, [
-				n.text(' rolls '),
-				n.component(new Html(s, { tagName: 'span' })),
-				n.text('. Result: '),
-				n.elem('span', { className: 'charlog--comm' }, [ n.text(ev.total) ]),
-				n.text('.'),
-				n.component(d
-					? c.id === charId || ev.mod?.muted
-						? new Html(" " + d, { tagName: 'span', className: 'charlog--ooc' })
-						: new PopupPill(() => new Html(d, { tagName: 'span', className: 'charlog--ooc' }), {
-							type: 'dark',
-							className: 'ev-roll--pill',
-						})
-					: null,
-				),
+		let inner = n => ([
+			n.text(' rolls '),
+			n.component(new Html(s, { tagName: 'span' })),
+			n.text('. Result: '),
+			n.elem('span', { className: 'charlog--comm' }, [ n.text(ev.total) ]),
+			n.text('.'),
+			n.component(d
+				? c.id === charId || ev.mod?.muted
+					? new Html(" " + d, { tagName: 'span', className: 'charlog--ooc' })
+					: new PopupPill(() => new Html(d, { tagName: 'span', className: 'charlog--ooc' }), {
+						type: 'dark',
+						className: 'ev-roll--pill',
+					})
+				: null,
+			),
+		]);
+
+		super(ev.quiet
+			? n => n.elem('div', [
+				n.elem('div', { className: 'charlog--fieldset' }, [
+					n.elem('div', { className: 'charlog--fieldset-label' }, [
+						n.component(new Txt(txtQuietRoll)),
+					]),
+					n.component(new Txt(c && c.name, { className: 'charlog--char' })),
+					n.elem('span', { className: 'charlog--ooc' }, inner(n)),
+				]),
+			])
+			: n => n.elem('div', { className: 'charlog--highlight' }, [
+				n.component(new Txt(c && c.name, { className: 'charlog--char' })),
+				n.elem('span', { className: 'charlog--tag' }, [ n.text(" roll") ]),
+				n.elem('span', { className: 'charlog--ooc' }, inner(n)),
 			]),
-		]));
+		);
 	}
 
 	get isCommunication() {
