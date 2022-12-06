@@ -10,6 +10,7 @@ class NumberStep {
 	 * @param {string} [opt.name] Name used in error outputs. Defaults to the id value.
 	 * @param {string} [opt.token] Token name. Defaults to 'number'.
 	 * @param {Step} [opt.next] Next step after a matched string.
+	 * @param {RegExp} [opt.regex] Regex used for matching. Defaults to /^-?\d*\.?\d* / (without the extra space at the end)
 	 * @param {boolean} [opt.trimSpace] Flag indicating if initial space should be trimmed. Defaults to true.
 	 * @param {bool} [opt.errFloat] Callback function that returns an error on float values. Null means floats are allowed.: function(this)
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this)
@@ -20,8 +21,8 @@ class NumberStep {
 		this.name = opt.name || id;
 		this.token = opt.token || 'number';
 		this.next = opt.next || null;
+		this.regex = opt.regex || /^-?\d*\.?\d*/;
 		this.trimSpace = opt.hasOwnProperty('trimSpace') ? !!opt.trimSpace : true;
-		this.completer = opt.completer || null;
 		this.errFloat = opt.hasOwnProperty('errFloat')
 			? opt.errFloat
 			: self => ({ code: 'numberStep.isFloat', message: 'Decimals are not allowed for {name}.', data: { name: self.name }});
@@ -44,7 +45,7 @@ class NumberStep {
 			return null;
 		}
 
-		let m = stream.match(/^-?\d*\.?\d*/);
+		let m = stream.match(this.regex);
 
 		if (!m || !m[0].length || m[0] == ".") {
 			state.backUp(stream);

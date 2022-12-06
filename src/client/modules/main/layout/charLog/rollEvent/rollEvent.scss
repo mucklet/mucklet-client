@@ -1,0 +1,26 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.ev-roll {
+	white-space: pre-wrap;
+	padding: 4px 0 0 0;
+
+	sub {
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+		bottom: -0.25em;
+	}
+
+	&--pill {
+		display: inline-block;
+		margin-left: 6px;
+		padding-bottom: 1px;
+
+		.popuppill--tip {
+			left: 6px;
+			padding: 14px 14px 14px 16px;
+		}
+	}
+}

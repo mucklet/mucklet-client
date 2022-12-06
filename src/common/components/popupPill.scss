@@ -1,11 +1,9 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-
-
 $popuptip-background: #{'rgba(3,4,6,90%)'};
 
-.charlog-mutedevent {
+.popuppill {
 	&--pill {
 		width: 20px;
 		height: 8px;
@@ -21,6 +19,8 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 		right: 16px;
 		transform: translateY(-100%) translateY(-18px);
 		border-radius: 4px;
+		display: inline-block;
+
 	}
 	&--caret {
 		position: absolute;
@@ -34,12 +34,12 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	}
 }
 
-.mev- {
-	&travel, &arrive, &leave, &wakeup, &sleep {
+.popuppill--style- {
+	&dark {
 		opacity: 50%;
 	}
 
-	&whisper, &message, &mail, &address, &controlRequest, &summon, &join, &leadRequest, &followRequest, &follow, &stopFollow, &stopLead, &dnd{
+	&border {
 		border-width: 1px 1px 1px 5px;
 	}
 }
