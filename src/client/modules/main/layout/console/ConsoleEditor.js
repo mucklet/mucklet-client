@@ -9,6 +9,11 @@ import { getToken } from 'utils/codemirror';
 
 const txtPlaceholder = l10n.l('console.enterYourCommand', "Enter your command (or type help)");
 
+// [TODO] Workaround for CodeMirror issue:
+// https://github.com/codemirror/dev/issues/1028
+// Remove once the issue is resolved.
+const isAndroid = /Android\b/.test(navigator.userAgent || '');
+
 class ConsoleEditor {
 	constructor(module, state) {
 		this.module = module;
@@ -72,7 +77,7 @@ class ConsoleEditor {
 		let state = EditorState.create({
 			doc,
 			extensions: [
-				placeholder(l10n.t(txtPlaceholder)),
+				... isAndroid ? [] : [ placeholder(l10n.t(txtPlaceholder)) ],
 				tabCompletion({
 					complete: state => this.module.cmd.getCMTabComplete(state),
 				}),
