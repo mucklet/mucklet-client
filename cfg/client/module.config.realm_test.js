@@ -13,6 +13,7 @@ const config = {
 		roomImgPattern: "https://file.test.mucklet.com/core/room/img/{0}",
 	},
 	confirmClose: { active: false },
+	serviceWorker: { active: false },
 };
 
 export default config;

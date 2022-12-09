@@ -12,6 +12,7 @@ const config = {
 		method: 'ws',
 	},
 	confirmClose: { active: false },
+	serviceWorker: { active: false },
 };
 
 export default config;
