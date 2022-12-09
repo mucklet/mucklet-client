@@ -1,7 +1,9 @@
 html, body {
 	box-sizing: border-box;
 	width: 100%;
-	height: 100vh;
+	height: 100%;
+
+	box-sizing: border-box;
 }
 
 body {
@@ -12,6 +14,8 @@ body {
 	background-color: $color1;
 	margin: 0;
 	line-height: 125%;
+	overflow: hidden;
+	position: relative;
 }
 
 * {

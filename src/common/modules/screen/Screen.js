@@ -1,14 +1,26 @@
 import Fader from 'components/Fader';
 import './screen.scss';
 
+
+const viewport = window.visualViewport || null;
+
 /**
  * Screen handles the screen viewport.
  */
 class Screen {
 	constructor(app, params) {
 		this.app = app;
+		// Bind callbacks
+		this._setHeight = this._setHeight.bind(this, "resize");
+		this._setScroll = this._setHeight.bind(this, "scroll");
+
 		this.fader = new Fader(null, { className: 'screen' });
 		this.app.setComponent(this.fader);
+
+
+		(viewport || window).addEventListener('resize', this._setHeight);
+		(viewport || window).addEventListener('scroll', this._setScroll);
+		this._setHeight();
 	}
 
 	getFader() {
@@ -79,10 +91,22 @@ class Screen {
 		return this.subcomponents ? this.subcomponents.findIndex(o => o.id === id) : null;
 	}
 
+	_setHeight(type, ev) {
+		let height = viewport ? viewport.height : window.innerHeight;
+		document.documentElement.style.height = height + 'px';
+		// document.documentElement.style.setProperty('--doc-height', height + 'px');
+		// document.querySelector('meta[name=viewport]').setAttribute('content', 'height=' + height + 'px, width=device-width, initial-scale=1.0');
+		// this.fader.setStyle('height', height + 'px');
+	}
+
 	dispose() {
 		this.app.unsetComponent(this.fader);
 		this.component = null;
 		this.subcomponents = null;
+		if (this.fader) {
+			(viewport || window).removeEventListener('resize', this._setHeight);
+			(viewport || window).removeEventListener('scroll', this._setScroll);
+		}
 		this.fader = null;
 	}
 }
