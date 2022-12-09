@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
 
 module.exports = function(ctx) {
@@ -81,6 +82,11 @@ module.exports = function(ctx) {
 			})),
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,
+			}),
+			new WorkboxPlugin.InjectManifest({
+				swSrc: path.resolve(ctx.commonPath, 'workers/service-worker.js'),
+				swDest: 'service-worker.js',
+				maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
 			}),
 		],
 	};
