@@ -12,7 +12,7 @@ const shortcuts = [
 	},
 	{
 		id: 'linebreak',
-		usage: '<kbd>Shift</kbd> + <kbd>Enter</kbd>',
+		usage: '<kbd>Shift</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd>',
 		desc: l10n.l('helpConsole.linebreakDesc', `<p>Insert a line break in the console.<p>`),
 		sortOrder: 20,
 	},

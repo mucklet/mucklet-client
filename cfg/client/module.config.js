@@ -6,6 +6,7 @@ const config = {
 	charPing: {
 		method: 'ws',
 	},
+	serviceWorker: { active: false },
 };
 
 export default config;

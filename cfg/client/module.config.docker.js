@@ -16,6 +16,7 @@ const config = {
 		charImgPattern: "http://file.mucklet.localhost/core/char/img/{0}",
 		roomImgPattern: "http://file.mucklet.localhost/core/room/img/{0}",
 	},
+	serviceWorker: { active: false },
 };
 
 export default config;
