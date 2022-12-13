@@ -1,6 +1,6 @@
-const defaultDuration = 1000 * 60 * 3; // 3 minutes between successful pings
-const defaultThreshold = 1000 * 60 * 5; // 5 minutes until character is put to sleep
-const defaultRetry = 1000 * 15; // 15 seconds between retries
+const defaultDuration = 1000 * 60 * 15; // 15 minutes between successful pings
+const defaultThreshold = 1000 * 60 * 60; // 60 minutes until character is put to sleep
+const defaultRetry = 1000 * 60 * 1; // 1 minute between retries
 
 /**
  * CharPing periodically sends a ping for all controlled characters
