@@ -6,14 +6,37 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = function(ctx) {
+
+	// Get policies
+	let policiesHtmlPlugins = [];
+	let policiesPath = path.resolve(ctx.commonPath, 'static/policies');
+	fs.readdirSync(policiesPath).forEach(file => {
+		let policy = JSON.parse(fs.readFileSync(path.resolve(policiesPath, file), 'utf8'));
+		console.log("POLICY: ", policy);
+		policiesHtmlPlugins.push(new HtmlWebpackPlugin({
+			filename: 'policy/' + policy.slug + '.html',
+			template: path.resolve(ctx.srcPath, 'policy/index.ejs'),
+			// title: ctx.siteConfig.APP_TITLE,
+			templateParameters: {
+				title: ctx.siteConfig.APP_TITLE,
+				policyTitle: policy.title,
+				policyCreated: policy.created,
+				policyBody: policy.body,
+			},
+			chunks: [ 'policy' ],
+		}));
+	});
+
 	return {
 		entry: {
 			app: path.resolve(ctx.srcPath, 'app.js'),
 			login: path.resolve(ctx.srcPath, 'login/app-login.js'),
 			verify: path.resolve(ctx.srcPath, 'verify/app-verify.js'),
 			reset: path.resolve(ctx.srcPath, 'reset/app-reset.js'),
+			policy: path.resolve(ctx.srcPath, 'policy/app-policy.js'),
 		},
 		devServer: {
 			port: 6460,
@@ -70,6 +93,7 @@ module.exports = function(ctx) {
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'reset' ],
 			}),
+			...policiesHtmlPlugins,
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
 				chunkFilename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
