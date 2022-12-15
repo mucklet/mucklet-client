@@ -14,8 +14,8 @@ const logoutUrl = API_IDENTITY_PATH + 'logout?noredirect';
 const registerUrl = API_IDENTITY_PATH + 'register?noredirect';
 const agreeUrl = API_IDENTITY_PATH + 'agree?noredirect';
 
-const isCrossOrigin = API_CROSS_ORIGIN;
-const isOauth2 = API_OAUTH2;
+const crossOrigin = API_CROSS_ORIGIN;
+const oauth2 = API_OAUTH2;
 
 /**
  * Login draws the main login wireframe
@@ -66,12 +66,12 @@ class Login {
 		return fetch(authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: isCrossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					if (resp.status < 500) {
-						if (isOauth2) {
+						if (oauth2) {
 							redirect(oauth2Url, true);
 						} else {
 							this._showLogin();
@@ -116,7 +116,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: isCrossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -131,7 +131,7 @@ class Login {
 	 * Calls the logout endpoint and then reloads.
 	 */
 	logout() {
-		if (isOauth2) {
+		if (oauth2) {
 			this._afterFade(() => {
 				redirect(oauth2LogoutUrl, true);
 			});
@@ -139,7 +139,7 @@ class Login {
 			this._afterFade(() => fetch(logoutUrl, {
 				method: 'POST',
 				mode: 'cors',
-				credentials: isCrossOrigin ? 'include' : 'same-origin',
+				credentials: crossOrigin ? 'include' : 'same-origin',
 			}).then(reload));
 		}
 	}
@@ -164,7 +164,7 @@ class Login {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: isCrossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -197,12 +197,12 @@ class Login {
 		return fetch(agreeUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: isCrossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					if (resp.status < 500) {
-						if (isOauth2) {
+						if (oauth2) {
 							redirect(oauth2Url, true);
 						} else {
 							this._showLogin();
@@ -248,7 +248,7 @@ class Login {
 				})
 				.catch(err => {
 					if (err.code == 'auth.termsNotAgreed') {
-						if (isOauth2) {
+						if (oauth2) {
 							redirect(oauth2Url, true);
 						} else {
 							this._showAgreeTerms();

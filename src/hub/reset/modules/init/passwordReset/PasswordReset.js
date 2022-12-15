@@ -8,18 +8,18 @@ import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
 import PasswordResetComponent from './PasswordResetComponent';
 import './passwordReset.scss';
 
+const resetUrl = API_IDENTITY_PATH + 'resetpass?noredirect';
+const resetValidateUrl = API_IDENTITY_PATH + 'resetpass/validate?noredirect';;
+const redirectUrl = HUB_PATH;
+
+const crossOrigin = API_CROSS_ORIGIN;
+
 /**
  * PasswordReset draws the login screen for email verification
  */
 class PasswordReset {
 	constructor(app, params) {
 		this.app = app;
-		this.params = Object.assign({
-			resetUrl: '/identity/resetpass?noredirect',
-			resetValidateUrl: '/identity/resetpass/validate?noredirect',
-			redirectUrl: '/',
-			crossOrigin: true,
-		}, params);
 
 		this.app.require([
 			'screen',
@@ -59,11 +59,11 @@ class PasswordReset {
 		let formData = new FormData();
 		formData.append('code', code);
 
-		return fetch(this.params.resetValidateUrl, {
+		return fetch(resetValidateUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -82,11 +82,11 @@ class PasswordReset {
 		formData.append('pass', sha256(pass.trim()));
 		formData.append('hash', hmacsha256(pass.trim(), publicPepper));
 
-		return fetch(this.params.resetUrl, {
+		return fetch(resetUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -128,7 +128,7 @@ class PasswordReset {
 	_redirect() {
 		this.module.screen.setComponent({
 			render: () => {
-				redirect(this.params.redirectUrl);
+				redirect(redirectUrl);
 			},
 			unrender: () => {},
 		});
@@ -136,7 +136,7 @@ class PasswordReset {
 
 	_showError(err) {
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
-			redirectUrl: this.params.redirectUrl,
+			redirectUrl: redirectUrl,
 		}));
 	}
 }

@@ -15,11 +15,10 @@ module.exports = function(ctx) {
 	let policiesPath = path.resolve(ctx.commonPath, 'static/policies');
 	fs.readdirSync(policiesPath).forEach(file => {
 		let policy = JSON.parse(fs.readFileSync(path.resolve(policiesPath, file), 'utf8'));
-		console.log("POLICY: ", policy);
+
 		policiesHtmlPlugins.push(new HtmlWebpackPlugin({
 			filename: 'policy/' + policy.slug + '.html',
 			template: path.resolve(ctx.srcPath, 'policy/index.ejs'),
-			// title: ctx.siteConfig.APP_TITLE,
 			templateParameters: {
 				title: ctx.siteConfig.APP_TITLE,
 				policyTitle: policy.title,
