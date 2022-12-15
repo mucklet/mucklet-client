@@ -11,16 +11,4 @@
 	&--tool-btn {
 		position: relative;
 	}
-
-	&--name {
-		color: $color3;
-		font-size: $font-size;
-	}
-
-	&--name, &--email, &--username {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
 }

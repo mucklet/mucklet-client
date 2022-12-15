@@ -89,7 +89,7 @@ class PagePlayerSettings {
 	 * @param {string} tool.id Tool ID.
 	 * @param {number} tool.sortOrder Sort order.
 	 * @param {function} tool.componentFactory Tool component factory: function(user, player, state) -> Component
-	 * @param {string} [tool.type] Target type. May be 'preference' or 'section'. Defaults to 'preference';
+	 * @param {string} [tool.type] Target type. May be 'preference' 'topSection', or 'section'. Defaults to 'preference';
 	 * @param {number} [tool.className] Class to give to the list item container.
 	 * @param {Model} [tool.alertModel] Model with an "alert" property. If the alert property resolves to true, an marker will show on settings icon
 	 * @returns {this}
