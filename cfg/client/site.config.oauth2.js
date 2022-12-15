@@ -11,7 +11,7 @@ module.exports = {
 	API_AUTH_PATH: '/auth/',
 	API_IDENTITY_PATH: '/identity/',
 	API_CROSS_ORIGIN: false,
-	API_OAUTH2: false,
+	API_OAUTH2: true,
 
 	HUB_PATH: 'http://localhost:6460/',
 };

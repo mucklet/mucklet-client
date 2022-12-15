@@ -1,6 +1,6 @@
 const config = {
 	login: {
-		authenticateUrl: null,
+		wsLogin: true,
 		crossOrigin: true,
 	},
 	api: {
