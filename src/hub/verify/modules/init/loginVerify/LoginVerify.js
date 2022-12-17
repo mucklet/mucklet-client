@@ -9,19 +9,19 @@ import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
 import LoginVerifyComponent from './LoginVerifyComponent';
 import './loginVerify.scss';
 
+const authenticateUrl = API_IDENTITY_PATH + 'authenticate?noredirect';
+const loginUrl = API_IDENTITY_PATH + 'login?noredirect';
+const verifyUrl = API_IDENTITY_PATH + 'verify?noredirect';
+const redirectUrl = HUB_PATH;
+
+const crossOrigin = API_CROSS_ORIGIN;
+
 /**
  * LoginVerify draws the login screen for email verification
  */
 class LoginVerify {
 	constructor(app, params) {
 		this.app = app;
-		this.params = Object.assign({
-			authenticateUrl: '/identity/authenticate?noredirect',
-			loginUrl: '/identity/login?noredirect',
-			verifyUrl: '/identity/verify?noredirect',
-			redirectUrl: '/',
-			crossOrigin: true,
-		}, params);
 
 		this.app.require([
 			'screen',
@@ -59,10 +59,10 @@ class LoginVerify {
 	 * @returns {Promise} Promise to the authenticate.
 	 */
 	authenticate() {
-		return fetch(this.params.authenticateUrl, {
+		return fetch(authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				if (resp.status < 500) {
@@ -105,11 +105,11 @@ class LoginVerify {
 		formData.append('pass', sha256(pass.trim()));
 		formData.append('hash', hmacsha256(pass.trim(), publicPepper));
 
-		return fetch(this.params.loginUrl, {
+		return fetch(loginUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -127,7 +127,7 @@ class LoginVerify {
 		fetch(this.params.logoutUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => this._afterFade(reload));
 	}
 
@@ -173,11 +173,11 @@ class LoginVerify {
 		let formData = new FormData();
 		formData.append('code', this.code);
 
-		return fetch(this.params.verifyUrl, {
+		return fetch(verifyUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -199,7 +199,7 @@ class LoginVerify {
 	_redirect() {
 		this.module.screen.setComponent({
 			render: () => {
-				redirect(this.params.redirectUrl);
+				redirect(redirectUrl);
 			},
 			unrender: () => {},
 		});
@@ -207,7 +207,7 @@ class LoginVerify {
 
 	_showError(err) {
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
-			redirectUrl: this.params.redirectUrl,
+			redirectUrl: redirectUrl,
 		}));
 	}
 }

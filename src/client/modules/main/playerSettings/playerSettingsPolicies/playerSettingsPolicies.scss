@@ -1,0 +1,15 @@
+@import '~scss/variables';
+
+.playersettingspolicies {
+	margin-top: -5px;
+	margin-bottom: 10px;
+
+	> * {
+		display: inline;
+		font-family: $font-text;
+		font-size: 13px;
+		+ * {
+			margin-left: 16px;
+		}
+	}
+}

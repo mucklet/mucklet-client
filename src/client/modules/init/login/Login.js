@@ -6,6 +6,17 @@ import LoginComponent from './LoginComponent';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';
 
+const oauth2Url = API_AUTH_PATH + 'oauth2/login';
+const oauth2LogoutUrl = API_AUTH_PATH + 'oauth2/logout';
+const authenticateUrl = API_IDENTITY_PATH + 'authenticate?noredirect';
+const loginUrl = API_IDENTITY_PATH + 'login?noredirect';
+const logoutUrl = API_IDENTITY_PATH + 'logout?noredirect';
+const registerUrl = API_IDENTITY_PATH + 'register?noredirect';
+const agreeUrl = API_IDENTITY_PATH + 'agree?noredirect';
+
+const crossOrigin = API_CROSS_ORIGIN;
+const oauth2 = API_OAUTH2;
+
 /**
  * Login draws the main login wireframe
  */
@@ -15,15 +26,7 @@ class Login {
 		this.params = Object.assign({
 			player: '',
 			pass: '',
-			oauth2Url: null,
-			oauth2LogoutUrl: null,
-			authenticateUrl: '/identity/authenticate?noredirect',
-			loginUrl: '/identity/login?noredirect',
-			logoutUrl: '/identity/logout?noredirect',
-			registerUrl: '/identity/register?noredirect',
-			agreeUrl: '/identity/agree?noredirect',
-			googleUrl: '/identity/google',
-			crossOrigin: false,
+			wsLogin: false,
 		}, params);
 
 		// Bind callbacks
@@ -56,21 +59,20 @@ class Login {
 	 * @returns {Promise} Promise to the authenticate.
 	 */
 	authenticate() {
-		let url = this.params.authenticateUrl;
-		if (!url) {
+		if (this.params.wsLogin) {
 			return this._getCurrentUser(true);
 		}
 
-		return fetch(url, {
+		return fetch(authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					if (resp.status < 500) {
-						if (this.params.oauth2Url) {
-							redirect(this.params.oauth2Url, true);
+						if (oauth2) {
+							redirect(oauth2Url, true);
 						} else {
 							this._showLogin();
 						}
@@ -110,11 +112,11 @@ class Login {
 		formData.append('pass', sha256(pass.trim()));
 		formData.append('hash', hmacsha256(pass.trim(), publicPepper));
 
-		return fetch(this.params.loginUrl, {
+		return fetch(loginUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -129,15 +131,15 @@ class Login {
 	 * Calls the logout endpoint and then reloads.
 	 */
 	logout() {
-		if (this.params.oauth2LogoutUrl) {
+		if (oauth2) {
 			this._afterFade(() => {
-				redirect(this.params.oauth2LogoutUrl, true);
+				redirect(oauth2LogoutUrl, true);
 			});
 		} else {
-			this._afterFade(() => fetch(this.params.logoutUrl, {
+			this._afterFade(() => fetch(logoutUrl, {
 				method: 'POST',
 				mode: 'cors',
-				credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+				credentials: crossOrigin ? 'include' : 'same-origin',
 			}).then(reload));
 		}
 	}
@@ -158,11 +160,11 @@ class Login {
 			formData.append('email', email);
 		}
 
-		return fetch(this.params.registerUrl, {
+		return fetch(registerUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -192,16 +194,16 @@ class Login {
 	 * @returns {Promise.<Model>} Promise of the logged in user model.
 	 */
 	agreeToTerms() {
-		return fetch(this.params.agreeUrl, {
+		return fetch(agreeUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					if (resp.status < 500) {
-						if (this.params.oauth2Url) {
-							redirect(this.params.oauth2Url, true);
+						if (oauth2) {
+							redirect(oauth2Url, true);
 						} else {
 							this._showLogin();
 						}
@@ -246,8 +248,8 @@ class Login {
 				})
 				.catch(err => {
 					if (err.code == 'auth.termsNotAgreed') {
-						if (this.params.oauth2Url) {
-							redirect(this.params.oauth2Url, true);
+						if (oauth2) {
+							redirect(oauth2Url, true);
 						} else {
 							this._showAgreeTerms();
 						}
@@ -264,12 +266,12 @@ class Login {
 	}
 
 	_onConnect() {
-		return (this.params.authenticateUrl
-			? this.module.api.authenticate('auth', 'authenticate')
-			: this.module.api.authenticate('auth', 'login', {
+		return (this.params.wsLogin
+			? this.module.api.authenticate('auth', 'login', {
 				name: this.params.player,
 				hash: hmacsha256(this.params.pass.trim(), publicPepper),
 			})
+			: this.module.api.authenticate('auth', 'authenticate')
 		).catch(err => {
 			return this.model.set({ authError: err });
 		});
