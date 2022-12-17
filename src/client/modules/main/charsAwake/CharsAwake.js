@@ -108,6 +108,10 @@ class CharsAwake {
 		return p;
 	}
 
+	filterIsEmpty() {
+		return this.filter.isEmpty();
+	}
+
 	_getCharsAwake(user) {
 		Promise.all([
 			this.module.api.get('core.chars.awake'),

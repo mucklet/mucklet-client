@@ -7,10 +7,10 @@ import firstLetterUppercase from 'utils/firstLetterUppercase';
 import idleLevels from 'utils/idleLevels';
 
 class PageAwakeChar {
-	constructor(module, char) { // }, model) {
+	constructor(module, char, onChange) {
 		this.module = module;
 		this.char = char;
-		// this.model = model;
+		this.onChange = onChange;
 	}
 
 	render(el) {
@@ -70,7 +70,7 @@ class PageAwakeChar {
 				])),
 				(m, c) => this._setTooltip(this.char, c),
 			),
-			(m, c) => {
+			(m, c, change) => {
 				c.setModel(m.puppeteer);
 				c = c.getComponent();
 				c.getNode('name').setText(m.name);
@@ -85,6 +85,10 @@ class PageAwakeChar {
 				for (let i = 0; i < idleLevels.length; i++) {
 					let lvl = idleLevels[i];
 					c[i == m.idle ? 'addNodeClass' : 'removeNodeClass']('fullname', lvl.className);
+				}
+				// Callback if change occured that may affect count
+				if (change && (change.hasOwnProperty('match') || change.hasOwnProperty('watch'))) {
+					this.onChange();
 				}
 			},
 		);

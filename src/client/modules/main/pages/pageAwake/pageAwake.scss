@@ -57,6 +57,13 @@
 		right: 3px;
 		top: 3px;
 	}
+
+	&--count {
+		font-size: $font-size-tiny;
+		position: relative;
+		top: -4px;
+		margin-left: 4px;
+	}
 }
 
 .pageawake-char {
