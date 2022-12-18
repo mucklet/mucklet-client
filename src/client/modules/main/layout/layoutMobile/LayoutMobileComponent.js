@@ -1,6 +1,6 @@
-import { Elem, Transition } from 'modapp-base-component';
-import { ModelComponent } from 'modapp-resource-component';
-import { Model } from 'modapp-resource';
+import { Elem, Transition, Context } from 'modapp-base-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { Model, CollectionWrapper } from 'modapp-resource';
 import Collapser from 'components/Collapser';
 import Fader from 'components/Fader';
 import KebabMenu from 'components/KebabMenu';
@@ -35,6 +35,22 @@ class LayoutMobileComponent {
 										topMargin: 10,
 									})),
 								]),
+								n.component(new Context(
+									() => new CollectionWrapper(
+										this.module.self.getOverlays(),
+										{
+											filter: t => !t.type || t.type == 'topbar',
+											eventBus: this.module.self.app.eventBus,
+										},
+									),
+									overlays => overlays.dispose(),
+									overlays => new CollectionList(overlays,
+										t => t.componentFactory(),
+										{
+											subClassName: t => t.className || null,
+										},
+									),
+								)),
 							]),
 							n.component('main', new Fader(null, { className: 'layoutmobile--main' })),
 						]),

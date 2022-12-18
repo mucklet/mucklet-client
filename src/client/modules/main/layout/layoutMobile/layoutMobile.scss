@@ -13,6 +13,7 @@
 	}
 
 	&--topbar {
+		position: relative;
 		flex: 0 0 auto;
 		background-color: $color1-lighter;
 		z-index: 5;
