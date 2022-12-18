@@ -8,12 +8,11 @@ import './login.scss';
 
 const oauth2Url = API_AUTH_PATH + 'oauth2/login';
 const oauth2LogoutUrl = API_AUTH_PATH + 'oauth2/logout';
-const authenticateUrl = API_IDENTITY_PATH + 'authenticate?noredirect';
+const authenticateUrl = API_AUTH_PATH + 'authenticate';
 const loginUrl = API_IDENTITY_PATH + 'login?noredirect';
 const logoutUrl = API_IDENTITY_PATH + 'logout?noredirect';
 const registerUrl = API_IDENTITY_PATH + 'register?noredirect';
 const agreeUrl = API_IDENTITY_PATH + 'agree?noredirect';
-
 const crossOrigin = API_CROSS_ORIGIN;
 const oauth2 = API_OAUTH2;
 
