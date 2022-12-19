@@ -1,9 +1,15 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-.help, .help-category {
+.ev-helpCategory {
 	@include log-pad(huge);
+}
 
+.ev-helpTopic {
+	@include log-pad();
+}
+
+.help, .help-category {
 	&--desc {
 		p {
 			@include log-pad();
@@ -11,6 +17,4 @@
 	}
 }
 
-.help-relatedtopic, .help-topic {
-	@include log-pad();
-}
+

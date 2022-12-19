@@ -25,6 +25,7 @@
 		position: relative;
 		border-left: 4px solid transparent;
 		overflow-wrap: break-word;
+		padding: 2px 0 2px 6px;
 
 		pre {
 			white-space: pre-wrap;
@@ -32,10 +33,6 @@
 
 		&.charlog--nofocus {
 			border-left: none;
-		}
-
-		> * {
-			padding: 2px 0 2px 6px;
 		}
 	}
 
@@ -88,6 +85,9 @@
 	}
 	&--pad-large {
 		@include log-pad(large)
+	}
+	&--pad-huge {
+		@include log-pad(huge)
 	}
 
 	// Common styling

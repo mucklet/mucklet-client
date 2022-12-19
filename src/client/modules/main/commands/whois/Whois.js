@@ -64,7 +64,7 @@ class Whois {
 				let charName = (c.name + ' ' + c.surname).trim();
 				let genderSpecies = (firstLetterUppercase(c.gender) + ' ' + firstLetterUppercase(c.species)).trim();
 				this.module.charLog.logComponent(char, 'whois', new Elem(n => n.elem('div', { className: 'whois charlog--pad' }, [
-					n.elem('div', { className: 'badge btn large dark charlog--pad', events: {
+					n.elem('div', { className: 'badge btn large dark', events: {
 						click: (comp, ev) => {
 							this.module.dialogAboutChar.open(c);
 							ev.stopPropagation();
