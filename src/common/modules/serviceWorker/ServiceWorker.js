@@ -1,3 +1,5 @@
+import reload from 'utils/reload';
+
 const serviceWorkerSupported = 'serviceWorker' in navigator;
 
 /**
@@ -8,6 +10,18 @@ class ServiceWorker {
 		this.app = app;
 
 		this._register();
+	}
+
+	/**
+	 * Clears the CacheStorage of all keys, and then performs a reload of the
+	 * client using no-cache headers.
+	 */
+	clearCacheAndReload() {
+		Promise.resolve(caches?.keys().then(keys => {
+			for (let key of keys) {
+				caches.delete(key);
+			}
+		})).then(() => reload(true));
 	}
 
 	_register() {
@@ -22,10 +36,9 @@ class ServiceWorker {
 		}).catch(registrationError => {
 			console.log("[ServiceWorker] Registration failed: ", registrationError);
 		});
-
 	}
 
-	dispose() {
+	_unregister() {
 		this.registration?.unregister().then(success => {
 			if (success) {
 				console.log("[ServiceWorker] Unregistered");
@@ -34,6 +47,10 @@ class ServiceWorker {
 				console.log("[ServiceWorker] Unregistration failed");
 			}
 		});
+	}
+
+	dispose() {
+		this._unregister();
 	}
 }
 

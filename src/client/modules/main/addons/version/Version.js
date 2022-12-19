@@ -46,7 +46,11 @@ class Version {
 		// Bind callbacks
 		this._onInfoChange = this._onInfoChange.bind(this);
 
-		this.app.require([ 'info', 'confirm', 'toaster' ], this._init.bind(this));
+		this.app.require([
+			'info',
+			'confirm',
+			'toaster',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -127,7 +131,18 @@ class Version {
 				n.elem('div', { className: 'flex-row margin8' }, [
 					n.elem('button', {
 						className: 'btn primary',
-						events: { click: () => reload(true) },
+						events: { click: () => {
+							// If the serviceWorker module exists, we use that
+							// one to clear the cache and reload. Otherwise we
+							// try to reload and clear the cache with a simple
+							// fetch.
+							let serviceWorker = this.app.getModule('serviceWorker');
+							if (serviceWorker) {
+								serviceWorker.clearCacheAndReload();
+							} else {
+								reload(true);
+							}
+						} },
 					}, [
 						n.component(new Txt(l10n.l('version.update', "Update"))),
 
