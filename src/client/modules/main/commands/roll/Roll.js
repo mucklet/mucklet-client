@@ -129,6 +129,7 @@ class Roll {
 			id: 'roll',
 			category: 'communicate',
 			cmd: 'roll',
+			alias: [ 'qroll' ],
 			usage: l10n.l('roll.usage', usageText),
 			shortDesc: l10n.l('roll.shortDesc', shortDesc),
 			desc: l10n.l('roll.helpText', helpText),
