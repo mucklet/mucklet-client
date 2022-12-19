@@ -1,9 +1,5 @@
 @import '~scss/variables';
 
-html, body {
-	box-sizing: border-box;
-}
-
 .layoutmobile {
 	width: 100%;
 	height: 100%;
@@ -17,6 +13,7 @@ html, body {
 	}
 
 	&--topbar {
+		position: relative;
 		flex: 0 0 auto;
 		background-color: $color1-lighter;
 		z-index: 5;

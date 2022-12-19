@@ -3,9 +3,20 @@ import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-reso
 import { CollectionWrapper, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
+import Fader from 'components/Fader';
 import LabelToggleBox from 'components/LabelToggleBox';
 import FAIcon from 'components/FAIcon';
 import PageAwakeChar from './PageAwakeChar';
+
+function countMatches(col) {
+	let count = 0;
+	for (let c of col) {
+		if (c?.match) {
+			count++;
+		}
+	}
+	return count;
+}
 
 class PageAwakeComponent {
 	constructor(module, state) {
@@ -14,7 +25,7 @@ class PageAwakeComponent {
 		this.model = null;
 
 		// Bind callbacks
-		this._onCreate = this._onCreate.bind(this);
+		this._onCountChange = this._onCountChange.bind(this);
 	}
 
 	render(el) {
@@ -22,6 +33,7 @@ class PageAwakeComponent {
 		let charsAwakeModel = this.module.charsAwake.getModel();
 		let watchedAwake = this.module.charsAwake.getWatchedAwake();
 		let unwatchedAwake = this.module.charsAwake.getUnwatchedAwake();
+		this.countCtx = { fader: new Fader() };
 
 		this.elem = new Elem(n => n.elem('div', { className: 'pageawake' }, [
 			n.component(new Context(
@@ -84,6 +96,13 @@ class PageAwakeComponent {
 							n.component(new FAIcon('times')),
 						]),
 					]),
+					n.elem('div', { className: 'pageawake--count' }, [
+						n.component(new CollectionComponent(
+							this.module.charsAwake.getCollection(),
+							this.countCtx.fader,
+							(col, c) => this._updateCount(),
+						)),
+					]),
 					// Watched for characters
 					n.component(new CollectionComponent(
 						watchedAwake,
@@ -93,7 +112,7 @@ class PageAwakeComponent {
 							: new Txt(l10n.l('pageAwake.nooneAwake', "Everyone watched is asleep"), { className: 'common--nolistplaceholder' }),
 						),
 					)),
-					n.component(new CollectionList(watchedAwake, m => new PageAwakeChar(this.module, m), { // }, this.model), {
+					n.component(new CollectionList(watchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
 						className: 'pageawake--watched',
 					})),
 					// Non-watched for characters
@@ -106,7 +125,7 @@ class PageAwakeComponent {
 						// Show/hide unwatched
 						c.getNode('unwatched').setComponent(m.showAll
 							? new Elem(n => n.elem('div', [
-								n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m), { //, this.model), {
+								n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
 									className: 'pageawake--unwatched',
 								})),
 								n.component(new CollectionComponent(
@@ -132,6 +151,10 @@ class PageAwakeComponent {
 					c.getNode('filter').setValue(m.filter, false);
 					// Set clear button enabled/disabled
 					c.setNodeProperty('clear', 'disabled', m.filter ? null : 'disabled');
+					// Update count
+					if (change && (change.hasOwnProperty('showAll') || change.hasOwnProperty('filter'))) {
+						this._onCountChange();
+					}
 				},
 			)),
 		]));
@@ -144,11 +167,63 @@ class PageAwakeComponent {
 			this.model = null;
 			this.elem.unrender();
 			this.elem = null;
+			this._clearTimer(this.countCtx);
+			this.countCtx = null;
 		}
 	}
 
-	_onCreate() {
-		this.module.createChar.open();
+	_onCountChange() {
+		let ctx = this.countCtx;
+		if (ctx && !ctx.timer) {
+			// 100 millisecond delay on updating the count to prevent multiple
+			// updates caused by a filter change.
+			ctx.timer = setTimeout(() => this._updateCount(), 100);
+		}
+	}
+
+	_clearTimer(ctx) {
+		if (ctx.timer) {
+			clearTimeout(ctx.timer);
+			ctx.timer = null;
+		}
+	}
+
+	_updateCount() {
+		let ctx = this.countCtx;
+		if (!ctx) return;
+
+		this._clearTimer(ctx);
+		let charsAwake = this.module.charsAwake;
+		let total = charsAwake.getCollection().length;
+		let filterIsEmpty = charsAwake.filterIsEmpty();
+		let showAll = charsAwake.getModel().showAll;
+		let col = showAll ? charsAwake.getCollection() : charsAwake.getWatchedAwake();
+
+		let str = null;
+		let state = "";
+		if (filterIsEmpty) {
+			if (showAll) {
+				state = 't';
+				str = l10n.l('pageAwake.totalAwake', "{total} awake", { total });
+			} else {
+				state = 'woa';
+				str = l10n.l('pageAwake.watchingOfTotalAwake', "Watching {showCount} of {total} awake", { showCount: col.length, total });
+			}
+		} else {
+			state = showAll ? 'moa' : 'mwoa';
+			str = l10n.l('pageAwake.matchingOfTotalAwake', "Matching {matchCount} of {total} awake", { matchCount: countMatches(col), total });
+		}
+
+		// Determine if we should create a new Txt.
+		// This is to make a nice fading transition between changing state.
+		if (state != ctx.state) {
+			ctx.state = state;
+			ctx.txt = new Txt("", { duration: 0 });
+		}
+
+		let txtComp = ctx.txt;
+		txtComp.setText(str);
+		ctx.fader.setComponent(txtComp);
 	}
 }
 

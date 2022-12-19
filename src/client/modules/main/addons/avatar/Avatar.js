@@ -8,9 +8,9 @@ class Avatar {
 
 	constructor(app, params) {
 		this.app = app;
-		this.avatarPattern = params.avatarPattern || 'http://localhost:6452/core/char/avatar/{0}';
-		this.charImgPattern = params.charImgPattern || 'http://localhost:6452/core/char/img/{0}';
-		this.roomImgPattern = params.roomImgPattern || 'http://localhost:6452/core/room/img/{0}';
+		this.avatarPattern = API_FILE_PATH + 'core/char/avatar/{0}';
+		this.charImgPattern = API_FILE_PATH + 'core/char/img/{0}';
+		this.roomImgPattern = API_FILE_PATH + 'core/room/img/{0}';
 
 		this.app.require([], this._init.bind(this));
 	}

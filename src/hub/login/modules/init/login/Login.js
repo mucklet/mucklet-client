@@ -5,6 +5,17 @@ import LoginComponent from './LoginComponent';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';
 
+const authenticateUrl = API_IDENTITY_PATH + 'authenticate?noredirect';
+const loginUrl = API_IDENTITY_PATH + 'login?noredirect';
+const logoutUrl = API_IDENTITY_PATH + 'logout?noredirect';
+const registerUrl = API_IDENTITY_PATH + 'register?noredirect';
+const agreeUrl = API_IDENTITY_PATH + 'agree?noredirect';
+const googleUrl = API_IDENTITY_PATH + 'google';
+const redirectUrl = API_IDENTITY_PATH + 'oauth2/authenticate';
+const recoverUrl = API_IDENTITY_PATH + 'recover?noredirect';
+
+const crossOrigin = API_CROSS_ORIGIN;
+
 /**
  * Login draws the main login wireframe
  */
@@ -15,15 +26,6 @@ class Login {
 			player: '',
 			pass: '',
 			realm: 'wolfery',
-			authenticateUrl: '/identity/authenticate?noredirect',
-			loginUrl: '/identity/login?noredirect',
-			logoutUrl: '/identity/logout?noredirect',
-			registerUrl: '/identity/register?noredirect',
-			agreeUrl: '/identity/agree?noredirect',
-			googleUrl: '/identity/google',
-			redirectUrl: '/identity/oauth2/authenticate',
-			recoverUrl: '/identity/recover?noredirect',
-			crossOrigin: true,
 		}, params);
 
 		// Bind callbacks
@@ -51,10 +53,10 @@ class Login {
 	 * @returns {Promise} Promise to the authenticate.
 	 */
 	authenticate() {
-		return fetch(this.params.authenticateUrl, {
+		return fetch(authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -70,7 +72,7 @@ class Login {
 				if (user && !user.termsAgreed) {
 					this._showAgreeTerms();
 				} else {
-					redirect(this.params.redirectUrl, true);
+					redirect(redirectUrl, true);
 				}
 			});
 		});
@@ -99,11 +101,11 @@ class Login {
 		formData.append('pass', sha256(pass.trim()));
 		formData.append('hash', hmacsha256(pass.trim(), publicPepper));
 
-		return fetch(this.params.loginUrl, {
+		return fetch(loginUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -118,10 +120,10 @@ class Login {
 	 * Calls the logout endpoint and then reloads.
 	 */
 	logout() {
-		fetch(this.params.logoutUrl, {
+		fetch(logoutUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => this._afterFade(reload));
 	}
 
@@ -141,11 +143,11 @@ class Login {
 			formData.append('email', email);
 		}
 
-		return fetch(this.params.registerUrl, {
+		return fetch(registerUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -175,10 +177,10 @@ class Login {
 	 * @returns {Promise.<Model>} Promise of the logged in user model.
 	 */
 	agreeToTerms() {
-		return fetch(this.params.agreeUrl, {
+		return fetch(agreeUrl, {
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
@@ -208,11 +210,11 @@ class Login {
 			formData.append('charName', charName.trim());
 		}
 
-		return fetch(this.params.recoverUrl, {
+		return fetch(recoverUrl, {
 			body: formData,
 			method: 'POST',
 			mode: 'cors',
-			credentials: this.params.crossOrigin ? 'include' : 'same-origin',
+			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json()
@@ -226,7 +228,7 @@ class Login {
 
 	googleOAuth2() {
 		this._afterFade(() => {
-			redirect(this.params.googleUrl, true);
+			redirect(googleUrl, true);
 		});
 	}
 
@@ -318,7 +320,7 @@ class Login {
 
 	_redirect() {
 		this._afterFade(() => {
-			redirect(this.params.redirectUrl, true);
+			redirect(redirectUrl, true);
 		});
 	}
 

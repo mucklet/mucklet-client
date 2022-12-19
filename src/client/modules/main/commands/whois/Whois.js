@@ -22,7 +22,15 @@ class Whois {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'charLog', 'player', 'avatar' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'help',
+			'charLog',
+			'player',
+			'avatar',
+			'dialogAboutChar',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -56,7 +64,12 @@ class Whois {
 				let charName = (c.name + ' ' + c.surname).trim();
 				let genderSpecies = (firstLetterUppercase(c.gender) + ' ' + firstLetterUppercase(c.species)).trim();
 				this.module.charLog.logComponent(char, 'whois', new Elem(n => n.elem('div', { className: 'whois charlog--pad' }, [
-					n.elem('div', { className: 'badge large charlog--badge charlog--pad' }, [
+					n.elem('div', { className: 'badge btn large dark', events: {
+						click: (comp, ev) => {
+							this.module.dialogAboutChar.open(c);
+							ev.stopPropagation();
+						},
+					}}, [
 						n.elem('div', { className: 'badge--select' }, [
 							n.component(this.module.avatar.newAvatar(c, { className: 'badge--icon' })),
 							n.elem('div', { className: 'badge--info large' }, [

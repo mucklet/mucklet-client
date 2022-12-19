@@ -419,7 +419,7 @@ class Help {
 		let categories = [];
 		let topics = [];
 		for (let c of this.categories) {
-			if (c.cmd == cmd) {
+			if (c.cmd === cmd || (c.alias && c.alias.indexOf(cmd) >= 0)) {
 				this.module.charLog.logComponent(char, 'helpCategory', new HelpCategory(this.module, this.categories, c));
 				return;
 			}
@@ -457,21 +457,45 @@ class Help {
 		prefix = (prefix || '').trim();
 		prefix += prefix ? ' ' : '';
 
-		return new TokenList(() => {
+		return new TokenList((ctx, key) => {
 			let map = {};
 			// Add categories
 			for (let cat of this.categories) {
 				// Does the category start with the prefix
+				let matchMain = false;
 				if (cat.cmd.substring(0, prefix.length) === prefix) {
-					map[cat.cmd.substring(prefix.length).split(" ")[0]] = true;
+					let token = cat.cmd.substring(prefix.length).split(" ")[0];
+					map[token] = true;
+					matchMain = !key || token.substring(0, key.length) == key;
+				}
+				// Add alias in case the real token doesn't match main key
+				if (cat.alias && !matchMain) {
+					for (let a of cat.alias) {
+						// Does any of the category alias start with the prefix
+						if (a.substring(0, prefix.length) === prefix) {
+							map[a.substring(prefix.length).split(" ")[0]] = true;
+						}
+					}
 				}
 			}
 			let props = this.topics.props;
 			for (let k in props) {
+				let matchMain = false;
 				let topic = props[k];
 				// Does the topic cmd start with the prefix
 				if (topic.cmd && topic.cmd.substring(0, prefix.length) === prefix) {
-					map[topic.cmd.substring(prefix.length).split(" ")[0]] = true;
+					let token = topic.cmd.substring(prefix.length).split(" ")[0];
+					map[token] = true;
+					matchMain = !key || token.substring(0, key.length) == key;
+				}
+				// Add alias in case the real token doesn't match main key
+				if (topic.alias && !matchMain) {
+					for (let a of topic.alias) {
+						// Does any of the topic alias start with the prefix
+						if (a.substring(0, prefix.length) === prefix) {
+							map[a.substring(prefix.length).split(" ")[0]] = true;
+						}
+					}
 				}
 			}
 

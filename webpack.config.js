@@ -112,15 +112,6 @@ for (let app of apps) {
 					},
 				},
 				{
-					test: /\.worker\.js$/,
-					use: {
-						loader: 'worker-loader',
-						options: {
-							chunkFilename: '[id].[contenthash].worker.js',
-						},
-					},
-				},
-				{
 					test: /\.(sa|sc|c)ss$/,
 					use: [
 						MiniCssExtractPlugin.loader,

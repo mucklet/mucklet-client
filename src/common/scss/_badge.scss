@@ -12,6 +12,10 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		background: $color-highlight;
 	}
 
+	&.dark {
+		background: $color1-dark;
+	}
+
 	&.inactive {
 		opacity: 0.5;
 		&.open {
@@ -155,17 +159,18 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		opacity: 1;
 	}
 
-
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
 			background: darken($color1, 3%);
 			&.highlight {
 				background: darken($color-highlight, 3%);
 			}
+			&.dark {
+				background: darken($color1-dark, 2%);
+			}
 		}
 	}
 }
-
 
 .badge.large {
 	padding: 6px;

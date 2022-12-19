@@ -1,5 +1,5 @@
 import { Elem } from 'modapp-base-component';
-import './popuppill.scss';
+import './popupPill.scss';
 
 const defaultCtx = {};
 

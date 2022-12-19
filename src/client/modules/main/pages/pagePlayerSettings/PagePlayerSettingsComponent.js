@@ -1,5 +1,5 @@
 import { Context, Elem, Txt } from 'modapp-base-component';
-import { ModelComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
@@ -17,41 +17,7 @@ class PagePlayerSettingsComponent {
 	}
 
 	render(el) {
-		let playernameComponent = this.identity && new PanelSection(
-			l10n.l('pagePlayerSettings.name', "Player name"),
-			new ModelTxt(this.identity, m => m.name, { className: 'pageplayersettings--name' }),
-			{
-				className: 'common--sectionpadding',
-				noToggle: true,
-			},
-		);
-		let usernameComponent = this.identity && new PanelSection(
-			l10n.l('pagePlayerSettings.username', "Login name"),
-			new ModelTxt(this.identity, m => m.username, { className: 'pageplayersettings--username' }),
-			{
-				className: 'common--sectionpadding',
-				noToggle: true,
-			},
-		);
 		this.elem = new Elem(n => n.elem('div', { className: 'pageplayersettings' }, [
-			n.component(new ModelComponent(
-				this.identity,
-				new Collapser(),
-				(m, c, change) => c.setComponent(m && m.name ? playernameComponent : null),
-			)),
-			n.component(new ModelComponent(
-				this.identity,
-				new Collapser(),
-				(m, c, change) => {
-					if (change && !change.hasOwnProperty('username') && !change.hasOwnProperty('name')) {
-						return;
-					}
-					c.setComponent(m && m.username && m.name.toLowerCase() != m.username
-						? usernameComponent
-						: null,
-					);
-				},
-			)),
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
 					filter: t => t.type == 'topSection',

@@ -6,6 +6,8 @@ import PasswordInput from 'components/PasswordInput';
 import ScreenDialog from 'components/ScreenDialog';
 import LoginRegister from './LoginRegister';
 
+const googleUrl = API_IDENTITY_PATH + 'google';
+
 /**
  * Login draws the main login wireframe
  */
@@ -59,7 +61,7 @@ class LoginComponent {
 			n.elem('div', { className: 'login--divider' }, [
 				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
 			]),
-			n.elem('a', { attributes: { href: this.module.self.params.googleUrl }, className: 'btn large google icon-left login--btn' }, [
+			n.elem('a', { attributes: { href: googleUrl }, className: 'btn large google icon-left login--btn' }, [
 				n.component(new FAIcon('google')),
 				n.component(new Txt(l10n.l('login.signin', "Signin with Google"))),
 			]),

@@ -2,9 +2,9 @@ let chars = {};
 
 let cfg = {
 	serviceUri: '/api/core',
-	duration: 1000 * 60 * 3,
-	threshold: 1000 * 60 * 5,
-	retry: 1000 * 20,
+	duration: 1000 * 60 * 15,
+	threshold: 1000 * 60 * 60,
+	retry: 1000 * 60 * 1,
 };
 
 /**

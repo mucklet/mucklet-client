@@ -1,8 +1,13 @@
 @import '~scss/variables';
 
+body {
+	overflow: hidden;
+	position: relative;
+}
+
 .screen {
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	position: relative;
 	overflow-x: hidden;
 }

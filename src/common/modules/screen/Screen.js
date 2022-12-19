@@ -7,6 +7,7 @@ import './screen.scss';
 class Screen {
 	constructor(app, params) {
 		this.app = app;
+
 		this.fader = new Fader(null, { className: 'screen' });
 		this.app.setComponent(this.fader);
 	}

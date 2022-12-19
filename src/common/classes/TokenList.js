@@ -51,7 +51,7 @@ class TokenList {
 		let { from, to } = expandSelection(str, this.expandRegex.left, this.expandRegex.right, 0, pos);
 
 		var key = (str && str.slice(from, to).toLowerCase().replace(/\s+/g, ' ')) || '';
-		let tokens = this.getTokens(ctx);
+		let tokens = this.getTokens(ctx, key);
 
 		let list = [];
 		let found = {};

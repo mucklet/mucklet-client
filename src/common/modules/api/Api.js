@@ -10,15 +10,13 @@ class Api extends ResClient {
 
 	constructor(app, params) {
 		let opt = Object.assign({
-			hostUrl: '/ws',
-			webResourcePath: '/api/',
 			debug: false,
 		}, params);
 		opt.debug = !!(opt.debug && opt.debug != 'false' && opt.debug != '0' && opt.debug != 'no');
-		super(opt.hostUrl, { namespace, eventBus: app.eventBus, debug: opt.debug });
+		super(API_HOST_PATH, { namespace, eventBus: app.eventBus, debug: opt.debug });
 
 		this.app = app;
-		this.webResourcePath = this._resolveWebResourcePath(opt.webResourcePath);
+		this.webResourcePath = this._resolveWebResourcePath(API_WEBRESOURCE_PATH);
 	}
 
 	getWebResourceUri(rid) {

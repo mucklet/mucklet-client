@@ -1,8 +1,6 @@
-import CharPingWorker from './CharPing.worker.js';
-
-const defaultDuration = 1000 * 60 * 3; // 3 minutes between successful pings
-const defaultThreshold = 1000 * 60 * 5; // 5 minutes until character is put to sleep
-const defaultRetry = 1000 * 15; // 15 seconds between retries
+const defaultDuration = 1000 * 60 * 15; // 15 minutes between successful pings
+const defaultThreshold = 1000 * 60 * 60; // 60 minutes until character is put to sleep
+const defaultRetry = 1000 * 60 * 1; // 1 minute between retries
 
 /**
  * CharPing periodically sends a ping for all controlled characters
@@ -35,7 +33,7 @@ class CharPing {
 		this.playerModel.on('change', this._onModelChange);
 		this._onModelChange();
 		if (!this.useWs) {
-			this.worker = new CharPingWorker();
+			this.worker = new Worker(new URL('./CharPing.worker.js', import.meta.url));
 			this.worker.onerror = this._onWorkerError;
 			this.worker.onmessage = this._onWorkerMessage;
 			this.worker.postMessage({

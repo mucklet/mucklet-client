@@ -1,11 +1,13 @@
 import Api from 'modules/api/Api';
 import Screen from 'modules/screen/Screen';
 import Policies from 'modules/policies/Policies';
+import ServiceWorker from 'modules/serviceWorker/ServiceWorker';
 
 const modules = {
 	api: Api,
 	screen: Screen,
 	policies: Policies,
+	serviceWorker: ServiceWorker,
 };
 
 const req = require.context("./init/", true, /^\..*\/([^/]*)\/\1.js$/i);
