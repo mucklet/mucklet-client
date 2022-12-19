@@ -26,7 +26,6 @@ const helpText =
 		<tr><td class="charlog--strong">No&nbsp;bypass&nbsp;account</td><td>Creating an account to bypass a ban or a suspend lockout will get the new account banned.</td></tr>
 		<tr><td class="charlog--strong">No&nbsp;lawless&nbsp;account</td><td>Creating an account for the purpose of breaking any of these rules will result in a ban.</td></tr>
 		<tr><td class="charlog--strong">No&nbsp;underaged&nbsp;humans</td><td>Sexual roleplay with underaged human characters may get you suspended.</td></tr>
-		<tr><td class="charlog--strong">No&nbsp;pornographic&nbsp;images</td><td>Uploading sexually suggestive or explicit photos of real people may get you suspended.</td></tr>
 	</tbody></table>
 </section>
 <section class="charlog--pad">
