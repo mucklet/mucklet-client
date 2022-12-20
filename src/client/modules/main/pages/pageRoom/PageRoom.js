@@ -18,6 +18,7 @@ class PageRoom {
 			'dialogEditNote',
 			'charPages',
 			'toaster',
+			'api',
 		], this._init.bind(this));
 	}
 
@@ -30,7 +31,7 @@ class PageRoom {
 			eventBus: this.app.eventBus,
 		});
 		this.module.roomPages.setDefaultPageFactory((ctrl, room, state, layout) => ({
-			component: new PageRoomComponent(this.module, ctrl, room, state, layout),
+			component: new PageRoomComponent(this.app, this.module, ctrl, room, state, layout),
 		}));
 	}
 
