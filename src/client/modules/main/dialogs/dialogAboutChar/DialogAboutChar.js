@@ -6,7 +6,6 @@ import FormatTxt from 'components/FormatTxt';
 import Collapser from 'components/Collapser';
 import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
-import SimpleBar from 'components/SimpleBar';
 import FAIcon from 'components/FAIcon';
 import Dialog from 'classes/Dialog';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
@@ -44,11 +43,8 @@ class DialogAboutChar {
 				l10n.l('dialogAboutChar.about', "About"),
 				new ModelComponent(
 					charInfo,
-					new SimpleBar(
-						new FormatTxt("", { className: 'common--desc-size' }),
-						{ className: 'dialogaboutchar--about' },
-					),
-					(m, c) => c.getComponent().setFormatText(m.about),
+					new FormatTxt("", { className: 'common--desc-size' }),
+					(m, c) => c.setFormatText(m.about),
 				),
 				{
 					className: 'common--sectionpadding',
