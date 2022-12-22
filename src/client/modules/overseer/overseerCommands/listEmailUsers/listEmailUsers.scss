@@ -1,0 +1,13 @@
+@import '~scss/variables';
+
+.listemailusers {
+	&--deleted > code {
+		color: $color4;
+	}
+	&--banned > code {
+		color: $log-error;
+	}
+	&--notverified {
+		color: $log-error;
+	}
+}
