@@ -17,8 +17,14 @@ class CharsAwake {
 		this._onWatchesChange = this._onWatchesChange.bind(this);
 		this._onTagChange = this._onTagChange.bind(this);
 		this._onCharTagsChange = this._onCharTagsChange.bind(this);
+		this._onCharEvent = this._onCharEvent.bind(this);
 
-		this.app.require([ 'login', 'api', 'player', 'notify' ], this._init.bind(this));
+		this.app.require([
+			'login',
+			'api',
+			'player',
+			'notify',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -195,6 +201,20 @@ class CharsAwake {
 		}
 	}
 
+	// Called on events on a character. Checks if the deleted flag has been
+	// changed, and if so updates the watches model.
+	_onCharEvent(change, char, __, ev) {
+		let watches = this.model.watches;
+		if (watches) {
+			// Ensure it is a change event
+			let parts = ev.split('.');
+			if (parts.length != 2 || parts[1] != 'change' || !change.hasOwnProperty('deleted')) {
+				return;
+			}
+			watches.refresh(parts[0]);
+		}
+	}
+
 	_loadSettings(user) {
 		if (localStorage) {
 			let data = localStorage.getItem(charsAwakeStoragePrefix + user.id);
@@ -247,6 +267,7 @@ class CharsAwake {
 		}
 		this.module.api[cb + 'Event']('tag.tag', this._onTagChange);
 		this.module.api[cb + 'Event']('tag.char', this._onCharTagsChange);
+		this.module.api[cb + 'Event']('core.char', this._onCharEvent);
 	}
 
 	dispose() {
