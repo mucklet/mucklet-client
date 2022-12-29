@@ -44,6 +44,21 @@
 	}
 }
 
+.pagereports-report, .pagereports-reporter {
+	&--copyid i {
+		transition: opacity 0.3s;
+		opacity: 0;
+	}
+
+	&--badge .badge--select:hover &--copyid i {
+		opacity: 0.6;
+	}
+
+	&--badge .badge--select:hover &--copyid:hover i {
+		opacity: 1;
+	}
+}
+
 .pagereports-closed {
 	&--head {
 		padding: 0 0 8px;

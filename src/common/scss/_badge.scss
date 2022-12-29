@@ -62,6 +62,13 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		background: $color1-lighter;
 	}
 
+	&--info-nopad {
+		flex: 1 1 0px;
+		text-align: left;
+		overflow: hidden;
+		line-height: 16px;
+	}
+
 	&--info {
 		flex: 1 1 0px;
 		text-align: left;
