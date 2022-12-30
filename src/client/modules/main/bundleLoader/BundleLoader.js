@@ -47,6 +47,9 @@ class BundleLoader {
 				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0) {
 					this._loadPioneerModules();
 				}
+				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('supporter') >= 0) {
+					this._loadSupporterModules();
+				}
 				if (idRoles.indexOf('overseer') >= 0) {
 					this._loadOverseerModules();
 					this._loadAdminModules();
@@ -110,6 +113,17 @@ class BundleLoader {
 		import(/* webpackChunkName: "pioneer" */ 'modules/pioneer-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
 				console.log("Pioneer modules: ", result);
+			});
+		});
+	}
+
+	_loadSupporterModules() {
+		if (this.loaded.supporter) return;
+		this.loaded.supporter = true;
+		// Load supporter modules
+		import(/* webpackChunkName: "supporter" */ 'modules/supporter-modules').then(({ default: modules }) => {
+			app.loadBundle(modules).then(result => {
+				console.log("Supporter modules: ", result);
 			});
 		});
 	}
