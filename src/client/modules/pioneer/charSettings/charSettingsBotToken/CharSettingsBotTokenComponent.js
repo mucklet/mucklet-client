@@ -1,6 +1,6 @@
 import { Context, Elem, Txt } from 'modapp-base-component';
 import { ModelComponent, ModelTxt } from 'modapp-resource-component';
-import { ModelWrapper } from 'modapp-resource';
+import { Model, ModelWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
@@ -8,6 +8,7 @@ import Fader from 'components/Fader';
 import Collapser from 'components/Collapser';
 import objectDefault from 'utils/objectDefault';
 import formatDateTime from 'utils/formatDateTime';
+import CharSettingsBotTokenContent from './CharSettingsBotTokenContent';
 
 const txtNotIssued = l10n.l('charSettingsBotToken.notIssue', "No token issued");;
 
@@ -17,9 +18,9 @@ class CharSettingsBotTokenComponent {
 		this.char = char;
 		this.charSettings = charSettings;
 		this.state = objectDefault(state, {
-			token: '',
+			open: false,
 		});
-		console.log(this.charSettings);
+		this.model = new Model({ data: this.state, eventBus: this.module.self.app.eventBus });
 	}
 
 	render(el) {
@@ -46,7 +47,14 @@ class CharSettingsBotTokenComponent {
 					ctx.model,
 					new ModelComponent(
 						null,
-						new Elem(n => n.elem('div', { className: 'charsettingsbottoken badge' }, [
+						new Elem(n => n.elem('div', { className: 'charsettingsbottoken badge', events: {
+							click: (e, ev) => {
+								if (ctx.model && ctx.model.props[this.char.id]) {
+									this._toggleContent();
+									ev.stopPropagation();
+								}
+							},
+						}}, [
 							n.elem('div', { className: 'badge--select' }, [
 								n.elem('button', {
 									className: 'badge--faicon iconbtn smallicon solid',
@@ -57,7 +65,7 @@ class CharSettingsBotTokenComponent {
 										},
 									},
 								}, [
-									n.component(new FAIcon('lock')),
+									n.component(new FAIcon('key')),
 								]),
 								n.elem('div', { className: 'badge--info' }, [
 									n.elem('div', { className: 'badge--subtitle' }, [
@@ -66,25 +74,44 @@ class CharSettingsBotTokenComponent {
 									n.component('issued', new Fader("", { className: 'badge--text' })),
 								]),
 							]),
-							n.component('content', new Collapser()),
+							n.component(new ModelComponent(
+								this.model,
+								new Collapser(),
+								(m, c) => {
+									let bot = ctx.model && ctx.model.props[this.char.id];
+									c.setComponent(components.content = m.open && bot
+										? components.content || new CharSettingsBotTokenContent(this.module, this.char, bot)
+										: null,
+									);
+								},
+							)),
 						])),
 						(m, c) => {
 							let n = c.getNode('issued');
 							let issued = m && m.issued;
 							n.setComponent(issued
-								? components.issued = components.issued && components.issued.getModel() == m
+								? components.issued = (components.issued && components.issued.getModel() == m
 									? components.issued
 									: new ModelTxt(m, m => formatDateTime(new Date(m.issued), { showYear: true }), { className: 'charsettingsbottoken--issued' })
+								)
 								: components.notIssued = components.notIssued || new Txt(txtNotIssued, { className: 'charsettingsbottoken--notissued' }),
 							);
 						},
 					),
-					(m, c) => c.setModel((m && m.props[this.char.id]) || null),
+					(m, c) => {
+						let bot = (m && m.props[this.char.id]) || null;
+						// Ensure we close the content
+						if (!bot) {
+							this._toggleContent(false);
+						}
+						c.getComponent()[bot ? 'addClass' : 'removeClass']('btn');
+						c.setModel(bot);
+					},
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('charSettingsBotToken.botTokenInfo', "The token is used as credentials when accessing the API to control the character using a bot script.\nCreate or renew the token by clicking the lock-icon."),
+					popupTip: l10n.l('charSettingsBotToken.botTokenInfo', "The token is used as credentials when accessing the API to control the character using a bot script.\nCreate or renew the token by clicking the key-icon."),
 					popupTipClassName: 'popuptip--width-s',
 				},
 			),
@@ -96,7 +123,15 @@ class CharSettingsBotTokenComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			Object.assign(this.state, this.model.props);
 		}
+	}
+
+	_toggleContent(open) {
+		this.model.set({ open: typeof open == 'undefined'
+			? !this.model.open
+			: !!open,
+		});
 	}
 
 	_renewToken(bots) {
@@ -129,17 +164,21 @@ class CharSettingsBotTokenComponent {
 	_issueToken(bots) {
 		let bot = bots.props[this.char.id];
 		return (bot ? bot.call('renewToken') : bots.getModel().call('create', { charId: this.char.id }))
-			.then(() => this.module.toaster.open({
-				title: l10n.l('charSettingsBotToken.tokenIssued', "Token issued"),
-				content: close => new Elem(n => n.elem('div', [
-					n.component(new Txt(l10n.l('charSettingsBotToken.botTokenIssued', "Bot token issued"), { tagName: 'p' })),
-					n.elem('div', { className: 'common--sectionpadding' }, [
-						n.component(new Txt((this.char.name + ' ' + this.char.surname).trim(), { tagName: 'div', className: 'dialog--strong' })),
-					]),
-				])),
-				closeOn: 'click',
-				onClose,
-			}))
+			.then(() => {
+				this.module.toaster.open({
+					title: l10n.l('charSettingsBotToken.tokenIssued', "Token issued"),
+					content: close => new Elem(n => n.elem('div', [
+						n.component(new Txt(l10n.l('charSettingsBotToken.botTokenIssued', "Bot token issued"), { tagName: 'p' })),
+						n.elem('div', { className: 'common--sectionpadding' }, [
+							n.component(new Txt((this.char.name + ' ' + this.char.surname).trim(), { tagName: 'div', className: 'dialog--strong' })),
+						]),
+					])),
+					closeOn: 'click',
+					type: 'success',
+					autoclose: true,
+				});
+				this._toggleContent(true);
+			})
 			.catch(err => this.module.toaster.openError(err, { title: l10n.l('charSettingsBotToken.failedToIssueToken', "Failed to issue token") }));
 	}
 }
