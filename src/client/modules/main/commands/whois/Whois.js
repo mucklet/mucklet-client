@@ -3,7 +3,7 @@ import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
 import CharTagsList, { hasTags } from 'components/CharTagsList';
-import idleLevels from 'utils/idleLevels';
+import { getCharIdleLevel } from 'utils/idleLevels';
 import formatDateTime from 'utils/formatDateTime';
 
 const usageText = 'whois <span class="param">Character</span>';
@@ -63,6 +63,7 @@ class Whois {
 			.then(c => {
 				let charName = (c.name + ' ' + c.surname).trim();
 				let genderSpecies = (firstLetterUppercase(c.gender) + ' ' + firstLetterUppercase(c.species)).trim();
+				let lvl = getCharIdleLevel(c);
 				this.module.charLog.logComponent(char, 'whois', new Elem(n => n.elem('div', { className: 'whois charlog--pad' }, [
 					n.elem('div', { className: 'badge btn large dark', events: {
 						click: (comp, ev) => {
@@ -80,14 +81,14 @@ class Whois {
 									n.component(new Txt(genderSpecies || textNotSet)),
 								]),
 								n.elem('div', { className: 'badge--text badge--nowrap' + (c.lastAwake
-									? c.awake
-										? (' ' + idleLevels[c.idle].className)
+									? c.awake && lvl
+										? (' ' + lvl.className)
 										: ''
 									: ' common--placeholder'
 								) }, [
 									n.component(new Txt(
-										c.awake
-											? idleLevels[c.idle].text
+										c.awake && lvl
+											? lvl.text
 											: c.lastAwake
 												? l10n.l('whois.lastSeen', "Last seen {time}", { time: formatDateTime(new Date(c.lastAwake)) })
 												: l10n.l('whois.neverSeen', "Never seen"),
