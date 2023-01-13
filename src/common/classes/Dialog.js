@@ -1,5 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
+import SimpleBar from 'components/SimpleBar';
 import './dialog.scss';
 
 const BASE_ZINDEX = 500;
@@ -51,9 +52,7 @@ class Dialog {
 					]),
 					n.component(new Txt(typeof this.opt.title == 'function' ? this.opt.title(this) : this.opt.title, { tagName: 'h2' })),
 				]),
-				n.elem('div', { className: 'dialog--content' }, [
-					n.component(this.content),
-				]),
+				n.component(new SimpleBar(this.content, { className: 'dialog--content', autoHide: true })),
 			]),
 		]));
 

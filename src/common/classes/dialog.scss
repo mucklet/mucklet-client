@@ -48,8 +48,9 @@
 
 .dialog--content {
 	flex: 0 1 auto;
-	padding: 16px;
-	overflow-y: auto;
+	padding: 16px 14px 16px 16px;
+	margin-right: 2px;
+	overflow-y: clip;
 }
 
 .dialog--close {

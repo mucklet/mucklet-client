@@ -52,6 +52,7 @@ class DialogCreateRoomProfile {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('dialogCreateRoomProfile.nameInfo', "A short but descriptive name for the profile."),
+						popupTipPosition: 'left-bottom',
 					},
 				)),
 				n.component(new PanelSection(
