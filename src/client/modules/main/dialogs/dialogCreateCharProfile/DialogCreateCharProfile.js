@@ -41,6 +41,7 @@ class DialogCreateCharProfile {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('dialogCreateCharProfile.nameInfo', "A short but descriptive name for the profile."),
+						popupTipPosition: 'left-bottom',
 					},
 				)),
 				n.component(new PanelSection(

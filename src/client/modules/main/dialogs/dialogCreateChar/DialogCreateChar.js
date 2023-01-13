@@ -33,7 +33,10 @@ class DialogCreateChar {
 			content: new Elem(n => n.elem('div', [
 				n.elem('div', { className: 'flex-row dialogcreatechar--disclaimer' }, [
 					n.component(new Txt(l10n.l('dialogCreateChar.noCanonNames', "No canon characters or established figures."), { className: 'flex-1 dialogcreatechar--disclaimer-info' })),
-					n.component(new PopupTip(l10n.l('dialogCreateChar.noCanonNamesInfo', "Roleplaying real people, established figures, or characters created or owned by someone else is not allowed."), { className: 'popuptip--width-m flex-auto' })),
+					n.component(new PopupTip(l10n.l('dialogCreateChar.noCanonNamesInfo', "Roleplaying real people, established figures, or characters created or owned by someone else is not allowed."), {
+						className: 'popuptip--width-m flex-auto',
+						position: 'left-bottom',
+					})),
 				]),
 				n.component('name', new PanelSection(
 					l10n.l('dialogCreateChar.name', "Name"),
@@ -46,6 +49,7 @@ class DialogCreateChar {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('dialogCreateChar.nameInfo', "Character name may contain numbers, letters, dash (-), and apostrophe (').\nIt can be changed later."),
+						popupTipPosition: 'left',
 					},
 				)),
 				n.component(new PanelSection(
