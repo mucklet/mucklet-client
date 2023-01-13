@@ -1,10 +1,8 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
-// import Collapser from 'components/Collapser';
-// import PageAwakeCharContent from './PageAwakeCharContent';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
-import idleLevels from 'utils/idleLevels';
+import idleLevels, { getCharIdleLevel } from 'utils/idleLevels';
 
 class PageAwakeChar {
 	constructor(module, char, onChange) {
@@ -82,9 +80,9 @@ class PageAwakeChar {
 
 				c[m.match ? 'removeNodeClass' : 'addNodeClass']('badge', 'inactive');
 				c[m.type == 'puppet' ? 'addNodeClass' : 'removeNodeClass']('badge', 'highlight');
-				for (let i = 0; i < idleLevels.length; i++) {
-					let lvl = idleLevels[i];
-					c[i == m.idle ? 'addNodeClass' : 'removeNodeClass']('fullname', lvl.className);
+				let lvl = getCharIdleLevel(m);
+				for (let l of idleLevels) {
+					c[lvl == l ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
 				}
 				// Callback if change occured that may affect count
 				if (change && (change.hasOwnProperty('match') || change.hasOwnProperty('watch'))) {

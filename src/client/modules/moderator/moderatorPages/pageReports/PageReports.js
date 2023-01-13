@@ -30,6 +30,7 @@ class PageReports {
 			'dialogReopenReport',
 			'confirm',
 			'notify',
+			'copyCharId',
 		], this._init.bind(this));
 	}
 

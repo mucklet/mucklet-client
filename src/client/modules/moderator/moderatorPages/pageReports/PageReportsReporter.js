@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelHtml, ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
+import FAIcon from 'components/FAIcon';
 import formatDateTime from 'utils/formatDateTime';
 import formatText from 'utils/formatText';
 import errString from 'utils/errString';
@@ -27,34 +28,48 @@ class PageReportsReporter {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'pagereports-reporter' }, [
 			n.elem('div', { className: 'badge--divider' }),
-			n.elem('div', { className: 'flex-row' }, [
-				n.component(new ModelTxt(this.reporter, m => m.type == 'report' ? txtReporterFrom : txtReporterMod, { className: 'badge--iconcol badge--subtitle' })),
-				n.component(new ModelTxt(this.reporter.char, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
-					className: 'badge--info badge--strong',
-				})),
-			]),
-			n.component(new ModelComponent(
-				this.reporter,
-				new Collapser(),
-				(m, c, change) => {
-					if (!change || change.hasOwnProperty('puppeteer')) {
-						c.setComponent(m.puppeteer
-							? new Elem(n => n.elem('div', { className: 'flex-row' }, [
-								n.component(new Txt(l10n.l('pageReports.ctrl', "Ctrl"), { className: 'badge--iconcol badge--subtitle' })),
-								n.component(new ModelTxt(m.puppeteer, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
-									className: 'badge--info badge--text',
-								})),
-							]))
-							: null,
-						);
-					}
-				},
-			)),
-			n.elem('div', { className: 'flex-row' }, [
-				n.component(new ModelTxt(this.reporter, m => this._reporterTypeText(m), { className: 'badge--iconcol badge--subtitle' })),
-				n.component(new ModelTxt(this.reporter, m => formatDateTime(new Date(m.created)), {
-					className: 'badge--info badge--text',
-				})),
+			n.elem('div', { className: 'badge--select' }, [
+				n.elem('div', { className: 'badge--info-nopad' }, [
+					n.elem('div', { className: 'flex-row' }, [
+						n.component(new ModelTxt(this.reporter, m => m.type == 'report' ? txtReporterFrom : txtReporterMod, { className: 'badge--iconcol badge--subtitle' })),
+						n.component(new ModelTxt(this.reporter.char, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
+							className: 'badge--info badge--strong',
+						})),
+					]),
+					n.component(new ModelComponent(
+						this.reporter,
+						new Collapser(),
+						(m, c, change) => {
+							if (!change || change.hasOwnProperty('puppeteer')) {
+								c.setComponent(m.puppeteer
+									? new Elem(n => n.elem('div', { className: 'flex-row' }, [
+										n.component(new Txt(l10n.l('pageReports.ctrl', "Ctrl"), { className: 'badge--iconcol badge--subtitle' })),
+										n.component(new ModelTxt(m.puppeteer, m => errString(m, m => (m.name + ' ' + m.surname), l10n.l('pageReports.unknown', "(Unknown)")), {
+											className: 'badge--info badge--text',
+										})),
+									]))
+									: null,
+								);
+							}
+						},
+					)),
+					n.elem('div', { className: 'flex-row' }, [
+						n.component(new ModelTxt(this.reporter, m => this._reporterTypeText(m), { className: 'badge--iconcol badge--subtitle' })),
+						n.component(new ModelTxt(this.reporter, m => formatDateTime(new Date(m.created)), {
+							className: 'badge--info badge--text',
+						})),
+					]),
+				]),
+				n.elem('div', { className: 'badge--tools' }, [
+					n.elem('button', { className: 'pagereports-reporter--copyid iconbtn medium tinyicon', events: {
+						click: (c, ev) => {
+							this.module.copyCharId.copy(this.reporter.char);
+							ev.stopPropagation();
+						},
+					}}, [
+						n.component(new FAIcon('clipboard')),
+					]),
+				]),
 			]),
 			n.elem('div', { className: 'badge--text' }, [
 				n.component(new ModelHtml(this.reporter, m => formatText(m.msg), { tagName: 'span', className: 'common--formattext' })),

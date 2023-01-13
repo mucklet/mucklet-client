@@ -82,7 +82,8 @@ class Inspect {
 
 				let c = result.char;
 				let rows = [
-					[ "Character", escapeHtml((c.name + ' ' + c.surname).trim(), { className: 'charlog--strong' }) ],
+					[ "Character", escapeHtml((c.name + ' ' + c.surname).trim()), { className: 'charlog--strong' }],
+					[ "Character ID", "<code>#" + escapeHtml(c.id) + "</code>" ],
 					[ "Player joined", result.playerJoined ],
 					[ "Character created", result.charCreated ],
 					[ "Banned", result.banned && escapeHtml(formatDateTime(new Date(result.banned), { showYear: true })), { hide: !result.banned }],
@@ -98,7 +99,7 @@ class Inspect {
 								n.component(new Txt(m[0])),
 							]),
 							n.elem('td', [
-								n.component(new Txt(m[1], { className: m[2] && m[2].className })),
+								n.component(new Html(m[1], { className: m[2] && m[2].className })),
 							]),
 						]))),
 					];

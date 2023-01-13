@@ -38,6 +38,25 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 		}
 	}
 
+	&.popuptip--position-left-bottom {
+		.popuptip--tip {
+			top:50%;
+			left: 0;
+			transform: translateY(-15px) translateX(-100%) translateX(-10px);
+
+			&::after {
+				content: "";
+				position: absolute;
+				top: 15px;
+				left: 100%;
+				margin-top: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: transparent transparent transparent $popuptip-background;
+			}
+		}
+	}
+
 	&.popuptip--position-top {
 		.popuptip--tip {
 			bottom: 100%;

@@ -6,11 +6,10 @@ import FormatTxt from 'components/FormatTxt';
 import Collapser from 'components/Collapser';
 import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
-import SimpleBar from 'components/SimpleBar';
 import FAIcon from 'components/FAIcon';
 import Dialog from 'classes/Dialog';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
-import idleLevels from 'utils/idleLevels';
+import idleLevels, { getCharIdleLevel } from 'utils/idleLevels';
 import formatDateTime from 'utils/formatDateTime';
 import './dialogAboutChar.scss';
 
@@ -44,11 +43,8 @@ class DialogAboutChar {
 				l10n.l('dialogAboutChar.about', "About"),
 				new ModelComponent(
 					charInfo,
-					new SimpleBar(
-						new FormatTxt("", { className: 'common--desc-size' }),
-						{ className: 'dialogaboutchar--about' },
-					),
-					(m, c) => c.getComponent().setFormatText(m.about),
+					new FormatTxt("", { className: 'common--desc-size' }),
+					(m, c) => c.setFormatText(m.about),
 				),
 				{
 					className: 'common--sectionpadding',
@@ -157,7 +153,8 @@ class DialogAboutChar {
 								? l10n.l('dialogAboutChar.lastSeen', "Last seen {time}", { time: formatDateTime(new Date(m.lastAwake)) })
 								: l10n.l('dialogAboutChar.neverSeen', "Never seen"),
 						);
-						c.getNode('idle').setText(idleLevels[m.idle].text);
+						let lvl = getCharIdleLevel(m);
+						c.getNode('idle').setText(lvl.text);
 						c.getNode('status').setText(m.status ? ' (' + m.status + ')' : '');
 						if (!change || change.hasOwnProperty('puppeteer')) {
 							c.getNode('puppeteer').setComponent(m.puppeteer
@@ -173,9 +170,8 @@ class DialogAboutChar {
 							);
 						}
 
-						for (let i = 0; i < idleLevels.length; i++) {
-							let lvl = idleLevels[i];
-							c[i == m.idle ? 'addNodeClass' : 'removeNodeClass']('idleStatus', lvl.className);
+						for (let l of idleLevels) {
+							c[l == lvl ? 'addNodeClass' : 'removeNodeClass']('idleStatus', l.className);
 						}
 
 

@@ -23,11 +23,4 @@
 	&--lastawake, &--puppeteer {
 		font-size: $font-size-small;
 	}
-
-	&--about {
-		max-height: 160px;
-		overflow-x: hidden;
-		margin-right: -13px;
-		padding-right: 13px;
-	}
 }

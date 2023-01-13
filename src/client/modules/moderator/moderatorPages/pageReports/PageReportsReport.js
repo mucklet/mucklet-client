@@ -3,6 +3,7 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import Fader from 'components/Fader';
+import FAIcon from 'components/FAIcon';
 import errString from 'utils/errString';
 import PageReportsReportContent from './PageReportsReportContent';
 
@@ -51,6 +52,16 @@ class PageReportsMessage {
 									);
 								},
 							)),
+						]),
+						n.elem('div', { className: 'badge--tools' }, [
+							n.elem('button', { className: 'pagereports-report--copyid iconbtn medium tinyicon', events: {
+								click: (c, ev) => {
+									this.module.copyCharId.copy(this.report.char);
+									ev.stopPropagation();
+								},
+							}}, [
+								n.component(new FAIcon('clipboard')),
+							]),
 						]),
 					]),
 					n.component(new ModelComponent(
