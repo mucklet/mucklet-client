@@ -2,7 +2,7 @@ import { Txt, Elem } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
-import idleLevels from 'utils/idleLevels';
+import idleLevels, { getCharIdleLevel } from 'utils/idleLevels';
 
 class PageRoomChar {
 	constructor(module, ctrl, char) {
@@ -71,10 +71,9 @@ class PageRoomChar {
 				this._setTooltip(m, sc);
 				sc[m.state == 'asleep' ? 'addNodeClass' : 'removeNodeClass']('btn', 'inactive');
 				sc[m.type == 'puppet' ? 'addNodeClass' : 'removeNodeClass']('btn', 'highlight');
-				if (!change || change.hasOwnProperty('idle')) {
-					for (let i = 0; i < idleLevels.length; i++) {
-						sc[m.idle == i ? 'addNodeClass' : 'removeNodeClass']('fullname', idleLevels[i].className);
-					}
+				let lvl = getCharIdleLevel(m);
+				for (let l of idleLevels) {
+					sc[lvl == l ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
 				}
 			},
 		);

@@ -104,6 +104,9 @@
 		&-inactive {
 			color: mix($color5, $color2, 80%);
 		}
+		&-bot {
+			color: $log-bot;
+		}
 	}
 
 	&--nowrap {

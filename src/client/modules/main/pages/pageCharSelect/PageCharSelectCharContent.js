@@ -3,6 +3,7 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
+import Fader from 'components/Fader';
 import formatDateTime from 'utils/formatDateTime';
 
 class PageCharSelectCharContent {
@@ -15,6 +16,7 @@ class PageCharSelectCharContent {
 
 	render(el) {
 		let o = {};
+		let actionFader = new Fader();
 		this.elem = new Elem(n => n.elem('div', [
 			n.elem('div', { className: 'badge--select badge--margin' }, [
 				n.elem('button', { className: 'badge--faicon iconbtn medium solid', events: {
@@ -59,6 +61,23 @@ class PageCharSelectCharContent {
 							]),
 						]));
 						o.suspended = action;
+					} else if (m.controller == 'bot') {
+						action = o.release || new Elem(n => n.elem('div', { className: 'badge--select badge--margin' }, [
+							n.elem('button', { className: 'btn medium primary flex-1', events: {
+								click: (el, e) => {
+									this._releaseChar();
+									e.stopPropagation();
+								},
+							}}, [
+								n.component(new FAIcon('sign-out')),
+								n.component(new ModelTxt(this.char, m => m.state != 'awake'
+									? l10n.l('pageCharSelect.release', "Release")
+									: l10n.l('pageCharSelect.sleep', "Sleep"),
+								)),
+							]),
+						]));
+						o.release = action;
+
 					} else if (m.state == 'asleep' || m.puppeteer) {
 						action = o.wakeup || new Elem(n => n.elem('div', { className: 'badge--select badge--margin' }, [
 							n.elem('button', { className: 'btn medium primary flex-1', events: {
@@ -76,7 +95,8 @@ class PageCharSelectCharContent {
 						]));
 						o.wakeup = action;
 					}
-					c.setComponent(action);
+					actionFader.setComponent(action);
+					c.setComponent(action ? actionFader : null);
 				},
 			)),
 
@@ -106,6 +126,11 @@ class PageCharSelectCharContent {
 				this.toggle(false);
 				this.module.player.setActiveChar(this.char.id);
 			})
+			.catch(err => this.module.confirm.openError(err));
+	}
+
+	_releaseChar() {
+		return this.module.player.getPlayer().call('releaseChar', { charId: this.char.id })
 			.catch(err => this.module.confirm.openError(err));
 	}
 

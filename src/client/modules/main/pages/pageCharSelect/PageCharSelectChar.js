@@ -3,7 +3,7 @@ import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
 import PageCharSelectCharContent from './PageCharSelectCharContent';
-import idleLevels from 'utils/idleLevels';
+import idleLevels, { getCharIdleLevel } from 'utils/idleLevels';
 
 class PageCharSelectChar {
 	constructor(module, char, model, close, puppeteer) {
@@ -54,9 +54,9 @@ class PageCharSelectChar {
 					c[m.state !== 'asleep' ? 'addNodeClass' : 'removeNodeClass']('btn', 'inactive');
 					c[m.type == 'puppet' ? 'addNodeClass' : 'removeNodeClass']('btn', 'highlight');
 					c[m.suspended ? 'addClass' : 'removeClass']('suspended');
-					for (let i = 0; i < idleLevels.length; i++) {
-						let lvl = idleLevels[i];
-						c[m.state != 'asleep' && i == m.idle ? 'addNodeClass' : 'removeNodeClass']('fullname', lvl.className);
+					let lvl = getCharIdleLevel(m);
+					for (let l of idleLevels) {
+						c[m.state != 'asleep' && l == lvl ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
 					}
 				},
 			),

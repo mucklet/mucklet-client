@@ -1,0 +1,12 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.charsettingsbottoken {
+
+}
+
+.charsettingsbottoken-content {
+	&--token {
+		font-size: $font-size-micro;
+	}
+}
