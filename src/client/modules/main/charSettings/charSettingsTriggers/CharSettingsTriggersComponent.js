@@ -19,7 +19,6 @@ class CharSettingsTriggersComponent {
 		this.state = objectDefault(state, {
 			trigger: '',
 		});
-		console.log(this.charSettings);
 	}
 
 	render(el) {

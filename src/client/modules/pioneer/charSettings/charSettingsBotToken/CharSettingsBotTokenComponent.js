@@ -25,6 +25,7 @@ class CharSettingsBotTokenComponent {
 
 	render(el) {
 		let components = {};
+		let contentCollapser = new Collapser();
 		this.elem = new Context(
 			() => {
 				let ctx = { model: new ModelWrapper(null, { eventBus: this.module.self.app.eventBus }) };
@@ -76,14 +77,8 @@ class CharSettingsBotTokenComponent {
 							]),
 							n.component(new ModelComponent(
 								this.model,
-								new Collapser(),
-								(m, c) => {
-									let bot = ctx.model && ctx.model.props[this.char.id];
-									c.setComponent(components.content = m.open && bot
-										? components.content || new CharSettingsBotTokenContent(this.module, this.char, bot)
-										: null,
-									);
-								},
+								contentCollapser,
+								(m, c) => this._setContent(c, ctx, m, components),
 							)),
 						])),
 						(m, c) => {
@@ -105,6 +100,7 @@ class CharSettingsBotTokenComponent {
 							this._toggleContent(false);
 						}
 						c.getComponent()[bot ? 'addClass' : 'removeClass']('btn');
+						this._setContent(contentCollapser, ctx, this.model, components);
 						c.setModel(bot);
 					},
 				),
@@ -125,6 +121,14 @@ class CharSettingsBotTokenComponent {
 			this.elem = null;
 			Object.assign(this.state, this.model.props);
 		}
+	}
+
+	_setContent(c, ctx, model, components) {
+		let bot = ctx.model && ctx.model.props[this.char.id];
+		c.setComponent(components.content = model.open && bot
+			? components.content || new CharSettingsBotTokenContent(this.module, this.char, bot)
+			: null,
+		);
 	}
 
 	_toggleContent(open) {
@@ -165,6 +169,7 @@ class CharSettingsBotTokenComponent {
 		let bot = bots.props[this.char.id];
 		return (bot ? bot.call('renewToken') : bots.getModel().call('create', { charId: this.char.id }))
 			.then(() => {
+				this._toggleContent(true);
 				this.module.toaster.open({
 					title: l10n.l('charSettingsBotToken.tokenIssued', "Token issued"),
 					content: close => new Elem(n => n.elem('div', [
@@ -177,7 +182,6 @@ class CharSettingsBotTokenComponent {
 					type: 'success',
 					autoclose: true,
 				});
-				this._toggleContent(true);
 			})
 			.catch(err => this.module.toaster.openError(err, { title: l10n.l('charSettingsBotToken.failedToIssueToken', "Failed to issue token") }));
 	}
