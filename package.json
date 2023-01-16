@@ -1,6 +1,6 @@
 {
   "name": "mucklet-client",
-  "version": "1.45.2",
+  "version": "1.45.3",
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
