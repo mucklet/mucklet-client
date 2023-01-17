@@ -1,6 +1,6 @@
 {
   "name": "mucklet-client",
-  "version": "1.45.3",
+  "version": "1.45.4",
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
@@ -57,7 +57,7 @@
     "modapp": "^2.6.0",
     "modapp-base-component": "^1.8.0",
     "modapp-l10n": "^1.8.0",
-    "modapp-resource": "^1.8.1",
+    "modapp-resource": "^1.8.2",
     "modapp-resource-component": "^1.8.1",
     "modapp-utils": "^1.8.0",
     "nouislider": "^15.6.1",
