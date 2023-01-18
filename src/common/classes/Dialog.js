@@ -51,8 +51,10 @@ class Dialog {
 					]),
 					n.component(new Txt(typeof this.opt.title == 'function' ? this.opt.title(this) : this.opt.title, { tagName: 'h2' })),
 				]),
-				n.elem('div', { className: 'dialog--content' }, [
-					n.component(this.content),
+				n.elem('div', { className: 'dialog--content-wrap' }, [
+					n.elem('div', { className: 'dialog--content' }, [
+						n.component(this.content),
+					]),
 				]),
 			]),
 		]));
