@@ -15,6 +15,7 @@ npm run client:realm:test
 ```
 
 Open a browser and go to the URL below, but replace `<USER>` and `<PASS>` with the
+[URL encoded](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
 username and password of your Mucklet developer account:
 ```text
 http://localhost:6450/?login.player=<USER>&login.pass=<PASS>
