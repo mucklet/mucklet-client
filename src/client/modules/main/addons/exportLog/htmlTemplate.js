@@ -33,6 +33,28 @@ body { font-family: "Open Sans", sans-serif; font-size: 16px; color: #7d818c; ba
 .charlog--pad-small { margin: 0; padding: 4px 0 2px 0; }
 .charlog--pad { margin: 0; padding: 6px 0 3px 0; }
 .charlog--pad-large { margin: 0; padding: 12px 0 6px 0; }
+.charlog--muted {
+	display: inline-block;
+	box-sizing: border-box;
+	width: 20px;
+	height: 8px;
+	padding: 0 !important;
+	margin: 3px;
+	border-radius: 3px;
+	border: solid 4px #93969f;
+}
+.charlog--muted > div {
+	display: none;
+	position: absolute;
+	width: 100%;
+	padding: 14px;
+	background: rgba(3,4,6,90%);
+	transform: translateY(-100%) translateY(-8px);
+	border-radius: 4px;
+	left: -4px;
+	z-index: 1;
+}
+.charlog--muted:hover > div { display: inline-block; }
 .common--formattext span.ooc { color: #565961; }
 .common--formattext span.cmd { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; color: #c1a657; }
 .common--formattext a { color: #4a9fc3; transition: color 0.2s; text-decoration: none; }

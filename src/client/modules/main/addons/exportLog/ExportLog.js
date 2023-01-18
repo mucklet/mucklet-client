@@ -166,7 +166,7 @@ class ExportLog {
 						if (v) {
 							let ec = ev.char;
 							a.push(
-								'<div class="ev ev-' + ev.type + '"' + (ec
+								'<div class="ev ev-' + ev.type + (ev.mod?.muted ? " charlog--muted" : "") + '"' + (ec
 									? ' title="' + escapeHtml((ec.name + " " + ec.surname).trim()) + (ev.time ? "&#013;" + escapeHtml(formatDateTime(new Date(ev.time))) : '') + '"'
 									: ev.time
 										? ' title="' + escapeHtml(formatDateTime(new Date(ev.time))) + '"'
