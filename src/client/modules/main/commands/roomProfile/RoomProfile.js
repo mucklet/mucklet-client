@@ -4,7 +4,7 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import ListStep from 'classes/ListStep';
 
-const usageText = 'room profile <span class="param">Keyword</span>';
+const usageText = 'roomprofile <span class="param">Keyword</span>';
 const shortDesc = "Change room appearance into one of its profiles";
 const helpText =
 `<p>Change the room's appearance to one of its profiles. This affects the <em>description</em> and <em>image</em>.</p>

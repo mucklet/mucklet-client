@@ -73,12 +73,14 @@ class RoomProfiles {
 	_listenChars(change) {
 		for (let charId in change) {
 			let char = change[charId];
+			let prev = this.chars[charId];
 			if (char) {
-				char.on('change', this._onCharChange);
-				this.chars[charId] = char;
-			} else {
-				char = this.chars[charId];
-				char.off('change', this._onCharChange);
+				if (!prev) {
+					char.on('change', this._onCharChange);
+					this.chars[charId] = char;
+				}
+			} else if (prev) {
+				prev.off('change', this._onCharChange);
 				delete this.chars[charId];
 			}
 		}
@@ -99,12 +101,14 @@ class RoomProfiles {
 	_listenRooms(change) {
 		for (let roomId in change) {
 			let room = change[roomId];
+			let prev = this.rooms[roomId];
 			if (room) {
-				room.on('change', this._onRoomChange);
-				this.rooms[roomId] = room;
-			} else {
-				room = this.rooms[roomId];
-				room.off('change', this._onRoomChange);
+				if (!prev) {
+					room.on('change', this._onRoomChange);
+					this.rooms[roomId] = room;
+				}
+			} else if (prev) {
+				prev.off('change', this._onRoomChange);
 				delete this.rooms[roomId];
 			}
 		}
@@ -117,8 +121,8 @@ class RoomProfiles {
 		let editableRooms = {};
 		for (let roomId in this.rooms) {
 			let room = this.rooms[roomId];
-			for (let char in this.chars) {
-				if (this.canSetRoomProfile(char, room)) {
+			for (let charId in this.chars) {
+				if (this.canSetRoomProfile(this.chars[charId], room)) {
 					editableRooms[roomId] = true;
 				}
 			}
@@ -135,7 +139,7 @@ class RoomProfiles {
 			if (change[roomId]) {
 				update[roomId] = null;
 				this.module.api.get('core.room.' + roomId + '.profiles').then(profiles => {
-					if (this.roomsProfiles?.props.hasOwnProperty(roomId)) {
+					if (this.roomsProfiles?.props[roomId] === null) {
 						profiles.on();
 						this.roomsProfiles.set({ [roomId]: profiles });
 					}
