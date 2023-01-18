@@ -46,10 +46,14 @@
 	border-bottom: 1px solid $color2;
 }
 
-.dialog--content {
+.dialog--content-wrap {
 	flex: 0 1 auto;
 	padding: 16px;
 	overflow-y: auto;
+}
+
+.dialog--content {
+	position: relative;
 }
 
 .dialog--close {
