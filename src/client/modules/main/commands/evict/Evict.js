@@ -55,7 +55,7 @@ class Evict {
 
 		this.module.help.addTopic({
 			id: 'evict',
-			category: 'regulate',
+			category: 'cleanup',
 			cmd: 'evict',
 			usage: l10n.l('evict.usage', usageText),
 			shortDesc: l10n.l('evict.shortDesc', shortDesc),

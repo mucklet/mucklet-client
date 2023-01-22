@@ -42,6 +42,13 @@ const helpText =
 	<section class="charlog--pad">
 		<div class="charlog--code"><code>area rules</code></div>
 	</section>
+</section>
+<section class="charlog--pad">
+	<h4 class="charlog--pad">Reporting incidents</h4>
+	<p class="charlog--font-small">To learn how to report a character to the moderators, type:</p>
+	<section class="charlog--pad">
+		<div class="charlog--code"><code>help reporting</code></div>
+	</section>
 </section>`;
 
 class HelpRulesComponent extends Html{
