@@ -198,6 +198,19 @@
 		padding: 8px 14px 8px 8px;
 	}
 
+	&--ol {
+		font-size: $font-size-small;
+		// padding: 8px 14px 8px 8px;
+		margin: 4px 0 4px 2em;
+		list-style-position: outside;
+		list-style-type:decimal;
+
+		> li {
+			margin: 2px 0;
+			text-indent: 0.5em;
+		}
+	}
+
 	&--info {
 		color: $color4-dark;
 		font-style: italic;

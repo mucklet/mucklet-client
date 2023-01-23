@@ -30,7 +30,7 @@ class Sweep {
 
 		this.module.help.addTopic({
 			id: 'sweep',
-			category: 'regulate',
+			category: 'cleanup',
 			cmd: 'sweep',
 			usage: l10n.l('sweep.usage', usageText),
 			shortDesc: l10n.l('sweep.shortDesc', shortDesc),

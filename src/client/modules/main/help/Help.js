@@ -34,11 +34,39 @@ const defaultCategories = [
 		alias: [ 'communication', 'talk', 'communications' ],
 	},
 	{
+		id: 'reporting',
+		title: l10n.l('help.requestTitle', "How to report incidents"),
+		shortDesc: l10n.l('help.requestShortDesc', "How to reports incidents to the moderators"),
+		desc: l10n.l('help.requestDesc',
+			`<p>Moderators are here to help us keep this place nice, friendly, and respectful. Don't hesitate to report when someone is being disrespectful, toxic, or breaking realm or area rules. Reports can only be seen by moderators.</p>` +
+			`<section class="charlog--pad">` +
+			`	<h4>Report a character</h4>` +
+			`	<p>To create a report, follow these steps:</p>` +
+			`   <ol class="charlog--ol">` +
+			`   <li>Hover over the reportable text in the chat log, or tap the text on mobile.</li>` +
+			`   <li>Click on the menu icon (⋮) that appears to the right.</li>` +
+			`   <li>Select <em>Report</em> to open the <em>Report character</em> dialog.</li>` +
+			`   <li>Type a message explaining the report.</li>` +
+			`   <li>Optionally choose the time interval of your log to attach.</li>` +
+			`   <li>Click <em>Send report</em>.</li>` +
+			`   </ol>` +
+			`	<p>If you don't have any logs to attach, you can also use the <code>report</code> command:</p>` +
+			`	<section class="charlog--pad"><div class="charlog--code"><code>report John Mischief = Keeps spamming the room.</code></div></section>` +
+			`</section>` +
+			`<section class="charlog--pad">` +
+			`	<h4>Report a moderator</h4>` +
+			`	<p>It is completely fine to report moderators if you find them acting abusive or unjust. When reporting a moderator, <em>another</em> moderator will review the report and get in contact with you. Remember to keep your own language respectful.</p>` +
+			`</section>`,
+		),
+		sortOrder: 30,
+		alias: [ 'abuse' ],
+	},
+	{
 		id: 'transport',
 		title: l10n.l('help.transportTitle', "Transportation commands"),
 		shortDesc: l10n.l('help.transportShortDesc', "How to move between rooms"),
 		desc: l10n.l('help.transportDesc', `<p>Commands for transporting between rooms, and manage teleport destinations.</p>`),
-		sortOrder: 30,
+		sortOrder: 40,
 		alias: [ 'transportation', 'move' ],
 	},
 	{
@@ -47,7 +75,7 @@ const defaultCategories = [
 		title: l10n.l('help.charTitle', "Profile commands"),
 		shortDesc: l10n.l('help.charShortDesc', "How to manage your character's appearance and profiles"),
 		desc: l10n.l('help.charDesc', `<p>Commands for managing your character's appearance and profiles.</p>`),
-		sortOrder: 40,
+		sortOrder: 50,
 		alias: [ 'manage profile', 'character', 'appearance' ],
 	},
 	{
@@ -70,7 +98,7 @@ const defaultCategories = [
 			`	<p>Hovering over a tag will show a description of the tag, if available. A tag name written in <i>italics</i> indicates a custom tag or a custom description. Custom descriptions can be used to clarify the scope of the tag.</p>` +
 			`</section>`,
 		),
-		sortOrder: 45,
+		sortOrder: 60,
 		alias: [ 'tag', 'manage tags' ],
 	},
 	{
@@ -78,7 +106,7 @@ const defaultCategories = [
 		title: l10n.l('help.friendsTitle', "Friends commands"),
 		shortDesc: l10n.l('help.friendsShortDesc', "How to watch for friends and remember them"),
 		desc: l10n.l('help.friendsDesc', `<p>Commands for managing friends and remembering them.</p>`),
-		sortOrder: 50,
+		sortOrder: 70,
 		alias: [ 'friend' ],
 	},
 	{
@@ -86,7 +114,7 @@ const defaultCategories = [
 		title: l10n.l('help.muteTitle', "Mute commands"),
 		shortDesc: l10n.l('help.muteShortDesc', "How to mute unwanted messages"),
 		desc: l10n.l('help.muteDesc', `<p>Commands for muting unwanted messages.</p>`),
-		sortOrder: 60,
+		sortOrder: 80,
 		alias: [ 'muting' ],
 	},
 	{
@@ -119,7 +147,7 @@ const defaultCategories = [
 			`	<p>If a puppeteer breaks any rules while playing the puppet, you can report them as usual. Note that breaking character, not following the <em>How to play</em> guidelines, is not against the rules. To complain about how a puppet is played, contact the puppet's owner by sending a mail to the puppet. Mails sent to a puppet always lands in the owner's inbox.</p>` +
 			`</section>`,
 		),
-		sortOrder: 70,
+		sortOrder: 90,
 		alias: [ 'puppet' ],
 	},
 	{
@@ -152,7 +180,7 @@ const defaultCategories = [
 			`	<section class="charlog--pad"><div class="charlog--code"><code>help register teleport</code></div></section>` +
 			`</section>`,
 		),
-		sortOrder: 80,
+		sortOrder: 100,
 		alias: [ 'build room', 'building rooms', 'building room' ],
 		categories: [ 'buildAreas' ],
 	},
@@ -171,7 +199,7 @@ const defaultCategories = [
 			`	<section class="charlog--pad"><div class="charlog--code"><code>set room area = My place</code></div></section>` +
 			`</section>`,
 		),
-		sortOrder: 90,
+		sortOrder: 110,
 		alias: [ 'build area', 'building areas', 'building area' ],
 		categories: [ 'buildRooms' ],
 	},
@@ -180,28 +208,19 @@ const defaultCategories = [
 		title: l10n.l('help.requestTitle', "Request commands"),
 		shortDesc: l10n.l('help.requestShortDesc', "How to make requests to other players' characters"),
 		desc: l10n.l('help.requestDesc', `<p>Commands for sending requests to other players' characters.</p>`),
-		sortOrder: 100,
+		sortOrder: 120,
 		alias: [ 'requests' ],
 	},
 	{
-		id: 'regulate',
-		title: l10n.l('help.requestTitle', "Regulation commands"),
-		shortDesc: l10n.l('help.requestShortDesc', "How to handle littering sleepers, unwanted tenants, or other nuisances"),
+		id: 'cleanup',
+		title: l10n.l('help.requestTitle', "Cleanup commands"),
+		shortDesc: l10n.l('help.requestShortDesc', "How to clean up littering sleepers or unwanted tenants"),
 		desc: l10n.l('help.requestDesc',
-			`<p>Here you can find commands for dealing with other player's characters, from minor nuisances to abusive behavior.</p>` +
-			`<section class="charlog--pad">` +
-			`	<h4>Report a character</h4>` +
-			`	<p>If someone is abusive, spammy, or breaks other rules, you may report that character. To send a simple report, type:</p>` +
-			`	<section class="charlog--pad"><div class="charlog--code"><code>report John Mischief = Keeps spamming the room.</code></div></section>` +
-			`	<p>If you wish to create a report with a part of your log attached, hover the abusive text in the chat log, and click on the menu icon (⋮) that appears to the right. Select <em>Report</em> to open the <em>Report character</em> dialog where you can choose the time interval of your log to attach.</p>` +
-			`</section>` +
-			`<section class="charlog--pad">` +
-			`	<h4>Report a moderator</h4>` +
-			`	<p>It is completely fine to report moderators if you find them acting abusive or unjust. When reporting a moderator, <em>another</em> moderator will review the report and get in contact with you. Remember to keep your own language respectful.</p>` +
-			`</section>`,
+			`<p>Here you can find commands for cleaning up rooms and areas of littering sleepers, unwanted tenants, or other nuisances.</p>` +
+			`<p>For info on how to report incidents to the moderators, type:</p>` +
+			`<section class="charlog--pad"><div class="charlog--code"><code>help reporting</code></div></section>`,
 		),
-		sortOrder: 110,
-		alias: [ 'abuse' ],
+		sortOrder: 130,
 	},
 ];
 
