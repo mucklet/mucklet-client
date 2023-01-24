@@ -1,4 +1,5 @@
 import { Model } from 'modapp-resource';
+import objectKeyDiff from 'utils/objectKeyDiff';
 import RoomPagesChar from './RoomPagesChar';
 
 const namespace = 'module.roomPages';
@@ -11,9 +12,8 @@ class RoomPages {
 		this.app = app;
 
 		// Bind callbacks
-		this._onCtrlAdd = this._onCtrlAdd.bind(this);
-		this._onCtrlRemove = this._onCtrlRemove.bind(this);
-		this._onActiveChange = this._onActiveChange.bind(this);
+		this._onCtrlChange = this._onCtrlChange.bind(this);
+		this._onPlayerChange = this._onPlayerChange.bind(this);
 		this._onCharChange = this._onCharChange.bind(this);
 		this._update = this._update.bind(this);
 
@@ -26,6 +26,9 @@ class RoomPages {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 		this.model = new Model({ data: { char: null, inRoom: null, page: null, factory: null }});
+
+		this.playerModel = this.module.player.getModel();
+		this.ctrlModel = this.module.player.getControlledModel();
 
 		this.charComponents = {};
 		this.defaultPageFactory = null;
@@ -104,11 +107,13 @@ class RoomPages {
 	}
 
 	_setListeners(on) {
-		let p = this.module.player;
 		let cb = on ? 'on' : 'off';
-		p[cb]('ctrlAdd', this._onCtrlAdd);
-		p[cb]('ctrlRemove', this._onCtrlRemove);
-		p[cb]('activeChange', this._onActiveChange);
+
+		this.ctrlModel[cb]('change', this._onCtrlChange);
+		this.playerModel[cb]('change', this._onPlayerChange);
+		if (on) {
+			this._onCtrlChange();
+		}
 	}
 
 	_setCharListener(ctrl, on) {
@@ -117,22 +122,28 @@ class RoomPages {
 		}
 	}
 
-	_onCtrlAdd(ev) {
-		let char = ev.char;
-		this.charComponents[char.id] = new RoomPagesChar(this.module, char, this._update);
+	_onCtrlChange() {
+		this._listenChars(objectKeyDiff(this.charComponents, this.ctrlModel?.props));
+		this._onPlayerChange();
 	}
 
-	_onCtrlRemove(ev) {
-		let c = this.charComponents[ev.char.id];
-		delete this.charComponents[ev.char.id];
-		c.dispose();
-	}
-
-	_onActiveChange(ev) {
-		let char = ev.char;
-		if (char) {
-			this._setModel(char);
+	_listenChars(change) {
+		for (let charId in change) {
+			let char = change[charId];
+			let prev = this.charComponents[charId];
+			if (char) {
+				if (!prev) {
+					this.charComponents[charId] = new RoomPagesChar(this.module, char, this._update);
+				}
+			} else if (prev) {
+				prev.dispose();
+				delete this.charComponents[charId];
+			}
 		}
+	}
+
+	_onPlayerChange(ev) {
+		this._setModel(this.playerModel.activeChar);
 	}
 
 	_onCharChange(change, char) {
@@ -158,13 +169,12 @@ class RoomPages {
 				page = c.getPage();
 			}
 		}
-		if (this.model.page === page) {
-			return;
-		}
-
 		if (this.model.char !== ctrl) {
 			this._setCharListener(this.model.char, false);
 			this._setCharListener(ctrl, true);
+		}
+		if (this.model.page === page) {
+			return;
 		}
 		this.model.set(page
 			? { char: ctrl, inRoom: ctrl.inRoom, page, factory: c ? c.createFactory() : null }
@@ -175,7 +185,7 @@ class RoomPages {
 	dispose() {
 		this._setModel(null);
 		this._setListeners(false);
-		this.charComponents = {};
+		this._listenChars(Object.keys(this.charComponents).map(k => undefined));
 	}
 }
 
