@@ -269,14 +269,14 @@ class Player {
 				if (this.module.api.isError(player)) {
 					return Promise.reject(player);
 				}
-				let c = player.controlled;
+				let ctrl = player.controlled;
 				player.on('unsubscribe', this._onUnsubscribe);
-				c.on('add', this._onCtrlAdd);
-				c.on('remove', this._onCtrlRemove);
-				for (let char of c) {
+				ctrl.on('add', this._onCtrlAdd);
+				ctrl.on('remove', this._onCtrlRemove);
+				for (let char of ctrl) {
 					this.app.eventBus.emit(this, namespace + '.ctrlAdd', { char });
 				}
-				this.model.set(Object.assign({ player, roles, idRoles }, this._ctrlChange(c, null)));
+				this.model.set(Object.assign({ player, roles, idRoles }, this._ctrlChange(ctrl)));
 				this.ctrlModel.setCollection(player.controlled);
 				this.availableChars = new CollectionWrapper(player.chars, {
 					filter: c => c.state == 'asleep',
@@ -313,7 +313,7 @@ class Player {
 
 	_onCtrlAddRemove(name, ev) {
 		this.app.eventBus.emit(this, namespace + (name == 'add' ? '.ctrlAdd' : '.ctrlRemove'), { char: ev.item });
-		this.model.set(this._ctrlChange(this.model.player.controlled, this.model.active));
+		this.model.set(this._ctrlChange(this.model.player?.controlled));
 	}
 
 	_onModelChange(changed) {
@@ -329,18 +329,27 @@ class Player {
 		this.app.eventBus.emit(this, namespace + '.activeChange', { char: m.activeChar, dir });
 	}
 
-	_ctrlChange(ctrl, active) {
+	_ctrlChange(ctrl) {
 		// Check for no controlled characters
 		if (!ctrl || !ctrl.length) {
 			return { activeChar: null, activeCharIdx: null };
 		}
-		let idx = 0;
+
+		let active = this.model.activeChar;
+		let idx = this.model.activeCharIdx || 0;
+
+		// Find index position of active character
 		if (active) {
-			idx = c.indexOf(active);
-			if (idx == -1) {
-				idx = ctrl.length > idx ? idx : ctrl.length - 1;
+			let newIdx = ctrl.indexOf(active);
+			if (newIdx >= 0) {
+				// Found at new position
+				idx = newIdx;
+			} else if (idx >= ctrl.length) {
+				// Set index to last position if out of range.
+				idx = ctrl.length - 1;
 			}
 		}
+
 		return { activeChar: ctrl.atIndex(idx), activeCharIdx: idx };
 	}
 
