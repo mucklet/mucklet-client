@@ -5,7 +5,7 @@ import DelimStep from 'classes/DelimStep';
 const usageText = 'set main <span class="opt">=</span> <span class="param">Character</span>';
 const shortDesc = 'Set main character';
 const helpText =
-`<p>Set an owned character as main character, used to represent the player when relating to other moderators.</p>`;
+`<p>Set an owned character as main character, used to represent the player when relating to other staff.</p>`;
 
 
 /**
