@@ -44,7 +44,7 @@ class ForceJoin {
 
 				this.module.help.addTopic({
 					id: 'forceJoin',
-					category: 'transport',
+					category: [ 'transport', 'moderate', 'builder' ],
 					cmd: 'force join',
 					alias: [ 'force mjoin' ],
 					usage: l10n.l('forceJoin.usage', usageText),
@@ -61,6 +61,10 @@ class ForceJoin {
 
 	forceJoin(char, params) {
 		return char.call('forceJoin', params);
+	}
+
+	dispose() {
+		this.module.roleFeature.removeFeature('forceJoin');
 	}
 }
 
