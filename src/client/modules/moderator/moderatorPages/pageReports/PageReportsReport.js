@@ -7,7 +7,7 @@ import FAIcon from 'components/FAIcon';
 import errString from 'utils/errString';
 import PageReportsReportContent from './PageReportsReportContent';
 
-const txtUnknown = l10n.l('pageRequest.unknown', "(Unknown)");
+const txtUnknown = l10n.l('pageReports.unknown', "(Unknown)");
 const txtNotAssigned = l10n.l('pageReports.notAssigned', "Not assigned");
 
 class PageReportsMessage {

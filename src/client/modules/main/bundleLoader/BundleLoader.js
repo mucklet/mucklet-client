@@ -24,6 +24,9 @@ class BundleLoader {
 		if (!change || change.hasOwnProperty('roles')) {
 			let roles = this.playerModel.roles;
 			if (roles) {
+				if (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0 || roles.indexOf('moderator') >= 0 || roles.indexOf('helper') >= 0) {
+					this._loadStaffModules();
+				}
 				if (roles.indexOf('admin') >= 0) {
 					this._loadAdminModules();
 				}
@@ -32,9 +35,6 @@ class BundleLoader {
 				}
 				if (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0) {
 					this._loadBuildModules();
-				}
-				if (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0 || roles.indexOf('moderator') >= 0) {
-					this._loadAssistantModules();
 				}
 				if (roles.indexOf('admin') >= 0 || roles.indexOf('helper') >= 0) {
 					this._loadHelperModules();
@@ -50,12 +50,15 @@ class BundleLoader {
 				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('supporter') >= 0) {
 					this._loadSupporterModules();
 				}
+				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0 || idRoles.indexOf('supporter') >= 0) {
+					this._loadBonusModules();
+				}
 				if (idRoles.indexOf('overseer') >= 0) {
 					this._loadOverseerModules();
 					this._loadAdminModules();
 					this._loadModModules();
 					this._loadBuildModules();
-					this._loadAssistantModules();
+					this._loadStaffModules();
 					this._loadHelperModules();
 				}
 			}
@@ -95,6 +98,17 @@ class BundleLoader {
 		});
 	}
 
+	_loadHelperModules() {
+		if (this.loaded.helper) return;
+		this.loaded.helper = true;
+		// Load helper modules
+		import(/* webpackChunkName: "helper" */ 'modules/helper-modules').then(({ default: modules }) => {
+			app.loadBundle(modules).then(result => {
+				console.log("Helper modules: ", result);
+			});
+		});
+	}
+
 	_loadOverseerModules() {
 		if (this.loaded.overseer) return;
 		this.loaded.overseer = true;
@@ -128,24 +142,24 @@ class BundleLoader {
 		});
 	}
 
-	_loadAssistantModules() {
-		if (this.loaded.assistant) return;
-		this.loaded.assistant = true;
-		// Load assistant modules
-		import(/* webpackChunkName: "assistant" */ 'modules/assistant-modules').then(({ default: modules }) => {
+	_loadStaffModules() {
+		if (this.loaded.staff) return;
+		this.loaded.staff = true;
+		// Load staff modules
+		import(/* webpackChunkName: "staff" */ 'modules/staff-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
-				console.log("Assistant modules: ", result);
+				console.log("Staff modules: ", result);
 			});
 		});
 	}
 
-	_loadHelperModules() {
-		if (this.loaded.helper) return;
-		this.loaded.helper = true;
-		// Load helper modules
-		import(/* webpackChunkName: "helper" */ 'modules/helper-modules').then(({ default: modules }) => {
+	_loadBonusModules() {
+		if (this.loaded.bonus) return;
+		this.loaded.bonus = true;
+		// Load bonus modules
+		import(/* webpackChunkName: "bonus" */ 'modules/bonus-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
-				console.log("Helper modules: ", result);
+				console.log("Bonus modules: ", result);
 			});
 		});
 	}

@@ -234,6 +234,12 @@ function isBoundary(i, str) {
 	return i < 0 || i >= str.length || str[i] == ' ';
 }
 
+function topicMatchCategory(topic, categoryId) {
+	return topic.category
+		? (Array.isArray(topic.category) ? topic.category : [ topic.category ]).indexOf(categoryId) >= 0
+		: false;
+}
+
 // matchesCmd checks if a topic is matched by the subcommand.
 function matchesCmd(topic, cmd) {
 	let t = topic.cmd;
@@ -351,6 +357,11 @@ class Help {
 		if (this.categories.get(category.id)) {
 			throw new Error("Category ID already registered: ", category.id);
 		}
+		let topics = new Collection({
+			idAttribute: m => m.id,
+			compare: sortOrderCompare,
+			eventBus: this.app.eventBus,
+		});
 		this.categories.add({
 			id: category.id,
 			cmd: category.cmd || category.id,
@@ -360,12 +371,15 @@ class Help {
 			sortOrder: category.sortOrder,
 			alias: category.alias,
 			categories: category.categories,
-			topics: new Collection({
-				idAttribute: m => m.id,
-				compare: sortOrderCompare,
-				eventBus: this.app.eventBus,
-			}),
+			topics,
 		});
+
+		for (let topicId in this.topics.props) {
+			let topic = this.topics.props[topicId];
+			if (topicMatchCategory(topic, category.id)) {
+				topics.add(topic);
+			}
+		}
 		return this;
 	}
 
@@ -383,7 +397,7 @@ class Help {
 	 * Registers a help topic.
 	 * @param {object} topic Topic object
 	 * @param {string} topic.id Topic ID.
-	 * @param {string} topic.category Category ID.
+	 * @param {string|Array.<string>} [topic.category] Category ID or array of category IDs.
 	 * @param {string|LocaleString} topic.title Topic title.
 	 * @param {string} topic.cmd Topic command (eg. "create room").
 	 * @param {Array.<string>} topic.alias Topic command aliases (eg. [ "msg", "page" ]).
@@ -397,13 +411,8 @@ class Help {
 		if (this.topics.props[topic.id]) {
 			throw new Error("Topic ID already registered: " + topic.id);
 		}
-		let category = this.categories.get(topic.category);
-		if (!category) {
-			throw new Error("Unknown help category: " + topic.category);
-		}
-
 		this.topics.set({ [topic.id]: topic });
-		category.topics.add(topic);
+		this._addRemoveTopicToCategories(topic, true);
 
 		return this;
 	}
@@ -417,10 +426,25 @@ class Help {
 		let topic = this.topics.props[topicId];
 		if (topic) {
 			this.topics.set({ [topicId]: undefined });
-			let category = this.categories.get(topic.category);
-			category.topics.remove(topicId);
+			this._addRemoveTopicToCategories(topic, false);
 		}
 		return this;
+	}
+
+	_addRemoveTopicToCategories(topic, add) {
+		if (!topic.category) return;
+
+		let cats = Array.isArray(topic.category) ? topic.category : [ topic.category ];
+		for (let cat of cats) {
+			let category = this.categories.get(cat);
+			if (category) {
+				if (add) {
+					category.topics.add(topic);
+				} else {
+					category.topics.remove(topic.id);
+				}
+			}
+		}
 	}
 
 	_showHelp(char, cmd) {
