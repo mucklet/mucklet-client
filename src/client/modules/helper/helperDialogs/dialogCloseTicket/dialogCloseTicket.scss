@@ -1,0 +1,17 @@
+@import '~scss/variables';
+
+.dialogcloseticket {
+	max-width: 380px;
+
+	&--fullname {
+		display: block;
+		margin-bottom: 12px;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 20px;
+	}
+
+	&--submit {
+		width: 152px;
+	}
+}

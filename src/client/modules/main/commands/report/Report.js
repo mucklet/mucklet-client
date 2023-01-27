@@ -75,7 +75,7 @@ class Report {
 			currentPuppeteer: true,
 			msg: params.msg || null,
 		})).then(() => {
-			this.module.charLog.logInfo(char, l10n.l('report.reportSentB', "The report was sent to the moderators."));
+			this.module.charLog.logInfo(char, l10n.l('report.reportSent', "The report was sent to the moderators."));
 		});
 	}
 }
