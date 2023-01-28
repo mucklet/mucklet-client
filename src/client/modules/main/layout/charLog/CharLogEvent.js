@@ -1,6 +1,9 @@
 import { Txt } from 'modapp-base-component';
+import l10n from 'modapp-l10n';
 import formatDateTime from 'utils/formatDateTime';
 import CharLogEventMenu from './CharLogEventMenu';
+
+const txtTampered = l10n.l('charLog.tamperedWith', "Event is likely tampered with.");
 
 class CharLogEvent {
 	constructor(modules, charId, ev, opt) {
@@ -15,6 +18,7 @@ class CharLogEvent {
 			c = f ? f(charId, ev, opt) : new Txt(JSON.stringify(ev), { tagName: 'pre' });
 		}
 		let ec = ev.char;
+		let invalid = ev.invalid;
 		let mod = ev.mod;
 		let div = document.createElement('div');
 		let own = ec && ec.id == charId;
@@ -30,13 +34,19 @@ class CharLogEvent {
 				+ (!own && (mod?.triggers?.length || mod?.mentioned) ? ' mentioned' : '')
 				+ (ev.target?.id == charId || mod?.targeted ? ' targeted' : '')
 				: ''
-			);
+			)
+			+ (invalid ? ' charlog--invalid' : '');
+		let title = "";
 		if (ec) {
 			let ep = ev.puppeteer;
-			subdiv.setAttribute('title', (ec.name + " " + ec.surname).trim() + (ep ? "\n(" + (ep.name + " " + ep.surname).trim() + ")" : '') + (ev.time ? "\n" + formatDateTime(new Date(ev.time)) : ''));
+			title = (ec.name + " " + ec.surname).trim() + (ep ? "\n(" + (ep.name + " " + ep.surname).trim() + ")" : '') + (ev.time ? "\n" + formatDateTime(new Date(ev.time)) : '');
 		} else if (ev.time) {
-			subdiv.setAttribute('title', formatDateTime(new Date(ev.time)));
+			title = formatDateTime(new Date(ev.time));
 		}
+		if (invalid) {
+			title += "\n" + l10n.t(invalid.code, invalid.message, invalid.data) + "\n" + l10n.t(txtTampered);
+		}
+		subdiv.setAttribute('title', title);
 		div.appendChild(subdiv);
 		c.render(subdiv);
 
