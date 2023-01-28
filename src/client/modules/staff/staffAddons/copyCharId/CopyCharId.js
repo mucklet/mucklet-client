@@ -25,7 +25,6 @@ class CopyCharId {
 	 * @param {Model} char Character model.
 	 */
 	copy(char) {
-		console.log("CHAR: ", char);
 		if (!char) return;
 		copyToClipboard("#" + char.id).then(() => this.module.toaster.open({
 			title: l10n.l('copyCharId.copiedToClipboard', "Copied to clipboard"),

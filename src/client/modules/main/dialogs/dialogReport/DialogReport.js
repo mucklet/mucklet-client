@@ -24,7 +24,13 @@ class DialogReport {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'charLog', 'confirm', 'toaster' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'charLog',
+			'confirm',
+			'toaster',
+			'player',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -199,34 +205,42 @@ class DialogReport {
 	_sendReport(ctrlId, charId, puppeteerId, ev, model) {
 		if (this.reportPromise) return this.reportPromise;
 
-		this.module.api.call('report.reports', 'create', {
-			charId: ctrlId,
-			targetId: charId,
-			puppeteer: puppeteerId || undefined,
-			msg: model.msg,
-			attachment: model.attachLog ? {
-				type: 'log',
-				params: {
-					startTime: addMin(ev.time, model.start).getTime(),
-					endTime: addMin(ev.time, model.end).getTime(),
-				},
-			} : undefined,
-		}).then(() => {
-			if (this.dialog) {
-				this.dialog.close();
-			}
-			this.module.toaster.open({
-				title: l10n.l('dialogReport.reportSent', "Report sent"),
-				content: new Txt(l10n.l('dialogReport.reportSentBody', "The report was successfully sent to the moderators.")),
-				closeOn: 'click',
-				type: 'success',
-				autoclose: true,
+		let ctrl = this.module.player.getControlledChar(ctrlId);
+		if (!ctrl) {
+			this._setMessage(l10n.l('dialogReport.charNotControlled', "Must control the character making the report."));
+			return;
+		}
+
+		this.reportPromise = (model.attachLog
+			? this._getLog(ctrl, addMin(ev.time, model.start).getTime(), addMin(ev.time, model.end).getTime())
+			: Promise.resolve()
+		).then(events => {
+			return this.module.api.call('report.reports', 'create', {
+				charId: ctrlId,
+				targetId: charId,
+				puppeteer: puppeteerId || undefined,
+				msg: model.msg,
+				attachment: model.attachLog ? {
+					type: 'log',
+					params: { events },
+				} : undefined,
+			}).then(() => {
+				if (this.dialog) {
+					this.dialog.close();
+				}
+				this.module.toaster.open({
+					title: l10n.l('dialogReport.reportSent', "Report sent"),
+					content: new Txt(l10n.l('dialogReport.reportSentBody', "The report was successfully sent to the moderators.")),
+					closeOn: 'click',
+					type: 'success',
+					autoclose: true,
+				});
+			}).catch(err => {
+				if (!this.dialog) return;
+				this._setMessage(l10n.l(err.code, err.message, err.data));
+			}).then(() => {
+				this.reportPromise = null;
 			});
-		}).catch(err => {
-			if (!this.dialog) return;
-			this._setMessage(l10n.l(err.code, err.message, err.data));
-		}).then(() => {
-			this.reportPromise = null;
 		});
 
 		return this.reportPromise;
@@ -236,6 +250,31 @@ class DialogReport {
 		if (!this.dialog) return;
 		let n = this.dialog.getContent().getNode('message');
 		n.setComponent(msg ? new Txt(msg, { className: 'dialog--error' }) : null);
+	}
+
+	_getLog(char, startTime, endTime, chunk, log) {
+		chunk = chunk || 0;
+		log = log || [];
+		return this.module.charLog.getLog(char, chunk).then(l => {
+			if (!l || !l.length) return log;
+
+			if (!Array.isArray(l)) l = l.toArray();
+
+			let end = l.length;
+			for (let i = end - 1; i >= 0; i--) {
+				let ev = l[i];
+				if (ev.time) {
+					if (ev.time > endTime) {
+						end = i;
+					}
+					if (ev.time < startTime) {
+						return l.slice(i + 1, end).concat(log);
+					}
+				}
+			}
+
+			return this._getLog(char, startTime, endTime, chunk + 1, end ? l.slice(0, end).concat(log) : log);
+		});
 	}
 }
 

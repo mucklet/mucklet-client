@@ -1,0 +1,71 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.pagetickets {
+	padding: 16px 14px;
+
+	&--name {
+		color: $color3;
+		font-size: $font-size;
+	}
+
+	&--name, &--email {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&--tool-btn {
+		position: relative;
+	}
+}
+
+
+.pagetickets-ticket {
+	padding: 2px 0;
+
+	&--icon.accepted {
+		@include btn-style($color6, $color6, $color6, $black, $black);
+	}
+
+	&--icon.rejected, &--icon.failed {
+		@include btn-style($color5, $color5, $color5, $black, $black);
+	}
+
+	&--badge.unassigned {
+		background: darken($color1, 6%);
+
+		&:not(:disabled) {
+			&:hover, &:focus, &:active {
+				background: darken($color1, 9%);
+			}
+		}
+	}
+}
+
+.pagetickets-ticket, .pagetickets-activity {
+	&--copyid i {
+		transition: opacity 0.3s;
+		opacity: 0;
+	}
+
+	&--badge .badge--select:hover &--copyid i {
+		opacity: 0.6;
+	}
+
+	&--badge .badge--select:hover &--copyid:hover i {
+		opacity: 1;
+	}
+}
+
+.pagetickets-closed {
+	&--head {
+		padding: 0 0 8px;
+		font-size: $font-size-small;
+	}
+
+	&--nomail {
+		font-style: italic;
+	}
+}

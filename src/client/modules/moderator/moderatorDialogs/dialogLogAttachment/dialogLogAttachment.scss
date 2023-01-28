@@ -1,9 +1,11 @@
 @import '~scss/variables';
 
 .dialoglogattachment {
-	width: 80%;
-	max-height: 80%;
-	max-width: 1280px;
+	&.dialog {
+		width: 80%;
+		max-height: 80%;
+		max-width: 1280px;
+	}
 
 	.dialog--content {
 		padding: 16px;

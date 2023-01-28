@@ -5,32 +5,32 @@ import Collapser from 'components/Collapser';
 import Fader from 'components/Fader';
 import FAIcon from 'components/FAIcon';
 import errString from 'utils/errString';
-import PageReportsReportContent from './PageReportsReportContent';
+import PageTicketsTicketContent from './PageTicketsTicketContent';
 
-const txtUnknown = l10n.l('pageReports.unknown', "(Unknown)");
-const txtNotAssigned = l10n.l('pageReports.notAssigned', "Not assigned");
+const txtUnknown = l10n.l('pageTickets.unknown', "(Unknown)");
+const txtNotAssigned = l10n.l('pageTickets.notAssigned', "Not assigned");
 
-class PageReportsMessage {
-	constructor(module, report, model, opt) {
+class PageTicketsMessage {
+	constructor(module, ticket, model, opt) {
 		this.opt = opt;
 		this.module = module;
-		this.report = report;
+		this.ticket = ticket;
 		this.model = model;
 	}
 
 	render(el) {
 		this.elem = new ModelComponent(
-			this.report,
-			new Elem(n => n.elem('div', { className: 'pagereports-report' }, [
-				n.elem('badge', 'div', { className: 'pagereports-report--badge badge btn margin4', events: {
+			this.ticket,
+			new Elem(n => n.elem('div', { className: 'pagetickets-ticket' }, [
+				n.elem('badge', 'div', { className: 'pagetickets-ticket--badge badge btn margin4', events: {
 					click: () => this._toggleInfo(),
 				}}, [
 					n.elem('div', { className: 'badge--select' }, [
-						n.component(this.module.avatar.newAvatar(this.report.char, { size: 'small', className: 'badge--icon' })),
+						n.component(this.module.avatar.newAvatar(this.ticket.char, { size: 'small', className: 'badge--icon' })),
 						n.elem('div', { className: 'badge--info' }, [
 							n.elem('div', { className: 'badge--title badge--nowrap' }, [
 								n.component(new ModelComponent(
-									this.report.char,
+									this.ticket.char,
 									new Txt(),
 									(m, c) => {
 										c.setText((m.name + ' ' + m.surname).trim());
@@ -39,7 +39,7 @@ class PageReportsMessage {
 								)),
 							]),
 							n.component(new ModelComponent(
-								this.report,
+								this.ticket,
 								new Fader(null, { className: 'badge--text' }),
 								(m, c, change) => {
 									if (change && !change.hasOwnProperty('assigned')) return;
@@ -54,9 +54,9 @@ class PageReportsMessage {
 							)),
 						]),
 						n.elem('div', { className: 'badge--tools' }, [
-							n.elem('button', { className: 'pagereports-report--copyid iconbtn medium tinyicon', events: {
+							n.elem('button', { className: 'pagetickets-ticket--copyid iconbtn medium tinyicon', events: {
 								click: (c, ev) => {
-									this.module.copyCharId.copy(this.report.char);
+									this.module.copyCharId.copy(this.ticket.char);
 									ev.stopPropagation();
 								},
 							}}, [
@@ -68,9 +68,9 @@ class PageReportsMessage {
 						this.model,
 						new Collapser(null),
 						(m, c, change) => {
-							if (change && !change.hasOwnProperty('reportId')) return;
-							c.setComponent(m.reportId === this.report.getResourceId()
-								? new PageReportsReportContent(this.module, this.report, (show) => this._toggleInfo(show), this.opt)
+							if (change && !change.hasOwnProperty('ticketId')) return;
+							c.setComponent(m.ticketId === this.ticket.getResourceId()
+								? new PageTicketsTicketContent(this.module, this.ticket, (show) => this._toggleInfo(show), this.opt)
 								: null,
 							);
 						},
@@ -92,13 +92,13 @@ class PageReportsMessage {
 	}
 
 	_toggleInfo(show) {
-		let rid = this.report.getResourceId();
+		let rid = this.ticket.getResourceId();
 		show = typeof show == 'undefined'
-			? !this.model.reportId || this.model.reportId != rid
+			? !this.model.ticketId || this.model.ticketId != rid
 			: !!show;
 
-		this.model.set({ reportId: show ? rid : null });
+		this.model.set({ ticketId: show ? rid : null });
 	}
 }
 
-export default PageReportsMessage;
+export default PageTicketsMessage;

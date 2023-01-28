@@ -20,6 +20,7 @@ class Info {
 		this.mail = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.note = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.report = new ModelWrapper(null, { eventBus: this.app.eventBus });
+		this.support = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.client = new ModelWrapper(Object.assign({ version: APP_VERSION }, this.params.client), { eventBus: this.app.eventBus });
 
 		this.module.login.getLoginPromise().then(() => {
@@ -53,6 +54,12 @@ class Info {
 				}
 			}).catch(err => console.error("Failed to get report info: ", err));
 
+			this.module.api.get('support.info').then(info => {
+				if (this.support) {
+					this.support.setModel(info);
+				}
+			}).catch(err => console.error("Failed to get support info: ", err));
+
 			this.module.api.get('client.web.info').then(info => {
 				if (this.client) {
 					this.client.setModel(info);
@@ -81,6 +88,10 @@ class Info {
 		return this.report;
 	}
 
+	getSupport() {
+		return this.support;
+	}
+
 	getClient() {
 		return this.client;
 	}
@@ -96,6 +107,8 @@ class Info {
 		this.note = null;
 		this.report.dispose();
 		this.report = null;
+		this.support.dispose();
+		this.support = null;
 		this.client.dispose();
 		this.client = null;
 	}
