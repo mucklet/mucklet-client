@@ -9,6 +9,10 @@ const helpText =
 	<section class="charlog--pad">
 		<div class="charlog--code"><code>say Hello!</code></div>
 	</section>
+	<p>If you have questions, you can always get help from one of our helpers by typing:</p>
+	<section class="charlog--pad">
+		<div class="charlog--code"><code>request help = How do I play this game?</code></div>
+	</section>
 </section>
 <section class="charlog--pad">
 	<h4>Realm</h4>
