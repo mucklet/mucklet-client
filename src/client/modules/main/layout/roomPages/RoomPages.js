@@ -169,16 +169,16 @@ class RoomPages {
 				page = c.getPage();
 			}
 		}
+		if (this.model.char === ctrl && this.model.page === page) {
+			return;
+		}
 		if (this.model.char !== ctrl) {
 			this._setCharListener(this.model.char, false);
 			this._setCharListener(ctrl, true);
 		}
-		if (this.model.page === page) {
-			return;
-		}
 		this.model.set(page
 			? { char: ctrl, inRoom: ctrl.inRoom, page, factory: c ? c.createFactory() : null }
-			: { char: null, inRoom: null, page: null, factory: null },
+			: { char: ctrl, inRoom: null, page: null, factory: null },
 		);
 	}
 
