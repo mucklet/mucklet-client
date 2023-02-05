@@ -51,7 +51,7 @@ class RequestHelp {
 
 		this.module.help.addTopic({
 			id: 'requestHelp',
-			category: [ 'basic', 'helper' ],
+			category: [ 'basic', 'helper', 'request' ],
 			cmd: 'request help',
 			usage: l10n.l('requestHelp.usage', usageText),
 			shortDesc: l10n.l('requestHelp.shortDesc', shortDesc),
