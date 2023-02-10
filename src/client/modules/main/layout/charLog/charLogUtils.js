@@ -13,6 +13,18 @@ export function appendCharName(el, char) {
 }
 
 /**
+ * Appends a superscripted tagnode to element.
+ * @param {Elem} el HTML element
+ * @param {string} tag Tag text
+ */
+export function appendTag(el, tag) {
+	let span = document.createElement('span');
+	span.className = 'charlog--tag';
+	span.textContent = tag;
+	el.appendChild(span);
+}
+
+/**
  * Appends a formatted text to element.
  * @param {Elem} el HTML element
  * @param {object} msg Formatted text
