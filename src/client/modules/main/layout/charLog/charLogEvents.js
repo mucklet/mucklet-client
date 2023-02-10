@@ -2,6 +2,7 @@ import {
 	appendCharName,
 	appendPoseSpacing,
 	appendFormatText,
+	appendTag,
 	toComponent,
 } from './charLogUtils';
 
@@ -38,10 +39,24 @@ export function sayEvent(charId, ev, isComm) {
 	return toComponent(div, isComm);
 }
 
+
+// Msg event for events with a method
+export function methodMsgEvent(charId, ev, method) {
+	let div = document.createElement('div');
+	appendCharName(div, ev.char);
+	if (method) {
+		appendTag(div, " " + method);
+	}
+	appendPoseSpacing(div, ev.msg);
+	appendFormatText(div, ev.msg, ev.mod);
+	return toComponent(div);
+}
+
+
 // Travel event
 export function travelEvent(charId, ev) {
 	let div = document.createElement('div');
-	msgEvent(charId, ev).render(div);
+	methodMsgEvent(charId, ev, ev.method).render(div);
 
 	let rdiv = document.createElement('div');
 	let t = ev.targetRoom;
