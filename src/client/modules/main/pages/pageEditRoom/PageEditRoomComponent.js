@@ -15,12 +15,13 @@ import DurationInput from 'components/DurationInput';
  * PageEditRoomComponent renders a room edit page.
  */
 class PageEditRoomComponent {
-	constructor(module, ctrl, room, state, close) {
+	constructor(module, ctrl, room, roomSettings, state, close) {
 		state.changes = state.changes || {};
 
 		this.module = module;
 		this.ctrl = ctrl;
 		this.room = room;
+		this.roomSettings = roomSettings;
 		this.state = state;
 		this.close = close;
 	}

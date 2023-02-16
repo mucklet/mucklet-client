@@ -11,6 +11,7 @@ class PageEditRoom {
 	constructor(app, params) {
 		this.app = app;
 		this.app.require([
+			'api',
 			'roomPages',
 			'pageRoom',
 			'dialogCropImage',
@@ -41,18 +42,26 @@ class PageEditRoom {
 	 * Opens an in-panel edit room page in the room panel.
 	 * @param {*} ctrl Controlled char model.
 	 * @param {*} room Room model of the room to edit.
-	 * @returns {function} Close function.
+	 * @returns {Promise.<function>} Promise of a close function.
 	 */
 	open(ctrl, room) {
-		return this.module.roomPages.openPage(
-			'editRoom',
-			ctrl.id,
-			room.id,
-			(ctrl, room, state, close) => ({
-				component: new PageEditRoomComponent(this.module, ctrl, room, state, close),
-				title: l10n.l('pageEditRoom.editRoom', "Edit Room"),
-			}),
-		);
+		return this.module.api.get('core.room.' + room.id + '.settings').then(roomSettings => {
+			roomSettings.on();
+			return this.module.roomPages.openPage(
+				'editRoom',
+				ctrl.id,
+				room.id,
+				(ctrl, room, state, close) => ({
+					component: new PageEditRoomComponent(this.module, ctrl, room, roomSettings, state, close),
+					title: l10n.l('pageEditRoom.editRoom', "Edit Room"),
+				}),
+				{
+					onClose: () => {
+						roomSettings.off();
+					},
+				},
+			);
+		});
 	}
 
 	dispose() {}
