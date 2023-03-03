@@ -28,6 +28,37 @@ class ConsoleComponent {
 					)),
 				]),
 				n.elem('div', { className: 'console--editorcont' }, [
+					n.elem('div', { className: 'console--lefttools' }, [
+						n.elem('cyclePrev', 'button', {
+							className: 'console--toolbtn iconbtn small',
+							events: {
+								click: (c, e) => {
+									this.editor.cyclePrev();
+									this.editor.focus();
+									e.stopPropagation();
+								},
+							},
+						}, [
+							n.component(new FAIcon('caret-up')),
+						]),
+						n.elem('cycleNext', 'button', {
+							className: 'console--toolbtn iconbtn small',
+							events: {
+								click: (c, e) => {
+									this.editor.cycleNext();
+									this.editor.focus();
+									e.stopPropagation();
+								},
+							},
+						}, [
+							n.component(new FAIcon('caret-down')),
+						]),
+						n.elem('button', {
+							className: 'console--toolbtn iconbtn small',
+						}, [
+							n.component(new FAIcon('long-arrow-right')),
+						]),
+					]),
 					n.component(new ModelComponent(
 						this.model,
 						new ModelComponent(
@@ -56,6 +87,11 @@ class ConsoleComponent {
 									},
 								}, [
 									n.component(new FAIcon('caret-down')),
+								]),
+								n.elem('button', {
+									className: 'console--toolbtnfull iconbtn small primary',
+								}, [
+									n.component(new FAIcon('paper-plane')),
 								]),
 							])),
 							(m, c) => {

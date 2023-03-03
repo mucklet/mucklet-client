@@ -24,8 +24,18 @@
 
 	&--editorcont {
 		flex: 1 1 0px;
-		padding: 5px 34px 10px 5px;
+		padding: 5px 36px 6px 36px;
 		position: relative;
+	}
+
+	&--lefttools {
+		position: absolute;
+		left: 4px;
+		width: 32px;
+
+		> * + * {
+			margin-top: 4px;
+		}
 	}
 
 	&--tools {
@@ -40,7 +50,9 @@
 
 	&--editor {
 		height: 100px;
-		padding-right: 8px;
+		padding: 0 8px 0 4px;
+		border-radius: 4px;
+		background-color: $color1;
 	}
 
 
@@ -57,11 +69,11 @@
 	}
 
 	.console--editor {
-		height: 80px;
+		height: 92px;
 	}
 
 	.console-editor > .cm-editor .cm-content {
-		min-height: 80px;
+		min-height: 92px;
 	}
 }
 
