@@ -1,5 +1,5 @@
 import { Elem, Txt, Input, Textarea } from 'modapp-base-component';
-import { ModelComponent, ModelTxt } from 'modapp-resource-component';
+import { ModelComponent } from 'modapp-resource-component';
 import { ModifyModel } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
@@ -10,6 +10,9 @@ import PanelSection from 'components/PanelSection';
 import ImgModal from 'classes/ImgModal';
 import LabelToggleBox from 'components/LabelToggleBox';
 import DurationInput from 'components/DurationInput';
+
+const txtUpdate = l10n.l('pageEditRoom.update', "Save edits");
+const txtClose = l10n.l('pageEditRoom.close', "Close");
 
 /**
  * PageEditRoomComponent renders a room edit page.
@@ -30,6 +33,10 @@ class PageEditRoomComponent {
 		let eventBus = this.module.self.app.eventBus;
 		this.model = new ModifyModel(this.room, {
 			props: this.state.changes,
+			eventBus,
+		});
+		this.settingsModel = new ModifyModel(this.roomSettings, {
+			props: this.state.settingsChanges,
 			eventBus,
 		});
 		this.elem = new ModelComponent(
@@ -200,6 +207,84 @@ class PageEditRoomComponent {
 							);
 						},
 					)),
+					n.component(new ModelComponent(
+						this.settingsModel,
+						new LabelToggleBox(l10n.l('pageEditRoom.customTeleportMessages', "Custom teleport messages"), false, {
+							className: 'common--formmargin',
+							onChange: v => this.settingsModel.set({ customTeleportMsgs: v }),
+							popupTip: l10n.l('pageEditRoom.customTeleportMessagesInfo', "Customize teleport messages shown when characters teleport to and from the room."),
+						}),
+						(m, c) => c.setValue(m.customTeleportMsgs, false),
+					)),
+					n.component(new ModelComponent(
+						this.settingsModel,
+						new Collapser(null),
+						(m, c, change) => {
+							if (change && !change.hasOwnProperty('customTeleportMsgs')) return;
+
+							// Reset custom messages if we hide them.
+							if (!m.customTeleportMsgs) {
+								m.set({
+									teleportLeaveMsg: this.roomSettings.teleportLeaveMsg,
+									teleportArriveMsg: this.roomSettings.teleportArriveMsg,
+									teleportTravelMsg: this.roomSettings.teleportTravelMsg,
+								});
+							}
+
+							c.setComponent(m.customTeleportMsgs
+								? new Elem(n => n.elem('div', { className: 'common--formsubsection' }, [
+									n.component(new PanelSection(
+										l10n.l('pageEditRoom.teleportLeaveMessage', "Teleport leave message"),
+										new ModelComponent(
+											this.settingsModel,
+											new Textarea(this.settingsModel.teleportLeaveMsg, {
+												className: 'common--paneltextarea-small common--paneltextarea-smallfont',
+												events: { input: c => this.settingsModel.set({ teleportLeaveMsg: c.getValue() }) },
+											}),
+											(m, c) => c.setValue(m.teleportLeaveMsg),
+										),
+										{
+											className: 'small common--sectionpadding',
+											noToggle: true,
+											popupTip: l10n.l('pageEditRoom.teleportLeaveMessageInfo', "Message seen by this room when a character teleports away from here. The character's name will be prepended."),
+										},
+									)),
+									n.component(new PanelSection(
+										l10n.l('pageEditRoom.teleportArriveMessage', "Teleport arrival message"),
+										new ModelComponent(
+											this.settingsModel,
+											new Textarea(this.settingsModel.teleportArriveMsg, {
+												className: 'common--paneltextarea-small common--paneltextarea-smallfont',
+												events: { input: c => this.settingsModel.set({ teleportArriveMsg: c.getValue() }) },
+											}),
+											(m, c) => c.setValue(m.teleportArriveMsg),
+										),
+										{
+											className: 'small common--sectionpadding',
+											noToggle: true,
+											popupTip: l10n.l('pageEditRoom.teleportArriveMessageInfo', "Message seen by this room when a character teleports here. The character's name will be prepended."),
+										},
+									)),
+									n.component(new PanelSection(
+										l10n.l('pageEditRoom.teleportTravelMessage', "Teleport travel message"),
+										new ModelComponent(
+											this.settingsModel,
+											new Textarea(this.settingsModel.teleportTravelMsg, {
+												className: 'common--paneltextarea-small common--paneltextarea-smallfont',
+												events: { input: c => this.settingsModel.set({ teleportTravelMsg: c.getValue() }) },
+											}),
+											(m, c) => c.setValue(m.teleportTravelMsg),
+										),
+										{
+											className: 'small common--sectionpadding',
+											noToggle: true,
+											popupTip: l10n.l('pageEditRoom.teleportTravelMessageInfo', "Message seen by the teleporting character when they teleport here. The character's name will be prepended."),
+										},
+									)),
+								])) : null,
+							);
+						},
+					)),
 				]),
 				n.component('message', new Collapser(null)),
 				n.component(new ModelComponent(
@@ -209,9 +294,15 @@ class PageEditRoomComponent {
 							n.elem('update', 'button', { events: {
 								click: () => this._save(),
 							}, className: 'btn primary common--btnwidth' }, [
-								n.component(new ModelTxt(this.model, m => m.isModified
-									? l10n.l('pageEditRoom.update', "Save edits")
-									: l10n.l('pageEditRoom.close', "Close"))),
+								n.component(new ModelComponent(
+									this.model,
+									new ModelComponent(
+										this.settingsModel,
+										new Txt(),
+										(m, c) => this._setSaveButton(c),
+									),
+									(m, c) => this._setSaveButton(c.getComponent()),
+								)),
 							]),
 						]),
 						n.elem('setOwner', 'button', { events: {
@@ -252,6 +343,11 @@ class PageEditRoomComponent {
 			this.model.dispose();
 			this.model = null;
 		}
+		if (this.settingsModel) {
+			this.state.settingsChanges = this.settingsModel.getModifications() || {};
+			this.settingsModel.dispose();
+			this.settingsModel = null;
+		}
 	}
 
 	_save() {
@@ -261,11 +357,8 @@ class PageEditRoomComponent {
 		} else if (this.model.autosweep && this.model.autosweepDelay === null) {
 			p = Promise.reject({ code: 'pageEditRoom.invalidAutosweepDelay', message: "Auto sweep delay is invalid." });
 		} else {
-			let change = this.model.getModifications();
-			if (change && !this.model.autosweep) {
-				delete change.autosweepDelay;
-			}
-			p = change
+			let change = this._getChanges();
+			p = Object.keys(change).length
 				? this.ctrl.call('setRoom', change)
 				: Promise.resolve();
 		}
@@ -275,6 +368,23 @@ class PageEditRoomComponent {
 		}).catch(err => {
 			this._setMessage(l10n.l(err.code, err.message, err.data));
 		});
+	}
+
+	_getChanges() {
+		if (!this.model || !this.settingsModel) return {};
+
+		let change = Object.assign({}, this.model.getModifications(), this.settingsModel.getModifications());
+		// If autosweep is disabled, we don't save the hidden delay value.
+		if (!this.model.autosweep) {
+			delete change.autosweepDelay;
+		}
+		// If custom teleport messages is disabled, we don't save the hidden text values.
+		if (!this.settingsModel.customTeleportMsgs) {
+			delete change.teleportLeaveMsg;
+			delete change.teleportArriveMsg;
+			delete change.teleportTravelMsg;
+		}
+		return change;
 	}
 
 	_setMessage(msg) {
@@ -324,6 +434,10 @@ class PageEditRoomComponent {
 
 	_canDeleteRoom() {
 		return this.module.player.isAdmin() || (this.room.owner && this.room.owner.id == this.ctrl.id);
+	}
+
+	_setSaveButton(c) {
+		c.setText(Object.keys(this._getChanges()).length ? txtUpdate : txtClose);
 	}
 }
 
