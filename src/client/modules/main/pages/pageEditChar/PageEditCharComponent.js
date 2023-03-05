@@ -271,7 +271,6 @@ class PageEditCharComponent {
 					popupTip: l10n.l('pageEditChar.aboutInfo', "Information about the character, such as background story or player preferences."),
 				},
 			)),
-
 			n.component(new ModelComponent(
 				this.model,
 				new LabelToggleBox(l10n.l('pageEditChar.customTeleportMessages', "Custom teleport messages"), false, {
