@@ -228,6 +228,7 @@ class PageEditRoomComponent {
 									teleportLeaveMsg: this.roomSettings.teleportLeaveMsg,
 									teleportArriveMsg: this.roomSettings.teleportArriveMsg,
 									teleportTravelMsg: this.roomSettings.teleportTravelMsg,
+									overrideCharTeleportMsgs: this.roomSettings.overrideCharTeleportMsgs,
 								});
 							}
 
@@ -280,6 +281,15 @@ class PageEditRoomComponent {
 											noToggle: true,
 											popupTip: l10n.l('pageEditRoom.teleportTravelMessageInfo', "Message seen by the teleporting character when they teleport here. The character's name will be prepended."),
 										},
+									)),
+									n.component(new ModelComponent(
+										this.settingsModel,
+										new LabelToggleBox(l10n.l('pageEditRoom.overrideCharacterMessages', "Override character messages"), false, {
+											className: 'small common--sectionpadding',
+											onChange: v => this.settingsModel.set({ overrideCharTeleportMsgs: v }),
+											popupTip: l10n.l('pageEditRoom.overrideCharacterMessagesInfo', "Override any customized character teleport messages with those defined for the room."),
+										}),
+										(m, c) => c.setValue(m.overrideCharTeleportMsgs, false),
 									)),
 								])) : null,
 							);
@@ -383,6 +393,7 @@ class PageEditRoomComponent {
 			delete change.teleportLeaveMsg;
 			delete change.teleportArriveMsg;
 			delete change.teleportTravelMsg;
+			delete change.overrideCharTeleportMsgs;
 		}
 		return change;
 	}
