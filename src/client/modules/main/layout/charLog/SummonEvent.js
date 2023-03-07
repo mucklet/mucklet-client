@@ -1,5 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import fullname from 'utils/fullname';
 
 const txtSummon = l10n.l('charLog.summon', "Summon");
 const txtHowToJoin = l10n.l('charLog.howToJoin', ". To accept the summons, type:");
@@ -23,7 +24,7 @@ class SummonEvent extends Elem {
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Txt("join " + (c.name + " " + c.surname).trim(), { tagName: 'code' })),
+							n.component(new Txt("join " + fullname(c), { tagName: 'code' })),
 						]),
 					])),
 				),
