@@ -56,8 +56,6 @@ class SetTeleportMsg {
 		this.app = app;
 
 		this.app.require([
-			'cmd',
-			'charLog',
 			'help',
 			'info',
 			'set',
@@ -87,14 +85,13 @@ class SetTeleportMsg {
 					new ListStep('value', this.module.cmdLists.getBool(), { name: "yes or no value" }),
 				],
 			}),
-			desc: l10n.l('setTeleportMsg.speciesDesc', "Use custom teleport messages. Value is <code>yes</code> or <code>no</code>. For setting specific messages, see <code>help set teleportmsgs</code>."),
+			desc: l10n.l('setTeleportMsg.teleportmsgsDesc', "Use custom teleport messages. Value is <code>yes</code> or <code>no</code>. For setting specific messages, see <code>help set teleportmsgs</code>."),
 			sortOrder: 300,
 			// value: this._exec.bind(this),
 		});
 
 		this.module.help.addTopic({
 			id: 'setTeleportMsgs',
-			category: 'profile',
 			cmd: 'set teleportmsgs',
 			usage: l10n.l('setTeleportMsgs.usage', usageText),
 			shortDesc: l10n.l('setTeleportMsgs.shortDesc', shortDesc),
@@ -111,7 +108,7 @@ class SetTeleportMsg {
 				}
 				return examples;
 			},
-			sortOrder: 10,
+			sortOrder: 15,
 		});
 	}
 
