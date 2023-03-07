@@ -303,7 +303,7 @@ class PageEditCharProfileComponent {
 									{
 										className: 'small common--sectionpadding',
 										noToggle: true,
-										popupTip: l10n.l('pageEditCharProfile.teleportLeaveMessageInfo', "Message seen by the departure room when teleporting away. The character's name will be prepended."),
+										popupTip: l10n.l('pageEditCharProfile.teleportLeaveMessageInfo', "Message seen by the origin room when teleporting away. The character's name will be prepended."),
 									},
 								)),
 								n.component(new PanelSection(
