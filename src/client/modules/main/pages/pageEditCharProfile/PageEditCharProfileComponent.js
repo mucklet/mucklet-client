@@ -6,6 +6,7 @@ import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import FileButton from 'components/FileButton';
 import PanelSection from 'components/PanelSection';
+import LabelToggleBox from 'components/LabelToggleBox';
 
 
 class PageEditCharProfileComponent {
@@ -263,13 +264,91 @@ class PageEditCharProfileComponent {
 						noToggle: true,
 					},
 				)),
+				n.component(new ModelComponent(
+					this.model,
+					new LabelToggleBox(l10n.l('pageEditCharProfile.customTeleportMessages', "Custom teleport messages"), false, {
+						className: 'common--formmargin',
+						onChange: v => this.model.set({ customTeleportMsgs: v }),
+						popupTip: l10n.l('pageEditCharProfile.customTeleportMessagesInfo', "Customize teleport messages shown when teleporting. May be overridden by custom teleport messages set for the rooms."),
+					}),
+					(m, c) => c.setValue(m.customTeleportMsgs, false),
+				)),
+				n.component(new ModelComponent(
+					this.model,
+					new Collapser(null),
+					(m, c, change) => {
+						if (change && !change.hasOwnProperty('customTeleportMsgs')) return;
+
+						// Reset custom messages if we hide them.
+						if (!m.customTeleportMsgs) {
+							m.set({
+								teleportLeaveMsg: this.profile.teleportLeaveMsg,
+								teleportArriveMsg: this.profile.teleportArriveMsg,
+								teleportTravelMsg: this.profile.teleportTravelMsg,
+							});
+						}
+
+						c.setComponent(m.customTeleportMsgs
+							? new Elem(n => n.elem('div', { className: 'common--formsubsection' }, [
+								n.component(new PanelSection(
+									l10n.l('pageEditCharProfile.teleportLeaveMessage', "Teleport leave message"),
+									new ModelComponent(
+										this.model,
+										new Textarea(this.model.teleportLeaveMsg, {
+											className: 'common--paneltextarea-small common--paneltextarea-smallfont',
+											events: { input: c => this.model.set({ teleportLeaveMsg: c.getValue() }) },
+										}),
+										(m, c) => c.setValue(m.teleportLeaveMsg),
+									),
+									{
+										className: 'small common--sectionpadding',
+										noToggle: true,
+										popupTip: l10n.l('pageEditCharProfile.teleportLeaveMessageInfo', "Message seen by the origin room when teleporting away. The character's name will be prepended."),
+									},
+								)),
+								n.component(new PanelSection(
+									l10n.l('pageEditCharProfile.teleportArriveMessage', "Teleport arrival message"),
+									new ModelComponent(
+										this.model,
+										new Textarea(this.model.teleportArriveMsg, {
+											className: 'common--paneltextarea-small common--paneltextarea-smallfont',
+											events: { input: c => this.model.set({ teleportArriveMsg: c.getValue() }) },
+										}),
+										(m, c) => c.setValue(m.teleportArriveMsg),
+									),
+									{
+										className: 'small common--sectionpadding',
+										noToggle: true,
+										popupTip: l10n.l('pageEditCharProfile.teleportArriveMessageInfo', "Message seen by the arrival room when teleporting there. The character's name will be prepended."),
+									},
+								)),
+								n.component(new PanelSection(
+									l10n.l('pageEditCharProfile.teleportTravelMessage', "Teleport travel message"),
+									new ModelComponent(
+										this.model,
+										new Textarea(this.model.teleportTravelMsg, {
+											className: 'common--paneltextarea-small common--paneltextarea-smallfont',
+											events: { input: c => this.model.set({ teleportTravelMsg: c.getValue() }) },
+										}),
+										(m, c) => c.setValue(m.teleportTravelMsg),
+									),
+									{
+										className: 'small common--sectionpadding',
+										noToggle: true,
+										popupTip: l10n.l('pageEditCharProfile.teleportTravelMessageInfo', "Message seen by you when teleporting. The character's name will be prepended."),
+									},
+								)),
+							])) : null,
+						);
+					},
+				)),
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
 					n.elem('div', { className: 'flex-1' }, [
 						n.elem('update', 'button', { events: {
 							click: () => this._save(),
 						}, className: 'btn primary common--btnwidth' }, [
-							n.component(new ModelTxt(this.model, m => m.isModified
+							n.component(new ModelTxt(this.model, m => this.model && Object.keys(this._getChanges()).length
 								? l10n.l('pageEditCharProfile.update', "Save edits")
 								: l10n.l('pageEditCharProfile.close', "Close"))),
 						]),
@@ -314,8 +393,8 @@ class PageEditCharProfileComponent {
 		if (!this.model) {
 			p = Promise.resolve();
 		} else {
-			let change = this.model.getModifications();
-			p = change
+			let change = this._getChanges();
+			p = Object.keys(change).length
 				? this.ctrl.call('setProfile', Object.assign(change, { profileId: this.profile.id }))
 				: Promise.resolve();
 		}
@@ -325,6 +404,19 @@ class PageEditCharProfileComponent {
 		}).catch(err => {
 			this._setMessage(l10n.l(err.code, err.message, err.data));
 		});
+	}
+
+	_getChanges() {
+		if (!this.model) return {};
+
+		let change = Object.assign({}, this.model.getModifications());
+		// If custom teleport messages is disabled, we don't save the hidden text values.
+		if (!this.model.customTeleportMsgs) {
+			delete change.teleportLeaveMsg;
+			delete change.teleportArriveMsg;
+			delete change.teleportTravelMsg;
+		}
+		return change;
 	}
 
 	_setMessage(msg) {

@@ -25,7 +25,7 @@ class SetCharAttr {
 				sortOrder: 200,
 			},
 			{
-				key: 'dndMsg',
+				key: 'dndmsg',
 				stepFactory: module => new ValueStep('value', '', {
 					next: new TextStep('value', {
 						name: "do not disturb message",
