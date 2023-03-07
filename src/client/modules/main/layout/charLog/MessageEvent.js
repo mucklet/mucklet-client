@@ -2,9 +2,7 @@ import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import formatText from 'utils/formatText';
 import poseSpacing from 'utils/poseSpacing';
-
-const txtMessage = l10n.l('charLog.message', "Message");
-const txtMessageOoc = l10n.l('charLog.messageOoc', "Message ooc");
+import fullname from 'utils/fullname';
 
 class MessageEvent extends Elem {
 	constructor(charId, ev) {
@@ -15,11 +13,11 @@ class MessageEvent extends Elem {
 				n.elem('div', { className: 'charlog--fieldset-label' }, [
 					n.component(new Txt(c && c.id === charId
 						? ev.ooc
-							? l10n.l('charLog.messageOocTo', "Message ooc to {name}", { name: t && t.name })
-							: l10n.l('charLog.messageTo', "Message to {name}", { name: t && t.name })
+							? l10n.l('charLog.messageOocTo', "Message ooc to {fullname}", { fullname: fullname(t) })
+							: l10n.l('charLog.messageTo', "Message to {fullname}", { fullname: fullname(t) })
 						: ev.ooc
-							? txtMessageOoc
-							: txtMessage,
+							? l10n.l('charLog.messageOocFrom', "Message ooc from {fullname}", { fullname: fullname(c) })
+							: l10n.l('charLog.messageFrom', "Message from {fullname}", { fullname: fullname(c) }),
 					)),
 				]),
 				n.component(new Txt(c && c.name, { className: 'charlog--char' })),
