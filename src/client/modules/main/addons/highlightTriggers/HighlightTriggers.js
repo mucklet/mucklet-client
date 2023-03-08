@@ -37,9 +37,12 @@ class HighlightTriggers {
 
 	_applyModifications(ev, ctrl, mod) {
 		let settings = ctrl.puppeteer
-			? this.module.player.getPuppet(ctrl.id, ctrl.puppeteer.id).settings
-			: this.module.player.getOwnedChar(ctrl.id).settings;
-
+			? this.module.player.getPuppet(ctrl.id, ctrl.puppeteer.id)?.settings
+			: this.module.player.getOwnedChar(ctrl.id)?.settings;
+		if (!settings) {
+			console.error("No settings found for char: ", ctrl);
+			return;
+		}
 
 		let f = msgEvents[ev.type];
 		if (f) {

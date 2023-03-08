@@ -296,11 +296,6 @@ class Help {
 						token: 'attr',
 						next,
 						errRequired: null,
-						// errNotFound: (step, m, state) => ({
-						// 	code: 'help.topicNotFound',
-						// 	message: 'There is no help topic for "{topic}".',
-						// 	data: { topic: ((state.getParam('topic') || "") + " " + m).trim() }
-						// })
 					},
 				),
 				{
@@ -470,19 +465,21 @@ class Help {
 			if (m >= 0) {
 				categories.push(c);
 			}
+		}
 
-			for (let t of c.topics) {
-				if (t.cmd === cmd || (t.alias && t.alias.indexOf(cmd) >= 0)) {
-					this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t, cmd));
-					return;
-				}
+		for (let topicId in this.topics.props) {
+			let t = this.topics.props[topicId];
+			if (t.cmd === cmd || (t.alias && t.alias.indexOf(cmd) >= 0)) {
+				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t, cmd));
+				return;
+			}
 
-				let m = matchesCmd(t, cmd);
-				if (m >= 0) {
-					topics.push(t);
-				}
+			let m = matchesCmd(t, cmd);
+			if (m >= 0) {
+				topics.push(t);
 			}
 		}
+		topics.sort((a, b) => (a.cmd || a.id).localeCompare(b.cmd || b.id));
 
 		if (!categories.length && !topics.length) {
 			this.module.charLog.logError(char, {

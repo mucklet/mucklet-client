@@ -13,15 +13,15 @@ class ItemList {
 	 * Creates an instance of ItemList.
 	 * @param {object} [opt] Optional params.
 	 * @param {Array.<object>} [opt.items] Array of initial items. See addItem method for the definition.
+	 * @param {object} [opt.expandRegex] Left and right regexes uses for expanding a selection on complete. Null matches any character. Defaults to { left: null, right: /\w/ }
 	 * @param {RegExp} [opt.regex] Regex used for matching. Must contain a single capturing parentheses. Defaults to /^\s*([\w\d]+)
 	 * @param {function} [opt.compare] Compare function for sorting item. Defaults to (a, b) => a.key.localeCompare(b.key)
 	 */
 	constructor(opt) {
 		opt = opt || {};
 		this.regex = opt.regex || /^[\w]+/;
+		this.expandRegex = opt.expandRegex || { left: null, right: /\w/ };
 		this.compare = opt.compare || keyCompare;
-		// this.lreg = opt.lreg || /[^\s:"!'=]/;
-		// this.rreg = opt.rreg || /[^\s:"!'=]/;
 
 		this._keys = {};
 		this._symbols = null;
@@ -118,11 +118,11 @@ class ItemList {
 
 		// Match using regex
 		let m = stream.match(this.regex);
-		return m && m[0] || null;
+		return (m && m[0]) || null;
 	}
 
 	complete(str, pos, ctx, inline) {
-		let { from, to } = expandSelection(str, null, /[\w]/, 0, pos);
+		let { from, to } = expandSelection(str, this.expandRegex.left, this.expandRegex.right, 0, pos);
 
 		var key = (str && str.slice(from, to).toLowerCase().replace(/\s+/g, ' ')) || '';
 

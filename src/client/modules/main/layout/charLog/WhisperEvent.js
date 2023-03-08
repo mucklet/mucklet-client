@@ -2,9 +2,7 @@ import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import formatText from 'utils/formatText';
 import poseSpacing from 'utils/poseSpacing';
-
-const txtWhisper = l10n.l('charLog.whisper', "Whisper");
-const txtWhisperOoc = l10n.l('charLog.whisperOoc', "Whisper ooc");
+import fullname from 'utils/fullname';
 
 class WhisperEvent extends Elem {
 	constructor(charId, ev) {
@@ -15,11 +13,11 @@ class WhisperEvent extends Elem {
 				n.elem('div', { className: 'charlog--fieldset-label' }, [
 					n.component(new Txt(c && c.id === charId
 						? ev.ooc
-							? l10n.l('charLog.whisperOocTo', "Whisper ooc to {name}", { name: t && t.name })
-							: l10n.l('charLog.whisperTo', "Whisper to {name}", { name: t && t.name })
+							? l10n.l('charLog.whisperOocTo', "Whisper ooc to {fullname}", { fullname: fullname(t) })
+							: l10n.l('charLog.whisperTo', "Whisper to {fullname}", { fullname: fullname(t) })
 						: ev.ooc
-							? txtWhisperOoc
-							: txtWhisper,
+							? l10n.l('charLog.whisperOocFrom', "Whisper ooc from {fullname}", { fullname: fullname(c) })
+							: l10n.l('charLog.whisperFrom', "Whisper from {fullname}", { fullname: fullname(c) }),
 					)),
 				]),
 				n.component(new Txt(c && c.name, { className: 'charlog--char' })),

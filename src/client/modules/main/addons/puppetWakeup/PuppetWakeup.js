@@ -160,7 +160,12 @@ class PuppetWakeup {
 			? Promise.resolve(controlled)
 			: this.module.player.getPlayer().call('controlPuppet', { charId: puppeteer.char.id, puppetId: puppet.id })
 		)
-			.then(c => c.call('wakeup'))
+			.then(c => {
+				if (isResError(c)) {
+					throw c;
+				}
+				c.call('wakeup');
+			})
 			.catch(err => this.module.toaster.openError(err));
 	}
 

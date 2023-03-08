@@ -11,6 +11,7 @@ class PageEditArea {
 	constructor(app, params) {
 		this.app = app;
 		this.app.require([
+			'api',
 			'roomPages',
 			'pageArea',
 			'confirm',
@@ -40,22 +41,30 @@ class PageEditArea {
 	 * @param {*} ctrl Controlled char model.
 	 * @param {*} area Area model of the area to edit.
 	 * @param {bool} toggleOpen Flag if the room panel should be toggled open.
-	 * @returns {function} Close function.
+	 * @returns {Promise.<function>} Promise of a close function.
 	 */
 	open(ctrl, area, toggleOpen) {
-		let close = this.module.roomPages.openPage(
-			'editArea_' + area.id,
-			ctrl.id,
-			null,
-			(ctrl, room, state, close) => ({
-				component: new PageEditAreaComponent(this.module, ctrl, area, state, close),
-				title: l10n.l('pageEditArea.editArea', "Edit Area"),
-			}),
-		);
-		if (toggleOpen) {
-			this.module.roomPages.openPanel();
-		}
-		return close;
+		return this.module.api.get('core.area.' + area.id + '.settings').then(areaSettings => {
+			areaSettings.on();
+			let close = this.module.roomPages.openPage(
+				'editArea_' + area.id,
+				ctrl.id,
+				null,
+				(ctrl, room, state, close) => ({
+					component: new PageEditAreaComponent(this.module, ctrl, area, areaSettings, state, close),
+					title: l10n.l('pageEditArea.editArea', "Edit Area"),
+				}),
+				{
+					onClose: () => {
+						areaSettings.off();
+					},
+				},
+			);
+			if (toggleOpen) {
+				this.module.roomPages.openPanel();
+			}
+			return close;
+		});
 	}
 
 	dispose() {}

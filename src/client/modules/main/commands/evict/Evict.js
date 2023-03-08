@@ -67,7 +67,6 @@ class Evict {
 				let types = this.evictType.getItems();
 				let examples = [];
 				for (let t of types) {
-					console.log("T: ", t);
 					if (t.examples) {
 						examples = examples.concat(t.examples);
 					}

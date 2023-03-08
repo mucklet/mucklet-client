@@ -65,7 +65,7 @@ const defaultAttr = [
 	{
 		key: 'arriveMsg',
 		name: "arrival message",
-		desc: l10n.l('setExit.arriveMsgDesc', "Message seen by the destination room. Usually in present tense (eg. \"arrives from ...\")."),
+		desc: l10n.l('setExit.arriveMsgDesc', "Message seen by the arrival room. Usually in present tense (eg. \"arrives from ...\")."),
 		sortOrder: 210,
 	},
 	{

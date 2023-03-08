@@ -8,7 +8,8 @@ const usageText = 'profile <span class="param">Keyword</span>';
 const shortDesc = "Change into one of your character's profiles";
 const helpText =
 `<p>Change your character's appearance to one of the profiles. This affects the <em>gender</em>, <em>species</em>, <em>description</em>, and <em>image</em>.</p>
-<p><code class="param">Keyword</code> is the keyword for the character profile.</p>`;
+<p><code class="param">Keyword</code> is the keyword for the character profile.</p>
+<p>Alias: <code>morph</code></p>`;
 
 /**
  * Profile adds the profile command.
@@ -27,6 +28,7 @@ class Profile {
 			next: new ListStep('profileId', this.module.cmdLists.getCharProfiles(), {
 				name: "character profile",
 			}),
+			alias: [ 'morph' ],
 			value: (ctx, p) => this.profile(ctx.char, p, true),
 		});
 
@@ -34,6 +36,7 @@ class Profile {
 			id: 'profile',
 			category: 'profile',
 			cmd: 'profile',
+			alias: [ 'morph' ],
 			usage: l10n.l('profile.usage', usageText),
 			shortDesc: l10n.l('profile.shortDesc', shortDesc),
 			desc: l10n.l('profile.helpText', helpText),
