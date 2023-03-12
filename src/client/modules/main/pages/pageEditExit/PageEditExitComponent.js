@@ -140,7 +140,7 @@ class PageEditExitComponent {
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('pageEditExit.arriveMessageInfo', "Message seen by the destination room. Usually starts with \"arrives from ...\"."),
+						popupTip: l10n.l('pageEditExit.arriveMessageInfo', "Message seen by the arrival room. Usually starts with \"arrives from ...\"."),
 					},
 				)),
 				n.component(new PanelSection(

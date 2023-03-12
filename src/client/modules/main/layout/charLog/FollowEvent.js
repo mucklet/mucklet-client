@@ -1,5 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import fullname from 'utils/fullname';
 
 const txtFollow = l10n.l('charLog.follow', "Follow");
 const txtStartsToFollow = l10n.l('charlog.startsToFollow', " starts to follow ");
@@ -33,7 +34,7 @@ class FollowEvent extends Elem {
 							n.component(new Txt(
 								self || opt.noCode
 									? "stop follow"
-									: "stop lead " + (c.name + " " + c.surname).trim()
+									: "stop lead " + fullname(c)
 								, { tagName: 'code' })),
 						]),
 					])),

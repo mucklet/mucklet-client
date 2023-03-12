@@ -1,5 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import fullname from 'utils/fullname';
 
 const txtFollowRequest = l10n.l('charLog.followRequest', "Follow request");
 const txtHowToLead = l10n.l('charLog.howToLead', ". To take the lead, type:");
@@ -23,7 +24,7 @@ class FollowRequestEvent extends Elem {
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Txt("lead " + (c.name + " " + c.surname).trim(), { tagName: 'code' })),
+							n.component(new Txt("lead " + fullname(c), { tagName: 'code' })),
 						]),
 					])),
 				),

@@ -1,6 +1,7 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import escapeHtml from 'utils/escapeHtml';
+import fullname from 'utils/fullname';
 
 const txtControlRequest = l10n.l('charLog.controlRequest', "Control request");
 const txtRequestToTakeControl = l10n.l('charlog.requestToTakeControl', " request to take over control of ");
@@ -25,7 +26,7 @@ class ControlRequestEvent extends Elem {
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Html('grant control <span class="opt">' + escapeHtml((c.name + " " + c.surname).trim()) + '</span>', { tagName: 'code' })),
+							n.component(new Html('grant control <span class="opt">' + escapeHtml(fullname(c)) + '</span>', { tagName: 'code' })),
 						]),
 					])),
 				),
@@ -34,7 +35,7 @@ class ControlRequestEvent extends Elem {
 					? null
 					: new Elem(n => n.elem('div', { className: 'charlog--pad-small' }, [
 						n.elem('div', { className: 'charlog--code' }, [
-							n.component(new Html('deny control <span class="opt">' + escapeHtml((c.name + " " + c.surname).trim()) + '</span> <span class="opt">= <span class="param">Reason</span></span>', { tagName: 'code' })),
+							n.component(new Html('deny control <span class="opt">' + escapeHtml(fullname(c)) + '</span> <span class="opt">= <span class="param">Reason</span></span>', { tagName: 'code' })),
 						]),
 					])),
 				),

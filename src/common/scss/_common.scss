@@ -40,6 +40,10 @@
 		resize: vertical;
 	}
 
+	&--paneltextarea-smallfont {
+		font-size: $font-size-small;
+	}
+
 	&--desc-size {
 		font-size: 15px;
 	}
