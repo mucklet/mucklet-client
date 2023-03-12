@@ -24,11 +24,11 @@
 
 	&--editorcont {
 		flex: 1 1 0px;
-		padding: 5px 34px 10px 5px;
+		padding: 5px 36px 6px 6px;
 		position: relative;
 	}
 
-	&--tools {
+	&--historytools {
 		position: absolute;
 		right: 0;
 		width: 32px;
@@ -38,14 +38,49 @@
 		}
 	}
 
+	&--sendtools {
+		position: absolute;
+		right: 2px;
+		width: 32px;
+
+		> * + * {
+			margin-top: 4px;
+		}
+	}
+
 	&--editor {
 		height: 100px;
-		padding-right: 8px;
+		padding: 0 8px 0 4px;
 	}
 
 
 	.simplebar-scrollbar::before {
 		background-color: lighten($color1, 18%);
+	}
+
+	&--touchonly {
+		display: none;
+	}
+
+	&--toolbtnfull.iconbtn {
+		height: 92px;
+	}
+}
+
+.console.console--touch {
+	.console--touchonly {
+		display: inherit;
+	}
+
+	.console--historytools {
+		left: 4px;
+		right: inherit;
+	}
+
+	.console--editorcont {
+		flex: 1 1 0px;
+		padding: 5px 36px 6px 34px;
+		position: relative;
 	}
 }
 
@@ -57,11 +92,11 @@
 	}
 
 	.console--editor {
-		height: 80px;
+		height: 92px;
 	}
 
 	.console-editor > .cm-editor .cm-content {
-		min-height: 80px;
+		min-height: 92px;
 	}
 }
 

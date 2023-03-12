@@ -20,7 +20,7 @@ const tabCompletionState = StateField.define({
 	},
 });
 
-function tabComplete(view) {
+export function tabComplete(view) {
 	let tr = view.state.update({ effects: tabCompleteEffect.of(null) });
 	let cState = tr.state.field(tabCompletionState, false);
 	if (cState && cState.active) {
