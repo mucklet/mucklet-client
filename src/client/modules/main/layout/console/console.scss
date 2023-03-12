@@ -24,13 +24,13 @@
 
 	&--editorcont {
 		flex: 1 1 0px;
-		padding: 5px 36px 6px 36px;
+		padding: 5px 36px 6px 6px;
 		position: relative;
 	}
 
-	&--lefttools {
+	&--historytools {
 		position: absolute;
-		left: 4px;
+		right: 0;
 		width: 32px;
 
 		> * + * {
@@ -38,9 +38,9 @@
 		}
 	}
 
-	&--tools {
+	&--sendtools {
 		position: absolute;
-		right: 0;
+		right: 2px;
 		width: 32px;
 
 		> * + * {
@@ -51,13 +51,36 @@
 	&--editor {
 		height: 100px;
 		padding: 0 8px 0 4px;
-		border-radius: 4px;
-		background-color: $color1;
 	}
 
 
 	.simplebar-scrollbar::before {
 		background-color: lighten($color1, 18%);
+	}
+
+	&--touchonly {
+		display: none;
+	}
+
+	&--toolbtnfull.iconbtn {
+		height: 92px;
+	}
+}
+
+.console.console--touch {
+	.console--touchonly {
+		display: inherit;
+	}
+
+	.console--historytools {
+		left: 4px;
+		right: inherit;
+	}
+
+	.console--editorcont {
+		flex: 1 1 0px;
+		padding: 5px 36px 6px 34px;
+		position: relative;
 	}
 }
 

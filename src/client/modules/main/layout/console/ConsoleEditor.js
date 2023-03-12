@@ -3,7 +3,7 @@ import { EditorView, keymap, placeholder } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { standardKeymap, insertNewline, cursorDocEnd } from '@codemirror/commands';
 import l10n from 'modapp-l10n';
-import tabCompletion from 'utils/codemirrorTabCompletion';
+import tabCompletion, { tabComplete } from 'utils/codemirrorTabCompletion';
 import spellcheck from 'utils/codemirrorSpellcheck';
 import { getToken } from 'utils/codemirror';
 
@@ -20,7 +20,7 @@ class ConsoleEditor {
 		this.state = state;
 
 		// Bind callbacks
-		this._onSend = this._onSend.bind(this);
+		this._onEnter = this._onEnter.bind(this);
 		this._onUpdate = this._onUpdate.bind(this);
 		this._cyclePrev = this._cycleHistory.bind(this, true);
 		this._cycleNext = this._cycleHistory.bind(this, false);
@@ -72,6 +72,18 @@ class ConsoleEditor {
 		this._cycleHistory(false, this.cm);
 	}
 
+	inserNewLine() {
+		insertNewline(this.cm);
+	}
+
+	send() {
+		this._onSend(this.cm);
+	}
+
+	tabComplete() {
+		tabComplete(this.cm);
+	}
+
 	_newState(doc) {
 		doc = doc || '';
 		let state = EditorState.create({
@@ -83,7 +95,7 @@ class ConsoleEditor {
 				}),
 				spellcheck,
 				keymap.of([
-					{ key: 'Enter', run: this._onSend },
+					{ key: 'Enter', run: this._onEnter },
 					{ key: 'Ctrl-Enter', run: insertNewline },
 					{ key: 'Ctrl-ArrowUp', run: this._cyclePrev },
 					{ key: 'Cmd-ArrowUp', run: this._cyclePrev },
@@ -109,6 +121,12 @@ class ConsoleEditor {
 			this.cm.setState(this._newState(doc));
 		}
 		this.state?.setDoc(doc.trim());
+	}
+
+	_onEnter(ctx) {
+		return this.module.self.getModel().mode == 'touch'
+			? insertNewline(ctx)
+			: this._onSend(ctx);
 	}
 
 	_onSend(ctx) {
