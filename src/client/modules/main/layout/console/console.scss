@@ -12,14 +12,15 @@
 	}
 
 	&--controlled {
-		flex: 0 0 42px;
-		border-bottom: 2px solid $color1;
+		flex: 0 0 auto;
 	}
 
 	&--controlledlist {
+		height: 42px;
 		padding: 4px 12px 2px 12px;
 		display: flex;
 		flex-direction: row;
+		border-bottom: 2px solid $color1;
 	}
 
 	&--editorcont {
@@ -85,7 +86,7 @@
 }
 
 .console.console--layoutmobile {
-	padding: 0 0;
+	padding: 1px 0 0 0;
 
 	.console--container {
 		border-radius: 0;
