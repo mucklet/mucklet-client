@@ -1,7 +1,8 @@
 import { Elem } from 'modapp-base-component';
-import { CollectionList, ModelComponent } from 'modapp-resource-component';
+import { CollectionList, ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import SimpleBar from 'components/SimpleBar';
+import Collapser from 'components/Collapser';
 import ConsoleControlledChar from './ConsoleControlledChar';
 import ConsoleEditor from './ConsoleEditor';
 
@@ -18,15 +19,25 @@ class ConsoleComponent {
 
 	render(el) {
 
+		let components = {};
 		this.elem = new ModelComponent(
 			this.module.self.getModel(),
 			new Elem(n => n.elem('div', { className: 'console console--layout' + this.layout }, [
 				n.elem('div', { className: 'console--container' }, [
 					n.elem('div', { className: 'console--controlled' }, [
-						n.component(new CollectionList(
+						n.component(new CollectionComponent(
 							this.module.player.getControlled(),
-							m => new ConsoleControlledChar(this.module, m, { onClick: this._onClick, layout: this.layout }),
-							{ className: 'console--controlledlist', horizontal: true },
+							new Collapser(),
+							(col, c) => {
+								c.setComponent(components.controlled = col.length > 1 || this.layout == 'desktop'
+									? components.controlled || new CollectionList(
+										this.module.player.getControlled(),
+										m => new ConsoleControlledChar(this.module, m, { onClick: this._onClick, layout: this.layout }),
+										{ className: 'console--controlledlist', horizontal: true },
+									)
+									: null,
+								);
+							},
 						)),
 					]),
 					n.elem('div', { className: 'console--editorcont' }, [
