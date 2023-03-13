@@ -1,5 +1,5 @@
-import { Elem } from 'modapp-base-component';
-import { EditorView, keymap, placeholder } from '@codemirror/view';
+import { Elem, Txt } from 'modapp-base-component';
+import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { standardKeymap, insertNewline, cursorDocEnd } from '@codemirror/commands';
 import l10n from 'modapp-l10n';
@@ -8,11 +8,6 @@ import spellcheck from 'utils/codemirrorSpellcheck';
 import { getToken } from 'utils/codemirror';
 
 const txtPlaceholder = l10n.l('console.enterYourCommand', "Enter your command (or type help)");
-
-// [TODO] Workaround for CodeMirror issue:
-// https://github.com/codemirror/dev/issues/1028
-// Remove once the issue is resolved.
-const isAndroid = /Android\b/.test(navigator.userAgent || '');
 
 class ConsoleEditor {
 	constructor(module, state) {
@@ -27,12 +22,15 @@ class ConsoleEditor {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'console-editor' }));
+		this.elem = new Elem(n => n.elem('div', { className: 'console-editor' }, [
+			n.component(new Txt(txtPlaceholder, { tagName: 'div', className: 'console-editor--placeholder' })),
+		]));
 		let rel = this.elem.render(el);
 		this.cm = new EditorView({
 			state: this._newState(this.state?.doc || ''),
 			parent: rel,
 		});
+		this._setEmpty();
 
 		return rel;
 	}
@@ -89,7 +87,6 @@ class ConsoleEditor {
 		let state = EditorState.create({
 			doc,
 			extensions: [
-				... isAndroid ? [] : [ placeholder(l10n.t(txtPlaceholder)) ],
 				tabCompletion({
 					complete: state => this.module.cmd.getCMTabComplete(state),
 				}),
@@ -156,6 +153,14 @@ class ConsoleEditor {
 
 	_onUpdate(update) {
 		this.state?.setDoc(this._getValue());
+
+		this._setEmpty();
+	}
+
+	_setEmpty() {
+		if (this.elem) {
+			this.elem[this.cm.state.doc.toString() ? 'removeClass' : 'addClass']('empty');
+		}
 	}
 
 	_getValue() {

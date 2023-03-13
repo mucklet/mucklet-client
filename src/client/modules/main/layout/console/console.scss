@@ -132,6 +132,20 @@
 .console-editor {
 	position: relative;
 
+	&--placeholder {
+		position: absolute;
+		top: 5px;
+		left: 3px;
+		color: $color1-placeholder;
+		display: none;
+	}
+
+	&.empty {
+		.console-editor--placeholder {
+			display: inherit;
+		}
+	}
+
 	> .cm-editor {
 		.cm-content {
 			font-family: $font-text;
@@ -144,9 +158,6 @@
 			padding: 0 5px 0 3px;
 			// word-break: break-word;
 			line-height: 22px;
-		}
-		.cm-placeholder {
-			color: $color1-placeholder;
 		}
 
 		.console--error { color: $log-error; }  // invalid
