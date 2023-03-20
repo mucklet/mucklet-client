@@ -51,7 +51,7 @@ class CharLogEvent {
 		this.subdiv = subdiv;
 		this.c = c;
 		this.div = div;
-		this.noMenu = c.noMenu || (opt && opt.noMenu);
+		this.noMenu = !!(ev.noMenu || c.noMenu || (opt && opt.noMenu));
 	}
 
 	render(el) {
