@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 /**
  * SetAreaOwner adds the setArea attribute to set the area owner.
@@ -8,7 +7,7 @@ class SetAreaOwner {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmdLists', 'setArea', 'charLog' ], this._init.bind(this));
+		this.app.require([ 'cmdSteps', 'setArea', 'charLog' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -16,8 +15,7 @@ class SetAreaOwner {
 
 		this.module.setArea.addAttribute({
 			key: 'owner',
-			stepFactory: () => new ListStep('charId', this.module.cmdLists.getAllChars(), {
-				textId: 'charName',
+			stepFactory: () => this.module.cmdSteps.newAnyCharStep({
 				name: "new owner",
 				errRequired: step => ({ code: 'setAreaOwner.characterRequired', message: "Who do you want to set as new owner?" }),
 			}),

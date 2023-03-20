@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'delete note <span class="param">Character</span>';
 const shortDesc = 'Delete any private notes for a character';
@@ -14,7 +13,13 @@ class DeleteNote {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help', 'api' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'charLog',
+			'help',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -25,9 +30,7 @@ class DeleteNote {
 			key: 'note',
 			alias: [ 'notes' ],
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'deleteNote.characterRequired', message: "Who do you want to delete the notes for?" }),
 				}),
 			],

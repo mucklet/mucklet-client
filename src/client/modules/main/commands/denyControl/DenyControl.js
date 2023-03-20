@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 import { communicationTooLong } from 'utils/cmdErr';
@@ -18,7 +17,14 @@ class DenyControl {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'player', 'charLog', 'info' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+			'player',
+			'charLog',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -26,9 +32,7 @@ class DenyControl {
 		this.module.cmd.addPrefixCmd('deny', {
 			key: 'control',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: null,
 				}),
 				new DelimStep("=", {

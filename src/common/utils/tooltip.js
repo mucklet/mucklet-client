@@ -34,6 +34,8 @@ function tryClose(ev, ref, opt) {
 }
 
 function createTooltip(ref, text, opt) {
+	opt = opt || {};
+
 	let ctx = getCtx(opt);
 
 	clearTimeout(ctx.timeout);
@@ -48,7 +50,10 @@ function createTooltip(ref, text, opt) {
 
 	ctx.ref = ref;
 	ctx.tooltip = new Tooltip(text, ref, {
-		margin: opt.margin || null,
+		className: opt.className,
+		margin: opt.margin,
+		size: opt.size,
+		position: opt.position,
 		onClose: () => {
 			if (ctx.ref === ref) {
 				ctx.ref = null;

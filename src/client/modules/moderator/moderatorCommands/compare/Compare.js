@@ -1,6 +1,5 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 import DelimStep from 'classes/DelimStep';
 import getObjectProperty from 'utils/getObjectProperty';
@@ -32,7 +31,7 @@ class Compare {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'player', 'cmdLists', 'helpModerate', 'api' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'charLog', 'player', 'cmdSteps', 'helpModerate', 'api' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -43,17 +42,14 @@ class Compare {
 			next: [
 				new IDStep('charId', {
 					name: "character name or ID",
-					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
-						textId: 'charName',
-						name: "character",
-						errRequired: step => ({ code: 'compare.characterRequired', message: "Which character?" }),
-					}),
+					else: this.module.cmdSteps.newAnyCharStep(),
 				}),
 				new DelimStep("=", {
 					next: [
 						new IDStep('compareCharId', {
 							name: "compare character name or ID",
-							else: new ListStep('compareCharId', this.module.cmdLists.getAllChars(), {
+							else: this.module.cmdSteps.newAnyCharStep({
+								id: 'compareCharId',
 								textId: 'compareCharName',
 								name: "compare character",
 								errRequired: step => ({ code: 'compare.compateCharacterRequired', message: "Which character to compare with?" }),

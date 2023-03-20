@@ -12,23 +12,24 @@
 	}
 
 	&--controlled {
-		flex: 0 0 42px;
-		border-bottom: 2px solid $color1;
+		flex: 0 0 auto;
 	}
 
 	&--controlledlist {
+		height: 42px;
 		padding: 4px 12px 2px 12px;
 		display: flex;
 		flex-direction: row;
+		border-bottom: 2px solid $color1;
 	}
 
 	&--editorcont {
 		flex: 1 1 0px;
-		padding: 5px 34px 10px 5px;
+		padding: 5px 36px 6px 6px;
 		position: relative;
 	}
 
-	&--tools {
+	&--historytools {
 		position: absolute;
 		right: 0;
 		width: 32px;
@@ -38,30 +39,65 @@
 		}
 	}
 
+	&--sendtools {
+		position: absolute;
+		right: 2px;
+		width: 32px;
+
+		> * + * {
+			margin-top: 4px;
+		}
+	}
+
 	&--editor {
 		height: 100px;
-		padding-right: 8px;
+		padding: 0 8px 0 4px;
 	}
 
 
 	.simplebar-scrollbar::before {
 		background-color: lighten($color1, 18%);
 	}
+
+	&--touchonly {
+		display: none;
+	}
+
+	&--toolbtnfull.iconbtn {
+		height: 92px;
+	}
+}
+
+.console.console--touch {
+	.console--touchonly {
+		display: inherit;
+	}
+
+	.console--historytools {
+		left: 4px;
+		right: inherit;
+	}
+
+	.console--editorcont {
+		flex: 1 1 0px;
+		padding: 5px 36px 6px 34px;
+		position: relative;
+	}
 }
 
 .console.console--layoutmobile {
-	padding: 0 0;
+	padding: 1px 0 0 0;
 
 	.console--container {
 		border-radius: 0;
 	}
 
 	.console--editor {
-		height: 80px;
+		height: 92px;
 	}
 
 	.console-editor > .cm-editor .cm-content {
-		min-height: 80px;
+		min-height: 92px;
 	}
 }
 
@@ -96,6 +132,20 @@
 .console-editor {
 	position: relative;
 
+	&--placeholder {
+		position: absolute;
+		top: 5px;
+		left: 3px;
+		color: $color1-placeholder;
+		display: none;
+	}
+
+	&.empty {
+		.console-editor--placeholder {
+			display: inherit;
+		}
+	}
+
 	> .cm-editor {
 		.cm-content {
 			font-family: $font-text;
@@ -108,9 +158,6 @@
 			padding: 0 5px 0 3px;
 			// word-break: break-word;
 			line-height: 22px;
-		}
-		.cm-placeholder {
-			color: $color1-placeholder;
 		}
 
 		.console--error { color: $log-error; }  // invalid

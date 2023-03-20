@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 
 /**
@@ -9,7 +8,11 @@ class EvictPuppeteer {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'evict', 'charLog', 'cmdLists' ], this._init.bind(this));
+		this.app.require([
+			'evict',
+			'charLog',
+			'cmdSteps',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -20,7 +23,8 @@ class EvictPuppeteer {
 			desc: l10n.l('evictPuppeteer.desc', `Evict from using a puppet. <code class="param">Value</code> is the name of the puppet.`),
 			next: [
 				new DelimStep("=", { errRequired: null }),
-				new ListStep('puppetId', this.module.cmdLists.getAllChars(), {
+				this.module.cmdSteps.newAnyCharStep({
+					id: 'puppetId',
 					textId: 'puppetName',
 					name: "puppet",
 					errRequired: step => ({ code: 'evictPuppeteer.puppetRequired', message: "What puppet do you want to evict from?" }),

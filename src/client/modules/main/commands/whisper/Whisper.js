@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
@@ -23,7 +22,13 @@ class Whisper {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'info' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'cmdSteps',
+			'help',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -33,8 +38,7 @@ class Whisper {
 		this.module.cmd.addCmd({
 			key: 'whisper',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getInRoomCharsAwake(), {
-					name: "character",
+				this.module.cmdSteps.newInRoomAwakeCharStep({
 					errRequired: null,
 				}),
 				new DelimStep("=", {

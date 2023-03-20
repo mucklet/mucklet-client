@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import ValueStep from 'classes/ValueStep';
@@ -21,7 +20,13 @@ class Warn {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'helpModerate', 'info' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'cmdSteps',
+			'helpModerate',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -31,8 +36,7 @@ class Warn {
 		this.module.cmd.addCmd({
 			key: 'warn',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
-					name: "character",
+				this.module.cmdSteps.newAwakeCharStep({
 					errRequired: null,
 				}),
 				new DelimStep("=", {

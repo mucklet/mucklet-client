@@ -2,6 +2,7 @@ import { Model } from 'modapp-resource';
 
 const defaultQueries = {
 	canHover: '(hover: hover)',
+	pointerCoarse: '(pointer: coarse)',
 };
 
 /**
@@ -48,7 +49,6 @@ class Media {
 		o.mql.removeEventListener('change', o.cb);
 		deleted(this.queries[k]);
 	}
-
 
 	dispose() {
 		for (let k in this.queries) {

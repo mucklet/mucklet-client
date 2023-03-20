@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'unsuspend <span class="param">Character</span>';
 const shortDesc = 'Unsuspend a currently suspended character';
@@ -15,7 +14,7 @@ class Unsuspend {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'helpModerate' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdSteps', 'charLog', 'helpModerate' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -25,9 +24,7 @@ class Unsuspend {
 		this.module.cmd.addCmd({
 			key: 'unsuspend',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to unsuspend?" }),
 				}),
 			],

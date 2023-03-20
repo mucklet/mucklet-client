@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 
 const usageText = 'request room owner = <span class="param">Character</span>';
@@ -16,7 +15,7 @@ class RequestRoomOwner {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'requestRoom', 'cmdLists', 'charLog', 'help' ], this._init.bind(this));
+		this.app.require([ 'requestRoom', 'cmdSteps', 'charLog', 'help' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -26,8 +25,7 @@ class RequestRoomOwner {
 			key: 'owner',
 			next: [
 				new DelimStep("=", { errRequired: null }),
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
+				this.module.cmdSteps.newAnyCharStep({
 					name: "new owner",
 					errRequired: step => ({ code: 'requestRoomOwner.characterRequired', message: "Who do you want to transfer ownership to?" }),
 				}),

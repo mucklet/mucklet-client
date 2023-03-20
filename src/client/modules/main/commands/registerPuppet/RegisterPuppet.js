@@ -1,6 +1,5 @@
 import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'register puppet <span class="param">Puppet</span>';
 const shortDesc = 'Register a puppet character';
@@ -15,7 +14,12 @@ class RegisterPuppet {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'charLog',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -25,8 +29,7 @@ class RegisterPuppet {
 			key: 'puppet',
 			next: [
 				new DelimStep("=", { errRequired: null }),
-				new ListStep('charId', this.module.cmdLists.getInRoomPuppets(), {
-					name: "character",
+				this.module.cmdSteps.newInRoomPuppetStep({
 					errRequired: null,
 				}),
 			],

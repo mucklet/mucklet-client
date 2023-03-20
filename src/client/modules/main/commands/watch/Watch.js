@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'watch <span class="param">Character</span>';
 const shortDesc = 'Add a watch for a character';
@@ -14,7 +13,7 @@ class Watch {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help', 'api' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdSteps', 'charLog', 'help', 'api' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -24,9 +23,7 @@ class Watch {
 		this.module.cmd.addCmd({
 			key: 'watch',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'watch.characterRequired', message: "Who do you want to watch for?" }),
 				}),
 			],

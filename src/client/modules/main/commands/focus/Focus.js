@@ -18,7 +18,14 @@ class Focus {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'charFocus', 'help', 'api' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'charLog',
+			'charFocus',
+			'help',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -44,9 +51,7 @@ class Focus {
 						new ErrorStep(/\s*(=)/, { code: 'focus.colorNotAllowed', message: "Highlight colors not avalable for @all." }),
 					],
 					else: [
-						new ListStep('charId', this.module.cmdLists.getAllChars(), {
-							textId: 'charName',
-							name: "character",
+						this.module.cmdSteps.newAnyCharStep({
 							errRequired: step => ({ code: 'focus.characterRequired', message: "Who do you want to focus on?" }),
 						}),
 						new DelimStep("=", {

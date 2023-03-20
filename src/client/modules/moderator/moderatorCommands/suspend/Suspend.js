@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import { communicationTooLong } from 'utils/cmdErr';
@@ -20,7 +19,7 @@ class Suspend {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'helpModerate', 'info' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdLists', 'cmdSteps', 'charLog', 'helpModerate', 'info' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -30,9 +29,7 @@ class Suspend {
 		this.module.cmd.addCmd({
 			key: 'suspend',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to suspend?" }),
 				}),
 				new DelimStep("=", {

@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 
 const usageText = 'set main <span class="opt">=</span> <span class="param">Character</span>';
@@ -17,7 +16,7 @@ class SetMain {
 
 		this.app.require([
 			'cmd',
-			'cmdLists',
+			'cmdSteps',
 			'charLog',
 			'help',
 			'player',
@@ -36,8 +35,7 @@ class SetMain {
 					key: 'main',
 					next: [
 						new DelimStep("=", { errRequired: null }),
-						new ListStep('charId', module.cmdLists.getOwnedChars(), {
-							name: "main character",
+						this.module.cmdSteps.newOwnedCharStep({
 							errRequired: null,
 						}),
 					],

@@ -1,6 +1,5 @@
 import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
-import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import IDStep from 'classes/IDStep';
 
@@ -22,7 +21,7 @@ class TransferChar {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmdLists', 'cmd', 'charLog', 'helpOverseer', 'api', 'player' ], this._init.bind(this));
+		this.app.require([ 'cmdSteps', 'cmd', 'charLog', 'helpOverseer', 'api', 'player' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -31,9 +30,7 @@ class TransferChar {
 		this.module.cmd.addPrefixCmd('transfer', {
 			key: 'char',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'transferChar.characterRequired', message: "What character do you want to transfer ownership of?" }),
 				}),
 				new DelimStep("="),
@@ -46,7 +43,8 @@ class TransferChar {
 					}),
 					else: new IDStep('userId', {
 						name: "user's character name or user ID",
-						else: new ListStep('ownerCharId', this.module.cmdLists.getAllChars(), {
+						else: this.module.cmdSteps.newAnyCharStep({
+							id: 'ownerCharId',
 							textId: 'ownerCharName',
 							name: "user",
 							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),

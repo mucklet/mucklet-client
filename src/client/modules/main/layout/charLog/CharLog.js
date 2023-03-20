@@ -236,14 +236,17 @@ class CharLog {
 	 * @param {string} char Controlled character.
 	 * @param {string} type Event type.
 	 * @param {Component} component Component.
-	 * @param {Date} [time] Optional timestamp. Defaults to now.
+	 * @param {object}[opt] Optional params.
+	 * @param {Date} [opt.time] Optional timestamp. Defaults to now.
+	 * @param {boolean} [opt.noMenu] Optional noMenu flag. Defaults to true.
 	 */
-	logComponent(char, type, component, time) {
+	logComponent(char, type, component, opt) {
 		this.getLog(char).then(l => l.add({
 			id: this._getLogId(),
 			type,
-			time: this._getTimestamp(l, time),
+			time: this._getTimestamp(l, opt?.time),
 			component,
+			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
 		}));
 	}
 
@@ -251,14 +254,17 @@ class CharLog {
 	 * Adds an info event to a character log, generating a local event ID.
 	 * @param {string} char Controlled character.
 	 * @param {string|LocaleString} msg Info message.
-	 * @param {Date} [time] Optional timestamp. Defaults to now.
+	 * @param {object}[opt] Optional params.
+	 * @param {Date} [opt.time] Optional timestamp. Defaults to now.
+	 * @param {boolean} [opt.noMenu] Optional noMenu flag. Defaults to true.
 	 */
-	logInfo(char, msg, time) {
+	logInfo(char, msg, opt) {
 		this.getLog(char).then(l => l.add({
 			id: this._getLogId(),
 			type: 'info',
-			time: this._getTimestamp(l, time),
+			time: this._getTimestamp(l, opt?.time),
 			msg,
+			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
 		}));
 	}
 
@@ -266,14 +272,17 @@ class CharLog {
 	 * Adds an error event to a character log, generating a local event ID.
 	 * @param {string} char Controlled character.
 	 * @param {object} err Error object with a message property.
-	 * @param {Date} [time] Optional timestamp. Defaults to now.
+	 * @param {object}[opt] Optional params.
+	 * @param {Date} [opt.time] Optional timestamp. Defaults to now.
+	 * @param {boolean} [opt.noMenu] Optional noMenu flag. Defaults to true.
 	 */
-	logError(char, err, time) {
+	logError(char, err, opt) {
 		this.getLog(char).then(l => l.add({
 			id: this._getLogId(),
 			type: 'error',
-			time: this._getTimestamp(l, time),
+			time: this._getTimestamp(l, opt?.time),
 			error: err,
+			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
 		}));
 	}
 
