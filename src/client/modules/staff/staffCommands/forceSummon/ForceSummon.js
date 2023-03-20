@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'force summon <span class="param">Character</span>';
 const shortDesc = 'Summon a character by force';
@@ -17,7 +16,7 @@ class ForceSummon {
 
 		this.app.require([
 			'cmd',
-			'cmdLists',
+			'cmdSteps',
 			'help',
 			'roleFeature',
 		], this._init.bind(this));
@@ -33,9 +32,7 @@ class ForceSummon {
 				this.module.cmd.addPrefixCmd('force', {
 					key: 'summon',
 					next: [
-						new ListStep('charId', this.module.cmdLists.getAllChars(), {
-							textId: 'charName',
-							name: "character",
+						this.module.cmdSteps.newAnyCharStep({
 							errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to summon?" }),
 						}),
 					],

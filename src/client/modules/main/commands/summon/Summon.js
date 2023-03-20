@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'summon <span class="param">Character</span>';
 const shortDesc = 'Summon a character to join you';
@@ -15,7 +14,11 @@ class Summon {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,8 +26,7 @@ class Summon {
 		this.module.cmd.addCmd({
 			key: 'summon',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
-					name: "character",
+				this.module.cmdSteps.newAwakeCharStep({
 					errRequired: step => ({ code: 'summon.charRequired', message: "Who do you wish to summon?" }),
 				}),
 			],

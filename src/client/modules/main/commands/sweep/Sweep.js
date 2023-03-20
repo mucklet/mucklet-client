@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'sweep <span class="opt"><span class="param">Character</span></span>';
 const shortDesc = 'Send home sleeping characters';
@@ -14,15 +13,18 @@ class Sweep {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 		this.module.cmd.addCmd({
 			key: 'sweep',
-			next: new ListStep('charId', this.module.cmdLists.getInRoomChars(), {
-				name: "character",
+			next: this.module.cmdSteps.newInRoomCharStep({
 				errRequired: null,
 			}),
 			value: (ctx, p) => this.sweep(ctx.char, p.charId ? { charId: p.charId } : null),

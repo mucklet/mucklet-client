@@ -16,7 +16,11 @@ class ListChar {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'helpBuilder' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'helpBuilder',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -26,9 +30,7 @@ class ListChar {
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'char',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'listChar.characterRequired', message: "Who do you want to list things for?" }),
 				}),
 				new DelimStep(":", { errRequired: null }),

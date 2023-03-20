@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'join <span class="param">Character</span>';
 const shortDesc = 'Join a character who has summoned you';
@@ -15,7 +14,11 @@ class Join {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,8 +26,7 @@ class Join {
 		this.module.cmd.addCmd({
 			key: 'join',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
-					name: "character",
+				this.module.cmdSteps.newAwakeCharStep({
 					errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to join?" }),
 				}),
 			],

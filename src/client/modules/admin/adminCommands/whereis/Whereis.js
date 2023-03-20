@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'whereis <span class="param">Character</span>';
 const shortDesc = "Show a character's location";
@@ -15,16 +14,23 @@ class Whereis {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'helpAdmin', 'charLog', 'player', 'api' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'cmdSteps',
+			'helpAdmin',
+			'charLog',
+			'player',
+			'api',
+		],
+		this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 		this.module.cmd.addCmd({
 			key: 'whereis',
-			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
-				textId: 'charName',
-				name: "character",
+			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => ({ code: 'whereisCmd.characterRequired', message: "Who do you want to locate?" }),
 			}),
 			alias: [ 'where' ],

@@ -126,10 +126,10 @@ class ConsoleComponent {
 	_onClick() {
 		if (!this.elem) return;
 
-		let editor = this.elem.getNode('editor');
-		if (editor) {
-			// editor.getComponent().focus();
-		}
+		// let editor = this.elem.getComponent().getNode('editor');
+		// if (editor) {
+		// 	// editor.getComponent().focus();
+		// }
 	}
 }
 

@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'follow <span class="param">Character</span>';
 const shortDesc = 'Follow a character wherever they go';
@@ -15,7 +14,11 @@ class Follow {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,8 +26,7 @@ class Follow {
 		this.module.cmd.addCmd({
 			key: 'follow',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getInRoomCharsAwake(), {
-					name: "character",
+				this.module.cmdSteps.newInRoomAwakeCharStep({
 					errRequired: step => ({ code: 'follow.charRequired', message: "Who do you wish to follow?" }),
 				}),
 			],

@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'stop lead <span class="opt"><span class="param">Character</span></span>';
 const shortDesc = 'Stop having characters follow you';
@@ -15,15 +14,18 @@ class Lead {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 		let opts = {
 			next: [
-				new ListStep('charId', this.module.cmdLists.getInRoomCharsAwake(), {
-					name: "character",
+				this.module.cmdSteps.newInRoomAwakeCharStep({
 					errRequired: null,
 				}),
 			],

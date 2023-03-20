@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'join <span class="param">Character</span>';
 const shortDesc = 'Join a character by force';
@@ -17,7 +16,7 @@ class ForceJoin {
 
 		this.app.require([
 			'cmd',
-			'cmdLists',
+			'cmdSteps',
 			'help',
 			'roleFeature',
 		], this._init.bind(this));
@@ -33,8 +32,7 @@ class ForceJoin {
 				this.module.cmd.addPrefixCmd('force', {
 					key: 'join',
 					next: [
-						new ListStep('charId', this.module.cmdLists.getCharsAwake(), {
-							name: "character",
+						this.module.cmdSteps.newAwakeCharStep({
 							errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to join?" }),
 						}),
 					],

@@ -1,7 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
-import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
@@ -24,7 +23,7 @@ class Mail {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'api', 'charLog', 'confirm', 'info' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdLists', 'cmdSteps', 'help', 'api', 'charLog', 'confirm', 'info' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -34,9 +33,7 @@ class Mail {
 		this.module.cmd.addCmd({
 			key: 'mail',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'mail.characterRequired', message: "Who do you want to send a mail to?" }),
 				}),
 				new DelimStep("=", {
