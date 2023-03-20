@@ -1,6 +1,12 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+.charlog-event {
+	&--tooltip {
+		font-style: normal;
+	}
+}
+
 .ev- {
 	&control {
 		font-size: $font-size-small;
