@@ -12,7 +12,10 @@ class Tooltip {
 	 * @param {string|LocaleString|Component} text Tip to show on click.
 	 * @param {Element} ref Reference element.
 	 * @param {object} [opt] Optional parameters.
+	 * @param {string} [opt.className] Class name for tooltip element.
 	 * @param {string} [opt.margin] Margin to use. May be 'm'.
+	 * @param {string} [opt.size] Size. May be 'auto' or 'full'. Default to 'auto'.
+	 * @param {number} [opt.position] Position of caret in pixels relative to viewport. Centered if omitted.
 	 * @param {function} [opt.onClose] Callback called on close.
 	 */
 	constructor(text, ref, opt) {
@@ -60,26 +63,38 @@ class Tooltip {
 		this.elem.setStyle('margin-left', null);
 		let el = this.elem.getElement();
 		let width = el.offsetWidth;
-		let elemRect = el.getBoundingClientRect();
 		this.elem.addClass('tooltip--full');
 		let contRect = el.getBoundingClientRect();
+		let contWidth = el.offsetWidth;
+		let refRect = this.ref.getBoundingClientRect();
+		let refWidth = this.ref.offsetWidth;
 
-		let contWidth = contRect.right - contRect.left;
+		// Calculate the x offset where the caret should be placed using the ref
+		// element as reference.
+		let offset = refWidth / 2;
+		if (typeof this.opt.position == 'number') {
+			offset = Math.min(Math.max(this.opt.position - refRect.left, 0), refWidth - 1);
+		}
+		// Ensure the offset is well inside the container to prevent the caret
+		// from being disconnected.
+		offset = Math.min(Math.max(offset, contRect.left - refRect.left + 9), contRect.right - refRect.left - 10);
 
-		if (width < contWidth) {
-			let contOffsetLeft = elemRect.left - contRect.left + (this.ref.offsetWidth) / 2;
+		if (width < contWidth && this.opt.size != 'full') {
+			let contOffset = refRect.left - contRect.left + offset - (width / 2);
 			this.elem.removeClass('tooltip--full');
-			if (contOffsetLeft < 0) {
+			if (contOffset < 0) {
 				this.elem.addClass('tooltip--left');
-			} else if (contOffsetLeft + width > contWidth) {
+			} else if (contOffset + width >= contWidth) {
 				this.elem.addClass('tooltip--right');
 			} else {
-				this.elem.setStyle('margin-left', (this.ref.offsetWidth / 2) + 'px');
+				this.elem.setStyle('margin-left', (offset - (width / 2)) + 'px');
 			}
 		}
 		this.elem.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
+
+		// Caret positioning
 		this.caret.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
-		this.caret.setStyle('margin-left', (this.ref.offsetWidth / 2) + 'px');
+		this.caret.setStyle('margin-left', offset + 'px');
 	}
 
 	close() {

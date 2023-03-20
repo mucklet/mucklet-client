@@ -1,6 +1,7 @@
 import { Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import formatDateTime from 'utils/formatDateTime';
+import * as tooltip from 'utils/tooltip';
 import CharLogEventMenu from './CharLogEventMenu';
 
 const txtTampered = l10n.l('charLog.tamperedWith', "Event is likely tampered with.");
@@ -10,6 +11,10 @@ class CharLogEvent {
 		this.modules = modules;
 		this.charId = charId;
 		this.ev = ev;
+
+		this._onMouseEnter = this._onMouseEnter.bind(this);
+		this._onMouseLeave = this._onMouseLeave.bind(this);
+		this._onClick = this._onClick.bind(this);
 
 		// Prerender component
 		let c = ev.component;
@@ -36,28 +41,17 @@ class CharLogEvent {
 				: ''
 			)
 			+ (invalid ? ' charlog--invalid' : '');
-		let title = "";
-		if (ec) {
-			let ep = ev.puppeteer;
-			title = (ec.name + " " + ec.surname).trim() + (ep ? "\n(" + (ep.name + " " + ep.surname).trim() + ")" : '') + (ev.time ? "\n" + formatDateTime(new Date(ev.time)) : '');
-		} else if (ev.time) {
-			title = formatDateTime(new Date(ev.time));
-		}
-		if (invalid) {
-			title += "\n" + l10n.t(invalid.code, invalid.message, invalid.data) + "\n" + l10n.t(txtTampered);
-		}
-		subdiv.setAttribute('title', title);
 		div.appendChild(subdiv);
 		c.render(subdiv);
 
-		if (!c.noMenu && (!opt || !opt.noMenu)) {
-			div.addEventListener('mouseenter', () => this._renderMenu());
-			div.addEventListener('mouseleave', () => this._unrenderMenu());
-		}
+		subdiv.addEventListener('mouseenter', this._onMouseEnter);
+		subdiv.addEventListener('mouseleave', this._onMouseLeave);
+		subdiv.addEventListener('click', this._onClick);
 
 		this.subdiv = subdiv;
 		this.c = c;
 		this.div = div;
+		this.noMenu = c.noMenu || (opt && opt.noMenu);
 	}
 
 	render(el) {
@@ -72,6 +66,48 @@ class CharLogEvent {
 			this.menu = null;
 		}
 		this.div.parentElement.removeChild(this.div);
+	}
+
+	_getTooltipText() {
+		let ev = this.ev;
+		let ec = ev.char;
+		let invalid = ev.invalid;
+		let txt = "";
+		if (ec) {
+			let ep = ev.puppeteer;
+			txt = (ec.name + " " + ec.surname).trim() + (ep ? "\n(" + (ep.name + " " + ep.surname).trim() + ")" : '') + (ev.time ? "\n" + formatDateTime(new Date(ev.time)) : '');
+		} else if (ev.time) {
+			txt = formatDateTime(new Date(ev.time));
+		}
+		if (invalid) {
+			txt += "\n" + l10n.t(invalid.code, invalid.message, invalid.data) + "\n" + l10n.t(txtTampered);
+		}
+		return txt;
+	}
+
+	_onClick(ev) {
+		let txt = this._getTooltipText();
+		if (txt) {
+			this.tooltip = tooltip.click(ev.currentTarget, txt, { className: 'charlog-event--tooltip', position: ev.clientX, margin: 'm', hoverDelay: true });
+		}
+		ev.stopPropagation();
+	}
+
+	_onMouseEnter(ev) {
+		// let txt = this._getTooltipText();
+		// if (txt) {
+		// 	this.tooltip = tooltip.mouseEnter(ev.currentTarget, txt, { position: ev.clientX, margin: 'm', hoverDelay: true });
+		// }
+		if (!this.noMenu) {
+			this._renderMenu();
+		}
+	}
+
+	_onMouseLeave(ev) {
+		// this.tooltip = tooltip.mouseLeave(ev.currentTarget);
+		if (!this.noMenu) {
+			this._unrenderMenu();
+		}
 	}
 
 	_renderMenu() {

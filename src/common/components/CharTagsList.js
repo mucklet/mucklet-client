@@ -106,7 +106,7 @@ class CharTagsList {
 										this.tooltip = tooltip.mouseEnter(ev.currentTarget.parentElement, cont.tag.desc, { margin: this.opt.tooltipMargin });
 									},
 									mouseleave: (c, ev) => {
-										this.tooltip = tooltip.mouseLeave(ev.currentTarget.parentElement, cont.tag.desc);
+										this.tooltip = tooltip.mouseLeave(ev.currentTarget.parentElement);
 									},
 								},
 						}, [

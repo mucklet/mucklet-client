@@ -14,7 +14,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	// right: 16px;
 	// transform: translateY(-100%) translateY(-18px);
 	border-radius: 4px;
-	transform: translateX(-50%) translateY(-100%) translateY(-5px);
+	transform: translateY(-100%) translateY(-5px);
 
 	&--text {
 		white-space: pre;
@@ -24,16 +24,13 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 
 	&--left {
 		left: 0;
-		transform: translateY(-100%) translateY(-5px);
 	}
 	&--right {
 		right: 0;
-		transform: translateY(-100%) translateY(-5px);
 	}
 	&--full {
 		right: 0;
 		left: 0;
-		transform: translateY(-100%) translateY(-5px);
 
 		.tooltip--text {
 			white-space: pre-wrap;
