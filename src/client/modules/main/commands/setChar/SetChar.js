@@ -19,7 +19,7 @@ class SetChar {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'info' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdSteps', 'charLog', 'info' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -32,9 +32,7 @@ class SetChar {
 		this.module.cmd.addPrefixCmd('set', {
 			key: 'char',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'transferChar.characterRequired', message: "What character do you want to set?" }),
 				}),
 				new DelimStep(":", { errRequired: null }),

@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'stop mute char <span class="param">Character</span>';
 const shortDesc = 'Stop muting a character';
@@ -17,16 +16,14 @@ class StopMuteChar {
 		// Bind callbacks
 		this._exec = this._exec.bind(this);
 
-		this.app.require([ 'cmd', 'stopMute', 'help', 'charLog', 'mute', 'cmdLists' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'stopMute', 'help', 'charLog', 'mute', 'cmdSteps' ], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 
 		let opts = {
-			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
-				textId: 'charName',
-				name: "character",
+			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => ({ code: 'stopMuteChar.characterRequired', message: "Who do you want to stop muting?" }),
 			}),
 			value: (ctx, p) => this.stopMuteChar(ctx.player, ctx.char, p),

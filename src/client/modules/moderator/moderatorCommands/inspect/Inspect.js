@@ -1,6 +1,5 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 import formatDateTime from 'utils/formatDateTime';
 import getObjectProperty from 'utils/getObjectProperty';
@@ -32,7 +31,7 @@ class Inspect {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'player', 'cmdLists', 'helpModerate', 'api' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'charLog', 'player', 'cmdSteps', 'helpModerate', 'api' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -43,10 +42,8 @@ class Inspect {
 			next: [
 				new IDStep('charId', {
 					name: "character name or ID",
-					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
-						textId: 'charName',
-						name: "character",
-						errRequired: step => ({ code: 'inspect.characterRequired', message: "Which character?" }),
+					else: this.module.cmdSteps.newAnyCharStep({
+						errRequired: step => ({ code: 'inspect.characterRequired', message: "Who do you want to inspect?" }),
 					}),
 				}),
 			],

@@ -17,7 +17,12 @@ class Evict {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'cmdLists', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'charLog',
+			'cmdSteps',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -29,9 +34,7 @@ class Evict {
 		this.module.cmd.addCmd({
 			key: 'evict',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'evict.characterRequired', message: "Who do you want to evict?" }),
 				}),
 				new DelimStep(":", {

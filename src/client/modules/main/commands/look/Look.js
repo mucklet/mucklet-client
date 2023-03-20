@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'look <span class="param">Character</span>';
 const shortDesc = 'Look at a character in the room';
@@ -15,15 +14,19 @@ class Look {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'charPages' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'help',
+			'charPages',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 		this.module.cmd.addCmd({
 			key: 'look',
-			next: new ListStep('charId', this.module.cmdLists.getInRoomChars(), {
-				name: "character",
+			next: this.module.cmdSteps.newInRoomCharStep({
 				errRequired: () => ({ code: 'look.required', message: 'Who do you want to look at?' }),
 			}),
 			alias: [ 'l', 'lookat' ],

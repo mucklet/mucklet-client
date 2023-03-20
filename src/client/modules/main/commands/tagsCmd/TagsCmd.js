@@ -1,6 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import CharTagsList, { hasTags } from 'components/CharTagsList';
 
 // const usageText = 'tags <span class="param">Character</span>';
@@ -16,16 +15,14 @@ class TagsCmd {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'charLog', 'api' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdSteps', 'help', 'charLog', 'api' ], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 		this.module.cmd.addCmd({
 			key: 'tags',
-			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
-				textId: 'charName',
-				name: "character",
+			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => ({ code: 'tagsCmd.characterRequired', message: "Who do you want to list tags for?" }),
 			}),
 			value: (ctx, p) => this.tags(ctx.player, ctx.char, p),

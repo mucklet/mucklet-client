@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'unwatch <span class="param">Character</span>';
 const shortDesc = 'Stop watching for a character';
@@ -13,7 +12,13 @@ class Unwatch {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help', 'api' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdSteps',
+			'charLog',
+			'help',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,7 +28,7 @@ class Unwatch {
 		this.module.cmd.addCmd({
 			key: 'unwatch',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getWatchedChars(), {
+				this.module.cmdSteps.newWatchedCharStep({
 					name: "watched character",
 					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to stop watching for?" }),
 				}),

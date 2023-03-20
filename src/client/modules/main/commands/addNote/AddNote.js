@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 
@@ -17,7 +16,14 @@ class AddNote {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help', 'api' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'cmdSteps',
+			'charLog',
+			'help',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -27,9 +33,7 @@ class AddNote {
 		this.module.cmd.addPrefixCmd('add', {
 			key: 'note',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => ({ code: 'addNote.characterRequired', message: "Who do you want to add a note for?" }),
 				}),
 				new DelimStep("=", {

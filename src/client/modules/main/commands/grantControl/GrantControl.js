@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 
 const usageText = 'grant control <span class="param">Character</span>';
 const shortDesc = 'Grant control of a puppet';
@@ -14,7 +13,7 @@ class GrantControl {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'help', 'player', 'charLog' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdSteps', 'help', 'player', 'charLog' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -22,9 +21,7 @@ class GrantControl {
 		this.module.cmd.addPrefixCmd('grant', {
 			key: 'control',
 			next: [
-				new ListStep('charId', this.module.cmdLists.getAllChars(), {
-					textId: 'charName',
-					name: "character",
+				this.module.cmdSteps.newAnyCharStep({
 					errRequired: null,
 				}),
 			],

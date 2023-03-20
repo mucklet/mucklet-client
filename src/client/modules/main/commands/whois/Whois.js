@@ -1,6 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
-import ListStep from 'classes/ListStep';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
 import CharTagsList, { hasTags } from 'components/CharTagsList';
 import { getCharIdleLevel } from 'utils/idleLevels';
@@ -24,7 +23,7 @@ class Whois {
 
 		this.app.require([
 			'cmd',
-			'cmdLists',
+			'cmdSteps',
 			'help',
 			'charLog',
 			'player',
@@ -37,9 +36,7 @@ class Whois {
 		this.module = module;
 		this.module.cmd.addCmd({
 			key: 'whois',
-			next: new ListStep('charId', this.module.cmdLists.getAllChars(), {
-				textId: 'charName',
-				name: "character",
+			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => ({ code: 'whoisCmd.characterRequired', message: "Who do you want to show information about?" }),
 			}),
 			alias: [ 'wi' ],
