@@ -1,0 +1,29 @@
+@import '~scss/variables';
+
+.stripe {
+
+	&--screendialog {
+		min-width: 480px;
+	}
+
+	&--pay {
+		margin-top: 22px;
+		position: relative;
+		> .spinner {
+			position: absolute;
+			top: 50%;
+			left: 26px;
+			&:before {
+				border-top-color: $color1;
+			}
+		}
+	}
+
+	&--btn {
+		width: 100%;
+	}
+
+	&--error {
+		color: $color5;
+	}
+}
