@@ -89,7 +89,7 @@ class StripeComponent {
 
 		let card = this.card;
 
-		this.payPromise = this.module.api.call('payment.customer.' + this.user.id, 'stripeCreatePaymentIntent', {
+		this.payPromise = this.module.api.call('payment.user.' + this.user.id + '.stripe', 'createPaymentIntent', {
 			paymentMethodType: 'card',
 		}).then(result => this.stripe.confirmCardPayment(
 			result.clientSecret,

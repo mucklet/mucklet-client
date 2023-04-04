@@ -11,6 +11,7 @@ class Stripe {
 		this.app = app;
 		this.params = Object.assign({
 			status: '',
+			priceId: '',
 		}, params);
 
 		this.app.require([
@@ -32,18 +33,33 @@ class Stripe {
 					this.module.screen.setComponent(this.component);
 					return;
 				}
-				return this.payPromise = this.module.api.call('payment.customer.' + user.id, 'stripeCreatePaymentIntent', {
-					paymentMethodType: 'card',
-				}).then(result => {
-					return loadStripe(info.stripePublicKey, {
-						apiVersion: info.stripeApiVersion,
-					}).then(stripe => {
-						this.stripe = stripe;
-						this.component = new StripePaymentElement(this.module, user, info, stripe, result.clientSecret);
-						this.module.screen.setComponent(this.component);
-					});
-				});
+				return this._createSubscription(user, info);
 			});
+		});
+	}
+
+	_createPaymentIntent(user, info) {
+		return this.payPromise = this.module.api.call('payment.user.' + user.id + '.stripe', 'createPaymentIntent', {
+			paymentMethodType: 'card',
+			force: true,
+		}).then(result => this._showPaymentElement(user, info, result.clientSecret));
+	}
+
+	_createSubscription(user, info) {
+		return this.payPromise = this.module.api.call('payment.user.' + user.id + '.stripe', 'createSubscription', {
+			priceId: this.params.priceId,
+			paymentMethodType: 'card',
+			force: true,
+		}).then(result => this._showPaymentElement(user, info, result.clientSecret));
+	}
+
+	_showPaymentElement(user, info, clientSecret) {
+		return loadStripe(info.stripePublicKey, {
+			apiVersion: info.stripeApiVersion,
+		}).then(stripe => {
+			this.stripe = stripe;
+			this.component = new StripePaymentElement(this.module, user, info, stripe, clientSecret);
+			this.module.screen.setComponent(this.component);
 		});
 	}
 

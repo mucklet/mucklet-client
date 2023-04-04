@@ -17,6 +17,7 @@ class StripePaymentElement {
 		this.clientSecret = clientSecret;
 		this.payPromise = null;
 
+
 		this.payment = null;
 	}
 
@@ -26,8 +27,9 @@ class StripePaymentElement {
 				n.component(new Txt(l10n.l('stripe.accountEmail', "Account email"), { tagName: 'h3' })),
 			]),
 			n.component(new ModelTxt(this.user, m => m.email, { tagName: 'div', className: 'common--formmargin' })),
-
-			n.elem('payment', 'div'),
+			n.elem('div', { className: 'stripe--payment' }, [
+				n.elem('payment', 'div'),
+			]),
 			n.component('message', new Collapser(null)),
 			n.elem('stripe', 'button', { events: {
 				click: (c, ev) => {
@@ -55,6 +57,7 @@ class StripePaymentElement {
 					colorText: '#fffcf2', // $color3
 					colorDanger: '#9a593e', // $log-error
 					colorTextPlaceholder: '#676c82', // $color1-placeholder-light
+					colorTextSecondary: '#93969f', // $color4
 					colorIcon: '#fffcf2', // $color3
 					fontSizeBase: '16px', // $font-size
 					fontFamily: 'Open Sans, sans-serif',
@@ -78,27 +81,7 @@ class StripePaymentElement {
 				},
 			},
 		});
-		this.payment = this.elements.create('payment', {
-			// style: {
-			// 	base: {
-			// 		iconColor: '#fffcf2', // '#00FF00', //9da0a9',
-			// 		color: '#fffcf2',
-			// 		fontFamily: 'Open Sans, sans-serif',
-			// 		fontSize: '16px',
-			// 		// fontSmoothing: 'antialiased',
-			// 		// ':-webkit-autofill': {
-			// 		// 	color: '#fce883',
-			// 		// },
-			// 		'::placeholder': {
-			// 			color: '#676c82',
-			// 		},
-			// 	},
-			// 	invalid: {
-			// 		iconColor: '#9a593e',
-			// 		color: '#9a593e',
-			// 	},
-			// },
-		});
+		this.payment = this.elements.create('payment');
 		this.payment.mount(this.elem.getComponent().getNode('payment'));
 
 		return rel;
