@@ -49,6 +49,9 @@ class StripePaymentElement {
 		this.elements = this.stripe.elements({
 			clientSecret: this.clientSecret,
 			locale: 'en',
+			fonts: [
+				{ cssSrc: '/fonts/fonts.css' },
+			],
 			appearance: {
 				theme: 'flat',
 				variables: {

@@ -26,16 +26,18 @@ class Stripe {
 
 		this.stripe = null;
 
-		this.module.auth.getUserPromise().then(user => {
-			return this.module.api.get('payment.info').then(info => {
-				if (this.params.status == 'redirect') {
-					this.component = new StripeCompleted(this.module, user, info);
-					this.module.screen.setComponent(this.component);
-					return;
-				}
-				return this._createSubscription(user, info);
+		if (this.params.status == 'payment') {
+			this.module.auth.getUserPromise().then(user => {
+				return this.module.api.get('payment.info').then(info => {
+					if (this.params.status == 'redirect') {
+						this.component = new StripeCompleted(this.module, user, info);
+						this.module.screen.setComponent(this.component);
+						return;
+					}
+					return this._createSubscription(user, info);
+				});
 			});
-		});
+		}
 	}
 
 	_createPaymentIntent(user, info) {

@@ -1,0 +1,186 @@
+@import '~scss/variables';
+
+
+$hublayout-sidepanel-width: 280px;
+
+.hublayout {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+
+	&--container {
+		display: flex;
+		flex-direction: row;
+		height: 100%;
+	}
+
+	&--sidepanel {
+		width: 90%;
+		max-width: $hublayout-sidepanel-width;
+		flex: 0 0 auto;
+		position: relative;
+		background-color: $color1-lighter;
+		z-index: 5;
+
+		/* Hide scrollbar for Chrome, Safari and Opera */
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		/* Hide scrollbar for IE, Edge and Firefox */
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
+
+		overflow-x: hidden;
+	}
+
+	&--maincontainer {
+		flex: 1 1 0px;
+		display: flex;
+		flex-direction: column;
+		overflow-x: hidden;
+		// background-color: ;
+	}
+
+	&--header {
+		flex: 0 0 auto;
+		// background-color: ;
+		position: relative;
+	}
+
+	&--headercontent {
+		position: relative;
+	}
+
+	&--headertools {
+		position: absolute;
+		z-index: 400;
+		top: 26px;
+		right: 40px;
+	}
+
+	&--hamburger {
+		z-index: 10;
+		position: fixed;
+		top: 6px;
+		left: 6px;
+		display: none;
+
+		.hamburger--svg-open {
+			fill: $color4;
+		}
+		.hamburger--svg-close {
+			fill: $color4-lightest;
+		}
+
+		.hamburger--icon {
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&--logo {
+		display: block;
+		height: 75px;
+		padding: 20px 24px 20px 10%;
+	}
+
+	&--main {
+		flex: 1 1 0px;
+		position: relative;
+		overflow-y: auto;
+		overflow-y: overlay;
+	}
+
+	&--profile {
+		flex: 0 0 auto;
+		padding-top: 56px;
+		text-align: center;
+	}
+
+	&--profileimage {
+		border-radius: 50%;
+		width: 96px;
+	}
+
+	&--menu {
+		flex: 1 1 0px;
+		padding: 12px 0 68px 0;
+	}
+
+	&--menuitem, &--logout {
+		// font-size: ;
+		color: $white;
+		display: block;
+		-webkit-transition: background-color 150ms linear;
+		-ms-transition: background-color 150ms linear;
+		transition: background-color 150ms linear;
+	}
+
+	&--menuitem {
+		position: relative;
+		padding: 16px 20px 16px 32px;
+
+		&:hover {
+			// background: ;
+		}
+
+		&.active {
+			// background: ;
+		}
+
+		&.active:hover {
+			// background: ;
+		}
+	}
+
+	&--logout {
+		max-width: $hublayout-sidepanel-width;
+		position: fixed;
+		padding: 16px 20px 16px 20px;
+		text-align: center;
+		bottom: 0;
+		width: inherit;
+		// background: ;
+
+		&:hover {
+			// background: ;
+		}
+	}
+}
+
+@media screen and (max-width: 900px) {
+
+	.hublayout {
+		&--sidepanel {
+			position: absolute;
+			height: 100%;
+			top: 0;
+			left: 0;
+			box-shadow: 0 0 8px $black;
+			transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
+			-webkit-transform: translate(-110%, 0);
+			transform: translate(-110%, 0);
+
+			&.open {
+				-webkit-transform: none;
+				transform: none;
+			}
+		}
+
+		&--logo {
+			height: 52px;
+			margin: 0 auto;
+			padding: 12px 16px 12px 56px;
+		}
+
+		&--hamburger {
+			display: block;
+		}
+
+		&--headertools {
+			top: 16px;
+			right: 16px;
+		}
+	}
+}

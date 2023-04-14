@@ -1,8 +1,10 @@
-const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);
+import Router from 'modules/router/Router';
 
-let modules = {
-	// Add third party modules here
+const modules = {
+	router: Router,
 };
+
+const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);
 
 // Using the first-character-lowercase name of the js-file as module name
 req.keys().forEach(key => {
