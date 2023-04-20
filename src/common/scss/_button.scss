@@ -23,7 +23,7 @@
 	}
 }
 
-button:focus {
+.btn:focus {
 	outline: 0;
 	&:not(.nooutline) {
 		box-shadow: 0 0 4px 1px $color2;

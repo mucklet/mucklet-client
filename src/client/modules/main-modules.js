@@ -1,7 +1,9 @@
 import Viewport from 'modules/viewport/Viewport';
+import PlayerTools from 'modules/playerTools/PlayerTools';
 
 const modules = {
 	viewport: Viewport,
+	playerTools: PlayerTools,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);

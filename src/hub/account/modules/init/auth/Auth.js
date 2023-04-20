@@ -97,6 +97,14 @@ class Auth {
 	}
 
 	/**
+	 * Returns the user or null if the user isn't logged in.
+	 * @returns {?Model} User model or null.
+	 */
+	getUser() {
+		return this.model.user;
+	}
+
+	/**
 	 * Calls the logout endpoint and then reloads.
 	 */
 	logout() {

@@ -1,9 +1,12 @@
 import { RootElem, Elem, Txt, Context } from 'modapp-base-component';
-import { CollectionList, ModelTxt, ModelComponent } from 'modapp-resource-component';
+import { CollectionList, ModelComponent } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
 import Hamburger from 'components/Hamburger';
+import FAIcon from 'components/FAIcon';
+import KebabMenu from 'components/KebabMenu';
+import HubLayoutFooter from './HubLayoutFooter';
 
 /**
  * HubLayoutComponent renders the main app layout.
@@ -31,62 +34,71 @@ class HubLayoutComponent {
 							className: 'hublayout--sidepanel',
 							events: { click: (c, e) => e.stopPropagation() }, // Prevent closing menu when clicking on it.
 						}, [
-							n.elem('div', { className: 'hublayout--profile' }, [
-								n.component(new ModelComponent(
-									this.user,
-									new ModelComponent(
-										null,
-										new Fader(),
-										(m, c, changed) => c.setComponent(new RootElem('img', {
-											className: 'hublayout--profileimage',
-											attributes: { src: m ? m.href : '/paw-bg.svg' },
-										})),
-									),
-									(m, c, changed) => {
-										c.setModel(m.image);
-									},
-								)),
-								n.elem('div', { className: 'hublayout--profilename' }, [
-									n.component(new Txt(l10n.l('layout.account', "Mucklet account"), { tagName: 'h2' })),
-									n.component(new ModelTxt(this.user, m => m.name.trim())),
+							n.elem('div', { className: 'hublayout--panelhead' }, [
+								n.elem('div', { className: 'hublayout--profile' }, [
+									n.component(new ModelComponent(
+										this.user,
+										new ModelComponent(
+											null,
+											new Fader(),
+											(m, c, changed) => c.setComponent(new RootElem('img', {
+												className: 'hublayout--profileimage',
+												attributes: { src: m ? m.href : '/paw-bg.svg' },
+											})),
+										),
+										(m, c, changed) => {
+											c.setModel(m.image);
+										},
+									)),
+									n.elem('div', { className: 'hublayout--profilename' }, [
+										n.component(new Txt(l10n.l('hubLayout.account', "Mucklet account"), { tagName: 'h2' })),
+									]),
 								]),
 							]),
-							n.component(new Context(
-								() => new CollectionWrapper(this.module.router.getRoutes(), {
-									eventBus: this.module.self.app.eventBus,
-									filter: r => !r.hidden
-										&& !r.parentId,
-								}),
-								routes => routes.dispose(),
-								routes => new CollectionList(routes, route => (route.menuComponent
-									? (typeof route.menuComponent == 'function'
-										? route.menuComponent(route, 'menuitem-' + route.id)
-										: route.menuComponent
-									)
-									: new ModelComponent(
-										this.module.router.getModel(),
-										new Elem(n =>
-											n.elem('a', {
-												className: 'hublayout--menuitem',
-												attributes: { id: 'menuitem-' + route.id },
-												events: { click: () => this._onMenuClick(route) },
-											}, [
-												n.component(new Txt(typeof route.name == 'function' ? route.name() : route.name)),
-											]),
-										),
-										(m, c) => c[m.route && m.route.id == route.id
-											? 'addClass'
-											: 'removeClass'
-										]('active'),
-									)
-								), { className: 'hublayout--menu' }),
-							)),
-							n.elem('a', {
-								className: 'hublayout--logout',
-								events: { click: () => this.module.auth.logout() },
-							}, [
-								n.component(new Txt(l10n.l('layout.logout', "Logga ut"))),
+							n.elem('div', { className: 'hublayout--panelmain' }, [
+								n.component(new Context(
+									() => new CollectionWrapper(this.module.router.getRoutes(), {
+										eventBus: this.module.self.app.eventBus,
+										filter: r => !r.hidden
+											&& !r.parentId,
+									}),
+									routes => routes.dispose(),
+									routes => new CollectionList(routes, route => (route.menuComponent
+										? (typeof route.menuComponent == 'function'
+											? route.menuComponent(route, 'menuitem-' + route.id)
+											: route.menuComponent
+										)
+										: new ModelComponent(
+											this.module.router.getModel(),
+											new Elem(n =>
+												n.elem('button', {
+													className: 'hublayout--menuitem',
+													attributes: { id: 'menuitem-' + route.id },
+													events: { click: () => this._onMenuClick(route) },
+												}, [
+													n.component(route.icon ? new FAIcon(route.icon) : null),
+													n.component(new Txt(typeof route.name == 'function' ? route.name() : route.name, {
+														className: 'hublayout--menuitemname',
+													})),
+												]),
+											),
+											(m, c) => c[m.route && m.route.id == route.id
+												? 'addClass'
+												: 'removeClass'
+											]('active'),
+										)
+									), { className: 'hublayout--menu' }),
+								)),
 							]),
+							n.elem('div', { className: 'hublayout--panelfooter' }, [
+								n.component(new HubLayoutFooter(this.module)),
+							]),
+							// n.elem('a', {
+							// 	className: 'hublayout--logout',
+							// 	events: { click: () => this.module.auth.logout() },
+							// }, [
+							// 	n.component(new Txt(l10n.l('hubLayout.logout', "Logout"))),
+							// ]),
 						]),
 						n.elem('div', { className: 'hublayout--maincontainer' }, [
 							n.elem('div', { className: 'hublayout--header' }, [
@@ -111,8 +123,9 @@ class HubLayoutComponent {
 										onToggle: (c, menuOpen) => this.module.self.toggleMenu(menuOpen),
 									})),
 									n.elem('div', { className: 'hublayout-common--maxwidth' }, [
-										n.elem('a', { className: 'flex-row sm', events: { click: () => this.module.router.setRoute('dashboard') }}, [
-											n.elem('img', { className: 'hublayout--logo flex-auto', attributes: { src: '/paw.png' }}),
+										n.elem('a', { className: 'flex-row flex-center sm', events: { click: () => this.module.router.setDefaultRoute() }}, [
+											n.elem('img', { className: 'hublayout--logo flex-auto', attributes: { src: '/paw-bg.svg' }}),
+											n.component(new Txt(l10n.l('hubLayout.account', "Mucklet account"), { tagName: 'h3' })),
 											n.component(new Context(
 												() => new CollectionWrapper(this.module.self.getTools(), {
 													filter: t => !t.type || t.type == 'logo' && (t.filter ? t.filter() : true),
@@ -128,6 +141,11 @@ class HubLayoutComponent {
 													},
 												),
 											)),
+											n.component(new KebabMenu(this.module.playerTools.getTools(), {
+												className: 'hublayout--kebabmenu',
+												btnClassName: 'iconbtn medium solid',
+												topMargin: 10,
+											})),
 										]),
 									]),
 								]),
@@ -138,9 +156,13 @@ class HubLayoutComponent {
 								(m, c) => {
 									let routeComponent = m.route ? m.route.component : null;
 									if (renderedRouteComponent != routeComponent) {
-										c.setComponent(!routeComponent || (m.route && m.route.fullscreen)
+										c.setComponent(!routeComponent
 											? routeComponent
-											: new Elem(n => n.elem('div', { className: 'hublayout-common--maxwidth' }, [ n.component(routeComponent) ])),
+											: new Elem(n => n.elem('div', { className: m.route?.fullscreen ? null : 'hublayout--routemaxwidth' }, [
+												n.elem('div', { className: 'hublayout--routecontainer' }, [
+													n.component(routeComponent),
+												]),
+											])),
 										);
 										renderedRouteComponent = routeComponent;
 									}

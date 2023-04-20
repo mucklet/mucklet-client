@@ -1,7 +1,9 @@
 import Router from 'modules/router/Router';
+import PlayerTools from 'modules/playerTools/PlayerTools';
 
 const modules = {
 	router: Router,
+	playerTools: PlayerTools,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);

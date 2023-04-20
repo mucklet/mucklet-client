@@ -19,6 +19,7 @@ class HubLayout {
 			'auth',
 			'router',
 			'screen',
+			'playerTools',
 		], this._init.bind(this));
 	}
 
@@ -63,7 +64,7 @@ class HubLayout {
 	 * @param {number} tool.sortOrder Sort order.
 	 * @param {function} tool.componentFactory Tool component factory: function() -> Component
 	 * @param {number} [tool.filter] Filter function: function() -> bool
-	 * @param {string} [tool.type] Target type. May be 'header'. Defaults to 'header';
+	 * @param {string} [tool.type] Target type. May be 'header' or 'footer'. Defaults to 'header';
 	 * @param {number} [tool.className] Class to give to the list item container.
 	 * @returns {this}
 	 */
