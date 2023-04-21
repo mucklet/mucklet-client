@@ -155,3 +155,44 @@
 .flex-auto {
 	flex: 0 0 auto;
 }
+
+.flex-50 {
+	width: 50%;
+}
+
+@media screen and (max-width: 720px) {
+	.flex-row.m {
+		flex-direction: column;
+
+		&.pad12 {
+			> *:not(:first-child) {
+				padding-left: 0;
+				padding-top: 6px;
+			}
+			> *:not(:last-child) {
+				padding-right: 0;
+				padding-bottom: 6px;
+			}
+		}
+
+		&.pad16 {
+			> *:not(:first-child) {
+				padding-left: 0;
+				padding-top: 8px;
+			}
+			> *:not(:last-child) {
+				padding-right: 0;
+				padding-bottom: 8px;
+			}
+		}
+
+		.flex-1, .flex-2, .flex-3, .flex-4, .flex-5 {
+			flex: 0 0 auto;
+		}
+
+		.flex-50 {
+			width: inherit;
+			flex: 0 0 auto;
+		}
+	}
+}

@@ -1,5 +1,11 @@
 @import '~scss/variables';
 
-.pageoverview {
+.routeoverview {
 
+	&--supportersection {
+		padding: 20px 20px;
+		background: $color1-light;
+	}
 }
+
+

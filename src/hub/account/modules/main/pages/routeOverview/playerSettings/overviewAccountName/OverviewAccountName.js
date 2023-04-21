@@ -18,17 +18,17 @@ class OverviewAccountName {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
-		// Add playerName
+		// Add accountName
 		this.module.routeOverview.addTool({
-			id: 'playerName',
+			id: 'accountName',
 			type: 'topSection',
 			sortOrder: 20,
-			componentFactory: (user, state) => new OverviewAccountNameComponent(this.module, user, state),
+			componentFactory: (user, paymentUser, state) => new OverviewAccountNameComponent(this.module, user, state),
 		});
 	}
 
 	dispose() {
-		this.module.routeOverview.removeTool('playerName');
+		this.module.routeOverview.removeTool('accountName');
 	}
 }
 

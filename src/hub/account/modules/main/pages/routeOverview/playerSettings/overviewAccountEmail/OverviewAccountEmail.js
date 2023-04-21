@@ -40,7 +40,7 @@ class OverviewAccountEmail {
 			id: 'email',
 			type: 'topSection',
 			sortOrder: 30,
-			componentFactory: (user, state) => new OverviewAccountEmailComponent(this.module, user, state),
+			componentFactory: (user, paymentUser, state) => new OverviewAccountEmailComponent(this.module, user, state),
 			alertModel: this.model,
 		});
 	}

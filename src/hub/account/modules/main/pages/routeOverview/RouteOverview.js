@@ -1,5 +1,6 @@
 import { Collection, Model, sortOrderCompare } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import { relistenModel } from 'utils/listenModel';
 
 import RouteOverviewComponent from './RouteOverviewComponent';
 import './routeOverview.scss';
@@ -18,6 +19,7 @@ class RouteOverview {
 		this.app.require([
 			'router',
 			'auth',
+			'api',
 		], this._init.bind(this));
 	}
 
@@ -38,7 +40,11 @@ class RouteOverview {
 			name: l10n.l('routeOverview.accountOverview', "Account overview"),
 			component: new RouteOverviewComponent(this.module, this.model),
 			// staticRouteParams: { userId: null },
-			setState: params => this.module.auth.getUserPromise(),
+			setState: params => this.module.auth.getUserPromise().then(user => {
+				return this.module.api.get('payment.user.' + user.id).then(paymentUser => {
+					this._setState(user, paymentUser);
+				});
+			}),
 			// getUrl: params => null,
 			// parseUrl: parts => null,
 			order: 10,
@@ -60,7 +66,7 @@ class RouteOverview {
 	 * @param {object} tool Tool object
 	 * @param {string} tool.id Tool ID.
 	 * @param {number} tool.sortOrder Sort order.
-	 * @param {function} tool.componentFactory Tool component factory: function(user, state) -> Component
+	 * @param {function} tool.componentFactory Tool component factory: function(user, paymentUser, state) -> Component
 	 * @param {string} [tool.type] Target type. May be 'preference' 'topSection', or 'section'. Defaults to 'preference';
 	 * @param {number} [tool.className] Class to give to the list item container.
 	 * @param {Model} [tool.alertModel] Model with an "alert" property. If the alert property resolves to true, an marker will show on settings icon
@@ -85,6 +91,18 @@ class RouteOverview {
 		this._listenTool(tool, false);
 		this.tools.remove(toolId);
 		return this;
+	}
+
+	/**
+	 * Sets the route state, and ensure it will remain subscribed.
+	 * @param {?ResModel} user User model.
+	 * @param {?ResModel} paymentUser Payment user model.
+	 * @returns {Promise} Promise to user being set.
+	 */
+	_setState(user, paymentUser) {
+		user = relistenModel(this.model.user, user);
+		paymentUser = relistenModel(this.model.paymentUser, paymentUser);
+		return this.model.set({ user, paymentUser });
 	}
 
 	_listenTool(tool, on) {

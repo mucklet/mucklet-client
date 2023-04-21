@@ -17,8 +17,8 @@ class OverviewAccountNameComponent {
 			n.component(new ModelComponent(
 				this.user,
 				new Collapser(),
-				(m, c, change) => c.setComponent(components.playerName = m && m.name
-					? components.playerName || new PanelSection(
+				(m, c, change) => c.setComponent(components.accountName = m && m.name
+					? components.accountName || new PanelSection(
 						l10n.l('overviewAccountName.name', "Player name"),
 						new ModelTxt(m, m => m.name, { className: 'overviewaccountname--name' }),
 						{

@@ -29,7 +29,7 @@ class OverviewAccountEmailComponent {
 								click: () => this.module.dialogChangeEmail.open({ setEmail: true }),
 							}, className: 'btn medium light icon-left' }, [
 								n.component(new FAIcon('at')),
-								n.component(new Txt(l10n.l('overviewAccountEmail.setEmailAddress', "Set email address"))),
+								n.component(new Txt(txtSetEmailAddress)),
 							]));
 						} else if (this.user.hasOpenId && this.user.emailVerified) {
 							comp = components.staticEmail = components.staticEmail || new ModelTxt(this.user, m => m.email, { className: 'overviewaccountemail--email' });
@@ -103,7 +103,6 @@ class OverviewAccountEmailComponent {
 											c.setValue(this.user.allowNewsletter, false);
 										}),
 										popupTip: l10n.l('notify.receiveNewsletterInfo', "Allow newsletters with game related info to be sent to you, at most once a month."),
-										popupTipClassName: 'popuptip--width-s',
 									}),
 									(m, c) => c.setValue(m.allowNewsletter, false),
 								)),

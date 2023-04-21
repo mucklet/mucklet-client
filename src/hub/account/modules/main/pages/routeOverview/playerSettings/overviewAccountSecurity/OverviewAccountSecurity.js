@@ -22,7 +22,7 @@ class OverviewAccountSecurity {
 			id: 'security',
 			type: 'topSection',
 			sortOrder: 100,
-			componentFactory: (user, state) => new OverviewAccountSecurityComponent(this.module, user, state),
+			componentFactory: (user, paymentUser, state) => new OverviewAccountSecurityComponent(this.module, user, state),
 			alertModel: this.model,
 		});
 	}
