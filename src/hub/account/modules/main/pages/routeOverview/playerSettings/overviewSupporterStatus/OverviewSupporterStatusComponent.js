@@ -8,40 +8,47 @@ import OverviewSupporterStatusSupporter from './OverviewSupporterStatusSupporter
 
 const txtSupporterStatusInfo = l10n.l(
 	'overviewSupporterStatus.supporterStatusInfo',
-	`Mucklet supporters not only helps with the development and operations of the game, but also get perks, such as:
+	`Mucklet supporters not only help with the development and operations of the game, but also get perks, such as:
 • Access to the supporter tag
 • Raised character cap
 • Raised profiles cap
 • Access to create bots`);
 
 class OverviewSupporterStatusComponent {
-	constructor(module, user, paymentUser, state) {
+	constructor(module, user, state, ctx) {
 		this.module = module;
 		this.user = user;
-		this.paymentUser = paymentUser;
 		this.state = state;
+		this.ctx = ctx;
 	}
 
 	render(el) {
 		let components = {};
-		this.elem = new Elem(n => n.elem('div', { className: 'overviewsupporterstatus' }, [
-			n.component(new PanelSection(
-				l10n.l('overviewSupporterStatus.supporterStatus', "Supporter status"),
-				new ModelComponent(
-					this.paymentUser,
-					new Collapser(),
-					(m, c) => c.setComponent(m.supporterUntil
-						? components.supporter = components.supporter || new OverviewSupporterStatusSupporter(this.module, this.user, this.paymentUser, this.state)
-						: components.notSupporter = components.notSupporter || new OverviewSupporterStatusNotSupporter(this.module, this.user, this.paymentUser, this.state),
-					),
-				),
-				{
-					className: 'common--sectionpadding',
-					popupTip: txtSupporterStatusInfo,
-					noToggle: true,
-				},
-			)),
-		]));
+		this.elem = new ModelComponent(
+			this.ctx.model,
+			new Collapser(),
+			(model, c) => c.setComponent(components.supporterStatus = model.paymentUser && model.supporterOffers
+				? components.supporterStatus || new Elem(n => n.elem('div', { className: 'overviewsupporterstatus' }, [
+					n.component(new PanelSection(
+						l10n.l('overviewSupporterStatus.supporterStatus', "Supporter status"),
+						new ModelComponent(
+							model.paymentUser,
+							new Collapser(),
+							(m, c) => c.setComponent(m.supporterUntil
+								? components.supporter = components.supporter || new OverviewSupporterStatusSupporter(this.module, this.user, model.paymentUser, model.supporterOffers, this.state)
+								: components.notSupporter = components.notSupporter || new OverviewSupporterStatusNotSupporter(this.module, this.user, model.paymentUser, model.supporterOffers, this.state),
+							),
+						),
+						{
+							className: 'common--sectionpadding',
+							popupTip: txtSupporterStatusInfo,
+							noToggle: true,
+						},
+					)),
+				]))
+				: null,
+			),
+		);
 		this.elem.render(el);
 	}
 

@@ -1,3 +1,5 @@
+import { Model } from 'modapp-resource';
+import listenModel from 'utils/listenModel';
 import OverviewSupporterStatusComponent from './OverviewSupporterStatusComponent';
 import './overviewSupporterStatus.scss';
 
@@ -23,7 +25,21 @@ class OverviewSupporterStatus {
 			id: 'supporterStatus',
 			type: 'supporterSection',
 			sortOrder: 20,
-			componentFactory: (user, paymentUser, state) => new OverviewSupporterStatusComponent(this.module, user, paymentUser, state),
+			createCtx: (ctx, user) => {
+				ctx.model = new Model({ data: { paymentUser: null, supporterOffers: null }, eventBus: this.app.eventBus });
+				return Promise.all([
+					this.module.api.get('payment.user.' + user.id)
+						.then(paymentUser => ctx.model?.set({ paymentUser: listenModel(paymentUser, true) })),
+					this.module.api.get('payment.offers.supporter')
+						.then(supporterOffers => ctx.model?.set({ supporterOffers: listenModel(supporterOffers, true) })),
+				]);
+			},
+			disposeCtx: ctx => {
+				listenModel(ctx.model.paymentUser, false);
+				listenModel(ctx.model.supporterOffers, false);
+				ctx.model = null;
+			},
+			componentFactory: (user, state, ctx) => new OverviewSupporterStatusComponent(this.module, user, state, ctx),
 		});
 	}
 

@@ -23,7 +23,7 @@ class OverviewAccountName {
 			id: 'accountName',
 			type: 'topSection',
 			sortOrder: 20,
-			componentFactory: (user, paymentUser, state) => new OverviewAccountNameComponent(this.module, user, state),
+			componentFactory: (user, state) => new OverviewAccountNameComponent(this.module, user, state),
 		});
 	}
 

@@ -62,6 +62,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		background: $color1-lighter;
 	}
 
+	&--faicontext {
+		font-family: $font-text;
+		font-weight: bold;
+		line-height: 31px;
+	}
+
 	&--info-nopad {
 		flex: 1 1 0px;
 		text-align: left;

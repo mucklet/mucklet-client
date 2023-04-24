@@ -16,7 +16,7 @@ class RouteOverviewComponent {
 
 	render(el) {
 		let user = this.model.user;
-		let paymentUser = this.model.paymentUser;
+		let ctx = this.model.ctx;
 		let components = {};
 		this.elem = new Elem(n => n.elem('div', { className: 'routeoverview' }, [
 			n.component(new Txt(l10n.l('routeOverview.accountOverview', "Account overview"), { tagName: 'h2' })),
@@ -29,7 +29,10 @@ class RouteOverviewComponent {
 					tools => tools.dispose(),
 					tools => new CollectionList(
 						tools,
-						t => t.componentFactory(user, paymentUser, this.state[t.id] = this.state[t.id] || {}),
+						t => {
+							this._ensureCtx(t, ctx, user);
+							return t.componentFactory(user, this.state[t.id] = this.state[t.id] || {}, ctx[t.id]);
+						},
 						{
 							className: 'flex-50',
 							subClassName: t => t.className || null,
@@ -47,7 +50,10 @@ class RouteOverviewComponent {
 						(col, c) => c.setComponent(components.supporter = col.length
 							? components.supporter || new CollectionList(
 								tools,
-								t => t.componentFactory(user, paymentUser, this.state[t.id] = this.state[t.id] || {}),
+								t => {
+									this._ensureCtx(t, ctx, user);
+									return t.componentFactory(user, this.state[t.id] = this.state[t.id] || {}, ctx[t.id]);
+								},
 								{
 									className: 'routeoverview--supportersection',
 									subClassName: t => t.className || null,
@@ -67,6 +73,14 @@ class RouteOverviewComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+		}
+	}
+
+	_ensureCtx(tool, ctx, user) {
+		if (!ctx[tool.id] && tool.createCtx) {
+			let o = {};
+			ctx[tool.id] = o;
+			tool.createCtx(o, user);
 		}
 	}
 }

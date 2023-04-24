@@ -3,6 +3,7 @@
  * @param {Model} model Model object.
  * @param {boolean} [on] Listens if true, otherwise unlistens. Defaults to true.
  * @param {function} [onChange] Callback function to call on change.
+ * @returns {Model} Model being listened to.
  */
 export default function listenModel(model, on, onChange) {
 	if (model) {
@@ -15,6 +16,7 @@ export default function listenModel(model, on, onChange) {
 			}
 		}
 	}
+	return model;
 }
 
 /**

@@ -26,7 +26,7 @@ class RouteOverview {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
-		this.model = new Model({ data: { alert: 0 }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { alert: 0, user: null, ctx: null }, eventBus: this.app.eventBus });
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
@@ -41,9 +41,21 @@ class RouteOverview {
 			component: new RouteOverviewComponent(this.module, this.model),
 			// staticRouteParams: { userId: null },
 			setState: params => this.module.auth.getUserPromise().then(user => {
-				return this.module.api.get('payment.user.' + user.id).then(paymentUser => {
-					this._setState(user, paymentUser);
-				});
+				let ctx = {};
+				let promises = [];
+				for (let tool of this.tools) {
+					if (tool.createCtx) {
+						let o = {};
+						ctx[tool.id] = o;
+						promises.push(tool.createCtx(o, user));
+					}
+				}
+				return Promise.all(promises)
+					.then(() => this._setState(user, ctx))
+					.catch(err => {
+						this._disposeCtx(user, ctx);
+						throw err;
+					});
 			}),
 			// getUrl: params => null,
 			// parseUrl: parts => null,
@@ -70,6 +82,8 @@ class RouteOverview {
 	 * @param {string} [tool.type] Target type. May be 'preference' 'topSection', or 'section'. Defaults to 'preference';
 	 * @param {number} [tool.className] Class to give to the list item container.
 	 * @param {Model} [tool.alertModel] Model with an "alert" property. If the alert property resolves to true, an marker will show on settings icon
+	 * @param {function} [tool.createCtx] Function called prior to rendering the route: function(ctx, user) -> Promise
+	 * @param {function} [tool.disposeCtx] Function called after unrendering the route: function(ctx, user)
 	 * @returns {this}
 	 */
 	addTool(tool) {
@@ -96,13 +110,15 @@ class RouteOverview {
 	/**
 	 * Sets the route state, and ensure it will remain subscribed.
 	 * @param {?ResModel} user User model.
-	 * @param {?ResModel} paymentUser Payment user model.
+	 * @param {object} ctx Context object for tools.
 	 * @returns {Promise} Promise to user being set.
 	 */
-	_setState(user, paymentUser) {
+	_setState(user, ctx) {
 		user = relistenModel(this.model.user, user);
-		paymentUser = relistenModel(this.model.paymentUser, paymentUser);
-		return this.model.set({ user, paymentUser });
+		if (this.model.ctx && this.model.ctx != ctx) {
+			this._disposeCtx(this.model.ctx, this.model.user);
+		}
+		return this.model.set({ user, ctx });
 	}
 
 	_listenTool(tool, on) {
@@ -125,7 +141,16 @@ class RouteOverview {
 		this.model.set({ alert });
 	}
 
+	_disposeCtx(ctx, user) {
+		for (let tool of this.tools) {
+			if (tool.disposeCtx) {
+				tool.disposeCtx(ctx[tool.id], user);
+			}
+		}
+	}
+
 	dispose() {
+		this._setState(null, null);
 		this.module.router.removeRoute('routeOverview');
 	}
 }

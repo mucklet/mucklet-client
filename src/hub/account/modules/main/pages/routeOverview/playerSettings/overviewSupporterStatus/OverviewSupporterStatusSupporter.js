@@ -4,10 +4,11 @@ import l10n from 'modapp-l10n';
 const txtThankYou = l10n.l('overviewSupporterStatus.thankYou', "Thank you for supporting Mucklet!");
 
 class OverviewSupporterStatusSupporter {
-	constructor(module, user, paymentUser) {
+	constructor(module, user, paymentUser, supporterOffers) {
 		this.module = module;
 		this.user = user;
 		this.paymentUser = paymentUser;
+		this.supporterOffers = supporterOffers;
 	}
 
 	render(el) {

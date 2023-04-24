@@ -7,4 +7,49 @@
 		font-size: 13px;
 		font-style: italic;
 	}
+
+	&--offers {
+		padding-top: 8px;
+	}
+}
+
+.overviewsupporterstatus-offer {
+	padding: 2px 0;
+
+	&--badge.recurrence-once {
+		.badge--faicon {
+			background: $color1-lightest;
+			color: $color1;
+		}
+	}
+	&--badge.recurrence-month {
+		.badge--faicon {
+			background: $color6;
+			color: $color1-light;
+		}
+	}
+	&--badge.recurrence-quarter {
+		.badge--faicon {
+			background: $color2;
+			color: $color1-light;
+		}
+	}
+
+	&--badge.btn.badge.recurrence-once:not(:disabled):hover {
+		.badge--faicon {
+			color: $color1-dark;
+		}
+	}
+	&--badge.btn.badge.recurrence-month:not(:disabled):hover {
+		.badge--faicon {
+			background: darken($color6, 8%);
+			color: $color1;
+		}
+	}
+	&--badge.btn.badge.recurrence-quarter:not(:disabled):hover {
+		.badge--faicon {
+			background: darken($color2, 8%);
+			color: $color1;
+		}
+	}
 }
