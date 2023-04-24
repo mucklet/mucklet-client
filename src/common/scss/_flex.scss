@@ -186,11 +186,11 @@
 			}
 		}
 
-		.flex-1, .flex-2, .flex-3, .flex-4, .flex-5 {
+		> .flex-1, > .flex-2, > .flex-3, > .flex-4, > .flex-5 {
 			flex: 0 0 auto;
 		}
 
-		.flex-50 {
+		> .flex-50 {
 			width: inherit;
 			flex: 0 0 auto;
 		}

@@ -2,7 +2,9 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import Fader from 'components/Fader';
+import Collapser from 'components/Collapser';
 import l10n from 'modapp-l10n';
+import OverviewSupporterStatusOfferContent from './OverviewSupporterStatusOfferContent';
 
 const txtRecurrence = {
 	once: '',
@@ -11,6 +13,14 @@ const txtRecurrence = {
 	halfYear: l10n.l('overviewSupporterStatus.recurrenceHalfYear', "6 months (recurring)"),
 	year: l10n.l('overviewSupporterStatus.recurrenceYear', "12 months (recurring)"),
 };
+
+// const txtRecurrenceInfo = {
+// 	once: l10n.l('overviewSupporterStatus.detailsNotStored', "Payment details will not be stored"),
+// 	month: l10n.l('overviewSupporterStatus.recurrenceMonth', "Recurring 1 month (recurring)"),
+// 	quarter: l10n.l('overviewSupporterStatus.recurrenceQuarter', "3 months (recurring)"),
+// 	halfYear: l10n.l('overviewSupporterStatus.recurrenceHalfYear', "6 months (recurring)"),
+// 	year: l10n.l('overviewSupporterStatus.recurrenceYear', "12 months (recurring)"),
+// };
 
 const txtOnceUnit = {
 	days: amount => amount == 1
@@ -35,11 +45,12 @@ const txtCurrency = {
 const txtOneTime = l10n.l('overviewSupporterStatus.oneTime', " one time");
 
 class OverviewSupporterStatusOffer {
-	constructor(module, user, paymentUser, offer) {
+	constructor(module, user, paymentUser, offer, model) {
 		this.module = module;
 		this.user = user;
 		this.paymentUser = paymentUser;
 		this.offer = offer;
+		this.model = model;
 	}
 
 	render(el) {
@@ -49,8 +60,8 @@ class OverviewSupporterStatusOffer {
 			(offer, c, change) => {
 				if (!change || change.hasOwnProperty('recurrence')) {
 					let isOnce = offer.recurrence == 'once';
-					c.setComponent(new Elem(n => n.elem('badge', 'div', { className: 'overviewsupporterstatus-offer--badge badge btn margin4 recurrence-' + offer.recurrence, events: {
-						click: () => this._openOffer(),
+					c.setComponent(new Elem(n => n.elem('badge', 'div', { className: 'overviewsupporterstatus-offer--badge badge large btn recurrence-' + offer.recurrence, events: {
+						click: () => this._toggleInfo(),
 					}}, [
 						n.elem('div', { className: 'badge--select' }, [
 							n.elem('div', { className: 'badge--faicon' }, [
@@ -60,13 +71,13 @@ class OverviewSupporterStatusOffer {
 								),
 							]),
 							n.elem('div', { className: 'badge--info' }, [
-								n.elem('div', { className: 'badge--title badge--nowrap' }, [
+								n.elem('div', { className: 'overviewsupporterstatus-offer--title badge--title badge--nowrap' }, [
 									n.component(new ModelTxt(this.offer, m => isOnce
 										? (txtOnceUnit[m.unit] || txtOnceUnit['unset'])(m.amount)
 										: txtRecurrence[offer.recurrence],
 									)),
 								]),
-								n.elem('div', { className: 'badge--strong badge--nowrap' }, [
+								n.elem('div', { className: 'overviewsupporterstatus-offer--info badge--strong badge--nowrap' }, [
 									n.component(new ModelTxt(this.offer, m => txtCurrency[m.currency](isOnce
 										? m.cost
 										: m.cost / m.amount,
@@ -78,17 +89,17 @@ class OverviewSupporterStatusOffer {
 								]),
 							]),
 						]),
-						// n.component(new ModelComponent(
-						// 	this.model,
-						// 	new Collapser(null),
-						// 	(m, c, change) => {
-						// 		if (change && !change.hasOwnProperty('selectedCharId')) return;
-						// 		c.setComponent(m.selectedCharId === this.char.id
-						// 			? new PageWatchCharContent(this.module, this.watch, (show) => this._toggleInfo(show))
-						// 			: null
-						// 		);
-						// 	}
-						// ))
+						n.component(new ModelComponent(
+							this.model,
+							new Collapser(null),
+							(m, c, change) => {
+								if (change && !change.hasOwnProperty('offerId')) return;
+								c.setComponent(m.offerId === this.offer.id
+									? new OverviewSupporterStatusOfferContent(this.module, this.user, this.paymentUser, this.offer, (show) => this._toggleInfo(show))
+									: null,
+								);
+							},
+						)),
 					])));
 				}
 			},
@@ -101,6 +112,15 @@ class OverviewSupporterStatusOffer {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_toggleInfo(show) {
+		let id = this.offer.id;
+		show = typeof show == 'undefined'
+			? !this.model.offerId || this.model.offerId != id
+			: !!show;
+
+		this.model.set({ offerId: show ? id : null });
 	}
 }
 

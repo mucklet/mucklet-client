@@ -10,7 +10,7 @@ import PageTicketsTicketContent from './PageTicketsTicketContent';
 const txtUnknown = l10n.l('pageTickets.unknown', "(Unknown)");
 const txtNotAssigned = l10n.l('pageTickets.notAssigned', "Not assigned");
 
-class PageTicketsMessage {
+class PageTicketsTicket {
 	constructor(module, ticket, model, opt) {
 		this.opt = opt;
 		this.module = module;
@@ -101,4 +101,4 @@ class PageTicketsMessage {
 	}
 }
 
-export default PageTicketsMessage;
+export default PageTicketsTicket;

@@ -16,6 +16,7 @@ $color5: rgba(201, 96, 54, 1);
 $color6: #4a9fc3;
 /* Other brands */
 $color-google:#d9534f;
+$color-paypal: #0070ba;
 /* Shadow */
 $shadow: rgba(0, 0, 0, 0.3);
 
@@ -46,6 +47,8 @@ $color6-active: darken($color6, 16%);
 
 $color-google-hover: darken($color-google, 8%);
 $color-google-active: darken($color-google, 16%);
+$color-paypal-hover: darken($color-paypal, 8%);
+$color-paypal-active: darken($color-paypal, 16%);
 
 
 /* Log colors */

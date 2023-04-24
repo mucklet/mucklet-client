@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import '~scss/mixins';
 
 .overviewsupporterstatus {
 
@@ -15,6 +16,18 @@
 
 .overviewsupporterstatus-offer {
 	padding: 2px 0;
+
+	&--title {
+		padding-left: 4px;
+		line-height: 26px;
+		font-size: $font-size;
+	}
+
+	&--info {
+		padding-left: 4px;
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
 
 	&--badge.recurrence-once {
 		.badge--faicon {
@@ -51,5 +64,13 @@
 			background: darken($color2, 8%);
 			color: $color1;
 		}
+	}
+}
+
+.overviewsupporterstatus-offercontent {
+	padding-top: 6px;
+
+	&--paypal.btn {
+		// @include btn-style($color-paypal, $color-paypal-hover, $color-paypal-active, $white, $white);
 	}
 }

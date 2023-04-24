@@ -202,6 +202,17 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 			height: 48px;
 		}
 
+		&--faicon {
+			font-size: 28px;
+			> i {
+				line-height: 47px;
+			}
+		}
+
+		&--faicontext {
+			line-height: 47px;
+		}
+
 		&--icon.small, &--faicon.small {
 			height: 32px;
 		}
