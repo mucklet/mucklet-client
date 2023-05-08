@@ -2,16 +2,17 @@
 
 .stripe {
 
-	&--screendialog {
-		min-width: 480px;
+	&--payment {
+		padding-bottom: 0px;
 	}
 
-	&--payment {
-		padding-bottom: 18px;
+	&--recurrenceinfo {
+		padding: 4px 0 8px 0;
+		font-size: $font-size-tiny;
 	}
 
 	&--pay {
-		margin-top: 22px;
+		margin-top: 16px;
 		position: relative;
 		> .spinner {
 			position: absolute;
@@ -21,6 +22,7 @@
 				border-top-color: $color1;
 			}
 		}
+		max-width: 240px;
 	}
 
 	&--btn {
@@ -29,5 +31,20 @@
 
 	&--error {
 		color: $color5;
+	}
+
+	&--input {
+		line-height: 20px;
+		margin-top: 6px;
+		margin-bottom: 10px;
+	}
+}
+
+
+@media screen and (max-width: 720px) {
+	.stripe {
+		&--pay {
+			max-width: inherit;
+		}
 	}
 }

@@ -151,7 +151,7 @@ class RouteOverview {
 
 	dispose() {
 		this._setState(null, null);
-		this.module.router.removeRoute('routeOverview');
+		this.module.router.removeRoute('overview');
 	}
 }
 

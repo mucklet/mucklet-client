@@ -1,9 +1,13 @@
 import Viewport from 'modules/viewport/Viewport';
 import PlayerTools from 'modules/playerTools/PlayerTools';
+import Confirm from 'modules/confirm/Confirm';
+import Toaster from 'modules/toaster/Toaster';
 
 const modules = {
 	viewport: Viewport,
 	playerTools: PlayerTools,
+	confirm: Confirm,
+	toaster: Toaster,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);

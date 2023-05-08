@@ -1,35 +1,50 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Elem, Txt, Input } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
-import ScreenDialog from 'components/ScreenDialog';
+import FAIcon from 'components/FAIcon';
+import * as txtRecurrence from 'utils/txtRecurrence';
+import * as txtCurrency from 'utils/txtCurrency';
 
 /**
  * StripePaymentElement draws a component that tests accepting a payment using
  * the stripe Payment element
  */
 class StripePaymentElement {
-	constructor(module, user, info, stripe, clientSecret) {
+	constructor(module, user, info, offer, stripe, clientSecret, opt) {
 		this.module = module;
 		this.user = user;
 		this.info = info;
+		this.offer = offer;
 		this.stripe = stripe;
 		this.clientSecret = clientSecret;
+		this.opt = opt || {};
+
 		this.payPromise = null;
-
-
 		this.payment = null;
+
+		this.info.on();
+		this.offer.on();
 	}
 
 	render(el) {
-		this.elem = new ScreenDialog(new Elem(n => n.elem('div', { className: 'stripe' }, [
-			n.elem('label', [
-				n.component(new Txt(l10n.l('stripe.accountEmail', "Account email"), { tagName: 'h3' })),
-			]),
-			n.component(new ModelTxt(this.user, m => m.email, { tagName: 'div', className: 'common--formmargin' })),
+		this.elem = new Elem(n => n.elem('div', { className: 'stripe' + (this.opt.className ? ' ' + this.opt.className : '') }, [
+			n.component(this.opt.includeName
+				? new Elem(n => n.elem('div', [
+					n.elem('label', { attributes: { for: 'stripe-cardholder' }}, [
+						n.component(new Txt(l10n.l('stripe.cardholder', "Cardholder"), { tagName: 'h3' })),
+					]),
+					n.component('cardholder', new Input('', {
+						className: 'stripe--input',
+						attributes: { placeholder: "Name on card", id: 'stripe-cardholder', spellcheck: 'false' },
+					})),
+				]))
+				: null,
+			),
 			n.elem('div', { className: 'stripe--payment' }, [
 				n.elem('payment', 'div'),
 			]),
+			n.component(new ModelTxt(this.offer, m => txtRecurrence.info(m.recurrence), { tagName: 'div', className: 'stripe--recurrenceinfo' })),
 			n.component('message', new Collapser(null)),
 			n.elem('stripe', 'button', { events: {
 				click: (c, ev) => {
@@ -38,12 +53,12 @@ class StripePaymentElement {
 				},
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
 				n.elem('spinner', 'div', { className: 'spinner fade hide' }),
+				n.component(new FAIcon('credit-card')),
 				n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
+				n.text(" "),
+				n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
 			]),
-		])), {
-			title: l10n.l('stripe.cardPayment', "Card payment"),
-			size: 'medium',
-		});
+		]));
 		let rel = this.elem.render(el);
 		// Mount stripe card element
 		this.elements = this.stripe.elements({
@@ -84,8 +99,14 @@ class StripePaymentElement {
 				},
 			},
 		});
-		this.payment = this.elements.create('payment');
-		this.payment.mount(this.elem.getComponent().getNode('payment'));
+		this.payment = this.elements.create('payment', {
+			fields: {
+				billingDetails: {
+					name: this.opt.includeName ? 'never' : 'auto',
+				},
+			},
+		});
+		this.payment.mount(this.elem.getNode('payment'));
 
 		return rel;
 	}
@@ -95,40 +116,63 @@ class StripePaymentElement {
 			this.payment.unmount();
 			this.elem.unrender();
 			this.elem = null;
+			this.payment = null;
 		}
+	}
+
+	dispose() {
+		this.unrender();
+		this.info.off();
+		this.offer.off();
 	}
 
 	_onPay() {
 		if (!this.payment || this.payPromise) return;
 
-		this.elem.getComponent().removeNodeClass('spinner', 'hide');
+		let billing_details = {};
 
+		if (this.opt.includeName) {
+			let cardholder = this.elem.getNode('cardholder').getValue().trim();
+			if (!cardholder) {
+				this._setMessage(l10n.l('stripe.missingCardholder', "Missing cardholder name."));
+				return;
+			}
+			billing_details.name = cardholder;
+		}
+
+		this.elem.removeNodeClass('spinner', 'hide');
 
 		this.payPromise = this.stripe.confirmPayment({
 			elements: this.elements,
 			confirmParams: {
-				return_url: window.location.href.split('?')[0] + '?stripe.status=redirect',
+				return_url: this.opt.returlUrl || window.location.href,
+				payment_method_data: {
+					billing_details,
+				},
 			},
 		}).then(result => {
 			if (result.error) {
 				console.error(result.error);
 				return Promise.reject({ code: 'stripe.error', message: result.error.message });
 			}
-			console.log("Success! Payment intent: ", result.paymentIntent);
-			let n = this.elem.getComponent().getNode('message');
-			n.setComponent(new Txt(l10n.l('stripe.successfulPayment', "Payment was successful")));
+			if (this.opt.onSuccess) {
+				this.opt.onSuccess(result.paymentIntent);
+			} else {
+				let n = this.elem.getNode('message');
+				n.setComponent(new Txt(l10n.l('stripe.successfulPayment', "Payment was successful")));
+			}
 		}).catch(err => {
 			this._setMessage(l10n.l(err.code, err.message, err.data));
 		}).then(() => {
 			this.payPromise = null;
-			this.elem.getComponent().addNodeClass('spinner', 'hide');
+			this.elem.addNodeClass('spinner', 'hide');
 		});
 
 	}
 
 	_setMessage(msg) {
 		if (!this.elem) return;
-		let n = this.elem.getComponent().getNode('message');
+		let n = this.elem.getNode('message');
 		n.setComponent(msg ? new Txt(msg, { className: 'stripe--error' }) : null);
 	}
 }

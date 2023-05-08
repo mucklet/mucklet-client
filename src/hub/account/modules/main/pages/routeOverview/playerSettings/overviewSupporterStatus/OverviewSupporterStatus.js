@@ -14,6 +14,10 @@ class OverviewSupporterStatus {
 		this.app.require([
 			'api',
 			'routeOverview',
+			'routePayment',
+			'dialogCardPayment',
+			'confirm',
+			'toaster',
 		], this._init.bind(this));
 	}
 

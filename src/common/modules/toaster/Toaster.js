@@ -15,7 +15,7 @@ class Toaster {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'notify' ], this._init.bind(this));
+		this.app.require([], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -69,7 +69,8 @@ class Toaster {
 
 		this.collection.add(opt, this.collection.length);
 		if (opt.title) {
-			this.module.notify.send(opt.title);
+			// Try send a notification if we have the notify module.
+			this.app.getModule('notify')?.send(opt.title);
 		}
 
 		if (opt.autoclose) {

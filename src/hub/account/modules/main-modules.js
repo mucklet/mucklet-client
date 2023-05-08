@@ -1,9 +1,13 @@
 import Router from 'modules/router/Router';
 import PlayerTools from 'modules/playerTools/PlayerTools';
+import Confirm from 'modules/confirm/Confirm';
+import Toaster from 'modules/toaster/Toaster';
 
 const modules = {
 	router: Router,
 	playerTools: PlayerTools,
+	confirm: Confirm,
+	toaster: Toaster,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);

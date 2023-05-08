@@ -8,10 +8,6 @@
 		font-size: 13px;
 		font-style: italic;
 	}
-
-	&--offers {
-		padding-top: 8px;
-	}
 }
 
 .overviewsupporterstatus-offer {
@@ -27,6 +23,10 @@
 		padding-left: 4px;
 		line-height: 20px;
 		font-size: $font-size-small;
+	}
+
+	&--unit {
+		color: $color4;
 	}
 
 	&--badge.recurrence-once {
@@ -74,3 +74,11 @@
 		// @include btn-style($color-paypal, $color-paypal-hover, $color-paypal-active, $white, $white);
 	}
 }
+
+.overviewsupporterstatus-nosubscription {
+	&--until {
+		color: $color3;
+		font-size: $font-size-small;
+	}
+}
+

@@ -22,6 +22,7 @@ class Confirm {
 	 * @param {function} [opt.onCancel] Callback function called on cancel or close.
 	 * @param {boolean} [opt.focusConfirm] Flag to tell if the confirm button should have initial focus. Default is the cancel button.
 	 * @param {boolean} [opt.spinner] Flag telling if a spinner should be used. Defaults to false.
+	 * @param {boolean} [opt.confirmStyle] Style to use for the confirm button. May be "primary", "secondary", or "warning". Defaults to "primary".
 	 * @param {boolean} [opt.noClose] Flag telling if closing through escape or an "X"-icon should be disabled. Defaults to false.
 	 * @param {boolean} [opt.onClose] Callback function called when the confirmed is closed.
 	 * @returns {Dialog} Dialog object.
@@ -42,7 +43,7 @@ class Confirm {
 			content: new Elem(n => {
 				let footer = [
 					n.elem('confirm', 'button', {
-						className: 'btn primary' + (opt.spinner ? ' confirm--withspinner' : ''),
+						className: 'btn ' + (opt.confirmStyle || 'primary') + (opt.spinner ? ' confirm--withspinner' : ''),
 						events: {
 							click: () => {
 								if (opt.spinner) {

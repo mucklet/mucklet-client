@@ -1,0 +1,44 @@
+@import '~scss/variables';
+
+.routepayment {
+
+}
+
+
+.routepayment-card {
+	&--product {
+		font-family: $font-text;
+		color: $color3;
+		font-size: $font-size-large;
+	}
+
+	&--cost {
+		font-size: $font-size;
+		color: $color3;
+	}
+
+	&--unit {
+		color: $color4;
+	}
+
+	&--description, &--recurrenceinfo {
+		font-size: $font-size-small;
+	}
+
+	&--features {
+		margin-bottom: 12px;
+	}
+
+	&--featuretitle {
+		font-size: $font-size-small;
+		color: $color2;
+	}
+
+	&--featuredesc {
+		font-size: $font-size-small;
+	}
+
+	&--cardpayment {
+		margin-top: 20px;
+	}
+}

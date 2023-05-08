@@ -3,46 +3,11 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import Fader from 'components/Fader';
 import Collapser from 'components/Collapser';
-import l10n from 'modapp-l10n';
+import * as txtCurrency from 'utils/txtCurrency';
+import * as txtRecurrence from 'utils/txtRecurrence';
+import * as txtUnit from 'utils/txtUnit';
+import * as txtProduct from 'utils/txtProduct';
 import OverviewSupporterStatusOfferContent from './OverviewSupporterStatusOfferContent';
-
-const txtRecurrence = {
-	once: '',
-	month: l10n.l('overviewSupporterStatus.recurrenceMonth', "1 month (recurring)"),
-	quarter: l10n.l('overviewSupporterStatus.recurrenceQuarter', "3 months (recurring)"),
-	halfYear: l10n.l('overviewSupporterStatus.recurrenceHalfYear', "6 months (recurring)"),
-	year: l10n.l('overviewSupporterStatus.recurrenceYear', "12 months (recurring)"),
-};
-
-// const txtRecurrenceInfo = {
-// 	once: l10n.l('overviewSupporterStatus.detailsNotStored', "Payment details will not be stored"),
-// 	month: l10n.l('overviewSupporterStatus.recurrenceMonth', "Recurring 1 month (recurring)"),
-// 	quarter: l10n.l('overviewSupporterStatus.recurrenceQuarter', "3 months (recurring)"),
-// 	halfYear: l10n.l('overviewSupporterStatus.recurrenceHalfYear', "6 months (recurring)"),
-// 	year: l10n.l('overviewSupporterStatus.recurrenceYear', "12 months (recurring)"),
-// };
-
-const txtOnceUnit = {
-	days: amount => amount == 1
-		? l10n.l('overviewSupporterStatus.supportForDay', "1 day")
-		: l10n.l('overviewSupporterStatus.supportForDays', "{amount} days", { amount }),
-	months: amount => amount == 1
-		? l10n.l('overviewSupporterStatus.supportForMonth', "1 month")
-		: l10n.l('overviewSupporterStatus.supportForMonths', "{amount} months", { amount }),
-};
-
-const txtPerUnit = {
-	days: l10n.l('overviewSupporterStatus.supportPerDay', " per day"),
-	months: l10n.l('overviewSupporterStatus.supportPerMonth', " per month"),
-};
-
-const txtCurrency = {
-	usd: cost => l10n.l('overviewSupporterStatus.usdCost', "${cost}", { cost: (cost / 100).toFixed(2).replace(/[.,]00$/, "") }),
-	eur: cost => l10n.l('overviewSupporterStatus.eurCost', "€{cost}", { cost: (cost / 100).toFixed(2).replace(/[.,]00$/, "") }),
-	sek: cost => l10n.l('overviewSupporterStatus.sekCost', "{cost} kr", { cost: (cost / 100).toFixed(2).replace(/[.,]00$/, "") }),
-};
-
-const txtOneTime = l10n.l('overviewSupporterStatus.oneTime', " one time");
 
 class OverviewSupporterStatusOffer {
 	constructor(module, user, paymentUser, offer, model) {
@@ -72,20 +37,17 @@ class OverviewSupporterStatusOffer {
 							]),
 							n.elem('div', { className: 'badge--info' }, [
 								n.elem('div', { className: 'overviewsupporterstatus-offer--title badge--title badge--nowrap' }, [
+									n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
+									n.text(" "),
 									n.component(new ModelTxt(this.offer, m => isOnce
-										? (txtOnceUnit[m.unit] || txtOnceUnit['unset'])(m.amount)
-										: txtRecurrence[offer.recurrence],
+										? txtUnit.toLocaleString(m.unit, m.amount)
+										: txtRecurrence.toLocaleString(offer.recurrence),
 									)),
 								]),
 								n.elem('div', { className: 'overviewsupporterstatus-offer--info badge--strong badge--nowrap' }, [
-									n.component(new ModelTxt(this.offer, m => txtCurrency[m.currency](isOnce
-										? m.cost
-										: m.cost / m.amount,
-									))),
-									n.component(new ModelTxt(this.offer, m => isOnce
-										? txtOneTime
-										: txtPerUnit[m.unit],
-									)),
+									n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
+									n.text(" "),
+									n.component(new Txt(txtRecurrence.unit(offer.recurrence), { className: 'overviewsupporterstatus-offer--unit' })),
 								]),
 							]),
 						]),

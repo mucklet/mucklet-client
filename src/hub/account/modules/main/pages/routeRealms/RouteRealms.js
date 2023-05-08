@@ -36,7 +36,7 @@ class RouteRealms {
 	}
 
 	dispose() {
-		this.module.router.removeRoute('routeRealms');
+		this.module.router.removeRoute('realms');
 	}
 }
 
