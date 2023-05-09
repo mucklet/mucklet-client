@@ -11,13 +11,13 @@ import * as txtCurrency from 'utils/txtCurrency';
  * the stripe Payment element
  */
 class StripePaymentElement {
-	constructor(module, user, info, offer, stripe, clientSecret, opt) {
+	constructor(module, user, info, offer, stripe, intent, opt) {
 		this.module = module;
 		this.user = user;
 		this.info = info;
 		this.offer = offer;
 		this.stripe = stripe;
-		this.clientSecret = clientSecret;
+		this.intent = intent;
 		this.opt = opt || {};
 
 		this.payPromise = null;
@@ -62,7 +62,7 @@ class StripePaymentElement {
 		let rel = this.elem.render(el);
 		// Mount stripe card element
 		this.elements = this.stripe.elements({
-			clientSecret: this.clientSecret,
+			clientSecret: this.intent.clientSecret,
 			locale: 'en',
 			fonts: [
 				{ cssSrc: '/fonts/fonts.css' },
@@ -142,15 +142,26 @@ class StripePaymentElement {
 
 		this.elem.removeNodeClass('spinner', 'hide');
 
-		this.payPromise = this.stripe.confirmPayment({
-			elements: this.elements,
-			confirmParams: {
-				return_url: this.opt.returlUrl || window.location.href,
-				payment_method_data: {
-					billing_details,
+		this.payPromise = (this.intent.secretType == 'payment'
+			? this.stripe.confirmPayment({
+				elements: this.elements,
+				confirmParams: {
+					return_url: 'http://localhost:6460/account/#overview', // this.opt.returlUrl || window.location.href,
+					payment_method_data: {
+						billing_details,
+					},
 				},
-			},
-		}).then(result => {
+			})
+			: this.stripe.confirmSetup({
+				elements: this.elements,
+				confirmParams: {
+					return_url: 'http://localhost:6460/account/#overview', // this.opt.returlUrl || window.location.href,
+					payment_method_data: {
+						billing_details,
+					},
+				},
+			})
+		).then(result => {
 			if (result.error) {
 				console.error(result.error);
 				return Promise.reject({ code: 'stripe.error', message: result.error.message });

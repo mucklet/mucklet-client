@@ -11,12 +11,11 @@ import formatDate from 'utils/formatDate';
 import OverviewSupporterStatusSubscriptionContent from './OverviewSupporterStatusSubscriptionContent';
 
 class OverviewSupporterStatusSubscription {
-	constructor(module, user, paymentUser, subscription, supporterOffers, state) {
+	constructor(module, user, paymentUser, subscription, state) {
 		this.module = module;
 		this.user = user;
 		this.paymentUser = paymentUser;
 		this.subscription = subscription;
-		this.supporterOffers = supporterOffers;
 		// The offer should never change on a subscription.
 		this.offer = subscription.offer;
 		this.state = state;

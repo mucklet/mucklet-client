@@ -46,7 +46,7 @@ class Stripe {
 			return api.call('payment.user.' + user.id + '.stripe', 'createPaymentIntent', {
 				offerId,
 				force: true,
-			}).then(intent => this._createPaymentElement(user, info, offer, intent.clientSecret, opt));
+			}).then(intent => this._createPaymentElement(user, info, offer, intent, opt));
 		});
 	}
 
@@ -74,10 +74,10 @@ class Stripe {
 	// 	}).then(result => this._createPaymentElement(user, info, result.clientSecret));
 	// }
 
-	_createPaymentElement(user, info, offer, clientSecret, opt) {
+	_createPaymentElement(user, info, offer, intent, opt) {
 		return loadStripe(info.stripePublicKey, {
 			apiVersion: info.stripeApiVersion,
-		}).then(stripe => new StripePaymentElement(this.module, user, info, offer, stripe, clientSecret, opt));
+		}).then(stripe => new StripePaymentElement(this.module, user, info, offer, stripe, intent, opt));
 	}
 
 	dispose() {
