@@ -130,7 +130,7 @@ class LoginRegister {
 					events: { click: () => this._onRegister(this.model) },
 					className: 'btn large primary login--login pad-top-xl login--btn',
 				}, [
-					n.elem('spinner', 'div', { className: 'spinner fade hide' }),
+					n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 					n.component(new Txt(l10n.l('login.register', "Register player"))),
 				])),
 				(m, c) => c.setProperty('disabled', m.name.trim() && m.pass.trim().length >= 4 && m.agree ? null : 'disabled'),

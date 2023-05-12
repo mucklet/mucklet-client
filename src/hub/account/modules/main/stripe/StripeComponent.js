@@ -38,7 +38,7 @@ class StripeComponent {
 					this._onPay();
 				},
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
-				n.elem('spinner', 'div', { className: 'spinner fade hide' }),
+				n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 				n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
 			]),
 		])), {
@@ -89,7 +89,7 @@ class StripeComponent {
 
 		let card = this.card;
 
-		this.payPromise = this.module.api.call('payment.user.' + this.user.id + '.stripe', 'createPaymentIntent', {
+		this.payPromise = this.module.api.call('payment.user.' + this.user.id + '.stripe', 'createPayment', {
 			paymentMethodType: 'card',
 		}).then(result => this.stripe.confirmCardPayment(
 			result.clientSecret,

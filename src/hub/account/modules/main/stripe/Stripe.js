@@ -35,18 +35,40 @@ class Stripe {
 		// }
 	}
 
-	newCardPaymentPromise(offerId, opt) {
+	createPayment(offerId, force) {
+		return this.module.auth.getUserPromise()
+			.then(user => this.module.api.call('payment.user.' + user.id + '.stripe', 'createPayment', {
+				offerId,
+				force,
+			}));
+	}
+
+	newCardPaymentPromise(paymentId, opt) {
 		let api = this.module.api;
+		let info = null;
+		let payment = null;
 		return Promise.all([
 			this.module.auth.getUserPromise(),
-			api.get('payment.info'),
-			api.get('payment.offer.' + offerId),
+			api.get('payment.info').then(o => {
+				info = o;
+				o?.on();
+				return o;
+			}),
+			api.get('payment.payment.' + paymentId).then(o => {
+				payment = o;
+				o?.on();
+				return o;
+			}),
+			api.call('payment.payment.' + paymentId, 'getStripeIntent'),
 		]).then(result => {
-			let [ user, info, offer ] = result;
-			return api.call('payment.user.' + user.id + '.stripe', 'createPaymentIntent', {
-				offerId,
-				force: true,
-			}).then(intent => this._createPaymentElement(user, info, offer, intent, opt));
+			let [ user, info, payment, intent ] = result;
+			info?.off();
+			payment?.off();
+			return this._createPaymentElement(user, info, payment, intent, opt);
+		}).catch(err => {
+			info?.off();
+			payment?.off();
+			throw err;
 		});
 	}
 
@@ -59,8 +81,8 @@ class Stripe {
 	// 	});
 	// }
 
-	// _createPaymentIntent(user, info) {
-	// 	return this.payPromise = this.module.api.call('payment.user.' + user.id + '.stripe', 'createPaymentIntent', {
+	// _createPayment(user, info) {
+	// 	return this.payPromise = this.module.api.call('payment.user.' + user.id + '.stripe', 'createPayment', {
 	// 		paymentMethodType: 'card',
 	// 		force: true,
 	// 	}).then(result => this._createPaymentElement(user, info, result.clientSecret));
@@ -74,10 +96,10 @@ class Stripe {
 	// 	}).then(result => this._createPaymentElement(user, info, result.clientSecret));
 	// }
 
-	_createPaymentElement(user, info, offer, intent, opt) {
+	_createPaymentElement(user, info, payment, intent, opt) {
 		return loadStripe(info.stripePublicKey, {
 			apiVersion: info.stripeApiVersion,
-		}).then(stripe => new StripePaymentElement(this.module, user, info, offer, stripe, intent, opt));
+		}).then(stripe => new StripePaymentElement(this.module, user, info, payment, stripe, intent, opt));
 	}
 
 	dispose() {

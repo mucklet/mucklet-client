@@ -11,20 +11,21 @@ import * as txtCurrency from 'utils/txtCurrency';
  * the stripe Payment element
  */
 class StripePaymentElement {
-	constructor(module, user, info, offer, stripe, intent, opt) {
+	constructor(module, user, info, payment, stripe, intent, opt) {
 		this.module = module;
 		this.user = user;
 		this.info = info;
-		this.offer = offer;
+		this.payment = payment;
 		this.stripe = stripe;
 		this.intent = intent;
+		this.offer = payment.offer;
 		this.opt = opt || {};
 
 		this.payPromise = null;
-		this.payment = null;
+		this.paymentElement = null;
 
 		this.info.on();
-		this.offer.on();
+		this.payment.on();
 	}
 
 	render(el) {
@@ -52,7 +53,7 @@ class StripePaymentElement {
 					this._onPay();
 				},
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
-				n.elem('spinner', 'div', { className: 'spinner fade hide' }),
+				n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 				n.component(new FAIcon('credit-card')),
 				n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
 				n.text(" "),
@@ -99,24 +100,24 @@ class StripePaymentElement {
 				},
 			},
 		});
-		this.payment = this.elements.create('payment', {
+		this.paymentElement = this.elements.create('payment', {
 			fields: {
 				billingDetails: {
 					name: this.opt.includeName ? 'never' : 'auto',
 				},
 			},
 		});
-		this.payment.mount(this.elem.getNode('payment'));
+		this.paymentElement.mount(this.elem.getNode('payment'));
 
 		return rel;
 	}
 
 	unrender() {
 		if (this.elem) {
-			this.payment.unmount();
+			this.paymentElement.unmount();
 			this.elem.unrender();
 			this.elem = null;
-			this.payment = null;
+			this.paymentElement = null;
 		}
 	}
 
@@ -127,7 +128,7 @@ class StripePaymentElement {
 	}
 
 	_onPay() {
-		if (!this.payment || this.payPromise) return;
+		if (!this.paymentElement || this.payPromise) return;
 
 		let billing_details = {};
 
@@ -142,11 +143,15 @@ class StripePaymentElement {
 
 		this.elem.removeNodeClass('spinner', 'hide');
 
-		this.payPromise = (this.intent.secretType == 'payment'
+		let url = typeof this.opt.returnUrl == 'function'
+			? this.opt.returnUrl(this.payment.id)
+			: this.opt.returnUrl || window.location.href;
+
+		this.payPromise = (this.intent.intentType == 'payment'
 			? this.stripe.confirmPayment({
 				elements: this.elements,
 				confirmParams: {
-					return_url: 'http://localhost:6460/account/#overview', // this.opt.returlUrl || window.location.href,
+					return_url: url,
 					payment_method_data: {
 						billing_details,
 					},
@@ -155,7 +160,7 @@ class StripePaymentElement {
 			: this.stripe.confirmSetup({
 				elements: this.elements,
 				confirmParams: {
-					return_url: 'http://localhost:6460/account/#overview', // this.opt.returlUrl || window.location.href,
+					return_url: url,
 					payment_method_data: {
 						billing_details,
 					},

@@ -52,7 +52,7 @@ class LoginComponent {
 			n.elem('login', 'button', { events: {
 				click: () => this._onLogin(),
 			}, className: 'btn large primary loginverify--login pad-top-xl loginverify--btn' }, [
-				n.elem('loginSpinner', 'div', { className: 'spinner fade hide' }),
+				n.elem('loginSpinner', 'div', { className: 'spinner  spinner--btn fade hide' }),
 				n.component(new Txt(l10n.l('loginVerify.login', "Login"))),
 			]),
 			n.elem('div', { className: 'loginverify--policies' }, [

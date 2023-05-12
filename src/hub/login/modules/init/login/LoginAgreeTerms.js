@@ -67,7 +67,7 @@ class LoginAgreeTerms {
 					events: { click: () => this._onContinue(this.model) },
 					className: 'btn large primary login--login pad-top-xl login--btn',
 				}, [
-					n.elem('spinner', 'div', { className: 'spinner fade hide' }),
+					n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 					n.component(new Txt(l10n.l('login.continue', "Continue"))),
 				])),
 				(m, c) => c.setProperty('disabled', m.agree ? null : 'disabled'),

@@ -14,14 +14,6 @@
 	&--pay {
 		margin-top: 16px;
 		position: relative;
-		> .spinner {
-			position: absolute;
-			top: 50%;
-			left: 26px;
-			&:before {
-				border-top-color: $color1;
-			}
-		}
 		max-width: 240px;
 	}
 

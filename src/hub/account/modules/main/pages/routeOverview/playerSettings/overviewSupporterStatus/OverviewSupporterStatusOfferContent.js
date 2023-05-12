@@ -25,11 +25,12 @@ class OverviewSupporterStatusOfferContent {
 			n.elem('div', { className: 'badge--divider' }),
 			n.elem('div', { className: 'badge--select badge--margin badge--select-margin' }, [
 				n.elem('button', { className: 'btn medium primary flex-1', events: {
-					click: (el, e) => {
-						this._openCardPayment();
+					click: (c, e) => {
+						this._openCardPayment(c);
 						e.stopPropagation();
 					},
 				}}, [
+					n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 					n.component(new FAIcon('credit-card')),
 					n.component(new Txt(l10n.l('overviewSupporterStatus.userCard', "Use card"))),
 				]),
@@ -55,8 +56,12 @@ class OverviewSupporterStatusOfferContent {
 	}
 
 	_openCardPayment() {
-		this.module.routePayment.setRoute('card', this.offer.id);
-		// this.module.dialogCardPayment.open(this.offer.id);
+		this.elem?.removeNodeClass('spinner', 'hide');
+
+		this.module.stripe.createPayment(this.offer.id, true)
+			.then(payment => this.module.routePayments.setRoute({ paymentId: payment.id }))
+			.catch(err => this.module.confirm.openError(err))
+			.then(() => this.elem?.addNodeClass('spinner', 'hide'));
 	}
 }
 

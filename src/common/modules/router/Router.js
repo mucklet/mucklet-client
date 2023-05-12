@@ -219,6 +219,27 @@ class Router {
 		history.back();
 	}
 
+	/**
+	 * Returns a URL created from a route with params.
+	 * @param {string|object} routeId Id of route or route object
+	 * @param {?object} [params] Optional params object
+	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.fullPath] Create URL with full path including protocol and host.
+	 * @param {object} [opt.keepQuery] Flag to include the initial query.
+	 * @return {?string} Url
+	 */
+	getUrl(routeId, params, opt) {
+		let route = typeof routeId == 'string' ? this.getRoute(routeId) : routeId;
+
+		let loc = window.location;
+		let url = (opt?.fullPath ? loc.protocol + '//' + loc.host : '') + loc.pathname + (opt?.keepQuery ? this.initialQuery : '') + (route ? '#' + route.id : '');
+		if (route?.getUrl) {
+			let routeUrl = route.getUrl(params);
+			url += routeUrl ? '/' + routeUrl : '';
+		}
+		return url;
+	}
+
 	reload() {
 		if (this.current) {
 			return Promise.resolve(this.current.route.setState ? this.current.route.setState(this.current.params, this.current.route) : null).then(() => true);
@@ -342,12 +363,7 @@ class Router {
 			} : null;
 
 			let title = setRoute.route.name;
-			let url = window.location.pathname + this.initialQuery + '#' + state.routeId;
-
-			if (this.current.route.getUrl) {
-				let routeUrl = setRoute.route.getUrl(state.params);
-				url += routeUrl ? '/' + routeUrl : '';
-			}
+			let url = this.getUrl(setRoute.route, setRoute.params, { keepQuery: true });
 
 			history.pushState(state, title, url);
 		}

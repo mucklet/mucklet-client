@@ -8,17 +8,18 @@ import * as txtUnit from 'utils/txtUnit';
 import * as txtProduct from 'utils/txtProduct';
 
 /**
- * RoutePaymentCard draws a card payment component
+ * RoutePaymentsStripe draws a stripe card payment component
  */
-class RoutePaymentCard {
-	constructor(module, offer) {
+class RoutePaymentsStripe {
+	constructor(module, payment) {
 		this.module = module;
-		this.offer = offer;
+		this.payment = payment;
+		this.offer = payment.offer;
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'routepayment-card' }, [
-			n.elem('p', { className: 'routepayment-card--product' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-stripe' }, [
+			n.elem('p', { className: 'routepayments-stripe--product' }, [
 				n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
 				n.text(" "),
 				n.component(new ModelTxt(this.offer, m => m.recurrence == 'once'
@@ -26,12 +27,12 @@ class RoutePaymentCard {
 					: txtRecurrence.toLocaleString(m.recurrence),
 				)),
 			]),
-			n.elem('p', { className: 'routepayment-card--cost' }, [
+			n.elem('p', { className: 'routepayments-stripe--cost' }, [
 				n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
 				n.text(" "),
-				n.component(new ModelTxt(this.offer, m => txtRecurrence.unit(m.recurrence), { className: 'routepayment-card--unit' })),
+				n.component(new ModelTxt(this.offer, m => txtRecurrence.unit(m.recurrence), { className: 'routepayments-stripe--unit' })),
 			]),
-			n.component(new ModelTxt(this.offer, m => txtProduct.description(m.product), { tagName: 'p', className: 'routepayment-card--description' })),
+			n.component(new ModelTxt(this.offer, m => txtProduct.description(m.product), { tagName: 'p', className: 'routepayments-stripe--description' })),
 			n.component(new ModelComponent(
 				this.offer,
 				new Collapser(),
@@ -41,11 +42,11 @@ class RoutePaymentCard {
 					let features = txtProduct.features(m.product);
 
 					c.setComponent(features.length
-						? new Elem(n => n.elem('table', { className: 'routepayment-card--features tbl tbl-nomargin' }, features.map(o => n.elem('tr', [
-							n.elem('td', { className: 'routepayment-card--featuretitle' }, [
+						? new Elem(n => n.elem('table', { className: 'routepayments-stripe--features tbl tbl-nomargin' }, features.map(o => n.elem('tr', [
+							n.elem('td', { className: 'routepayments-stripe--featuretitle' }, [
 								n.component(new Txt(o.title)),
 							]),
-							n.elem('td', { className: 'routepayment-card--featuredesc' }, [
+							n.elem('td', { className: 'routepayments-stripe--featuredesc' }, [
 								n.component(new Txt(o.desc)),
 							]),
 						]))))
@@ -56,7 +57,10 @@ class RoutePaymentCard {
 			n.component('fader', new Fader()),
 		]));
 		// Create payment component
-		this.module.stripe.newCardPaymentPromise(this.offer.id, { className: 'routepayment-card--cardpayment' }).then(paymentComponent => {
+		this.module.stripe.newCardPaymentPromise(this.payment.id, {
+			className: 'routepayments-stripe--cardpayment',
+			returnUrl: this.module.router.getUrl('payment', { paymentId: this.payment.id }, { keepQuery: true, fullPath: true }),
+		}).then(paymentComponent => {
 			if (this.elem) {
 				let n = this.elem.getNode('fader');
 				if (!n.getComponent()) {
@@ -78,4 +82,4 @@ class RoutePaymentCard {
 	}
 }
 
-export default RoutePaymentCard;
+export default RoutePaymentsStripe;
