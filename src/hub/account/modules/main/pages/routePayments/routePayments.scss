@@ -1,11 +1,7 @@
 @import '~scss/variables';
 
+
 .routepayments {
-
-}
-
-
-.routepayments-stripe {
 	&--product {
 		font-family: $font-text;
 		color: $color3;
@@ -21,7 +17,7 @@
 		color: $color4;
 	}
 
-	&--description, &--recurrenceinfo {
+	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
 		font-size: $font-size-small;
 	}
 

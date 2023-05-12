@@ -55,9 +55,14 @@ class StripePaymentElement {
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
 				n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 				n.component(new FAIcon('credit-card')),
-				n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
-				n.text(" "),
-				n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
+				n.component(this.intent.intentType == 'payment'
+					? new Elem(n => n.elem('span', [
+						n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
+						n.text(" "),
+						n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
+					]))
+					: new Txt(l10n.l('stripe.subscribe', "Subscribe")),
+				),
 			]),
 		]));
 		let rel = this.elem.render(el);
@@ -124,7 +129,7 @@ class StripePaymentElement {
 	dispose() {
 		this.unrender();
 		this.info.off();
-		this.offer.off();
+		this.payment.off();
 	}
 
 	_onPay() {
