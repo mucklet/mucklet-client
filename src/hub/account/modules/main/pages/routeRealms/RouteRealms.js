@@ -29,7 +29,7 @@ class RouteRealms {
 			setState: params => this.module.auth.getUserPromise(),
 			// getUrl: params => null,
 			// parseUrl: parts => null,
-			order: 10,
+			order: 20,
 		});
 
 		this.module.router.setDefault('realms');

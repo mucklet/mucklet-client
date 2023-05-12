@@ -5,6 +5,7 @@ import RoutePaymentsStripe from './RoutePaymentsStripe';
 import RoutePaymentsResult from './RoutePaymentsResult';
 import RoutePaymentsError from './RoutePaymentsError';
 import RoutePaymentsPayment from './RoutePaymentsPayment';
+import RoutePaymentsPayments from './RoutePaymentsPayments';
 
 const txtPageNotFound = l10n.l('routePayments.pageNotFound', "Page not found.");
 
@@ -18,11 +19,12 @@ class RoutePaymentsComponent {
 	}
 
 	render(el) {
+		let paymentsComponent = null;
 		this.elem = new ModelComponent(
 			this.model,
 			new Fader(),
 			(m, c, change) => {
-				let { payment, page, error } = m.props;
+				let { payment, page, user, error } = m.props;
 				let components = {};
 				c.setComponent(error
 					? new RoutePaymentsError(this.module, error)
@@ -41,7 +43,11 @@ class RoutePaymentsComponent {
 									),
 								)
 								: new RoutePaymentsError(this.module, txtPageNotFound)
-						: null,
+						: user
+							? paymentsComponent?.user == user
+								? paymentsComponent
+								: paymentsComponent = new RoutePaymentsPayments(this.module, this.model, user)
+							: null,
 				);
 			},
 		);

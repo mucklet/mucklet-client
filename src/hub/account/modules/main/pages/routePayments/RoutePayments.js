@@ -5,6 +5,14 @@ import { relistenModel } from 'utils/listenModel';
 import RoutePaymentsComponent from './RoutePaymentsComponent';
 import './routePayments.scss';
 
+const pathDef = [
+	[ 'payment', '$paymentId', '$page' ],
+	[ 'payment', '$paymentId' ],
+	[ 'user', '$userId', 'page', '$pageNr' ],
+	[ 'page', '$pageNr' ],
+	[ 'user', '$userId' ],
+];
+
 /**
  * RoutePayments adds the payment route.
  */
@@ -17,6 +25,7 @@ class RoutePayments {
 			'api',
 			'router',
 			'stripe',
+			'auth',
 		], this._init.bind(this));
 	}
 
@@ -24,26 +33,29 @@ class RoutePayments {
 		this.module = Object.assign({ self: this }, module);
 
 		this.model = new Model({ data: { payment: null, page: null, error: null }, eventBus: this.app.eventBus });
+		this.state = {};
 
 		this.module.router.addRoute({
 			id: 'payments',
 			icon: 'credit-card',
-			name: l10n.l('routePayments.payment', "Payment"),
+			name: l10n.l('routePayments.payments', "Payments"),
 			component: new RoutePaymentsComponent(this.module, this.model),
 			setState: params => Promise.resolve(params.paymentId
 				? this.module.api.get('payment.payment.' + params.paymentId).then(payment => this._setState({ payment, page: params.page }))
-				: Promise.reject(l10n.l('routePayments.missingPayment', "What payment? We are missing something here.")),
+				: (params.userId
+					? this.module.api.get('identity.user.' + params.userId)
+					: this.module.auth.getUserPromise()
+				).then(user => this._setState({ user, pageNr: Number(params.pageNr) || 0 })),
 			).catch(error => this._setState({ error })),
-			getUrl: params => params.paymentId
-				? this.module.router.createUrl(params.page && params.page != 'payment'
-					? [ 'payment', params.paymentId, params.page ]
-					: [ 'payment', params.paymentId ],
-				)
-				: null,
-			parseUrl: parts => (parts.length == 3 || parts.length == 4) && parts[1] == 'payment'
-				? { page: parts[3] || 'payment', paymentId: parts[2] }
-				: null,
-			order: 10,
+			getUrl: params => this.module.router.createDefUrl(params, pathDef),
+			parseUrl: parts => {
+				let o = this.module.router.parseDefUrl(parts, pathDef);
+				if (typeof o?.pageNr == 'string') {
+					o.pageNr = Number(o.pageNr) || 0;
+				}
+				return o;
+			},
+			order: 30,
 		});
 	}
 
@@ -51,6 +63,8 @@ class RoutePayments {
 		state = state || {};
 		return this.model.set({
 			payment: relistenModel(this.model.payment, state.payment),
+			user: relistenModel(this.model.user, state.user),
+			pageNr: state.user ? state.pageNr || 0 : null,
 			page: state.page || (state.payment ? 'payment' : null),
 			error: state.error || null,
 		});
@@ -59,11 +73,18 @@ class RoutePayments {
 	/**
 	 * Sets the payment route.
 	 * @param {object} params Route params.
-	 * @param {string} params.paymentId Payment ID.
-	 * @param {string} params.page Payment page. May be 'payment' or 'result'. Defaults to 'payment'.
+	 * @param {string} [params.paymentId] Payment ID.
+	 * @param {string} [params.page] Payment page. May be 'payment' or 'result'. Defaults to 'payment'.
+	 * @param {string} [params.userId] User ID to show payments for. Ignored if paymentId is set.
+	 * @param {string} [params.pageNr] Page nr for the pagination when showing payments. Ignored if userId is not set.
 	 */
 	setRoute(params) {
-		this.module.router.setRoute('payments', { paymentId: params?.paymentId || null, page: params?.page || null });
+		this.module.router.setRoute('payments', {
+			paymentId: params?.paymentId || null,
+			page: params?.page || null,
+			userId: params?.userId || null,
+			pageNr: params?.pageNr || null,
+		});
 	}
 
 	dispose() {

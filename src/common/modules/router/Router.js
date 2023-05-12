@@ -255,6 +255,7 @@ class Router {
 	 * @returns {Promise.<module/Router~setRoute>} Promise to the set route.
 	 */
 	setRoute(routeId, params = {}, pushHistoryState = true, force = false) {
+		params = params || {};
 		// this.initialRoute = null;
 		// this.initialRouteData = null;
 
@@ -342,6 +343,72 @@ class Router {
 	 */
 	createUrl(parts) {
 		return parts.map(part => encodeURIComponent(String(part))).join('/');
+	}
+
+	/**
+	 * Helper function to create the url using a definition array.
+	 * @param {object} params Params object.
+	 * @param {Array.<Array.<string>>} pathDef Path definition array.
+	 * @returns {string} Url string to be returned from setState callback.
+	 */
+	createDefUrl(params, pathDef) {
+		if (!params) return null;
+
+		next:
+		for (let def of pathDef) {
+			let parts = [];
+			for (let d of def) {
+				if (d.slice(0, 1) == '$') {
+					let v = params[d.slice(1)];
+					if (v === null || typeof v == 'undefined') {
+						continue next;
+					}
+					parts.push(v);
+				} else {
+					parts.push(d);
+				}
+			}
+			return this.createUrl(parts);
+		}
+		return null;
+	}
+
+
+	/**
+	 * Helper function to parse the url parts using a definition array. It will
+	 * loop through the outer pathDef array and return first match. It is
+	 * considered a match if each item in the inner array matches that of the
+	 * path, or if the definition item starts with '$', in which case the part
+	 * will be stored as a parameter.
+	 *
+	 * Example:
+	 * [
+	 *    [ 'user', '$userId' ], // Matches path "user/42" where 42 will be stored with the key 'userId'
+	 * ]
+	 * @param {Array.<string>} parts Array of path part strings.
+	 * @param {Array.<Array.<string>>} pathDef Path definition array.
+	 * dimentional array.
+	 * @returns {Object} Params object.
+	 */
+	parseDefUrl(parts, pathDef) {
+		let len = parts.length - 1;
+		next:
+		for (let def of pathDef) {
+			if (def.length != len) continue;
+
+			let o = {};
+			for (let i = 0; i < def.length; i++) {
+				let p = parts[i + 1];
+				let d = def[i];
+				if (d.slice(0, 1) == '$') {
+					o[d.slice(1)] = p;
+				} else if (d != p) {
+					continue next;
+				}
+			}
+			return o;
+		}
+		return null;
 	}
 
 	/**

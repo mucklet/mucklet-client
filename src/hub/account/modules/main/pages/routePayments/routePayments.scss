@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import '~scss/mixins';
 
 
 .routepayments {
@@ -36,5 +37,59 @@
 
 	&--cardpayment {
 		margin-top: 20px;
+	}
+
+	&--placeholder {
+		font-style: italic;
+	}
+}
+
+.routepayments-payments {
+	&--listitem {
+		padding: 3px 0;
+	}
+}
+
+.routepayments-paymentbadge {
+	&.method-card {
+		.badge--faicon {
+			background: $color6;
+			color: $color1-light;
+		}
+		&:hover {
+			.badge--faicon {
+				background: darken($color6, 8%);
+				color: darken($color1-light, 8%);
+			}
+		}
+	}
+	&.method-paypal {
+		.badge--faicon {
+			background: $color-paypal;
+			color: $white;
+		}
+		&:hover, &:active {
+			.badge--faicon {
+				background: darken($color-paypal, 8%);
+				color: darken($white, 8%);
+			}
+		}
+	}
+	&--title {
+		padding-left: 4px;
+		line-height: 26px;
+		font-size: $font-size;
+	}
+
+	&--info {
+		padding-left: 4px;
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--date {
+		color: $color4;
+		line-height: 20px;
+		font-size: $font-size-small;
 	}
 }
