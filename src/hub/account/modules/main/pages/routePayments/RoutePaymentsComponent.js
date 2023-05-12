@@ -4,6 +4,7 @@ import Fader from 'components/Fader';
 import RoutePaymentsStripe from './RoutePaymentsStripe';
 import RoutePaymentsResult from './RoutePaymentsResult';
 import RoutePaymentsError from './RoutePaymentsError';
+import RoutePaymentsPayment from './RoutePaymentsPayment';
 
 const txtPageNotFound = l10n.l('routePayments.pageNotFound', "Page not found.");
 
@@ -22,15 +23,23 @@ class RoutePaymentsComponent {
 			new Fader(),
 			(m, c, change) => {
 				let { payment, page, error } = m.props;
+				let components = {};
 				c.setComponent(error
 					? new RoutePaymentsError(this.module, error)
 					: payment
 						? page == 'result'
 							? new RoutePaymentsResult(this.module, payment)
 							: page == 'payment'
-								? payment.provider == 'stripe'
-									? new RoutePaymentsStripe(this.module, payment)
-									: new RoutePaymentsError(this.module, txtPageNotFound)
+								? new ModelComponent(
+									payment,
+									new Fader(),
+									(m, c, change) => c.setComponent(m.status == 'pending'
+										? payment.provider == 'stripe'
+											? components.stripe = components.stripe || new RoutePaymentsStripe(this.module, payment)
+											: components.error = components.error || new RoutePaymentsError(this.module, txtPageNotFound)
+										: components.payment = components.payment || new RoutePaymentsPayment(this.module, payment),
+									),
+								)
 								: new RoutePaymentsError(this.module, txtPageNotFound)
 						: null,
 				);
