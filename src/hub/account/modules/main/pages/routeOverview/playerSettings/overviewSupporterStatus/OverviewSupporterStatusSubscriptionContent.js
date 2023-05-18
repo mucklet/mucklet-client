@@ -1,11 +1,12 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
-// import Fader from 'components/Fader';
+import Collapser from 'components/Collapser';
 import l10n from 'modapp-l10n';
 import * as txtCurrency from 'utils/txtCurrency';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtProduct from 'utils/txtProduct';
+import * as txtCardbrand from 'utils/txtCardbrand';
 
 
 class OverviewSupporterStatusSubscriptionContent {
@@ -16,12 +17,25 @@ class OverviewSupporterStatusSubscriptionContent {
 		this.subscription = subscription;
 		this.toggle = toggle;
 		this.offer = subscription.offer;
+
+		this.methodTypes = {
+			card: (method, subscription, paymentUser) => this._cardComponentFactory(method, subscription, paymentUser),
+		};
 	}
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'overviewsupporterstatus-offercontent' }, [
-			n.elem('div', { className: 'badge--select overviewsupporterstatus-offercontent--text' }, [
-				n.elem('div', { className: 'badge--text' }, [
+			n.component(new ModelComponent(
+				this.subscription,
+				new Collapser(),
+				(m, c) => c.setComponent(m.methodInfo
+					? (this.methodTypes[m.methodInfo.type] || (() => null))(m.methodInfo, m, this.paymentUser)
+					: null,
+				),
+			)),
+			n.elem('div', { className: 'badge--select' }, [
+				n.component(new Txt(l10n.l('routePayments.setup', "Setup"), { className: 'badge--iconcol badge--subtitle' })),
+				n.elem('div', { className: 'badge--info-morepad badge--text' }, [
 					n.component(new Txt(l10n.l('overviewSupporterStatus.recurringPaymentOf', "Recurring payment of "))),
 					n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
 					n.text(" "),
@@ -70,6 +84,22 @@ class OverviewSupporterStatusSubscriptionContent {
 			])),
 			confirm: l10n.l('overviewSupporterStatus.unsubscribe', "Unsubscribe"),
 		});
+	}
+
+	_cardComponentFactory(method, subscription, paymentUser) {
+		return new Elem(n => n.elem('div', [
+			n.elem('div', { className: 'badge--select' }, [
+				n.component(new Txt(l10n.l('routePayments.card', "Card"), { className: 'badge--iconcol badge--subtitle' })),
+				n.elem('div', { className: 'badge--info-morepad badge--text' }, [
+					n.component(new ModelTxt(method, m => txtCardbrand.toLocaleString(m.data.brand))),
+					n.component(new ModelTxt(method, m => " •••• " + m.data.last4)),
+				]),
+			]),
+			n.elem('div', { className: 'badge--select' }, [
+				n.component(new Txt(l10n.l('routePayments.expires', "Expires"), { className: 'badge--iconcol badge--subtitle' })),
+				n.component(new ModelTxt(method, m => ("00" + m.data.expMonth).slice(-2) + " / " + m.data.expYear, { className: 'badge--info-morepad badge--text' })),
+			]),
+		]));
 	}
 }
 

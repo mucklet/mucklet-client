@@ -37,21 +37,21 @@ class RoutePaymentsPaymentBadge {
 						)),
 					]),
 					n.elem('div', { className: 'badge--info-morepad' }, [
-						n.elem('div', { className: 'routepayments-paymentbadge--title badge--title badge--nowrap ' }, [
-							n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
-							n.text(" "),
-							n.component(new ModelTxt(this.offer, m => m.recurrence == 'once'
-								? txtUnit.toLocaleString(m.unit, m.amount)
-								: txtRecurrence.toLocaleString(this.offer.recurrence),
-							)),
-						]),
-						n.elem('div', { className: 'flex-row flex-baseline' }, [
-							n.elem('div', { className: 'routepayments-paymentbadge--info badge--strong badge--nowrap flex-1' }, [
-								n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost))),
+						n.elem('div', { className: 'flex-row flex-start' }, [
+							n.elem('div', { className: 'routepayments-paymentbadge--title badge--title badge--nowrap flex-1' }, [
+								n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
+								n.text(" "),
+								n.component(new ModelTxt(this.offer, m => m.recurrence == 'once'
+									? txtUnit.toLocaleString(m.unit, m.amount)
+									: txtRecurrence.toLocaleString(this.offer.recurrence),
+								)),
 							]),
 							n.elem('div', { className: 'routepayments-paymentbadge--date badge--nowrap flex-auto' }, [
 								n.component(new ModelTxt(this.payment, m => formatDateTime(new Date(m.updated), { showYear: true }))),
 							]),
+						]),
+						n.elem('div', { className: 'routepayments-paymentbadge--info badge--strong badge--nowrap flex-1' }, [
+							n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost))),
 						]),
 					]),
 				]),
