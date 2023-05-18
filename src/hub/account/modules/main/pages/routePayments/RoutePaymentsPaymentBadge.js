@@ -7,7 +7,7 @@ import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtUnit from 'utils/txtUnit';
 import * as txtProduct from 'utils/txtProduct';
 import formatDateTime from 'utils/formatDateTime';
-// import RoutePaymentsPaymentBadgeContent from './RoutePaymentsPaymentBadgeContent';
+import RoutePaymentsPaymentBadgeContent from './RoutePaymentsPaymentBadgeContent';
 
 const methodIcons = {
 	card: 'credit-card',
@@ -36,7 +36,7 @@ class RoutePaymentsPaymentBadge {
 							(m, c) => c.setIcon(m.refunded ? 'undo' : (methodIcons[m.method] || 'money')),
 						)),
 					]),
-					n.elem('div', { className: 'badge--info' }, [
+					n.elem('div', { className: 'badge--info-morepad' }, [
 						n.elem('div', { className: 'routepayments-paymentbadge--title badge--title badge--nowrap ' }, [
 							n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
 							n.text(" "),

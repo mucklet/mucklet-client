@@ -83,6 +83,14 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		line-height: 16px;
 	}
 
+	&--info-morepad {
+		flex: 1 1 0px;
+		text-align: left;
+		overflow: hidden;
+		padding-left: 10px;
+		line-height: 16px;
+	}
+
 	&--tools {
 		flex: 0 0 auto;
 		margin-left: 4px;

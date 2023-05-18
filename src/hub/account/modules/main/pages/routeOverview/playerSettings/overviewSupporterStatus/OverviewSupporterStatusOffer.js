@@ -35,7 +35,7 @@ class OverviewSupporterStatusOffer {
 									: new FAIcon('refresh'),
 								),
 							]),
-							n.elem('div', { className: 'badge--info' }, [
+							n.elem('div', { className: 'badge--info-morepad' }, [
 								n.elem('div', { className: 'overviewsupporterstatus-offer--title badge--title badge--nowrap' }, [
 									n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
 									n.text(" "),
