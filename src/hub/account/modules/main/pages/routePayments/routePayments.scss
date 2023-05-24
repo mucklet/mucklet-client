@@ -9,7 +9,7 @@
 		font-size: $font-size-large;
 	}
 
-	&--cost {
+	&--cost, &--amountrefunded {
 		font-size: $font-size;
 		color: $color3;
 	}

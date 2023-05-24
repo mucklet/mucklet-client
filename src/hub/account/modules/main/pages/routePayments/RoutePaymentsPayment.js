@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
+import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
 import formatDateTime from 'utils/formatDateTime';
 import * as txtRecurrence from 'utils/txtRecurrence';
@@ -47,6 +48,24 @@ class RoutePaymentsPayment {
 					className: 'common--sectionpadding',
 					noToggle: true,
 				},
+			)),
+			n.component(new ModelComponent(
+				this.payment,
+				new Collapser(),
+				(m, c) => c.setComponent(m.refunded
+					? components.refunded = components.refunded || new PanelSection(
+						l10n.l('routePayments.refunded', "Refunded"),
+						new Elem(n => n.elem('div', [
+							n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.amountRefunded), { tagName: 'div', className: 'routepayments--amountrefunded' })),
+							n.component(new ModelTxt(this.payment, m => formatDateTime(new Date(m.refunded || m.created), { showYear: true }))),
+						])),
+						{
+							className: 'common--sectionpadding',
+							noToggle: true,
+						},
+					)
+					: null,
+				),
 			)),
 			n.component(new PanelSection(
 				l10n.l('routePayments.status', "Status"),
