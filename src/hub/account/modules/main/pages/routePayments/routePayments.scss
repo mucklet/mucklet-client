@@ -75,6 +75,18 @@
 			}
 		}
 	}
+	&.refunded {
+		.badge--faicon {
+			background: $green;
+			color: $color1-light;
+		}
+		&:hover, &:active {
+			.badge--faicon {
+				background: darken($green, 8%);
+				color: darken($color1-light, 8%);
+			}
+		}
+	}
 	&--title {
 		line-height: 26px;
 		font-size: $font-size;
@@ -89,5 +101,14 @@
 		color: $color4;
 		line-height: 20px;
 		font-size: $font-size-small;
+	}
+
+	&--cost, &--refundednew {
+		color: $color3;
+	}
+
+	&--refundedcost {
+		color: $color5;
+		text-decoration: line-through;
 	}
 }

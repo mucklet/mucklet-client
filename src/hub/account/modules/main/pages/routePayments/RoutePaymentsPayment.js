@@ -58,7 +58,7 @@ class RoutePaymentsPayment {
 			)),
 			n.component(new PanelSection(
 				l10n.l('routePayments.dateAndTime', "Date & time"),
-				new ModelTxt(this.payment, m => formatDateTime(new Date(m.updated), { showYear: true })),
+				new ModelTxt(this.payment, m => formatDateTime(new Date(m.completed || m.created), { showYear: true })),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
