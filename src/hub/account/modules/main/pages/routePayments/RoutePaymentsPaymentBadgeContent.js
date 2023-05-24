@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
+import formatDateTime from 'utils/formatDateTime';
 import * as txtCardbrand from 'utils/txtCardbrand';
 
 
@@ -19,12 +20,13 @@ class RoutePaymentsPaymentBadgeContent {
 	}
 
 	render(el) {
+		let components = {};
 		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-paymentbadgecontent' }, [
 			n.component(new ModelComponent(
 				this.payment,
 				new Collapser(),
 				(m, c) => c.setComponent(m.method
-					? (this.methodTypes[m.method] || (() => null))(m.methodInfo, m, this.paymentUser)
+					? components.details = components.details || (this.methodTypes[m.method] || (() => null))(m.methodInfo, m, this.paymentUser)
 					: null,
 				),
 			)),
@@ -33,7 +35,18 @@ class RoutePaymentsPaymentBadgeContent {
 				new Collapser(),
 				(m, c) => c.setComponent(m.method
 					? null
-					: new Txt(l10n.l('routePayments.noMethodDetails', "No details to show you."), { tagName: 'div', className: 'badge--text' }),
+					: components.noDetails = components.noDetails || new Txt(l10n.l('routePayments.noMethodDetails', "No details to show you."), { tagName: 'div', className: 'badge--text' }),
+				),
+			)),
+			n.component(new ModelComponent(
+				this.payment,
+				new Collapser(),
+				(m, c) => c.setComponent(m.refunded
+					? components.refunded = components.refunded || new Elem(n => n.elem('div', { className: 'badge--select' }, [
+						n.component(new Txt(l10n.l('routePayments.refundedShort', "Refund"), { className: 'badge--iconcol badge--subtitle' })),
+						n.component(new ModelTxt(this.payment, m => m.refunded && formatDateTime(new Date(m.refunded) || '', { showYear: true }), { className: 'badge--info-morepad badge--text' })),
+					]))
+					: null,
 				),
 			)),
 		]));

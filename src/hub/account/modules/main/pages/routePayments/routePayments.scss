@@ -77,12 +77,14 @@
 	}
 	&.refunded {
 		.badge--faicon {
-			background: $green;
+			// background: $green;
+			background: $color5;
 			color: $color1-light;
 		}
 		&:hover, &:active {
 			.badge--faicon {
-				background: darken($green, 8%);
+				// background: darken($green, 8%);
+				background: darken($color5, 8%);
 				color: darken($color1-light, 8%);
 			}
 		}
