@@ -10,7 +10,10 @@ class VerifyEmail {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'toaster', 'login' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'toaster',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,21 +26,23 @@ class VerifyEmail {
 		return this.model;
 	}
 
-	sendVerification() {
+	/**
+	 * Sends an verification mail to the account's email address.
+	 * @param {Model} account Account model.
+	 * @returns {Promise} Promise of the verification email being sent.
+	 */
+	sendVerification(account) {
 		// Prevent sending multiple times.
 		if (this.model.isSendingVerify) {
 			return Promise.resolve();
 		}
 
 		this.model.set({ isSendingVerify: true });
-		return this.module.login.getLoginPromise()
-			.then(user => {
-				if (!user.identity) {
-					throw { code: 'verifyEmail.identityNotAvailable', message: "Not possible to send email verification from this domain." };
-				}
-
-				return user.identity.call('sendEmailVerification');
-			})
+		return (account
+			? Promise.resolve(account)
+			: Promise.reject({ code: 'verifyEmail.missingAccount', message: "Not possible to send email verification from this domain." })
+		)
+			.then(account => account.call('sendEmailVerification'))
 			.then(() => {
 				this.module.toaster.open({
 					title: l10n.l('verifyEmail.emailVerificationSent', "Verification email sent"),

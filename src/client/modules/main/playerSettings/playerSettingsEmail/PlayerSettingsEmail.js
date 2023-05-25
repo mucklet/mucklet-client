@@ -1,6 +1,5 @@
 import { Model } from 'modapp-resource';
 import PlayerSettingsEmailComponent from './PlayerSettingsEmailComponent';
-import './playerSettingsEmail.scss';
 
 /**
  * PlayerSettingsEmail adds a section to the PlayerSettings to show and set email.
@@ -15,9 +14,8 @@ class PlayerSettingsEmail {
 		this.app.require([
 			'api',
 			'pagePlayerSettings',
-			'dialogChangeEmail',
-			'verifyEmail',
 			'login',
+			'accountEmail',
 		], this._init.bind(this));
 	}
 
@@ -41,7 +39,7 @@ class PlayerSettingsEmail {
 			type: 'topSection',
 			sortOrder: 30,
 			componentFactory: (user, player, state) => user.identity && !this.module.api.isError(user.identity)
-				? new PlayerSettingsEmailComponent(this.module, user, player, state)
+				? new PlayerSettingsEmailComponent(this.module, user.identity)
 				: null,
 			alertModel: this.model,
 		});

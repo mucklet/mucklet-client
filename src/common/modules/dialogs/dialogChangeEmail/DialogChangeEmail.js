@@ -14,7 +14,6 @@ class DialogChangeEmail {
 		this.app = app;
 
 		this.app.require([
-			'login',
 			'verifyEmail',
 		], this._init.bind(this));
 	}
@@ -25,10 +24,11 @@ class DialogChangeEmail {
 
 	/**
 	 * Opens a dialog to change account email.
+	 * @param {model} account Account model
 	 * @param {object} [opt] Optional parameters
 	 * @param {object} [opt.setEmail] Flag to show the title "Set email" instead of "Change email"
 	 */
-	open(opt) {
+	open(account, opt) {
 		if (this.dialog) return;
 
 		opt = opt || {};
@@ -79,7 +79,7 @@ class DialogChangeEmail {
 				n.component('message', new Collapser(null)),
 				n.elem('div', { className: 'pad-top-xl' }, [
 					n.elem('button', {
-						events: { click: () => this._changeEmail(model) },
+						events: { click: () => this._changeEmail(account, model) },
 						className: 'btn primary dialog--btn',
 					}, [
 						n.component(new Txt(opt.setEmail
@@ -96,7 +96,7 @@ class DialogChangeEmail {
 		this.dialog.getContent().getNode('email').getComponent().getElement().focus();
 	}
 
-	_changeEmail(model) {
+	_changeEmail(account, model) {
 		if (this.changeEmailPromise) return this.changeEmailPromise;
 
 		let pwd = model.pass.trim();
@@ -104,14 +104,13 @@ class DialogChangeEmail {
 		let hash = hmacsha256(pwd, publicPepper);
 		let email = model.email.trim();
 
-		this.module.login.getLoginPromise()
-			.then(user => user.identity.call('changeEmail', { email, pass, hash }))
+		account.call('changeEmail', { email, pass, hash })
 			.then(result => {
 				if (this.dialog) {
 					this.dialog.close();
 				}
 				if (result.updated && result.email) {
-					this.module.verifyEmail.sendVerification();
+					this.module.verifyEmail.sendVerification(account);
 				}
 			})
 			.catch(err => {

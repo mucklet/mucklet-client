@@ -1,7 +1,6 @@
 import { Model } from 'modapp-resource';
 import { relistenModel } from 'utils/listenModel';
 import OverviewAccountEmailComponent from './OverviewAccountEmailComponent';
-import './overviewAccountEmail.scss';
 
 /**
  * OverviewAccountEmail adds a section to the PlayerSettings to show and set email.
@@ -16,8 +15,7 @@ class OverviewAccountEmail {
 		this.app.require([
 			'api',
 			'routeOverview',
-			// 'dialogChangeEmail',
-			// 'verifyEmail',
+			'accountEmail',
 			'auth',
 		], this._init.bind(this));
 	}
