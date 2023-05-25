@@ -96,7 +96,7 @@ class OverviewSupporterStatusOfferContent {
 	_openCardPayment() {
 		this.elem?.removeNodeClass('spinner', 'hide');
 
-		this.module.stripe.createPayment(this.offer.id, true)
+		this.module.stripe.createPayment(this.offer.id)
 			.then(payment => this.module.routePayments.setRoute({ paymentId: payment.id }))
 			.catch(err => this.module.confirm.openError(err))
 			.then(() => this.elem?.addNodeClass('spinner', 'hide'));
