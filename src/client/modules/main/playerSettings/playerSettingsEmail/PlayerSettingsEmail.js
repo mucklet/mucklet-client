@@ -53,7 +53,7 @@ class PlayerSettingsEmail {
 
 	_onIdentityChange() {
 		let m = this.identity;
-		this.model.set({ alert: m && m.email && !m.emailVerified });
+		this.model.set({ alert: m && !(m.email || m.emailVerified) });
 	}
 
 	dispose() {

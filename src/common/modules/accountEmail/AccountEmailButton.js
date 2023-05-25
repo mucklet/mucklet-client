@@ -55,14 +55,29 @@ class AccountEmailButton {
 			n.component(new ModelComponent(
 				this.account,
 				new Collapser(),
+				(m, c) => c.setComponent(m.email && m.emailVerified
+					? null
+					: components.alert = components.alert || new Elem(n => n.elem('div', { className: 'pad-top-s' }, [
+						n.elem('div', { className: 'common--relative' }, [
+							n.component(new ModelTxt(
+								this.account,
+								m => m.email
+									? l10n.l('accountEmail.verificationRequired', "Address requires verification.")
+									: l10n.l('accountEmail.recoverRequiresEmail', "Recovery requires email."),
+								{ tagName: 'div', className: 'common--error' },
+							)),
+							n.elem('alert', 'div', { className: 'counter small alert' }),
+						]),
+					])),
+				),
+			)),
+			n.component(new ModelComponent(
+				this.account,
+				new Collapser(),
 				(m, c) => {
 					let comp = null;
 					if (this.account.email && !this.account.emailVerified) {
-						comp = components.sendVerify = components.sendVerify || new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
-							n.elem('div', { className: 'common--relative' }, [
-								n.component(new Txt(l10n.l('accountEmail.verificationRequired', "Address requires verification."), { tagName: 'div', className: 'common--error common--formmargin' })),
-								n.elem('alert', 'div', { className: 'counter small alert' }),
-							]),
+						comp = components.sendVerify = components.sendVerify || new Elem(n => n.elem('div', { className: 'pad-top-l pad-bottom-l' }, [
 							n.elem('button', { events: {
 								click: () => this.module.verifyEmail.sendVerification(this.account),
 							}, className: 'btn small primary icon-left' + fullWidth }, [

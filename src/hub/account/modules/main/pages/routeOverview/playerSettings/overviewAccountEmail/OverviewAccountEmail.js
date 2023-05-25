@@ -45,7 +45,7 @@ class OverviewAccountEmail {
 
 	_onUserChange() {
 		let m = this.user;
-		this.model.set({ alert: m && m.email && !m.emailVerified });
+		this.model.set({ alert: m && !(m.email && m.emailVerified) });
 	}
 
 	dispose() {
