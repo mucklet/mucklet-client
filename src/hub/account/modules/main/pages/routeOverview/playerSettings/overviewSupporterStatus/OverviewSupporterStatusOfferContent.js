@@ -66,6 +66,21 @@ class OverviewSupporterStatusOfferContent {
 	}
 
 	_tryOpen(callback) {
+		// Make sure we have a verified email
+		if (!this.user.email || !this.user.emailVerified) {
+			this.module.confirm.open(null, {
+				title: l10n.l('overviewSupporterStatus.verifiedEmailRequired', "Verified email required"),
+				body: [
+					l10n.l('overviewSupporterStatus.verifiedEmailRequiredBody1', "Any sort of payment requires a verified email address, for payment confirmations and account recovery."),
+					l10n.l('overviewSupporterStatus.verifiedEmailRequiredBody2', "Once verified, you can try again!"),
+				],
+				confirm: l10n.l('overviewSupporterStatus.gotIt', "Got it"),
+				cancel: null,
+			});
+			return;
+		}
+
+		// Show confirmation for pioneers becoming a supporter
 		if (this.offer.product == 'supporter' && hasIdRole(this.user, 'pioneer')) {
 			this.module.confirm.open(callback, {
 				title: l10n.l('overviewSupporterStatus.areYouSure', "Are you sure?"),
