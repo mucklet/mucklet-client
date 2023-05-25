@@ -41,7 +41,10 @@ class RoutePayments {
 			name: l10n.l('routePayments.payments', "Payments"),
 			component: new RoutePaymentsComponent(this.module, this.model),
 			setState: params => Promise.resolve(params.paymentId
-				? this.module.api.call('payment.payment.' + params.paymentId, 'update').then(payment => this._setState({ payment, page: params.page }))
+				? (params.page == 'result'
+					? this.module.api.call('payment.payment.' + params.paymentId, 'update')
+					: this.module.api.get('payment.payment.' + params.paymentId)
+				).then(payment => this._setState({ payment, page: params.page }))
 				: (params.userId
 					? this.module.api.get('identity.user.' + params.userId)
 					: this.module.auth.getUserPromise()

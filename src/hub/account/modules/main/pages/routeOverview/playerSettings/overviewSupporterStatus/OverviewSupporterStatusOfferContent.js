@@ -71,7 +71,7 @@ class OverviewSupporterStatusOfferContent {
 			this.module.confirm.open(null, {
 				title: l10n.l('overviewSupporterStatus.verifiedEmailRequired', "Verified email required"),
 				body: [
-					l10n.l('overviewSupporterStatus.verifiedEmailRequiredBody1', "Any sort of payment requires a verified email address, for payment confirmations and account recovery."),
+					l10n.l('overviewSupporterStatus.verifiedEmailRequiredBody1', "You must have a verified email address to make payments, so that you can receive confirmations or recover the account if lost."),
 					l10n.l('overviewSupporterStatus.verifiedEmailRequiredBody2', "Once verified, you can try again!"),
 				],
 				confirm: l10n.l('overviewSupporterStatus.gotIt', "Got it"),
