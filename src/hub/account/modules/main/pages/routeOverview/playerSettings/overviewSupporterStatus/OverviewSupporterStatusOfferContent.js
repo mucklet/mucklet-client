@@ -5,6 +5,16 @@ import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import * as txtRecurrence from 'utils/txtRecurrence';
 
+function hasIdRole(user, role) {
+	if (user?.idRoles) {
+		for (let r of user.idRoles) {
+			if (r == role) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 class OverviewSupporterStatusOfferContent {
 	constructor(module, user, paymentUser, offer, toggle) {
@@ -26,7 +36,7 @@ class OverviewSupporterStatusOfferContent {
 			n.elem('div', { className: 'badge--select badge--margin badge--select-margin' }, [
 				n.elem('button', { className: 'btn medium primary flex-1', events: {
 					click: (c, e) => {
-						this._openCardPayment(c);
+						this._tryOpen(() => this._openCardPayment(c));
 						e.stopPropagation();
 					},
 				}}, [
@@ -52,6 +62,19 @@ class OverviewSupporterStatusOfferContent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+		}
+	}
+
+	_tryOpen(callback) {
+		if (this.offer.product == 'supporter' && hasIdRole(this.user, 'pioneer')) {
+			this.module.confirm.open(callback, {
+				title: l10n.l('overviewSupporterStatus.areYouSure', "Are you sure?"),
+				body: l10n.l('overviewSupporterStatus.confirmPioneerSupporter', "You are pioneer with all the perks available for supporters already. You are still welcome to support, of course, but you've probably already helped plenty!"),
+				confirm: l10n.l('overviewSupporterStatus.letMeSupport', "Let me support!"),
+				cancel: l10n.l('overviewSupporterStatus.nevermind', "Nevermind"),
+			});
+		} else {
+			callback();
 		}
 	}
 
