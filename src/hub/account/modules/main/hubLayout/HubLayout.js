@@ -1,5 +1,7 @@
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
 import HubLayoutComponent from './HubLayoutComponent';
+import HubLayoutMenuItem from './HubLayoutMenuItem';
+import HubLayoutCounterMarker from './HubLayoutCounterMarker';
 import './hubLayout.scss';
 
 /**
@@ -98,6 +100,32 @@ class HubLayout {
 	removeTool(toolId) {
 		this.tools.remove(toolId);
 		return this;
+	}
+
+	/**
+	 * Creates a new HubLayoutMenuItem component to use as a menuComponent.
+	 * @param {object} route Route object
+	 * @param {object} [opt] Optional parameters
+	 * @param {string} [opt.itemId] Item id. Defaults to: 'menuitem-' + route.id
+	 * @param {function} [opt.onClick] Callback called when menu item is clicked: function(route)
+	 * @param {Component} [opt.markerComponent] Component that is added as a marker to the right side of the menu item.
+	 * @returns {Component} Menu item component.
+	 */
+	newMenuItem(route, opt) {
+		return new HubLayoutMenuItem(this.module, route, opt);
+	}
+
+	/**
+	 * Creates a new HubLayoutCounterMarker component to use as markerComponent
+	 * for the menu item.
+	 * @param {Model} model Context model.
+	 * @param {function} countCallback Callback that returns the count: function(model) -> Number
+	 * @param {object} [opt] Optional parameters
+	 * @param {function} [opt.tagClassNameCallback] Callback that returns a classname (eg. 'warn') to use for the marker tag: function(model) -> string
+	 * @returns {Component} Counter marker component.
+	 */
+	newCounterMarker(model, countCallback, opt) {
+		return new HubLayoutCounterMarker(model, countCallback, opt);
 	}
 
 	_setListener(on) {

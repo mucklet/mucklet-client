@@ -1,9 +1,6 @@
-.counter {
-	position: absolute;
+.counter, .counter-standalone {
 	background: $color4;
 	color: $black;
-	top: -3px;
-	right: -3px;
 	height: 16px;
 	min-width: 16px;
 	font-size: 12px;
@@ -12,6 +9,7 @@
 	border-radius: 8px;
 	padding: 2px;
 	transition: 0.2s opacity, 0.2s background-color;
+	text-align: center;
 
 	&.hide {
 		opacity: 0;
@@ -29,3 +27,11 @@
 		right: 0px;
 	}
 }
+
+.counter {
+	position: absolute;
+	top: -3px;
+	right: -3px;
+}
+
+

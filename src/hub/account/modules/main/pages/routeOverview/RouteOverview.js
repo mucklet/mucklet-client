@@ -20,6 +20,7 @@ class RouteOverview {
 			'router',
 			'auth',
 			'api',
+			'hubLayout',
 		], this._init.bind(this));
 	}
 
@@ -37,8 +38,18 @@ class RouteOverview {
 		this.module.router.addRoute({
 			id: 'overview',
 			icon: 'user',
-			name: l10n.l('routeOverview.accountOverview', "Account overview"),
+			name: l10n.l('routeOverview.overview', "Overview"),
 			component: new RouteOverviewComponent(this.module, this.model),
+			menuComponent: (route, itemId, closeMenu) => this.module.hubLayout.newMenuItem(route, {
+				itemId,
+				onClick: () => {
+					this.module.router.setRoute(route.id);
+					closeMenu();
+				},
+				markerComponent: this.module.hubLayout.newCounterMarker(this.model, m => m.alert, {
+					tagClassNameCallback: () => 'alert',
+				}),
+			}),
 			// staticRouteParams: { userId: null },
 			setState: params => this.module.auth.getUserPromise().then(user => {
 				let ctx = {};

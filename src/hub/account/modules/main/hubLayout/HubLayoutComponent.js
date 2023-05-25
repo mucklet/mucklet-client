@@ -4,9 +4,9 @@ import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
 import Hamburger from 'components/Hamburger';
-import FAIcon from 'components/FAIcon';
 import KebabMenu from 'components/KebabMenu';
 import HubLayoutFooter from './HubLayoutFooter';
+import HubLayoutMenuItem from './HubLayoutMenuItem';
 
 /**
  * HubLayoutComponent renders the main app layout.
@@ -20,6 +20,7 @@ class HubLayoutComponent {
 
 		// Bind callbacks
 		this._closeMenu = this._closeMenu.bind(this);
+		this._onMenuClick = this._onMenuClick.bind(this);
 	}
 
 	render(el) {
@@ -65,28 +66,11 @@ class HubLayoutComponent {
 									routes => routes.dispose(),
 									routes => new CollectionList(routes, route => (route.menuComponent
 										? (typeof route.menuComponent == 'function'
-											? route.menuComponent(route, 'menuitem-' + route.id)
+											? route.menuComponent(route, 'menuitem-' + route.id, this._closeMenu)
 											: route.menuComponent
 										)
-										: new ModelComponent(
-											this.module.router.getModel(),
-											new Elem(n =>
-												n.elem('button', {
-													className: 'hublayout--menuitem',
-													attributes: { id: 'menuitem-' + route.id },
-													events: { click: () => this._onMenuClick(route) },
-												}, [
-													n.component(route.icon ? new FAIcon(route.icon) : null),
-													n.component(new Txt(typeof route.name == 'function' ? route.name() : route.name, {
-														className: 'hublayout--menuitemname',
-													})),
-												]),
-											),
-											(m, c) => c[m.route && m.route.id == route.id
-												? 'addClass'
-												: 'removeClass'
-											]('active'),
-										)
+										: new HubLayoutMenuItem(this.module, route, { onClick: this._onMenuClick })
+
 									), { className: 'hublayout--menu' }),
 								)),
 							]),

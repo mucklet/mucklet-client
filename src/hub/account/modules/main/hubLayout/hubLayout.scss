@@ -130,61 +130,70 @@ $hublayout-sidepanel-width: 240px;
 		padding: 12px 0 68px 0;
 	}
 
-	&--menuitem, &--logout {
-		font-size: $font-size;
-		color: $color4-light;
-		display: flex;
-		width: 100%;
-		text-decoration: none;
-		background: none;
-		border: none;
-		align-items: center;
-		text-align: left;
-		min-height: 52px;
-		-webkit-transition: background-color 150ms linear, color 150ms linear, border-right-color 150ms linear;
-		-ms-transition: background-color 150ms linear, color 150ms linear, border-right-color 150ms linear;
-		transition: background-color 150ms linear, color 150ms linear, border-right-color 150ms linear;
-	}
-
-	&--menuitem {
-		position: relative;
-		padding: 8px 8px 8px 20px;
-		border-right: solid 4px transparent;
-		display: flex;
-
-		> .fa {
-			flex: 0 0 auto;
-			font-size: 24px;
-			width: 46px;
-			padding-right: 20px;
-			text-align: center;
-		}
-
-		&:hover, &:focus {
-			background: $color1-lightest;
-			color: $color4-lightest;
-			outline: 0;
-		}
-
-		&.active {
-			border-right-color: $color2;
-			color: $color4-lightest;
-		}
-
-		&.active:hover, &.active:focus {
-			color: $color4-lightestest;
-		}
-	}
-
-	&--menuitemname {
-		flex: 1 1 0px;
-	}
-
 	&--kebabmenu {
 		position: absolute;
 		bottom: 6px;
 		right: 5px;
 	}
+}
+
+.hublayout-menuitem, .hublayout--logout {
+	font-size: $font-size;
+	color: $color4-light;
+	display: flex;
+	width: 100%;
+	text-decoration: none;
+	background: none;
+	border: none;
+	align-items: center;
+	text-align: left;
+	min-height: 52px;
+	-webkit-transition: background-color 150ms linear, color 150ms linear, border-right-color 150ms linear;
+	-ms-transition: background-color 150ms linear, color 150ms linear, border-right-color 150ms linear;
+	transition: background-color 150ms linear, color 150ms linear, border-right-color 150ms linear;
+}
+
+.hublayout-menuitem {
+	position: relative;
+	padding: 8px 8px 8px 20px;
+	border-right: solid 4px transparent;
+	display: flex;
+
+	> .fa {
+		flex: 0 0 auto;
+		font-size: 24px;
+		width: 46px;
+		padding-right: 20px;
+		text-align: center;
+	}
+
+	&:hover, &:focus {
+		background: $color1-lightest;
+		color: $color4-lightest;
+		outline: 0;
+	}
+
+	&.active {
+		border-right-color: $color2;
+		color: $color4-lightest;
+	}
+
+	&.active:hover, &.active:focus {
+		color: $color4-lightestest;
+	}
+
+	&--name {
+		flex: 1 1 0px;
+	}
+}
+
+.hublayout-countermarker {
+	position: absolute;
+	top: 50%;
+	right: 12px;
+	-moz-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
 }
 
 .hublayout-footer {
