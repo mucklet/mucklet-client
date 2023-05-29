@@ -1,6 +1,7 @@
 import { Txt } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import awaitMailSent from 'utils/awaitMailSent';
 
 /**
  * VerifyEmail sends email verification and shows the result in a toaster.
@@ -43,7 +44,7 @@ class VerifyEmail {
 			: Promise.reject({ code: 'verifyEmail.missingAccount', message: "Not possible to send email verification from this domain." })
 		)
 			.then(account => account.call('sendEmailVerification'))
-			.then(() => {
+			.then(awaitMailSent).then(() => {
 				this.module.toaster.open({
 					title: l10n.l('verifyEmail.emailVerificationSent', "Verification email sent"),
 					content: new Txt(l10n.l('verifyEmail.emailSentBody', "Check your inbox for a verification mail.")),
