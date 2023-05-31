@@ -49,6 +49,21 @@ class RoutePaymentsPaymentBadgeContent {
 					: null,
 				),
 			)),
+			n.elem('div', { className: 'routepayments-paymentbadgecontent--details' }, [
+				n.component(new Txt(l10n.l('routePayments.details', "Details"), {
+					tagName: 'a',
+					className: 'link',
+					attributes: {
+						href: 'javascript:;',
+					},
+					events: {
+						click: (c, ev) => {
+							this.module.self.setRoute({ paymentId: this.payment.id });
+							ev.preventDefault();
+						},
+					},
+				})),
+			]),
 		]));
 		this.elem.render(el);
 	}

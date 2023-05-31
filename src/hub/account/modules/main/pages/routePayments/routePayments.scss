@@ -114,3 +114,28 @@
 		text-decoration: line-through;
 	}
 }
+
+.routepayments-paymentbadgecontent {
+	&--details {
+		position: absolute;
+		right: 6px;
+		bottom: 6px;
+		font-size: $font-size-small;
+	}
+}
+
+
+.routepayments-payment {
+	&--cost, &--refundednew {
+		color: $color3;
+	}
+
+	&--refundedcost {
+		color: $color5;
+		text-decoration: line-through;
+	}
+
+	&--refundedtotal {
+		font-size: $font-size-small;
+	}
+}

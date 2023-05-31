@@ -10,7 +10,9 @@ const txtStatusMethods = {
 	refunded: {
 		card: payment => payment.cost == 0
 			? l10n.l('txtPayment.cardSetupRefunded', "Card setup refunded. Huh?")
-			: l10n.l('txtPayment.cardPaymentRefunded', "Card payment refunded"),
+			: payment.cost <= payment.amountRefunded
+				? l10n.l('txtPayment.cardPaymentRefunded', "Card payment refunded")
+				: l10n.l('txtPayment.cardPaymentRefunded', "Card payment partially refunded"),
 	},
 	completed: {
 		card: payment => payment.cost == 0

@@ -10,6 +10,7 @@ import * as txtUnit from 'utils/txtUnit';
 import * as txtProduct from 'utils/txtProduct';
 import * as txtPaymentStatus from 'utils/txtPaymentStatus';
 import * as txtCurrency from 'utils/txtCurrency';
+import * as txtCardbrand from 'utils/txtCardbrand';
 
 /**
  * RoutePaymentsPayment draws a payment component
@@ -19,12 +20,22 @@ class RoutePaymentsPayment {
 		this.module = module;
 		this.payment = payment;
 		this.offer = payment.offer;
+
+		this.methodTypes = {
+			card: method => this._cardComponentFactory(method),
+		};
 	}
 
 	render(el) {
 		let components = {};
 		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-payment' }, [
-			n.component(new Txt(l10n.l('routePayments.payment', "Payment"), { tagName: 'h2' })),
+			n.component(new ModelTxt(
+				this.payment,
+				m => m.cost
+					? l10n.l('routePayments.payment', "Payment")
+					: l10n.l('routePayments.paymentSetup', "Payment setup"),
+				{ tagName: 'h2' },
+			)),
 			n.elem('div', { className: 'common--hr' }),
 			n.elem('p', { className: 'routepayments--product' }, [
 				n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
@@ -34,30 +45,70 @@ class RoutePaymentsPayment {
 					: txtRecurrence.toLocaleString(m.recurrence),
 				)),
 			]),
-			n.component(new PanelSection(
-				l10n.l('routePayments.amount', "Amount"),
-				new ModelComponent(
-					this.payment,
-					new Fader(),
-					(m, c) => c.setComponent(m.cost
-						? components.cost = components.cost || new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments--cost' })
-						: components.setup = components.setup || new Txt(l10n.l('routePayments.setup', "Setup for future payments. Nothing charged.")),
-					),
+			n.component(new ModelComponent(
+				this.payment,
+				new Collapser(),
+				(m, c) => c.setComponent(m.cost
+					? new PanelSection(
+						l10n.l('routePayments.amount', "Amount"),
+						new ModelComponent(
+							this.payment,
+							new Fader(),
+							(m, c, change) => {
+								if (!change || (change.hasOwnProperty('amountRefunded') && (!change.amountRefunded) != (!m.amountRefunded))) {
+									c.setComponent(m.amountRefunded
+										? new Elem(n => n.elem('div', { className: 'routepayments-payment--refunded' }, [
+											n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments-payment--refundedcost' })),
+											n.text(' → '),
+											n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost - m.amountRefunded), { className: 'routepayments-payment--refundednew' })),
+											n.text(' '),
+											n.component(new ModelTxt(this.payment, m => l10n.l('routePayments.refundedTotal', "({amount} refunded)", { amount: l10n.t(txtCurrency.toLocaleString(m.currency, m.amountRefunded)) }), { className: 'routepayments-payment--refundedtotal' })),
+										]))
+										: new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments-payment--cost' }),
+									);
+								}
+							},
+						),
+						{
+							className: 'common--sectionpadding',
+							noToggle: true,
+						},
+					)
+					: null,
 				),
-				{
-					className: 'common--sectionpadding',
-					noToggle: true,
-				},
 			)),
 			n.component(new ModelComponent(
 				this.payment,
 				new Collapser(),
-				(m, c) => c.setComponent(m.refunded
-					? components.refunded = components.refunded || new PanelSection(
-						l10n.l('routePayments.refunded', "Refunded"),
+				(m, c, change) => {
+					if (!change || change.hasOwnProperty('methodInfo')) {
+						let comp = (this.methodTypes[m.method] || (() => null))(m.methodInfo);
+						c.setComponent(comp
+							? new PanelSection(
+								l10n.l('routePayments.method', "Method"),
+								comp,
+								{
+									className: 'common--sectionpadding',
+									noToggle: true,
+								},
+							)
+							: null,
+						);
+					}
+				},
+			)),
+			n.component(new ModelComponent(
+				this.offer,
+				new Collapser(),
+				(m, c) => c.setComponent(m.recurrence != 'once'
+					? new PanelSection(
+						l10n.l('routePayments.setup', "Setup"),
 						new Elem(n => n.elem('div', [
-							n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.amountRefunded), { tagName: 'div', className: 'routepayments--amountrefunded' })),
-							n.component(new ModelTxt(this.payment, m => formatDateTime(new Date(m.refunded || m.created), { showYear: true }))),
+							n.component(new Txt(l10n.l('overviewSupporterStatus.recurringPaymentOf', "Recurring payment of "))),
+							n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
+							n.text(" "),
+							n.component(new Txt(txtRecurrence.unit(this.offer.recurrence))),
+							n.text("."),
 						])),
 						{
 							className: 'common--sectionpadding',
@@ -83,6 +134,21 @@ class RoutePaymentsPayment {
 					noToggle: true,
 				},
 			)),
+			n.component(new ModelComponent(
+				this.payment,
+				new Collapser(),
+				(m, c) => c.setComponent(m.refunded
+					? components.refunded = components.refunded || new PanelSection(
+						l10n.l('routePayments.refunded', "Refunded"),
+						new ModelTxt(this.payment, m => formatDateTime(new Date(m.refunded || m.created), { showYear: true })),
+						{
+							className: 'common--sectionpadding',
+							noToggle: true,
+						},
+					)
+					: null,
+				),
+			)),
 		]));
 		return this.elem.render(el);
 	}
@@ -92,6 +158,15 @@ class RoutePaymentsPayment {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_cardComponentFactory(method) {
+		return new Elem(n => n.elem('div', [
+			n.component(new ModelTxt(method, m => txtCardbrand.toLocaleString(m.data.brand))),
+			n.component(new ModelTxt(method, m => " •••• " + m.data.last4)),
+			n.component(new Txt(l10n.l('routePayments.expires', ", expires "))),
+			n.component(new ModelTxt(method, m => ("00" + m.data.expMonth).slice(-2) + " / " + m.data.expYear)),
+		]));
 	}
 }
 
