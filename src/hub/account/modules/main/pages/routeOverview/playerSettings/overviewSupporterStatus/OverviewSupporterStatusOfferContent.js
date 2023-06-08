@@ -1,9 +1,9 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
-// import Fader from 'components/Fader';
 import l10n from 'modapp-l10n';
 import * as txtRecurrence from 'utils/txtRecurrence';
+import isError from 'utils/isError';
 
 function hasIdRole(user, role) {
 	if (user?.idRoles) {
@@ -44,6 +44,8 @@ class OverviewSupporterStatusOfferContent {
 					n.component(new FAIcon('credit-card')),
 					n.component(new Txt(l10n.l('overviewSupporterStatus.userCard', "Use card"))),
 				]),
+				// // In the future we want to have paypal as well.
+				//
 				// n.elem('button', { className: 'overviewsupporterstatus-offercontent--paypal btn medium primary flex-1', events: {
 				// 	click: (el, e) => {
 				// 		this._openCardPayment();
@@ -98,7 +100,20 @@ class OverviewSupporterStatusOfferContent {
 
 		this.module.stripe.createPayment(this.offer.id)
 			.then(payment => this.module.routePayments.setRoute({ paymentId: payment.id }))
-			.catch(err => this.module.confirm.openError(err))
+			.catch(err => {
+				if (isError(err, 'payment.locationPaymentBlocked')) {
+					this.module.confirm.open(null, {
+						title: l10n.l('overviewSupporterStatus.locationPaymentBlockError', "Unsupported location"),
+						body: [
+							l10n.l('overviewSupporterStatus.locationPaymentBlockBody1', "Due to tax laws and possibly other reasons, we are not able to take payments from your location at the moment."),
+							l10n.l('overviewSupporterStatus.locationPaymentBlockBody2', "Sorry about that!"),
+						],
+						cancel: null,
+					});
+				} else {
+					this.module.confirm.openError(err);
+				}
+			})
 			.then(() => this.elem?.addNodeClass('spinner', 'hide'));
 	}
 }
