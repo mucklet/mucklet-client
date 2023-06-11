@@ -3,7 +3,6 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
 import l10n from 'modapp-l10n';
-import * as txtCurrency from 'utils/txtCurrency';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtProduct from 'utils/txtProduct';
 import * as txtCardbrand from 'utils/txtCardbrand';
@@ -35,13 +34,7 @@ class OverviewSupporterStatusSubscriptionContent {
 			)),
 			n.elem('div', { className: 'badge--select' }, [
 				n.component(new Txt(l10n.l('routePayments.setup', "Setup"), { className: 'badge--iconcol badge--subtitle' })),
-				n.elem('div', { className: 'badge--info-morepad badge--text' }, [
-					n.component(new Txt(l10n.l('overviewSupporterStatus.recurringPaymentOf', "Recurring payment of "))),
-					n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
-					n.text(" "),
-					n.component(new Txt(txtRecurrence.unit(this.offer.recurrence), { className: 'overviewsupporterstatus-offer--unit' })),
-					n.text("."),
-				]),
+				n.component(this.module.payment.newOfferSetupTxt(this.offer, { className: 'badge--info-morepad badge--text' })),
 			]),
 			n.elem('div', { className: 'badge--divider' }),
 			n.elem('div', { className: 'badge--select badge--margin badge--select-margin' }, [

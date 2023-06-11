@@ -1,10 +1,15 @@
-import { Elem, Txt, Input } from 'modapp-base-component';
+import { Elem, Html, Txt, Input } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
+import formatDate from 'utils/formatDate';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtCurrency from 'utils/txtCurrency';
+
+const paymentUrl = HUB_PATH + 'policy/payment.html';
+const txtPaymentTerms = l10n.l('stripe.paymentTermsInfo', `By making this card payment, you agree to Mucklet's <a href="{paymentUrl}" class="link" target="_blank">Payment Terms</a>.`, { paymentUrl });
+const txtSetupTerms = l10n.l('stripe.subscriptionTermsInfo', `By setting up this card for future payments, you agree to Mucklet's <a href="{paymentUrl}" class="link" target="_blank">Payment Terms</a>.`, { paymentUrl });
 
 /**
  * StripePaymentElement draws a component that tests accepting a payment using
@@ -45,7 +50,22 @@ class StripePaymentElement {
 			n.elem('div', { className: 'stripe--payment' }, [
 				n.elem('payment', 'div'),
 			]),
-			n.component(new ModelTxt(this.offer, m => txtRecurrence.info(m.recurrence), { tagName: 'div', className: 'stripe--recurrenceinfo' })),
+			n.elem('div', { className: 'stripe--termsinfo' }, [
+				n.component(new Html(this.intent.intentType == 'payment'
+					? txtPaymentTerms
+					: txtSetupTerms,
+				)),
+				n.elem('div', [
+					n.component(this.intent.intentType == 'setup'
+						? new ModelTxt(this.payment, m => m.periodEnd
+							? l10n.l('stripe.firstPayment', "First payment {date}. ", { date: formatDate(new Date(m.periodEnd), { showYear: true }) })
+							: '',
+						)
+						: null,
+					),
+					n.component(new ModelTxt(this.offer, m => txtRecurrence.info(m.recurrence))),
+				]),
+			]),
 			n.component('message', new Collapser(null)),
 			n.elem('stripe', 'button', { events: {
 				click: (c, ev) => {

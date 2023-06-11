@@ -19,6 +19,7 @@ class OverviewSupporterStatus {
 			'confirm',
 			'toaster',
 			'stripe',
+			'payment',
 		], this._init.bind(this));
 	}
 

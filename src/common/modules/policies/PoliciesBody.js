@@ -8,42 +8,37 @@ class PoliciesBody extends Html{
 		super(html, { className: 'policies-body' });
 		this.module = module;
 
-		// Bind callbacks
-		this._onPrivacyClick = this._onClick.bind(this, 'privacy');
-		this._onTermsClick = this._onClick.bind(this, 'terms');
+		// Set policy link bindings
+		this._policies = this.module.self.availablePolicies.map(p => ({
+			slug: p,
+			onClick: this._onClick.bind(this, p),
+			links: null,
+		}));
 	}
 
 	render(el) {
 		let rel = super.render(el);
-		this._privacyLinks = [];
 
-		let privacyEl = rel.getElementsByClassName('privacy');
-		for (let pel of privacyEl) {
-			pel.setAttribute('href', 'javascript:;');
-			pel.addEventListener('click', this._onPrivacyClick);
-			this._privacyLinks.push(pel);
-		}
-		let termsEl = rel.getElementsByClassName('terms');
-		for (let pel of termsEl) {
-			pel.setAttribute('href', 'javascript:;');
-			pel.addEventListener('click', this._onTermsClick);
-			this._termsLinks.push(pel);
+		for (let p of this._policies) {
+			p.links = [];
+			let links = rel.getElementsByClassName(p.slug);
+			for (let l of links) {
+				l.setAttribute('href', 'javascript:;');
+				l.addEventListener('click', p.onClick);
+				p.links.push(l);
+			}
 		}
 		return rel;
 	}
 
 	unrender() {
-		if (this._privacyLinks) {
-			for (let pel of this._privacyLinks) {
-				pel.removeEventListener('click', this._onPrivacyClick);
+		for (let p of this._policies) {
+			if (p.links) {
+				for (let l of p.links) {
+					l.removeEventListener('click', p.onClick);
+				}
+				p.links = null;
 			}
-			this._privacyLinks;
-		}
-		if (this._termsLinks) {
-			for (let pel of this._termsLinks) {
-				pel.removeEventListener('click', this._onTermsClick);
-			}
-			this._termsLinks;
 		}
 		super.unrender();
 	}

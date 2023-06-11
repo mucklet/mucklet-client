@@ -61,13 +61,10 @@ class Stripe {
 			api.call('payment.payment.' + paymentId, 'getStripeIntent'),
 		]).then(result => {
 			let [ user, info, payment, intent ] = result;
-			info?.off();
-			payment?.off();
 			return this._createPaymentElement(user, info, payment, intent, opt);
-		}).catch(err => {
+		}).finally(() => {
 			info?.off();
 			payment?.off();
-			throw err;
 		});
 	}
 

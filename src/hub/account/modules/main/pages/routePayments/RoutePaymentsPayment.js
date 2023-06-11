@@ -103,13 +103,7 @@ class RoutePaymentsPayment {
 				(m, c) => c.setComponent(m.recurrence != 'once'
 					? new PanelSection(
 						l10n.l('routePayments.setup', "Setup"),
-						new Elem(n => n.elem('div', [
-							n.component(new Txt(l10n.l('overviewSupporterStatus.recurringPaymentOf', "Recurring payment of "))),
-							n.component(new ModelTxt(this.offer, m => txtCurrency.toLocaleString(m.currency, m.cost))),
-							n.text(" "),
-							n.component(new Txt(txtRecurrence.unit(this.offer.recurrence))),
-							n.text("."),
-						])),
+						this.module.payment.newOfferSetupTxt(this.offer),
 						{
 							className: 'common--sectionpadding',
 							noToggle: true,

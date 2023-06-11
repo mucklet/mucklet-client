@@ -18,7 +18,10 @@ module.exports = function(ctx) {
 
 		policiesHtmlPlugins.push(new HtmlWebpackPlugin({
 			filename: 'policy/' + policy.slug + '.html',
-			template: path.resolve(ctx.srcPath, 'policy/index.ejs'),
+			template: path.resolve(ctx.srcPath, ctx.devMode
+				? 'policy/' + policy.slug + '.ejs'
+				: 'policy/index.ejs',
+			),
 			templateParameters: {
 				title: ctx.siteConfig.APP_TITLE,
 				policyTitle: policy.title,

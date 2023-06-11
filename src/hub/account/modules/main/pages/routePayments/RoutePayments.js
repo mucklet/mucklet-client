@@ -26,6 +26,7 @@ class RoutePayments {
 			'router',
 			'stripe',
 			'auth',
+			'payment',
 		], this._init.bind(this));
 	}
 
