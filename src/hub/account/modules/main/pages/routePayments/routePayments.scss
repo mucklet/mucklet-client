@@ -75,7 +75,7 @@
 			}
 		}
 	}
-	&.refunded {
+	&.refunded, &.canceled{
 		.badge--faicon {
 			// background: $green;
 			background: $color5;

@@ -3,7 +3,7 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
-import Fader from 'components/Fader';
+import ModelFader from 'components/ModelFader';
 import * as txtCurrency from 'utils/txtCurrency';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtUnit from 'utils/txtUnit';
@@ -53,24 +53,28 @@ class RoutePaymentsPaymentBadge {
 							]),
 						]),
 						n.elem('div', { className: 'routepayments-paymentbadge--info badge--text badge--nowrap flex-1' }, [
-							n.component(new ModelComponent(
-								this.payment,
-								new Fader(),
-								(m, c, change) => {
-									if (!change || (change.hasOwnProperty('amountRefunded') && (!change.amountRefunded) != (!m.amountRefunded))) {
-										c.setComponent(m.amountRefunded
-											? new Elem(n => n.elem('div', { className: 'routepayments-paymentbadge--refunded' }, [
-												n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments-paymentbadge--refundedcost' })),
-												n.text(' → '),
-												n.component(new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost - m.amountRefunded), { className: 'routepayments-paymentbadge--refundednew' })),
-												n.text(' '),
-												n.component(new ModelTxt(this.payment, m => l10n.l('routePayments.refundedTotal', "({amount} refunded)", { amount: l10n.t(txtCurrency.toLocaleString(m.currency, m.amountRefunded)) }), { className: 'routepayments-paymentbadge--refundedtotal badge--text' })),
-											]))
-											: new ModelTxt(this.payment, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments-paymentbadge--cost' }),
-										);
-									}
+							n.component(new ModelFader(this.payment, [
+								{
+									condition: m => m.amountRefunded,
+									factory: m => new Elem(n => n.elem('div', { className: 'routepayments-paymentbadge--refunded' }, [
+										n.component(new ModelTxt(m, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments-paymentbadge--refundedcost' })),
+										n.text(' → '),
+										n.component(new ModelTxt(m, m => txtCurrency.toLocaleString(m.currency, m.cost - m.amountRefunded), { className: 'routepayments-paymentbadge--refundednew' })),
+										n.text(' '),
+										n.component(new ModelTxt(m, m => l10n.l('routePayments.refundedTotal', "({amount} refunded)", { amount: l10n.t(txtCurrency.toLocaleString(m.currency, m.amountRefunded)) }), { className: 'routepayments-paymentbadge--refundedtotal badge--text' })),
+									])),
 								},
-							)),
+								{
+									condition: m => m.canceled,
+									factory: m => new ModelTxt(m, m => m.error
+										? l10n.l(m.error.code, m.error.message, m.error.data)
+										: l10n.l('routePayments.canceledPayment', "Payment canceled.")
+									, { className: 'routepayments-paymentbadge--error' }),
+								},
+								{
+									factory: m => new ModelTxt(m, m => txtCurrency.toLocaleString(m.currency, m.cost), { className: 'routepayments-paymentbadge--cost' }),
+								},
+							])),
 						]),
 					]),
 				]),
@@ -91,6 +95,7 @@ class RoutePaymentsPaymentBadge {
 					c[method == m.method ? 'addClass' : 'removeClass']('method-' + method);
 				}
 				c[m.refunded ? 'addClass' : 'removeClass']('refunded');
+				c[m.canceled ? 'addClass' : 'removeClass']('canceled');
 			},
 		);
 		this.elem.render(el);
