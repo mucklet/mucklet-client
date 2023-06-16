@@ -1,7 +1,7 @@
 import arraysEqual from './arraysEqual';
 
 /**
- * @typedef {Object} modelComponentSelectorComponent
+ * @typedef {object} modelComponentSelectorComponent
  * @property {function} [component] Component to set.
  * @property {function} [factory] Component factory function. Ignored if a component property is set: function(model) -> Component
  * @property {function} [condition] Condition function if component is to be selected: function(model) -> boolean
