@@ -78,28 +78,46 @@ const defaultAttr = [
 		sortOrder: 1210,
 	},
 	{
+		key: 'maxRoomProfiles',
+		stepFactory: () => new NumberStep('value', { name: "max room profiles" }),
+		desc: l10n.l('setConfig.maxRoomProfilesDesc', "Max number of room profiles."),
+		sortOrder: 1220,
+	},
+	{
 		key: 'adminMaxOwnedChars',
 		stepFactory: () => new NumberStep('value', { name: "max owned characters for admins" }),
 		desc: l10n.l('setConfig.adminMaxOwnedCharsDesc', "Max number of owned characters for admins."),
-		sortOrder: 1220,
+		sortOrder: 1230,
 	},
 	{
 		key: 'adminMaxCharProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max character profiles for admins" }),
 		desc: l10n.l('setConfig.adminMaxCharProfilesDesc', "Max number of character profiles for admins."),
-		sortOrder: 1230,
+		sortOrder: 1240,
+	},
+	{
+		key: 'adminMaxRoomProfiles',
+		stepFactory: () => new NumberStep('value', { name: "max room profiles for admins" }),
+		desc: l10n.l('setConfig.adminMaxRoomProfilesDesc', "Max number of room profiles for admins."),
+		sortOrder: 1250,
 	},
 	{
 		key: 'supporterMaxOwnedChars',
 		stepFactory: () => new NumberStep('value', { name: "max owned characters for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxOwnedCharsDesc', "Max number of owned characters for supporters."),
-		sortOrder: 1240,
+		sortOrder: 1260,
 	},
 	{
 		key: 'supporterMaxCharProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max character profiles for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxCharProfilesDesc', "Max number of character profiles for supporters."),
-		sortOrder: 1250,
+		sortOrder: 1270,
+	},
+	{
+		key: 'supporterMaxRoomProfiles',
+		stepFactory: () => new NumberStep('value', { name: "max room profiles for supporters" }),
+		desc: l10n.l('setConfig.supporterMaxRoomProfilesDesc', "Max number of room profiles for supporters."),
+		sortOrder: 1280,
 	},
 	// Max item values (non-role dependent)
 	{
