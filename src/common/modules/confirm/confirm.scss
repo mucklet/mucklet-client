@@ -3,6 +3,10 @@
 .dialog.confirm {
 	max-width: 360px;
 
+	&.wide {
+		max-width: 420px;
+	}
+
 	.confirm--body {
 		display: block;
 		margin: 16px 0 32px 0;
@@ -13,6 +17,7 @@
 	// 	margin: 8px 0 12px 0;
 	// }
 }
+
 
 .confirm--footer {
 	margin: 32px 0 8px 0;

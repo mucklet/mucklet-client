@@ -25,6 +25,7 @@ class Confirm {
 	 * @param {boolean} [opt.confirmStyle] Style to use for the confirm button. May be "primary", "secondary", or "warning". Defaults to "primary".
 	 * @param {boolean} [opt.noClose] Flag telling if closing through escape or an "X"-icon should be disabled. Defaults to false.
 	 * @param {boolean} [opt.onClose] Callback function called when the confirmed is closed.
+	 * @param {string} [opt.size] Size of the dialog. May be "wide".
 	 * @returns {Dialog} Dialog object.
 	 */
 	open(onConfirm, opt) {
@@ -38,7 +39,7 @@ class Confirm {
 
 		this.dialog = new Dialog({
 			title: opt.title || l10n.l('confirm.title', "Confirm"),
-			className: opt.className || 'confirm',
+			className: opt.className || 'confirm' + (opt.size ? ' ' + opt.size : ''),
 			noClose: !!opt.noClose,
 			content: new Elem(n => {
 				let footer = [
