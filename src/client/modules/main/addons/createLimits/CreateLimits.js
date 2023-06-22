@@ -1,11 +1,13 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import escapeHtml from 'utils/escapeHtml';
 
 const txtBecomeSupporter = l10n.l('createLimits.becomeSupporter', "Become supporter");
 const txtNevermind = l10n.l('createLimits.nervermind', "Nevermind");
 const txtCharLimitReached = l10n.l('createLimits.charLimitReached', "Character limit reached");
 const txtProfileLimitReached = l10n.l('createLimits.profileLimitReached', "Profile limit reached");
-const txtRoomProfileLimitReachedPrune = (maxRoomProfiles) => l10n.l('createLimits.roomProfileLimitReachedBody2', "You've reached the limit of {maxRoomProfiles} profiles. Maybe it is time to prune some of them?", { maxRoomProfiles });
+const txtCharProfileLimitReachedPrune = (maxCharProfiles) => l10n.l('createLimits.charProfileLimitReachedPrune', "You've reached the limit of {maxCharProfiles} profiles. Maybe it is time to prune some of them?", { maxCharProfiles });
+const txtRoomProfileLimitReachedPrune = (maxRoomProfiles) => l10n.l('createLimits.roomProfileLimitReachedPrune', "You've reached the limit of {maxRoomProfiles} profiles. Maybe it is time to prune some of them?", { maxRoomProfiles });
 const accountOverviewUrl = HUB_PATH + 'account#overview';
 
 /**
@@ -81,7 +83,7 @@ class CreateLimits {
 			// On limit reached
 			(maxCharProfiles) => this.module.confirm.open(null, {
 				title: txtProfileLimitReached,
-				body: l10n.l('createLimits.profileLimitReachedBody2', "You've reached the limit of {maxCharProfiles} profiles. Maybe it is time to prune some of them?", { maxCharProfiles }),
+				body: txtCharProfileLimitReachedPrune(maxCharProfiles),
 				cancel: null,
 			}),
 			// On promote supporter
@@ -97,6 +99,25 @@ class CreateLimits {
 			}),
 			// On limit not reached
 			cb,
+		);
+	}
+
+	/**
+	 * Get a promise to a room profiles error component.
+	 * @param {Model} ctrl Controlled character model.
+	 * @param {*} opt Optional parameters for the component.
+	 * @returns {Promise.<Component>} Promise of a error message component, or null if no error.
+	 */
+	getCharProfilesError(ctrl, opt) {
+		return this._limitSelector(
+			ctrl.profiles.length,
+			this.coreInfo.maxCharProfiles,
+			this.coreInfo.adminMaxCharProfiles,
+			this.coreInfo.supporterMaxCharProfiles,
+			// On limit reached
+			(maxCharProfiles) => new Html(txtCharProfileLimitReachedPrune(maxCharProfiles), opt),
+			// On promote supporter
+			(maxCharProfiles, supporterMaxCharProfiles) => new Html(l10n.l('createLimit.maxCharProfilesPromote', `You can only have {maxCharProfiles} profiles. By <a href="{url}" class="link" target="_blank">becoming a supporter</a>, you can raise the cap to {supporterMaxCharProfiles} profiles.`, { maxCharProfiles, supporterMaxCharProfiles, url: escapeHtml(accountOverviewUrl) }), opt),
 		);
 	}
 
@@ -150,7 +171,7 @@ class CreateLimits {
 			// On limit reached
 			(maxRoomProfiles) => new Html(txtRoomProfileLimitReachedPrune(maxRoomProfiles), opt),
 			// On promote supporter
-			(maxRoomProfiles, supporterMaxRoomProfiles) => new Html(l10n.l('createLimit.maxRoomProfilesPromote', `You can only have {maxRoomProfiles} profiles. By <a href="{accountOverviewUrl}" class="link" target="_blank">becoming a supporter</a>, you can raise the cap to {supporterMaxRoomProfiles} profiles.`, { maxRoomProfiles, supporterMaxRoomProfiles, accountOverviewUrl }), opt),
+			(maxRoomProfiles, supporterMaxRoomProfiles) => new Html(l10n.l('createLimit.maxRoomProfilesPromote', `You can only have {maxRoomProfiles} profiles. By <a href="{url}" class="link" target="_blank">becoming a supporter</a>, you can raise the cap to {supporterMaxRoomProfiles} profiles.`, { maxRoomProfiles, supporterMaxRoomProfiles, url: escapeHtml(accountOverviewUrl) }), opt),
 		);
 	}
 
