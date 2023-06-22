@@ -1,11 +1,11 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 
 const txtBecomeSupporter = l10n.l('createLimits.becomeSupporter', "Become supporter");
 const txtNevermind = l10n.l('createLimits.nervermind', "Nevermind");
 const txtCharLimitReached = l10n.l('createLimits.charLimitReached', "Character limit reached");
 const txtProfileLimitReached = l10n.l('createLimits.profileLimitReached', "Profile limit reached");
-
+const txtRoomProfileLimitReachedPrune = (maxRoomProfiles) => l10n.l('createLimits.roomProfileLimitReachedBody2', "You've reached the limit of {maxRoomProfiles} profiles. Maybe it is time to prune some of them?", { maxRoomProfiles });
 const accountOverviewUrl = HUB_PATH + 'account#overview';
 
 /**
@@ -38,38 +38,31 @@ class CreateLimits {
 	 * @param {function} cb Callback called if limit is not reached.
 	 */
 	validateOwnedChars(cb) {
-		let playerMod = this.module.player;
-		let supporterMaxOwnedChars = this.coreInfo.supporterMaxOwnedChars;
-		let maxOwnedChars = Math.max(
+		this._limitSelector(
+			ctrl.profiles.length,
 			this.coreInfo.maxOwnedChars,
-			playerMod.hasAnyRole('admin') || playerMod.hasAnyIdRole('overseer') ? this.coreInfo.adminMaxOwnedChars : 0,
-			playerMod.hasAnyIdRole('overseer', 'pioneer', 'supporter') ? supporterMaxOwnedChars : 0,
+			this.coreInfo.adminMaxOwnedChars,
+			this.coreInfo.supporterMaxOwnedChars,
+			// On limit reached
+			(maxOwnedChars) => this.module.confirm.open(null, {
+				title: txtCharLimitReached,
+				body: l10n.l('createLimits.charLimitReachedBody2', "You've reached the limit of {maxOwnedChars} characters. Maybe it is time to prune some of them?", { maxOwnedChars }),
+				cancel: null,
+			}),
+			// On promote supporter
+			(maxOwnedChars, supporterMaxOwnedChars) => this.module.confirm.open(() => this._redirectToAccount(), {
+				title: txtCharLimitReached,
+				confirm: txtBecomeSupporter,
+				body: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('createLimits.charLimitReachedBody', "You can only own {maxOwnedChars} characters.", { maxOwnedChars }), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('createLimits.charLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxOwnedChars} characters.", { supporterMaxOwnedChars }), { tagName: 'p' })),
+				])),
+				cancel: txtNevermind,
+				size: 'wide',
+			}),
+			// On limit not reached
+			cb,
 		);
-		let ownedChars = playerMod.getChars().length;
-		if (maxOwnedChars <= ownedChars) {
-			// Check if we should show supporter message
-			if (supporterMaxOwnedChars > maxOwnedChars && supporterMaxOwnedChars > ownedChars) {
-				this.module.confirm.open(() => this._redirectToAccount(), {
-					title: txtCharLimitReached,
-					confirm: txtBecomeSupporter,
-					body: new Elem(n => n.elem('div', [
-						n.component(new Txt(l10n.l('createLimits.charLimitReachedBody', "You can only own {maxOwnedChars} characters.", { maxOwnedChars }), { tagName: 'p' })),
-						n.component(new Txt(l10n.l('createLimits.charLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxOwnedChars} characters.", { supporterMaxOwnedChars }), { tagName: 'p' })),
-					])),
-					cancel: txtNevermind,
-					size: 'wide',
-				});
-			} else {
-				this.module.confirm.open(null, {
-					title: txtCharLimitReached,
-					body: l10n.l('createLimits.charLimitReachedBody2', "You've reached the limit of {maxOwnedChars} characters. Maybe it is time to prune some of them?", { maxOwnedChars }),
-					cancel: null,
-				});
-			}
-			return;
-		}
-
-		cb();
 	}
 
 	/**
@@ -80,38 +73,31 @@ class CreateLimits {
 	 * @param {function} cb Callback called if limit is not reached.
 	 */
 	validateCharProfiles(ctrl, cb) {
-		let playerMod = this.module.player;
-		let supporterMaxCharProfiles = this.coreInfo.supporterMaxCharProfiles;
-		let maxCharProfiles = Math.max(
+		this._limitSelector(
+			ctrl.profiles.length,
 			this.coreInfo.maxCharProfiles,
-			playerMod.hasAnyRole('admin') || playerMod.hasAnyIdRole('overseer') ? this.coreInfo.adminMaxCharProfiles : 0,
-			playerMod.hasAnyIdRole('overseer', 'pioneer', 'supporter') ? supporterMaxCharProfiles : 0,
+			this.coreInfo.adminMaxCharProfiles,
+			this.coreInfo.supporterMaxCharProfiles,
+			// On limit reached
+			(maxCharProfiles) => this.module.confirm.open(null, {
+				title: txtProfileLimitReached,
+				body: l10n.l('createLimits.profileLimitReachedBody2', "You've reached the limit of {maxCharProfiles} profiles. Maybe it is time to prune some of them?", { maxCharProfiles }),
+				cancel: null,
+			}),
+			// On promote supporter
+			(maxCharProfiles, supporterMaxCharProfiles) => this.module.confirm.open(() => this._redirectToAccount(), {
+				title: txtProfileLimitReached,
+				confirm: txtBecomeSupporter,
+				body: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('createLimits.profileLimitReachedBody', "You can only have {maxCharProfiles} profiles per character.", { maxCharProfiles }), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('createLimits.profileLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxCharProfiles} profiles.", { supporterMaxCharProfiles }), { tagName: 'p' })),
+				])),
+				cancel: txtNevermind,
+				size: 'wide',
+			}),
+			// On limit not reached
+			cb,
 		);
-		let charProfiles = ctrl.profiles.length;
-		if (maxCharProfiles <= charProfiles) {
-			// Check if we should show supporter message
-			if (supporterMaxCharProfiles > maxCharProfiles && supporterMaxCharProfiles > charProfiles) {
-				this.module.confirm.open(() => this._redirectToAccount(), {
-					title: txtProfileLimitReached,
-					confirm: txtBecomeSupporter,
-					body: new Elem(n => n.elem('div', [
-						n.component(new Txt(l10n.l('createLimits.profileLimitReachedBody', "You can only have {maxCharProfiles} profiles per character.", { maxCharProfiles }), { tagName: 'p' })),
-						n.component(new Txt(l10n.l('createLimits.profileLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxCharProfiles} profiles.", { supporterMaxCharProfiles }), { tagName: 'p' })),
-					])),
-					cancel: txtNevermind,
-					size: 'wide',
-				});
-			} else {
-				this.module.confirm.open(null, {
-					title: txtProfileLimitReached,
-					body: l10n.l('createLimits.profileLimitReachedBody2', "You've reached the limit of {maxCharProfiles} profiles. Maybe it is time to prune some of them?", { maxCharProfiles }),
-					cancel: null,
-				});
-			}
-			return;
-		}
-
-		cb();
 	}
 
 	/**
@@ -122,38 +108,66 @@ class CreateLimits {
 	 * @param {function} cb Callback called if limit is not reached.
 	 */
 	validateRoomProfiles(profiles, cb) {
-		let playerMod = this.module.player;
-		let supporterMaxRoomProfiles = this.coreInfo.supporterMaxRoomProfiles;
-		let maxRoomProfiles = Math.max(
+		this._limitSelector(
+			profiles.length,
 			this.coreInfo.maxRoomProfiles,
-			playerMod.hasAnyRole('admin') || playerMod.hasAnyIdRole('overseer') ? this.coreInfo.adminMaxRoomProfiles : 0,
-			playerMod.hasAnyIdRole('overseer', 'pioneer', 'supporter') ? supporterMaxRoomProfiles : 0,
+			this.coreInfo.adminMaxRoomProfiles,
+			this.coreInfo.supporterMaxRoomProfiles,
+			// On limit reached
+			(maxRoomProfiles) => this.module.confirm.open(null, {
+				title: txtProfileLimitReached,
+				body: txtRoomProfileLimitReachedPrune(maxRoomProfiles),
+				cancel: null,
+			}),
+			// On promote supporter
+			(maxRoomProfiles, supporterMaxRoomProfiles) => this.module.confirm.open(() => this._redirectToAccount(), {
+				title: txtProfileLimitReached,
+				confirm: txtBecomeSupporter,
+				body: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedBody', "You can only have {maxRoomProfiles} profiles per room.", { maxRoomProfiles }), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxRoomProfiles} profiles.", { supporterMaxRoomProfiles }), { tagName: 'p' })),
+				])),
+				cancel: txtNevermind,
+				size: 'wide',
+			}),
+			// On limit not reached
+			cb,
 		);
-		let roomProfiles = profiles.length;
-		if (maxRoomProfiles <= roomProfiles) {
-			// Check if we should show supporter message
-			if (supporterMaxRoomProfiles > maxRoomProfiles && supporterMaxRoomProfiles > roomProfiles) {
-				this.module.confirm.open(() => this._redirectToAccount(), {
-					title: txtProfileLimitReached,
-					confirm: txtBecomeSupporter,
-					body: new Elem(n => n.elem('div', [
-						n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedBody', "You can only have {maxRoomProfiles} profiles per room.", { maxRoomProfiles }), { tagName: 'p' })),
-						n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxRoomProfiles} profiles.", { supporterMaxRoomProfiles }), { tagName: 'p' })),
-					])),
-					cancel: txtNevermind,
-					size: 'wide',
-				});
-			} else {
-				this.module.confirm.open(null, {
-					title: txtProfileLimitReached,
-					body: l10n.l('createLimits.roomProfileLimitReachedBody2', "You've reached the limit of {maxRoomProfiles} profiles. Maybe it is time to prune some of them?", { maxRoomProfiles }),
-					cancel: null,
-				});
-			}
-			return;
-		}
+	}
 
-		cb();
+	/**
+	 * Get a promise to a room profiles error component.
+	 * @param {Collection} profiles Room profiles collection.
+	 * @param {*} opt Optional parameters for the component.
+	 * @returns {Promise.<Component>} Promise of a error message component, or null if no error.
+	 */
+	getRoomProfilesError(profiles, opt) {
+		return this._limitSelector(
+			profiles.length,
+			this.coreInfo.maxRoomProfiles,
+			this.coreInfo.adminMaxRoomProfiles,
+			this.coreInfo.supporterMaxRoomProfiles,
+			// On limit reached
+			(maxRoomProfiles) => new Html(txtRoomProfileLimitReachedPrune(maxRoomProfiles), opt),
+			// On promote supporter
+			(maxRoomProfiles, supporterMaxRoomProfiles) => new Html(l10n.l('createLimit.maxRoomProfilesPromote', `You can only have {maxRoomProfiles} profiles. By <a href="{accountOverviewUrl}" class="link" target="_blank">becoming a supporter</a>, you can raise the cap to {supporterMaxRoomProfiles} profiles.`, { maxRoomProfiles, supporterMaxRoomProfiles, accountOverviewUrl }), opt),
+		);
+	}
+
+	_limitSelector(count, all, admin, supporter, onMax, onPromote, onProceed) {
+		let playerMod = this.module.player;
+		let max = Math.max(
+			all,
+			playerMod.hasAnyRole('admin') || playerMod.hasAnyIdRole('overseer') ? admin : 0,
+			playerMod.hasAnyIdRole('overseer', 'pioneer', 'supporter') ? supporter : 0,
+		);
+		if (max <= count) {
+			if (supporter > max && supporter > count) {
+				return onPromote(max, supporter);
+			}
+			return onMax(max);
+		}
+		return onProceed && onProceed() || null;
 	}
 
 	_redirectToAccount() {
