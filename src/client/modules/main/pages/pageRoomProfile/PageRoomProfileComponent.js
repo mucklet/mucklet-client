@@ -63,7 +63,7 @@ class PageRoomProfileComponent {
 	}
 
 	_onCreate() {
-		this.module.dialogCreateRoomProfile.open(this.ctrl);
+		this.module.createLimits.validateRoomProfiles(this.profiles, () => this.module.dialogCreateRoomProfile.open(this.ctrl));
 	}
 }
 

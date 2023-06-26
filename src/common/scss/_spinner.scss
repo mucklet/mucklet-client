@@ -1,3 +1,5 @@
+@import '~scss/variables';
+
 @keyframes comp-spinner {
 	to {transform: rotate(360deg);}
 }
@@ -30,6 +32,14 @@
 	}
 }
 
+.spinner--btn {
+	position: absolute;
+	top: 50%;
+	left: 26px;
+	&:before {
+		border-top-color: $color1;
+	}
+}
 
 
 @keyframes comp-spinner {

@@ -87,7 +87,7 @@ class PageCharSelectComponent {
 	}
 
 	_onCreate() {
-		this.module.dialogCreateChar.open();
+		this.module.createLimits.validateOwnedChars(() => this.module.dialogCreateChar.open());
 	}
 
 	_closePopupTip() {

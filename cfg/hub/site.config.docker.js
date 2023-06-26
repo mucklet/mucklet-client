@@ -8,6 +8,7 @@ module.exports = {
 	API_HOST_PATH: 'ws://api.mucklet.localhost/',
 	API_WEBRESOURCE_PATH: 'http://api.mucklet.localhost/api/',
 	API_IDENTITY_PATH: '/dockerauth/',
+	API_AUTH_PATH: '/dockerauth/',
 	API_CROSS_ORIGIN: true,
 	API_OAUTH2: true,
 

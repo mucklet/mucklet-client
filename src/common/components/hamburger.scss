@@ -1,0 +1,35 @@
+.hamburger {
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 8px 10px;
+
+	&:focus {
+		outline: none;
+	}
+
+	&--icon {
+		display: inline-block;
+		width: 24px;
+		height: 24px;
+	}
+
+	&--svg-open {
+		opacity: 1;
+		fill: #000;
+		transition: opacity 0.3s ease-in-out;
+	}
+	&--svg-close {
+		opacity: 0;
+		fill: #000;
+		transition: opacity 0.3s ease-in-out;
+	}
+
+	&.open .hamburger--svg-open {
+		opacity: 0;
+	}
+
+	&.open .hamburger--svg-close {
+		opacity: 1;
+	}
+}

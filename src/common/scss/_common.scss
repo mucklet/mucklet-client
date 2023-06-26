@@ -153,4 +153,11 @@
 	&--relative {
 		position: relative;
 	}
+
+	&--hr {
+		display: block;
+		padding-bottom: 20px;
+		margin-bottom: 16px;
+		border-bottom: 1px solid $color2;
+	}
 }

@@ -18,10 +18,12 @@ class CreateRoomProfile {
 		this.app = app;
 
 		this.app.require([
+			'api',
 			'cmd',
 			'charLog',
 			'help',
 			'info',
+			'createLimits',
 		], this._init.bind(this));
 	}
 
@@ -66,8 +68,14 @@ class CreateRoomProfile {
 	}
 
 	createRoomProfile(char, params) {
-		return char.call('createRoomProfile', params).then(result => {
-		 	this.module.charLog.logInfo(char, l10n.l('createRoomProfile.roomProfileCreated', "Created room profile \"{profileName}\".", { profileName: result.profile.name }));
+		return this.module.api.get('core.room.' + char.inRoom.id + '.profiles').then(profiles => {
+			let errComponent = this.module.createLimits.getRoomProfilesError(profiles);
+			if (errComponent) {
+				return this.module.charLog.logComponent(char, 'error', errComponent);
+			}
+			return char.call('createRoomProfile', params).then(result => {
+				this.module.charLog.logInfo(char, l10n.l('createRoomProfile.roomProfileCreated', "Created room profile \"{profileName}\".", { profileName: result.profile.name }));
+			});
 		});
 	}
 }

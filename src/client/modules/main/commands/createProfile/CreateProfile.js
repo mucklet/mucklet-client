@@ -22,6 +22,7 @@ class CreateProfile {
 			'charLog',
 			'help',
 			'info',
+			'createLimits',
 		], this._init.bind(this));
 	}
 
@@ -66,6 +67,10 @@ class CreateProfile {
 	}
 
 	createProfile(char, params) {
+		let errComponent = this.module.createLimits.getCharProfilesError(char);
+		if (errComponent) {
+			return this.module.charLog.logComponent(char, 'error', errComponent);
+		}
 		return char.call('createProfile', params).then(result => {
 		 	this.module.charLog.logInfo(char, l10n.l('createProfile.profileCreated', "Created profile \"{profileName}\".", { profileName: result.profile.name }));
 		});

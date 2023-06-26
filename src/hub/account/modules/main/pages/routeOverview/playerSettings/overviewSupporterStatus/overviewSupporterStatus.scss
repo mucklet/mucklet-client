@@ -1,0 +1,82 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.overviewsupporterstatus {
+
+	&--disclaimer {
+		margin-bottom: 12px;
+		font-size: 13px;
+		// font-style: italic;
+	}
+}
+
+.overviewsupporterstatus-offer {
+	padding: 3px 0;
+
+	&--title {
+		line-height: 26px;
+		font-size: $font-size;
+	}
+
+	&--info {
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--unit {
+		color: $color4;
+	}
+
+	&--badge.recurrence-once {
+		.badge--faicon {
+			background: $color1-lightest;
+			color: $color1;
+		}
+	}
+	&--badge.recurrence-month {
+		.badge--faicon {
+			background: $color6;
+			color: $color1-light;
+		}
+	}
+	&--badge.recurrence-quarter {
+		.badge--faicon {
+			background: $color2;
+			color: $color1-light;
+		}
+	}
+
+	&--badge.btn.badge.recurrence-once:not(:disabled):hover {
+		.badge--faicon {
+			color: $color1-dark;
+		}
+	}
+	&--badge.btn.badge.recurrence-month:not(:disabled):hover {
+		.badge--faicon {
+			background: darken($color6, 8%);
+			color: $color1;
+		}
+	}
+	&--badge.btn.badge.recurrence-quarter:not(:disabled):hover {
+		.badge--faicon {
+			background: darken($color2, 8%);
+			color: $color1;
+		}
+	}
+}
+
+.overviewsupporterstatus-offercontent {
+	padding-top: 6px;
+
+	&--paypal.btn {
+		// @include btn-style($color-paypal, $color-paypal-hover, $color-paypal-active, $white, $white);
+	}
+}
+
+.overviewsupporterstatus-nosubscription {
+	&--until {
+		color: $color3;
+		font-size: $font-size-small;
+	}
+}
+

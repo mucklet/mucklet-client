@@ -43,7 +43,7 @@ class PasswordResetComponent {
 					events: { click: () => this._onReset(this.model) },
 					className: 'btn large primary passwordreset--login pad-top-xl passwordreset--btn',
 				}, [
-					n.elem('spinner', 'div', { className: 'spinner fade hide' }),
+					n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 					n.component(new Txt(l10n.l('passwordReset.resetPassword', "Reset password"))),
 				])),
 				(m, c) => c.setProperty('disabled', m && m.pass.trim().length >= 4 ? null : 'disabled'),

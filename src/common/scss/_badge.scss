@@ -62,6 +62,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		background: $color1-lighter;
 	}
 
+	&--faicontext {
+		font-family: $font-text;
+		font-weight: bold;
+		line-height: 31px;
+	}
+
 	&--info-nopad {
 		flex: 1 1 0px;
 		text-align: left;
@@ -74,6 +80,14 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		text-align: left;
 		overflow: hidden;
 		padding-left: 6px;
+		line-height: 16px;
+	}
+
+	&--info-morepad {
+		flex: 1 1 0px;
+		text-align: left;
+		overflow: hidden;
+		padding-left: 10px;
 		line-height: 16px;
 	}
 
@@ -194,6 +208,17 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		&--icon, &--faicon {
 			width: 48px;
 			height: 48px;
+		}
+
+		&--faicon {
+			font-size: 28px;
+			> i {
+				line-height: 47px;
+			}
+		}
+
+		&--faicontext {
+			line-height: 47px;
 		}
 
 		&--icon.small, &--faicon.small {

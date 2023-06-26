@@ -18,7 +18,10 @@ module.exports = function(ctx) {
 
 		policiesHtmlPlugins.push(new HtmlWebpackPlugin({
 			filename: 'policy/' + policy.slug + '.html',
-			template: path.resolve(ctx.srcPath, 'policy/index.ejs'),
+			template: path.resolve(ctx.srcPath, ctx.devMode
+				? 'policy/' + policy.slug + '.ejs'
+				: 'policy/index.ejs',
+			),
 			templateParameters: {
 				title: ctx.siteConfig.APP_TITLE,
 				policyTitle: policy.title,
@@ -36,6 +39,7 @@ module.exports = function(ctx) {
 			verify: path.resolve(ctx.srcPath, 'verify/app-verify.js'),
 			reset: path.resolve(ctx.srcPath, 'reset/app-reset.js'),
 			policy: path.resolve(ctx.srcPath, 'policy/app-policy.js'),
+			account: path.resolve(ctx.srcPath, 'account/app-account.js'),
 		},
 		devServer: {
 			port: 6460,
@@ -91,6 +95,12 @@ module.exports = function(ctx) {
 				template: path.resolve(ctx.srcPath, 'reset/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'reset' ],
+			}),
+			new HtmlWebpackPlugin({
+				filename: 'account/index.html',
+				template: path.resolve(ctx.srcPath, 'account/index.html'),
+				title: ctx.siteConfig.APP_TITLE,
+				chunks: [ 'account' ],
 			}),
 			...policiesHtmlPlugins,
 			new MiniCssExtractPlugin({

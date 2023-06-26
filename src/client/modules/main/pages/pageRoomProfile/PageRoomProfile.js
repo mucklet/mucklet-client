@@ -21,6 +21,7 @@ class PageRoomProfile {
 			'roomProfile',
 			'updateRoomProfile',
 			'pageEditRoomProfile',
+			'createLimits',
 		], this._init.bind(this));
 	}
 

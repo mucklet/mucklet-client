@@ -1,0 +1,47 @@
+@import '~scss/variables';
+
+.stripe {
+
+	&--payment {
+		padding-bottom: 0px;
+	}
+
+	&--termsinfo {
+		line-height: 20px;
+		padding: 2px 0 4px 0;
+		font-size: $font-size-tiny;
+
+		> * {
+			margin: 4px 0;
+		}
+	}
+
+	&--pay {
+		margin-top: 16px;
+		position: relative;
+		max-width: 240px;
+	}
+
+	&--btn {
+		width: 100%;
+	}
+
+	&--error {
+		color: $color5;
+	}
+
+	&--input {
+		line-height: 20px;
+		margin-top: 6px;
+		margin-bottom: 10px;
+	}
+}
+
+
+@media screen and (max-width: 720px) {
+	.stripe {
+		&--pay {
+			max-width: inherit;
+		}
+	}
+}

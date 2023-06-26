@@ -6,10 +6,11 @@ import formatDate from 'utils/formatDate';
 import PoliciesBody from './PoliciesBody';
 import './policies.scss';
 
-const availablePolicies = {
-	'privacy': true,
-	'terms': true,
-};
+const availablePolicies = [
+	'privacy',
+	'terms',
+	'payment',
+];
 
 /**
  * Policies draws the main login wireframe
@@ -25,8 +26,12 @@ class Policies {
 		this.module = Object.assign({ self: this }, module);
 	}
 
+	get availablePolicies() {
+		return availablePolicies;
+	}
+
 	openPolicy(policy) {
-		if (!availablePolicies[policy]) {
+		if (!availablePolicies.indexOf(policy) < 0) {
 			console.error("Unknown policy:", policy);
 			return;
 		}

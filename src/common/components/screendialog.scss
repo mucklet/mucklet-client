@@ -12,6 +12,10 @@
 		max-width: 280px;
 		padding: 14px 0;
 
+		&.medium {
+			max-width: 380px;
+		}
+
 		&.wide {
 			max-width: 800px;
 		}
