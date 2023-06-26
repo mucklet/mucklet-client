@@ -1,8 +1,10 @@
-import { Elem } from 'modapp-base-component';
+import { Elem, Txt } from 'modapp-base-component';
 import { CollectionList, ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import SimpleBar from 'components/SimpleBar';
 import Collapser from 'components/Collapser';
+import Fader from 'components/Fader';
+import counterString from 'utils/counterString';
 import ConsoleControlledChar from './ConsoleControlledChar';
 import ConsoleEditor from './ConsoleEditor';
 
@@ -107,7 +109,35 @@ class ConsoleComponent {
 								this.editor.setState(m.state);
 							},
 						)),
-						n.component('editor', new SimpleBar(this.editor, { className: 'console--editor', autoHide: false })),
+						n.elem('div', { className: 'console--main' }, [
+							n.component('editor', new SimpleBar(this.editor, { className: 'console--editor', autoHide: false })),
+							n.component(new CollectionComponent(
+								this.module.player.getControlled(),
+								new Fader(null, { className: 'console--counter' }),
+								(col, c) => {
+									if (col.length != 1 || this.layout == 'desktop') {
+										c.setComponent(null);
+										return;
+									}
+									let char = col.atIndex(0);
+									c.setComponent(new ModelComponent(
+										this.module.charLog.getUnseenTargeted(),
+										new ModelComponent(
+											this.module.charLog.getUnseen(),
+											new Elem(n => n.elem('div', { className: 'counter' }, [
+												n.component('txt', new Txt("")),
+											])),
+											(m, c) => {
+												let l = m.props[char.id];
+												c.getNode('txt').setText(counterString(l));
+												c[l ? 'removeClass' : 'addClass']('hide');
+											},
+										),
+										(m, c) => c.getComponent()[m.props[char.id] ? 'addClass' : 'removeClass']('alert'),
+									));
+								},
+							)),
+						]),
 					]),
 				]),
 			])),
