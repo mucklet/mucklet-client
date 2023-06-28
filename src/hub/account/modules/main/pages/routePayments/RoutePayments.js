@@ -22,6 +22,7 @@ class RoutePayments {
 		this.app = app;
 
 		this.app.require([
+			'auth',
 			'api',
 			'router',
 			'stripe',
@@ -41,16 +42,18 @@ class RoutePayments {
 			icon: 'credit-card',
 			name: l10n.l('routePayments.payments', "Payments"),
 			component: new RoutePaymentsComponent(this.module, this.model),
-			setState: params => Promise.resolve(params.paymentId
-				? (params.page == 'result'
-					? this.module.api.call('payment.payment.' + params.paymentId, 'update')
-					: this.module.api.get('payment.payment.' + params.paymentId)
-				).then(payment => this._setState({ payment, page: params.page }))
-				: (params.userId
-					? this.module.api.get('identity.user.' + params.userId)
-					: this.module.auth.getUserPromise()
-				).then(user => this._setState({ user, pageNr: Number(params.pageNr) || 0 })),
-			).catch(error => this._setState({ error })),
+			setState: params => this.module.auth.getUserPromise()
+				.then(user => Promise.resolve(params.paymentId
+					? (params.page == 'result'
+						? this.module.api.call('payment.payment.' + params.paymentId, 'update')
+						: this.module.api.get('payment.payment.' + params.paymentId)
+					).then(payment => this._setState({ payment, page: params.page }))
+					: Promise.resolve(params.userId
+						? this.module.api.get('identity.user.' + params.userId)
+						: user,
+					).then(user => this._setState({ user, pageNr: Number(params.pageNr) || 0 })),
+				))
+				.catch(error => this._setState({ error })),
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => {
 				let o = this.module.router.parseDefUrl(parts, pathDef);
