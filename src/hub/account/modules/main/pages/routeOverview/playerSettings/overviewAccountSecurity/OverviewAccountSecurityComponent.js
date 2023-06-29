@@ -24,7 +24,7 @@ class OverviewAccountSecurityComponent {
 					? new PanelSection(
 						l10n.l('overviewAccountSecurity.security', "Security"),
 						new Elem(n => n.elem('button', { events: {
-							click: () => this.module.dialogChangePassword.open(this.user),
+							click: () => this.module.dialogChangePassword.open(m.id),
 						}, className: 'btn medium light icon-left' }, [
 							n.component(new FAIcon('key')),
 							n.component(new Txt(l10n.l('overviewAccountSecurity.changePassword', "Change password"))),

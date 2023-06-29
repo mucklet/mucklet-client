@@ -5,6 +5,7 @@ import Toaster from 'modules/toaster/Toaster';
 import AccountEmail from 'modules/accountEmail/AccountEmail';
 import VerifyEmail from 'modules/verifyEmail/VerifyEmail';
 import DialogChangeEmail from 'modules/dialogs/dialogChangeEmail/DialogChangeEmail';
+import DialogChangePassword from 'modules/dialogs/dialogChangePassword/DialogChangePassword';
 
 const modules = {
 	router: Router,
@@ -14,6 +15,7 @@ const modules = {
 	accountEmail: AccountEmail,
 	verifyEmail: VerifyEmail,
 	dialogChangeEmail: DialogChangeEmail,
+	dialogChangePassword: DialogChangePassword,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);

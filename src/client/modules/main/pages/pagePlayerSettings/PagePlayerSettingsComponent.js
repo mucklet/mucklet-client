@@ -64,7 +64,7 @@ class PagePlayerSettingsComponent {
 						? new PanelSection(
 							l10n.l('pagePlayerSettings.security', "Security"),
 							new Elem(n => n.elem('button', { events: {
-								click: () => this.module.dialogChangePassword.open(),
+								click: () => this.module.dialogChangePassword.open(m.id),
 							}, className: 'btn medium light full-width icon-left' }, [
 								n.component(new FAIcon('key')),
 								n.component(new Txt(l10n.l('pagePlayerSettings.changePassword', "Change password"))),

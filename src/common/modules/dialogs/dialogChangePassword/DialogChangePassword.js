@@ -6,20 +6,24 @@ import Dialog from 'classes/Dialog';
 import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
 import PasswordInput from 'components/PasswordInput';
+import changePasswordParams from 'utils/changePasswordParams';
 import './dialogChangePassword.scss';
 
 class DialogChangePassword {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'login', 'confirm' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'toaster',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 	}
 
-	open() {
+	open(userId) {
 		if (this.dialog) return;
 
 		let model = new Model({ data: {
@@ -61,7 +65,7 @@ class DialogChangePassword {
 					n.component(new ModelComponent(
 						model,
 						new Elem(n => n.elem('button', {
-							events: { click: () => this._changePass(model) },
+							events: { click: () => this._changePass(userId, model) },
 							className: 'btn primary dialog--btn',
 						}, [
 							n.component(new Txt(l10n.l('dialogChangePassword.changePassword', "Change password"))),
@@ -77,23 +81,20 @@ class DialogChangePassword {
 		this.dialog.getContent().getNode('oldPass').getComponent().getElement().focus();
 	}
 
-	_changePass(model) {
+	_changePass(userId, model) {
 		if (this.changePassPromise) return this.changePassPromise;
 
-		this.module.login.changePassword(model.oldPass, model.newPass).then(() => {
+		this.module.api.call('identity.user.' + userId, 'changePassword', changePasswordParams(model.oldPass, model.newPass)).then(() => {
 			if (this.dialog) {
 				this.dialog.close();
 			}
-			setTimeout(() => {
-				this.module.confirm.open(null, {
-					title: l10n.l('dialogChangePassword.changeSuccessful', "Password changed"),
-					body: [
-						l10n.l('dialogChangePassword.changeSuccessfulBody', "Password was successfully changed."),
-					],
-					confirm: l10n.l('playerPanel.okay', "Okay"),
-					cancel: null,
-				});
-			}, 0);
+			this.module.toaster.open({
+				title: l10n.l('dialogChangePassword.changeSuccessful', "Password changed"),
+				content: new Txt(l10n.l('dialogChangePassword.changeSuccessfulBody', "Password was successfully changed.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			});
 		}).catch(err => {
 			if (!this.dialog) return;
 			this._setMessage(l10n.l(err.code, err.message, err.data));

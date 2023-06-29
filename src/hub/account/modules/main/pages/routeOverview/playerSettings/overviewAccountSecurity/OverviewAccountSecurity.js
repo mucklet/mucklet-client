@@ -11,7 +11,7 @@ class OverviewAccountSecurity {
 		this.app.require([
 			'api',
 			'routeOverview',
-			// 'dialogChangePassword',
+			'dialogChangePassword',
 		], this._init.bind(this));
 	}
 
