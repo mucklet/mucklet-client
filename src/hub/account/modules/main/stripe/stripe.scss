@@ -8,7 +8,7 @@
 
 	&--termsinfo {
 		line-height: 20px;
-		padding: 2px 0 4px 0;
+		padding: 2px 0 8px 0;
 		font-size: $font-size-tiny;
 
 		> * {
@@ -20,6 +20,12 @@
 		margin-top: 16px;
 		position: relative;
 		max-width: 240px;
+	}
+
+	&--agree {
+		font-size: $font-size-tiny;
+		display: inline;
+		margin-left: 12px;
 	}
 
 	&--btn {
