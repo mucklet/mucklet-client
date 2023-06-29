@@ -6,13 +6,6 @@ import l10n from 'modapp-l10n';
 import OverviewSupporterStatusNotSupporter from './OverviewSupporterStatusNotSupporter';
 import OverviewSupporterStatusSupporter from './OverviewSupporterStatusSupporter';
 
-const txtSupporterStatusInfo = l10n.l(
-	'overviewSupporterStatus.supporterStatusInfo',
-	`Mucklet supporters not only help with the development and operations of the game, but also get perks, such as:
-• Access to the supporter tag
-• Raised character cap
-• Raised profiles cap
-• Access to create bots`);
 
 class OverviewSupporterStatusComponent {
 	constructor(module, user, state, ctx) {
@@ -41,7 +34,6 @@ class OverviewSupporterStatusComponent {
 						),
 						{
 							className: 'common--sectionpadding',
-							popupTip: txtSupporterStatusInfo,
 							noToggle: true,
 						},
 					)),

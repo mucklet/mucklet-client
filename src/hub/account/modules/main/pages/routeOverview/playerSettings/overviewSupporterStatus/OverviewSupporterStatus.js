@@ -20,6 +20,7 @@ class OverviewSupporterStatus {
 			'toaster',
 			'stripe',
 			'payment',
+			'dialogProductContent',
 		], this._init.bind(this));
 	}
 

@@ -18,11 +18,31 @@ const txtProductPaidThanks = {
 
 const txtProductFeatures = {
 	supporter: [
-		{ title: l10n.l('txtProduct.supporterTag', "Supporter tag"), desc: l10n.l('txtProduct.supporterTagDesc', "Add the supporter tag to any character") },
-		{ title: l10n.l('txtProduct.increasedCharCap', "Increased character cap"), desc: l10n.l('txtProduct.increasedCharCapDesc', "Create up to 50 characters per realm") },
-		{ title: l10n.l('txtProduct.increasedProfileCap', "Increased profile cap"), desc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room") },
-		{ title: l10n.l('txtProduct.botAccess', "Bot access"), desc: l10n.l('txtProduct.botAccessDesc', "Create and connect bot characters") },
-		{ title: l10n.l('txtProduct.comingFeatures', "... and more"), desc: l10n.l('txtProduct.comingFeaturesDesc', "Upcoming supporter features") },
+		{
+			title: l10n.l('txtProduct.supporterTag', "Supporter tag"),
+			desc: l10n.l('txtProduct.supporterTagDesc', "Add the supporter tag to any character"),
+			longDesc: l10n.l('txtProduct.supporterTagDesc', "Add the supporter tag to any character."),
+		},
+		{
+			title: l10n.l('txtProduct.increasedCharCap', "Increased character cap"),
+			desc: l10n.l('txtProduct.increasedCharCapDesc', "Create up to 50 characters per realm"),
+			longDesc: l10n.l('txtProduct.increasedCharCapDesc', "Create up to 50 characters per realm, instead of 5."),
+		},
+		{
+			title: l10n.l('txtProduct.increasedProfileCap', "Increased profile cap"),
+			desc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room"),
+			longDesc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room, instead of 3."),
+		},
+		{
+			title: l10n.l('txtProduct.botAccess', "Bot access"),
+			desc: l10n.l('txtProduct.botAccessDesc', "Create and connect bot characters"),
+			longDesc: l10n.l('txtProduct.botAccessDesc', "Connect your characters using bot tokens, and control them with scripts."),
+		},
+		{
+			title: l10n.l('txtProduct.comingFeatures', "... and more"),
+			desc: l10n.l('txtProduct.comingFeaturesDesc', "Upcoming supporter features"),
+			longDesc: l10n.l('txtProduct.comingFeaturesDesc', "Get access to upcoming supporter features as they are added."),
+		},
 	],
 };
 

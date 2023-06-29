@@ -6,6 +6,9 @@ import OverviewSupporterStatusSubscription from './OverviewSupporterStatusSubscr
 import OverviewSupporterStatusNoSubscription from './OverviewSupporterStatusNoSubscription';
 
 const txtThankYou = l10n.l('overviewSupporterStatus.thankYou', "Thank you for supporting Mucklet! We will do our best to improve things, and not to break reality.");
+const txtEnjoySupporterPrefix = l10n.l('overviewSupporterStatus.enjoySupporterPrefix', "Enjoy your ");
+const txtEnjoySupporterLink = l10n.l('overviewSupporterStatus.enjoySupporterLink', "supporter perks");
+const txtEnjoySupporterSuffix = l10n.l('overviewSupporterStatus.enjoySupporterSuffix', "!");
 
 class OverviewSupporterStatusSupporter {
 	constructor(module, user, paymentUser, supporterOffers, state) {
@@ -18,7 +21,26 @@ class OverviewSupporterStatusSupporter {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'overviewsupporterstatus-supporter' }, [
-			n.component(new Txt(txtThankYou, { className: 'overviewsupporterstatus--disclaimer' })),
+			n.elem('div', { className: 'overviewsupporterstatus--disclaimer' }, [
+				n.component(new Txt(txtThankYou, { tagName: 'div' })),
+				n.elem('div', [
+					n.component(new Txt(txtEnjoySupporterPrefix)),
+					n.component(new Txt(txtEnjoySupporterLink, {
+						tagName: 'a',
+						className: 'link',
+						attributes: {
+							href: 'javascript:;',
+						},
+						events: {
+							click: (c, ev) => {
+								this.module.dialogProductContent.open('supporter');
+								ev.preventDefault();
+							},
+						},
+					})),
+					n.component(new Txt(txtEnjoySupporterSuffix)),
+				]),
+			]),
 			n.component(new ModelComponent(
 				this.paymentUser,
 				new ModelComponent(

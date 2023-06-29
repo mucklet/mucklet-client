@@ -4,9 +4,10 @@
 .overviewsupporterstatus {
 
 	&--disclaimer {
-		margin-bottom: 12px;
 		font-size: 13px;
-		// font-style: italic;
+		> * {
+			padding-top: 4px;
+		}
 	}
 }
 
