@@ -41,7 +41,7 @@ class CreateLimits {
 	 */
 	validateOwnedChars(cb) {
 		this._limitSelector(
-			ctrl.profiles.length,
+			this.module.player.getChars().length,
 			this.coreInfo.maxOwnedChars,
 			this.coreInfo.adminMaxOwnedChars,
 			this.coreInfo.supporterMaxOwnedChars,
