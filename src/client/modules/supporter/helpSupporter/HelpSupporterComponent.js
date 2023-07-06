@@ -1,22 +1,20 @@
-import { Html } from 'modapp-base-component';
+import { RootElem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import * as txtProduct from 'utils/txtProduct';
 
-const helpText =
-`<section class="charlog--pad">
-	<p>Thank you for financially supporting the development, operations, and marketing of the game! And apart from earning our gratitude, it also comes with a few benefits!</p>
-</section>
-<section class="charlog--pad">
-	<h4 class="charlog--pad">Supporter benefits</h4>
-	<table class="tbl-small tbl-nomargin charlog--font-small"><tbody>
-		<tr><td class="charlog--strong">Additional features</td><td>Access to upcoming features such as multiple profile images, custom client addons, or bot tokens.</td></tr>
-		<tr><td class="charlog--strong">Increased caps</td><td>Permission to create more characters, rooms, areas, etc.</td></tr>
-		<tr><td class="charlog--strong">Supporter tag</td><td>Exclusive access to use the <em>supporter</em> title tag. Woohoo!</td></tr>
-	</tbody></table>
-</section>`;
-
-class HelpSupporterComponent extends Html{
+class HelpSupporterComponent extends RootElem {
 	constructor(module) {
-		super(l10n.l('helpSupporter.helpDesc', helpText), { className: 'helpsupporter' });
+		let features = txtProduct.features('supporter');
+
+		super(n => n.elem('div', { className: 'helpsupporter' }, [
+			n.elem('section', { className: 'charlog--pad' }, [
+				n.component(new Txt(l10n.t('helpSupporter.helpInfo', "Thank you for financially supporting the development, operations, and marketing of the game! And apart from earning our gratitude, it also comes with a few benefits."))),
+			]),
+			n.elem('section', features.map(o => n.elem('div', { className: 'charlog--pad' }, [
+				n.component(new Txt(l10n.t(o.title), { tagName: 'h4' })),
+				n.component(new Txt(l10n.t(o.longDesc), { tagName: 'div', className: 'charlog--font-small' })),
+			]))),
+		]));
 	}
 }
 
