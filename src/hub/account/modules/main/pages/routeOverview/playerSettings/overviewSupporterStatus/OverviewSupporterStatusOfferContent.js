@@ -4,17 +4,7 @@ import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import isError from 'utils/isError';
-
-function hasIdRole(user, role) {
-	if (user?.idRoles) {
-		for (let r of user.idRoles) {
-			if (r == role) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
+import { hasIdRoles } from 'utils/idRoles';
 
 class OverviewSupporterStatusOfferContent {
 	constructor(module, user, paymentUser, offer, toggle) {
@@ -83,7 +73,7 @@ class OverviewSupporterStatusOfferContent {
 		}
 
 		// Show confirmation for pioneers becoming a supporter
-		if (this.offer.product == 'supporter' && hasIdRole(this.user, 'pioneer')) {
+		if (this.offer.product == 'supporter' && hasIdRoles(this.user, 'pioneer')) {
 			this.module.confirm.open(callback, {
 				title: l10n.l('overviewSupporterStatus.areYouSure', "Are you sure?"),
 				body: l10n.l('overviewSupporterStatus.confirmPioneerSupporter', "You are pioneer with all the perks available for supporters already. You are still welcome to support, of course, but you've probably already helped plenty!"),

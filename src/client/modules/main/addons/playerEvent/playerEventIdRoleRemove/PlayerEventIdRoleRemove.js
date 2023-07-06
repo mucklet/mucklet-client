@@ -1,6 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
-import * as idroles from 'utils/idroles';
+import * as idRoles from 'utils/idRoles';
 
 /**
  * PlayerEventIdRoleRemove registers the idRoleRemove playerEvent handler.
@@ -26,7 +26,7 @@ class PlayerEventIdRoleRemove {
 			title: l10n.l('playerEventRoleRemove.titleRemoved', "Title removed"),
 			content: close => new Elem(n => n.elem('div', [
 				n.component(new Txt(l10n.l('playerEventRoleRemove.titleRemovedInfo', "One of your account titles has been removed:"), { tagName: 'p' })),
-				n.component(new Txt(idroles.toLocaleString(ev.idRole), { tagName: 'p', className: 'dialog--strong' })),
+				n.component(new Txt(idRoles.toLocaleString(ev.idRole), { tagName: 'p', className: 'dialog--strong' })),
 			])),
 			closeOn: 'click',
 			onClose,

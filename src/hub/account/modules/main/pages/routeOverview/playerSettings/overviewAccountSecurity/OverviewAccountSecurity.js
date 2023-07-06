@@ -23,7 +23,6 @@ class OverviewAccountSecurity {
 			type: 'topSection',
 			sortOrder: 100,
 			componentFactory: (user, state) => new OverviewAccountSecurityComponent(this.module, user, state),
-			alertModel: this.model,
 		});
 	}
 

@@ -80,6 +80,6 @@ export default function modelComponentSelector(components, opt) {
 		}
 
 		// Set new component
-		setter(c, selected.component || (selected.factory && selected.factory(m)) || null);
+		setter(c, selected && (selected.component || (selected.factory && selected.factory(m))) || null);
 	};
 }
