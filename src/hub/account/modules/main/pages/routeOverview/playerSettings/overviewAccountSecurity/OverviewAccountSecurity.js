@@ -2,7 +2,7 @@ import OverviewAccountSecurityComponent from './OverviewAccountSecurityComponent
 import './overviewAccountSecurity.scss';
 
 /**
- * OverviewAccountSecurity adds a section to the overview to change password.
+ * OverviewAccountSecurity adds a section to Overview to change password.
  */
 class OverviewAccountSecurity {
 	constructor(app, params) {
@@ -20,7 +20,7 @@ class OverviewAccountSecurity {
 		this.module.routeOverview.addTool({
 			id: 'security',
 			type: 'topSection',
-			sortOrder: 100,
+			sortOrder: 110,
 			componentFactory: (user, state) => new OverviewAccountSecurityComponent(this.module, user, state),
 		});
 	}

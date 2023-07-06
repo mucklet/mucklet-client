@@ -2,8 +2,7 @@ import OverviewAccountTitlesComponent from './OverviewAccountTitlesComponent';
 import './overviewAccountTitles.scss';
 
 /**
- * OverviewAccountTitles adds a section to the PlayerSettings to see account
- * titles.
+ * OverviewAccountTitles adds a section to the Overview to see account titles.
  */
 class OverviewAccountTitles {
 	constructor(app, params) {
@@ -12,7 +11,6 @@ class OverviewAccountTitles {
 		this.app.require([
 			'api',
 			'routeOverview',
-			'dialogChangePassword',
 		], this._init.bind(this));
 	}
 

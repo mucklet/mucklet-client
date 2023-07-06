@@ -7,9 +7,9 @@ import CharTagsList from 'components/CharTagsList';
 
 const idRoleTags = [ 'overseer', 'supporter', 'pioneer', 'root' ].reduce((o, r) => {
 	o[r] = {
-    	id: r,
-    	idRole: r,
-    	key: r,
+		id: r,
+		idRole: r,
+		key: r,
 	};
 	return o;
 }, {});
