@@ -2,14 +2,13 @@ import OverviewAccountSecurityComponent from './OverviewAccountSecurityComponent
 import './overviewAccountSecurity.scss';
 
 /**
- * OverviewAccountSecurity adds a section to the PlayerSettings to change password.
+ * OverviewAccountSecurity adds a section to the overview to change password.
  */
 class OverviewAccountSecurity {
 	constructor(app, params) {
 		this.app = app;
 
 		this.app.require([
-			'api',
 			'routeOverview',
 			'dialogChangePassword',
 		], this._init.bind(this));

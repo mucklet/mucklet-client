@@ -1,8 +1,6 @@
-import { Context, Elem, Txt } from 'modapp-base-component';
-import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { Context, Elem } from 'modapp-base-component';
+import { CollectionList } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
-import Collapser from 'components/Collapser';
-import FAIcon from 'components/FAIcon';
 import PanelSection from 'components/PanelSection';
 import l10n from 'modapp-l10n';
 
@@ -51,31 +49,6 @@ class PagePlayerSettingsComponent {
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-				},
-			)),
-			n.component(new ModelComponent(
-				this.identity,
-				new Collapser(),
-				(m, c, change) => {
-					if (change && !change.hasOwnProperty('hasLogin')) {
-						return;
-					}
-					c.setComponent(m && m.hasLogin
-						? new PanelSection(
-							l10n.l('pagePlayerSettings.security', "Security"),
-							new Elem(n => n.elem('button', { events: {
-								click: () => this.module.dialogChangePassword.open(m.id),
-							}, className: 'btn medium light full-width icon-left' }, [
-								n.component(new FAIcon('key')),
-								n.component(new Txt(l10n.l('pagePlayerSettings.changePassword', "Change password"))),
-							])),
-							{
-								className: 'common--sectionpadding',
-								noToggle: true,
-							},
-						)
-						: null,
-					);
 				},
 			)),
 			n.component(new Context(
