@@ -1,4 +1,6 @@
 import { Model, CollectionToModel, CollectionWrapper } from 'modapp-resource';
+import { hasRoles, hasAnyRole } from 'utils/roles';
+import { hasIdRoles, hasAnyIdRole } from 'utils/idRoles';
 
 const namespace = 'module.player';
 
@@ -182,18 +184,8 @@ class Player {
 	 * @param {string|Array.<string>} roles Role(s).
 	 * @returns {boolean} True if the player has all roles, otherwise false.
 	 */
-	hasRoles(roles) {
-		if (!roles) {
-			return true;
-		}
-		roles = Array.isArray(roles) ? roles : arguments;
-		let rs = this.getRoles() || [];
-		for (let r of roles) {
-			if (!rs[r]) {
-				return false;
-			}
-		}
-		return true;
+	hasRoles(...roles) {
+		return hasRoles(this.model, ...roles);
 	}
 
 	/**
@@ -201,18 +193,8 @@ class Player {
 	 * @param {string|Array.<string>} roles Role(s).
 	 * @returns {boolean} True if the player has any of the roles, otherwise false.
 	 */
-	hasAnyRole(roles) {
-		if (!roles) {
-			return false;
-		}
-		roles = Array.isArray(roles) ? roles : arguments;
-		let rs = this.getRoles() || [];
-		for (let r of roles) {
-			if (rs.indexOf(r) >= 0) {
-				return true;
-			}
-		}
-		return false;
+	hasAnyRole(...roles) {
+		return hasAnyRole(this.model, ...roles);
 	}
 
 	/**
@@ -220,18 +202,8 @@ class Player {
 	 * @param {string|Array.<string>} idRoles ID role(s).
 	 * @returns {boolean} True if the user has all ID roles, otherwise false.
 	 */
-	hasIdRoles(idRoles) {
-		if (!idRoles) {
-			return true;
-		}
-		idRoles = Array.isArray(idRoles) ? idRoles : arguments;
-		let rs = this.getIdRoles() || [];
-		for (let r of idRoles) {
-			if (rs.indexOf(r) >= 0) {
-				return false;
-			}
-		}
-		return true;
+	hasIdRoles(...idRoles) {
+		return hasIdRoles(this.model, ...idRoles);
 	}
 
 	/**
@@ -239,18 +211,8 @@ class Player {
 	 * @param {string|Array.<string>} idRoles ID role(s).
 	 * @returns {boolean} True if the user has any of the roles, otherwise false.
 	 */
-	hasAnyIdRole(idRoles) {
-		if (!idRoles) {
-			return false;
-		}
-		idRoles = Array.isArray(idRoles) ? idRoles : arguments;
-		let rs = this.getIdRoles() || [];
-		for (let r of idRoles) {
-			if (rs.indexOf(r) >= 0) {
-				return true;
-			}
-		}
-		return false;
+	hasAnyIdRole(...idRoles) {
+		return hasAnyIdRole(this.model, ...idRoles);
 	}
 
 	_getPlayerPromise() {

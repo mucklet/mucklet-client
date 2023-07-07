@@ -23,9 +23,14 @@ const helpText =
 	<p class="common--formattext"><code class="charlog--code-inline">!gmt timezone</code> will match characters who does not have the "gmt timezone" tag.</p>
 </section>
 <section class="charlog--pad">
+	<h4 class="charlog--pad">Disliked tags</h4>
+	<p>Putting a tilde (~) in front of a criteria, will match characters with a matching dislike tag.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">~males</code> will match characters who has a dislike "males" tag.</p>
+</section>
+<section class="charlog--pad">
 	<h4 class="charlog--pad">Complex critera</h4>
 	<p>The above syntax forms may be combined into more complex filters.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">male, !private roleplay, wolf/fox</code> will match male wolf or fox characters without the "private roleplay" tag.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">male, !~private roleplay, wolf/fox</code> will match male wolf or fox characters without a dislike "private roleplay" tag.</p>
 </section>`;
 
 class HelpFilterComponent extends Html{

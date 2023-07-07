@@ -26,6 +26,7 @@ class PageCharSelect {
 			'avatar',
 			'dialogRequestControl',
 			'screen',
+			'createLimits',
 		], this._init.bind(this));
 	}
 

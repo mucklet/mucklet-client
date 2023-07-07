@@ -93,7 +93,7 @@ class PageMailComponent {
 	_loadMail(offset) {
 		if (!this.model || this.loadingOffset === offset) return;
 
-		if (this.model.mails && this.offset === offset) {
+		if (this.model.mails && this.model.offset === offset) {
 			this.loadingOffset = null;
 			return;
 		}
@@ -130,25 +130,6 @@ class PageMailComponent {
 				this.model.set({ mails, offset });
 			});
 		});
-	}
-
-	_getTo() {
-		let m = this.model;
-		if (m) {
-			let ms = m.mails;
-			if (ms) {
-				return m.offset + (ms.length > defaultLimit ? defaultLimit : ms.length);
-			}
-		}
-		return '...';
-	}
-
-	_setNextDisabled(c) {
-		let m = this.model;
-		c.setProperty('disabled', m && m.mails && m.mails.length > m.offset
-			? null
-			: 'disabled',
-		);
 	}
 }
 

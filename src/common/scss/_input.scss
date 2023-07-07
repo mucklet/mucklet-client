@@ -1,5 +1,5 @@
 
-input, textarea {
+input, textarea, .input--textarea {
 	background: $color1-lightest;
 	font-size: $font-size;
 	font-family: $font-text;
@@ -19,7 +19,9 @@ input, textarea {
 	&::-ms-input-placeholder { /* Microsoft Edge */
 		color: $color1-placeholder-light;
 	}
+}
 
+input, textarea {
 	&:focus {
 		outline: 0;
 		box-shadow: 0 0 4px 1px $color2;

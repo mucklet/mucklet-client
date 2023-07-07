@@ -23,7 +23,7 @@
 	}
 }
 
-button:focus {
+.btn:focus {
 	outline: 0;
 	&:not(.nooutline) {
 		box-shadow: 0 0 4px 1px $color2;
@@ -35,6 +35,7 @@ button:focus {
 	white-space: nowrap;
 	padding: 8px 24px 9px;
 	position: relative;
+	max-width: 100%;
 }
 
 .btn > span {

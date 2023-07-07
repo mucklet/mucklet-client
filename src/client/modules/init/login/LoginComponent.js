@@ -55,7 +55,7 @@ class LoginComponent {
 			n.elem('login', 'button', { events: {
 				click: () => this._onLogin(),
 			}, className: 'btn large primary login--login pad-top-xl login--btn' }, [
-				n.elem('loginSpinner', 'div', { className: 'spinner fade hide' }),
+				n.elem('loginSpinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 				n.component(new Txt(l10n.l('login.login', "Login"))),
 			]),
 			n.elem('div', { className: 'login--divider' }, [

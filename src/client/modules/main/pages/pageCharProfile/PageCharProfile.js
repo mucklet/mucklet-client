@@ -19,6 +19,7 @@ class PageCharProfile {
 			'profile',
 			'updateProfile',
 			'pageEditCharProfile',
+			'createLimits',
 		], this._init.bind(this));
 	}
 

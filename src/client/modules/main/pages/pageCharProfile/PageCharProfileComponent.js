@@ -60,7 +60,7 @@ class PageCharProfileComponent {
 	}
 
 	_onCreate() {
-		this.module.dialogCreateCharProfile.open(this.ctrl);
+		this.module.createLimits.validateCharProfiles(this.ctrl, () => this.module.dialogCreateCharProfile.open(this.ctrl));
 	}
 }
 

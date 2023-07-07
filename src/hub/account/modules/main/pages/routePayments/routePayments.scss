@@ -1,0 +1,141 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+
+.routepayments {
+	&--product {
+		font-family: $font-text;
+		color: $color3;
+		font-size: $font-size-large;
+	}
+
+	&--cost, &--amountrefunded {
+		font-size: $font-size;
+		color: $color3;
+	}
+
+	&--unit {
+		color: $color4;
+	}
+
+	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
+		font-size: $font-size-small;
+	}
+
+	&--features {
+		margin-bottom: 12px;
+	}
+
+	&--featuretitle {
+		font-size: $font-size-small;
+		color: $color2;
+	}
+
+	&--featuredesc {
+		font-size: $font-size-small;
+	}
+
+	&--cardpayment {
+		margin-top: 20px;
+	}
+
+	&--placeholder {
+		font-style: italic;
+	}
+}
+
+.routepayments-payments {
+	&--listitem {
+		padding: 3px 0;
+	}
+}
+
+.routepayments-paymentbadge {
+	&.method-card {
+		.badge--faicon {
+			background: $color6;
+			color: $color1-light;
+		}
+		&:hover {
+			.badge--faicon {
+				background: darken($color6, 8%);
+				color: darken($color1-light, 8%);
+			}
+		}
+	}
+	&.method-paypal {
+		.badge--faicon {
+			background: $color-paypal;
+			color: $white;
+		}
+		&:hover, &:active {
+			.badge--faicon {
+				background: darken($color-paypal, 8%);
+				color: darken($white, 8%);
+			}
+		}
+	}
+	&.refunded, &.canceled{
+		.badge--faicon {
+			// background: $green;
+			background: $color5;
+			color: $color1-light;
+		}
+		&:hover, &:active {
+			.badge--faicon {
+				// background: darken($green, 8%);
+				background: darken($color5, 8%);
+				color: darken($color1-light, 8%);
+			}
+		}
+	}
+	&--title {
+		line-height: 26px;
+		font-size: $font-size;
+	}
+
+	&--info {
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--date {
+		color: $color4;
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--cost, &--refundednew {
+		color: $color3;
+	}
+
+	&--refundedcost {
+		color: $color5;
+		text-decoration: line-through;
+	}
+}
+
+.routepayments-paymentbadgecontent {
+	&--details {
+		position: absolute;
+		right: 6px;
+		bottom: 6px;
+		font-size: $font-size-small;
+	}
+}
+
+
+.routepayments-payment {
+	&--cost, &--refundednew {
+		color: $color3;
+	}
+
+	&--refundedcost {
+		color: $color5;
+		text-decoration: line-through;
+	}
+
+	&--refundedtotal {
+		font-size: $font-size-small;
+	}
+}

@@ -33,14 +33,26 @@ class CharFilter {
 
 			for (let key of keyStrs) {
 				key = key.trim();
-				if (!key) continue;
-				let match = key[0] != '!';
-				if (!match) {
+
+				let match = true;
+				let dislike = false;
+				if (key[0] == '!') {
+					match = false;
 					key = key.slice(1).trim();
-					if (!key) continue;
+				}
+				if (key[0] == '~') {
+					dislike = true;
+					key = key.slice(1).trim();
+				}
+				// In case of reverse order ~!
+				if (key[0] == '!' && match) {
+					match = false;
+					key = key.slice(1).trim();
 				}
 
-				keys.push({ key, match, regex: new RegExp('\\b' + escapeRegex(key) + '\\b', 'i') });
+				if (key) {
+					keys.push({ key, match, dislike, regex: new RegExp('\\b' + escapeRegex(key) + '\\b', 'i') });
+				}
 			}
 
 			if (keys.length) {
@@ -107,23 +119,26 @@ class CharFilter {
 	}
 
 	_matchKey(char, k) {
-		if (
-			(char.species && char.species.match(k.regex)) ||
-			(char.gender && char.gender.match(k.regex)) ||
-			((char.name + ' ' + char.surname).match(k.regex))
-		) {
-			return true;
+		// Dislike modifiers only matches tags
+		if (!k.dislike) {
+			if (
+				(char.species && char.species.match(k.regex)) ||
+				(char.gender && char.gender.match(k.regex)) ||
+				((char.name + ' ' + char.surname).match(k.regex))
+			) {
+				return true;
+			}
 		}
 
 		if (!char.tags) return false;
 
-		let p = char.tags.props || char.tags;
+		let props = char.tags.props || char.tags;
 		let key = k.key;
-		for (let k in p) {
-			if (k.slice(k.length - 8) == '_dislike') {
+		for (let pk in props) {
+			if ((pk.slice(pk.length - 8) == '_dislike') != k.dislike) {
 				continue;
 			}
-			if (p[k].key == key) {
+			if (props[pk].key == key) {
 				return true;
 			}
 		}

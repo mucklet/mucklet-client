@@ -1,6 +1,6 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
-import * as idroles from 'utils/idroles';
+import * as idRoles from 'utils/idRoles';
 
 const idRoleInfo = {
 	overseer: l10n.l('playerEventIdRoleAdd.overseerInfo', `<div class="pad-bottom-m">To learn more, type:</div>` +
@@ -36,7 +36,7 @@ class PlayerEventIdRoleAdd {
 			title: l10n.l('playerEventIdRoleAdd.titleGranted', "Title granted"),
 			content: close => new Elem(n => n.elem('div', [
 				n.component(new Txt(l10n.l('playerEventIdRoleAdd.titleGrantedInfo', "You've been granted a new account title:"), { tagName: 'p' })),
-				n.component(new Txt(idroles.toLocaleString(ev.idRole), { tagName: 'p', className: 'dialog--strong dialog--large' })),
+				n.component(new Txt(idRoles.toLocaleString(ev.idRole), { tagName: 'p', className: 'dialog--strong dialog--large' })),
 				n.component(info
 					? new Html(info, { tagName: 'div', className: 'common--sectionpadding' })
 					: null,

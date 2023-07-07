@@ -268,12 +268,12 @@ class DialogReport {
 						end = i;
 					}
 					if (ev.time < startTime) {
-						return l.slice(i + 1, end).concat(log);
+						return l.slice(i + 1, end).filter(ev => ev.sig).concat(log);
 					}
 				}
 			}
 
-			return this._getLog(char, startTime, endTime, chunk + 1, end ? l.slice(0, end).concat(log) : log);
+			return this._getLog(char, startTime, endTime, chunk + 1, end ? l.slice(0, end).filter(ev => ev.sig).concat(log) : log);
 		});
 	}
 }

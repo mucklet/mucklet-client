@@ -12,9 +12,6 @@ class PageWatchComponent {
 		this.state = state;
 		this.close = close;
 		this.model = null;
-
-		// Bind callbacks
-		this._onCreate = this._onCreate.bind(this);
 	}
 
 	render(el) {
@@ -63,10 +60,6 @@ class PageWatchComponent {
 			this.elem.unrender();
 			this.elem = null;
 		}
-	}
-
-	_onCreate() {
-		this.module.dialogCreateChar.open();
 	}
 }
 

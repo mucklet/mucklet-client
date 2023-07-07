@@ -1,0 +1,9 @@
+@import '~scss/variables';
+
+.dialogproductcontent {
+	max-width: 540px;
+
+	&--featuredesc {
+		font-size: $font-size-small;
+	}
+}

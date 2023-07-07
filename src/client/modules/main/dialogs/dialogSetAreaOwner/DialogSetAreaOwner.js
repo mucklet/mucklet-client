@@ -21,7 +21,7 @@ class DialogSetAreaOwner {
 			'charsAwake',
 			'confirm',
 			'setAreaOwner',
-			// 'requestAreaOwner'
+			'requestAreaOwner',
 		], this._init.bind(this));
 	}
 

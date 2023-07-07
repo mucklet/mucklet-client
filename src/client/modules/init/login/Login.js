@@ -2,6 +2,7 @@ import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
+import changePasswordParams from 'utils/changePasswordParams';
 import LoginComponent from './LoginComponent';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';
@@ -180,12 +181,7 @@ class Login {
 			return Promise.reject({ code: 'login.notLoggedIn', message: "You are not logged in." });
 		}
 
-		return u.call('changePassword', {
-			oldPass: sha256(oldPass.trim()),
-			oldHash: hmacsha256(oldPass.trim(), publicPepper),
-			newPass: sha256(newPass.trim()),
-			newHash: hmacsha256(newPass.trim(), publicPepper),
-		});
+		return u.call('changePassword', changePasswordParams(oldPass, newPass));
 	}
 
 	/**

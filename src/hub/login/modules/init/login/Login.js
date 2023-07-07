@@ -1,6 +1,6 @@
-import l10n from 'modapp-l10n';
 import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
+import { uri } from 'modapp-utils';
 import LoginComponent from './LoginComponent';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';
@@ -27,9 +27,6 @@ class Login {
 			pass: '',
 			realm: 'wolfery',
 		}, params);
-
-		// Bind callbacks
-		this._onModelChange = this._onModelChange.bind(this);
 
 		this.app.require([ 'screen', 'policies' ], this._init.bind(this));
 	}
@@ -72,27 +69,10 @@ class Login {
 				if (user && !user.termsAgreed) {
 					this._showAgreeTerms();
 				} else {
-					redirect(redirectUrl, true);
+					this._redirect(true);
 				}
 			});
 		});
-	}
-
-	getModel() {
-		return this.model;
-	}
-
-	/**
-	 * Returns a promise to when the player is logged in.
-	 * The promise will never reject.
-	 * @returns {Promise.<Model>} Promise to user being logged in.
-	 */
-	getLoginPromise() {
-		return this.loginPromise = this.loginPromise || (
-			this.model.loggedIn
-				? Promise.resolve(this.model.user)
-				: new Promise(resolve => this.loginResolve = resolve)
-		);
 	}
 
 	login(name, pass) {
@@ -158,20 +138,6 @@ class Login {
 		});
 	}
 
-	changePassword(oldPass, newPass) {
-		let u = this.model.user;
-		if (!u) {
-			return Promise.reject({ code: 'login.notLoggedIn', message: "You are not logged in." });
-		}
-
-		return u.call('changePassword', {
-			oldPass: sha256(oldPass.trim()),
-			oldHash: hmacsha256(oldPass.trim(), publicPepper),
-			newPass: sha256(newPass.trim()),
-			newHash: hmacsha256(newPass.trim(), publicPepper),
-		});
-	}
-
 	/**
 	 * Agrees to the terms and policies.
 	 * @returns {Promise.<Model>} Promise of the logged in user model.
@@ -232,77 +198,6 @@ class Login {
 		});
 	}
 
-	_getCurrentUser(reconnect) {
-		if (reconnect) {
-			// Disconnect to force a reconnect with new header cookies
-			this.module.api.disconnect();
-			this.model.set({ authError: null });
-			this._onUnsubscribe();
-		}
-		if (!this.userPromise) {
-			this.userPromise = this.module.api.connect()
-				.then(() => {
-					if (this.model.authError) {
-						throw this.model.authError;
-					}
-					return this.module.api.call('auth', 'getUser');
-				})
-				.then(user => {
-					if (this.module.api.isError(user)) {
-						throw new Error("Error getting user: " + l10n.t(user.code, user.message, user.data));
-					}
-					this.model.set({
-						loggedIn: true,
-						user,
-					});
-					if (this.loginResolve) {
-						this.loginResolve(user);
-						this.loginResolve = null;
-					}
-					user.on('unsubscribe', this._onUnsubscribe);
-					return user;
-				})
-				.catch(err => {
-					if (err.code == 'auth.termsNotAgreed') {
-						this._showAgreeTerms();
-						return;
-					}
-
-					// Or else we throw the error to be handled by the caller to
-					// show an error message.
-					this.userPromise = null;
-					throw err;
-				});
-		}
-		return this.userPromise;
-	}
-
-	_onConnect() {
-		return this.module.api.authenticate('auth', 'authenticate').catch(err => {
-			return this.model.set({ authError: err });
-		});
-	}
-
-	_onUnsubscribe() {
-		// Remove user model
-		if (this.model.user) {
-			this.model.user.off('unsubscribe', this._onUnsubscribe);
-			this.loginPromise = null;
-		}
-		this.model.set({
-			loggedIn: false,
-			user: null,
-		});
-		this.userPromise = null;
-	}
-
-	_onModelChange(changed) {
-		// Show login screen when logged out
-		if (changed.hasOwnProperty('loggedIn') && !this.model.loggedIn) {
-			this._afterFade(reload);
-		}
-	}
-
 	_showLogin() {
 		this.module.screen.setComponent(new LoginComponent(this.module, this.state, this.params));
 	}
@@ -318,15 +213,37 @@ class Login {
 		});
 	}
 
-	_redirect() {
-		this._afterFade(() => {
-			redirect(redirectUrl, true);
-		});
+	_redirect(instant) {
+		let url = redirectUrl;
+		let includeQuery = true;
+
+		// If we are missing a client_id in the query params, we are not to
+		// redirect back to the oauth2, but instead to a local URL. If we have a
+		// required_uri query parameter, validate that it is a local path or
+		// belongs to the same origin.
+		let q = uri.getQuery();
+		if (!q.hasOwnProperty('client_id')) {
+			includeQuery = false;
+			url = q.redirect_uri || '/';
+			if (!url.startsWith('/')) {
+				let origin = window.location.origin;
+				if (url != origin && !url.startsWith(origin + '/')) {
+					// Fallback to redirect to root
+					url = '/';
+				}
+			}
+		}
+
+		if (instant) {
+			redirect(url, includeQuery);
+		} else {
+			this._afterFade(() => {
+				redirect(url, includeQuery);
+			});
+		}
 	}
 
 	dispose() {
-		this.model.off('change', this._onModelChange);
-		this._onUnsubscribe();
 	}
 }
 

@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+.overviewaccountname {
+
+	&--name {
+		color: $color3;
+		font-size: $font-size;
+	}
+
+	&--name, &--username {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
