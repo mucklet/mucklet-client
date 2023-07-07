@@ -169,7 +169,7 @@ class Router {
 				routeData = route.parseUrl(this.initialRouteData);
 			}
 
-			this.setRoute(route.id, routeData || {});
+			this.setRoute(route.id, routeData || {}, false);
 		}
 		if (isDefault) {
 			this.setDefault(route.id);

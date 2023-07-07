@@ -31,8 +31,6 @@ class RouteRealms {
 			// parseUrl: parts => null,
 			order: 20,
 		});
-
-		this.module.router.setDefault('realms');
 	}
 
 	dispose() {
