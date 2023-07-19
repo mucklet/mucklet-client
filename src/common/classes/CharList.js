@@ -1,3 +1,4 @@
+import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import expandSelection from 'utils/expandSelection';
 
 /**
@@ -83,14 +84,14 @@ class CharList {
 			? expandSelection(str, /[\p{L}\p{N}'-]/u, /[\p{L}\p{N}'-]/u, pos, pos)
 			: expandSelection(str, null, /[\p{L}\p{N}'-]/u, 0, pos);
 
-		let key = (str && str.slice(from, to).toLowerCase().replace(/\s+/g, ' ')) || '';
+		let prefix = (str && str.slice(from, to).toLowerCase().replace(/\s+/g, ' ')) || '';
 
 		let matches = [];
 		let seen = {};
 		for (let c of chars) {
 			let name = c.name.toLowerCase();
 			let fullname = name + (c.surname ? ' ' + c.surname.toLowerCase() : '');
-			if (!key || fullname.substring(0, key.length) == key) {
+			if (isNormalizedPrefix(prefix, fullname)) {
 				let full = c.name + (c.surname ? ' ' + c.surname : '');
 				if (this.useFullname) {
 					matches.push(full);
@@ -105,7 +106,7 @@ class CharList {
 					} else {
 						seen[name] = { idx: matches.length, full: full };
 						// Use fullname if we are completing the entire first name
-						if (key.length < name.length) {
+						if (prefix.length < name.length) {
 							matches.push(c.name);
 							if (inline) {
 								matches.push(full);

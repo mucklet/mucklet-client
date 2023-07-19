@@ -1,19 +1,5 @@
+import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import expandSelection from 'utils/expandSelection';
-
-export function isNormalizedPrefix(prefix, token, rawToken) {
-	if (prefix && token.substring(0, prefix.length) !== prefix) {
-		if (
-			typeof token.normalize != 'function' ||
-			token.normalize('NFKD')
-				.replace(/\p{M}/gu, '')
-				.normalize('NFKC')
-				.substring(0, prefix.length) !== prefix
-		) {
-			return null;
-		}
-	}
-	return rawToken || token;
-}
 
 /**
  * TokenList is a generic list of tokens from an external source, such as a collection.

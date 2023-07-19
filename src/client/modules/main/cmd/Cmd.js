@@ -29,7 +29,7 @@ class Cmd {
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.cmds = new ItemList({ regex: /^\s*([\w\d/][\w\d]*)/ });
+		this.cmds = new ItemList({ regex: /^\s*([\p{L}\p{N}/][\p{L}\p{N}]*)/u });
 		this.cmdStep = new ListStep('cmd', this.cmds, {
 			textId: 'cmdText',
 			name: 'command',

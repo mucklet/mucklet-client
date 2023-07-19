@@ -1,6 +1,7 @@
 import CharList from 'classes/CharList';
 import ItemList from 'classes/ItemList';
-import TokenList, { isNormalizedPrefix } from 'classes/TokenList';
+import TokenList from 'classes/TokenList';
+import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import mergeCharLists from 'utils/mergeCharLists';
 import {
 	keyTokenRegex,
