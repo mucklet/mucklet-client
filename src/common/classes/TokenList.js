@@ -1,5 +1,20 @@
 import expandSelection from 'utils/expandSelection';
 
+export function isNormalizedPrefix(prefix, token, rawToken) {
+	if (prefix && token.substring(0, prefix.length) !== prefix) {
+		if (
+			typeof token.normalize != 'function' ||
+			token.normalize('NFKD')
+				.replace(/\p{M}/gu, '')
+				.normalize('NFKC')
+				.substring(0, prefix.length) !== prefix
+		) {
+			return null;
+		}
+	}
+	return rawToken || token;
+}
+
 /**
  * TokenList is a generic list of tokens from an external source, such as a collection.
  */
@@ -20,7 +35,7 @@ class TokenList {
 		this.expandRegex = opt.expandRegex || { left: null, right: /\w/ };
 		this.getTokens = getTokens;
 		this.isMatch = opt.isMatch || ((t, k) => t.key === k ? t : false);
-		this.isPrefix = opt.isPrefix || ((t, prefix) => (!prefix || t.id.substring(0, prefix.length) == prefix) ? t.id : null);
+		this.isPrefix = opt.isPrefix || ((t, prefix) => isNormalizedPrefix(prefix, t.id));
 	}
 
 	consume(stream) {
