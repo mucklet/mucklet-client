@@ -14,8 +14,8 @@ const helpText =
 </section>
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Set of critera alternatives</h4>
-	<p>Separating a set of critera with slash (/) or pipe (|) will match characters fulfilling at least one of the alternatives in the set.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">wolf / werewolf / timberwolf</code> will match characters with the species matching either "wolf", "werewolf", or "timberwolf".</p>
+	<p>Separating a set of critera with pipe (|) will match characters fulfilling at least one of the alternatives in the set.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">wolf | werewolf | timberwolf</code> will match characters with the species matching either "wolf", "werewolf", or "timberwolf".</p>
 </section>
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Negative criteria</h4>
@@ -30,7 +30,7 @@ const helpText =
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Complex critera</h4>
 	<p>The above syntax forms may be combined into more complex filters.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">male, !~private roleplay, wolf/fox</code> will match male wolf or fox characters without a dislike "private roleplay" tag.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">male, !~private roleplay, wolf|fox</code> will match male wolf or fox characters without a dislike "private roleplay" tag.</p>
 </section>`;
 
 class HelpFilterComponent extends Html{

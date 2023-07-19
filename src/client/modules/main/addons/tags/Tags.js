@@ -2,8 +2,8 @@ import { ModelWrapper, ModelToCollection } from 'modapp-resource';
 import TokenList from 'classes/TokenList';
 import ItemList from 'classes/ItemList';
 import {
-	keyTokenRegex,
-	keyExpandRegex,
+	tagTokenRegex,
+	tagExpandRegex,
 } from 'utils/regex';
 import l10n from 'modapp-l10n';
 
@@ -43,8 +43,8 @@ class Tags {
 			eventBus: this.app.eventBus,
 		});
 		this.tagsList = new TokenList(() => this.collection, {
-			regex: keyTokenRegex,
-			expandRegex: keyExpandRegex,
+			regex: tagTokenRegex,
+			expandRegex: tagExpandRegex,
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key
@@ -72,8 +72,8 @@ class Tags {
 			eventBus: this.app.eventBus,
 		});
 		this.groupsList = new TokenList(() => this.groupsCollection, {
-			regex: keyTokenRegex,
-			expandRegex: keyExpandRegex,
+			regex: tagTokenRegex,
+			expandRegex: tagExpandRegex,
 			isMatch: (t, key) => key === t.key ? { key, value: t.key } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key

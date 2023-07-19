@@ -16,8 +16,6 @@ class TokenList {
 	 */
 	constructor(getTokens, opt) {
 		opt = opt || {};
-		// this._lreg = opt.lreg || /[^\s:"!'=]/;
-		// this._rreg = opt.rreg || /[^\s:"!'=]/;
 		this.regex = opt.regex || /^([\w]+)/;
 		this.expandRegex = opt.expandRegex || { left: null, right: /\w/ };
 		this.getTokens = getTokens;
