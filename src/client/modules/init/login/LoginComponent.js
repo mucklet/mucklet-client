@@ -25,38 +25,66 @@ class LoginComponent {
 
 	render(el) {
 		this.elem = new ScreenDialog(new Elem(n => n.elem('div', { className: 'login' }, [
-			n.elem('label', [
-				n.component(new Txt(l10n.l('login.player', "Account name"), { tagName: 'h3' })),
-			]),
-			n.component('player', new Input(this.state.login.player, {
-				className: 'common--formmargin',
-				attributes: { spellcheck: 'false', name: 'username', id: 'username' },
-				events: {
-					keydown: (c, e) => {
-						if (e.keyCode == 13 && this.elem) {
-							this.elem.getComponent().getNode('password').getElement().focus();
-						}
+			n.elem('form', [
+				n.elem('label', {
+					attributes: { for: 'username' },
+				}, [
+					n.component(new Txt(l10n.l('login.player', "Account name"), { tagName: 'h3' })),
+				]),
+				n.component('player', new Input(this.state.login.player, {
+					className: 'common--formmargin autocomplete',
+					attributes: {
+						id: 'username',
+						name: 'username',
+						spellcheck: 'false',
+						autocomplete: 'username',
 					},
-				},
-			})),
-			n.elem('label', [ n.component(new Txt(l10n.l('login.password', "Password"), { tagName: 'h3' })) ]),
-			n.component('password', new PasswordInput(this.state.login.password, {
-				className: 'common--formmargin',
-				inputOpt: { attributes: { name: 'password', id: 'password' }},
-				events: {
-					keydown: (c, e) => {
-						if (e.keyCode == 13) {
+					events: {
+						keydown: (c, e) => {
+							if (e.keyCode == 13 && this.elem) {
+								this.elem.getComponent().getNode('password').getElement().focus();
+							}
+						},
+					},
+				})),
+				n.elem('label', {
+					attributes: { for: 'password' },
+				}, [
+					n.component(new Txt(l10n.l('login.password', "Password"), { tagName: 'h3' })),
+				]),
+				n.component('password', new PasswordInput(this.state.login.password, {
+					className: 'common--formmargin',
+					inputOpt: {
+						className: 'autocomplete',
+						attributes: {
+							id: 'password',
+							name: 'password',
+							autocomplete: 'current-password',
+						},
+					},
+					events: {
+						keydown: (c, e) => {
+							if (e.keyCode == 13) {
+								e.preventDefault();
+								this._onLogin();
+							}
+						},
+					},
+				})),
+				n.component('message', new Collapser(null)),
+				n.elem('login', 'button', {
+					events: {
+						click: (c, ev) => {
+							ev.preventDefault();
 							this._onLogin();
-						}
+						},
 					},
-				},
-			})),
-			n.component('message', new Collapser(null)),
-			n.elem('login', 'button', { events: {
-				click: () => this._onLogin(),
-			}, className: 'btn large primary login--login pad-top-xl login--btn' }, [
-				n.elem('loginSpinner', 'div', { className: 'spinner spinner--btn fade hide' }),
-				n.component(new Txt(l10n.l('login.login', "Login"))),
+					attributes: { type: 'submit' },
+					className: 'btn large primary login--login pad-top-xl login--btn',
+				}, [
+					n.elem('loginSpinner', 'div', { className: 'spinner spinner--btn fade hide' }),
+					n.component(new Txt(l10n.l('login.login', "Login"))),
+				]),
 			]),
 			n.elem('div', { className: 'login--divider' }, [
 				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),

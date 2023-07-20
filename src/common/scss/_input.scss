@@ -31,3 +31,28 @@ input, textarea {
 input[type='text'], textarea {
 	-webkit-appearance: none; // make iOS inputs pretty
 }
+
+input.autocomplete {
+	&:autofill,
+	&:autofill:hover,
+	&:autofill:focus,
+	&:autofill:active {
+		font-size: $font-size;
+		color: mix($color6, $color3, 80%) !important;
+		background: $color1-lightest !important;
+	}
+
+	&:-webkit-autofill,
+	&:-webkit-autofill:hover,
+	&:-webkit-autofill:focus,
+	&:-webkit-autofill:active {
+		-webkit-text-fill-color: mix($color6, $color3, 80%);
+		-webkit-box-shadow: 0 0 0 32px $color1-lightest inset !important;
+		transition: background-color 5000s ease-in-out 0s;
+		border-radius: 4px !important;
+	}
+	&:-webkit-autofill::first-line {
+		// font-size: $font-size !important;
+		font-family: $font-text !important;
+	}
+}

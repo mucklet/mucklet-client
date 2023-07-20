@@ -25,6 +25,7 @@ class ToggleBox extends RootElem {
 		this._values = opt.values || [ false, true ];
 		if (!opt.disableClick) {
 			this.setEvent('click', (c, e) => {
+				e.preventDefault();
 				this.toggleNext();
 				e.stopPropagation();
 			});
