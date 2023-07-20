@@ -6,7 +6,7 @@ import ValueStep from 'classes/ValueStep';
 import ItemList from 'classes/ItemList';
 import TokenList from 'classes/TokenList';
 import { isResError } from 'resclient';
-import { keyTokenRegex } from 'utils/regex';
+import { tagTokenRegex, tagExpandRegex } from 'utils/regex';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { keyRegex } from 'utils/regex';
 import { descriptionTooLong, keyTooLong } from 'utils/cmdErr';
@@ -81,8 +81,8 @@ class SetTag {
 				.filter(t => !isResError(t))
 				.sort((a, b) => a.key.localeCompare(b.key) || a.id.localeCompare(b.id));
 		}, {
-			regex: keyTokenRegex,
-			expandRegex: { left: /\w\s/, right: /\w\s/ },
+			regex: tagTokenRegex,
+			expandRegex: tagExpandRegex,
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key

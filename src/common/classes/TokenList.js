@@ -1,3 +1,4 @@
+import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import expandSelection from 'utils/expandSelection';
 
 /**
@@ -16,13 +17,11 @@ class TokenList {
 	 */
 	constructor(getTokens, opt) {
 		opt = opt || {};
-		// this._lreg = opt.lreg || /[^\s:"!'=]/;
-		// this._rreg = opt.rreg || /[^\s:"!'=]/;
 		this.regex = opt.regex || /^([\w]+)/;
 		this.expandRegex = opt.expandRegex || { left: null, right: /\w/ };
 		this.getTokens = getTokens;
 		this.isMatch = opt.isMatch || ((t, k) => t.key === k ? t : false);
-		this.isPrefix = opt.isPrefix || ((t, prefix) => (!prefix || t.id.substring(0, prefix.length) == prefix) ? t.id : null);
+		this.isPrefix = opt.isPrefix || ((t, prefix) => isNormalizedPrefix(prefix, t.id));
 	}
 
 	consume(stream) {
