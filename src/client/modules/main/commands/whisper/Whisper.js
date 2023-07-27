@@ -3,17 +3,24 @@ import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
 import ValueStep from 'classes/ValueStep';
+import RepeatStep from 'classes/RepeatStep';
 import { communicationTooLong } from 'utils/cmdErr';
 
-const usageText = 'whisper <span class="opt"><span class="param">Character</span></span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
-const shortDesc = 'Whisper something to a character in the room';
+const usageText = 'whisper <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span><span class="comment">...</span></span>  =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
+const shortDesc = 'Whisper something to characters in the room';
 const helpText =
-`<p>Whisper something to a character in the room.<br>
+`<p>Whisper something to one or more characters in the room.<br>
 If the message starts with <code>&gt;</code> (greater than), the whisper will be marked as out of character (OOC).<br>
 If the message starts with <code>:</code> (colon), the whisper will be treated in the same way as a <code>pose</code> action rather than something being said.</p>
-<p><code class="param">Character</code> is the name of the character to whisper to. It defaults to the character last whispered to.</p>
+<p><code class="param">Character</code> is the name of the character to whisper to. If omitted, it defaults to the character(s) last whispered to.</p>
 <p><code class="param">Message</code> is the whispered message. It may be formatted and span multiple paragraphs.</p>
 <p>Alias: <code>w</code>, <code>wh</code></p>`;
+const examples = [
+	{ cmd: 'whisper Jane Doe = Hi there.', desc: l10n.l('whisper.whisperSingleDesc', "Whispers to Jane Doe") },
+	{ cmd: 'whisper John => Phonecall. BRB.', desc: l10n.l('whisper.whispeOocDesc', "Whispers out of character to John") },
+	{ cmd: 'wh John, Jane =>: has to go AFK.', desc: l10n.l('whisper.whisperOocPoseMultipleDesc', "Whispers an out of character pose to John and Jane") },
+	{ cmd: 'w =: nods discreetly.', desc: l10n.l('whisper.whisperPoseLastDesc', "Whispers a pose to last character(s) whispered to") },
+];
 
 /**
  * Whisper adds the whisper command.
@@ -33,14 +40,23 @@ class Whisper {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
+		this.lastCharIds = {};
 
 		this.module.cmd.addCmd({
 			key: 'whisper',
 			next: [
-				this.module.cmdSteps.newInRoomAwakeCharStep({
-					errRequired: null,
-				}),
+				new RepeatStep(
+					'chars',
+					(next, idx) => this.module.cmdSteps.newInRoomAwakeCharStep({
+						id: 'charId-' + idx,
+						errRequired: null,
+						next,
+					}),
+					{
+						delimiter: ",",
+					},
+				),
+
 				new DelimStep("=", {
 					next: [
 						new MultiDelimStep({
@@ -58,7 +74,15 @@ class Whisper {
 				}),
 			],
 			alias: [ 'w', 'wh' ],
-			value: (ctx, p) => this.whisper(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc }),
+			value: (ctx, p) => {
+				let charIds = [];
+				let i = 0;
+				while (p['charId-' + i]) {
+					charIds.push(p['charId-' + i]);
+					i++;
+				}
+				return this.whisper(ctx.char, { charIds, msg: p.msg, pose: p.pose, ooc: p.ooc });
+			},
 		});
 
 		this.module.help.addTopic({
@@ -69,21 +93,22 @@ class Whisper {
 			usage: l10n.l('whisper.usage', usageText),
 			shortDesc: l10n.l('whisper.shortDesc', shortDesc),
 			desc: l10n.l('whisper.helpText', helpText),
+			examples,
 			sortOrder: 30,
 		});
 	}
 
 	whisper(char, params) {
-		// If we are missing target charId, we fetch the last one whispered to.
-		let charId = params.charId;
-		if (!charId) {
-			charId = this.lastCharId[char.id];
-			if (!charId) {
+		// If we are missing target charIds, we fetch the last one whispered to.
+		let charIds = params.charIds || [];
+		if (!charIds.length) {
+			charIds = this.lastCharIds[char.id];
+			if (!charIds) {
 				return Promise.reject({ code: 'whisper.noCharacter', message: "Who do you want to whisper to?" });
 			}
-			params.charId = charId;
+			params.charIds = charIds;
 		} else {
-			this.lastCharId[char.id] = charId;
+			this.lastCharIds[char.id] = charIds;
 		}
 		return char.call('whisper', params);
 	}

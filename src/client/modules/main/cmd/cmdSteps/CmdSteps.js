@@ -62,6 +62,7 @@ class CmdSteps {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
+	 * @param {Step} [opt.next] Next step after matching a character.
 	 * @returns {IDStep}
 	 */
 	newInRoomAwakeCharStep(opt) {
@@ -71,7 +72,9 @@ class CmdSteps {
 			else: new ListStep(id, this.module.cmdLists.getInRoomCharsAwake(), {
 				name: defaultCharIdName,
 				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				next: opt?.next,
 			}),
+			next: opt?.next,
 		});
 	}
 
