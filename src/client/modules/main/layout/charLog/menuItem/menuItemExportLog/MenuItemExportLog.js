@@ -18,7 +18,7 @@ class MenuItemExportLog {
 			name: l10n.l('menuItemExport.export', "Export"),
 			icon: 'file-text-o',
 			onClick: this._onClick.bind(this),
-			sortOrder: 10,
+			sortOrder: 20,
 		});
 	}
 
