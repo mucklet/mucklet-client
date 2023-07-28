@@ -52,15 +52,20 @@
 		padding: 8px 0 0 0;
 	}
 
-	&say, &pose, &ooc, &address {
+	&say, &pose {
+		white-space: pre-wrap;
+		padding: 2px 0 0 0;
+	}
+
+	&ooc, &address {
 		white-space: pre-wrap;
 		// color: $color4-lightest;
-		padding: 4px 0 0 0;
+		padding: 7px 0 0 0;
 	}
 
 	&msg, &wakeup, &sleep, &leave, &arrive, &travel, &action {
 		// color: $color4;
-		padding: 4px 0 0 0;
+		padding: 7px 0 0 0;
 		font-style: italic;
 	}
 

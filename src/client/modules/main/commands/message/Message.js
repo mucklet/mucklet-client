@@ -3,17 +3,24 @@ import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
 import ValueStep from 'classes/ValueStep';
+import RepeatStep from 'classes/RepeatStep';
 import { communicationTooLong } from 'utils/cmdErr';
 
-const usageText = 'message <span class="opt"><span class="param">Character</span></span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
-const shortDesc = 'Send a message to any awake character';
+const usageText = 'message <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span><span class="comment">...</span></span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
+const shortDesc = 'Send a message to awake characters';
 const helpText =
-`<p>Send a message to any awake character in the realm.<br>
+`<p>Send a message to one or more awake characters in the realm.<br>
 If the message starts with <code>&gt;</code> (greater than), the message will be marked as out of character (OOC).<br>
 If the message starts with <code>:</code> (colon), the message will be treated in the same way as a <code>pose</code> action rather than something being texted.</p>
-<p><code class="param">Character</code> is the name of the character to message. It defaults to the character last messaged.</p>
+<p><code class="param">Character</code> is the name of the character to message. If omitted, it defaults to the character(s) last messaged.</p>
 <p><code class="param">Message</code> is the messaged text. It may be formatted and span multiple paragraphs.</p>
 <p>Alias: <code>m</code>, <code>msg</code>, <code>p</code>, <code>page</code></p>`;
+const examples = [
+	{ cmd: 'message Jane Doe = Long time no see!', desc: l10n.l('message.messageSingleDesc', "Messages Jane Doe") },
+	{ cmd: 'msg John => Are you busy?', desc: l10n.l('message.whispeOocDesc', "Messages John out of character") },
+	{ cmd: 'm John, Jane =>: is no longer AFK.', desc: l10n.l('message.messageOocPoseMultipleDesc', "Messages John and Jane with an out of character pose") },
+	{ cmd: 'page =: sends a thumbs up.', desc: l10n.l('message.messagePoseLastDesc', "Messages the last character(s) messaged with a pose") },
+];
 
 /**
  * Message adds the message command.
@@ -33,14 +40,22 @@ class Message {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
+		this.lastCharIds = {};
 
 		this.module.cmd.addCmd({
 			key: 'message',
 			next: [
-				this.module.cmdSteps.newAwakeCharStep({
-					errRequired: null,
-				}),
+				new RepeatStep(
+					'chars',
+					(next, idx) => this.module.cmdSteps.newAwakeCharStep({
+						id: 'charId-' + idx,
+						errRequired: null,
+						next,
+					}),
+					{
+						delimiter: ",",
+					},
+				),
 				new DelimStep("=", {
 					next: [
 						new MultiDelimStep({
@@ -58,7 +73,15 @@ class Message {
 				}),
 			],
 			alias: [ 'm', 'msg', 'p', 'page' ],
-			value: (ctx, p) => this.message(ctx.char, { charId: p.charId, msg: p.msg, pose: p.pose, ooc: p.ooc }),
+			value: (ctx, p) => {
+				let charIds = [];
+				let i = 0;
+				while (p['charId-' + i]) {
+					charIds.push(p['charId-' + i]);
+					i++;
+				}
+				return this.message(ctx.char, { charIds, msg: p.msg, pose: p.pose, ooc: p.ooc });
+			},
 		});
 
 		this.module.help.addTopic({
@@ -69,21 +92,22 @@ class Message {
 			usage: l10n.l('message.usage', usageText),
 			shortDesc: l10n.l('message.shortDesc', shortDesc),
 			desc: l10n.l('message.helpText', helpText),
+			examples,
 			sortOrder: 40,
 		});
 	}
 
 	message(char, params) {
-		// If we are missing target charId, we fetch the last one messaged to.
-		let charId = params.charId;
-		if (!charId) {
-			charId = this.lastCharId[char.id];
-			if (!charId) {
+		// If we are missing target charIds, we fetch the last ones targeted.
+		let charIds = params.charIds || [];
+		if (!charIds.length) {
+			charIds = this.lastCharIds[char.id];
+			if (!charIds) {
 				return Promise.reject({ code: 'message.noCharacter', message: "Who do you want to message?" });
 			}
-			params.charId = charId;
+			params.charIds = charIds;
 		} else {
-			this.lastCharId[char.id] = charId;
+			this.lastCharIds[char.id] = charIds;
 		}
 		return char.call('message', params);
 	}

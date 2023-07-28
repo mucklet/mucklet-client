@@ -79,6 +79,12 @@ class CharLogEvent {
 		} else if (ev.time) {
 			txt = formatDateTime(new Date(ev.time));
 		}
+		if (this.c.getTooltipText) {
+			let tt = this.c.getTooltipText(ev);
+			if (tt) {
+				txt += "\n" + tt;
+			}
+		}
 		if (invalid) {
 			txt += "\n" + l10n.t(invalid.code, invalid.message, invalid.data) + "\n" + l10n.t(txtTampered);
 		}
