@@ -6,7 +6,7 @@ import ValueStep from 'classes/ValueStep';
 import RepeatStep from 'classes/RepeatStep';
 import { communicationTooLong } from 'utils/cmdErr';
 
-const usageText = 'whisper <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span><span class="comment">...</span></span>  =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
+const usageText = 'whisper <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span><span class="comment">...</span></span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
 const shortDesc = 'Whisper something to characters in the room';
 const helpText =
 `<p>Whisper something to one or more characters in the room.<br>
@@ -99,7 +99,7 @@ class Whisper {
 	}
 
 	whisper(char, params) {
-		// If we are missing target charIds, we fetch the last one whispered to.
+		// If we are missing target charIds, we fetch the last ones targeted.
 		let charIds = params.charIds || [];
 		if (!charIds.length) {
 			charIds = this.lastCharIds[char.id];
