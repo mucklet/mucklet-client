@@ -45,6 +45,20 @@ class Console {
 		return this.model;
 	}
 
+	/**
+	 * Sets the current command text for a controlled character.
+	 * @param {string} ctrlId Controlled character ID.
+	 * @param {string} doc Console doc text.
+	 * @param {boolean} [storeHistory] Flag to store history before setting. Defaults to false.
+	 */
+	setCommand(ctrlId, doc, storeHistory) {
+		let state = this._getCharState(ctrlId);
+		if (storeHistory) {
+			state.storeHistory();
+		}
+		state.setDoc(doc);
+	}
+
 	_setListeners(on) {
 		let cb = on ? 'on' : 'off';
 		this.module.player[cb]('activeChange', this._onActiveChange);
@@ -58,6 +72,7 @@ class Console {
 		let state = null;
 		if (char) {
 			let ctrlId = getCtrlId(char);
+			state = this._getCharState(ctrlId);
 			state = this.charStates[ctrlId];
 			if (!state) {
 				state = new ConsoleState(this.module, ctrlId);
@@ -65,6 +80,15 @@ class Console {
 			}
 		}
 		this.model.set({ state });
+	}
+
+	_getCharState(ctrlId) {
+		let state = this.charStates[ctrlId];
+		if (!state) {
+			state = new ConsoleState(this.module, ctrlId);
+			this.charStates[ctrlId] = state;
+		}
+		return state;
 	}
 
 	_onMediaChange(ev) {

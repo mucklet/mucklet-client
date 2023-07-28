@@ -40,7 +40,10 @@ class ConsoleState extends Model {
 		}, emit, reset);
 	}
 
-
+	/**
+	 * Set current text of the doc.
+	 * @param {string} doc Console doc text.
+	 */
 	setDoc(doc) {
 		this._doc = doc;
 		this._saveDoc();
@@ -164,7 +167,9 @@ class ConsoleState extends Model {
 	 * @returns {object} Null if no history was added, otherwise an object { shifted: boolean } if the history was shifted.
 	 */
 	_addHistory() {
-		let historyDoc = this._history[this._historyIdx] || "";
+		let l = this._history.length;
+		// Get current history, or last history if we are at the end
+		let historyDoc = this._history[this._historyIdx >= l ? l - 1 : this._historyIdx] || "";
 		let trimDoc = this._doc.trim();
 
 		// If we are clean, nothing is added
