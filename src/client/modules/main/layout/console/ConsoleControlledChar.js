@@ -9,46 +9,44 @@ class ConsoleControlledChar extends Elem {
 		this.module = module;
 		this.char = char;
 		let playerModel = this.module.player.getModel();
-		this.setRootNode(n => n.component(
-			new ModelComponent(playerModel,
-				new ModelComponent(char,
-					new Elem(n => n.elem('div', {
-						className: 'console-controlledchar',
-						attributes: { 'data-charname': this.char.name },
-					}, [
-						n.elem('button', {
-							className: 'btn medium', events: {
-								click: () => this._onClick(),
+		this.setRootNode(n => n.component(new ModelComponent(
+			playerModel,
+			new Elem(n => n.elem('div', {
+				className: 'console-controlledchar',
+				attributes: { 'data-charid': this.char.id },
+			}, [
+				n.elem('button', {
+					className: 'btn medium', events: {
+						click: () => this._onClick(),
+					},
+				}, [
+					n.component(this.module.avatar.newAvatar(this.char, { size: 'tiny', className: 'console-controlledchar--avatar' })),
+					n.component(opt.layout == 'mobile' ? null : new ModelTxt(this.char, m => m.name)),
+					n.component(new ModelComponent(
+						this.module.charLog.getUnseenTargeted(),
+						new ModelComponent(
+							this.module.charLog.getUnseen(),
+							new Elem(n => n.elem('div', { className: 'console-controlledchar--counter counter' }, [
+								n.component('txt', new Txt("")),
+							])),
+							(m, c) => {
+								let l = m.props[char.id];
+								c.getNode('txt').setText(counterString(l));
+								c[l ? 'removeClass' : 'addClass']('hide');
 							},
-						}, [
-							n.component(this.module.avatar.newAvatar(this.char, { size: 'tiny', className: 'console-controlledchar--avatar' })),
-							n.component(opt.layout == 'mobile' ? null : new ModelTxt(this.char, m => m.name)),
-							n.component(new ModelComponent(
-								this.module.charLog.getUnseenTargeted(),
-								new ModelComponent(
-									this.module.charLog.getUnseen(),
-									new Elem(n => n.elem('div', { className: 'console-controlledchar--counter counter' }, [
-										n.component('txt', new Txt("")),
-									])),
-									(m, c) => {
-										let l = m.props[char.id];
-										c.getNode('txt').setText(counterString(l));
-										c[l ? 'removeClass' : 'addClass']('hide');
-									},
-								),
-								(m, c) => c.getComponent()[m.props[char.id] ? 'addClass' : 'removeClass']('alert'),
-							)),
-						]),
-					])), (m, c) => {
-						c.setAttribute('data-charname', m.name);
-					}),
-				(m, c) => {
-					if (this.char === m.activeChar) {
-						c.getComponent().addClass('active');
-					} else {
-						c.getComponent().removeClass('active');
-					}
-				})));
+						),
+						(m, c) => c.getComponent()[m.props[char.id] ? 'addClass' : 'removeClass']('alert'),
+					)),
+				]),
+			])),
+			(m, c) => {
+				if (this.char === m.activeChar) {
+					c.addClass('active');
+				} else {
+					c.removeClass('active');
+				}
+			},
+		)));
 
 		this.onClick = opt.onClick;
 	}
