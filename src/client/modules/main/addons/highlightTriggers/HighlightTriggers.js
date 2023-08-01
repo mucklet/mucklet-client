@@ -11,6 +11,10 @@ const msgEvents = {
 	mail: ev => ev.msg,
 };
 
+function isTargetted(charId, ev) {
+	return !!(ev.target?.id == charId || ev.targets?.find(t => t.id == charId));
+}
+
 /**
  * HighlightTriggers handles muting of events.
  */
@@ -60,7 +64,7 @@ class HighlightTriggers {
 			}
 		}
 
-		if (ev.target && ev.target.id == ctrl.id) {
+		if (isTargetted(ctrl.id, ev)) {
 			mod.targeted = true;
 		}
 	}

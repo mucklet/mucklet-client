@@ -30,7 +30,7 @@ class Notify {
 		this.module = Object.assign({ self: this }, module);
 
 		this.model = new Model({ data: { enabled: false }, eventBus: this.app.eventBus });
-
+		this.tags = {};
 		this.user = null;
 		this.module.login.getLoginPromise().then(user => {
 			this.user = user;
@@ -52,8 +52,19 @@ class Notify {
 	send(title, opt) {
 		if (!this.model.enabled || (isVisible() && !this.alwaysNotify)) return;
 
+		// Prevent new notifications on the same tag
+		if (opt?.tag) {
+			let tag = opt.tag;
+			if (this.tags[tag]) {
+				return;
+			}
+			this.tags[tag] = true;
+			setTimeout(() => delete this.tags[tag], 200);
+		}
+
 		opt = Object.assign({ icon: this.defaultIcon, duration: 5000, onClick: defaultOnClick }, opt);
-		let n = new Notification(l10n.t(title), opt);
+		title = typeof title == 'string' ? title : l10n.t(title);
+		let n = new Notification(title, opt);
 
 		if (opt.duration) {
 			setTimeout(() => n.close(), opt.duration);

@@ -1,8 +1,9 @@
+import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import CharList from 'classes/CharList';
 import flattenObject from 'utils/flattenObject';
+import extractEventTarget from 'utils/extractEventTarget';
 import { firstTriggerWord } from 'utils/formatText';
-import { Model } from 'modapp-resource';
 
 const focusStoragePrefix = 'charFocus.';
 
@@ -170,7 +171,7 @@ class CharFocus {
 			}
 		}
 		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject(ev)), {
-			tag: ev ? ev.id : undefined,
+			tag: ev.id,
 			onClick: (ev) => {
 				this.module.player.setActiveChar(charId).catch(() => {});
 				window.focus();
@@ -181,7 +182,7 @@ class CharFocus {
 	}
 
 	/**
-	 * Checks if a controllec character is focusing on a specific character.
+	 * Checks if a controlled character is focusing on a specific character.
 	 * It does not take focus all into account.
 	 * @param {*} ctrlId Controlled character ID.
 	 * @param {*} charId Focused character ID.
@@ -214,8 +215,8 @@ class CharFocus {
 			return false;
 		}
 
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject(Object.assign({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) }))), {
-			tag: ev ? ev.id : undefined,
+		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) })), {
+			tag: ev.id,
 			onClick: (ev) => {
 				this.module.player.setActiveChar(charId).catch(() => {});
 				window.focus();
@@ -241,12 +242,12 @@ class CharFocus {
 			// Check if we should not send event
 			if (!this.focusAll.props[charId]) { // Focus
 				let p = this.module.player.getPlayer();
-				if (!p || !p.notifyOnEvent || ev.target?.id !== charId) { // Targeted event
+				if (!p?.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
 					return false;
 				}
 			}
 		}
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject(ev)), {
+		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, target: extractEventTarget(charId, ev) })), {
 			tag: ev.id,
 			onClick: (ev) => {
 				this.module.player.setActiveChar(charId).catch(() => {});

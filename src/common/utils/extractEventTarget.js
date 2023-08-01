@@ -1,5 +1,5 @@
 /**
- * Extracts the main target character for an event, but either selecting the one
+ * Extracts the main target character for an event, by either selecting the one
  * matching the character, or the first mentioned target.
  * @param {string} charId ID of character receiving the event
  * @param {object} ev Event with targets
