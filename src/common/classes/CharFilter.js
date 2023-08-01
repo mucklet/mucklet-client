@@ -29,7 +29,7 @@ class CharFilter {
 		let stepStrs = filter.split(',');
 		for (let stepStr of stepStrs) {
 			let keys = [];
-			let keyStrs = stepStr.split(/[/|]/);
+			let keyStrs = stepStr.split(/[|]/);
 
 			for (let key of keyStrs) {
 				key = key.trim();

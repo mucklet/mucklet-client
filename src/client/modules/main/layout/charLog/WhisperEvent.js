@@ -3,21 +3,23 @@ import l10n from 'modapp-l10n';
 import formatText from 'utils/formatText';
 import poseSpacing from 'utils/poseSpacing';
 import fullname from 'utils/fullname';
+import * as charEvent from 'utils/charEvent';
 
 class WhisperEvent extends Elem {
 	constructor(charId, ev) {
 		let c = ev.char;
-		let t = ev.target;
+		let t = charEvent.extractTarget(charId, ev);
+		let more = ev.targets?.length - (ev.target ? 0 : 1);
 		super(n => n.elem('div', [
 			n.elem('div', { className: 'charlog--fieldset' }, [
 				n.elem('div', { className: 'charlog--fieldset-label' }, [
-					n.component(new Txt(c && c.id === charId
-						? ev.ooc
-							? l10n.l('charLog.whisperOocTo', "Whisper ooc to {fullname}", { fullname: fullname(t) })
-							: l10n.l('charLog.whisperTo', "Whisper to {fullname}", { fullname: fullname(t) })
-						: ev.ooc
-							? l10n.l('charLog.whisperOocFrom', "Whisper ooc from {fullname}", { fullname: fullname(c) })
-							: l10n.l('charLog.whisperFrom', "Whisper from {fullname}", { fullname: fullname(c) }),
+					n.component(new Txt(ev.ooc
+						? more
+							? l10n.l('charLog.whisperOocTo', "Whisper ooc to {fullname} +{more} more", { fullname: fullname(t), more })
+							: l10n.l('charLog.whisperOocTo', "Whisper ooc to {fullname}", { fullname: fullname(t) })
+						: more
+							? l10n.l('charLog.whisperTo', "Whisper to {fullname} +{more} more", { fullname: fullname(t), more })
+							: l10n.l('charLog.whisperTo', "Whisper to {fullname}", { fullname: fullname(t) }),
 					)),
 				]),
 				n.component(new Txt(c && c.name, { className: 'charlog--char' })),
@@ -32,6 +34,10 @@ class WhisperEvent extends Elem {
 
 	get isCommunication() {
 		return true;
+	}
+
+	getTooltipText(ev) {
+		return charEvent.targetTooltipText(ev);
 	}
 }
 

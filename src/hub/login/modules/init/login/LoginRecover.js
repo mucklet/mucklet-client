@@ -36,8 +36,8 @@ class LoginRecover {
 				n.component(new PopupTip(l10n.l('login.accountNameInfo', "Account name is your login name."), { className: 'popuptip--width-m flex-auto' })),
 			]),
 			n.component('player', new Input(this.model.username, {
-				className: 'common--formmargin',
-				attributes: { spellcheck: 'false', name: 'username', id: 'username' },
+				className: 'common--formmargin autocomplete',
+				attributes: { spellcheck: 'false', name: 'username', id: 'username', autocomplete: 'username' },
 				events: {
 					input: c => this.model.set({ username: c.getValue() }),
 					keydown: (c, e) => {

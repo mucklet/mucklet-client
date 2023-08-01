@@ -3,7 +3,7 @@ import RepeatStep from 'classes/RepeatStep';
 import ListStep from 'classes/ListStep';
 import TokenList from 'classes/TokenList';
 import { isResError } from 'resclient';
-import { keyTokenRegex } from 'utils/regex';
+import { tagTokenRegex, tagExpandRegex } from 'utils/regex';
 
 const usageText = 'remove tag <span class="param">Keyword</span></span> <span class="opt">, <span class="param">Keyword</span></span><span class="comment">...</span>';
 const shortDesc = 'Remove one or more tags from the character';
@@ -33,8 +33,8 @@ class RemoveTag {
 				.filter(t => !isResError(t))
 				.sort((a, b) => a.key.localeCompare(b.key) || a.id.localeCompare(b.id));
 		}, {
-			regex: keyTokenRegex,
-			expandRegex: { left: /\w\s/, right: /\w\s/ },
+			regex: tagTokenRegex,
+			expandRegex: tagExpandRegex,
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
 				? t.key

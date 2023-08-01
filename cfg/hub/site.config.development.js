@@ -2,7 +2,7 @@
 
 module.exports = {
 	APP_VERSION: '0', // Overwritten by version in package.json
-	APP_TITLE: "Mucklet Dev",
+	APP_TITLE: "Dev Mucklet",
 	APP_DESCRIPTION: "A textual world of role play. Create a character, wake them up, and join in.",
 
 	API_HOST_PATH: 'ws://localhost:8080/',

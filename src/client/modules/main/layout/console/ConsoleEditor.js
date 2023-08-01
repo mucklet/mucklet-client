@@ -1,4 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
+import { ModelComponent } from 'modapp-resource-component';
 import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { standardKeymap, insertNewline, cursorDocEnd } from '@codemirror/commands';
@@ -22,9 +23,17 @@ class ConsoleEditor {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'console-editor' }, [
-			n.component(new Txt(txtPlaceholder, { tagName: 'div', className: 'console-editor--placeholder' })),
-		]));
+		this.elem = new ModelComponent(
+			this.state,
+			new Elem(n => n.elem('div', { className: 'console-editor' }, [
+				n.component(new Txt(txtPlaceholder, { tagName: 'div', className: 'console-editor--placeholder' })),
+			])),
+			(m, c, change) => {
+				if (change) {
+					this._onStateUpdate(m, c);
+				}
+			},
+		);
 		let rel = this.elem.render(el);
 		this.cm = new EditorView({
 			state: this._newState(this.state?.doc || ''),
@@ -48,6 +57,9 @@ class ConsoleEditor {
 	setState(state) {
 		this.state = state || null;
 		this._setConsole(state ? this.state.doc : '');
+		if (this.elem) {
+			this.elem.setModel(this.state);
+		}
 		if (this.cm) {
 			cursorDocEnd(this.cm);
 		}
@@ -157,9 +169,16 @@ class ConsoleEditor {
 		this._setEmpty();
 	}
 
+	_onStateUpdate(state, c) {
+		// Update cm state if state.doc differs
+		if (this.cm && state && state.doc.trim() != this.cm.state.doc.toString().trim()) {
+			this.cm.setState(this._newState(state.doc));
+		}
+	}
+
 	_setEmpty() {
-		if (this.elem) {
-			this.elem[this.cm.state.doc.toString() ? 'removeClass' : 'addClass']('empty');
+		if (this.elem && this.cm) {
+			this.elem.getComponent()[this.cm.state.doc.toString() ? 'removeClass' : 'addClass']('empty');
 		}
 	}
 

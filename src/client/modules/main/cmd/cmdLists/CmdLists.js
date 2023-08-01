@@ -1,6 +1,7 @@
 import CharList from 'classes/CharList';
 import ItemList from 'classes/ItemList';
 import TokenList from 'classes/TokenList';
+import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import mergeCharLists from 'utils/mergeCharLists';
 import {
 	keyTokenRegex,
@@ -71,9 +72,7 @@ class CmdLists {
 			regex: keyTokenRegex,
 			expandRegex: keyExpandRegex,
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
-			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
-				? t.key
-				: null,
+			isPrefix: (t, prefix) => isNormalizedPrefix(prefix, t.key),
 		});
 		this.inRoomExits = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -92,7 +91,7 @@ class CmdLists {
 			isPrefix: (t, prefix) => {
 				if (!prefix) return t.keys[0] || null;
 				for (let k of t.keys) {
-					if (k.substring(0, prefix.length) === prefix) {
+					if (isNormalizedPrefix(prefix, k)) {
 						return k;
 					}
 				}
@@ -106,9 +105,7 @@ class CmdLists {
 			regex: keyTokenRegex,
 			expandRegex: keyExpandRegex,
 			isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
-			isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix
-				? t.key
-				: null,
+			isPrefix: (t, prefix) => isNormalizedPrefix(prefix, t.key),
 		});
 		this.charOwnedAreas = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -117,9 +114,7 @@ class CmdLists {
 			regex: colonDelimTokenRegex,
 			expandRegex: colonDelimExpandRegex,
 			isMatch: (t, key) => key === t.name.toLowerCase().replace(/\s+/g, ' ') ? { key: t.name, value: t.id } : false,
-			isPrefix: (t, prefix) => !prefix || t.name.toLowerCase().replace(/\s+/g, ' ').substring(0, prefix.length) === prefix
-				? t.name
-				: null,
+			isPrefix: (t, prefix) => isNormalizedPrefix(prefix, t.name.toLowerCase().replace(/\s+/g, ' '), t.name),
 		});
 		this.charOwnedAreasOrNone = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -130,9 +125,7 @@ class CmdLists {
 			regex: colonDelimTokenRegex,
 			expandRegex: colonDelimExpandRegex,
 			isMatch: (t, key) => key === t.name.toLowerCase().replace(/\s+/g, ' ') ? { key: t.name, value: t.id } : false,
-			isPrefix: (t, prefix) => !prefix || t.name.toLowerCase().replace(/\s+/g, ' ').substring(0, prefix.length) === prefix
-				? t.name
-				: null,
+			isPrefix: (t, prefix) => isNormalizedPrefix(prefix, t.name.toLowerCase().replace(/\s+/g, ' '), t.name),
 		});
 		this.charOwnedRooms = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -141,9 +134,7 @@ class CmdLists {
 			regex: anyTokenRegex,
 			expandRegex: anyExpandRegex,
 			isMatch: (t, key) => key === t.name.toLowerCase().replace(/\s+/g, ' ') ? { key: t.name, value: t.id } : false,
-			isPrefix: (t, prefix) => !prefix || t.name.toLowerCase().replace(/\s+/g, ' ').substring(0, prefix.length) === prefix
-				? t.name
-				: null,
+			isPrefix: (t, prefix) => isNormalizedPrefix(prefix, t.name.toLowerCase().replace(/\s+/g, ' '), t.name),
 		});
 		this.bool = new ItemList({
 			items: [

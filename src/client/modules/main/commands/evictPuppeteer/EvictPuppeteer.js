@@ -36,7 +36,7 @@ class EvictPuppeteer {
 			)),
 			examples: [{
 				cmd: 'evict John Doe : puppeteer = Jane Puppet',
-				desc: l10n.l('evictPuppeteer.exampleDesc', "Evicts Jane Doe from using current Jane Puppet as a puppet."),
+				desc: l10n.l('evictPuppeteer.exampleDesc', "Evicts John Doe from using Jane Puppet as a puppet."),
 			}],
 			sortOrder: 30,
 		});

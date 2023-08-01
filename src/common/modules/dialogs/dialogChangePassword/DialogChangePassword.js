@@ -40,7 +40,14 @@ class DialogChangePassword {
 					l10n.l('dialogChangePassword.oldPassword', "Old password"),
 					new PasswordInput(model.oldPass, {
 						onInput: c => model.set({ oldPass: c.getValue() }),
-						inputOpt: { className: 'dialog--input' },
+						inputOpt: {
+							className: 'dialog--input',
+							attributes: {
+								id: 'oldpassword',
+								name: 'oldpassword',
+								autocomplete: 'current-password',
+							},
+						},
 						className: 'darkeye',
 					}),
 					{
@@ -52,7 +59,14 @@ class DialogChangePassword {
 					l10n.l('dialogChangePassword.newPassword', "New password"),
 					new PasswordInput(model.newPass, {
 						onInput: c => model.set({ newPass: c.getValue() }),
-						inputOpt: { className: 'dialog--input' },
+						inputOpt: {
+							className: 'dialog--input',
+							attributes: {
+								id: 'newpassword',
+								name: 'newpassword',
+								autocomplete: 'new-password',
+							},
+						},
 						className: 'darkeye',
 					}),
 					{

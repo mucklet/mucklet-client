@@ -4,7 +4,7 @@ import DelimStep from 'classes/DelimStep';
 import ListStep from 'classes/ListStep';
 import ValueStep from 'classes/ValueStep';
 // import TokenList from 'classes/TokenList';
-// import { keyTokenRegex } from 'utils/regex';
+// import { tagTokenRegex } from 'utils/regex';
 
 const usageText = 'add tag <span class="param">Keyword</span><span class="opt">:<span class="param">Preference</span></span> <span class="opt">, <span class="param">Keyword</span><span class="opt">:<span class="param">Preference</span></span></span><span class="comment">...</span>';
 const shortDesc = 'Add one or more predefined tags to the character';
@@ -35,7 +35,7 @@ class AddTag {
 		// 	Object.keys(p).map(k => m[p[k].id] = true);
 		// 	return this.module.tags.getTagsCollection().toArray().filter(tag => !m[tag.id]);
 		// }, {
-		// 	regex: keyTokenRegex,
+		// 	regex: tagTokenRegex,
 		// 	expandRegex: { left: /\w\s/, right: /\w\s/ },
 		// 	isMatch: (t, key) => key === t.key ? { key, value: t.id } : false,
 		// 	isPrefix: (t, prefix) => !prefix || t.key.substring(0, prefix.length) === prefix

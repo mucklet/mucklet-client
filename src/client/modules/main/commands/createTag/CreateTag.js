@@ -3,7 +3,7 @@ import TextStep from 'classes/TextStep';
 import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ValueStep from 'classes/ValueStep';
-import { keyRegex } from 'utils/regex';
+import { tagRegex } from 'utils/regex';
 import { descriptionTooLong, keyTooLong } from 'utils/cmdErr';
 
 const usageText = 'create tag <span class="param">Keyword</span><span class="opt">:<span class="param">Preference</span></span> <span class="opt">= <span class="param">Description</span></span>';
@@ -31,7 +31,7 @@ class CreateTag {
 			key: 'tag',
 			next: [
 				new TextStep('key', {
-					regex: keyRegex,
+					regex: tagRegex,
 					name: "tag keyword",
 					maxLength: () => this.module.info.getTag().tagKeyMaxLength,
 					errTooLong: keyTooLong,

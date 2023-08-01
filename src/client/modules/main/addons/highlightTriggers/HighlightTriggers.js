@@ -1,4 +1,5 @@
 import { filterTriggers } from 'utils/formatText';
+import { isTargeted } from 'utils/charEvent';
 
 
 const msgEvents = {
@@ -60,7 +61,7 @@ class HighlightTriggers {
 			}
 		}
 
-		if (ev.target && ev.target.id == ctrl.id) {
+		if (isTargeted(ctrl.id, ev)) {
 			mod.targeted = true;
 		}
 	}

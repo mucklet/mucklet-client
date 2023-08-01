@@ -1,9 +1,8 @@
 import { RootElem } from 'modapp-base-component';
-
-import './fader.scss';
+import { anim } from 'modapp-utils';
 
 /**
- * Fader is component wrapper that can fade in and out components
+ * Fader is component wrapper that can fade in and out components.
  */
 class Fader extends RootElem {
 
@@ -11,25 +10,35 @@ class Fader extends RootElem {
 	 * Creates an instance of Fader
 	 * @param {?Component} component Component to wrap.
 	 * @param {object} [opt] Optional parameters.
+	 * @param {boolean} [opt.duration] Optional transition duration in milliseconds.
 	 * @param {boolean} [opt.hidden] Flag to tell if the fader should start as hidden.
 	 */
 	constructor(component, opt) {
-		opt = Object.assign({}, opt);
-		opt.className = 'comp-fader' + (opt.className ? ' ' + opt.className : '');
 		super('div', opt);
 
-		// Bind callbacks
-		this._onTransitionEnd = this._onTransitionEnd.bind(this);
-
-		this.current = null;
-		this.component = null;
+		opt = opt || {};
+		this._fadeOpt = {
+			callback: this._onTransitionEnd.bind(this),
+			duration: typeof opt?.duration == 'number' ? opt.duration : 150,
+		};
+		this._current = null;
+		this._component = null;
+		this._token = null;
 
 		this.setComponent(component);
 	}
 
 	/**
-	 * Sets the component to fade in
-	 * @param {Component} component Component
+	 * Gets the current set component.
+	 * @returns {?Component}
+	 */
+	getComponent() {
+		return this._component;
+	}
+
+	/**
+	 * Sets the component to fade in, or null to fade out.
+	 * @param {?Component} component Component to set.
 	 * @param {object} [opt] Optional parameters
 	 * @param {function} [opt.onRender] Callback function to call after rendering the component.
 	 * @param {function} [opt.onUnrender] Callback function to call before unrendering the component.
@@ -37,106 +46,93 @@ class Fader extends RootElem {
 	 */
 	setComponent(component, opt) {
 		component = component || null;
-		this.component = component;
-		this.componentOpt = opt;
+		if (this._component === component) return this;
+
+		this._component = component;
+		this._componentOpt = opt;
 		let el = this.getElement();
 		if (!el) {
 			return this;
 		}
 
 		// Is the component the same at currently rendered one?
-		if (this.component === this.current) {
-			if (this.current) {
-				super.removeClass('fade-out');
+		if (this._component === this._current) {
+			if (this._current) {
+				this._fade(1);
 			}
 			return this;
 		}
 
-		if (this.current) {
-			this._hide();
+		if (this._current) {
+			this._fade(0);
 		} else {
 			this._renderComponent();
+			this._fade(1);
 		}
 		return this;
 	}
 
-	getComponent() {
-		return this.component;
-	}
-
 	render(el) {
-		super.removeClass('fade-out');
 		super.render(el);
 		this._renderComponent();
-		let e = this.getElement();
-		e.addEventListener('transitionend', this._onTransitionEnd);
-		return e;
+		super.setStyle('opacity', this._component ? null : 0);
+		return this.getElement();
 	}
 
 	unrender() {
-		let el = this.getElement();
-		if (!el) return;
-		el.removeEventListener('transitionend', this._onTransitionEnd);
-		this._unrenderComponent();
-		super.unrender();
+		anim.stop(this._token);
+		if (this.getElement()) {
+			this._unrenderComponent();
+			super.unrender();
+		}
 	}
 
-	_hide() {
+	_fade(opacity) {
 		let el = this.getElement();
 		if (el) {
-			let o = getComputedStyle(el).getPropertyValue("opacity");
-			super.addClass('fade-out');
-			if (o == 0) {
-				this._onTransitionEnd();
-			}
+			anim.stop(this._token);
+			this._token = anim.fade(el, opacity, this._fadeOpt);
 		}
 	}
 
 	_renderComponent() {
 		let el = this.getElement();
-		if (this.component) {
-			if (el) {
-				this.component.render(el);
+		if (this._component) {
+			this._component.render(el);
+			this._current = this._component;
+			this._currentOpt = this._componentOpt;
+			// Call onRender callback if available
+			let onRender = this._currentOpt?.onRender;
+			if (onRender) {
+				onRender(this, this._component);
 			}
-			this.current = this.component;
-			this.currentOpt = this.componentOpt;
-			super.removeClass('fade-out');
-		} else {
-			super.addClass('fade-out');
-		}
-
-		// Call onRender callback if available
-		let onRender = this.componentOpt && this.componentOpt.onRender;
-		if (onRender) {
-			onRender(this, this.component);
 		}
 	}
 
 	_unrenderComponent() {
-		// Call onUnrender callback if available
-		let onUnrender = this.currentOpt && this.currentOpt.onUnrender;
-		if (onUnrender) {
-			onUnrender(this, this.current);
-		}
-
-		if (this.current) {
-			this.current.unrender();
-			this.current = null;
+		if (this._current) {
+			// Call onUnrender callback if available
+			let onUnrender = this._currentOpt?.onUnrender;
+			if (onUnrender) {
+				onUnrender(this, this._current);
+			}
+			this._current.unrender();
+			this._current = null;
+			this._currentOpt = null;
 		}
 	}
 
-	_onTransitionEnd(e) {
+	_onTransitionEnd() {
 		let el = this.getElement();
 		if (!el) return;
 
-		if (e && (e.currentTarget != e.target || !el.classList.contains('fade-out'))) return;
+		if (this._component && this._current === this._component) return;
 
-		if (this.component) {
-			if (this.current === this.component) return;
-			this._unrenderComponent();
-			this._renderComponent();
-		} else {
-			this._unrenderComponent();
+		this._unrenderComponent();
+		this._renderComponent();
+
+		if (this._component) {
+			this._fade(1);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import expandSelection from 'utils/expandSelection';
 
 function keyCompare(a, b) {
@@ -19,8 +20,8 @@ class ItemList {
 	 */
 	constructor(opt) {
 		opt = opt || {};
-		this.regex = opt.regex || /^[\w]+/;
-		this.expandRegex = opt.expandRegex || { left: null, right: /\w/ };
+		this.regex = opt.regex || /^[\p{L}\p{N}]+/u;
+		this.expandRegex = opt.expandRegex || { left: null, right: /[\p{L}\p{N}]/u };
 		this.compare = opt.compare || keyCompare;
 
 		this._keys = {};
@@ -124,18 +125,18 @@ class ItemList {
 	complete(str, pos, ctx, inline) {
 		let { from, to } = expandSelection(str, this.expandRegex.left, this.expandRegex.right, 0, pos);
 
-		var key = (str && str.slice(from, to).toLowerCase().replace(/\s+/g, ' ')) || '';
+		var prefix = (str && str.slice(from, to).toLowerCase().replace(/\s+/g, ' ')) || '';
 
 		var items = [];
 		var aliases = [];
 		for (let item of this._items) {
 			// Is the item a match?
-			if (!key || item.key.toLowerCase().lastIndexOf(key, 0) === 0) {
+			if (isNormalizedPrefix(prefix, item.key.toLowerCase())) {
 				items.push(item.key);
 			// Check for matches against alias
 			} else if (item.alias) {
 				for (let a of item.alias) {
-					if (a.toLowerCase().lastIndexOf(key, 0) === 0) {
+					if (isNormalizedPrefix(prefix, a.toLowerCase())) {
 						aliases.push(a);
 						break;
 					}
