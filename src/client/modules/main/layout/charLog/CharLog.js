@@ -2,6 +2,7 @@ import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
 import getCtrlId from 'utils/getCtrlId';
+import { isTargeted } from 'utils/charEvent';
 import {
 	msgEvent,
 	sayEvent,
@@ -608,7 +609,7 @@ class CharLog {
 			) {
 				this.unseen.set({ [ctrl.id]: this.unseen.props[ctrl.id] + 1 });
 				// Increase targeted if character is the target
-				if (ev.target && ev.target.id === ctrl.id) {
+				if (isTargeted(ctrl.id, ev)) {
 					this.unseenTargeted.set({ [ctrl.id]: this.unseenTargeted.props[ctrl.id] + 1 });
 				}
 			}

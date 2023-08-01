@@ -1,4 +1,5 @@
 import { filterTriggers } from 'utils/formatText';
+import { isTargeted } from 'utils/charEvent';
 
 
 const msgEvents = {
@@ -10,10 +11,6 @@ const msgEvents = {
 	whisper: ev => ev.msg,
 	mail: ev => ev.msg,
 };
-
-function isTargetted(charId, ev) {
-	return !!(ev.target?.id == charId || ev.targets?.find(t => t.id == charId));
-}
 
 /**
  * HighlightTriggers handles muting of events.
@@ -64,7 +61,7 @@ class HighlightTriggers {
 			}
 		}
 
-		if (isTargetted(ctrl.id, ev)) {
+		if (isTargeted(ctrl.id, ev)) {
 			mod.targeted = true;
 		}
 	}

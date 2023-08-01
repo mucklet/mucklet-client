@@ -2,7 +2,7 @@ import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import CharList from 'classes/CharList';
 import flattenObject from 'utils/flattenObject';
-import extractEventTarget from 'utils/extractEventTarget';
+import * as charEvent from 'utils/charEvent';
 import { firstTriggerWord } from 'utils/formatText';
 
 const focusStoragePrefix = 'charFocus.';
@@ -247,7 +247,7 @@ class CharFocus {
 				}
 			}
 		}
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, target: extractEventTarget(charId, ev) })), {
+		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(charId, ev) })), {
 			tag: ev.id,
 			onClick: (ev) => {
 				this.module.player.setActiveChar(charId).catch(() => {});

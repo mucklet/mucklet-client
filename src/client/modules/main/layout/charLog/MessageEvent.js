@@ -3,13 +3,12 @@ import l10n from 'modapp-l10n';
 import formatText from 'utils/formatText';
 import poseSpacing from 'utils/poseSpacing';
 import fullname from 'utils/fullname';
-import extractEventTarget from 'utils/extractEventTarget';
-import targetTooltipText from 'utils/targetTooltipText';
+import * as charEvent from 'utils/charEvent';
 
 class MessageEvent extends Elem {
 	constructor(charId, ev) {
 		let c = ev.char;
-		let t = extractEventTarget(charId, ev);
+		let t = charEvent.extractTarget(charId, ev);
 		let more = ev.targets?.length - (ev.target ? 0 : 1);
 		super(n => n.elem('div', [
 			n.elem('div', { className: 'charlog--fieldset' }, [
@@ -38,7 +37,7 @@ class MessageEvent extends Elem {
 	}
 
 	getTooltipText(ev) {
-		return targetTooltipText(ev);
+		return charEvent.targetTooltipText(ev);
 	}
 }
 
