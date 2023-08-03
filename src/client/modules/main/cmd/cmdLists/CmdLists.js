@@ -20,7 +20,7 @@ class CmdLists {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'player', 'login', 'charsAwake', 'globalTeleports' ], this._init.bind(this));
+		this.app.require([ 'player', 'auth', 'charsAwake', 'globalTeleports' ], this._init.bind(this));
 	}
 
 	_init(module) {

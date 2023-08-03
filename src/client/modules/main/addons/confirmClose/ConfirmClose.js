@@ -12,7 +12,7 @@ class ConfirmClose {
 		// Bind callbacks
 		this._onBeforeUnload = this._onBeforeUnload.bind(this);
 
-		this.app.require([ 'player', 'login' ], this._init.bind(this));
+		this.app.require([ 'player', 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {

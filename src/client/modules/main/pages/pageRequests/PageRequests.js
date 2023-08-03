@@ -20,7 +20,7 @@ class PageRequests {
 
 		this.app.require([
 			'playerTabs',
-			'login',
+			'auth',
 			'player',
 			'api',
 			'confirm',
@@ -36,7 +36,7 @@ class PageRequests {
 			eventBus: this.app.eventBus,
 		});
 
-		this.module.login.getLoginPromise()
+		this.module.auth.getUserPromise()
 			.then(user => Promise.all([
 				this.module.api.get('core.player.' + user.id + '.incoming.requests'),
 				this.module.api.get('core.player.' + user.id + '.outgoing.requests'),

@@ -20,7 +20,7 @@ class CharsAwake {
 		this._onCharEvent = this._onCharEvent.bind(this);
 
 		this.app.require([
-			'login',
+			'auth',
 			'api',
 			'player',
 			'notify',
@@ -59,7 +59,7 @@ class CharsAwake {
 		});
 
 		this.user = null;
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			this.user = user;
 			this._loadSettings(user);
 			this._getCharsAwake(user);

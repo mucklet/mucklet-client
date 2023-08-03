@@ -10,7 +10,7 @@ class ErrorScreen {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'login' ], this._init.bind(this));
+		this.app.require([ 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -26,7 +26,7 @@ class ErrorScreen {
 			}
 			this._showError(err);
 		} else {
-			this.module.login.authenticate().catch(err => {
+			this.module.auth.authenticate().catch(err => {
 				if (err.code == 'system.connectionError') {
 					err = { code: err.code, message: "Failed to connect to the realm." };
 				}

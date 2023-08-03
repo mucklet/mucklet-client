@@ -14,7 +14,7 @@ class PlayerSettingsEmail {
 		this.app.require([
 			'api',
 			'pagePlayerSettings',
-			'login',
+			'auth',
 			'accountEmail',
 		], this._init.bind(this));
 	}
@@ -26,7 +26,7 @@ class PlayerSettingsEmail {
 		this.identity = null;
 
 		// Get user model to alert on unverified email.
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			if (user.identity && this.model) {
 				this.identity = user.identity;
 				this._listen(true);

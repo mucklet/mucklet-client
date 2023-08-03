@@ -29,7 +29,7 @@ class CharSettingsBotTokenComponent {
 		this.elem = new Context(
 			() => {
 				let ctx = { model: new ModelWrapper(null, { eventBus: this.module.self.app.eventBus }) };
-				this.module.login.getLoginPromise()
+				this.module.auth.getUserPromise()
 					.then(user => this.module.api.get('auth.user.' + user.id + '.bots'))
 					.then(bots => {
 						if (ctx.model) {

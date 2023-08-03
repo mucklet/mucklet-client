@@ -7,13 +7,13 @@ import TokenList from 'classes/TokenList';
 class GlobalTeleports {
 	constructor(app, params) {
 		this.app = app;
-		this.app.require([ 'login', 'api' ], this._init.bind(this));
+		this.app.require([ 'auth', 'api' ], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
 		this.model = new Model({ data: { globalTeleports: null }, eventBus: this.app.eventBus });
-		this.module.login.getLoginPromise().then(() => this._getGlobalTeleports());
+		this.module.auth.getUserPromise().then(() => this._getGlobalTeleports());
 		this.list = new TokenList(() => this.getGlobalTeleports(), {
 			regex: /^([\w\s]*\w)\s*/,
 			expandRegex: { left: /\w\s/, right: /\w\s/ },

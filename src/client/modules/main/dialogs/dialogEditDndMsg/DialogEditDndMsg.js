@@ -11,7 +11,7 @@ class DialogEditDndMsg {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'login', 'player', 'confirm' ], this._init.bind(this));
+		this.app.require([ 'api', 'auth', 'player', 'confirm' ], this._init.bind(this));
 	}
 
 	_init(module) {

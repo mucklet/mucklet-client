@@ -20,7 +20,7 @@ class PageCharSelect {
 			'player',
 			'dialogCreateChar',
 			'confirm',
-			'login',
+			'auth',
 			'pageCharSettings',
 			'pagePuppeteerSettings',
 			'avatar',

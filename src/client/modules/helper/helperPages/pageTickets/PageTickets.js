@@ -20,7 +20,7 @@ class PageTickets {
 
 		this.app.require([
 			'playerTabs',
-			'login',
+			'auth',
 			'api',
 			'avatar',
 			'toaster',
@@ -42,7 +42,7 @@ class PageTickets {
 			eventBus: this.app.eventBus,
 		});
 
-		this.module.login.getLoginPromise()
+		this.module.auth.getUserPromise()
 			.then(user => this.module.api.get('support.tickets'))
 			.then(tickets => {
 				if (!this.model) return;

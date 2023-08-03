@@ -101,7 +101,7 @@ class PageTicketsClosed {
 
 		this.loadingOffset = offset;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			if (!this.model || offset !== this.loadingOffset) return;
 			this.module.api.get('support.tickets.closed?offset=' + offset + '&limit=' + (defaultLimit + 1)).then(tickets => {
 				if (!this.model || offset !== this.loadingOffset) return;

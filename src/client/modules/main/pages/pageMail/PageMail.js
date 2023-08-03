@@ -21,7 +21,7 @@ class PageMail {
 			'playerTabs',
 			'player',
 			'confirm',
-			'login',
+			'auth',
 			'api',
 			'avatar',
 			'notify',
@@ -62,7 +62,7 @@ class PageMail {
 			}),
 		});
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			if (!this.unread) return;
 
 			this.module.api.get('mail.player.' + user.id + '.unread')

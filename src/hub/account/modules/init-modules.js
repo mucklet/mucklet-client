@@ -1,8 +1,10 @@
 import Api from 'modules/api/Api';
+import Auth from 'modules/auth/Auth';
 import Screen from 'modules/screen/Screen';
 
 const modules = {
 	api: Api,
+	auth: Auth,
 	screen: Screen,
 };
 
