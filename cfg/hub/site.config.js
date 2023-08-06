@@ -9,7 +9,12 @@ module.exports = {
 	API_WEBRESOURCE_PATH: 'https://api.mucklet.com/api/',
 	API_IDENTITY_PATH: 'https://auth.mucklet.com/',
 	API_CROSS_ORIGIN: true,
-	API_OAUTH2: true,
+
+	AUTH_LOGIN_URL: '/login',
+	AUTH_LOGOUT_URL: 'https://auth.mucklet.com/logout',
+	AUTH_AUTHENTICATE_URL: 'https://auth.mucklet.com/authenticate?noredirect',
+	AUTH_LOGIN_RID: 'identity',
+	AUTH_AUTHENTICATE_RID: 'identity',
 
 	HUB_PATH: 'https://mucklet.com/',
 };

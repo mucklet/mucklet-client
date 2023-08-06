@@ -13,7 +13,6 @@
     "client": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
     "client:realm:test": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=realm_test webpack-dev-server",
     "client:docker": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=docker webpack-dev-server",
-    "client:oauth2": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=oauth2 webpack-dev-server",
     "hub": "cross-env NODE_ENV=development APP_NAME=hub webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack",
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",

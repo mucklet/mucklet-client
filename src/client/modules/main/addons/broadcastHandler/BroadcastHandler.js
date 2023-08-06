@@ -14,7 +14,7 @@ class BroadcastHandler {
 		// Bind callbacks
 		this._onOut = this._onOut.bind(this);
 
-		this.app.require([ 'api', 'toaster', 'login' ], this._init.bind(this));
+		this.app.require([ 'api', 'toaster', 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -22,7 +22,7 @@ class BroadcastHandler {
 
 		this.model = new Model({ data: { info: null }, eventBus: this.app.eventBus });
 
-		this.module.login.getLoginPromise()
+		this.module.auth.getUserPromise()
 			.then(() => this.module.api.get('core.info'))
 			.then(info => {
 				if (this.model) {

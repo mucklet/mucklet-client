@@ -101,7 +101,7 @@ class PageReportsClosed {
 
 		this.loadingOffset = offset;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			if (!this.model || offset !== this.loadingOffset) return;
 			this.module.api.get('report.reports.closed?offset=' + offset + '&limit=' + (defaultLimit + 1)).then(reports => {
 				if (!this.model || offset !== this.loadingOffset) return;

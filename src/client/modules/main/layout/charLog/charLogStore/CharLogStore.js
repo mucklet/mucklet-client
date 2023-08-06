@@ -23,7 +23,7 @@ class CharLogStore {
 		// Bind callbacks
 		this._onSettingsChange = this._onSettingsChange.bind(this);
 
-		this.app.require([ 'charLogSettings', 'player', 'login' ], this._init.bind(this));
+		this.app.require([ 'charLogSettings', 'player', 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -210,7 +210,7 @@ class CharLogStore {
 	_openDB(settings) {
 		if (settings && !settings.useLocalStorage) return Promise.reject();
 
-		return this.module.login.getLoginPromise().then(user => {
+		return this.module.auth.getUserPromise().then(user => {
 			let dbName = charLogDBPrefix + user.id;
 			let req = indexedDB.open(dbName, 1);
 			req.onupgradeneeded = (ev) => {

@@ -11,7 +11,7 @@ class DialogEditNote {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'login', 'player', 'confirm' ], this._init.bind(this));
+		this.app.require([ 'api', 'auth', 'player', 'confirm' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,7 +23,7 @@ class DialogEditNote {
 
 		this.dialog = true;
 
-		this.module.login.getLoginPromise()
+		this.module.auth.getUserPromise()
 			.then(user => this.module.api.get('note.player.' + user.id + '.note.' + char.id))
 			.then(note => {
 				this.dialog = new Dialog({

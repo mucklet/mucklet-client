@@ -1,15 +1,17 @@
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
-import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
+import { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
 
-const oauth2Url = '/login';
-const oauth2LogoutUrl = API_IDENTITY_PATH + 'logout';
-const authenticateUrl = API_IDENTITY_PATH + 'authenticate?noredirect';
+const oauth2Url = AUTH_LOGIN_URL;
+const oauth2LogoutUrl = AUTH_LOGOUT_URL;
+const authenticateUrl = AUTH_AUTHENTICATE_URL;
 const crossOrigin = API_CROSS_ORIGIN;
+const wsLoginRid = AUTH_LOGIN_RID;
+const wsAuthRid = AUTH_AUTHENTICATE_RID;
 
-function redirectWithUri(url) {
-	redirect(url + '?redirect_uri=' + encodeURIComponent(window.location.href), false);
+function redirectWithUri(url, pushHistory) {
+	redirect(url + '?redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
 }
 
 /**
@@ -53,10 +55,11 @@ class Auth {
 	 * The returned promise will be rejected if the API returns any other error
 	 * than 'user.authenticationFailed'. If user.authenticationFailed is
 	 * returned, the auth module will redirect the client to the authentication
-	 * endpoint.
+	 * endpoint, or resolve to null if noRedirect is true.
+	 * @param {boolean} noRedirect Flag to prevent redirect on not being logged in. Instead, the promise will resolve to null.
 	 * @returns {Promise} Promise to the authenticate.
 	 */
-	authenticate() {
+	authenticate(noRedirect) {
 		if (this.params.wsAuth) {
 			return this._getCurrentUser(true);
 		}
@@ -69,8 +72,10 @@ class Auth {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					if (resp.status < 500) {
-						redirectWithUri(oauth2Url);
-						return;
+						if (!noRedirect) {
+							redirectWithUri(oauth2Url);
+						}
+						return null;
 					}
 					throw err;
 				});
@@ -113,17 +118,12 @@ class Auth {
 		});
 	}
 
-	changePassword(oldPass, newPass) {
-		let u = this.model.user;
-		if (!u) {
-			return Promise.reject({ code: 'login.notLoggedIn', message: "You are not logged in." });
-		}
-
-		return u.call('changePassword', {
-			oldPass: sha256(oldPass.trim()),
-			oldHash: hmacsha256(oldPass.trim(), publicPepper),
-			newPass: sha256(newPass.trim()),
-			newHash: hmacsha256(newPass.trim(), publicPepper),
+	/**
+	 * Redirects to the oauth2 login page.
+	 */
+	redirectToLogin() {
+		this._afterFade(() => {
+			redirectWithUri(oauth2Url, true);
 		});
 	}
 
@@ -174,11 +174,11 @@ class Auth {
 
 	_onConnect() {
 		return (this.params.wsAuth
-			? this.module.api.authenticate('identity', 'login', {
+			? this.module.api.authenticate(wsLoginRid, 'login', {
 				name: this.params.player,
 				hash: hmacsha256(this.params.pass.trim(), publicPepper),
 			})
-			: this.module.api.authenticate('identity', 'authenticate')
+			: this.module.api.authenticate(wsAuthRid, 'authenticate')
 		).catch(err => {
 			return this.model.set({ authError: err });
 		});

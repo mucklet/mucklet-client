@@ -32,7 +32,7 @@ class CharFocus {
 		this.app = app;
 
 		this.app.require([
-			'login',
+			'auth',
 			'player',
 			'notify',
 			'api',
@@ -279,7 +279,7 @@ class CharFocus {
 				dta.push({ ctrlId, charId, color: f[charId].color });
 			}
 		}
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			localStorage.setItem(focusStoragePrefix + user.id + '.focus', JSON.stringify(dta));
 		});
 	}
@@ -287,7 +287,7 @@ class CharFocus {
 	_loadFocus() {
 		if (!localStorage) return;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.focus');
 			// [TODO] Legacy behavior. Remove after v 1.40.0
 			let legacy = false; if (!raw) { legacy = true; raw = localStorage.getItem('focus'); }
@@ -310,7 +310,7 @@ class CharFocus {
 	_saveFocusColors() {
 		if (!localStorage) return;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			localStorage.setItem(focusStoragePrefix + user.id + '.colors', JSON.stringify(this.focusColors));
 		});
 	}
@@ -318,7 +318,7 @@ class CharFocus {
 	_loadFocusColors() {
 		if (!localStorage) return;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.colors');
 			if (raw) {
 				this.focusColors = JSON.parse(raw);
@@ -329,7 +329,7 @@ class CharFocus {
 	_loadFocusAll() {
 		if (!localStorage) return;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.all');
 			// [TODO] Legacy behavior. Remove after v 1.40.0
 			let legacy = false; if (!raw) { legacy = true; raw = localStorage.getItem('focus.all'); }
@@ -345,7 +345,7 @@ class CharFocus {
 
 	_saveFocusAll() {
 		if (!localStorage) return;
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			localStorage.setItem(focusStoragePrefix + user.id + '.all', JSON.stringify(this.focusAll.props));
 		});
 	}

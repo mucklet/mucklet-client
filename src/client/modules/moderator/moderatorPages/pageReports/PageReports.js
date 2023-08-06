@@ -20,7 +20,7 @@ class PageReports {
 
 		this.app.require([
 			'playerTabs',
-			'login',
+			'auth',
 			'api',
 			'avatar',
 			'toaster',
@@ -42,7 +42,7 @@ class PageReports {
 			eventBus: this.app.eventBus,
 		});
 
-		this.module.login.getLoginPromise()
+		this.module.auth.getUserPromise()
 			.then(user => this.module.api.get('report.reports'))
 			.then(reports => {
 				if (!this.model) return;

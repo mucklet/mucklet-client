@@ -20,7 +20,7 @@ class PagePlayerSettings {
 		this.app.require([
 			'playerTabs',
 			'playerTools',
-			'login',
+			'auth',
 			'player',
 			'dialogChangePassword',
 			'api',
@@ -126,7 +126,7 @@ class PagePlayerSettings {
 		this.closer = this.module.playerTabs.openPage(
 			'playerSettings',
 			(state, close, layoutId) => ({
-				component: new PagePlayerSettingsComponent(this.module, this.module.login.getModel().user, player, state, close),
+				component: new PagePlayerSettingsComponent(this.module, this.module.auth.getUser(), player, state, close),
 				title: l10n.l('pagePlayerSettings.playerSettings', "Player Settings"),
 			}),
 			{

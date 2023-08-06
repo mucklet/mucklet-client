@@ -22,7 +22,7 @@ class PlayerPanel {
 			'api',
 			'player',
 			'confirm',
-			'login',
+			'auth',
 		], this._init.bind(this));
 	}
 

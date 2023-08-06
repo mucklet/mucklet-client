@@ -1,0 +1,48 @@
+@import '~scss/variables';
+
+.greetingscreen {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	width: 100vw;
+
+	&--container {
+		width: 90%;
+		max-width: 720px;
+		padding: 20px 0;
+	}
+	&--header {
+		padding-bottom: 20px;
+		margin: 0 0 18px 0;
+		border-bottom: 1px solid #c1a657;
+	}
+	&--foot {
+		padding-top: 24px;
+	}
+	&--btn {
+		max-width: 280px;
+	}
+	&--logo {
+		height: 50px;
+		margin-right: 22px;
+	}
+	&--com {
+		font-size: 62%;
+	}
+	&--img {
+		float: right;
+		max-width: 50%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.greetingscreen {
+		&--foot {
+			padding-top: 16px;
+		}
+		&--btn {
+			max-width: 100%;
+		}
+	}
+}

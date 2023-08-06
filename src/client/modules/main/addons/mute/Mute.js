@@ -25,7 +25,7 @@ class Mute {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'login', 'charLog', 'charFocus' ], this._init.bind(this));
+		this.app.require([ 'auth', 'charLog', 'charFocus' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -70,7 +70,7 @@ class Mute {
 	_loadMuteTravel() {
 		if (!localStorage) return;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(muteStoragePrefix + user.id + '.travel');
 			if (raw) {
 				this.muteTravel.reset(JSON.parse(raw));
@@ -80,7 +80,7 @@ class Mute {
 
 	_saveMuteTravel() {
 		if (!localStorage) return;
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			localStorage.setItem(muteStoragePrefix + user.id + '.travel', JSON.stringify(this.muteTravel.props));
 		});
 	}
@@ -88,7 +88,7 @@ class Mute {
 	_loadMuteChars() {
 		if (!localStorage) return;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(muteStoragePrefix + user.id + '.chars');
 			if (raw) {
 				this.muteChars.reset(JSON.parse(raw));
@@ -98,7 +98,7 @@ class Mute {
 
 	_saveMuteChars() {
 		if (!localStorage) return;
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			localStorage.setItem(muteStoragePrefix + user.id + '.chars', JSON.stringify(this.muteChars.props));
 		});
 	}
