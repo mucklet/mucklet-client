@@ -18,7 +18,10 @@ class Player {
 		this._onUserChange = this._onUserChange.bind(this);
 		this._onIdentityChange = this._onIdentityChange.bind(this);
 
-		this.app.require([ 'auth', 'api' ], this._init.bind(this));
+		this.app.require([
+			'auth',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {

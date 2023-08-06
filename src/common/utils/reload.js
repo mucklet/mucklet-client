@@ -53,7 +53,7 @@ export default function reload(clearCache, clearQuery) {
 	}
 };
 
-export function redirect(url, includeQuery) {
+export function redirect(url, includeQuery, pushHistory) {
 	forced = true;
 	setTimeout(() => forced = false, 100);
 
@@ -66,6 +66,8 @@ export function redirect(url, includeQuery) {
 	}
 	if (url == href) {
 		window.location.reload();
+	} else if (pushHistory) {
+		window.location.assign(url);
 	} else {
 		window.location.replace(url);
 	}

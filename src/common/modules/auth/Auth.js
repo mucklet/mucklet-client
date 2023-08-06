@@ -10,8 +10,8 @@ const crossOrigin = API_CROSS_ORIGIN;
 const wsLoginRid = AUTH_LOGIN_RID;
 const wsAuthRid = AUTH_AUTHENTICATE_RID;
 
-function redirectWithUri(url) {
-	redirect(url + '?redirect_uri=' + encodeURIComponent(window.location.href), false);
+function redirectWithUri(url, pushHistory) {
+	redirect(url + '?redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
 }
 
 /**
@@ -115,6 +115,15 @@ class Auth {
 	logout() {
 		this._afterFade(() => {
 			redirect(oauth2LogoutUrl, true);
+		});
+	}
+
+	/**
+	 * Redirects to the oauth2 login page.
+	 */
+	redirectToLogin() {
+		this._afterFade(() => {
+			redirectWithUri(oauth2Url, true);
 		});
 	}
 
