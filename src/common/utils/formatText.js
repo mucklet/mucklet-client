@@ -138,14 +138,9 @@ const rules = [
 	// Cmd
 	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, (m, opt) => opt.cmd && opt.cmd.start || token_cmd_start, (m, opt) => opt.cmd && opt.cmd.end || token_cmd_end, {
 		crossToken: false,
-		processInner: (tokens, startIdx, endIdx, keepContent) => {
-			for (let i = startIdx; i <= endIdx; i++) {
-				let t = tokens[i];
-				if (t.type == 'text') {
-					tokens[i] = { type: 'static', content: keepContent ? t.content : escapeHtml(t.content) };
-				}
-			}
-		},
+		processInner: (t, keepContent) => t.type == 'text'
+			? { type: 'static', content: keepContent ? t.content : escapeHtml(t.content) }
+			: t,
 	}),
 	// Formatted links
 	formattedLinks,
@@ -239,10 +234,15 @@ function textStyle(startRegex, endRegex, startToken, endToken, config) {
 			}
 
 			// Found emphasis
-			spliceTextTokens(tokens, start, end, startToken(start, opt), endToken(end, opt), keepContent);
-			if (processInner) {
-				processInner(tokens, start.idx + 2, end.idx + 2, keepContent);
-			}
+			spliceTextTokens(
+				tokens,
+				{ idx: start.idx, from: matchOffset(start, true), to: matchOffset(start) },
+				{ idx: end.idx, from: matchOffset(end, true), to: matchOffset(end) },
+				startToken(start, opt),
+				endToken(end, opt),
+				keepContent,
+				processInner,
+			);
 			idx = end.idx;
 			pos = matchOffset(end);
 		}
@@ -310,7 +310,9 @@ function triggers(tokens, opt, keepContent) {
 						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign({ trigger }, token_highlight_start), keepContent);
 						let t = tokens[idx + 2];
 						t.type = 'highlight_static';
-						t.content = keepContent ? t.content : escapeHtml(t.content);
+						if (!keepContent) {
+							t.content = escapeHtml(t.content);
+						}
 						t.orig = t.content;
 						t.level++;
 						str = str.slice(0, txtIdx);
@@ -323,15 +325,20 @@ function triggers(tokens, opt, keepContent) {
 }
 
 
-function spliceTextTokens(tokens, start, end, startToken, endToken, keepContent) {
-	spliceTextToken(tokens, end.idx, matchOffset(end, true), matchOffset(end), endToken, keepContent);
-	spliceTextToken(tokens, start.idx, matchOffset(start, true), matchOffset(start), startToken, keepContent);
+function spliceTextTokens(tokens, start, end, startToken, endToken, keepContent, processInner) {
+	spliceTextToken(tokens, end.idx, end.from, end.to, endToken, keepContent);
+	spliceTextToken(tokens, start.idx, start.from, start.to, startToken, keepContent);
 
 	// Increase level for inbetween text tokens
-	for (let i = start.idx + 1, e = end.idx + 3; i < e; i++) {
+	let sidx = start.idx + 1;
+	let eidx = end.idx + 3;
+	for (let i = sidx, e = eidx; i < e; i++) {
 		let t = tokens[i];
 		if (t.type == 'text') {
 			t.level++;
+		}
+		if (processInner && i != sidx && i != eidx) {
+			tokens[i] = processInner(t, keepContent) || t;
 		}
 	}
 }
@@ -388,12 +395,37 @@ function formattedLinks(tokens, opt, keepContent) {
 			continue;
 		}
 
-		let escapedUrl = escapeHtml(link.url);
-		spliceTextToken(tokens, start.idx, matchOffset(start, true), link.offset + link.url.length + end.index + end[0].length, {
-			type: 'anchor',
-			content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>',
-		}, keepContent);
-		idx = start.idx + 2;
+		if (keepContent) {
+			let linkFrom = matchOffset(start) - 1;
+			let linkTo = link.offset + link.url.length + end.index + end[0].length;
+			let anchorFrom = matchOffset(start, true);
+			spliceTextTokens(
+				tokens,
+				{ idx: start.idx, from: linkFrom, to: linkFrom + 1 },
+				{ idx: start.idx, from: linkTo - end[0].length, to: linkTo },
+				{ type: 'link_start' },
+				{ type: 'link_end' },
+				true,
+				t => { t.type = 'link'; },
+			);
+			spliceTextTokens(
+				tokens,
+				{ idx: start.idx, from: anchorFrom, to: anchorFrom + 1 },
+				{ idx: start.idx, from: linkFrom - 1, to: linkFrom },
+				{ type: 'anchor_start' },
+				{ type: 'anchor_end' },
+				true,
+				t => { t.type = 'anchor'; },
+			);
+			idx = start.idx + 7;
+		} else {
+			let escapedUrl = escapeHtml(link.url);
+			spliceTextToken(tokens, start.idx, matchOffset(start, true), link.offset + link.url.length + end.index + end[0].length, {
+				type: 'anchor',
+				content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>',
+			}, keepContent);
+			idx = start.idx + 2;
+		}
 		pos = 0;
 	}
 }

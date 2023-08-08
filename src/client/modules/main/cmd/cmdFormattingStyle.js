@@ -2,7 +2,6 @@ import { ViewPlugin, Decoration } from "@codemirror/view";
 import { getToken } from "utils/codemirror";
 import { formatTextTokens } from 'utils/formatText';
 
-
 const formatterMark = Decoration.mark({ class: 'cmd--format-formatter' });
 const emMark = Decoration.mark({ class: 'cmd--format-em' });
 const strongMark = Decoration.mark({ class: 'cmd--format-strong' });
@@ -12,6 +11,7 @@ const supMark = Decoration.mark({ class: 'cmd--format-sup' });
 const subMark = Decoration.mark({ class: 'cmd--format-sub' });
 const strikethroughMark = Decoration.mark({ class: 'cmd--format-strikethrough' });
 const linkMark = Decoration.mark({ class: 'cmd--format-link' });
+const linkUrlMark = Decoration.mark({ class: 'cmd--format-linkurl' });
 
 const tokenTypes = {
 	// Span tokens
@@ -23,13 +23,10 @@ const tokenTypes = {
 	'sub_start': { end: 'sub_end', outerMark: subMark, startMark: formatterMark, endMark: formatterMark },
 	'strikethrough_start': { end: 'strikethrough_end', mark: strikethroughMark, startMark: formatterMark, endMark: formatterMark },
 	// Single token
+	'anchor_start': { end: 'anchor_end', mark: linkMark, startMark: formatterMark, endMark: formatterMark },
+	'link_start': { end: 'link_end', mark: linkUrlMark, startMark: formatterMark, endMark: formatterMark },
 	'anchor': { mark: linkMark },
 };
-
-// const boldMark = Decoration.mark({ attributes: { style: 'font-weight:bold;' }});
-// const italicsMark = Decoration.mark({ attributes: { style: 'font-style:italic;' }});
-// const strikethroughMark = Decoration.mark({ attributes: { style: 'text-decoration:line-through;' }});
-// const oocMark = Decoration.mark({ attributes: { style: 'color:#696d77;' }});
 
 function getItemById(a, id) {
 	for (let o of a) {
@@ -120,12 +117,6 @@ const codemirrorFormattingSyntax = ViewPlugin.fromClass(class {
 						} else if (len) {
 							// Single token. Generate a decoration.
 							set.push(type.mark.range(pos, pos + len));
-						}
-					} else if (stack.length) {
-						let s = stack[stack.length - 1];
-						if (s.type.end == t.type) {
-							// End of span
-
 						}
 					}
 					pos += len;
