@@ -20,6 +20,7 @@ class TextStep {
 	 * @param {Completer} [opt.completer] List that implements a complete function: { complete: function(str, pos, ctx, inline) -> ?{ list, to, from } }
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match or the match is empty. Null means it is not required.: function(this)
 	 * @param {?function} [opt.errTooLong] Callback function that returns an error when max length is exceeded: function(this, maxLength)
+	 * @param {object} [opt.formatText] Options for formatted text.
 	 */
 	constructor(id, opt) {
 		opt = opt || {};
@@ -38,6 +39,7 @@ class TextStep {
 			? opt.errRequired
 			: self => ({ code: 'textStep.required', message: 'There is no {name}.', data: { name: self.name }});
 		this.errTooLong = opt.errTooLong || ((self, maxLength) => ({ code: 'textStep.exceedsMaxLength', message: 'Exceeds max length of {maxLength} characters.', data: { maxLength }}));
+		this._formatText = opt.formatText ? Object.assign({ id }, typeof opt.formatText == 'object' ? opt.formatText : null) : null;
 	}
 
 	get spellcheck() {
@@ -110,6 +112,10 @@ class TextStep {
 		return range
 			? { list: range.list, from: range.from + diff, to: range.to + diff }
 			: null;
+	}
+
+	formatText() {
+		return this._formatText;
 	}
 
 	_setRequired(state) {

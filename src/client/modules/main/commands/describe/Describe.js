@@ -29,6 +29,7 @@ class Describe {
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
 				completer: this.module.cmdLists.getInRoomChars(),
+				formatText: true,
 			}),
 			alias: [ 'desc', 'spoof' ],
 			value: (ctx, p) => this.describe(ctx.char, { msg: p.msg }),

@@ -34,6 +34,7 @@ class Pose {
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
 					completer: this.module.cmdLists.getInRoomChars(),
+					formatText: true,
 				}),
 			],
 			symbol: ':',

@@ -43,6 +43,7 @@ class Report {
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'report.messageRequired', message: "What do you want to report?" }),
 							completer: this.module.cmdLists.getCharsAwake(),
+							formatText: true,
 						}),
 					],
 				}),

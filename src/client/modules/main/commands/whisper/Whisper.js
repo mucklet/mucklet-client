@@ -69,6 +69,7 @@ class Whisper {
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'whisper.messageRequired', message: "What do you want to whisper?" }),
 							completer: this.module.cmdLists.getInRoomChars(),
+							formatText: true,
 						}),
 					],
 				}),

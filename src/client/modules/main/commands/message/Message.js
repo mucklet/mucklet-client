@@ -68,6 +68,7 @@ class Message {
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							completer: this.module.cmdLists.getCharsAwake(),
+							formatText: true,
 						}),
 					],
 				}),

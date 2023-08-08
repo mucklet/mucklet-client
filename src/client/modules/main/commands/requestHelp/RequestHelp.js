@@ -44,6 +44,7 @@ class RequestHelp {
 					errTooLong: communicationTooLong,
 					errRequired: null,
 					completer: this.module.cmdLists.getCharsAwake(),
+					formatText: true,
 				}),
 			],
 			value: (ctx, p) => this.requestHelp(ctx.player, ctx.char, p),

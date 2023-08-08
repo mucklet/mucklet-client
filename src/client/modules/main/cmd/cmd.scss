@@ -1,0 +1,50 @@
+@import '~scss/variables';
+
+
+.cmd {
+	// Tokens
+	&--error { color: $log-error; }  // invalid
+	&--listitem { color: $log-listitem; } // attributeValue
+	&--text { color: $log-text; }  // string
+	&--delim { color: $log-delim; } // operator
+	&--cmd { color: $log-cmd; } // name
+	&--attr { color: $log-attr; } // propertyName
+	&--unknown { color: $log-error; } // comment
+	&--entityid { color: $log-entityid; } // keyword
+
+	// Formatted text
+	&--format-formatter &--text {
+		color: $color4-dark;
+	}
+	&--format-em {
+		font-style: italic;
+	}
+	&--format-strong {
+		font-weight: 700;
+	}
+	&--format-ooc &--text {
+		color: $color4-dark;
+	}
+	&--format-cmd &--text {
+		font-family: $font-code;
+		color: $color2;
+	}
+	&--format-strikethrough {
+		text-decoration: line-through;
+	}
+	&--format-link &--text {
+		color: $color6;
+	}
+	&--format-sup, &--format-sub {
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+	}
+	&--format-sup {
+		top: -0.5em;
+	}
+	&--format-sub {
+		bottom: -0.25em;
+	}
+}

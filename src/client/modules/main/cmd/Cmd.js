@@ -8,6 +8,8 @@ import escapeHtml from 'utils/escapeHtml';
 import { getToken } from 'utils/codemirror';
 import cmdParser from './cmdParser';
 import cmdHighlightStyle from './cmdHighlightStyle';
+import cmdFormattingStyle from './cmdFormattingStyle';
+import './cmd.scss';
 
 /**
  * Cmd holds available commands.
@@ -59,6 +61,14 @@ class Cmd {
 	 */
 	getCMHighlightStyle() {
 		return cmdHighlightStyle;
+	}
+
+	/**
+	 * Returns the CodeMirror formatting style for formatted text in commands.
+	 * @returns {object} CodeMirror highlight style.
+	 */
+	getCMFormattingStyle() {
+		return cmdFormattingStyle;
 	}
 
 	getCMTabComplete(editorState) {

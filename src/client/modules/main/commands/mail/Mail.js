@@ -48,6 +48,7 @@ class Mail {
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'mail.messageRequired', message: "What is the message you want to mail?" }),
 							completer: this.module.cmdLists.getCharsAwake(),
+							formatText: true,
 						}),
 					],
 				}),

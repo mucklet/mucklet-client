@@ -168,14 +168,5 @@
 			// word-break: break-word;
 			line-height: 22px;
 		}
-
-		.console--error { color: $log-error; }  // invalid
-		.console--listitem { color: $log-listitem; } // attributeValue
-		.console--text { color: $log-text; }  // string
-		.console--delim { color: $log-delim; } // operator
-		.console--cmd { color: $log-cmd; } // name
-		.console--attr { color: $log-attr; } // propertyName
-		.console--unknown { color: $log-error; } // comment
-		.console--entityid { color: $log-entityid; } // keyword
 	}
 }

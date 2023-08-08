@@ -33,7 +33,27 @@ export default function formatText(str, opt) {
 }
 
 /**
- * Filter trigger arrays to only contain triggers exisiting in the text.
+ * Formats a string, escapes it and formats it so that _this_ becomes italic and
+ * **that** becomes bold.
+ * @param {string} str Text to format.
+ * @param {object} [opt] Optional parameters
+ * @returns {Array.<object>}  HTML formatted string.
+ */
+export function formatTextTokens(str, opt) {
+	let tokens = [{
+		type: 'text',
+		content: str,
+		level: 0,
+	}];
+
+	parseTokens(tokens, opt, true);
+
+	return tokens;
+	// return tokens.map(t => t.content).join('');
+}
+
+/**
+ * Filter trigger arrays to only contain triggers existing in the text.
  * @param {string} str Text to scan for triggers.
  * @param {Array.<object>} triggers Array of trigger objects
  * @returns {?Array.<object>} Array of triggers existing in the text. Or null if no triggers matches.
@@ -118,11 +138,11 @@ const rules = [
 	// Cmd
 	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, (m, opt) => opt.cmd && opt.cmd.start || token_cmd_start, (m, opt) => opt.cmd && opt.cmd.end || token_cmd_end, {
 		crossToken: false,
-		processInner: (tokens, startIdx, endIdx) => {
+		processInner: (tokens, startIdx, endIdx, keepContent) => {
 			for (let i = startIdx; i <= endIdx; i++) {
 				let t = tokens[i];
 				if (t.type == 'text') {
-					tokens[i] = { type: 'static', content: escapeHtml(t.content) };
+					tokens[i] = { type: 'static', content: keepContent ? t.content : escapeHtml(t.content) };
 				}
 			}
 		},
@@ -151,10 +171,10 @@ const rules = [
 	escape,
 ];
 
-function parseTokens(tokens, opt) {
+function parseTokens(tokens, opt, keepContent) {
 	opt = opt || defaultOpt;
 	for (let rule of rules) {
-		rule(tokens, opt);
+		rule(tokens, opt, keepContent);
 	}
 }
 
@@ -199,7 +219,7 @@ function matchOffset(m, atStart) {
 
 function textStyle(startRegex, endRegex, startToken, endToken, config) {
 	let { crossToken, processInner } = Object.assign({ crossToken: true }, config);
-	return function(tokens, opt) {
+	return function(tokens, opt, keepContent) {
 		let idx = 0;
 		let pos = 0;
 		while (idx < tokens.length) {
@@ -219,9 +239,9 @@ function textStyle(startRegex, endRegex, startToken, endToken, config) {
 			}
 
 			// Found emphasis
-			spliceTextTokens(tokens, start, end, startToken(start, opt), endToken(end, opt));
+			spliceTextTokens(tokens, start, end, startToken(start, opt), endToken(end, opt), keepContent);
 			if (processInner) {
-				processInner(tokens, start.idx + 2, end.idx + 2);
+				processInner(tokens, start.idx + 2, end.idx + 2, keepContent);
 			}
 			idx = end.idx;
 			pos = matchOffset(end);
@@ -230,7 +250,7 @@ function textStyle(startRegex, endRegex, startToken, endToken, config) {
 }
 
 function textReplace(regex, tokenFactory) {
-	return function(tokens, opt) {
+	return function(tokens, opt, keepContent) {
 		let idx = 0;
 		let pos = 0;
 		while (idx < tokens.length) {
@@ -239,7 +259,7 @@ function textReplace(regex, tokenFactory) {
 				return;
 			}
 
-			spliceTextToken(tokens, m.idx, matchOffset(m, true), matchOffset(m), tokenFactory(m, opt));
+			spliceTextToken(tokens, m.idx, matchOffset(m, true), matchOffset(m), tokenFactory(m, opt), keepContent);
 
 			idx = m.idx;
 			pos = matchOffset(m);
@@ -247,10 +267,13 @@ function textReplace(regex, tokenFactory) {
 	};
 }
 
-function escape(tokens) {
-	for (let t of tokens) {
-		if (t.type == 'text') {
-			t.content = escapeHtml(t.content);
+function escape(tokens, keepContent) {
+	if (!keepContent) {
+		for (let t of tokens) {
+			if (t.type == 'text') {
+				t.raw = t.content;
+				t.content = escapeHtml(t.content);
+			}
 		}
 	}
 }
@@ -264,7 +287,7 @@ export function isBoundary(s, idx) {
 }
 
 
-function triggers(tokens, opt) {
+function triggers(tokens, opt, keepContent) {
 	let triggers = opt.triggers;
 	if (!triggers || !triggers.length) {
 		return;
@@ -283,11 +306,11 @@ function triggers(tokens, opt) {
 
 					let txtIdx = str.indexOf(trigger.key);
 					if (txtIdx >= 0 && isBoundary(str, txtIdx) && isBoundary(str, txtIdx + triggerLength)) {
-						spliceTextToken(tokens, idx, txtIdx + triggerLength, txtIdx + triggerLength, token_highlight_end);
-						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign({ trigger }, token_highlight_start));
+						spliceTextToken(tokens, idx, txtIdx + triggerLength, txtIdx + triggerLength, token_highlight_end, keepContent);
+						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign({ trigger }, token_highlight_start), keepContent);
 						let t = tokens[idx + 2];
 						t.type = 'highlight_static';
-						t.content = escapeHtml(t.content);
+						t.content = keepContent ? t.content : escapeHtml(t.content);
 						t.orig = t.content;
 						t.level++;
 						str = str.slice(0, txtIdx);
@@ -300,9 +323,9 @@ function triggers(tokens, opt) {
 }
 
 
-function spliceTextTokens(tokens, start, end, startToken, endToken) {
-	spliceTextToken(tokens, end.idx, matchOffset(end, true), matchOffset(end), endToken);
-	spliceTextToken(tokens, start.idx, matchOffset(start, true), matchOffset(start), startToken);
+function spliceTextTokens(tokens, start, end, startToken, endToken, keepContent) {
+	spliceTextToken(tokens, end.idx, matchOffset(end, true), matchOffset(end), endToken, keepContent);
+	spliceTextToken(tokens, start.idx, matchOffset(start, true), matchOffset(start), startToken, keepContent);
 
 	// Increase level for inbetween text tokens
 	for (let i = start.idx + 1, e = end.idx + 3; i < e; i++) {
@@ -321,8 +344,9 @@ function spliceTextTokens(tokens, start, end, startToken, endToken) {
  * @param {number} start Start index position
  * @param {number} end End index position
  * @param {object} token Token object to splice in.
+ * @param {boolean} keepContent Flag telling to keep raw content intact.
  */
-function spliceTextToken(tokens, idx, start, end, token) {
+function spliceTextToken(tokens, idx, start, end, token, keepContent) {
 	let t = tokens[idx];
 	tokens.splice(idx, 1,
 		{
@@ -330,7 +354,7 @@ function spliceTextToken(tokens, idx, start, end, token) {
 			content: t.content.slice(0, start),
 			level: t.level,
 		},
-		token,
+		keepContent ? Object.assign({}, token, { content: t.content.slice(start, end) }) : token,
 		{
 			type: 'text',
 			content: t.content.slice(end),
@@ -339,7 +363,7 @@ function spliceTextToken(tokens, idx, start, end, token) {
 	);
 }
 
-function formattedLinks(tokens, opt) {
+function formattedLinks(tokens, opt, keepContent) {
 	let idx = 0;
 	let pos = 0;
 	while (idx < tokens.length) {
@@ -368,13 +392,13 @@ function formattedLinks(tokens, opt) {
 		spliceTextToken(tokens, start.idx, matchOffset(start, true), link.offset + link.url.length + end.index + end[0].length, {
 			type: 'anchor',
 			content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>',
-		});
+		}, keepContent);
 		idx = start.idx + 2;
 		pos = 0;
 	}
 }
 
-function inlineLinks(tokens, opt) {
+function inlineLinks(tokens, opt, keepContent) {
 	let idx = 0;
 	let pos = 0;
 	while (idx < tokens.length) {
@@ -386,7 +410,7 @@ function inlineLinks(tokens, opt) {
 				spliceTextToken(tokens, idx, link.offset, link.offset + link.url.length, {
 					type: 'anchor',
 					content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapedUrl + '</a>',
-				});
+				}, keepContent);
 				idx += 2;
 				pos = 0;
 				continue;
