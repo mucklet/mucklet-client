@@ -6,6 +6,31 @@ function keySort(a, b) {
 	return a.key.localeCompare(b.key);
 }
 
+const typeText = 'text';
+
+/**
+ * Token a token produced by the parser.
+ * The text "**YES!**" could produce the tokens:
+ *    [
+ *      new Token('strong_start', '<strong>'),
+ *      new Token('text', 'YES!', 1),
+ *      new Token('strong_end', '</strong>'),
+ *    ]
+ */
+class Token {
+	/**
+	 * Creates a new Token instance.
+	 * @param {string} type Token type. The parse
+	 * @param {string} content Content that would be the output for this token.
+	 * @param {number} level Level of wrapping/applied formats for 'text' tokens. Eg. <em>level 1<strong>level 2</strong></em>
+	 */
+	constructor(type, content, level) {
+		this.type = type,
+		this.content = content;
+		this.level = level;
+	}
+}
+
 /**
  * Formats a string, escapes it and formats it so that _this_ becomes italic and
  * **that** becomes bold.
@@ -22,11 +47,7 @@ function keySort(a, b) {
  * @returns {string} HTML formatted string.
  */
 export default function formatText(str, opt) {
-	let tokens = [{
-		type: 'text',
-		content: str,
-		level: 0,
-	}];
+	let tokens = [ new Token(typeText, str, 0) ];
 
 	parseTokens(tokens, opt);
 
@@ -41,11 +62,7 @@ export default function formatText(str, opt) {
  * @returns {Array.<object>}  HTML formatted string.
  */
 export function formatTextTokens(str, opt) {
-	let tokens = [{
-		type: 'text',
-		content: str,
-		level: 0,
-	}];
+	let tokens = [ new Token(typeText, str, 0) ];
 
 	parseTokens(tokens, opt, true);
 
@@ -63,11 +80,7 @@ export function filterTriggers(str, triggers) {
 		return null;
 	}
 
-	let tokens = [{
-		type: 'text',
-		content: str,
-		level: 0,
-	}];
+	let tokens = [ new Token(typeText, str, 0) ];
 
 	triggers.sort(keySort);
 	parseTokens(tokens, { triggers });
@@ -95,11 +108,7 @@ export function firstTriggerWord(str, triggers) {
 		return "";
 	}
 
-	let tokens = [{
-		type: 'text',
-		content: str,
-		level: 0,
-	}];
+	let tokens = [ new Token(typeText, str, 0) ];
 
 	triggers.sort(keySort);
 	parseTokens(tokens, { triggers }, true);
@@ -112,25 +121,25 @@ export function firstTriggerWord(str, triggers) {
 	return "";
 }
 
-const token_cmd_start = { type: 'cmd_start', content: '<span class="cmd">' };
-const token_cmd_end = { type: 'cmd_end', content: '</span>' };
-const token_em_start = { type: 'em_start', content: '<em>' };
-const token_em_end = { type: 'em_end', content: '</em>' };
-const token_strong_start = { type: 'strong_start', content: '<strong>' };
-const token_strong_end = { type: 'strong_end', content: '</strong>' };
-const token_ooc_start = { type: 'ooc_start', content: '<span class="ooc">((' };
-const token_ooc_end = { type: 'ooc_end', content: '))</span>' };
-const token_ooc_start_noparenthesis = { type: 'ooc_start', content: '<span class="ooc">' };
-const token_ooc_end_noparenthesis = { type: 'ooc_end', content: '</span>' };
-const token_sup_start = { type: 'sup_start', content: '<sup>' };
-const token_sup_end = { type: 'sup_end', content: '</sup>' };
-const token_sub_start = { type: 'sub_start', content: '<sub>' };
-const token_sub_end = { type: 'sub_end', content: '</sub>' };
-const token_strikethrough_start = { type: 'strikethrough_start', content: '<s>' };
-const token_strikethrough_end = { type: 'strikethrough_end', content: '</s>' };
-const token_br = { type: 'br', content: '<br/>' };
-const token_highlight_start = { type: 'highlight_start', content: '<span class="highlight">' };
-const token_highlight_end = { type: 'highlight_end', content: '</span>' };
+const token_cmd_start = new Token('cmd_start', '<span class="cmd">');
+const token_cmd_end = new Token('cmd_end', '</span>');
+const token_em_start = new Token('em_start', '<em>');
+const token_em_end = new Token('em_end', '</em>');
+const token_strong_start = new Token('strong_start', '<strong>');
+const token_strong_end = new Token('strong_end', '</strong>');
+const token_ooc_start = new Token('ooc_start', '<span class="ooc">((');
+const token_ooc_end = new Token('ooc_end', '))</span>');
+const token_ooc_start_noparenthesis = new Token('ooc_start', '<span class="ooc">');
+const token_ooc_end_noparenthesis = new Token('ooc_end', '</span>');
+const token_sup_start = new Token('sup_start', '<sup>');
+const token_sup_end = new Token('sup_end', '</sup>');
+const token_sub_start = new Token('sub_start', '<sub>');
+const token_sub_end = new Token('sub_end', '</sub>');
+const token_strikethrough_start = new Token('strikethrough_start', '<s>');
+const token_strikethrough_end = new Token('strikethrough_end', '</s>');
+const token_br = new Token('br', '<br/>');
+const token_highlight_start = new Token('highlight_start', '<span class="highlight">');
+const token_highlight_end = new Token('highlight_end', '</span>');
 
 export const oocNoParenthesis = { start: token_ooc_start_noparenthesis, end: token_ooc_end_noparenthesis };
 
@@ -138,8 +147,8 @@ const rules = [
 	// Cmd
 	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, opt => opt.cmd && opt.cmd.start || token_cmd_start, opt => opt.cmd && opt.cmd.end || token_cmd_end, {
 		crossToken: false,
-		processInner: (t, keepContent) => t.type == 'text'
-			? { type: 'static', content: keepContent ? t.content : escapeHtml(t.content) }
+		processInner: (t, keepContent) => t.type == typeText
+			? new Token('static', keepContent ? t.content : escapeHtml(t.content))
 			: t,
 	}),
 	// Formatted links
@@ -168,6 +177,17 @@ const rules = [
 	escape,
 ];
 
+/**
+ * Takes an array of tokens (initially just a single 'text' token: [ new
+ * Token(typeText, str, 0) ]) and applies formatting rules on it. Each rule may
+ * modify the array of tokens as they see fit by updating tokens, splicing in
+ * more tokens, or removing tokens.
+ * @param {Array.<Token>} tokens Array of tokens.
+ * @param {object} opt Parser options.
+ * @param {boolean} keepContent If true, the content of each Token in the array
+ * should contain the string characters they represent, so that tokens.join(t =>
+ * t.content) would produce the initial string.
+ */
 function parseTokens(tokens, opt, keepContent) {
 	opt = opt || defaultOpt;
 	for (let rule of rules) {
@@ -180,7 +200,7 @@ function findInTokens(tokens, re, opts) {
 
 	for (let i = idx, l = tokens.length; i < l; i++) {
 		let token = tokens[i];
-		if (token.type == 'text') {
+		if (token.type == typeText) {
 			if (level != null && token.level < level) {
 				return null;
 			}
@@ -273,8 +293,7 @@ function textReplace(regex, tokenFactory) {
 function escape(tokens, keepContent) {
 	if (!keepContent) {
 		for (let t of tokens) {
-			if (t.type == 'text') {
-				t.raw = t.content;
+			if (t.type == typeText) {
 				t.content = escapeHtml(t.content);
 			}
 		}
@@ -299,7 +318,7 @@ function triggers(tokens, opt, keepContent) {
 	let idx = 0;
 	while (idx < tokens.length) {
 		let token = tokens[idx];
-		if (token.type == 'text') {
+		if (token.type == typeText) {
 			let str = tokens[idx].content.toLowerCase();
 			// Try to find emphasis start
 			for (let i = triggers.length - 1; i >= 0; i--) {
@@ -336,7 +355,7 @@ function spliceTextTokens(tokens, start, end, startToken, endToken, keepContent,
 	let eidx = end.idx + 3;
 	for (let i = sidx, e = eidx; i < e; i++) {
 		let t = tokens[i];
-		if (t.type == 'text') {
+		if (t.type == typeText) {
 			t.level++;
 		}
 		if (processInner && i != sidx && i != eidx) {
@@ -357,18 +376,12 @@ function spliceTextTokens(tokens, start, end, startToken, endToken, keepContent,
  */
 function spliceTextToken(tokens, idx, start, end, token, keepContent) {
 	let t = tokens[idx];
-	tokens.splice(idx, 1,
-		{
-			type: 'text',
-			content: t.content.slice(0, start),
-			level: t.level,
-		},
-		keepContent ? Object.assign({}, token, { content: t.content.slice(start, end) }) : token,
-		{
-			type: 'text',
-			content: t.content.slice(end),
-			level: t.level,
-		},
+	tokens.splice(
+		idx,
+		1,
+		new Token(typeText, t.content.slice(0, start), t.level),
+		keepContent ? new Token(token.type, t.content.slice(start, end), token.level) : token,
+		new Token(typeText, t.content.slice(end), t.level),
 	);
 }
 
@@ -405,8 +418,8 @@ function formattedLinks(tokens, opt, keepContent) {
 				tokens,
 				{ idx: start.idx, from: linkFrom, to: linkFrom + 1 },
 				{ idx: start.idx, from: linkTo - end[0].length, to: linkTo },
-				{ type: 'link_start' },
-				{ type: 'link_end' },
+				new Token('link_start'),
+				new Token('link_end'),
 				true,
 				t => { t.type = 'link'; },
 			);
@@ -414,18 +427,22 @@ function formattedLinks(tokens, opt, keepContent) {
 				tokens,
 				{ idx: start.idx, from: anchorFrom, to: anchorFrom + 1 },
 				{ idx: start.idx, from: linkFrom - 1, to: linkFrom },
-				{ type: 'anchor_start' },
-				{ type: 'anchor_end' },
+				new Token('anchor_start'),
+				new Token('anchor_end'),
 				true,
 				t => { t.type = 'anchor'; },
 			);
 			idx = start.idx + 7;
 		} else {
 			let escapedUrl = escapeHtml(link.url);
-			spliceTextToken(tokens, start.idx, matchOffset(start, true), link.offset + link.url.length + end.index + end[0].length, {
-				type: 'anchor',
-				content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>',
-			}, keepContent);
+			spliceTextToken(
+				tokens,
+				start.idx,
+				matchOffset(start, true),
+				link.offset + link.url.length + end.index + end[0].length,
+				new Token('anchor', '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapeHtml(start.match[1]) + '</a>'),
+				keepContent,
+			);
 			idx = start.idx + 2;
 		}
 		pos = 0;
@@ -437,14 +454,18 @@ function inlineLinks(tokens, opt, keepContent) {
 	let pos = 0;
 	while (idx < tokens.length) {
 		let token = tokens[idx];
-		if (token.type == 'text') {
+		if (token.type == typeText) {
 			let link = findLinkInToken(token, pos, false, true);
 			if (link) {
 				let escapedUrl = escapeHtml(link.url);
-				spliceTextToken(tokens, idx, link.offset, link.offset + link.url.length, {
-					type: 'anchor',
-					content: '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapedUrl + '</a>',
-				}, keepContent);
+				spliceTextToken(
+					tokens,
+					idx,
+					link.offset,
+					link.offset + link.url.length,
+					new Token('anchor', '<a href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer" title="' + escapedUrl + '">' + escapedUrl + '</a>'),
+					keepContent,
+				);
 				idx += 2;
 				pos = 0;
 				continue;
