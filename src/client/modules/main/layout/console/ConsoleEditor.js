@@ -103,6 +103,7 @@ class ConsoleEditor {
 					complete: state => this.module.cmd.getCMTabComplete(state),
 				}),
 				spellcheck,
+				this.module.cmd.getCMFormattingStyle(),
 				keymap.of([
 					{ key: 'Enter', run: this._onEnter },
 					{ key: 'Ctrl-Enter', run: insertNewline },

@@ -1,0 +1,55 @@
+@import '~scss/variables';
+
+
+.cmd {
+	// Tokens
+	&--error { color: $log-error; }  // invalid
+	&--listitem { color: $log-listitem; } // attributeValue
+	&--text { color: $log-text; }  // string
+	&--delim { color: $log-delim; } // operator
+	&--cmd { color: $log-cmd; } // name
+	&--attr { color: $log-attr; } // propertyName
+	&--unknown { color: $log-error; } // comment
+	&--entityid { color: $log-entityid; } // keyword
+	&--listitem { color: $log-listitem; } // attributeValue
+	&--ooc { color: $color4-semidark; } // meta
+
+	// Formatted text
+	&--format-formatter &--text, &--format-formatter &--ooc {
+		color: $color4-dark;
+	}
+	&--format-em {
+		font-style: italic;
+	}
+	&--format-strong {
+		font-weight: 700;
+	}
+	&--format-ooc &--text, &--format-ooc &--ooc {
+		color: $color4-semidark;
+	}
+	&--format-cmd &--text, &--format-cmd &--ooc {
+		font-family: $font-code;
+		color: $color2;
+	}
+	&--format-strikethrough {
+		text-decoration: line-through;
+	}
+	&--format-link &--text, &--format-link &--ooc {
+		color: $color6;
+	}
+	&--format-linkurl &--text, &--format-linkurl &--ooc {
+		color: $color6;
+	}
+	&--format-sup, &--format-sub {
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+	}
+	&--format-sup {
+		top: -0.5em;
+	}
+	&--format-sub {
+		bottom: -0.25em;
+	}
+}

@@ -31,6 +31,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
+			formatText: true,
 		}),
 		desc: l10n.l('setRoom.descDesc', "Description of the room. It may be formatted and span multiple paragraphs."),
 		sortOrder: 20,

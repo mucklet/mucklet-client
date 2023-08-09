@@ -19,6 +19,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
+			formatText: true,
 		}),
 		desc: l10n.l('setPuppet.howToPlayDesc', "Information on how to play the puppet. It may be formatted and span multiple paragraphs."),
 		sortOrder: 10,

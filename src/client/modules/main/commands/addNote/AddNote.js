@@ -42,6 +42,7 @@ class AddNote {
 							spanLines: true,
 							errRequired: step => ({ code: 'addNote.noteRequired', message: "What is the note you want to add?" }),
 							completer: this.module.cmdLists.getAllChars(),
+							formatText: true,
 						}),
 					],
 				}),

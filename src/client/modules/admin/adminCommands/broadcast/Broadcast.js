@@ -36,6 +36,7 @@ class Broadcast {
 						new TextStep('msg', {
 							spanLines: true,
 							errRequired: step => ({ code: 'broadcast.messageRequired', message: "What do you want to broadcast?" }),
+							formatText: true,
 						}),
 					],
 				}),
