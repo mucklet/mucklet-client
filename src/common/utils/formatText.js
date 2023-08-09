@@ -18,6 +18,7 @@ function keySort(a, b) {
  * @param {object} [opt.cmd] Token object for cmd
  * @param {object} [opt.sup] Token object for sup
  * @param {object} [opt.sub] Token object for sub
+ * @param {object} [opt.strikethrough] Token object for strikethrough
  * @returns {string} HTML formatted string.
  */
 export default function formatText(str, opt) {
@@ -49,7 +50,6 @@ export function formatTextTokens(str, opt) {
 	parseTokens(tokens, opt, true);
 
 	return tokens;
-	// return tokens.map(t => t.content).join('');
 }
 
 /**
@@ -102,11 +102,11 @@ export function firstTriggerWord(str, triggers) {
 	}];
 
 	triggers.sort(keySort);
-	parseTokens(tokens, { triggers });
+	parseTokens(tokens, { triggers }, true);
 
 	for (let t of tokens) {
 		if (t.type == 'highlight_static') {
-			return t.orig;
+			return t.content;
 		}
 	}
 	return "";
@@ -136,7 +136,7 @@ export const oocNoParenthesis = { start: token_ooc_start_noparenthesis, end: tok
 
 const rules = [
 	// Cmd
-	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, (m, opt) => opt.cmd && opt.cmd.start || token_cmd_start, (m, opt) => opt.cmd && opt.cmd.end || token_cmd_end, {
+	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, opt => opt.cmd && opt.cmd.start || token_cmd_start, opt => opt.cmd && opt.cmd.end || token_cmd_end, {
 		crossToken: false,
 		processInner: (t, keepContent) => t.type == 'text'
 			? { type: 'static', content: keepContent ? t.content : escapeHtml(t.content) }
@@ -147,18 +147,20 @@ const rules = [
 	// Inline links
 	inlineLinks,
 	// Em
-	textStyle(/\b_/m, /_\b/m, (m, opt) => opt.em && opt.em.start || token_em_start, (m, opt) => opt.em && opt.em.end || token_em_end),
+	textStyle(/\b_/m, /_\b/m, opt => opt.em && opt.em.start || token_em_start, opt => opt.em && opt.em.end || token_em_end),
 	// Strong
-	textStyle(/(?=^|[^\w])\*\*/m, /\*\*(?=$|[^\w])/m, (m, opt) => opt.strong && opt.strong.start || token_strong_start, (m, opt) => opt.strong && opt.strong.end || token_strong_end),
+	textStyle(/(?=^|[^\w])\*\*/m, /\*\*(?=$|[^\w])/m, opt => opt.strong && opt.strong.start || token_strong_start, opt => opt.strong && opt.strong.end || token_strong_end),
 	// Strikethrough
-	textStyle(/(?=^|[^\w])~~/m, /~~(?=$|[^\w])/m, (m, opt) => opt.strikethrough && opt.strikethrough.start || token_strikethrough_start, (m, opt) => opt.strikethrough && opt.strikethrough.end || token_strikethrough_end),
+	textStyle(/(?=^|[^\w])~~/m, /~~(?=$|[^\w])/m, opt => opt.strikethrough && opt.strikethrough.start || token_strikethrough_start, opt => opt.strikethrough && opt.strikethrough.end || token_strikethrough_end),
 	// OOC
-	textStyle(/(?=^|[^\w])\(\(/m, /\)\)(?=$|[^\w])/m, (m, opt) => opt.ooc && opt.ooc.start || token_ooc_start, (m, opt) => opt.ooc && opt.ooc.end || token_ooc_end),
-	// Superscript
-	textStyle(/\+\+/m, /\+\+/m, (m, opt) => opt.sup && opt.sup.start || token_sup_start, (m, opt) => opt.sup && opt.sup.end || token_sup_end),
-	// Subscript
-	textStyle(/--/m, /--/m, (m, opt) => opt.sub && opt.sub.start || token_sub_start, (m, opt) => opt.sub && opt.sub.end || token_sub_end),
-	// Triggers
+	textStyle(/(?=^|[^\w])\(\(/m, /\)\)(?=$|[^\w])/m, opt => opt.ooc && opt.ooc.start || token_ooc_start, opt => opt.ooc && opt.ooc.end || token_ooc_end),
+	// Superscript / subscript
+	textStyle(
+		/(?:\+\+|--)/m,
+		m => m[0] == '++' ? /\+\+/m : /--/m,
+		(opt, start, end) => start.match[0] == '++' ? opt.sup && opt.sup.start || token_sup_start : opt.sub && opt.sub.start || token_sub_start,
+		(opt, start, end) => end.match[0] == '++' ? opt.sup && opt.sup.end || token_sup_end : opt.sub && opt.sub.end || token_sub_end,
+	),
 	triggers,
 	// Line breaks
 	textReplace(/\n/m, (m, opt) => token_br),
@@ -214,6 +216,7 @@ function matchOffset(m, atStart) {
 
 function textStyle(startRegex, endRegex, startToken, endToken, config) {
 	let { crossToken, processInner } = Object.assign({ crossToken: true }, config);
+	let endRegexFactory = typeof endRegex == 'function' ? endRegex : () => endRegex;
 	return function(tokens, opt, keepContent) {
 		let idx = 0;
 		let pos = 0;
@@ -226,7 +229,7 @@ function textStyle(startRegex, endRegex, startToken, endToken, config) {
 
 			// Try to find emphasis end
 			let offset = matchOffset(start);
-			let end = findInTokens(tokens, endRegex, { idx: start.idx, pos: offset + 1, level: start.token.level, crossBoundary: false, crossToken });
+			let end = findInTokens(tokens, endRegexFactory(start.match), { idx: start.idx, pos: offset + 1, level: start.token.level, crossBoundary: false, crossToken });
 			if (!end) {
 				idx = start.idx;
 				pos = offset;
@@ -238,13 +241,13 @@ function textStyle(startRegex, endRegex, startToken, endToken, config) {
 				tokens,
 				{ idx: start.idx, from: matchOffset(start, true), to: matchOffset(start) },
 				{ idx: end.idx, from: matchOffset(end, true), to: matchOffset(end) },
-				startToken(start, opt),
-				endToken(end, opt),
+				startToken(opt, start, end),
+				endToken(opt, start, end),
 				keepContent,
 				processInner,
 			);
-			idx = end.idx;
-			pos = matchOffset(end);
+			idx = end.idx + 4;
+			pos = 0;
 		}
 	};
 }
@@ -313,7 +316,6 @@ function triggers(tokens, opt, keepContent) {
 						if (!keepContent) {
 							t.content = escapeHtml(t.content);
 						}
-						t.orig = t.content;
 						t.level++;
 						str = str.slice(0, txtIdx);
 					}
