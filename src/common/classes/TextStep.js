@@ -12,7 +12,7 @@ class TextStep {
 	 * @param {string} [opt.name] Name used in error outputs. Defaults to the id value.
 	 * @param {RegExp} [opt.regex] Regex used for matching. Defaults to /^.*$/
 	 * @param {number|Function} [opt.maxLength] Max length of matched characters, or a function that returns max length. Null means no length requirements.
-	 * @param {string} [opt.token] Token name. Defaults to 'text'.
+	 * @param {string|function} [opt.token] Token name. Defaults to 'text'. Functions should have the signature: (state, TextStep) => {string}
 	 * @param {Step} [opt.next] Next step after a matched string.
 	 * @param {boolean} [opt.trimSpace] Flag indicating if initial space should be trimmed. Defaults to true.
 	 * @param {boolean} [opt.spellcheck] Flag indicating if text should be spell checked. Defaults to true.
@@ -76,7 +76,7 @@ class TextStep {
 			stream.backUp(full.length - maxLength);
 			if (this.errTooLong) {
 				state.addStep(new ErrorStep(this.regex, this.errTooLong(this, maxLength)));
-				return this.token;
+				return this._token(state);
 			}
 			full = full.slice(0, maxLength);
 		}
@@ -93,7 +93,11 @@ class TextStep {
 			state.setParam(this.id, full);
 		}
 
-		return this.token;
+		return this._token(state);
+	}
+
+	_token(state) {
+		return typeof this.token == 'function' ? this.token(state, this) : this.token;
 	}
 
 	/**

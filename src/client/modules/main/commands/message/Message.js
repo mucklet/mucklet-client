@@ -64,6 +64,7 @@ class Message {
 						}),
 						new TextStep('msg', {
 							spanLines: true,
+							token: state => state.getParam('ooc') ? 'ooc' : 'text',
 							errRequired: step => ({ code: 'message.messageRequired', message: "What do you want to message?" }),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,

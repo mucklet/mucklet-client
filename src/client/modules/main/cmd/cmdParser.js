@@ -10,6 +10,7 @@ const tokenTags = {
 	attr: 'propertyName',
 	unknown: 'comment',
 	entityid: 'keyword',
+	ooc: 'meta',
 };
 
 export default function(cfg) {

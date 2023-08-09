@@ -11,9 +11,11 @@
 	&--attr { color: $log-attr; } // propertyName
 	&--unknown { color: $log-error; } // comment
 	&--entityid { color: $log-entityid; } // keyword
+	&--listitem { color: $log-listitem; } // attributeValue
+	&--ooc { color: $color4-semidark; } // meta
 
 	// Formatted text
-	&--format-formatter &--text {
+	&--format-formatter &--text, &--format-formatter &--ooc {
 		color: $color4-dark;
 	}
 	&--format-em {
@@ -22,20 +24,20 @@
 	&--format-strong {
 		font-weight: 700;
 	}
-	&--format-ooc &--text {
-		color: $color4-dark;
+	&--format-ooc &--text, &--format-ooc &--ooc {
+		color: $color4-semidark;
 	}
-	&--format-cmd &--text {
+	&--format-cmd &--text, &--format-cmd &--ooc {
 		font-family: $font-code;
 		color: $color2;
 	}
 	&--format-strikethrough {
 		text-decoration: line-through;
 	}
-	&--format-link &--text {
+	&--format-link &--text, &--format-link &--ooc {
 		color: $color6;
 	}
-	&--format-linkurl &--text {
+	&--format-linkurl &--text, &--format-linkurl &--ooc {
 		color: $color6;
 	}
 	&--format-sup, &--format-sub {

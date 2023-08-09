@@ -10,6 +10,7 @@ export const highlightStyle = HighlightStyle.define([
 	{ tag: t.propertyName, class: 'cmd--attr' },
 	{ tag: t.comment, class: 'cmd--unknown' },
 	{ tag: t.keyword, class: 'cmd--entityid' },
+	{ tag: t.meta, class: 'cmd--ooc' },
 ]);
 
 export default syntaxHighlighting(highlightStyle);

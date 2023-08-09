@@ -30,6 +30,7 @@ class Pose {
 				new DelimStep(">", { next: new ValueStep('ooc', true), errRequired: null }),
 				new TextStep('msg', {
 					spanLines: true,
+					token: state => state.getParam('ooc') ? 'ooc' : 'text',
 					errRequired: step => ({ code: 'pose.messageRequired', message: "What is your pose message?" }),
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
