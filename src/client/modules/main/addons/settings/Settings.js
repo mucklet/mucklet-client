@@ -10,7 +10,7 @@ class Settings {
 		this.app = app;
 		this.params = params;
 
-		this.app.require([ 'login' ], this._init.bind(this));
+		this.app.require([ 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -33,7 +33,7 @@ class Settings {
 		};
 		this.settings[id] = c;
 
-		return this.module.login.getLoginPromise()
+		return this.module.auth.getUserPromise()
 			.then(user => {
 				c.user = user;
 				return m.set(Object.assign({},

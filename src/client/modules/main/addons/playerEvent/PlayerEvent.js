@@ -8,12 +8,12 @@ class PlayerEvent {
 		this.app = app;
 		// Bind callbacks
 		this._onPlayerModelChange = this._onPlayerModelChange.bind(this);
-		this._onLoginModelChange = this._onLoginModelChange.bind(this);
+		this._onAuthModelChange = this._onAuthModelChange.bind(this);
 		this._onPlayerEvent = this._onPlayerEvent.bind(this);
 		this._onNoticeAdd = this._onNoticeAdd.bind(this);
 		this._onNoticeRemove = this._onNoticeRemove.bind(this);
 
-		this.app.require([ 'player', 'login', 'api' ], this._init.bind(this));
+		this.app.require([ 'player', 'auth', 'api' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -26,7 +26,7 @@ class PlayerEvent {
 		this.readNotices = {};
 		this._setListeners(true);
 		this._onPlayerModelChange();
-		this._onLoginModelChange();
+		this._onAuthModelChange();
 
 	}
 
@@ -45,7 +45,7 @@ class PlayerEvent {
 
 	_setListeners(on) {
 		this.module.player.getModel()[on ? 'on' : 'off']('change', this._onPlayerModelChange);
-		this.module.login.getModel()[on ? 'on' : 'off']('change', this._onLoginModelChange);
+		this.module.auth.getModel()[on ? 'on' : 'off']('change', this._onAuthModelChange);
 	}
 
 	_onPlayerModelChange() {
@@ -72,8 +72,8 @@ class PlayerEvent {
 		}
 	}
 
-	_onLoginModelChange() {
-		let user = this.module.login.getModel().user;
+	_onAuthModelChange() {
+		let user = this.module.auth.getUser();
 		if (user === this.user) return;
 
 		this._setNoticeListeners(false);

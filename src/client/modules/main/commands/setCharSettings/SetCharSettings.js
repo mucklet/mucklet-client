@@ -33,6 +33,7 @@ class SetCharAttr {
 						errTooLong: communicationTooLong,
 						spanLines: true,
 						errRequired: null,
+						formatText: true,
 					}),
 				}),
 				desc: l10n.l('setChar.dndDesc', "Do not disturb message. It may be formatted and span multiple paragraphs."),

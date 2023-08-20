@@ -12,7 +12,7 @@ class TextStep {
 	 * @param {string} [opt.name] Name used in error outputs. Defaults to the id value.
 	 * @param {RegExp} [opt.regex] Regex used for matching. Defaults to /^.*$/
 	 * @param {number|Function} [opt.maxLength] Max length of matched characters, or a function that returns max length. Null means no length requirements.
-	 * @param {string} [opt.token] Token name. Defaults to 'text'.
+	 * @param {string|function} [opt.token] Token name. Defaults to 'text'. Functions should have the signature: (state, TextStep) => {string}
 	 * @param {Step} [opt.next] Next step after a matched string.
 	 * @param {boolean} [opt.trimSpace] Flag indicating if initial space should be trimmed. Defaults to true.
 	 * @param {boolean} [opt.spellcheck] Flag indicating if text should be spell checked. Defaults to true.
@@ -20,6 +20,7 @@ class TextStep {
 	 * @param {Completer} [opt.completer] List that implements a complete function: { complete: function(str, pos, ctx, inline) -> ?{ list, to, from } }
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match or the match is empty. Null means it is not required.: function(this)
 	 * @param {?function} [opt.errTooLong] Callback function that returns an error when max length is exceeded: function(this, maxLength)
+	 * @param {object} [opt.formatText] Options for formatted text.
 	 */
 	constructor(id, opt) {
 		opt = opt || {};
@@ -38,6 +39,7 @@ class TextStep {
 			? opt.errRequired
 			: self => ({ code: 'textStep.required', message: 'There is no {name}.', data: { name: self.name }});
 		this.errTooLong = opt.errTooLong || ((self, maxLength) => ({ code: 'textStep.exceedsMaxLength', message: 'Exceeds max length of {maxLength} characters.', data: { maxLength }}));
+		this._formatText = opt.formatText ? Object.assign({ id }, typeof opt.formatText == 'object' ? opt.formatText : null) : null;
 	}
 
 	get spellcheck() {
@@ -74,7 +76,7 @@ class TextStep {
 			stream.backUp(full.length - maxLength);
 			if (this.errTooLong) {
 				state.addStep(new ErrorStep(this.regex, this.errTooLong(this, maxLength)));
-				return this.token;
+				return this._token(state);
 			}
 			full = full.slice(0, maxLength);
 		}
@@ -91,7 +93,11 @@ class TextStep {
 			state.setParam(this.id, full);
 		}
 
-		return this.token;
+		return this._token(state);
+	}
+
+	_token(state) {
+		return typeof this.token == 'function' ? this.token(state, this) : this.token;
 	}
 
 	/**
@@ -110,6 +116,10 @@ class TextStep {
 		return range
 			? { list: range.list, from: range.from + diff, to: range.to + diff }
 			: null;
+	}
+
+	formatText() {
+		return this._formatText;
 	}
 
 	_setRequired(state) {

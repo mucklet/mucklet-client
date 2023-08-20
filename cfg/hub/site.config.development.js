@@ -9,7 +9,12 @@ module.exports = {
 	API_WEBRESOURCE_PATH: 'http://localhost:8080/api/',
 	API_IDENTITY_PATH: '/identity/',
 	API_CROSS_ORIGIN: true,
-	API_OAUTH2: true,
+
+	AUTH_LOGIN_URL: '/login',
+	AUTH_LOGOUT_URL: '/identity/logout',
+	AUTH_AUTHENTICATE_URL: '/identity/authenticate?noredirect',
+	AUTH_LOGIN_RID: 'identity',
+	AUTH_AUTHENTICATE_RID: 'identity',
 
 	HUB_PATH: 'http://localhost:6460/',
 };

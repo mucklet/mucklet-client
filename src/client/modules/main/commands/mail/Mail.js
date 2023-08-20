@@ -44,10 +44,12 @@ class Mail {
 						}),
 						new TextStep('msg', {
 							spanLines: true,
+							token: state => state.getParam('ooc') ? 'ooc' : 'text',
 							maxLength: () => this.module.info.getMail().mailMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'mail.messageRequired', message: "What is the message you want to mail?" }),
 							completer: this.module.cmdLists.getCharsAwake(),
+							formatText: true,
 						}),
 					],
 				}),

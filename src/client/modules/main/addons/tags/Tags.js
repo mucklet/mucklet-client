@@ -22,7 +22,7 @@ class Tags {
 		// Bind callbacks
 		this._onPlayerChange = this._onPlayerChange.bind(this);
 
-		this.app.require([ 'login', 'api', 'player' ], this._init.bind(this));
+		this.app.require([ 'auth', 'api', 'player' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -80,7 +80,7 @@ class Tags {
 				: null,
 		});
 
-		this.module.login.getLoginPromise()
+		this.module.auth.getUserPromise()
 			.then(() => Promise.all([
 				this.module.api.get('tag.tags'),
 				this.module.api.get('tag.groups'),

@@ -9,7 +9,7 @@ class CharSettingsBotToken {
 		this.app = app;
 
 		this.app.require([
-			'login',
+			'auth',
 			'api',
 			'pageCharSettings',
 			'toaster',

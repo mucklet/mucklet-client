@@ -10,7 +10,7 @@ class Info {
 
 		this.params = params;
 
-		this.app.require([ 'api', 'login' ], this._init.bind(this));
+		this.app.require([ 'api', 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -23,7 +23,7 @@ class Info {
 		this.support = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.client = new ModelWrapper(Object.assign({ version: APP_VERSION }, this.params.client), { eventBus: this.app.eventBus });
 
-		this.module.login.getLoginPromise().then(() => {
+		this.module.auth.getUserPromise().then(() => {
 			this.module.api.get('core.info').then(info => {
 				if (this.core) {
 					this.core.setModel(info);

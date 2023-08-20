@@ -8,13 +8,6 @@ let app = new AppExt(moduleConfig);
 app.loadBundle(initModules).then(result => {
 	console.log("Init modules: ", result);
 	app.render(document.body);
-
-	// Load main modules
-	import(/* webpackChunkName: "main" */ 'modules/main-modules').then(({ default: mainModules }) => {
-		app.loadBundle(mainModules).then(result => {
-			console.log("Main modules: ", result);
-		});
-	});
 });
 
 // Make app global

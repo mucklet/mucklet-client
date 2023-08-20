@@ -64,10 +64,12 @@ class Address {
 						}),
 						new TextStep('msg', {
 							spanLines: true,
+							token: state => state.getParam('ooc') ? 'ooc' : 'text',
 							errRequired: step => ({ code: 'address.messageRequired', message: "What do you want to communicate?" }),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							completer: this.module.cmdLists.getInRoomChars(),
+							formatText: true,
 						}),
 					],
 				}),

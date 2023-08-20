@@ -23,7 +23,7 @@ class Notify {
 		this.defaultIcon = params.defaultIcon || '/paw.png';
 		this.alwaysNotify = !!params.alwaysNotify;
 
-		this.app.require([ 'confirm', 'login' ], this._init.bind(this));
+		this.app.require([ 'confirm', 'auth' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -32,7 +32,7 @@ class Notify {
 		this.model = new Model({ data: { enabled: false }, eventBus: this.app.eventBus });
 		this.tags = {};
 		this.user = null;
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			this.user = user;
 			this._loadSettings();
 		});

@@ -18,7 +18,10 @@ class Player {
 		this._onUserChange = this._onUserChange.bind(this);
 		this._onIdentityChange = this._onIdentityChange.bind(this);
 
-		this.app.require([ 'login', 'api' ], this._init.bind(this));
+		this.app.require([
+			'auth',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -29,7 +32,7 @@ class Player {
 		this.model.on('change', this._onModelChange);
 		this.user = null;
 
-		this._playerPromise = this.module.login.getLoginPromise().then(user => {
+		this._playerPromise = this.module.auth.getUserPromise().then(user => {
 			this.user = user;
 			this._listenUser(true);
 			return this._getPlayerPromise();

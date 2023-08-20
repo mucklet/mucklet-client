@@ -13,7 +13,7 @@ class LogoutTool {
 			'playerTools',
 			'player',
 			'confirm',
-			'login',
+			'auth',
 		], this._init.bind(this));
 	}
 
@@ -44,7 +44,7 @@ class LogoutTool {
 
 	logout() {
 		return (this.module.player.getControlled() || []).length
-			? this.module.confirm.open(() => this.module.login.logout(), {
+			? this.module.confirm.open(() => this.module.auth.logout(), {
 				title: l10n.l('playerPanel.confirmLogout', "Confirm logout"),
 				body: [
 					l10n.l('playerPanel.logoutBody1', "Some characters are still awake."),
@@ -52,7 +52,7 @@ class LogoutTool {
 				],
 				confirm: l10n.l('playerPanel.logout', "Logout"),
 			})
-			: this.module.login.logout();
+			: this.module.auth.logout();
 	}
 }
 

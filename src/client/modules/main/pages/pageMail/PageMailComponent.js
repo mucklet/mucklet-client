@@ -100,7 +100,7 @@ class PageMailComponent {
 
 		this.loadingOffset = offset;
 
-		this.module.login.getLoginPromise().then(user => {
+		this.module.auth.getUserPromise().then(user => {
 			if (!this.model || offset !== this.loadingOffset) return;
 			this.module.api.get('mail.player.' + user.id + '.inbox?offset=' + offset + '&limit=' + (defaultLimit + 1)).then(mails => {
 				if (!this.model || offset !== this.loadingOffset) return;

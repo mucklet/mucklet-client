@@ -1,10 +1,12 @@
 import Api from 'modules/api/Api';
+import Auth from 'modules/auth/Auth';
 import Screen from 'modules/screen/Screen';
 import Policies from 'modules/policies/Policies';
 import ServiceWorker from 'modules/serviceWorker/ServiceWorker';
 
 const modules = {
 	api: Api,
+	auth: Auth,
 	screen: Screen,
 	policies: Policies,
 	serviceWorker: ServiceWorker,

@@ -65,10 +65,12 @@ class Whisper {
 						}),
 						new TextStep('msg', {
 							spanLines: true,
+							token: state => state.getParam('ooc') ? 'ooc' : 'text',
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => ({ code: 'whisper.messageRequired', message: "What do you want to whisper?" }),
 							completer: this.module.cmdLists.getInRoomChars(),
+							formatText: true,
 						}),
 					],
 				}),

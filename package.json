@@ -1,6 +1,6 @@
 {
   "name": "mucklet-client",
-  "version": "1.49.0",
+  "version": "1.50.0",
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
@@ -9,11 +9,10 @@
   "author": "Accipiter Nisus <accipiter@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
+    "start": "npm run hub",
     "client": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
     "client:realm:test": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=realm_test webpack-dev-server",
     "client:docker": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=docker webpack-dev-server",
-    "client:oauth2": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=oauth2 webpack-dev-server",
     "hub": "cross-env NODE_ENV=development APP_NAME=hub webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack",
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",

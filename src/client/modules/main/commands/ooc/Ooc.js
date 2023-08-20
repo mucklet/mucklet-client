@@ -30,10 +30,12 @@ class Ooc {
 				new DelimStep(":", { next: new ValueStep('pose', true), errRequired: null }),
 				new TextStep('msg', {
 					spanLines: true,
+					token: 'ooc',
 					errRequired: step => ({ code: 'ooc.messageRequired', message: "What do you want to say?" }),
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
 					completer: this.module.cmdLists.getInRoomChars(),
+					formatText: true,
 				}),
 			],
 			symbol: '>',
