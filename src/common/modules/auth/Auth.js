@@ -140,7 +140,7 @@ class Auth {
 					if (this.model.authError) {
 						throw this.model.authError;
 					}
-					return this.module.api.call('identity', 'getUser');
+					return this.module.api.call(wsAuthRid, 'getUser');
 				})
 				.then(user => {
 					if (this.module.api.isError(user)) {
@@ -158,7 +158,7 @@ class Auth {
 					return user;
 				})
 				.catch(err => {
-					if (err.code == 'identity.termsNotAgreed') {
+					if (err.code.endsWith('.termsNotAgreed')) {
 						redirectWithUri(oauth2Url);
 						return;
 					}
