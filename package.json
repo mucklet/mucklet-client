@@ -9,7 +9,7 @@
   "author": "Accipiter Nisus <accipiter@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
+    "start": "npm run hub",
     "client": "cross-env NODE_ENV=development APP_NAME=client webpack-dev-server",
     "client:realm:test": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=realm_test webpack-dev-server",
     "client:docker": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=docker webpack-dev-server",
