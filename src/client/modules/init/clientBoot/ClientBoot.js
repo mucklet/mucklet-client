@@ -42,13 +42,13 @@ class ClientBoot {
 					if (user) {
 						this.mainModulesPromise.then(({ default: mainModules }) => {
 							app.loadBundle(mainModules).then(result => {
-								console.log("Main modules: ", result);
+								console.log("[ClientBoot] Main modules: ", result);
 							});
 						});
 					} else {
 						this.greetingModulesPromise.then(({ default: greetingModules }) => {
 							app.loadBundle(greetingModules).then(result => {
-								console.log("Greeting modules: ", result);
+								console.log("[ClientBoot] Greeting modules: ", result);
 							});
 						});
 					}
