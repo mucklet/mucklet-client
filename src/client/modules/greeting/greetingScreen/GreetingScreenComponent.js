@@ -43,11 +43,11 @@ class GreetingScreenComponent {
 				n.elem('div', { className: 'greetingscreen--foot' }, [
 					n.elem('a', {
 						className: 'greetingscreen--btn btn large primary full-width',
-						attributes: { href: '#' },
+						attributes: { href: 'javascript:;' },
 						events: {
 							click: (c, ev) => {
 								ev.preventDefault();
-								this.module.auth.redirectToLogin();
+								this.module.auth.redirectToLogin(true);
 							},
 						},
 	 				}, [
