@@ -1,4 +1,7 @@
+import GreetingScreen from 'modules/greetingScreen/GreetingScreen';
+
 const modules = {
+	greetingScreen: GreetingScreen,
 };
 
 const req = require.context("./greeting/", true, /^\..*\/([^/]*)\/\1.js$/i);
