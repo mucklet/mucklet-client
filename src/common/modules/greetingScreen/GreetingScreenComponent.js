@@ -20,7 +20,7 @@ class GreetingScreenComponent {
 		this._links = [
 			{
 				className: 'greeting-screenshot',
-				onClick: this._onClickImg.bind(this, '/img/screenshot.png'),
+				onClick: this._onClickImg.bind(this, '/img/screenshot.png', '/img/screenshot_mobile.png'),
 			},
 		];
 	}
@@ -76,8 +76,12 @@ class GreetingScreenComponent {
 		}
 	}
 
-	_onClickImg(url, ev) {
+	_onClickImg(url, urlMobile, ev) {
 		ev.preventDefault();
+
+		if (urlMobile && window.matchMedia('screen and (max-width: 720px)').matches) {
+			url = urlMobile;
+		}
 		new ImgModal(url).open();
 	}
 }
