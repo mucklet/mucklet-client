@@ -290,7 +290,7 @@ function textReplace(regex, tokenFactory) {
 	};
 }
 
-function escape(tokens, keepContent) {
+function escape(tokens, opt, keepContent) {
 	if (!keepContent) {
 		for (let t of tokens) {
 			if (t.type == typeText) {
