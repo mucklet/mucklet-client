@@ -120,11 +120,16 @@ class Auth {
 
 	/**
 	 * Redirects to the oauth2 login page.
+	 * @param {boolean} noFade Flag to prevent fading out.
 	 */
-	redirectToLogin() {
-		this._afterFade(() => {
+	redirectToLogin(noFade) {
+		if (noFade) {
 			redirectWithUri(oauth2Url, true);
-		});
+		} else {
+			this._afterFade(() => {
+				redirectWithUri(oauth2Url, true);
+			});
+		}
 	}
 
 	_getCurrentUser(reconnect) {
