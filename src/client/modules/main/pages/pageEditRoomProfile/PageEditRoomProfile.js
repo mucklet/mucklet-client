@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import getRoomInstanceId from 'utils/getRoomInstanceId';
 import PageEditRoomProfileComponent from './PageEditRoomProfileComponent';
 import './pageEditRoomProfile.scss';
 
@@ -42,7 +43,7 @@ class PageEditRoomProfile {
 			return this.module.roomPages.openPage(
 				'editRoomProfile',
 				ctrl.id,
-				room.id,
+				getRoomInstanceId(room),
 				(ctrl, room, state, close) => ({
 					component: new PageEditRoomProfileComponent(this.module, ctrl, room, result[0], result[1], state, close),
 					title: l10n.l('pageEditRoomProfile.editRoomProfile', "Edit Room Profile"),
