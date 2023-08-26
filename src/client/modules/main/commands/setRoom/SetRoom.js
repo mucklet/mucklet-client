@@ -77,10 +77,16 @@ const defaultAttr = [
 		sortOrder: 60,
 	},
 	{
+		key: 'isinstance',
+		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is instance flag" }),
+		desc: l10n.l('setRoom.isInstanceDesc', "Flag telling if the room may host characters in multiple instances. Value is <code>yes</code> or <code>no</code>."),
+		sortOrder: 70,
+	},
+	{
 		key: 'autosweep',
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "autosweep flag" }),
 		desc: l10n.l('setRoom.autosweepDesc', "Flag telling if the room should be automatically swept from sleepers. Value is <code>yes</code> or <code>no</code>."),
-		sortOrder: 70,
+		sortOrder: 80,
 	},
 	{
 		key: 'autosweepdelay',
@@ -92,7 +98,7 @@ const defaultAttr = [
 		}),
 		desc: l10n.l('setRoom.autosweepDelayDesc', 'Delay before a sleeper is auto-swept from the room. Value format is <code>1h 2m 3s</code> for (h)ours, (m)inutes, and (s)econds.'),
 		value: (ctx, p, self) => self._exec(ctx, { attr: 'autosweepdelay', value: parseDuration(p.value) }),
-		sortOrder: 80,
+		sortOrder: 90,
 	},
 ];
 
