@@ -59,7 +59,7 @@
     "modapp-base-component": "^1.8.0",
     "modapp-l10n": "^1.8.1",
     "modapp-resource": "^1.8.3",
-    "modapp-resource-component": "^1.8.1",
+    "modapp-resource-component": "^1.8.3",
     "modapp-utils": "^1.8.0",
     "nouislider": "^15.6.1",
     "resclient": "^2.4.1",
