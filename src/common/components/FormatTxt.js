@@ -35,6 +35,7 @@ class FormatTxt extends Fader {
 		this.noInteraction = !!opt.noInteraction;
 		this.setStr = null;
 		this.setFormatText(str);
+		this.contentEditable = opt.contentEditable || false;
 	}
 
 	getState() {
@@ -48,6 +49,11 @@ class FormatTxt extends Fader {
 
 		let div = toComponent(document.createElement('div'));
 		div.className = 'common--formattext';
+
+		// allow the PWA/grammarly plugins to trigger on the div but don't allow
+		// editing as that will screw up the formatting
+		div.contentEditable = this.contentEditable == true;
+		div.onkeydown = (event) => event.metaKey;
 
 		let offset = 0;
 		let sectionRegex = /^\[\[(.*?)\]\](?:\s*\{([\s\S]*?)\} *$| *$)/gm;

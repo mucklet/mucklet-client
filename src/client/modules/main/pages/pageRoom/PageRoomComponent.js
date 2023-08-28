@@ -11,6 +11,7 @@ import FormatTxt from 'components/FormatTxt';
 import ImgModal from 'classes/ImgModal';
 import PageRoomChar from './PageRoomChar';
 import PageRoomExit from './PageRoomExit';
+import PageRoomExitReview from './PageRoomExitReview';
 
 
 const textNotSet = l10n.l('pageRoom.notSet', "Not set");
@@ -19,7 +20,8 @@ const textNotSet = l10n.l('pageRoom.notSet', "Not set");
  * PageRoomComponent renders a room info page.
  */
 class PageRoomComponent {
-	constructor(module, ctrl, room, state, layout) {
+	constructor(app, module, ctrl, room, state, layout) {
+		this.app = app;
 		this.module = module;
 		this.ctrl = ctrl;
 		this.room = room;
@@ -106,7 +108,11 @@ class PageRoomComponent {
 						l10n.l('pageRoom.description', "Description"),
 						new ModelComponent(
 							this.room,
-							new FormatTxt("", { className: 'common--desc-size', state: this.roomState.description }),
+							new FormatTxt("", {
+								className: 'common--desc-size',
+								state: this.roomState.description,
+								contentEditable: this.module.player.isBuilder(),
+							}),
 							(m, c) => {
 								c.setFormatText(m.desc ? m.desc : textNotSet);
 								c[m.desc ? 'removeClass' : 'addClass']('pagechar--notset');
@@ -118,6 +124,30 @@ class PageRoomComponent {
 							onToggle: (c, v) => this.state.descriptionOpen = v,
 						},
 					)),
+					this.module.player.isBuilder() ? n.component(new PanelSection(
+						new Elem(n => n.elem('div', { className: 'pageroom--exitsheader' }, [
+							n.component(new Txt(l10n.l('pageRoom.exits', "Exits Review"), { tagName: 'h3' })),
+						])),
+						new CollectionComponent(
+							this.room.exits,
+							new Fader(null),
+							(col, c, e) => {
+								if (!col || !col.length) {
+									return;
+								}
+								if (!e || (col.length == 1 && e.event == 'add')) {
+									c.setComponent(new CollectionList(
+										col,
+										m => new PageRoomExitReview(this.app, this.module, this.ctrl, this.room, m),
+									));
+								}
+							},
+						),
+						{
+							className: 'pageroom--exits common--sectionpadding',
+							open: false,
+						},
+					)) : null,
 					n.component(new PanelSection(
 						new Elem(n => n.elem('div', { className: 'pageroom--exitsheader' }, [
 							n.component(new Txt(l10n.l('pageRoom.exits', "Exits"), { tagName: 'h3' })),
@@ -195,7 +225,7 @@ class PageRoomComponent {
 							onToggle: (c, v) => this.state.inRoomOpen = v,
 						},
 					)),
-				])),
+				].filter(Boolean))),
 			),
 			(m, c, change) => {
 				// Reset filtering of tools is ownership of the room changes.
