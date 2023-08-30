@@ -1,5 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import { ModelComponent } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import Fader from 'components/Fader';
 
@@ -35,20 +35,17 @@ class PageAreaLocation {
 			className: 'badge--text',
 			duration: 0,
 		});
+		let nameComponent = new Txt('', { tagName: 'div' });
 		let component = new Elem(n => n.elem('div', { className: 'pagearea-location' }, [
 			n.elem('cont', 'div', { className: 'pagearea-location--cont' }, [
-				n.elem('div', {
-					className: 'badge btn' + (this.location.private ? ' pagearea-location--private' : ''),
+				n.elem('badge', 'div', {
 					events: {
 						click: () => this.click(this.location),
 					},
 				}, [
 					n.elem('div', { className: 'badge--select' }, [
 						n.elem('div', { className: 'badge--info' }, [
-							n.component(new ModelTxt(this.location, m => m.name, {
-								tagName: 'div',
-								className: (locationTypeClass[getLocationType(this.location)] || 'badge--text') + ' badge--nowrap',
-							})),
+							n.component(nameComponent),
 						]),
 						n.elem('div', { className: 'badge--counter' }, [
 							n.component(countComponent),
@@ -70,7 +67,12 @@ class PageAreaLocation {
 						this._updateCount(countComponent);
 					},
 				),
-				(m, c) => this._updateCount(countComponent),
+				(m, c) => {
+					this._updateCount(countComponent);
+					component.setNodeClassName('badge', 'badge btn' + (m.private ? ' pagearea-location--private' : ''));
+					nameComponent.setText(m.name),
+					nameComponent.setClassName((locationTypeClass[getLocationType(m)] || 'badge--text') + ' badge--nowrap');
+				},
 			),
 			(m, c) => {
 				let selected = this.location.id == m.selected;
