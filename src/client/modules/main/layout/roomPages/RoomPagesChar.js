@@ -1,3 +1,5 @@
+import getRoomInstanceId from 'utils/getRoomInstanceId';
+
 function getPageIdx(pageId, pages) {
 	if (pageId) {
 		for (let i = 0; i < pages.length; i++) {
@@ -23,21 +25,21 @@ class RoomPagesChar {
 	/**
 	 * Opens a page to for a specific room ID.
 	 * @param {string} pageId Page ID. If a page with the same ID is already open for that room, that page will be moved to the top.
-	 * @param {string} roomId Room ID
+	 * @param {string} roomInstanceId Room instance ID
 	 * @param {function} pageFactory Page factory callback function: function(ctrl, room, roomState, close) -> { component, [title], [onClose], [closeIcon] }
 	 * @param {object} [opt] Optional parameters.
 	 * @param {function} [opt.onClose] Callback called when page is closed.
 	 * @returns {function} Function that closes the page.
 	 */
-	openPage(pageId, roomId, pageFactory, opt) {
+	openPage(pageId, roomInstanceId, pageFactory, opt) {
 		opt = opt || {};
-		let pages = this._getRoomPages(roomId);
-		let firstIdx = roomId ? 1 : 0;
+		let pages = this._getRoomPages(roomInstanceId);
+		let firstIdx = roomInstanceId ? 1 : 0;
 		// Check if page with that ID already existed
 		let pageIdx = getPageIdx(pageId, pages);
 
 		if (opt.reset) {
-			this._closePages(roomId);
+			this._closePages(roomInstanceId);
 		} else if (pageIdx >= firstIdx) {
 			// Move page from stack to end.
 			pages.push(pages.splice(pageIdx, 1)[0]);
@@ -45,7 +47,7 @@ class RoomPagesChar {
 
 		// Check if page didn't exists before
 		if (pageIdx < 0) {
-			let close = () => this._closePage(roomId, pageId, true);
+			let close = () => this._closePage(roomInstanceId, pageId, true);
 			pages.push({
 				id: pageId,
 				factory: pageFactory,
@@ -57,7 +59,7 @@ class RoomPagesChar {
 			});
 		}
 
-		this.update(this.ctrl, roomId);
+		this.update(this.ctrl, roomInstanceId);
 
 		return pages[pages.length - 1].close || null;
 	}
@@ -66,8 +68,8 @@ class RoomPagesChar {
 		if (!this.ctrl.inRoom && !this.charPages.length) {
 			return null;
 		}
-		let roomId = this.ctrl.inRoom.id;
-		let pages = this.charPages.length ? this.charPages : this._getRoomPages(roomId);
+		let roomInstanceId = getRoomInstanceId(this.ctrl.inRoom);
+		let pages = this.charPages.length ? this.charPages : this._getRoomPages(roomInstanceId);
 		return pages[pages.length - 1];
 	}
 
@@ -76,8 +78,11 @@ class RoomPagesChar {
 		return (layoutId) => page.factory(this.ctrl, this.ctrl.inRoom, page.state, page.close, layoutId);
 	}
 
-	_getRoomPages(roomId) {
-		let pages = roomId ? this.roomPages[roomId] : this.charPages;
+	_getRoomPages(roomInstanceId) {
+		if (!roomInstanceId) {
+			return this.charPages;
+		}
+		let pages = this.roomPages[roomInstanceId];
 		if (!pages) {
 			let f = this.module.self.getDefaultPageFactory();
 			pages = [{
@@ -86,23 +91,23 @@ class RoomPagesChar {
 				factory: (ctrl, room, state, close, layoutId) => f(ctrl, room, state, layoutId),
 				close: null,
 			}];
-			this.roomPages[roomId] = pages;
+			this.roomPages[roomInstanceId] = pages;
 		}
 		return pages;
 	}
 
-	_closePages(roomId, skipPageId) {
-		let pages = this._getRoomPages(roomId);
-		let firstIdx = roomId ? 1 : 0;
+	_closePages(roomInstanceId, skipPageId) {
+		let pages = this._getRoomPages(roomInstanceId);
+		let firstIdx = roomInstanceId ? 1 : 0;
 		for (let i = pages.length - 1; i >= firstIdx; i--) {
 			if (pages[i].id !== skipPageId) {
-				this._closePage(tabId, pages[i].id);
+				this._closePage(roomInstanceId, pages[i].id);
 			}
 		}
 	}
 
-	_closePage(roomId, pageId, triggerUpdate) {
-		let pages = this._getRoomPages(roomId);
+	_closePage(roomInstanceId, pageId, triggerUpdate) {
+		let pages = this._getRoomPages(roomInstanceId);
 		// Find index position of page
 		let pageIdx = getPageIdx(pageId, pages);
 
@@ -113,7 +118,7 @@ class RoomPagesChar {
 
 		let page = pages.splice(pageIdx, 1)[0];
 		if (triggerUpdate && pageIdx >= pages.length) {
-			this.update(this.ctrl, roomId);
+			this.update(this.ctrl);
 		}
 
 		if (page.onClose) {

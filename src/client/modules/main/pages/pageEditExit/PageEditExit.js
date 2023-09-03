@@ -1,6 +1,7 @@
 import { Model } from 'modapp-resource';
 import PageEditExitComponent from './PageEditExitComponent';
 import l10n from 'modapp-l10n';
+import getRoomInstanceId from 'utils/getRoomInstanceId';
 import './pageEditExit.scss';
 
 /**
@@ -50,7 +51,7 @@ class PageEditExit {
 		closer = this.module.roomPages.openPage(
 			'editExit_' + exitId,
 			ctrl.id,
-			room.id,
+			getRoomInstanceId(room),
 			(ctrl, room, state, close) => ({
 				component: new PageEditExitComponent(this.module, ctrl, room, exitId, model, state, close),
 				title: l10n.l('pageEditExit.editExit', "Edit Exit"),

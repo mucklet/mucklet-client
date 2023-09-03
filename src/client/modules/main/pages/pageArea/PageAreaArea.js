@@ -8,6 +8,7 @@ import NameSection from 'components/NameSection';
 import PanelSection from 'components/PanelSection';
 import FormatTxt from 'components/FormatTxt';
 import AreaChildrenModel from 'classes/AreaChildrenModel';
+import listenModel, { relistenModel } from 'utils/listenModel';
 import PageAreaLocation from './PageAreaLocation';
 import PageAreaImage from './PageAreaImage';
 
@@ -31,6 +32,8 @@ class PageAreaArea {
 
 		// Bind callbacks
 		this._onLocationClick = this._onLocationClick.bind(this);
+		this._onLocationsChange = this._onLocationsChange.bind(this);
+		this.listeners = null;
 	}
 
 	render(el) {
@@ -38,6 +41,7 @@ class PageAreaArea {
 		this.model = new Model({ data: {
 			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
+		this.inLocations = new Model({ data: this._getAndListenInLocations(), eventBus: this.module.self.app.eventBus });
 
 		let imgFader = new Fader();
 		let about = new PanelSection(
@@ -158,7 +162,7 @@ class PageAreaArea {
 						eventBus: this.module.self.app.eventBus,
 					}),
 					col => col.dispose(),
-					col => new CollectionList(col, m => new PageAreaLocation(this.module, this.ctrl, m, this.model, this._onLocationClick)),
+					col => new CollectionList(col, m => new PageAreaLocation(this.module, m, this.inLocations, this.model, this._onLocationClick)),
 				),
 				{
 					className: 'common--sectionpadding',
@@ -186,6 +190,8 @@ class PageAreaArea {
 			this.elem = null;
 			this.children.dispose();
 			this.children = null;
+			this._unlistenInLocations(false);
+			this.inLocations = null;
 		}
 	}
 
@@ -205,6 +211,55 @@ class PageAreaArea {
 		return !this.ctrl.puppeteer && (this.module.player.isBuilder() || this.module.player.ownsChar(this.area.owner));
 	}
 
+	_getAndListenInLocations() {
+		if (!this.listeners) {
+			this.listeners = { char: this.ctrl, room: null, areas: [] };
+			listenModel(this.ctrl, true, this._onLocationsChange);
+		}
+		this.listeners.room = relistenModel(this.listeners.room, this.ctrl.inRoom, this._onLocationsChange);
+		let o = {};
+		let areaIdx = 0;
+		let areas = this.listeners.areas;
+		let room = this.ctrl.inRoom;
+		if (room) {
+			o[room.id] = room.pop;
+			let area = room.area;
+			// Traverse areas as long as we have parents that does not loop.
+			while (area && areas.slice(0, areaIdx).indexOf(area) < 0) {
+				areas[areaIdx] = relistenModel(areas[areaIdx], area, this._onLocationsChange);
+				o[area.id] = area.pop;
+				area = area.parent;
+				areaIdx++;
+			}
+		}
+		// Stop listening to additional areas
+		for (let i = areas.length - 1; i >= areaIdx; i--) {
+			listenModel(areas[i], false, this._onLocationsChange);
+			areas.pop();
+		}
+		return o;
+	}
+
+	_unlistenInLocations() {
+		if (this.listeners) {
+			listenModel(this.listeners.char, false, this._onLocationsChange);
+			listenModel(this.listeners.room, false, this._onLocationsChange);
+			for (let area of this.listeners.areas) {
+				listenModel(area, false, this._onLocationsChange);
+			}
+		}
+		this.listeners = null;
+	}
+
+	_onLocationsChange(change) {
+		if (this.inLocations && (
+			change.hasOwnProperty('inRoom') ||
+			change.hasOwnProperty('pop') ||
+			change.hasOwnProperty('parent')
+		)) {
+			this.inLocations.reset(this._getAndListenInLocations());
+		}
+	}
 }
 
 export default PageAreaArea;
