@@ -24,7 +24,7 @@ class ListStep {
 		this.list = list;
 		this.name = opt.name || id;
 		this.textId = opt.textId || null;
-		this.token = opt.token || 'listitem';
+		this.token = opt.hasOwnProperty('token') ? opt.token : 'listitem';
 		this.delimToken = opt.delimToken || 'delim';
 		this.trimSpace = opt.hasOwnProperty('trimSpace') ? !!opt.trimSpace : true;
 		this.next = opt.next || null;

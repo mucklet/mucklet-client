@@ -74,7 +74,7 @@ class Roll {
 						],
 					}), {
 						name: 'dice type',
-						token: 'name',
+						token: null,
 						delimToken: 'name',
 						trimSpace: false,
 						errRequired: null,
