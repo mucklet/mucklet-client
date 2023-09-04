@@ -99,16 +99,11 @@ class PageAreaImage {
 									c.render(el);
 									nextFrame(() => e.removeClass('hide'));
 								},
-								onRemove: c => new Promise(resolve => {
+								onRemove: (c, unrender) => {
 									let e = c.getComponent().getComponent();
 									e.addClass('hide');
-									setTimeout(() => {
-										if (e.getElement()) {
-											c.unrender();
-										}
-										resolve();
-									}, 2100);
-								}),
+									setTimeout(unrender, 500);
+								},
 							},
 						)),
 					]),

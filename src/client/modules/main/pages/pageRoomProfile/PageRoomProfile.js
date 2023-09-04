@@ -1,6 +1,7 @@
 import { Elem } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
+import getRoomInstanceId from 'utils/getRoomInstanceId';
 import PageRoomProfileComponent from './PageRoomProfileComponent';
 import './pageRoomProfile.scss';
 
@@ -51,7 +52,7 @@ class PageRoomProfile {
 			return this.module.roomPages.openPage(
 				'roomProfile',
 				ctrl.id,
-				room.id,
+				getRoomInstanceId(room),
 				(ctrl, room, state, close) => ({
 					component: new PageRoomProfileComponent(this.module, profiles, ctrl, room, state, close),
 					title: l10n.l('pageRoomProfile.roomProfile', "Room profiles"),

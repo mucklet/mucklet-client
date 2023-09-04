@@ -105,7 +105,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		padding-left: 6px;
 	}
 
-	&--title, &--subtitle, &--strong, &--text, &--error {
+	&--text, &--title, &--subtitle, &--strong, &--highlight, &--error {
 		line-height: 16px;
 		font-size: $font-size-tiny;
 		text-align: left;
@@ -118,6 +118,10 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+
+	&--text {
+		color: $color4;
 	}
 
 	&--title {
@@ -137,8 +141,8 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		color: $color3;
 	}
 
-	&--text {
-		color: $color4;
+	&--highlight {
+		color: $log-instance;
 	}
 
 	&--error {

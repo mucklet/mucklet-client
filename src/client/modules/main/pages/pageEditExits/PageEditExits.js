@@ -2,6 +2,7 @@ import { Elem } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
+import getRoomInstanceId from 'utils/getRoomInstanceId';
 import PageEditExitsComponent from './PageEditExitsComponent';
 import './pageEditExits.scss';
 
@@ -68,7 +69,7 @@ class PageEditRoom {
 		return this.module.roomPages.openPage(
 			'editExits',
 			ctrl.id,
-			room.id,
+			getRoomInstanceId(room),
 			(ctrl, room, state, close) => ({
 				component: new PageEditExitsComponent(this.module, ctrl, room, model, state, close),
 				title: l10n.l('pageEditExits.editExits', "Edit Exits"),

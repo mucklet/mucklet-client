@@ -1,6 +1,7 @@
 import { Elem } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
+import getRoomInstanceId from 'utils/getRoomInstanceId';
 import PageEditRoomComponent from './PageEditRoomComponent';
 import './pageEditRoom.scss';
 
@@ -50,7 +51,7 @@ class PageEditRoom {
 			return this.module.roomPages.openPage(
 				'editRoom',
 				ctrl.id,
-				room.id,
+				getRoomInstanceId(room),
 				(ctrl, room, state, close) => ({
 					component: new PageEditRoomComponent(this.module, ctrl, room, roomSettings, state, close),
 					title: l10n.l('pageEditRoom.editRoom', "Edit Room"),

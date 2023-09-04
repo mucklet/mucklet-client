@@ -80,23 +80,23 @@ class RoomPages {
 	 * Opens a in-panel page set to a specific room ID.
 	 * @param {string} pageId Page ID. If a page with the same ID is already open for that character and room, that page will be moved to the top.
 	 * @param {string} ctrlId Char ID of controlled character.
-	 * @param {string} roomId Room ID
+	 * @param {string} roomInstanceId Room instance ID
 	 * @param {function} pageFactory Page factory callback function: function(ctrl, room, roomState, close, layoutId) -> { component, [title], [onClose], [closeIcon] }
 	 * @param {object} [opt] Optional parameters.
 	 * @param {bool} [opt.openPanel] Flag to tell if the panel should be opened when opening the page.
 	 * @param {function} [opt.onClose] Callback called when page is closed.
  	 * @returns {function} Function that closes the page.
 	 */
-	openPage(pageId, ctrlId, roomId, pageFactory, opt) {
+	openPage(pageId, ctrlId, roomInstanceId, pageFactory, opt) {
 		opt = opt || {};
 		let c = this.charComponents[ctrlId];
 		if (!c) {
 			throw new Error("No component for char " + ctrlId);
 		}
-		let ret = c.openPage(pageId, roomId, pageFactory, opt);
-		// if (opt.openPanel) {
-		// 	this.component.toggle(true);
-		// }
+		let ret = c.openPage(pageId, roomInstanceId, pageFactory, opt);
+		if (opt.openPanel) {
+			this.openPanel();
+		}
 
 		return ret;
 	}

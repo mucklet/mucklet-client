@@ -45,10 +45,10 @@ class PageArea {
 				component: new PageAreaComponent(this.module, ctrl, state, close),
 				title: l10n.l('pageArea.area', "Area"),
 			}),
+			{
+				openPanel: toggleOpen,
+			},
 		);
-		if (toggleOpen) {
-			this.module.roomPages.openPanel();
-		}
 
 		return close;
 	}

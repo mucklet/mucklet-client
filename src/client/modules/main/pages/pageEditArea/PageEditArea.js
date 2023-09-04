@@ -58,11 +58,9 @@ class PageEditArea {
 					onClose: () => {
 						areaSettings.off();
 					},
+					openPanel: toggleOpen,
 				},
 			);
-			if (toggleOpen) {
-				this.module.roomPages.openPanel();
-			}
 			return close;
 		});
 	}

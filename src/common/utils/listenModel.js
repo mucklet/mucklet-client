@@ -28,7 +28,9 @@ export default function listenModel(model, on, onChange) {
  */
 export function relistenModel(oldModel, newModel, onChange) {
 	newModel = newModel || null;
-	listenModel(oldModel, false, onChange);
-	listenModel(newModel, true, onChange);
+	if (oldModel !== newModel) {
+		listenModel(oldModel, false, onChange);
+		listenModel(newModel, true, onChange);
+	}
 	return newModel;
 }

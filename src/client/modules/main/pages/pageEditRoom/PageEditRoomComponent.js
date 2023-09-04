@@ -167,6 +167,15 @@ class PageEditRoomComponent {
 					)),
 					n.component(new ModelComponent(
 						this.model,
+						new LabelToggleBox(l10n.l('pageEditRoom.isInstance', "Is instance"), false, {
+							className: 'common--formmargin',
+							onChange: v => this.model.set({ isInstance: v }),
+							popupTip: l10n.l('pageEditRoom.isInstanceInfo', "Characters entering the room will reside in their own private instance."),
+						}),
+						(m, c) => c.setValue(m.isInstance, false),
+					)),
+					n.component(new ModelComponent(
+						this.model,
 						new LabelToggleBox(l10n.l('pageEditRoom.autoSweepSleepers', "Auto sweep sleepers"), false, {
 							className: 'common--formmargin',
 							onChange: v => this.model.set({ autosweep: v }),
