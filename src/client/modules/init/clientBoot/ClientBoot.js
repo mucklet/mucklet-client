@@ -2,6 +2,7 @@ import { uri } from 'modapp-utils';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
+import Err from 'classes/Err';
 
 /**
  * ClientBoot boots the app by trying to authenticate, and then showing the
@@ -32,7 +33,7 @@ class ClientBoot {
 			try {
 				err = JSON.parse(atob(q.error));
 			} catch (e) {
-				err = { code: 'errorScreen.failedToParse', message: "Failed to parse error: {message}", data: { message: e.message }};
+				err = new Err('errorScreen.failedToParse', "Failed to parse error: {message}", { message: e.message });
 			}
 			this._showError(err);
 		} else {

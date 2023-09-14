@@ -4,6 +4,7 @@ import { StreamLanguage } from '@codemirror/language';
 import l10n from 'modapp-l10n';
 import ItemList from 'classes/ItemList';
 import ListStep from 'classes/ListStep';
+import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 import { getToken } from 'utils/codemirror';
 import cmdParser from './cmdParser';
@@ -38,7 +39,7 @@ class Cmd {
 			token: 'name',
 			delimToken: 'name',
 			errRequired: null,
-			errNotFound: (step, match) => ({ code: 'cmd.commandNotFound', message: 'There is no command called "{match}".', data: { name: step.name, match: match }}),
+			errNotFound: (step, match) => new Err('cmd.commandNotFound', 'There is no command called "{match}".', { name: step.name, match: match }),
 		});
 		this.cmdLanguage = StreamLanguage.define(cmdParser({
 			step: this.cmdStep,

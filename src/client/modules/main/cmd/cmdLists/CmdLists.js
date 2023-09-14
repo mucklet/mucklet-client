@@ -1,6 +1,7 @@
 import CharList from 'classes/CharList';
 import ItemList from 'classes/ItemList';
 import TokenList from 'classes/TokenList';
+import Err from 'classes/Err';
 import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import mergeCharLists from 'utils/mergeCharLists';
 import {
@@ -47,7 +48,7 @@ class CmdLists {
 				: null,
 		});
 		this.charsAwake = new CharList(() => this.module.charsAwake.getCollection(), {
-			errNotFound: (l, m) => ({ code: 'cmdList.awakeCharNotFound', message: 'There is no character awake named {match}.', data: { match: m }}),
+			errNotFound: (l, m) => new Err('cmdList.awakeCharNotFound', 'There is no character awake named {match}.', { match: m }),
 		});
 		this.watchedChars = new CharList(() => {
 			let m = this.module.charsAwake.getWatches();

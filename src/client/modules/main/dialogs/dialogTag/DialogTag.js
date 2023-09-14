@@ -3,6 +3,7 @@ import { ModelComponent, CollectionList, ModelTxt } from 'modapp-resource-compon
 import { ModifyModel } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Dialog from 'classes/Dialog';
+import Err from 'classes/Err';
 import Collapser from 'components/Collapser';
 import LabelToggleBox from 'components/LabelToggleBox';
 import PanelSection from 'components/PanelSection';
@@ -179,7 +180,7 @@ class DialogTag {
 					promise = this._callSetPref(ctrl, model.id, null)
 						.then(() => this._callSetPref(ctrl, global.id, model.pref));
 				} else {
-					promise = Promise.reject({ code: 'dialogTag.noGlobalTag', message: "There is no global tag [{tag}]", data: { tag: model.key }});
+					promise = Promise.reject(new Err('dialogTag.noGlobalTag', "There is no global tag [{tag}]", { tag: model.key }));
 				}
 			} else {
 				// Updating preference

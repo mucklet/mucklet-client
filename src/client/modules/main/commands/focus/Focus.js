@@ -3,6 +3,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ErrorStep from 'classes/ErrorStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'focus <span class="param">Character</span> <span class="opt">= <span class="param">Color</span></span>';
 const shortDesc = 'Focus on a character to highlight them';
@@ -85,7 +86,7 @@ class Focus {
 					if (change) {
 						this.module.charLog.logInfo(char, l10n.l('focus.focusingOnAll', "{charName} focuses on all events.", { charName: char.name }));
 					} else {
-						this.module.charLog.logError(char, { code: 'focus.alreadyFocusOnAll', message: "{charName} is already focusing on all events.", data: { charName: char.name }});
+						this.module.charLog.logError(char, new Err('focus.alreadyFocusOnAll', "{charName} is already focusing on all events.", { charName: char.name }));
 					}
 				})
 			: player.call('getChar', params).then(c => {

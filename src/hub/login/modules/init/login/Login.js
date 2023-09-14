@@ -1,3 +1,4 @@
+import Err from 'classes/Err';
 import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
 import { uri } from 'modapp-utils';
@@ -184,7 +185,7 @@ class Login {
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json()
-					.catch(() => ({ code: 'login.errorResponse', message: "Request returned with status {status}.", data: { status: resp.status }}))
+					.catch(() => new Err('login.errorResponse', "Request returned with status {status}.", { status: resp.status }))
 					.then(err => {
 						throw err;
 					});

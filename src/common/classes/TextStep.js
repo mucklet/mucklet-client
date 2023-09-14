@@ -1,4 +1,5 @@
 import ErrorStep from './ErrorStep';
+import Err from './Err';
 
 /**
  * TextStep consumes a string of text.
@@ -37,8 +38,8 @@ class TextStep {
 		this.completer = opt.completer || null;
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
-			: self => ({ code: 'textStep.required', message: 'There is no {name}.', data: { name: self.name }});
-		this.errTooLong = opt.errTooLong || ((self, maxLength) => ({ code: 'textStep.exceedsMaxLength', message: 'Exceeds max length of {maxLength} characters.', data: { maxLength }}));
+			: self => new Err('textStep.required', 'There is no {name}.', { name: self.name });
+		this.errTooLong = opt.errTooLong || ((self, maxLength) => (new Err('textStep.exceedsMaxLength', 'Exceeds max length of {maxLength} characters.', { maxLength })));
 		this._formatText = opt.formatText ? Object.assign({ id }, typeof opt.formatText == 'object' ? opt.formatText : null) : null;
 	}
 

@@ -1,10 +1,12 @@
+import Err from './Err';
+
 /**
  * ErrorStep tests of the stream matches the regex, and if so sets the error.
  */
 class ErrorStep {
 	constructor(regex, err) {
 		this.regex = regex;
-		this.err = err || (match => ({ code: 'errorStep.errorCommand', message: 'Erronous command "{match}".', data: { match }}));
+		this.err = err || (match => new Err('errorStep.errorCommand', 'Erronous command "{match}".', { match }));
 	}
 
 	parse(stream, s) {

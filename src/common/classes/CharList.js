@@ -1,3 +1,4 @@
+import Err from './Err';
 import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import expandSelection from 'utils/expandSelection';
 
@@ -60,7 +61,7 @@ class CharList {
 		}
 
 		return matches.length
-			? { key, error: { code: 'charList.ambiguousName', message: "There are more than one character named \"{name}\".", data: { name: key }}}
+			? { key, error: new Err('charList.ambiguousName', "There are more than one character named \"{name}\".", { name: key }) }
 			: null;
 	}
 

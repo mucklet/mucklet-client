@@ -1,3 +1,5 @@
+import Err from './Err';
+
 /**
  * NumberStep consumes a number.
  */
@@ -25,10 +27,10 @@ class NumberStep {
 		this.trimSpace = opt.hasOwnProperty('trimSpace') ? !!opt.trimSpace : true;
 		this.errFloat = opt.hasOwnProperty('errFloat')
 			? opt.errFloat
-			: self => ({ code: 'numberStep.isFloat', message: 'Decimals are not allowed for {name}.', data: { name: self.name }});
+			: self => new Err('numberStep.isFloat', 'Decimals are not allowed for {name}.', { name: self.name });
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
-			: self => ({ code: 'numberStep.required', message: 'There is no {name}.', data: { name: self.name }});
+			: self => new Err('numberStep.required', 'There is no {name}.', { name: self.name });
 	}
 
 	blank(state) {

@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'mute char <span class="param">Character</span>';
 const shortDesc = 'Mute a character';
@@ -48,7 +49,7 @@ class MuteChar {
 				if (change) {
 					this.module.charLog.logInfo(char, l10n.l('muteChar.muteCharStart', "Activated muting of {name}.", { name: c.name }));
 				} else {
-					this.module.charLog.logError(char, { code: 'muteChar.alreadyMutingTravel', message: "Already muting {name}.", data: { name: c.name }});
+					this.module.charLog.logError(char, new Err('muteChar.alreadyMutingTravel', "Already muting {name}.", { name: c.name }));
 				}
 			}));
 	}

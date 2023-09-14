@@ -5,6 +5,7 @@ import ListStep from 'classes/ListStep';
 import ItemList from 'classes/ItemList';
 import StateStep from 'classes/StateStep';
 import ValueStep from 'classes/ValueStep';
+import Err from 'classes/Err';
 
 const usageText = 'roll <span class="opt">quiet</span> <span class="opt"><span class="param">Roll</span></span>';
 const shortDesc = 'Roll dice shown to the room';
@@ -78,7 +79,7 @@ class Roll {
 						delimToken: 'name',
 						trimSpace: false,
 						errRequired: null,
-						errNotFound: (step, match) => ({ code: 'roll.typeNotFound', message: 'There is no dice type "{match}". The supported dice type is d (standard multi-sided die).', data: { name: step.name, match: match }}),
+						errNotFound: (step, match) => new Err('roll.typeNotFound', 'There is no dice type "{match}". The supported dice type is d (standard multi-sided die).', { name: step.name, match: match }),
 						else: new StateStep(state => state.setParam('part-' + idx, state.getParam('count-' + idx)), { next }),
 					}),
 				});

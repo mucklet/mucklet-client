@@ -1,3 +1,4 @@
+import Err from './Err';
 import expandSelection from 'utils/expandSelection';
 
 const expandRegex = /[a-vA-V0-9]/;
@@ -28,9 +29,9 @@ class IDStep {
 		this.list = opt.list || null;
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
-			: self => ({ code: 'idStep.required', message: 'There is no {name}. Expected a #-sign followed by 20 characters.', data: { name: self.name }});
+			: self => new Err('idStep.required', 'There is no {name}. Expected a #-sign followed by 20 characters.', { name: self.name });
 		this.errInvalid = opt.errInvalid || ((self, m) => (
-			{ code: 'idStep.invalid', message: 'The {name} value "#{value}" is invalid. Expected the #-sign to be followed by 20 characters a-v or 0-9.', data: { name: self.name, value: m }}
+			new Err('idStep.invalid', 'The {name} value "#{value}" is invalid. Expected the #-sign to be followed by 20 characters a-v or 0-9.', { name: self.name, value: m })
 		));
 	}
 

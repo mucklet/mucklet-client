@@ -1,3 +1,4 @@
+import Err from 'classes/Err';
 import exportFile from 'utils/exportFile';
 import formatISODate from 'utils/formatISODate';
 import formatDateTime from 'utils/formatDateTime';
@@ -189,7 +190,7 @@ class ExportLog {
 				let filename = char.name + '_' + formatISODate(date) + '_' + ('0' + date.getHours()).slice(-2) + ('0' + date.getMinutes()).slice(-2) + '.html';
 				exportFile(filename, out);
 			} catch (ex) {
-				return Promise.reject({ code: 'exportLog.failed', message: "Failed to export log: {message}", data: { message: ex.message }});
+				return Promise.reject(new Err('exportLog.failed', "Failed to export log: {message}", { message: ex.message }));
 			}
 		});
 	}

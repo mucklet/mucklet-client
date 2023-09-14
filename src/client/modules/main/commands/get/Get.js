@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import fullname from 'utils/fullname';
 import formatDateTime from 'utils/formatDateTime';
@@ -97,7 +98,7 @@ class Get {
 				}
 				break;
 			default:
-				this.module.charLog.logError(char, { code: 'get.unknownAttribute', message: "Unknown attribute: {attr}", data: { attr }});
+				this.module.charLog.logError(char, new Err('get.unknownAttribute', "Unknown attribute: {attr}", { attr }));
 		}
 	}
 }

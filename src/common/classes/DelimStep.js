@@ -1,3 +1,5 @@
+import Err from './Err';
+
 /**
  * DelimStep consumes a delimiter string.
  */
@@ -22,7 +24,7 @@ class DelimStep {
 		this.trimSpace = opt.hasOwnProperty('trimSpace') ? !!opt.trimSpace : true;
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
-			: self => ({ code: 'delimStep.required', message: 'Expected to find "{delim}"', data: { delim: self.delimiter }});
+			: self => new Err('delimStep.required', 'Expected to find "{delim}"', { delim: self.delimiter });
 	}
 
 	get delimiter() {

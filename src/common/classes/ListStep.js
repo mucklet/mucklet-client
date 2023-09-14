@@ -1,3 +1,5 @@
+import Err from './Err';
+
 /**
  * ListStep is a generic list of tokens for commands.
  */
@@ -33,10 +35,10 @@ class ListStep {
 			? opt.errNotFound
 			: this.textId
 				? null
-				: list.errNotFound || ((self, m) => ({ code: 'listStep.itemNotFound', message: 'There is no {name} named "{match}".', data: { name: self.name, match: m }}));
+				: list.errNotFound || ((self, m) => new Err('listStep.itemNotFound', 'There is no {name} named "{match}".', { name: self.name, match: m }));
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
-			: self => ({ code: 'listStep.required', message: 'There is no {name}.', data: { name: self.name }});
+			: self => new Err('listStep.required', 'There is no {name}.', { name: self.name });
 
 	}
 
