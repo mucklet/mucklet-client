@@ -2,6 +2,7 @@ import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
+import Err from 'classes/Err';
 
 const usageText = 'unban player <span class="param">@Username<span class="comment">/</span>Character</span>';
 const shortDesc = 'Unban a previously banned player';
@@ -36,7 +37,7 @@ class BanPlayer {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'unbanPlayer.characterRequired', message: "Which player?" }),
+						errRequired: step => new Err('unbanPlayer.characterRequired', "Which player?"),
 					}),
 				}),
 			],

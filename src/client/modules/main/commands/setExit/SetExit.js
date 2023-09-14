@@ -4,6 +4,7 @@ import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import RepeatStep from 'classes/RepeatStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { communicationTooLong, keyTooLong, itemNameTooLong } from 'utils/cmdErr';
 
@@ -101,7 +102,7 @@ class SetExit {
 				new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
 					name: "exit",
 					textId: 'exitKey',
-					errRequired: step => ({ code: 'setExit.keyRequired', message: "What exit do you want to set?" }),
+					errRequired: step => new Err('setExit.keyRequired', "What exit do you want to set?"),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.exitAttr, {

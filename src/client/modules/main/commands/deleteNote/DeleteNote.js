@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'delete note <span class="param">Character</span>';
 const shortDesc = 'Delete any private notes for a character';
@@ -31,7 +32,7 @@ class DeleteNote {
 			alias: [ 'notes' ],
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'deleteNote.characterRequired', message: "Who do you want to delete the notes for?" }),
+					errRequired: step => new Err('deleteNote.characterRequired', "Who do you want to delete the notes for?"),
 				}),
 			],
 			value: (ctx, p) => this.deleteNote(ctx.player, ctx.char, p.charId

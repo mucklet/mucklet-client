@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'unwatch <span class="param">Character</span>';
 const shortDesc = 'Stop watching for a character';
@@ -30,7 +31,7 @@ class Unwatch {
 			next: [
 				this.module.cmdSteps.newWatchedCharStep({
 					name: "watched character",
-					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to stop watching for?" }),
+					errRequired: step => new Err('suspend.characterRequired', "Who do you want to stop watching for?"),
 				}),
 			],
 			value: (ctx, p) => this.unwatch(ctx.player, ctx.char, { charId: p.charId }),

@@ -1,6 +1,7 @@
 import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import l10n from 'modapp-l10n';
 import helpDefList from 'utils/helpDefList';
 
@@ -31,7 +32,7 @@ class ListChar {
 			key: 'char',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'listChar.characterRequired', message: "Who do you want to list things for?" }),
+					errRequired: step => new Err('listChar.characterRequired', "Who do you want to list things for?"),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('item', this.itemList, {

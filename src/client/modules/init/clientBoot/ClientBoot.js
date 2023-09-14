@@ -57,7 +57,7 @@ class ClientBoot {
 				.catch(err => {
 					this.model.set({ error: true });
 					if (err.code == 'system.connectionError') {
-						err = { code: err.code, message: "Failed to connect to the realm." };
+						err = new Err(err.code, "Failed to connect to the realm.");
 					}
 					this._showError(err);
 				});

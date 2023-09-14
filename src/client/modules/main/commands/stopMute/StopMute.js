@@ -1,5 +1,6 @@
 import ItemList from 'classes/ItemList';
 import ListStep from 'classes/ListStep';
+import Err from 'classes/Err';
 
 /**
  * StopMuteTravel adds the stop mute travel command.
@@ -26,7 +27,7 @@ class StopMuteTravel {
 				new ListStep('object', this.stopMuteType, {
 					name: "message type",
 					token: 'name',
-					errRequired: step => ({ code: 'stopMuteTravel.messageTypeRequired', message: "What sort of messages do you want to stop muting?" }),
+					errRequired: step => new Err('stopMuteTravel.messageTypeRequired', "What sort of messages do you want to stop muting?"),
 				}),
 			],
 			value: this._exec,

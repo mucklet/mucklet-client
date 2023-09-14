@@ -1,6 +1,7 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import FormatTxt from 'components/FormatTxt';
+import Err from 'classes/Err';
 import './areaRules.scss';
 
 const usageText = 'area rules';
@@ -40,7 +41,7 @@ class RulesArea {
 	areaRules(char, attr) {
 		let a = char.inRoom.area;
 		if (!a) {
-			this.module.charLog.logError(char, { code: 'areaRules.roomHasNoArea', message: "This room doesn't belong to an area." });
+			this.module.charLog.logError(char, new Err('areaRules.roomHasNoArea', "This room doesn't belong to an area."));
 			return;
 		}
 

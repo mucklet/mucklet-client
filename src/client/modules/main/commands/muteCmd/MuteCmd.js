@@ -1,5 +1,6 @@
 import ItemList from 'classes/ItemList';
 import ListStep from 'classes/ListStep';
+import Err from 'classes/Err';
 
 /**
  * MuteCmd adds the mute command.
@@ -26,7 +27,7 @@ class MuteCmd {
 			next: new ListStep('object', this.muteType, {
 				name: "message type",
 				token: 'name',
-				errRequired: step => ({ code: 'muteCmd.messageTypeRequired', message: "What sort of messages do you want to mute?" }),
+				errRequired: step => new Err('muteCmd.messageTypeRequired', "What sort of messages do you want to mute?"),
 			}),
 			value: this._exec,
 		});

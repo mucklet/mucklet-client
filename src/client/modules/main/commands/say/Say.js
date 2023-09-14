@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'say <span class="param">Message</span>';
@@ -26,7 +27,7 @@ class Say {
 			key: 'say',
 			next: new TextStep('msg', {
 				spanLines: true,
-				errRequired: step => ({ code: 'say.messageRequired', message: "What do you want to say?" }),
+				errRequired: step => new Err('say.messageRequired', "What do you want to say?"),
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
 				completer: this.module.cmdLists.getInRoomChars(),

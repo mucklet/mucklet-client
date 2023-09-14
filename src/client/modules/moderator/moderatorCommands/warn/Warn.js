@@ -3,6 +3,7 @@ import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import ValueStep from 'classes/ValueStep';
 import RepeatStep from 'classes/RepeatStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'warn <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span></span> =<span class="opt">:</span> <span class="param">Message</span>';
@@ -57,7 +58,7 @@ class Warn {
 						new DelimStep(":", { next: new ValueStep('pose', true), errRequired: null }),
 						new TextStep('msg', {
 							spanLines: true,
-							errRequired: step => ({ code: 'warn.messageRequired', message: "What warning message do you want to send?" }),
+							errRequired: step => new Err('warn.messageRequired', "What warning message do you want to send?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							completer: this.module.cmdLists.getCharsAwake(),
@@ -94,7 +95,7 @@ class Warn {
 		if (!charIds.length) {
 			charIds = this.lastCharIds[char.id];
 			if (!charIds) {
-				return Promise.reject({ code: 'warn.noCharacter', message: "Who do you want to warn?" });
+				return Promise.reject(new Err('warn.noCharacter', "Who do you want to warn?"));
 			}
 			params.charIds = charIds;
 		} else {

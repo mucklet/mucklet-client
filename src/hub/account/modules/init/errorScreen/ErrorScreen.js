@@ -29,7 +29,7 @@ class ErrorScreen {
 		} else {
 			this.module.auth.authenticate().catch(err => {
 				if (err.code == 'system.connectionError') {
-					err = { code: err.code, message: "Failed to connect to the server." };
+					err = new Err(err.code, "Failed to connect to the server.");
 				}
 				this._showError(err);
 			});

@@ -2,6 +2,7 @@ import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
+import Err from 'classes/Err';
 import formatDateTime from 'utils/formatDateTime';
 import escapeHtml from 'utils/escapeHtml';
 import './getPlayer.scss';
@@ -42,7 +43,7 @@ class GetPlayer {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" }),
+						errRequired: step => new Err('addPlayerRole.characterRequired', "Which player (by character)?"),
 					}),
 				}),
 			],

@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'join <span class="param">Character</span>';
 const shortDesc = 'Join a character who has summoned you';
@@ -27,7 +28,7 @@ class Join {
 			key: 'join',
 			next: [
 				this.module.cmdSteps.newAwakeCharStep({
-					errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to join?" }),
+					errRequired: step => new Err('join.charRequired', "Who do you wish to join?"),
 				}),
 			],
 			alias: [ 'mjoin' ],

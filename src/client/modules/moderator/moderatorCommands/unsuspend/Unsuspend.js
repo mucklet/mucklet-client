@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'unsuspend <span class="param">Character</span>';
 const shortDesc = 'Unsuspend a currently suspended character';
@@ -25,7 +26,7 @@ class Unsuspend {
 			key: 'unsuspend',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to unsuspend?" }),
+					errRequired: step => new Err('suspend.characterRequired', "Who do you want to unsuspend?"),
 				}),
 			],
 			value: (ctx, p) => this.unsuspend(ctx.char, p.charId

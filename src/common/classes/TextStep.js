@@ -39,7 +39,7 @@ class TextStep {
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
 			: self => new Err('textStep.required', 'There is no {name}.', { name: self.name });
-		this.errTooLong = opt.errTooLong || ((self, maxLength) => (new Err('textStep.exceedsMaxLength', 'Exceeds max length of {maxLength} characters.', { maxLength })));
+		this.errTooLong = opt.errTooLong || ((self, maxLength) => new Err('textStep.exceedsMaxLength', 'Exceeds max length of {maxLength} characters.', { maxLength }));
 		this._formatText = opt.formatText ? Object.assign({ id }, typeof opt.formatText == 'object' ? opt.formatText : null) : null;
 	}
 

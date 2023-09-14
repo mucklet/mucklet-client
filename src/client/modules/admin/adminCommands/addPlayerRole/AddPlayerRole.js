@@ -3,6 +3,7 @@ import DelimStep from 'classes/DelimStep';
 import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'add player <span class="param">Player\'s Character<span class="comment">/</span>#PlayerID</span> : role <span class="opt">=</span> <span class="param">Role</span>';
 const shortDesc = 'Add a role to a player';
@@ -56,7 +57,7 @@ class AddPlayerRole {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" }),
+						errRequired: step => new Err('addPlayerRole.characterRequired', "Which player (by character)?"),
 					}),
 				}),
 				new DelimStep(":"),

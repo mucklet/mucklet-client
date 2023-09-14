@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'follow <span class="param">Character</span>';
 const shortDesc = 'Follow a character wherever they go';
@@ -27,7 +28,7 @@ class Follow {
 			key: 'follow',
 			next: [
 				this.module.cmdSteps.newInRoomAwakeCharStep({
-					errRequired: step => ({ code: 'follow.charRequired', message: "Who do you wish to follow?" }),
+					errRequired: step => new Err('follow.charRequired', "Who do you wish to follow?"),
 				}),
 			],
 			alias: [ 'hopon' ],

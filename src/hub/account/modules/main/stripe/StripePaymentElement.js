@@ -5,6 +5,7 @@ import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import LabelToggleBox from 'components/LabelToggleBox';
+import Err from 'classes/Err';
 import formatDate from 'utils/formatDate';
 import escapeHtml from 'utils/escapeHtml';
 import * as txtRecurrence from 'utils/txtRecurrence';
@@ -210,7 +211,7 @@ class StripePaymentElement {
 		).then(result => {
 			if (result.error) {
 				console.error(result.error);
-				return Promise.reject({ code: 'stripe.error', message: result.error.message });
+				return Promise.reject(new Err('stripe.error', result.error.message));
 			}
 			if (this.opt.onSuccess) {
 				this.opt.onSuccess(result.paymentIntent);

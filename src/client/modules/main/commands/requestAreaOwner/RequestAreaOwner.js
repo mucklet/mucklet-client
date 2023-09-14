@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 
 const usageText = 'request area <span class="param">#AreaID<span class="comment">/</span>Area</span> : owner = <span class="param">Character</span>';
 const shortDesc = "Request to give area ownership to someone else's character";
@@ -29,7 +30,7 @@ class RequestAreaOwner {
 				new DelimStep("=", { errRequired: null }),
 				this.module.cmdSteps.newAnyCharStep({
 					name: "new owner",
-					errRequired: step => ({ code: 'requestAreaOwner.characterRequired', message: "Who do you want to transfer ownership to?" }),
+					errRequired: step => new Err('requestAreaOwner.characterRequired', "Who do you want to transfer ownership to?"),
 				}),
 			],
 			value: (ctx, p) => this.requestAreaOwner(ctx.char, Object.assign({ areaId: p.areaId }, p.charId

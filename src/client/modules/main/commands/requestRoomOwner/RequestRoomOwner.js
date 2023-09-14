@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 
 const usageText = 'request room owner = <span class="param">Character</span>';
 const shortDesc = "Request to give room ownership to someone else's character";
@@ -27,7 +28,7 @@ class RequestRoomOwner {
 				new DelimStep("=", { errRequired: null }),
 				this.module.cmdSteps.newAnyCharStep({
 					name: "new owner",
-					errRequired: step => ({ code: 'requestRoomOwner.characterRequired', message: "Who do you want to transfer ownership to?" }),
+					errRequired: step => new Err('requestRoomOwner.characterRequired', "Who do you want to transfer ownership to?"),
 				}),
 			],
 			value: (ctx, p) => this.requestRoomOwner(ctx.char, p.charId

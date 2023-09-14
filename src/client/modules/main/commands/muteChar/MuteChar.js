@@ -23,7 +23,7 @@ class MuteChar {
 
 		let opts = {
 			next: this.module.cmdSteps.newAnyCharStep({
-				errRequired: step => ({ code: 'muteChar.characterRequired', message: "Who do you want to mute?" }),
+				errRequired: step => new Err('muteChar.characterRequired', "Who do you want to mute?"),
 			}),
 			value: (ctx, p) => this.muteChar(ctx.player, ctx.char, p),
 		};

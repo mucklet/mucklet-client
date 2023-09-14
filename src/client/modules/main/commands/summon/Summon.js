@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'summon <span class="param">Character</span>';
 const shortDesc = 'Summon a character to join you';
@@ -27,7 +28,7 @@ class Summon {
 			key: 'summon',
 			next: [
 				this.module.cmdSteps.newAwakeCharStep({
-					errRequired: step => ({ code: 'summon.charRequired', message: "Who do you wish to summon?" }),
+					errRequired: step => new Err('summon.charRequired', "Who do you wish to summon?"),
 				}),
 			],
 			alias: [ 'msummon' ],

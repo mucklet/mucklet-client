@@ -4,6 +4,7 @@ import IDStep from 'classes/IDStep';
 import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 
 const usageText = 'set player <span class="param">Player\'s Character<span class="comment">/</span>#PlayerID</span> : <span class="param">Attribute</span> <span class="opt">=</span> <span class="param">Value</span>';
@@ -49,7 +50,7 @@ class SetPlayer {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'addPlayerRole.characterRequired', message: "Which player (by character)?" }),
+						errRequired: step => new Err('addPlayerRole.characterRequired', "Which player (by character)?"),
 					}),
 				}),
 				new DelimStep(":"),

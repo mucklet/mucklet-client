@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
+import Err from 'classes/Err';
 
 const usageText = 'go <span class="param">Keyword</span>';
 const shortDesc = 'Go to another room';
@@ -24,7 +25,7 @@ class Go {
 			next: new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
 				name: "exit",
 				textId: 'exitKey',
-				errRequired: () => ({ code: 'go.exitRequired', message: "Where do you want to go?" }),
+				errRequired: () => new Err('go.exitRequired', "Where do you want to go?"),
 			}),
 			value: this.go.bind(this),
 		});

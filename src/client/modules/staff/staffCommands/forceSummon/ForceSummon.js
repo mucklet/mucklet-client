@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'force summon <span class="param">Character</span>';
 const shortDesc = 'Summon a character by force';
@@ -33,7 +34,7 @@ class ForceSummon {
 					key: 'summon',
 					next: [
 						this.module.cmdSteps.newAnyCharStep({
-							errRequired: step => ({ code: 'join.charRequired', message: "Who do you wish to summon?" }),
+							errRequired: step => new Err('join.charRequired', "Who do you wish to summon?"),
 						}),
 					],
 					alias: [ 'msummon' ],

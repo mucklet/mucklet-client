@@ -1,6 +1,7 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import CharTagsList, { hasTags } from 'components/CharTagsList';
+import Err from 'classes/Err';
 
 // const usageText = 'tags <span class="param">Character</span>';
 // const shortDesc = "List a character's tags";
@@ -23,7 +24,7 @@ class TagsCmd {
 		this.module.cmd.addCmd({
 			key: 'tags',
 			next: this.module.cmdSteps.newAnyCharStep({
-				errRequired: step => ({ code: 'tagsCmd.characterRequired', message: "Who do you want to list tags for?" }),
+				errRequired: step => new Err('tagsCmd.characterRequired', "Who do you want to list tags for?"),
 			}),
 			value: (ctx, p) => this.tags(ctx.player, ctx.char, p),
 		});

@@ -1,6 +1,7 @@
 import { Elem, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
+import Err from 'classes/Err';
 import formatDateTime from 'utils/formatDateTime';
 import escapeHtml from 'utils/escapeHtml';
 
@@ -32,7 +33,7 @@ class Suspend {
 					spanLines: false,
 					regex: /^([\p{L}\p{N}'-]*)\s*/u,
 					token: 'listitem',
-					errRequired: step => ({ code: 'lookup.nameRequired', message: "What is the first name of the characters to lookup?" }),
+					errRequired: step => new Err('lookup.nameRequired', "What is the first name of the characters to lookup?"),
 				}),
 			],
 			value: (ctx, p) => this.lookup(ctx.char, { name: p.name }),

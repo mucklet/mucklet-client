@@ -4,6 +4,7 @@ import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
 import ValueStep from 'classes/ValueStep';
 import RepeatStep from 'classes/RepeatStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'whisper <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span><span class="comment">...</span></span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
@@ -68,7 +69,7 @@ class Whisper {
 							token: state => state.getParam('ooc') ? 'ooc' : 'text',
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							errRequired: step => ({ code: 'whisper.messageRequired', message: "What do you want to whisper?" }),
+							errRequired: step => new Err('whisper.messageRequired', "What do you want to whisper?"),
 							completer: this.module.cmdLists.getInRoomChars(),
 							formatText: true,
 						}),
@@ -106,7 +107,7 @@ class Whisper {
 		if (!charIds.length) {
 			charIds = this.lastCharIds[char.id];
 			if (!charIds) {
-				return Promise.reject({ code: 'whisper.noCharacter', message: "Who do you want to whisper to?" });
+				return Promise.reject(new Err('whisper.noCharacter', "Who do you want to whisper to?"));
 			}
 			params.charIds = charIds;
 		} else {

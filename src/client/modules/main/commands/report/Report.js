@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'report <span class="param">Character</span> <span class="opt">= <span class="param">Message</span></span>';
@@ -32,7 +33,7 @@ class Report {
 			key: 'report',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'report.characterRequired', message: "Who do you want to report?" }),
+					errRequired: step => new Err('report.characterRequired', "Who do you want to report?"),
 				}),
 				new DelimStep("=", {
 					errRequired: null,
@@ -41,7 +42,7 @@ class Report {
 							spanLines: true,
 							maxLength: () => this.module.info.getReport().reportMsgMaxLength,
 							errTooLong: communicationTooLong,
-							errRequired: step => ({ code: 'report.messageRequired', message: "What do you want to report?" }),
+							errRequired: step => new Err('report.messageRequired', "What do you want to report?"),
 							completer: this.module.cmdLists.getCharsAwake(),
 							formatText: true,
 						}),

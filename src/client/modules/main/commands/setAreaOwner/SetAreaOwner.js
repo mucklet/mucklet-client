@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 /**
  * SetAreaOwner adds the setArea attribute to set the area owner.
@@ -17,7 +18,7 @@ class SetAreaOwner {
 			key: 'owner',
 			stepFactory: () => this.module.cmdSteps.newAnyCharStep({
 				name: "new owner",
-				errRequired: step => ({ code: 'setAreaOwner.characterRequired', message: "Who do you want to set as new owner?" }),
+				errRequired: step => new Err('setAreaOwner.characterRequired', "Who do you want to set as new owner?"),
 			}),
 			desc: l10n.l('setAreaOwner.ownerDesc', "Name of the new owner. To give ownership to another player's character, use the <code>request area owner</code> command instead."),
 			value: (ctx, p) => this.setAreaOwner(ctx.char, p.charId

@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
+import Err from 'classes/Err';
 
 const usageText = 'add note <span class="param">Character</span> = <span class="param">Note</span>';
 const shortDesc = 'Add a private note for any character';
@@ -34,13 +35,13 @@ class AddNote {
 			key: 'note',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'addNote.characterRequired', message: "Who do you want to add a note for?" }),
+					errRequired: step => new Err('addNote.characterRequired', "Who do you want to add a note for?"),
 				}),
 				new DelimStep("=", {
 					next: [
 						new TextStep('text', {
 							spanLines: true,
-							errRequired: step => ({ code: 'addNote.noteRequired', message: "What is the note you want to add?" }),
+							errRequired: step => new Err('addNote.noteRequired', "What is the note you want to add?"),
 							completer: this.module.cmdLists.getAllChars(),
 							formatText: true,
 						}),

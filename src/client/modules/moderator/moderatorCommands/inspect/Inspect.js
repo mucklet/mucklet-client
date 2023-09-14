@@ -1,6 +1,7 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import IDStep from 'classes/IDStep';
+import Err from 'classes/Err';
 import formatDateTime from 'utils/formatDateTime';
 import getObjectProperty from 'utils/getObjectProperty';
 import escapeHtml from 'utils/escapeHtml';
@@ -43,7 +44,7 @@ class Inspect {
 				new IDStep('charId', {
 					name: "character name or ID",
 					else: this.module.cmdSteps.newAnyCharStep({
-						errRequired: step => ({ code: 'inspect.characterRequired', message: "Who do you want to inspect?" }),
+						errRequired: step => new Err('inspect.characterRequired', "Who do you want to inspect?"),
 					}),
 				}),
 			],

@@ -46,20 +46,20 @@ class Focus {
 							items: [{ key: 'all' }],
 						}), {
 							name: "focus at",
-							errNotFound: step => ({ code: 'focus.atNotFound', message: "Did you mean to focus @all?" }),
-							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to focus @all?" }),
+							errNotFound: step => new Err('focus.atNotFound', "Did you mean to focus @all?"),
+							errRequired: step => new Err('focus.atRequired', "Did you mean to focus @all?"),
 						}),
-						new ErrorStep(/\s*(=)/, { code: 'focus.colorNotAllowed', message: "Highlight colors not avalable for @all." }),
+						new ErrorStep(/\s*(=)/, new Err('focus.colorNotAllowed', "Highlight colors not avalable for @all.")),
 					],
 					else: [
 						this.module.cmdSteps.newAnyCharStep({
-							errRequired: step => ({ code: 'focus.characterRequired', message: "Who do you want to focus on?" }),
+							errRequired: step => new Err('focus.characterRequired', "Who do you want to focus on?"),
 						}),
 						new DelimStep("=", {
 							errRequired: null,
 							next: new ListStep('color', this.colors, {
 								name: "focus color",
-								errRequired: step => ({ code: 'focus.colorRequired', message: "What focus color do you want?" }),
+								errRequired: step => new Err('focus.colorRequired', "What focus color do you want?"),
 							}),
 						}),
 					],

@@ -1,6 +1,7 @@
 import { Txt } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 import awaitMailSent from 'utils/awaitMailSent';
 
 /**
@@ -41,7 +42,7 @@ class VerifyEmail {
 		this.model.set({ isSendingVerify: true });
 		return (account
 			? Promise.resolve(account)
-			: Promise.reject({ code: 'verifyEmail.missingAccount', message: "Not possible to send email verification from this domain." })
+			: Promise.reject(new Err('verifyEmail.missingAccount', "Not possible to send email verification from this domain."))
 		)
 			.then(account => account.call('sendEmailVerification'))
 			.then(awaitMailSent).then(() => {

@@ -40,7 +40,7 @@ class LoginVerify {
 		this.code = q.code || "";
 
 		if (!this.code) {
-			this._showError({ code: 'loginVerify.missingCode', message: "Missing verification code." });
+			this._showError(new Err('loginVerify.missingCode', "Missing verification code."));
 		} else {
 			this.authenticate();
 		}
@@ -164,7 +164,7 @@ class LoginVerify {
 	_validateCode() {
 		let q = uri.getQuery();
 		if (!q.code) {
-			return this._showError({ code: 'loginVerify.missingCode', message: "Missing verification code." });
+			return this._showError(new Err('loginVerify.missingCode', "Missing verification code."));
 		}
 
 		return q.code;

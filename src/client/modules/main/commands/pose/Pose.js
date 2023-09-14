@@ -2,6 +2,7 @@ import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import ValueStep from 'classes/ValueStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'pose <span class="param">Message</span>';
@@ -31,7 +32,7 @@ class Pose {
 				new TextStep('msg', {
 					spanLines: true,
 					token: state => state.getParam('ooc') ? 'ooc' : 'text',
-					errRequired: step => ({ code: 'pose.messageRequired', message: "What is your pose message?" }),
+					errRequired: step => new Err('pose.messageRequired', "What is your pose message?"),
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
 					completer: this.module.cmdLists.getInRoomChars(),

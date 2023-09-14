@@ -2,7 +2,7 @@ import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 import IDStep from 'classes/IDStep';
-
+import Err from 'classes/Err';
 
 const usageText = 'transfer char <span class="param">Character</span> = <span class="param">@Username<span class="comment">/</span>Player\'s Character<span class="comment">/</span>#UserID</span>';
 const shortDesc = 'Transfer character ownership to another player';
@@ -31,7 +31,7 @@ class TransferChar {
 			key: 'char',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'transferChar.characterRequired', message: "What character do you want to transfer ownership of?" }),
+					errRequired: step => new Err('transferChar.characterRequired', "What character do you want to transfer ownership of?"),
 				}),
 				new DelimStep("="),
 				new DelimStep("@", {
@@ -47,7 +47,7 @@ class TransferChar {
 							id: 'ownerCharId',
 							textId: 'ownerCharName',
 							name: "user",
-							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),
+							errRequired: step => new Err('getUser.userRequired', "Which user?"),
 						}),
 					}),
 				}),

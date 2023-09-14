@@ -109,7 +109,7 @@ class Cmd {
 		let err = state.error;
 		if (err) {
 			return Promise.reject(typeof err == 'string'
-				? { code: 'cmd.parseError', message: err }
+				? new Err('cmd.parseError', err)
 				: err.code == 'cmd.commandNotFound'
 					? this._resolveNotFound(ctx, err, p.unknown || null)
 					: err,

@@ -37,7 +37,7 @@ class PasswordReset {
 		this.code = q.code || "";
 
 		if (!this.code) {
-			this._showError({ code: 'passwordReset.missingResetCode', message: "Missing reset code." });
+			this._showError(new Err('passwordReset.missingResetCode', "Missing reset code."));
 		} else {
 			this.validateCode(this.code)
 				.then(result => {

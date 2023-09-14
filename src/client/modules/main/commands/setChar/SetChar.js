@@ -3,6 +3,7 @@ import DelimStep from 'classes/DelimStep';
 import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 
 const usageText = 'set char <span class="param">Character</span> : <span class="param">Attribute</span> <span class="opt">=</span> <span class="param">Value</span>';
@@ -33,7 +34,7 @@ class SetChar {
 			key: 'char',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'transferChar.characterRequired', message: "What character do you want to set?" }),
+					errRequired: step => new Err('transferChar.characterRequired', "What character do you want to set?"),
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.charAttr, {

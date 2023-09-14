@@ -4,6 +4,7 @@ import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'add user <span class="param">@Username<span class="comment">/</span>#UserID<span class="comment">/</span>Character</span> : title <span class="opt">=</span> <span class="param">Title</span>';
 const shortDesc = 'Add a title to a user';
@@ -63,7 +64,7 @@ class AddUserTitle {
 						else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 							textId: 'charName',
 							name: "user",
-							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),
+							errRequired: step => new Err('getUser.userRequired', "Which user?"),
 						}),
 					}),
 				}),

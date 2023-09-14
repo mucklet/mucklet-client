@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
+import Err from 'classes/Err';
 import { itemNameTooLong } from 'utils/cmdErr';
 
 const usageText = 'create area <span class="param">Name</span>';
@@ -25,7 +26,7 @@ class CreateArea {
 			key: 'area',
 			next: [
 				new TextStep('name', {
-					errRequired: () => ({ code: 'createArea.nameRequired', message: "What should the area be called?" }),
+					errRequired: () => new Err('createArea.nameRequired', "What should the area be called?"),
 					maxLength: () => module.info.getCore().itemNameMaxLength,
 					errTooLong: itemNameTooLong,
 				}),

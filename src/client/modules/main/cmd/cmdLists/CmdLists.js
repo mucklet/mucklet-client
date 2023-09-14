@@ -36,7 +36,7 @@ class CmdLists {
 			return (c && c.inRoom.chars) || null;
 		}, {
 			validation: (key, char) => char.state != 'awake'
-				? { code: 'cmdLists.charNotAwake', message: "Character is not awake." }
+				? new Err('cmdLists.charNotAwake', "Character is not awake.")
 				: null,
 		});
 		this.inRoomPuppets = new CharList(() => {
@@ -44,7 +44,7 @@ class CmdLists {
 			return (c && c.inRoom.chars) || null;
 		}, {
 			validation: (key, char) => char.type != 'puppet'
-				? { code: 'cmdLists.charNotAPuppet', message: "Character is not a puppet." }
+				? new Err('cmdLists.charNotAPuppet', "Character is not a puppet.")
 				: null,
 		});
 		this.charsAwake = new CharList(() => this.module.charsAwake.getCollection(), {
