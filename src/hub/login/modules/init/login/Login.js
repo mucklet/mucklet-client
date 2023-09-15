@@ -123,6 +123,11 @@ class Login {
 		if (email) {
 			formData.append('email', email);
 		}
+		// Include promo code if available
+		let p = URLSearchParams ? new URLSearchParams(window.location.search).get('p') : '';
+		if (p) {
+			formData.append('p', p);
+		}
 
 		return fetch(registerUrl, {
 			body: formData,
