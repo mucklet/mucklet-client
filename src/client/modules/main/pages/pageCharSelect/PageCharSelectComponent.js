@@ -5,7 +5,6 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import PanelSection from 'components/PanelSection';
 import Collapser from 'components/Collapser';
-import PopupTip from 'components/PopupTip';
 import PageCharSelectChar from './PageCharSelectChar';
 import PageCharSelectPuppet from './PageCharSelectPuppet';
 
@@ -16,9 +15,6 @@ class PageCharSelectComponent {
 		this.state = state;
 		this.close = close;
 		this.model = null;
-
-		// Bind callbacks
-		this._onCreate = this._onCreate.bind(this);
 	}
 
 	render(el) {
@@ -37,28 +33,23 @@ class PageCharSelectComponent {
 
 		let chars = this.module.player.getChars();
 		this.elem = new Elem(n => n.elem('div', { className: 'pagecharselect' }, [
-			n.component(new CollectionComponent(
+			n.component(new CollectionList(
 				chars,
-				new CollectionList(
-					chars,
-					char => new PageCharSelectChar(this.module, char, this.model, this.close),
-					{ className: 'pagecharselect--chars' },
-				),
-				(col, c, ev) => {
-					if (ev) {
-						if (col.length) {
-							this._closePopupTip();
-						} else {
-							this._openPopupTip();
-						}
-					}
-				},
+				char => new PageCharSelectChar(this.module, char, this.model, this.close),
+				{ className: 'pagecharselect--chars' },
 			)),
 			n.elem('div', { className: 'pagecharselect--add' }, [
-				n.elem('add', 'button', { events: { click: this._onCreate }, className: 'btn icon-left' }, [
-					n.component(new FAIcon('plus')),
-					n.component(new Txt(l10n.l('pageCharSelect.createNew', "Create New"))),
-				]),
+				n.component(new CollectionComponent(
+					chars,
+					new Elem(n => n.elem('add', 'button', { events: { click: () => this._onCreate(chars.length == 0) }, className: 'btn icon-left' }, [
+						n.component(new FAIcon('plus')),
+						n.component(new Txt(l10n.l('pageCharSelect.createNew', "Create New"))),
+					])),
+					(col, c, ev) => col.length == 0
+						? this._openTip(c.getElement())
+						: this._closeTip(),
+					{ postrenderUpdate: true },
+				)),
 			]),
 			n.component(new CollectionComponent(
 				this.module.player.getPuppets(),
@@ -69,54 +60,35 @@ class PageCharSelectComponent {
 				),
 			)),
 		]));
-		let rel = this.elem.render(el);
-		if (chars.length == 0) {
-			this._openPopupTip();
-		}
-		return rel;
+
+		return this.elem.render(el);
 	}
 
 	unrender() {
 		if (this.elem) {
+			this._closeTip(),
 			Object.assign(this.state, this.model.props);
 			this.model = null;
 			this.elem.unrender();
 			this.elem = null;
 		}
-		this._closePopupTip();
 	}
 
-	_onCreate() {
-		this.module.createLimits.validateOwnedChars(() => this.module.dialogCreateChar.open());
+	_onCreate(onboarding) {
+		this.module.createLimits.validateOwnedChars(() => this.module.dialogCreateChar.open({ onboarding }));
 	}
 
-	_closePopupTip() {
-		if (this.popupTip) {
-			this.popupTip.unrender();
-			this.popupTip = null;
-		}
-	}
-
-	_openPopupTip() {
-		let el = this.module.screen.getFader().getElement();
-		if (!el || !this.elem || this.popupTip) return;
-
-		let rect = this.elem.getNode('add').getBoundingClientRect();
-
-		this.popupTip = new PopupTip(new Elem(n => n.elem('div', { className: 'pagecharselect--add-tip-body' }, [
-			n.component(new Txt(l10n.l('pageCharSelect.getStarted', "Get started"), { tagName: 'h3' })),
-			n.component(new Txt(l10n.l('pageCharSelect.clickCreateNew', "You have no characters yet. Click \"Create New\" to create your first."))),
-		])), {
-			noIcon: true,
-			noToggle: true,
-			position: 'right',
-			className: 'pagecharselect--add-tip popuptip--width-m',
-			attributes: {
-				style: "top:" + (rect.top + rect.bottom) / 2 + "px; left: " + rect.right + "px",
-			},
+	_openTip(el) {
+		this.module.onboarding.openTip('pageCharCreateNew', el, {
+			priority: 20,
+			position: [ 'right', 'bottom' ],
+			title: l10n.l('pageCharSelect.getStarted', "Get started"),
+			content: l10n.l('pageCharSelect.clickCreateNew', "You have no characters yet. Click \"Create New\" to create your first."),
 		});
+	}
 
-		this.popupTip.render(el);
+	_closeTip() {
+		this.module.onboarding.closeTip('pageCharCreateNew');
 	}
 }
 

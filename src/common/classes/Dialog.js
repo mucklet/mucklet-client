@@ -101,6 +101,14 @@ class Dialog {
 	getContent() {
 		return this.content || null;
 	}
+
+	/**
+	 * Returns the container element for the dialog.
+	 * @returns {Component} Container element
+	 */
+	getContainer() {
+		return this.comp;
+	}
 }
 
 export default Dialog;
