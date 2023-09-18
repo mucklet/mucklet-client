@@ -61,7 +61,6 @@ class DialogCreateChar {
 	/**
 	 * Opens a dialog to create a new character.
 	 * @param {object} [opt] Optional parameters.
-	 * @param {boolean} [opt.onboarding] Flag to tell if we are onboarding a new player. Defaults to false.
 	 */
 	open(opt) {
 		if (this.dialog) return;
@@ -71,8 +70,6 @@ class DialogCreateChar {
 			surname: "",
 			focus: null,
 		}, eventBus: this.app.eventBus });
-
-		let onboarding = !!opt?.onboarding;
 
 		let nameComponent = new Input("", {
 			events: {
@@ -152,7 +149,7 @@ class DialogCreateChar {
 						]),
 					])),
 					(m, c) => {
-						if (onboarding) {
+						if (this.module.onboarding.getModel().createChar) {
 							this._setTip(m, ctx, nameComponent, surnameComponent, buttonComponent);
 						}
 					},

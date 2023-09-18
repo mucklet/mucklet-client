@@ -1,6 +1,6 @@
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
-import { relistenModel } from 'utils/listenModel';
+import { relistenResource } from 'utils/listenResource';
 
 import RoutePaymentsComponent from './RoutePaymentsComponent';
 import './routePayments.scss';
@@ -69,8 +69,8 @@ class RoutePayments {
 	_setState(state) {
 		state = state || {};
 		return this.model.set({
-			payment: relistenModel(this.model.payment, state.payment),
-			user: relistenModel(this.model.user, state.user),
+			payment: relistenResource(this.model.payment, state.payment),
+			user: relistenResource(this.model.user, state.user),
 			pageNr: state.user ? state.pageNr || 0 : null,
 			page: state.page || (state.payment ? 'payment' : null),
 			error: state.error || null,

@@ -1,5 +1,5 @@
 import { Model } from 'modapp-resource';
-import { relistenModel } from 'utils/listenModel';
+import { relistenResource } from 'utils/listenResource';
 import OverviewAccountEmailComponent from './OverviewAccountEmailComponent';
 
 /**
@@ -29,7 +29,7 @@ class OverviewAccountEmail {
 		// Get user model to alert on unverified email.
 		this.module.auth.getUserPromise().then(user => {
 			if (this.model) {
-				this.user = relistenModel(this.user, user, this._onUserChange);
+				this.user = relistenResource(this.user, user, this._onUserChange);
 				this._onUserChange();
 			}
 		});
@@ -49,7 +49,7 @@ class OverviewAccountEmail {
 	}
 
 	dispose() {
-		this.user = relistenModel(this.user, null, this._onUserChange);
+		this.user = relistenResource(this.user, null, this._onUserChange);
 		this.module.routeOverview.removeTool('email');
 		this.model = null;
 	}

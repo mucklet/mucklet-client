@@ -1,5 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { CollectionList, CollectionComponent } from 'modapp-resource-component';
+import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-resource-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
@@ -39,13 +39,13 @@ class PageCharSelectComponent {
 				{ className: 'pagecharselect--chars' },
 			)),
 			n.elem('div', { className: 'pagecharselect--add' }, [
-				n.component(new CollectionComponent(
-					chars,
-					new Elem(n => n.elem('add', 'button', { events: { click: () => this._onCreate(chars.length == 0) }, className: 'btn icon-left' }, [
+				n.component(new ModelComponent(
+					this.module.onboarding.getModel(),
+					new Elem(n => n.elem('add', 'button', { events: { click: () => this._onCreate() }, className: 'btn icon-left' }, [
 						n.component(new FAIcon('plus')),
 						n.component(new Txt(l10n.l('pageCharSelect.createNew', "Create New"))),
 					])),
-					(col, c, ev) => col.length == 0
+					(m, c) => m.createChar
 						? this._openTip(c.getElement())
 						: this._closeTip(),
 					{ postrenderUpdate: true },
@@ -74,8 +74,8 @@ class PageCharSelectComponent {
 		}
 	}
 
-	_onCreate(onboarding) {
-		this.module.createLimits.validateOwnedChars(() => this.module.dialogCreateChar.open({ onboarding }));
+	_onCreate() {
+		this.module.createLimits.validateOwnedChars(() => this.module.dialogCreateChar.open());
 	}
 
 	_openTip(el) {

@@ -1,6 +1,8 @@
 import { Elem, Txt } from 'modapp-base-component';
+import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PopupTip from 'components/PopupTip';
+import listenResource from 'utils/listenResource';
 import './onboarding.scss';
 
 /**
@@ -14,15 +16,38 @@ class Onboarding {
 		this.app = app;
 		this.params = params;
 
+		// Bind callbacks
+		this._updateModel = this._updateModel.bind(this);
+
 		this.app.require([
 			'screen',
+			'player',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
+		this.model = new Model({ data: {
+			createChar: false,
+			wakeupChar: false,
+		}, eventBus: this.app.eventBus });
+
+		this.player = null;
+
+		this.module.player.getPlayerPromise().then(player => {
+			if (!this.model) return;
+
+			this.player = player;
+			this._setListeners(true);
+			this._updateModel();
+		});
+
 		this.tips = [];
+	}
+
+	getModel() {
+		return this.model;
 	}
 
 	/**
@@ -99,15 +124,17 @@ class Onboarding {
 
 	closeTip(tipId) {
 		let current = this._current();
-		if (current.tipId == tipId) {
-			this._unrenderTip(current);
-			this._clear(tipId);
-			current = this._current();
-			if (current) {
-				this._renderTip(current);
+		if (current) {
+			if (current.tipId == tipId) {
+				this._unrenderTip(current);
+				this._clear(tipId);
+				current = this._current();
+				if (current) {
+					this._renderTip(current);
+				}
+			} else {
+				this._clear(tipId);
 			}
-		} else {
-			this._clear(tipId);
 		}
 	}
 
@@ -117,6 +144,41 @@ class Onboarding {
 
 	_clear(tipId) {
 		this.tips = this.tips.filter(o => o.tipId != tipId);
+	}
+
+	_setListeners(on) {
+		listenResource(this.player.chars, on, this._updateModel, 'add');
+		listenResource(this.player.chars, on, this._updateModel, 'remove');
+		listenResource(this.player.controlled, on, this._updateModel, 'add');
+	}
+
+	_updateModel() {
+		if (!this.player) return;
+
+		let o = {
+			createChar: false,
+			wakeupChar: false,
+		};
+
+		if (!this.player.chars.length) {
+			o.createChar = true;
+		} else {
+			o.wakeupChar = true;
+			for (let c of this.player.chars) {
+				if (c.lastAwake) {
+					o.wakeupChar = false;
+					break;
+				}
+			}
+		}
+
+		this.model.set(o);
+	}
+
+	dispose() {
+		this._setListeners(false);
+		this.model = null;
+		this.player = null;
 	}
 }
 
