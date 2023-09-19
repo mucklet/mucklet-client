@@ -35,7 +35,7 @@ class PageCharSelectComponent {
 		this.elem = new Elem(n => n.elem('div', { className: 'pagecharselect' }, [
 			n.component(new CollectionList(
 				chars,
-				char => new PageCharSelectChar(this.module, char, this.model, this.close),
+				char => new PageCharSelectChar(this.module, char, chars, this.model, this.close),
 				{ className: 'pagecharselect--chars' },
 			)),
 			n.elem('div', { className: 'pagecharselect--add' }, [
