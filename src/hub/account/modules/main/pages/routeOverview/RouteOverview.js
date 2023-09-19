@@ -1,6 +1,6 @@
 import { Collection, Model, sortOrderCompare } from 'modapp-resource';
 import l10n from 'modapp-l10n';
-import { relistenModel } from 'utils/listenModel';
+import { relistenResource } from 'utils/listenResource';
 
 import RouteOverviewComponent from './RouteOverviewComponent';
 import './routeOverview.scss';
@@ -125,7 +125,7 @@ class RouteOverview {
 	 * @returns {Promise} Promise to user being set.
 	 */
 	_setState(user, ctx) {
-		user = relistenModel(this.model.user, user);
+		user = relistenResource(this.model.user, user);
 		if (this.model.ctx && this.model.ctx != ctx) {
 			this._disposeCtx(this.model.ctx, this.model.user);
 		}
