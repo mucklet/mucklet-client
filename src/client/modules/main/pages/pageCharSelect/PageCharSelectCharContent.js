@@ -17,6 +17,26 @@ class PageCharSelectCharContent {
 	render(el) {
 		let o = {};
 		let actionFader = new Fader();
+		let wakeupComponent = new ModelComponent(
+			this.module.onboarding.getModel(),
+			new Elem(n => n.elem('div', { className: 'badge--select badge--margin' }, [
+				n.elem('button', { className: 'btn medium primary flex-1', events: {
+					click: (el, e) => {
+						this._wakeupChar();
+						e.stopPropagation();
+					},
+				}}, [
+					n.component(new FAIcon('sign-in')),
+					n.component(new ModelTxt(this.char, m => m.puppeteer
+						? l10n.l('pageCharSelect.control', "Control")
+						: l10n.l('pageCharSelect.wakeUp', "Wake up"),
+					)),
+				]),
+			])),
+			(m, c) => this._setTip(c, m),
+			{ postrenderUpdate: true },
+		);
+
 		this.elem = new Elem(n => n.elem('div', [
 			n.elem('div', { className: 'badge--select badge--margin' }, [
 				n.elem('button', { className: 'badge--faicon iconbtn medium solid', events: {
@@ -79,20 +99,7 @@ class PageCharSelectCharContent {
 						o.release = action;
 
 					} else if (m.state == 'asleep' || m.puppeteer) {
-						action = o.wakeup || new Elem(n => n.elem('div', { className: 'badge--select badge--margin' }, [
-							n.elem('button', { className: 'btn medium primary flex-1', events: {
-								click: (el, e) => {
-									this._wakeupChar();
-									e.stopPropagation();
-								},
-							}}, [
-								n.component(new FAIcon('sign-in')),
-								n.component(new ModelTxt(this.char, m => m.puppeteer
-									? l10n.l('pageCharSelect.control', "Control")
-									: l10n.l('pageCharSelect.wakeUp', "Wake up"),
-								)),
-							]),
-						]));
+						action = wakeupComponent;
 						o.wakeup = action;
 					}
 					actionFader.setComponent(action);
@@ -106,6 +113,7 @@ class PageCharSelectCharContent {
 
 	unrender() {
 		if (this.elem) {
+			this._closeTip();
 			this.elem.unrender();
 			this.elem = null;
 		}
@@ -132,6 +140,30 @@ class PageCharSelectCharContent {
 	_releaseChar() {
 		return this.module.player.getPlayer().call('releaseChar', { charId: this.char.id })
 			.catch(err => this.module.confirm.openError(err));
+	}
+
+	_setTip(component, onboarding) {
+		let el = component.getElement();
+
+		// To show the onboarding tip, check the conditions
+		if (el && onboarding.wakeupChar) {
+			this._openTip(el);
+		} else {
+			this._closeTip();
+		}
+	}
+
+	_openTip(el) {
+		this.module.onboarding.openTip('pageCharSelectWakeup', el, {
+			priority: 20,
+			position: [ 'right', 'bottom' ],
+			title: l10n.l('pageCharSelect.getStarted', "Get started"),
+			content: l10n.l('pageCharSelect.clickWakeup', "Click \"Wake up\" to start exploring a world of roleplay!"),
+		});
+	}
+
+	_closeTip() {
+		this.module.onboarding.closeTip('pageCharSelectWakeup');
 	}
 
 }
