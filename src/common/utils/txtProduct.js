@@ -34,6 +34,11 @@ const txtProductFeatures = {
 			longDesc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room, instead of 3."),
 		},
 		{
+			title: l10n.l('txtProduct.instanceRooms', "Instance rooms"),
+			desc: l10n.l('txtProduct.instanceRoomsDesc', "Create rooms hosting multiple instances"),
+			longDesc: l10n.l('txtProduct.instanceRoomsDesc', "Create rooms and areas where characters can play in private instances."),
+		},
+		{
 			title: l10n.l('txtProduct.botAccess', "Bot access"),
 			desc: l10n.l('txtProduct.botAccessDesc', "Create and connect bot characters"),
 			longDesc: l10n.l('txtProduct.botAccessDesc', "Connect your characters using bot tokens, and control them with scripts."),
