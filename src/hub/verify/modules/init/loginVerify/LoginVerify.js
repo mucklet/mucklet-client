@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { uri } from 'modapp-utils';
+import Err from 'classes/Err';
 import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
@@ -39,7 +40,7 @@ class LoginVerify {
 		this.code = q.code || "";
 
 		if (!this.code) {
-			this._showError({ code: 'loginVerify.missingCode', message: "Missing verification code." });
+			this._showError(new Err('loginVerify.missingCode', "Missing verification code."));
 		} else {
 			this.authenticate();
 		}
@@ -163,7 +164,7 @@ class LoginVerify {
 	_validateCode() {
 		let q = uri.getQuery();
 		if (!q.code) {
-			return this._showError({ code: 'loginVerify.missingCode', message: "Missing verification code." });
+			return this._showError(new Err('loginVerify.missingCode', "Missing verification code."));
 		}
 
 		return q.code;
@@ -183,7 +184,7 @@ class LoginVerify {
 				return resp.json().then(err => {
 					throw err;
 				}).catch(err => {
-					throw { code: 'loginVerify.verificationFailedWithStatus', message: "Verification failed with status {status}.", data: { status: resp.status }};
+					throw new Err('loginVerify.verificationFailedWithStatus', "Verification failed with status {status}.", { status: resp.status });
 				});
 			}
 			return resp.json().then(result => {

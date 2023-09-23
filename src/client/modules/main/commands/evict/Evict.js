@@ -2,6 +2,7 @@ import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import ItemList from 'classes/ItemList';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 
 const usageText = 'evict <span class="param">Character</span> <span class="opt">: <span class="param">Type</span> <span class="opt">=</span> <span class="param">Value</span></span>';
@@ -35,7 +36,7 @@ class Evict {
 			key: 'evict',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'evict.characterRequired', message: "Who do you want to evict?" }),
+					errRequired: step => new Err('evict.characterRequired', "Who do you want to evict?"),
 				}),
 				new DelimStep(":", {
 					next: new ListStep('type', this.evictType, {

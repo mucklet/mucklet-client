@@ -1,0 +1,17 @@
+@import '~scss/variables';
+
+.onboarding {
+
+	&--tip {
+		z-index: 1002;
+	}
+
+	&--tip-body {
+		h3 {
+			padding: 2px 0 8px;
+		}
+		span {
+			font-size: $font-size-small;
+		}
+	}
+}

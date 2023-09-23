@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'watch <span class="param">Character</span>';
 const shortDesc = 'Add a watch for a character';
@@ -24,7 +25,7 @@ class Watch {
 			key: 'watch',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'watch.characterRequired', message: "Who do you want to watch for?" }),
+					errRequired: step => new Err('watch.characterRequired', "Who do you want to watch for?"),
 				}),
 			],
 			alias: [ 'watchfor', 'wf' ],

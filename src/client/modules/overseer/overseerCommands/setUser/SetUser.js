@@ -3,6 +3,7 @@ import DelimStep from 'classes/DelimStep';
 import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 
 const usageText = 'set user <span class="param">@Username<span class="comment">/</span>User\'s Character</span> : <span class="param">Attribute</span> <span class="opt">=</span> <span class="param">Value</span>';
@@ -73,7 +74,7 @@ class SetUser {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "user",
-						errRequired: step => ({ code: 'setUser.characterRequired', message: "Which user?" }),
+						errRequired: step => new Err('setUser.characterRequired', "Which user?"),
 					}),
 				}),
 				new DelimStep(":"),

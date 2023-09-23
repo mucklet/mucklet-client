@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'lead <span class="param">Character</span>';
 const shortDesc = 'Have a character follow you wherever you go';
@@ -27,7 +28,7 @@ class Lead {
 			key: 'lead',
 			next: [
 				this.module.cmdSteps.newInRoomAwakeCharStep({
-					errRequired: step => ({ code: 'lead.charRequired', message: "Who do you wish to lead?" }),
+					errRequired: step => new Err('lead.charRequired', "Who do you wish to lead?"),
 				}),
 			],
 			alias: [ 'carry' ],

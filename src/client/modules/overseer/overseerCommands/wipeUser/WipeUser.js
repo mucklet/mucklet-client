@@ -4,6 +4,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import IDStep from 'classes/IDStep';
 import TextStep from 'classes/TextStep';
+import Err from 'classes/Err';
 import FAIcon from 'components/FAIcon';
 
 const usageText = 'wipe user <span class="param">#UserID<span class="comment">/</span>@Username<span class="comment">/</span>Character</span>';
@@ -50,7 +51,7 @@ class WipeUser {
 						else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 							textId: 'charName',
 							name: "user",
-							errRequired: step => ({ code: 'wipeUser.userRequired', message: "Which user do you want to wipe?" }),
+							errRequired: step => new Err('wipeUser.userRequired', "Which user do you want to wipe?"),
 						}),
 					}),
 				}),

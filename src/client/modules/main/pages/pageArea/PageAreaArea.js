@@ -8,7 +8,7 @@ import NameSection from 'components/NameSection';
 import PanelSection from 'components/PanelSection';
 import FormatTxt from 'components/FormatTxt';
 import AreaChildrenModel from 'classes/AreaChildrenModel';
-import listenModel, { relistenModel } from 'utils/listenModel';
+import listenResource, { relistenResource } from 'utils/listenResource';
 import PageAreaLocation from './PageAreaLocation';
 import PageAreaImage from './PageAreaImage';
 
@@ -214,9 +214,9 @@ class PageAreaArea {
 	_getAndListenInLocations() {
 		if (!this.listeners) {
 			this.listeners = { char: this.ctrl, room: null, areas: [] };
-			listenModel(this.ctrl, true, this._onLocationsChange);
+			listenResource(this.ctrl, true, this._onLocationsChange);
 		}
-		this.listeners.room = relistenModel(this.listeners.room, this.ctrl.inRoom, this._onLocationsChange);
+		this.listeners.room = relistenResource(this.listeners.room, this.ctrl.inRoom, this._onLocationsChange);
 		let o = {};
 		let areaIdx = 0;
 		let areas = this.listeners.areas;
@@ -226,7 +226,7 @@ class PageAreaArea {
 			let area = room.area;
 			// Traverse areas as long as we have parents that does not loop.
 			while (area && areas.slice(0, areaIdx).indexOf(area) < 0) {
-				areas[areaIdx] = relistenModel(areas[areaIdx], area, this._onLocationsChange);
+				areas[areaIdx] = relistenResource(areas[areaIdx], area, this._onLocationsChange);
 				o[area.id] = area.pop;
 				area = area.parent;
 				areaIdx++;
@@ -234,7 +234,7 @@ class PageAreaArea {
 		}
 		// Stop listening to additional areas
 		for (let i = areas.length - 1; i >= areaIdx; i--) {
-			listenModel(areas[i], false, this._onLocationsChange);
+			listenResource(areas[i], false, this._onLocationsChange);
 			areas.pop();
 		}
 		return o;
@@ -242,10 +242,10 @@ class PageAreaArea {
 
 	_unlistenInLocations() {
 		if (this.listeners) {
-			listenModel(this.listeners.char, false, this._onLocationsChange);
-			listenModel(this.listeners.room, false, this._onLocationsChange);
+			listenResource(this.listeners.char, false, this._onLocationsChange);
+			listenResource(this.listeners.room, false, this._onLocationsChange);
 			for (let area of this.listeners.areas) {
-				listenModel(area, false, this._onLocationsChange);
+				listenResource(area, false, this._onLocationsChange);
 			}
 		}
 		this.listeners = null;

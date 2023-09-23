@@ -4,6 +4,7 @@ import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
 import ValueStep from 'classes/ValueStep';
 import RepeatStep from 'classes/RepeatStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'message <span class="opt"><span class="param">Character</span> <span class="opt">, <span class="param">Character</span></span><span class="comment">...</span></span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
@@ -65,7 +66,7 @@ class Message {
 						new TextStep('msg', {
 							spanLines: true,
 							token: state => state.getParam('ooc') ? 'ooc' : 'text',
-							errRequired: step => ({ code: 'message.messageRequired', message: "What do you want to message?" }),
+							errRequired: step => new Err('message.messageRequired', "What do you want to message?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							completer: this.module.cmdLists.getCharsAwake(),
@@ -105,7 +106,7 @@ class Message {
 		if (!charIds.length) {
 			charIds = this.lastCharIds[char.id];
 			if (!charIds) {
-				return Promise.reject({ code: 'message.noCharacter', message: "Who do you want to message?" });
+				return Promise.reject(new Err('message.noCharacter', "Who do you want to message?"));
 			}
 			params.charIds = charIds;
 		} else {

@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 import { keyTooLong, itemNameTooLong } from 'utils/cmdErr';
 
 const usageText = 'create roomprofile <span class="param">Keyword</span> = <span class="param">Name</span>';
@@ -45,7 +46,7 @@ class CreateRoomProfile {
 							name: "profile name",
 							maxLength: () => this.module.info.getCore().itemNameMaxLength,
 							errTooLong: itemNameTooLong,
-							errRequired: step => ({ code: 'createRoomProfile.nameRequired', message: "What would the descriptive name of the profile be?" }),
+							errRequired: step => new Err('createRoomProfile.nameRequired', "What would the descriptive name of the profile be?"),
 						}),
 					],
 				}),

@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import fullname from 'utils/fullname';
 import formatDateTime from 'utils/formatDateTime';
@@ -90,14 +91,14 @@ class Get {
 			case 'created':
 				let c = this.module.player.getOwnedChar(char.id);
 				if (!c) {
-					this.module.charLog.logError(char, { code: 'get.charNotOwned', message: "You must own the character." });
+					this.module.charLog.logError(char, new Err('get.charNotOwned', "You must own the character."));
 				} else {
 					console.log("C: ", c);
 					this.module.charLog.logInfo(char, l10n.l('get.roomHasOwner', "{fullname} was created {created}", { fullname: fullname(c), created: formatDateTime(new Date(c.created), { showYear: true }) }));
 				}
 				break;
 			default:
-				this.module.charLog.logError(char, { code: 'get.unknownAttribute', message: "Unknown attribute: {attr}", data: { attr }});
+				this.module.charLog.logError(char, new Err('get.unknownAttribute', "Unknown attribute: {attr}", { attr }));
 		}
 	}
 }

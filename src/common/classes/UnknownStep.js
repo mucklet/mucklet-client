@@ -1,3 +1,5 @@
+import Err from './Err';
+
 /**
  * UnknownStep consumes all that is left of the stream and issues an error if
  * non-whitespace characters are found.
@@ -17,7 +19,7 @@ class UnknownStep {
 			return 'unknown';
 		}
 
-		s.setError({ code: 'unknownStep.unableToParse', message: 'I don\'t understand "{match}".', data: { match: m[1] }});
+		s.setError(new Err('unknownStep.unableToParse', 'I don\'t understand "{match}".', { match: m[1] }));
 		return 'error';
 	}
 }

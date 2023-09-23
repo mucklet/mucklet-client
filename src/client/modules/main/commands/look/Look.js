@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'look <span class="param">Character</span>';
 const shortDesc = 'Look at a character in the room';
@@ -27,7 +28,7 @@ class Look {
 		this.module.cmd.addCmd({
 			key: 'look',
 			next: this.module.cmdSteps.newInRoomCharStep({
-				errRequired: () => ({ code: 'look.required', message: 'Who do you want to look at?' }),
+				errRequired: () => new Err('look.required', 'Who do you want to look at?'),
 			}),
 			alias: [ 'l', 'lookat' ],
 			value: this.look.bind(this),

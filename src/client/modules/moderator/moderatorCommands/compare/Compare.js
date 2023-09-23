@@ -2,6 +2,7 @@ import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import IDStep from 'classes/IDStep';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 import getObjectProperty from 'utils/getObjectProperty';
 import escapeHtml from 'utils/escapeHtml';
 
@@ -52,7 +53,7 @@ class Compare {
 								id: 'compareCharId',
 								textId: 'compareCharName',
 								name: "compare character",
-								errRequired: step => ({ code: 'compare.compateCharacterRequired', message: "Which character to compare with?" }),
+								errRequired: step => new Err('compare.compateCharacterRequired', "Which character to compare with?"),
 							}),
 						}),
 					],

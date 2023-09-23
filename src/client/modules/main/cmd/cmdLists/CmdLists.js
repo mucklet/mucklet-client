@@ -1,6 +1,7 @@
 import CharList from 'classes/CharList';
 import ItemList from 'classes/ItemList';
 import TokenList from 'classes/TokenList';
+import Err from 'classes/Err';
 import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import mergeCharLists from 'utils/mergeCharLists';
 import {
@@ -35,7 +36,7 @@ class CmdLists {
 			return (c && c.inRoom.chars) || null;
 		}, {
 			validation: (key, char) => char.state != 'awake'
-				? { code: 'cmdLists.charNotAwake', message: "Character is not awake." }
+				? new Err('cmdLists.charNotAwake', "Character is not awake.")
 				: null,
 		});
 		this.inRoomPuppets = new CharList(() => {
@@ -43,11 +44,11 @@ class CmdLists {
 			return (c && c.inRoom.chars) || null;
 		}, {
 			validation: (key, char) => char.type != 'puppet'
-				? { code: 'cmdLists.charNotAPuppet', message: "Character is not a puppet." }
+				? new Err('cmdLists.charNotAPuppet', "Character is not a puppet.")
 				: null,
 		});
 		this.charsAwake = new CharList(() => this.module.charsAwake.getCollection(), {
-			errNotFound: (l, m) => ({ code: 'cmdList.awakeCharNotFound', message: 'There is no character awake named {match}.', data: { match: m }}),
+			errNotFound: (l, m) => new Err('cmdList.awakeCharNotFound', 'There is no character awake named {match}.', { match: m }),
 		});
 		this.watchedChars = new CharList(() => {
 			let m = this.module.charsAwake.getWatches();

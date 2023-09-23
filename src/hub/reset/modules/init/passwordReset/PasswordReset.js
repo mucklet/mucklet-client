@@ -1,6 +1,7 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import { uri } from 'modapp-utils';
+import Err from 'classes/Err';
 import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import { redirect } from 'utils/reload';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
@@ -36,7 +37,7 @@ class PasswordReset {
 		this.code = q.code || "";
 
 		if (!this.code) {
-			this._showError({ code: 'passwordReset.missingResetCode', message: "Missing reset code." });
+			this._showError(new Err('passwordReset.missingResetCode', "Missing reset code."));
 		} else {
 			this.validateCode(this.code)
 				.then(result => {
@@ -69,7 +70,7 @@ class PasswordReset {
 				return resp.json().then(err => {
 					throw err;
 				}).catch(err => {
-					throw { code: 'passwordReset.failedToVerifyCode', message: "Code verification failed with status {status}.", data: { status: resp.status }};
+					throw new Err('passwordReset.failedToVerifyCode', "Code verification failed with status {status}.", { status: resp.status });
 				});
 			}
 			return resp.json();
@@ -92,7 +93,7 @@ class PasswordReset {
 				return resp.json().then(err => {
 					throw err;
 				}).catch(err => {
-					throw { code: 'passwordReset.resetFailed', message: "Reset failed with status {status}.", data: { status: resp.status }};
+					throw new Err('passwordReset.resetFailed', "Reset failed with status {status}.", { status: resp.status });
 				});
 			}
 			this._showResetComplete();

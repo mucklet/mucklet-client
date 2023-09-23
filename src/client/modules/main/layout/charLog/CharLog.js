@@ -1,6 +1,7 @@
 import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
 import {
@@ -465,7 +466,7 @@ class CharLog {
 	 */
 	validateNotPuppet(char, err) {
 		if (char && char.puppeteer) {
-			this.logError(char.id, err || { code: 'charLog.puppetAccessDenied', message: "Puppets are not allowed to do that." });
+			this.logError(char.id, err || new Err('charLog.puppetAccessDenied', "Puppets are not allowed to do that."));
 			return false;
 		}
 

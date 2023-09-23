@@ -4,6 +4,7 @@ import ListStep from 'classes/ListStep';
 import TextStep from 'classes/TextStep';
 import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import parseDuration, { durationRegex } from 'utils/parseDuration';
 import { descriptionTooLong, itemNameTooLong } from 'utils/cmdErr';
@@ -103,7 +104,7 @@ const defaultAttr = [
 		stepFactory: () => new TextStep('value', {
 			name: "autosweep delay",
 			regex: durationRegex,
-			errRequired: () => ({ code: 'setRoom.durationRequired', message: 'Enter a duration in format "1h 2m 3s" for (h)ours, (m)inutes, and (s)econds.' }),
+			errRequired: () => new Err('setRoom.durationRequired', 'Enter a duration in format "1h 2m 3s" for (h)ours, (m)inutes, and (s)econds.'),
 			spellcheck: false,
 		}),
 		desc: l10n.l('setRoom.autosweepDelayDesc', 'Delay before a sleeper is auto-swept from the room. Value format is <code>1h 2m 3s</code> for (h)ours, (m)inutes, and (s)econds.'),

@@ -1,5 +1,6 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 import formatText from 'utils/formatText';
 
 const usageText = 'get note <span class="param">Character</span>';
@@ -33,7 +34,7 @@ class GetNote {
 			alias: [ 'notes' ],
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'getNote.characterRequired', message: "Who do you want to view the notes for?" }),
+					errRequired: step => new Err('getNote.characterRequired', "Who do you want to view the notes for?"),
 				}),
 			],
 			value: (ctx, p) => this.getNote(ctx.player, ctx.char, p.charId

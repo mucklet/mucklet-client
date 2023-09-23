@@ -1,5 +1,6 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 
 const usageText = 'list roomprofiles';
@@ -8,7 +9,7 @@ const helpText =
 `<p>Get a list of the room's profiles.</p>
 <p>Alias: <code>list roomprofile</code></p>`;
 
-const errAccessDenied = { code: 'listProfiles.accessToProfilesDenied', message: "You must own the room to list room profiles." };
+const errAccessDenied = new Err('listProfiles.accessToProfilesDenied', "You must own the room to list room profiles.");
 
 /**
  * ListRoomProfiles adds command to list all profiles of current room.

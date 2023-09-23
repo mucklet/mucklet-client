@@ -69,6 +69,7 @@ class Auth {
 			mode: 'cors',
 			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
+			// Legacy behavior and other >= 400 errors
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					if (resp.status < 500) {
@@ -78,9 +79,31 @@ class Auth {
 						return null;
 					}
 					throw err;
-				});
+				}).catch(err => resp.text().then(
+					text => {
+						throw new Err('auth.failedToAuthenticateMsg', "Failed to authenticate: {text}", resp.text());
+					},
+					err => {
+						throw new Err('auth.failedToAuthenticate', "Failed to authenticate.");
+					},
+				));
 			}
-			return this._getCurrentUser(true);
+			// New behavior allows a 200 response but with an {"error": {...}}
+			// json object, to indicate failed authentication.
+			return resp.text().then(text => {
+				try {
+					let result = JSON.parse(text);
+					if (result?.error) {
+						if (!noRedirect) {
+							redirectWithUri(oauth2Url);
+						}
+						return null;
+					}
+				} catch (ex) {
+					// A 200 response with invalid JSON is legacy success.
+				}
+				return this._getCurrentUser(true);
+			});
 		});
 	}
 

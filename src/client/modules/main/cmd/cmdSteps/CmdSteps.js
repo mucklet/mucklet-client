@@ -1,7 +1,8 @@
 import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
+import Err from 'classes/Err';
 
-const errCharacterRequired = { code: 'inspect.characterRequired', message: "Which character?" };
+const errCharacterRequired = new Err('inspect.characterRequired', "Which character?");
 const defaultIDStepName = "character name or ID";
 const defaultCharIdName = "character";
 

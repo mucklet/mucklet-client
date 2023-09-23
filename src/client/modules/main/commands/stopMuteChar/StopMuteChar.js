@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'stop mute char <span class="param">Character</span>';
 const shortDesc = 'Stop muting a character';
@@ -24,7 +25,7 @@ class StopMuteChar {
 
 		let opts = {
 			next: this.module.cmdSteps.newAnyCharStep({
-				errRequired: step => ({ code: 'stopMuteChar.characterRequired', message: "Who do you want to stop muting?" }),
+				errRequired: step => new Err('stopMuteChar.characterRequired', "Who do you want to stop muting?"),
 			}),
 			value: (ctx, p) => this.stopMuteChar(ctx.player, ctx.char, p),
 		};
@@ -58,7 +59,7 @@ class StopMuteChar {
 				if (change) {
 					this.module.charLog.logInfo(char, l10n.l('stopMuteChar.stopMuteChar', "Deactivated muting of {name}.", { name: c.name }));
 				} else {
-					this.module.charLog.logError(char, { code: 'stopMuteChar.notMutingChar', message: "Not currently muting {name}.", data: { name: c.name }});
+					this.module.charLog.logError(char, new Err('stopMuteChar.notMutingChar', "Not currently muting {name}.", { name: c.name }));
 				}
 			}));
 	}

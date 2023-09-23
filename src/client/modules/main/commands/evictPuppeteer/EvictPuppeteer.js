@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 
 /**
  * EvictPuppeteer adds the puppeteer type to the evict command.
@@ -27,7 +28,7 @@ class EvictPuppeteer {
 					id: 'puppetId',
 					textId: 'puppetName',
 					name: "puppet",
-					errRequired: step => ({ code: 'evictPuppeteer.puppetRequired', message: "What puppet do you want to evict from?" }),
+					errRequired: step => new Err('evictPuppeteer.puppetRequired', "What puppet do you want to evict from?"),
 				}),
 			],
 			value: (ctx, p) => this.evictPuppeteer(ctx.char, Object.assign(

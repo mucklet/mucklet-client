@@ -5,6 +5,7 @@ import ListStep from 'classes/ListStep';
 import ItemList from 'classes/ItemList';
 import StateStep from 'classes/StateStep';
 import ValueStep from 'classes/ValueStep';
+import Err from 'classes/Err';
 
 const usageText = 'roll <span class="opt">quiet</span> <span class="opt"><span class="param">Roll</span></span>';
 const shortDesc = 'Roll dice shown to the room';
@@ -58,7 +59,7 @@ class Roll {
 				let numStep = new NumberStep('count-' + idx, {
 					name: "number of dice",
 					regex: /^[1-9][0-9]*/,
-					errRequired: idx ? () => ({ code: 'roll.required', message: 'Must be a number that is greater than 0.' }) : null,
+					errRequired: idx ? () => new Err('roll.required', 'Must be a number that is greater than 0.') : null,
 					next: new ListStep('type-' + idx, new ItemList({
 						regex: /^[a-zA-Z]/,
 						items: [
@@ -67,7 +68,7 @@ class Roll {
 								next: new NumberStep('sides-' + idx, {
 									name: "number of sides",
 									regex: /^[1-9][0-9]*/,
-									errRequired: () => ({ code: 'roll.sidesRequired', message: "The d should be followed by the number of sides on the dice." }),
+									errRequired: () => new Err('roll.sidesRequired', "The d should be followed by the number of sides on the dice."),
 									next: new StateStep(state => state.setParam('part-' + idx, state.getParam('count-' + idx) + 'd' + state.getParam('sides-' + idx)), { next }),
 								}),
 							},
@@ -78,7 +79,7 @@ class Roll {
 						delimToken: 'name',
 						trimSpace: false,
 						errRequired: null,
-						errNotFound: (step, match) => ({ code: 'roll.typeNotFound', message: 'There is no dice type "{match}". The supported dice type is d (standard multi-sided die).', data: { name: step.name, match: match }}),
+						errNotFound: (step, match) => new Err('roll.typeNotFound', 'There is no dice type "{match}". The supported dice type is d (standard multi-sided die).', { name: step.name, match: match }),
 						else: new StateStep(state => state.setParam('part-' + idx, state.getParam('count-' + idx)), { next }),
 					}),
 				});
@@ -95,7 +96,7 @@ class Roll {
 						name: 'plus or minus',
 						token: 'number',
 						errRequired: null,
-						errNotFound: (step, match) => ({ code: 'roll.typeNotFound', message: 'Multiple dice expression must be join with +/-' }),
+						errNotFound: (step, match) => new Err('roll.typeNotFound', 'Multiple dice expression must be join with +/-'),
 						next: numStep,
 					});
 				}

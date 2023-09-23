@@ -3,6 +3,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ErrorStep from 'classes/ErrorStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'focus <span class="param">Character</span> <span class="opt">= <span class="param">Color</span></span>';
 const shortDesc = 'Focus on a character to highlight them';
@@ -45,20 +46,20 @@ class Focus {
 							items: [{ key: 'all' }],
 						}), {
 							name: "focus at",
-							errNotFound: step => ({ code: 'focus.atNotFound', message: "Did you mean to focus @all?" }),
-							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to focus @all?" }),
+							errNotFound: step => new Err('focus.atNotFound', "Did you mean to focus @all?"),
+							errRequired: step => new Err('focus.atRequired', "Did you mean to focus @all?"),
 						}),
-						new ErrorStep(/\s*(=)/, { code: 'focus.colorNotAllowed', message: "Highlight colors not avalable for @all." }),
+						new ErrorStep(/\s*(=)/, new Err('focus.colorNotAllowed', "Highlight colors not avalable for @all.")),
 					],
 					else: [
 						this.module.cmdSteps.newAnyCharStep({
-							errRequired: step => ({ code: 'focus.characterRequired', message: "Who do you want to focus on?" }),
+							errRequired: step => new Err('focus.characterRequired', "Who do you want to focus on?"),
 						}),
 						new DelimStep("=", {
 							errRequired: null,
 							next: new ListStep('color', this.colors, {
 								name: "focus color",
-								errRequired: step => ({ code: 'focus.colorRequired', message: "What focus color do you want?" }),
+								errRequired: step => new Err('focus.colorRequired', "What focus color do you want?"),
 							}),
 						}),
 					],
@@ -85,7 +86,7 @@ class Focus {
 					if (change) {
 						this.module.charLog.logInfo(char, l10n.l('focus.focusingOnAll', "{charName} focuses on all events.", { charName: char.name }));
 					} else {
-						this.module.charLog.logError(char, { code: 'focus.alreadyFocusOnAll', message: "{charName} is already focusing on all events.", data: { charName: char.name }});
+						this.module.charLog.logError(char, new Err('focus.alreadyFocusOnAll', "{charName} is already focusing on all events.", { charName: char.name }));
 					}
 				})
 			: player.call('getChar', params).then(c => {

@@ -2,6 +2,7 @@ import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'stop focus <span class="param">Character</span>';
 const shortDesc = 'Remove focus from a character';
@@ -31,14 +32,14 @@ class StopFocus {
 							items: [{ key: 'all' }],
 						}), {
 							name: "stopFocus at",
-							errNotFound: step => ({ code: 'focus.atNotFound', message: "Did you mean to stopFocus @all?" }),
-							errRequired: step => ({ code: 'focus.atRequired', message: "Did you mean to stopFocus @all?" }),
+							errNotFound: step => new Err('focus.atNotFound', "Did you mean to stop focus @all?"),
+							errRequired: step => new Err('focus.atRequired', "Did you mean to stop focus @all?"),
 						}),
 					],
 					else: [
 						new ListStep('charId', this.module.charFocus.getFocusCharList(), {
 							name: "character being focused on",
-							errRequired: step => ({ code: 'stopFocus.characterRequired', message: "Who do you want to remove focus from?" }),
+							errRequired: step => new Err('stopFocus.characterRequired', "Who do you want to remove focus from?"),
 						}),
 					],
 				}),
@@ -68,13 +69,13 @@ class StopFocus {
 					if (change) {
 						this.module.charLog.logInfo(char, l10n.l('focus.stopFocusOnAll', "Removed focus from all events."));
 					} else {
-						this.module.charLog.logError(char, { code: 'focus.alreadyFocusOnAll', message: "Already focusing on all events." });
+						this.module.charLog.logError(char, new Err('focus.alreadyFocusOnAll', "Already focusing on all events."));
 					}
 				})
 			: Promise.resolve(this.module.charFocus.removeFocus(char.id, params.charId))
 				.then(c => {
 					if (!c) {
-						this.module.charLog.logError(char, { code: 'stopFocus.charNotFocusedOn', message: "Character is not being focused on." });
+						this.module.charLog.logError(char, new Err('stopFocus.charNotFocusedOn', "Character is not being focused on."));
 					} else {
 						this.module.charLog.logInfo(char, l10n.l('stopFocus.stopFocusingOnChar', "Removed focus from {charName}.", { charName: c.name }));
 					}

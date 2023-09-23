@@ -27,6 +27,7 @@ class PageCharSelect {
 			'dialogRequestControl',
 			'screen',
 			'createLimits',
+			'onboarding',
 		], this._init.bind(this));
 	}
 

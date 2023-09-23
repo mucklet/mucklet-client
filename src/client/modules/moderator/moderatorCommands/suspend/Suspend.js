@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'suspend <span class="param">Character</span> = <span class="param">Reason</span>';
@@ -30,13 +31,13 @@ class Suspend {
 			key: 'suspend',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'suspend.characterRequired', message: "Who do you want to suspend?" }),
+					errRequired: step => new Err('suspend.characterRequired', "Who do you want to suspend?"),
 				}),
 				new DelimStep("=", {
 					next: [
 						new TextStep('reason', {
 							spanLines: false,
-							errRequired: step => ({ code: 'suspend.reasonRequired', message: "What is the reason to suspend the character?" }),
+							errRequired: step => new Err('suspend.reasonRequired', "What is the reason to suspend the character?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							completer: this.module.cmdLists.getCharsAwake(),

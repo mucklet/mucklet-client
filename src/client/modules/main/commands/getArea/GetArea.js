@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'get area <span class="param">Attribute</span>';
 const shortDesc = 'Get info about the area of current room';
@@ -57,7 +58,7 @@ class GetArea {
 	getArea(char, attr) {
 		let a = char.inRoom.area;
 		if (!a) {
-			this.module.charLog.logError(char, { code: 'getArea.roomHasNoArea', message: "This room doesn't belong to an area." });
+			this.module.charLog.logError(char, new Err('getArea.roomHasNoArea', "This room doesn't belong to an area."));
 		} else {
 			switch (attr) {
 				case 'id':

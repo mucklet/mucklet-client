@@ -4,6 +4,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 import IDStep from 'classes/IDStep';
+import Err from 'classes/Err';
 import formatDateTime from 'utils/formatDateTime';
 import escapeHtml from 'utils/escapeHtml';
 import './getUser.scss';
@@ -46,7 +47,7 @@ class GetUser {
 						else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 							textId: 'charName',
 							name: "user",
-							errRequired: step => ({ code: 'getUser.userRequired', message: "Which user?" }),
+							errRequired: step => new Err('getUser.userRequired', "Which user?"),
 						}),
 					}),
 				}),

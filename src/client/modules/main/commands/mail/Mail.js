@@ -5,6 +5,7 @@ import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import MultiDelimStep from 'classes/MultiDelimStep';
 import ValueStep from 'classes/ValueStep';
+import Err from 'classes/Err';
 import { communicationTooLong } from 'utils/cmdErr';
 
 const usageText = 'mail <span class="param">Character</span> =<span class="opt">&gt;</span><span class="opt">:</span> <span class="param">Message</span>';
@@ -34,7 +35,7 @@ class Mail {
 			key: 'mail',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
-					errRequired: step => ({ code: 'mail.characterRequired', message: "Who do you want to send a mail to?" }),
+					errRequired: step => new Err('mail.characterRequired', "Who do you want to send a mail to?"),
 				}),
 				new DelimStep("=", {
 					next: [
@@ -47,7 +48,7 @@ class Mail {
 							token: state => state.getParam('ooc') ? 'ooc' : 'text',
 							maxLength: () => this.module.info.getMail().mailMaxLength,
 							errTooLong: communicationTooLong,
-							errRequired: step => ({ code: 'mail.messageRequired', message: "What is the message you want to mail?" }),
+							errRequired: step => new Err('mail.messageRequired', "What is the message you want to mail?"),
 							completer: this.module.cmdLists.getCharsAwake(),
 							formatText: true,
 						}),

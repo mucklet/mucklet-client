@@ -3,6 +3,7 @@ import DelimStep from 'classes/DelimStep';
 import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 const usageText = 'remove player <span class="param">Player\'s Character<span class="comment">/</span>#PlayerID</span> : role <span class="opt">=</span> <span class="param">Role</span>';
 const shortDesc = 'Remove a role from a player';
@@ -56,7 +57,7 @@ class RemovePlayerRole {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'removePlayerRole.characterRequired', message: "Which player (by character)?" }),
+						errRequired: step => new Err('removePlayerRole.characterRequired', "Which player (by character)?"),
 					}),
 				}),
 				new DelimStep(":"),

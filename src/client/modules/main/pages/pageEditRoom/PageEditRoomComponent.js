@@ -8,6 +8,7 @@ import FileButton from 'components/FileButton';
 import Img from 'components/Img';
 import PanelSection from 'components/PanelSection';
 import ImgModal from 'classes/ImgModal';
+import Err from 'classes/Err';
 import LabelToggleBox from 'components/LabelToggleBox';
 import DurationInput from 'components/DurationInput';
 
@@ -374,7 +375,7 @@ class PageEditRoomComponent {
 		if (!this.model) {
 			p = Promise.resolve();
 		} else if (this.model.autosweep && this.model.autosweepDelay === null) {
-			p = Promise.reject({ code: 'pageEditRoom.invalidAutosweepDelay', message: "Auto sweep delay is invalid." });
+			p = Promise.reject(new Err('pageEditRoom.invalidAutosweepDelay', "Auto sweep delay is invalid."));
 		} else {
 			let change = this._getChanges();
 			p = Object.keys(change).length

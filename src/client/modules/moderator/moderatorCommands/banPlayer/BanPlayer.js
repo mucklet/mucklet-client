@@ -4,6 +4,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 import getObjectProperty from 'utils/getObjectProperty';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import banReasons from 'utils/banReasons';
@@ -50,7 +51,7 @@ class BanPlayer {
 					else: new ListStep('charId', this.module.cmdLists.getAllChars(), {
 						textId: 'charName',
 						name: "player",
-						errRequired: step => ({ code: 'banPlayer.characterRequired', message: "Which player?" }),
+						errRequired: step => new Err('banPlayer.characterRequired', "Which player?"),
 					}),
 				}),
 				new DelimStep("=", {

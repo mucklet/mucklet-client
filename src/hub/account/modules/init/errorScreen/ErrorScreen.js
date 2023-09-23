@@ -1,6 +1,7 @@
 import { uri } from 'modapp-utils';
 import l10n from 'modapp-l10n';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
+import Err from 'classes/Err';
 
 /**
  * ErrorScreen shows connection and authentication error messages.
@@ -22,13 +23,13 @@ class ErrorScreen {
 			try {
 				err = JSON.parse(atob(q.error));
 			} catch (e) {
-				err = { code: 'errorScreen.failedToParse', message: "Failed to parse error: {message}", data: { message: e.message }};
+				err = new Err('errorScreen.failedToParse', "Failed to parse error: {message}", { message: e.message });
 			}
 			this._showError(err);
 		} else {
 			this.module.auth.authenticate().catch(err => {
 				if (err.code == 'system.connectionError') {
-					err = { code: err.code, message: "Failed to connect to the server." };
+					err = new Err(err.code, "Failed to connect to the server.");
 				}
 				this._showError(err);
 			});

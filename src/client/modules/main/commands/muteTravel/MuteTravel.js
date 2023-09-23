@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'mute travel';
 const shortDesc = 'Mute travel messages';
@@ -40,7 +41,7 @@ class MuteTravel {
 				if (change) {
 					this.module.charLog.logInfo(char, l10n.l('muteTravel.muteTravelStart', "Activated muting of travel messages."));
 				} else {
-					this.module.charLog.logError(char, { code: 'muteTravel.alreadyMutingTravel', message: "Travel messages are already getting muted." });
+					this.module.charLog.logError(char, new Err('muteTravel.alreadyMutingTravel', "Travel messages are already getting muted."));
 				}
 			});
 	}

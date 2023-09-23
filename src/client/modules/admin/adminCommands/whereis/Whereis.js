@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import Err from 'classes/Err';
 
 const usageText = 'whereis <span class="param">Character</span>';
 const shortDesc = "Show a character's location";
@@ -31,7 +32,7 @@ class Whereis {
 		this.module.cmd.addCmd({
 			key: 'whereis',
 			next: this.module.cmdSteps.newAnyCharStep({
-				errRequired: step => ({ code: 'whereisCmd.characterRequired', message: "Who do you want to locate?" }),
+				errRequired: step => new Err('whereisCmd.characterRequired', "Who do you want to locate?"),
 			}),
 			alias: [ 'where' ],
 			value: (ctx, p) => this.whereis(ctx.player, ctx.char, p),
