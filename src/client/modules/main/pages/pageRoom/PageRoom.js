@@ -34,7 +34,6 @@ class PageRoom {
 		});
 		this.module.roomPages.setDefaultPageFactory((ctrl, state, layout) => {
 			let title = new Txt(roomInfo, { tagName: 'h3', className: 'panel--titletxt' });
-			console.log("LAYOUT: ", layout);
 			return {
 				component: new PageRoomComponent(this.module, ctrl, state, layout, (txt) => title.setText(txt)),
 				title,

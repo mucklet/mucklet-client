@@ -85,7 +85,7 @@ class CharPagesStore {
 			req,
 			(r, ev) => r.result,
 			(r, ev) => {
-				console.log("Error opening " + charPagesDB + ": ", ev);
+				console.error("Error opening " + charPagesDB + ": ", ev);
 				this.useLocalStorage = true;
 			},
 		);

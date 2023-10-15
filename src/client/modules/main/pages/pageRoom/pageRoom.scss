@@ -2,12 +2,12 @@
 @import '~scss/mixins';
 
 .pageroom {
-	padding: 0;
+	padding-top: 8px;
 	margin: 0;
 }
 
 .pageroom-zoombar {
-	padding: 8px 12px 0 12px;
+	padding: 0 12px;
 	display: flex;
 	flex-direction: row;
 

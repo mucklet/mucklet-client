@@ -44,7 +44,7 @@ class PageRoomComponent {
 				new Elem(n => n.elem('div', { className: 'pageroom' }, [
 					// Zoom bar
 					n.component(new ModelCollapser(this.model, [{
-						condition: m => m.areas.length,
+						condition: m => m.areas.length > 1,
 						factory: m => new PageRoomZoomBar(this.module, m.areas, m),
 					}], { duration: 150 })),
 					// Transition area
@@ -115,13 +115,10 @@ class PageRoomComponent {
 		if (arraysEqual(areas, this.model.areas)) return;
 
 		this._listenAreas(this.model.areas, areas);
-		let current = this._getCurrent(this._currentAreaId(), this.model.areas, areas);
-		if (!current) {
-			this.model.set({ areas });
-			this.close();
-		} else {
-			this.model.set({ current, areas });
-		}
+		this.model.set({
+			current: this._getCurrent(this._currentAreaId(), this.model.areas, areas),
+			areas,
+		});
 	}
 
 	_listenAreas(before, after) {
@@ -147,15 +144,23 @@ class PageRoomComponent {
 	// previous set as current, what areas we had before, and what areas we have
 	// now.
 	_getCurrent(areaId, before, after) {
-		before = before || [];
-		if (areaId && !(before.length > 0 && before[0].id === areaId)) {
+		// Assert that we have areas
+		if (areaId && after?.length > 1) {
+			// If we were watching the room's current area, we will continue do
+			// so even after entering a room belonging to a new area.
+			if (before && before[1]?.id === areaId) {
+				return after[1];
+			}
+			// Try to see if the area we used to watch still exists after the
+			// changes. If so, select that area.
 			for (let area of after) {
 				if (area?.id == areaId) {
 					return area;
 				}
 			}
 		}
-		return after.length > 0 ? after[0] : null;
+		// Default to show the room
+		return null;
 	}
 
 	_currentAreaId() {
@@ -165,40 +170,3 @@ class PageRoomComponent {
 }
 
 export default PageRoomComponent;
-
-
-// import ModelFader from 'components/ModelFader';
-// import PageRoomRoom from './PageRoomRoom.js';
-
-// /**
-//  * PageRoomComponent renders a room info page.
-//  */
-// class PageRoomComponent {
-// 	constructor(module, ctrl, state, layout) {
-// 		this.module = module;
-// 		this.ctrl = ctrl;
-// 		this.state = state;
-// 		this.layout = layout;
-// 	}
-
-// 	render(el) {
-// 		this.elem = new ModelFader
-// 		this.elem = new ModelFader(this.ctrl, [
-// 			{
-// 				factory: m => new PageRoomRoom(this.module, this.ctrl, m.inRoom, this.state, this.layout),
-// 				condition: m => m.inRoom,
-// 				hash: m => m.inRoom,
-// 			},
-// 		]);
-// 		return this.elem.render(el);
-// 	}
-
-// 	unrender() {
-// 		if (this.elem) {
-// 			this.elem.unrender();
-// 			this.elem = null;
-// 		}
-// 	}
-// }
-
-// export default PageRoomComponent;

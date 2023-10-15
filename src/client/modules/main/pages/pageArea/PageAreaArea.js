@@ -43,7 +43,7 @@ class PageAreaArea {
 		}, eventBus: this.module.self.app.eventBus });
 		this.inLocations = new Model({ data: this._getAndListenInLocations(), eventBus: this.module.self.app.eventBus });
 
-		let imgFader = new Fader();
+		let imgFader = new Fader(null, { className: 'pagearea-area--image' });
 		let about = new PanelSection(
 			l10n.l('pageArea.about', "About"),
 			new ModelComponent(

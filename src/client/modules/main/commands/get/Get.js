@@ -93,7 +93,6 @@ class Get {
 				if (!c) {
 					this.module.charLog.logError(char, new Err('get.charNotOwned', "You must own the character."));
 				} else {
-					console.log("C: ", c);
 					this.module.charLog.logInfo(char, l10n.l('get.roomHasOwner', "{fullname} was created {created}", { fullname: fullname(c), created: formatDateTime(new Date(c.created), { showYear: true }) }));
 				}
 				break;

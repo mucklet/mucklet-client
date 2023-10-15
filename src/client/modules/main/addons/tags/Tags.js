@@ -35,7 +35,7 @@ class Tags {
 				try {
 					return a.value.key.localeCompare(b.value.key) || a.key.localeCompare(b.key);
 				} catch (e) {
-					console.log("Error: ", e, a, b);
+					console.error("Error comparing tags: ", e, a, b);
 				}
 			},
 			filter: (k, v) => (!v.role || this.module.player.hasAnyRole(v.role, 'admin'))

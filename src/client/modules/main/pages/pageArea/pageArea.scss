@@ -62,7 +62,12 @@
 	padding: 0 16px;
 
 	&--tools {
-		padding-top: 8px;
+		&::after {
+			content: " ";
+			display: block;
+			height: 0;
+			clear: both;
+		}
 
 		> * {
 			display: inline-block;

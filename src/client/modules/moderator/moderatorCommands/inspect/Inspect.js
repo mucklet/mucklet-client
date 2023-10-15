@@ -126,7 +126,7 @@ class Inspect {
 
 				this.module.charLog.logComponent(ctx.char, 'inspect', elem);
 			} catch (ex) {
-				console.log(ex);
+				console.error(ex);
 			}
 		});
 	}
