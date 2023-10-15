@@ -8,7 +8,8 @@ const helpText =
 <p>Use <code>stop mute travel</code> to stop muting travel messages.</p>`;
 
 /**
- * MuteTravel adds the mute travel command.*/
+ * MuteTravel adds the mute travel command.
+ */
 class MuteTravel {
 	constructor(app) {
 		this.app = app;

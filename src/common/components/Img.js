@@ -113,7 +113,6 @@ class Img extends RootElem {
 	/**
 	 * Sets the current src and fades it in when loaded.
 	 * It assumes opacity is 0 when called.
-	 * @param {string} src Image source.
 	 */
 	_setCurrent() {
 		let src = this.src;

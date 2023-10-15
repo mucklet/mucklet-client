@@ -9,7 +9,8 @@ const helpText =
 <p>Alias: <code>watchfor</code>, <code>wf</code></p>`;
 
 /**
- * Watch adds the watch command.*/
+ * Watch adds the watch command.
+ */
 class Watch {
 	constructor(app) {
 		this.app = app;

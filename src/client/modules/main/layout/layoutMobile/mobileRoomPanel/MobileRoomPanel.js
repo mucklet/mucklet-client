@@ -47,7 +47,7 @@ class MobileRoomPanel {
 	/**
 	 * Toggles the panel between open or close.
 	 * @param {bool} open State to toggle to. Defaults to toggle between open and close.
-	 * @return {this}
+	 * @returns {this}
 	 */
 	toggle(open) {
 		this.module.mobileActivePanel.toggleRoomPanel(open);

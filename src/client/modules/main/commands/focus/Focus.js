@@ -14,7 +14,8 @@ const helpText =
 <p>Use <code>stop focus</code> to remove focus from a character.</p>`;
 
 /**
- * Focus adds the focus command.*/
+ * Focus adds the focus command.
+ */
 class Focus {
 	constructor(app) {
 		this.app = app;

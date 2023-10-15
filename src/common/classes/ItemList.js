@@ -46,7 +46,7 @@ class ItemList {
 	 * @param {Step|Array.<CmdStep>} item.next Next step or steps to follow after the item.
 	 * @param {Array.<string>} [item.alias] A list of alias for the item. Eg. [ 's', '/say' ]
 	 * @param {string} [item.symbol] A single ascii symbol character for the item that may not otherwise match the regex. Eg. ':'
-	 * @return {this}
+	 * @returns {this}
 	 */
 	addItem(item) {
 		item = Object.assign({ value: item.key, next: null }, item);

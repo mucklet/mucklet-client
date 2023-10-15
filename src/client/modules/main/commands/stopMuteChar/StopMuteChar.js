@@ -9,7 +9,8 @@ const helpText =
 <p>Alias: <code>unignore</code>, <code>unmute char</code>`;
 
 /**
- * StopMuteChar adds the stop mute char command.*/
+ * StopMuteChar adds the stop mute char command.
+ */
 class StopMuteChar {
 	constructor(app) {
 		this.app = app;

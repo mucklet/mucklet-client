@@ -12,7 +12,8 @@ const helpText =
 <p>Alias: <code>unfocus</code>`;
 
 /**
- * StopFocus adds the stop focus command.*/
+ * StopFocus adds the stop focus command.
+ */
 class StopFocus {
 	constructor(app) {
 		this.app = app;

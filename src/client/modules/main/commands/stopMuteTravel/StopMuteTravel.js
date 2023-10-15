@@ -8,7 +8,8 @@ const helpText =
 <p>Alias: <code>unmute travel</code>`;
 
 /**
- * StopMuteTravel adds the stop mute travel command.*/
+ * StopMuteTravel adds the stop mute travel command.
+ */
 class StopMuteTravel {
 	constructor(app) {
 		this.app = app;

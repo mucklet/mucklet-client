@@ -11,7 +11,8 @@ const helpText =
 <p>Alias: <code>get notes</code></p>`;
 
 /**
- * GetNote views the get note command.*/
+ * GetNote views the get note command.
+ */
 class GetNote {
 	constructor(app) {
 		this.app = app;

@@ -9,7 +9,8 @@ const helpText =
 <p>Alias: <code>delete notes</code></p>`;
 
 /**
- * DeleteNote deletes the delete note command.*/
+ * DeleteNote deletes the delete note command.
+ */
 class DeleteNote {
 	constructor(app) {
 		this.app = app;

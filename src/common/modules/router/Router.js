@@ -226,7 +226,7 @@ class Router {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {object} [opt.fullPath] Create URL with full path including protocol and host.
 	 * @param {object} [opt.keepQuery] Flag to include the initial query.
-	 * @return {?string} Url
+	 * @returns {?string} Url
 	 */
 	getUrl(routeId, params, opt) {
 		let route = typeof routeId == 'string' ? this.getRoute(routeId) : routeId;
@@ -388,7 +388,7 @@ class Router {
 	 * @param {Array.<string>} parts Array of path part strings.
 	 * @param {Array.<Array.<string>>} pathDef Path definition array.
 	 * dimentional array.
-	 * @returns {Object} Params object.
+	 * @returns {object} Params object.
 	 */
 	parseDefUrl(parts, pathDef) {
 		let len = parts.length - 1;

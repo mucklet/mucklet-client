@@ -1,0 +1,19 @@
+{
+  "include": ["src/**/*"],
+  "exclude": ["node_modules/**/*"],
+  "compilerOptions": {
+    "outDir": "./build/",
+    "sourceMap": true,
+    "module": "ES6",
+    "target": "ES6",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "checkJs": false,
+    "baseUrl": "./src",
+    "noEmit": false,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+}

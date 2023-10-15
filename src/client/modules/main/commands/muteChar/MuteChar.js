@@ -10,7 +10,8 @@ const helpText =
 <p>Alias: <code>ignore</code>`;
 
 /**
- * MuteChar adds the mute char command.*/
+ * MuteChar adds the mute char command.
+ */
 class MuteChar {
 	constructor(app) {
 		this.app = app;
