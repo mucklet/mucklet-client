@@ -1,8 +1,5 @@
 import { Model } from 'modapp-resource';
-import l10n from 'modapp-l10n';
-import PageAreaComponent from './PageAreaComponent';
 import PageAreaArea from './PageAreaArea';
-import PageAreaBadge from './PageAreaBadge';
 import PageAreaImage from './PageAreaImage';
 import './pageArea.scss';
 
@@ -18,13 +15,7 @@ class PageArea {
 
 		this.app.require([
 			'pageRoom',
-			'dialogCropImage',
-			'confirm',
-			'deleteRoom',
-			'dialogSetRoomOwner',
 			'player',
-			'toaster',
-			'roomPanel',
 		], this._init.bind(this));
 	}
 
@@ -33,29 +24,6 @@ class PageArea {
 
 		this.tools = new Model({ eventBus: this.app.eventBus });
 		this.module.pageRoom.setAreaComponentFactory(this.newArea);
-	}
-
-	/**
-	 * Opens an in-panel edit room page in the room panel.
-	 * @param {Model} ctrl Controlled char model.
-	 * @param {bool} toggleOpen Flag if the room panel should be toggled open.
-	 * @returns {function} Close function.
-	 */
-	open(ctrl, toggleOpen) {
-		let close = this.module.roomPages.openPage(
-			'area',
-			ctrl.id,
-			null,
-			(ctrl, room, state, close) => ({
-				component: new PageAreaComponent(this.module, ctrl, state, close),
-				title: l10n.l('pageArea.area', "Area"),
-			}),
-			{
-				openPanel: toggleOpen,
-			},
-		);
-
-		return close;
 	}
 
 	/**
@@ -120,17 +88,6 @@ class PageArea {
 	 */
 	newImage(ctrl, areaId, image, children, selectedModel, state, opt) {
 		return new PageAreaImage(this.module, ctrl, areaId, image, children, selectedModel, state, opt);
-	}
-
-	/**
-	 * Creates a new PageArea badge component.
-	 * @param {Model} ctrl Controlled character model.
-	 * @param {Model} area Area model.
-	 * @param {object} [opt] Optional Elem parameters.
- 	 * @returns {Component} Area badge component.
-	 */
-	newBadge(ctrl, area, opt) {
-		return new PageAreaBadge(this.module, ctrl, area, opt);
 	}
 
 	dispose() {

@@ -61,6 +61,13 @@
 .pageroom-room {
 	padding: 0 16px;
 
+	&--population {
+		position: relative;
+		top: -8px;
+		font-size: $font-size-tiny;
+		color: $color4;
+	}
+
 	&--tools {
 		&::after {
 			content: " ";
@@ -110,7 +117,6 @@
 	&--sections {
 		position: relative;
 		top: -4px;
-		padding-bottom: 4px;
 	}
 }
 

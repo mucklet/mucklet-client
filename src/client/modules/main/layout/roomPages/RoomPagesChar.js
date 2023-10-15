@@ -90,7 +90,10 @@ class RoomPagesChar {
 		}
 		let pages = this.roomPages[roomInstanceId];
 		if (!pages) {
-			this.defaultPage.factory = this.module.self.getDefaultPageFactory();
+			let f = this.module.self.getDefaultPageFactory();
+			this.defaultPage.factory = f
+				? (ctrl, room, state, close, layoutId) => f(ctrl, state, layoutId)
+				: null;
 			pages = [ this.defaultPage ];
 			this.roomPages[roomInstanceId] = pages;
 		}

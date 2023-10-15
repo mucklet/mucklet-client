@@ -81,8 +81,9 @@
 
 	&--population {
 		font-size: $font-size-tiny;
-		margin-top: -8px;
-		padding-bottom: 4px;
+		position: relative;
+		top: -8px;
+		font-size: $font-size-tiny;
 		color: $color4;
 		cursor: help;
 	}

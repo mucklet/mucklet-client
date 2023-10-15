@@ -8,6 +8,7 @@ import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
 import NameSection from 'components/NameSection';
 import FormatTxt from 'components/FormatTxt';
+import ModelCollapser from 'components/ModelCollapser';
 import ImgModal from 'classes/ImgModal';
 import PageRoomChar from './PageRoomChar';
 import PageRoomExit from './PageRoomExit';
@@ -88,6 +89,20 @@ class PageRoomComponent {
 							}
 						},
 					)),
+					n.component(new ModelCollapser(this.room, [{
+						condition: m => !m.isDark,
+						factory: m => new ModelComponent(
+							this.room,
+							new Elem(n => n.elem('div', { className: 'pageroom-room--population flex-row pad8' }, [
+								n.component(new Txt(l10n.l('pageArea.population', "Population"), {
+									tagName: 'div',
+									className: 'pageroom-room--population-title flex-1',
+								})),
+								n.component('pop', new Txt(null, { className: 'pageroom-room--population-count flex-auto', duration: 0 })),
+							])),
+							(m, c) => c.getNode('pop').setText(m.pop || "0"),
+						),
+					}])),
 					n.component(new Context(
 						() => new CollectionWrapper(allTools, {
 							filter: t => t.type == 'section',

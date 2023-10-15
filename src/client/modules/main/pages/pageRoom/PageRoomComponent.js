@@ -150,7 +150,7 @@ class PageRoomComponent {
 		before = before || [];
 		if (areaId && !(before.length > 0 && before[0].id === areaId)) {
 			for (let area of after) {
-				if (area.id == areaId) {
+				if (area?.id == areaId) {
 					return area;
 				}
 			}
