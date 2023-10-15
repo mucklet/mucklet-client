@@ -1,4 +1,6 @@
+import { Txt } from 'modapp-base-component';
 import { Collection, sortOrderCompare } from 'modapp-resource';
+import { roomInfo } from './pageRoomTxt';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import './pageRoom.scss';
@@ -23,15 +25,20 @@ class PageRoom {
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.areaComponentFactory = null;
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.module.roomPages.setDefaultPageFactory((ctrl, room, state, layout) => ({
-			component: new PageRoomComponent(this.module, ctrl, room, state, layout),
-		}));
+		this.module.roomPages.setDefaultPageFactory((ctrl, state, layout) => {
+			let title = new Txt(roomInfo, { tagName: 'h3', className: 'panel--titletxt' });
+			return {
+				component: new PageRoomComponent(this.module, ctrl, state, layout, (txt) => title.setText(txt)),
+				title,
+			};
+		});
 	}
 
 	/**
@@ -70,6 +77,25 @@ class PageRoom {
 		this.tools.remove(toolId);
 		return this;
 	}
+
+	/**
+	 * Sets the component factory function for creating the area page.
+	 * @param {(ctrl: Model, area: Model, state: object, layoutId: string) => Component} areaComponentFactory Area component factory callback function
+	 * @returns {this}
+	 */
+	setAreaComponentFactory(areaComponentFactory) {
+		this.areaComponentFactory = areaComponentFactory;
+		return this;
+	}
+
+	/**
+	 * Gets the area component factory function.
+	 * @returns {(ctrl: Model, area: Model, state: object, layoutId: string) => Component} Area component factory callback function
+	 */
+	getAreaComponentFactory() {
+		return this.areaComponentFactory;
+	}
+
 
 	/**
 	 * Checks if a controlled character can edit a room.

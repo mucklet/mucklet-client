@@ -1,210 +1,89 @@
-import { Elem, Txt, Context } from 'modapp-base-component';
-import { ModelTxt, ModelComponent, CollectionList, CollectionComponent } from 'modapp-resource-component';
-import { CollectionWrapper } from 'modapp-resource';
-import l10n from 'modapp-l10n';
-import Collapser from 'components/Collapser';
-import Img from 'components/Img';
-import Fader from 'components/Fader';
-import PanelSection from 'components/PanelSection';
-import NameSection from 'components/NameSection';
-import FormatTxt from 'components/FormatTxt';
-import ImgModal from 'classes/ImgModal';
-import PageRoomChar from './PageRoomChar';
-import PageRoomExit from './PageRoomExit';
+import { Elem, Transition } from 'modapp-base-component';
+import { ModelComponent } from 'modapp-resource-component';
+import { Model } from 'modapp-resource';
+import arraysEqual from 'utils/arraysEqual';
+import ModelFader from 'components/ModelFader';
+import ModelCollapser from 'components/ModelCollapser';
 
-
-const textNotSet = l10n.l('pageRoom.notSet', "Not set");
+import { roomInfo, areaInfo } from './pageRoomTxt';
+import PageRoomZoomBar from './PageRoomZoomBar';
+import PageRoomRoom from './PageRoomRoom.js';
 
 /**
- * PageRoomComponent renders a room info page.
+ * PageRoomComponent is the default component for the room panel. It listens on
+ * the character, the room they are in, and creates a list of the area and its
+ * ancestors.
  */
 class PageRoomComponent {
-	constructor(module, ctrl, room, state, layout) {
+	constructor(module, ctrl, state, layout, setTitle) {
+		state.changes = state.changes || {};
+
 		this.module = module;
 		this.ctrl = ctrl;
-		this.room = room;
 		this.state = state;
 		this.layout = layout;
-		this.roomState = this.state['room_' + room.id] || {};
-		this.state['room_' + room.id] = this.roomState;
-		this.roomState.description = this.roomState.description || {};
+		this.setTitle = setTitle;
+
+		// Bind callbacks
+		this._updateModel = this._updateModel.bind(this);
 	}
 
 	render(el) {
-		let image = new Elem(n => n.elem('div', { className: 'pageroom--image-cont' }, [
-			n.component('img', new Img('', { className: 'pageroom--image', events: {
-				click: () => new ImgModal(this.room.image.href).open(),
-			}})),
-		]));
-		this.elem = new ModelComponent(
-			this.room,
-			new Context(
-				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.filter ? t.filter(this.ctrl, this.room, this._canEdit(), this._canDelete(), this.layout) : true,
-				}),
-				allTools => allTools.dispose(),
-				allTools => new Elem(n => n.elem('div', { className: 'pageroom' }, [
-					n.component(new Context(
-						() => new CollectionWrapper(allTools, {
-							filter: t => (t.type || 'room') == 'room',
-						}),
-						tools => tools.dispose(),
-						tools => new CollectionComponent(
-							tools,
-							new Collapser(),
-							(col, c, ev) => {
-								// Collapse if we have no tools to show
-								if (!col.length) {
-									c.setComponent(null);
-									return;
-								}
+		let areas = this._getAreas();
+		this.model = new Model({ data: {
+			current: this._getCurrent(this.state.areaId, null, areas),
+			areas,
+		}, eventBus: this.module.self.app.eventBus });
+		this._listenAreas([], areas);
+		this._setTitle();
 
-								if (!ev || (col.length == 1 && ev.event == 'add')) {
-									c.setComponent(new CollectionList(
-										tools,
-										t => t.componentFactory(this.ctrl, this.room),
-										{
-											className: 'pageroom--tools',
-											subClassName: t => t.className || null,
-											horizontal: true,
-										},
-									));
-								}
-							},
-						),
-					)),
+		this.elem = new ModelComponent(
+			this.ctrl,
+			new ModelComponent(
+				null,
+				new Elem(n => n.elem('div', { className: 'pageroom' }, [
+					// Zoom bar
+					n.component(new ModelCollapser(this.model, [{
+						condition: m => m.areas.length,
+						factory: m => new PageRoomZoomBar(this.module, m.areas, m),
+					}], { duration: 150 })),
+					// Transition area
 					n.component(new ModelComponent(
-						this.room,
-						new NameSection(new ModelTxt(this.room, c => c.name), null, {
-							open: this.state.roomImageOpen,
-							onToggle: (c, v) => this.state.roomImageOpen = v,
-						}),
-						(m, c, changed) => {
-							if (m.image) {
-								image.getNode('img').setSrc(m.image.href + "?thumb=xxl");
-								c.setComponent(image);
-							} else {
-								c.setComponent(null);
+						this.model,
+						new Transition(null, { duration: 150 }),
+						(m, c, change) => {
+							if (!change || change.hasOwnProperty('current')) {
+								let cb = 'fade';
+								if (change && !change.hasOwnProperty('areas')) {
+									let before = m.areas.indexOf(change.current);
+									let after = m.areas.indexOf(m.current);
+									if (before >= 0 && after >= 0 && before != after) {
+										cb = after - before > 0 ? 'slideLeft' : 'slideRight';
+									}
+								}
+								c[cb](m.current
+									? this.module.self.getAreaComponentFactory()?.(this.ctrl, m.current, this.state, this.layout)
+									: new ModelFader(this.ctrl, [
+										{
+											factory: m => new PageRoomRoom(this.module, this.ctrl, m.inRoom, this.state, this.layout),
+											condition: m => m.inRoom, // Should always be true though
+											hash: m => m.inRoom,
+										},
+									]),
+								);
+								this._setTitle();
 							}
 						},
 					)),
-					n.component(new Context(
-						() => new CollectionWrapper(allTools, {
-							filter: t => t.type == 'section',
-						}),
-						tools => tools.dispose(),
-						tools => new CollectionList(
-							tools,
-							t => t.componentFactory(this.ctrl, this.room),
-							{
-								className: 'pageroom--sections',
-								subClassName: t => t.className || null,
-							},
-						),
-					)),
-					n.component(new PanelSection(
-						l10n.l('pageRoom.description', "Description"),
-						new ModelComponent(
-							this.room,
-							new FormatTxt("", { className: 'common--desc-size', state: this.roomState.description }),
-							(m, c) => {
-								c.setFormatText(m.desc ? m.desc : textNotSet);
-								c[m.desc ? 'removeClass' : 'addClass']('pagechar--notset');
-							},
-						),
-						{
-							className: 'common--sectionpadding',
-							open: this.state.descriptionOpen,
-							onToggle: (c, v) => this.state.descriptionOpen = v,
-						},
-					)),
-					n.component(new PanelSection(
-						new Elem(n => n.elem('div', { className: 'pageroom--exitsheader' }, [
-							n.component(new Txt(l10n.l('pageRoom.exits', "Exits"), { tagName: 'h3' })),
-							n.component(new Context(
-								() => new CollectionWrapper(allTools, {
-									filter: t => t.type == 'exit',
-								}),
-								tools => tools.dispose(),
-								tools => new CollectionList(
-									tools,
-									t => t.componentFactory(this.ctrl, this.room),
-									{
-										className: 'pageroom--exitstools',
-										subClassName: t => t.className || null,
-										horizontal: true,
-									},
-								),
-							)),
-						])),
-						new CollectionComponent(
-							this.room.exits,
-							new Fader(null),
-							(col, c, e) => {
-								if (!col || !col.length) {
-									c.setComponent(new Txt(l10n.l('pageRoom.noExits', "There are no exits."), { className: 'common--nolistplaceholder' }));
-									return;
-								}
-								if (!e || (col.length == 1 && e.event == 'add')) {
-									c.setComponent(new CollectionList(
-										col,
-										m => new PageRoomExit(this.module, this.ctrl, this.room, m),
-									));
-								}
-							},
-						),
-						{
-							className: 'pageroom--exits common--sectionpadding',
-							open: this.state.exitsOpen,
-							onToggle: (c, v) => this.state.exitsOpen = v,
-						},
-					)),
-					n.component(new PanelSection(
-						new Elem(n => n.elem('div', { className: 'pageroom--inroomheader' }, [
-							n.component(new Txt(l10n.l('pageRoom.inRoom', "In room"), { tagName: 'h3' })),
-							n.component(new Context(
-								() => new CollectionWrapper(allTools, {
-									filter: t => t.type == 'inRoom',
-								}),
-								tools => tools.dispose(),
-								tools => new CollectionList(
-									tools,
-									t => t.componentFactory(this.ctrl, this.room),
-									{
-										className: 'pageroom--inroomtools',
-										subClassName: t => t.className || null,
-										horizontal: true,
-									},
-								),
-							)),
-						])),
-						new ModelComponent(
-							this.room,
-							new Fader(),
-							(m, c, changed) => {
-								if (changed && !changed.hasOwnProperty('chars')) return;
-								c.setComponent(m.chars
-									? new CollectionList(m.chars, m => new PageRoomChar(this.module, this.ctrl, m))
-									: new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }),
-								);
-							},
-						),
-						{
-							className: 'pageroom--chars common--sectionpadding',
-							open: this.state.inRoomOpen,
-							onToggle: (c, v) => this.state.inRoomOpen = v,
-						},
-					)),
 				])),
+				(m, c, change) => {
+					if (!change || change.hasOwnProperty('area')) {
+						this._updateModel();
+					}
+				},
 			),
-			(m, c, change) => {
-				// Reset filtering of tools is ownership of the room changes.
-				if (change && change.hasOwnProperty('owner')) {
-					c.getContext().refresh();
-				}
-			},
+			(m, c) => c.setModel(m.inRoom),
 		);
-
 		return this.elem.render(el);
 	}
 
@@ -212,16 +91,114 @@ class PageRoomComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			this.state.areaId = (this.model.current && this.model.current.id) || null;
+			this._listenAreas(this.model.areas, []);
+			this.model = null;
 		}
 	}
 
-	_canEdit() {
-		return this.module.self.canEdit(this.ctrl, this.room);
+	_setTitle() {
+		if (this.model && this.setTitle) {
+			this.setTitle(this.model.current
+				? areaInfo
+				: roomInfo,
+			);
+		}
 	}
 
-	_canDelete() {
-		return this.module.self.canDelete(this.ctrl, this.room);
+	_updateModel() {
+		if (!this.model) {
+			return;
+		}
+
+		let areas = this._getAreas();
+		if (arraysEqual(areas, this.model.areas)) return;
+
+		this._listenAreas(this.model.areas, areas);
+		let current = this._getCurrent(this._currentAreaId(), this.model.areas, areas);
+		if (!current) {
+			this.model.set({ areas });
+			this.close();
+		} else {
+			this.model.set({ current, areas });
+		}
 	}
+
+	_listenAreas(before, after) {
+		for (let b of before) {
+			b?.off('change', this._updateModel);
+		}
+		for (let a of after) {
+			a?.on('change', this._updateModel);
+		}
+	}
+
+	_getAreas() {
+		let list = [ null ];
+		let area = this.ctrl.inRoom && this.ctrl.inRoom.area;
+		while (area) {
+			list.push(area);
+			area = area.parent;
+		}
+		return list;
+	}
+
+	// Gets the area that is to be set as current, depending on what areaId was
+	// previous set as current, what areas we had before, and what areas we have
+	// now.
+	_getCurrent(areaId, before, after) {
+		before = before || [];
+		if (areaId && !(before.length > 0 && before[0].id === areaId)) {
+			for (let area of after) {
+				if (area.id == areaId) {
+					return area;
+				}
+			}
+		}
+		return after.length > 0 ? after[0] : null;
+	}
+
+	_currentAreaId() {
+		return (this.model?.current?.id) || null;
+	}
+
 }
 
 export default PageRoomComponent;
+
+
+// import ModelFader from 'components/ModelFader';
+// import PageRoomRoom from './PageRoomRoom.js';
+
+// /**
+//  * PageRoomComponent renders a room info page.
+//  */
+// class PageRoomComponent {
+// 	constructor(module, ctrl, state, layout) {
+// 		this.module = module;
+// 		this.ctrl = ctrl;
+// 		this.state = state;
+// 		this.layout = layout;
+// 	}
+
+// 	render(el) {
+// 		this.elem = new ModelFader
+// 		this.elem = new ModelFader(this.ctrl, [
+// 			{
+// 				factory: m => new PageRoomRoom(this.module, this.ctrl, m.inRoom, this.state, this.layout),
+// 				condition: m => m.inRoom,
+// 				hash: m => m.inRoom,
+// 			},
+// 		]);
+// 		return this.elem.render(el);
+// 	}
+
+// 	unrender() {
+// 		if (this.elem) {
+// 			this.elem.unrender();
+// 			this.elem = null;
+// 		}
+// 	}
+// }
+
+// export default PageRoomComponent;

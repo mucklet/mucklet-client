@@ -18,7 +18,6 @@ class PageAreaZoom {
 	}
 
 	render(el) {
-		this.zoombar = new Fader();
 		this.elem = new ModelComponent(
 			this.model,
 			new Elem(n => n.elem('div', { className: 'pagearea-zoom' }, [

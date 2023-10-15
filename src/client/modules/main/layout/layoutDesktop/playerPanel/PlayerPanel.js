@@ -133,7 +133,7 @@ class PlayerPanel {
 			](pi.component);
 
 			this.component
-				.setTitle(pi.title || "Unknown title")
+				.setTitle(pi.title || '')
 				.setButton((m.page && m.page.close) || null, pi.closeIcon || (m.pageIdx > 0
 					? 'chevron-circle-left'
 					: 'times'
