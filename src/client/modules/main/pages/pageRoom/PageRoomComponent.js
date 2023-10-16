@@ -97,12 +97,15 @@ class PageRoomComponent {
 		}
 	}
 
+	getTitle() {
+		return (this.model ? this.model.current : this.state.areaId)
+			? areaInfo
+			: roomInfo;
+	}
+
 	_setTitle() {
-		if (this.model && this.setTitle) {
-			this.setTitle(this.model.current
-				? areaInfo
-				: roomInfo,
-			);
+		if (this.setTitle) {
+			this.setTitle(this.getTitle());
 		}
 	}
 

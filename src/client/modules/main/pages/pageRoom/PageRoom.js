@@ -1,6 +1,5 @@
 import { Txt } from 'modapp-base-component';
 import { Collection, sortOrderCompare } from 'modapp-resource';
-import { roomInfo } from './pageRoomTxt';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import './pageRoom.scss';
@@ -33,9 +32,10 @@ class PageRoom {
 			eventBus: this.app.eventBus,
 		});
 		this.module.roomPages.setDefaultPageFactory((ctrl, state, layout) => {
-			let title = new Txt(roomInfo, { tagName: 'h3', className: 'panel--titletxt' });
+			let component = new PageRoomComponent(this.module, ctrl, state, layout, (txt) => title.setText(txt));
+			let title = new Txt(component.getTitle(), { tagName: 'h3', className: 'panel--titletxt' });
 			return {
-				component: new PageRoomComponent(this.module, ctrl, state, layout, (txt) => title.setText(txt)),
+				component,
 				title,
 			};
 		});
