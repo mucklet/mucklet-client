@@ -15,12 +15,10 @@ import PageRoomRoom from './PageRoomRoom.js';
  * ancestors.
  */
 class PageRoomComponent {
-	constructor(module, ctrl, state, layout, setTitle) {
-		state.changes = state.changes || {};
-
+	constructor(module, ctrl, stateModel, layout, setTitle) {
 		this.module = module;
 		this.ctrl = ctrl;
-		this.state = state;
+		this.stateModel = stateModel;
 		this.layout = layout;
 		this.setTitle = setTitle;
 
@@ -29,15 +27,14 @@ class PageRoomComponent {
 	}
 
 	render(el) {
-		let areas = this._getAreas();
-		this.model = new Model({ data: {
-			current: this._getCurrent(this.state.areaId, null, areas),
-			areas,
-		}, eventBus: this.module.self.app.eventBus });
-		this._listenAreas([], areas);
+		this.model = new Model({
+			data: { current: null, areas: [] },
+			eventBus: this.module.self.app.eventBus,
+		});
+		this._updateModel(this.stateModel.areaId);
 		this._setTitle();
 
-		this.elem = new ModelComponent(
+		let component = new ModelComponent(
 			this.ctrl,
 			new ModelComponent(
 				null,
@@ -45,7 +42,8 @@ class PageRoomComponent {
 					// Zoom bar
 					n.component(new ModelCollapser(this.model, [{
 						condition: m => m.areas.length > 1,
-						factory: m => new PageRoomZoomBar(this.module, m.areas, m),
+						factory: m => new PageRoomZoomBar(this.module, m.areas, this.stateModel),
+						hash: m => m.areas,
 					}], { duration: 150 })),
 					// Transition area
 					n.component(new ModelComponent(
@@ -62,10 +60,10 @@ class PageRoomComponent {
 									}
 								}
 								c[cb](m.current
-									? this.module.self.getAreaComponentFactory()?.(this.ctrl, m.current, this.state, this.layout)
+									? this.module.self.getAreaComponentFactory()?.(this.ctrl, m.current, this.stateModel, this.layout)
 									: new ModelFader(this.ctrl, [
 										{
-											factory: m => new PageRoomRoom(this.module, this.ctrl, m.inRoom, this.state, this.layout),
+											factory: m => new PageRoomRoom(this.module, this.ctrl, m.inRoom, this.stateModel, this.layout),
 											condition: m => m.inRoom, // Should always be true though
 											hash: m => m.inRoom,
 										},
@@ -84,6 +82,17 @@ class PageRoomComponent {
 			),
 			(m, c) => c.setModel(m.inRoom),
 		);
+
+		this.elem = new ModelComponent(
+			this.stateModel,
+			component,
+			(m, c, change) => {
+				if (change?.hasOwnProperty('areaId') && this.model.current?.id != m.areaId) {
+					this._updateModel(m.areaId);
+				}
+			},
+		);
+
 		return this.elem.render(el);
 	}
 
@@ -91,14 +100,14 @@ class PageRoomComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
-			this.state.areaId = (this.model.current && this.model.current.id) || null;
+			this.stateModel.set({ areaId: (this.model.current?.id || null) });
 			this._listenAreas(this.model.areas, []);
 			this.model = null;
 		}
 	}
 
 	getTitle() {
-		return (this.model ? this.model.current : this.state.areaId)
+		return (this.model ? this.model.current : this.stateModel.areaId)
 			? areaInfo
 			: roomInfo;
 	}
@@ -109,19 +118,28 @@ class PageRoomComponent {
 		}
 	}
 
-	_updateModel() {
+	/**
+	 * Updates the model
+	 * @param {string?} [areaId] Area ID to try set as current. If not set, it will try to set current area ID.
+	 */
+	_updateModel(areaId) {
 		if (!this.model) {
 			return;
 		}
 
 		let areas = this._getAreas();
-		if (arraysEqual(areas, this.model.areas)) return;
+		if (arraysEqual(areas, this.model.areas)) {
+			areas = this.model.areas;
+		} else {
+			this._listenAreas(this.model.areas, areas);
+		}
 
-		this._listenAreas(this.model.areas, areas);
+		let current = this._getCurrent(typeof areaId == 'undefined' ? this._currentAreaId() : areaId, this.model.areas, areas);
 		this.model.set({
-			current: this._getCurrent(this._currentAreaId(), this.model.areas, areas),
+			current,
 			areas,
 		});
+		this.stateModel.set({ areaId: current?.id || null });
 	}
 
 	_listenAreas(before, after) {

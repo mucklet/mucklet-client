@@ -13,6 +13,7 @@ class AreaMap {
 			'charLog',
 			'pageArea',
 			'roomPages',
+			'pageRoom',
 		], this._init.bind(this));
 	}
 

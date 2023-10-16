@@ -1,5 +1,5 @@
 import { Txt } from 'modapp-base-component';
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection, sortOrderCompare } from 'modapp-resource';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import './pageRoom.scss';
@@ -31,14 +31,36 @@ class PageRoom {
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.module.roomPages.setDefaultPageFactory((ctrl, state, layout) => {
-			let component = new PageRoomComponent(this.module, ctrl, state, layout, (txt) => title.setText(txt));
-			let title = new Txt(component.getTitle(), { tagName: 'h3', className: 'panel--titletxt' });
-			return {
-				component,
-				title,
-			};
+		this.charStates = {};
+		this.module.roomPages.setDefaultPageFactory({
+			componentFactory: (ctrl, stateModel, layout) => {
+				let component = new PageRoomComponent(this.module, ctrl, stateModel, layout, (txt) => title.setText(txt));
+				let title = new Txt(component.getTitle(), { tagName: 'h3', className: 'panel--titletxt' });
+				return {
+					component,
+					title,
+				};
+			},
+			stateFactory: ctrl => this._getStateModel(ctrl.id),
 		});
+	}
+
+	_getStateModel(ctrlId) {
+		let m = this.charStates[ctrlId];
+		if (!m) {
+			m = new Model({ areaId: null });
+			this.charStates[ctrlId] = m;
+		}
+		return m;
+	}
+
+	/**
+	 * Sets the area ID for the zoom bar in the room page.
+	 * @param {string} ctrlId Controlled character ID
+	 * @param {string?} areaId Area ID to show, or null to show the room.
+	 */
+	setAreaId(ctrlId, areaId) {
+		this._getStateModel(ctrlId).set({ areaId });
 	}
 
 	/**

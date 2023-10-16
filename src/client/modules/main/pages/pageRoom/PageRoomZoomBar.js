@@ -2,19 +2,24 @@ import { Elem } from 'modapp-base-component';;
 import { CollectionList, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 
+
+function getAreaId(area) {
+	return area ? area.id : null;
+}
+
 /**
  * PageRoomZoomBar renders the zoom bar.
  */
 class PageRoomZoomBar {
-	constructor(module, areas, model) {
+	constructor(module, areas, stateModel) {
 		this.module = module;
 		this.areas = areas;
-		this.model = model;
+		this.stateModel = stateModel;
 	}
 
 	render(el) {
 		this.elem = new ModelComponent(
-			this.model,
+			this.stateModel,
 			new Elem(n => n.elem('div', { className: 'pageroom-zoombar' }, [
 				n.elem('div', { className: 'pageroom-zoombar--zoomin' }, [
 					n.elem('zoomin', 'button', { className: 'iconbtn medium', events: { click: () => this._zoom(-1) }}, [
@@ -22,14 +27,14 @@ class PageRoomZoomBar {
 					]),
 				]),
 				n.component(new CollectionList(this.areas, area => new ModelComponent(
-					this.model,
+					this.stateModel,
 					new Elem(n => n.elem('div', { className: 'pageroom-zoombar--area' }, [
 						n.elem('bar', 'div', {
 							className: 'pageroom-zoombar--bar',
-							events: { click: () => this.model.set({ current: area }) },
+							events: { click: () => this.stateModel.set({ areaId: getAreaId(area) }) },
 						}),
 					])),
-					(m, c) => c[area == m.current ? 'addNodeClass' : 'removeNodeClass']('bar', 'current'),
+					(m, c) => c[getAreaId(area) == m.areaId ? 'addNodeClass' : 'removeNodeClass']('bar', 'current'),
 				), {
 					className: 'pageroom-zoombar--areas',
 					duration: 600,
@@ -42,7 +47,7 @@ class PageRoomZoomBar {
 				]),
 			])),
 			(m, c, change) => {
-				if (change && !change.hasOwnProperty('current')) return;
+				if (change && !change.hasOwnProperty('areaId')) return;
 
 				let idx = this._getAreaIndex();
 				c.setNodeProperty('zoomin', 'disabled', idx > 0 ? null : 'disabled');
@@ -60,10 +65,10 @@ class PageRoomZoomBar {
 	}
 
 	_getAreaIndex() {
-		let current = this.model.current;
+		let areaId = this.stateModel.areaId;
 		let idx = 0;
 		for (let a of this.areas) {
-			if (current == a) {
+			if (areaId == getAreaId(a)) {
 				return idx;
 			}
 			idx++;
@@ -85,7 +90,7 @@ class PageRoomZoomBar {
 			}
 		}
 
-		this.model.set({ current: this.areas[idx] });
+		this.stateModel.set({ areaId: getAreaId(this.areas[idx]) });
 	}
 }
 

@@ -46,6 +46,7 @@ class AreaMapArea {
 									this._toggleArea(true);
 								} else {
 									this.module.roomPages.openPanel();
+									this.module.pageRoom.setAreaId(this.ctrl.id, this.area.id);
 								}
 								ev.stopPropagation();
 							},
