@@ -109,7 +109,7 @@ class Compare {
 
 				this.module.charLog.logComponent(ctx.char, 'compare', elem);
 			} catch (ex) {
-				console.log(ex);
+				console.error(ex);
 			}
 		});
 	}

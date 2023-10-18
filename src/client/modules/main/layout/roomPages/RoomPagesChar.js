@@ -12,7 +12,7 @@ function getPageIdx(pageId, pages) {
 }
 
 class RoomPagesChar {
-	constructor(module, ctrl, update) {
+	constructor(module, ctrl, update, defaultPageFactory) {
 		this.module = module;
 		this.ctrl = ctrl;
 		this.update = update;
@@ -20,6 +20,8 @@ class RoomPagesChar {
 		this.roomPages = {};
 		this.charPages = [];
 		this.defaultRoomStates = {};
+
+		this.setDefaultPageFactory(defaultPageFactory);
 	}
 
 	/**
@@ -29,6 +31,7 @@ class RoomPagesChar {
 	 * @param {function} pageFactory Page factory callback function: function(ctrl, room, roomState, close) -> { component, [title], [onClose], [closeIcon] }
 	 * @param {object} [opt] Optional parameters.
 	 * @param {function} [opt.onClose] Callback called when page is closed.
+	 * @param {function} [opt.stateFactory] Initial state factory function.
 	 * @returns {function} Function that closes the page.
 	 */
 	openPage(pageId, roomInstanceId, pageFactory, opt) {
@@ -51,7 +54,7 @@ class RoomPagesChar {
 			pages.push({
 				id: pageId,
 				factory: pageFactory,
-				state: {},
+				state: opt.stateFactory ? opt.stateFactory(this.ctrl) : {},
 				close: opt.beforeClose
 					? force => force ? close : opt.beforeClose(close)
 					: close,
@@ -84,16 +87,22 @@ class RoomPagesChar {
 		}
 		let pages = this.roomPages[roomInstanceId];
 		if (!pages) {
-			let f = this.module.self.getDefaultPageFactory();
-			pages = [{
-				id: null,
-				state: {},
-				factory: (ctrl, room, state, close, layoutId) => f(ctrl, room, state, layoutId),
-				close: null,
-			}];
+			pages = [ this.defaultPage ];
 			this.roomPages[roomInstanceId] = pages;
 		}
 		return pages;
+	}
+
+	setDefaultPageFactory(pageFactory) {
+		let f = pageFactory?.componentFactory;
+		this.defaultPage = {
+			id: null,
+			state: (pageFactory.stateFactory ? pageFactory.stateFactory(this.ctrl) : {}),
+			factory: f
+				? (ctrl, room, state, close, layoutId) => f(ctrl, state, layoutId)
+				: null,
+			close: null,
+		};
 	}
 
 	_closePages(roomInstanceId, skipPageId) {

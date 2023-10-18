@@ -1,4 +1,5 @@
 import { Collection, sortOrderCompare } from 'modapp-resource';
+import l10n from 'modapp-l10n';
 import PageCharComponent from './PageCharComponent';
 import PageCharSleep from './PageCharSleep';
 import './pageChar.scss';
@@ -22,6 +23,7 @@ class PageChar {
 		});
 		this.module.charPages.setDefaultPageFactory((ctrl, char, state) => ({
 			component: new PageCharComponent(this.module, ctrl, char, state),
+			title: l10n.l('pageChar.characterInfo', "Character Info"),
 			close: char && char.id != ctrl.id
 				? () => ctrl.call('look', { charId: ctrl.id })
 				: null,

@@ -2,47 +2,52 @@ import { Elem } from 'modapp-base-component';;
 import { CollectionList, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 
+
+function getAreaId(area) {
+	return area ? area.id : null;
+}
+
 /**
- * PageAreaZoomBar renders the zoom bar.
+ * PageRoomZoomBar renders the zoom bar.
  */
-class PageAreaZoomBar {
-	constructor(module, areas, model) {
+class PageRoomZoomBar {
+	constructor(module, areas, stateModel) {
 		this.module = module;
 		this.areas = areas;
-		this.model = model;
+		this.stateModel = stateModel;
 	}
 
 	render(el) {
 		this.elem = new ModelComponent(
-			this.model,
-			new Elem(n => n.elem('div', { className: 'pagearea-zoombar' }, [
-				n.elem('div', { className: 'pagearea-zoombar--zoomin' }, [
+			this.stateModel,
+			new Elem(n => n.elem('div', { className: 'pageroom-zoombar' }, [
+				n.elem('div', { className: 'pageroom-zoombar--zoomin' }, [
 					n.elem('zoomin', 'button', { className: 'iconbtn medium', events: { click: () => this._zoom(-1) }}, [
 						n.component(new FAIcon('search-plus')),
 					]),
 				]),
-				n.component('areas', new CollectionList(this.areas, area => new ModelComponent(
-					this.model,
-					new Elem(n => n.elem('div', { className: 'pagearea-zoombar--area' }, [
+				n.component(new CollectionList(this.areas, area => new ModelComponent(
+					this.stateModel,
+					new Elem(n => n.elem('div', { className: 'pageroom-zoombar--area' }, [
 						n.elem('bar', 'div', {
-							className: 'pagearea-zoombar--bar',
-							events: { click: () => this.model.set({ current: area }) },
+							className: 'pageroom-zoombar--bar',
+							events: { click: () => this.stateModel.set({ areaId: getAreaId(area) }) },
 						}),
 					])),
-					(m, c) => c[area == m.current ? 'addNodeClass' : 'removeNodeClass']('bar', 'current'),
+					(m, c) => c[getAreaId(area) == m.areaId ? 'addNodeClass' : 'removeNodeClass']('bar', 'current'),
 				), {
-					className: 'pagearea-zoombar--areas',
+					className: 'pageroom-zoombar--areas',
 					duration: 600,
 					horizontal: true,
 				})),
-				n.elem('div', { className: 'pagearea-zoombar--zoomout' }, [
+				n.elem('div', { className: 'pageroom-zoombar--zoomout' }, [
 					n.elem('zoomout', 'button', { className: 'iconbtn medium', events: { click: () => this._zoom(1) }}, [
 						n.component(new FAIcon('search-minus')),
 					]),
 				]),
 			])),
 			(m, c, change) => {
-				if (change && !change.hasOwnProperty('current')) return;
+				if (change && !change.hasOwnProperty('areaId')) return;
 
 				let idx = this._getAreaIndex();
 				c.setNodeProperty('zoomin', 'disabled', idx > 0 ? null : 'disabled');
@@ -60,10 +65,10 @@ class PageAreaZoomBar {
 	}
 
 	_getAreaIndex() {
-		let current = this.model.current;
+		let areaId = this.stateModel.areaId;
 		let idx = 0;
 		for (let a of this.areas) {
-			if (current == a) {
+			if (areaId == getAreaId(a)) {
 				return idx;
 			}
 			idx++;
@@ -85,8 +90,8 @@ class PageAreaZoomBar {
 			}
 		}
 
-		this.model.set({ current: this.areas[idx] });
+		this.stateModel.set({ areaId: getAreaId(this.areas[idx]) });
 	}
 }
 
-export default PageAreaZoomBar;
+export default PageRoomZoomBar;

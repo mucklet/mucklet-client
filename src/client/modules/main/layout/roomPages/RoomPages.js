@@ -59,18 +59,28 @@ class RoomPages {
 	}
 
 	/**
-	 * Sets the component factory function for creating the default room page.
-	 * @param {function} pageFactory Page factory callback function: function(ctrl, room, panelState, layoutId) -> { component, [title], [onClose], [closeIcon] }
+	 * @typedef {object} RoomPagesDefaultPageFactory
+	 * @property {(ctrl: Model, state: Object, layoutId: string) => { component: Component, title?: String | LocaleString }} componentFactory Default page compoent factory callback function
+	 * @property {(ctrl: Model) => Object} stateFactory Initial state factory function.
+	 */
+
+	/**
+	 * Sets the default page factory for the room pages.
+	 * @param {?RoomPagesDefaultPageFactory} pageFactory Default page room factory.
 	 * @returns {this}
 	 */
 	setDefaultPageFactory(pageFactory) {
-		this.defaultPageFactory = pageFactory;
+		this.defaultPageFactory = pageFactory || null;
+		// Set it for all existing character components.
+		for (let k in this.charComponents) {
+			this.charComponents[k].setDefaultPage(pageFactory);
+		}
 		return this;
 	}
 
 	/**
-	 * Gets the default page component factory function.
-	 * @returns {?function} Page factory callback function: function(ctrl, room, panelState, layoutId) -> { component, [title], [onClose], [closeIcon] }
+	 * Gets the default page factory for the room pages.
+	 * @returns {?RoomPagesDefaultPageFactory} Default room page factory.
 	 */
 	getDefaultPageFactory() {
 		return this.defaultPageFactory;
@@ -85,6 +95,7 @@ class RoomPages {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {bool} [opt.openPanel] Flag to tell if the panel should be opened when opening the page.
 	 * @param {function} [opt.onClose] Callback called when page is closed.
+	 * @param {(ctrl: Model) => Object} [opt.stateFactory] Initial state factory function.
  	 * @returns {function} Function that closes the page.
 	 */
 	openPage(pageId, ctrlId, roomInstanceId, pageFactory, opt) {
@@ -133,7 +144,7 @@ class RoomPages {
 			let prev = this.charComponents[charId];
 			if (char) {
 				if (!prev) {
-					this.charComponents[charId] = new RoomPagesChar(this.module, char, this._update);
+					this.charComponents[charId] = new RoomPagesChar(this.module, char, this._update, this.getDefaultPageFactory());
 				}
 			} else if (prev) {
 				prev.dispose();

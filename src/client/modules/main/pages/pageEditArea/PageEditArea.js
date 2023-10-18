@@ -65,7 +65,9 @@ class PageEditArea {
 		});
 	}
 
-	dispose() {}
+	dispose() {
+		this.module.pageArea.removeTool('editArea');
+	}
 }
 
 export default PageEditArea;
