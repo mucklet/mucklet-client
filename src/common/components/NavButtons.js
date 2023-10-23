@@ -52,6 +52,7 @@ class NavButtons {
 	 * @param {object} state Button state.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Additional class names to append to font-awesome class names.
+	 * @param {bool} [opt.shadow] Add a drop shadow to the buttons.
 	 * @param {(dir: string, c: NavButtons) => void} [opt.onClick] Callback called on click
 	 */
 	constructor(state, opt) {
@@ -73,7 +74,8 @@ class NavButtons {
 	width="100"
 	version="1.1"
 	xmlns="http://www.w3.org/2000/svg"
-	xmlns:svg="http://www.w3.org/2000/svg">
+	xmlns:svg="http://www.w3.org/2000/svg"${opt?.shadow ? `
+	class="shadow"` : ''}>
 	<defs>
 		<path
 			id="btn"
