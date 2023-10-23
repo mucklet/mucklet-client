@@ -60,6 +60,10 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		transition: 0.2s color, 0.2s background-color;
 		color: $color4;
 		background: $color1-lighter;
+
+		&.smallicon {
+			font-size: 18px;
+		}
 	}
 
 	&--faicontext {

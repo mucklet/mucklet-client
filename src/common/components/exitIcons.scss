@@ -16,4 +16,9 @@
 		-webkit-transform: rotate(90deg);
 		transform: rotate(90deg);
 	}
+
+	&--dot {
+		font-size: 10px;
+		transform: translateY(2px)
+	}
 }
