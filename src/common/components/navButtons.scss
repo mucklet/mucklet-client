@@ -1,0 +1,84 @@
+@import '~scss/variables';
+
+.navbuttons {
+
+	&--icon {
+		font-family:'FontAwesome';
+		fill: $color4-light;
+		opacity: 0;
+	}
+
+	&--btn {
+		fill: $color1-lightest;
+
+		&:not(.disabled) {
+			cursor: pointer;
+			&:hover {
+				fill: lighten($color1-lightest, 5%);
+				.navbuttons--icon {
+					fill:$color4-lighter;
+				}
+			}
+
+			&.selected {
+				fill: $color6;
+				.navbuttons--icon {
+					fill: $color1-light;
+				}
+				&:not(.disabled):hover {
+					fill: $color6-hover;
+					.navbuttons--icon {
+						fill: $color1-lighter;
+					}
+				}
+			}
+		}
+		&.selected:not(.disabled) {
+			&:hover {
+				fill: lighten($color1-lightest, 5%);
+				.navbuttons--icon {
+					fill: $color4-lighter;
+				}
+			}
+		}
+		&.disabled {
+			opacity: 0.3;
+		}
+		&.n .navbuttons--icon.n {
+			opacity: 1;
+		}
+		&.ne .navbuttons--icon.ne {
+			opacity: 1;
+		}
+		&.e .navbuttons--icon.e {
+			opacity: 1;
+		}
+		&.se .navbuttons--icon.se {
+			opacity: 1;
+		}
+		&.se .navbuttons--icon.se {
+			opacity: 1;
+		}
+		&.sw .navbuttons--icon.sw {
+			opacity: 1;
+		}
+		&.w .navbuttons--icon.w {
+			opacity: 1;
+		}
+		&.nw .navbuttons--icon.nw {
+			opacity: 1;
+		}
+		&.up .navbuttons--icon.up {
+			opacity: 1;
+		}
+		&.down .navbuttons--icon.down {
+			opacity: 1;
+		}
+		&.in .navbuttons--icon.in {
+			opacity: 1;
+		}
+		&.out .navbuttons--icon.out {
+			opacity: 1;
+		}
+	}
+}

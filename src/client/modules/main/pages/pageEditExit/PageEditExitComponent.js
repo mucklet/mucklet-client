@@ -1,5 +1,5 @@
 import { Elem, Txt, Input, Textarea, Context } from 'modapp-base-component';
-import { ModelComponent, ModelTxt } from 'modapp-resource-component';
+import { ModelComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
 import { ModifyModel, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
@@ -7,6 +7,8 @@ import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import LabelToggleBox from 'components/LabelToggleBox';
+import ExitIcon from 'components/ExitIcon';
+import NavButtons, { directions } from 'components/NavButtons';
 import prepareKeys from 'utils/prepareKeys';
 
 /**
@@ -111,6 +113,48 @@ class PageEditExitComponent {
 						popupTip: l10n.l('pageEditExit.keysInfo', "Comma-separated list of case-insensitive keywords used for identifying the exit."),
 					},
 				)),
+				n.elem('div', { className: 'flex-row pad8 common--sectionpadding' }, [
+					n.component(new PanelSection(
+						l10n.l('pageEditExit.icon', "Icon"),
+						new Elem(n => n.elem('div', { className: 'flex-row' }, [
+							n.component(this._newIconSet(ctx.model, [
+								[ 'nw', 'n', 'ne' ],
+								[ 'w', '', 'e' ],
+								[ 'sw', 's', 'se' ],
+							], {
+								className: 'pageeditexit--dir-icons flex-auto',
+							})),
+							n.component(this._newIconSet(ctx.model, [
+								[ 'in', 'out' ],
+								[ 'up', 'down' ],
+							], {
+								className: 'pageeditexit--misc-icons flex-1',
+							})),
+						])),
+						{
+							className: 'flex-1',
+							noToggle: true,
+						},
+					)),
+					n.component(new PanelSection(
+						l10n.l('pageEditExit.navigation', "Navigation"),
+						new ModelComponent(
+							ctx.model,
+							new NavButtons(null, {
+								onClick: (dir) => ctx.model.set({ compass: ctx.model.compass == dir ? '' : dir }),
+							}),
+							(m, c, change) => {
+								if (!change || change.hasOwnProperty('compass')) {
+									c.setState(this._getNavState(m.compass));
+								}
+							},
+						),
+						{
+							className: 'flex-1',
+							noToggle: true,
+						},
+					)),
+				]),
 				n.component(new PanelSection(
 					l10n.l('pageEditExit.leaveMessage', "Leave message"),
 					new ModelComponent(
@@ -199,6 +243,40 @@ class PageEditExitComponent {
 				]),
 			])),
 		));
+	}
+
+	_newIconSet(model, set, opt) {
+		return new CollectionList(set, row => new CollectionList(
+			row,
+			icon => new ModelComponent(
+				model,
+				new Elem(n => n.elem('div', { className: 'pageeditexit--icon' }, [
+					n.elem('btn', 'button', {
+						className: 'iconbtn tiny tinyicon',
+						attributes: icon ? null : { disabled: '' },
+						events: {
+							click: (e, ev) => {
+								model.set({ icon: model.icon == icon ? '' : icon });
+								ev.stopPropagation();
+							},
+						},
+					}, [
+						n.component(new ExitIcon(icon)),
+					]),
+				])),
+				(m, c) => c[icon && model.icon == icon ? 'addNodeClass' : 'removeNodeClass']('btn', 'active'),
+			),
+			{
+				className: 'pageeditexit--icon-row flex-row',
+				horizontal: true,
+			},
+		), opt);
+	}
+
+	_getNavState(compass) {
+		return directions.reduce((state, dir) => (state[dir] = {
+			selected: dir == compass,
+		}, state), {});
 	}
 
 	_setSaveText(ctx, c) {

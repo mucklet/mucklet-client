@@ -1,6 +1,27 @@
 @import '~scss/variables';
+@import '~scss/mixins';
 
 .pageeditexit {
 	padding: 16px;
 	margin: 0;
+
+	&--dir-icons {
+		padding-right: 4px;
+		border-right: solid 1px $color1-dark;
+	}
+	&--misc-icons {
+		padding-left: 4px;
+	}
+
+	&--icon {
+		padding: 0 2px 2px 0;
+
+		> .iconbtn {
+			@include btn-style(none, $color1-lighter, $color1-lighter, $color4-dark, $color4-semidark);
+		}
+
+		> .iconbtn.active {
+			@include btn-style($color6, $color6-hover, $color6-hover, $color1-light, $color1-lighter);
+		}
+	}
 }
