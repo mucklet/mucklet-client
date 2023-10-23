@@ -117,14 +117,14 @@ class PageEditExitComponent {
 					n.component(new PanelSection(
 						l10n.l('pageEditExit.icon', "Icon"),
 						new Elem(n => n.elem('div', { className: 'flex-row' }, [
-							n.component(this._newIconSet(ctx.model, [
+							n.component(this._newIconSet(ctx.exit, [
 								[ 'nw', 'n', 'ne' ],
 								[ 'w', '', 'e' ],
 								[ 'sw', 's', 'se' ],
 							], {
 								className: 'pageeditexit--dir-icons flex-auto',
 							})),
-							n.component(this._newIconSet(ctx.model, [
+							n.component(this._newIconSet(ctx.exit, [
 								[ 'in', 'out' ],
 								[ 'up', 'down' ],
 							], {
@@ -139,13 +139,13 @@ class PageEditExitComponent {
 					n.component(new PanelSection(
 						l10n.l('pageEditExit.navigation', "Navigation"),
 						new ModelComponent(
-							ctx.model,
+							ctx.exit,
 							new NavButtons(null, {
-								onClick: (dir) => ctx.model.set({ compass: ctx.model.compass == dir ? '' : dir }),
+								onClick: (dir) => ctx.exit.set({ nav: ctx.exit.nav == dir ? '' : dir }),
 							}),
 							(m, c, change) => {
-								if (!change || change.hasOwnProperty('compass')) {
-									c.setState(this._getNavState(m.compass));
+								if (!change || change.hasOwnProperty('nav')) {
+									c.setState(this._getNavState(m.nav));
 								}
 							},
 						),
@@ -273,9 +273,9 @@ class PageEditExitComponent {
 		), opt);
 	}
 
-	_getNavState(compass) {
+	_getNavState(nav) {
 		return directions.reduce((state, dir) => (state[dir] = {
-			selected: dir == compass,
+			selected: dir == nav,
 		}, state), {});
 	}
 

@@ -116,7 +116,7 @@ class NavButtons {
 	}
 
 	unrender() {
-		this.svg.parentNode()?.removeChild(this.svg);
+		this.svg.parentNode?.removeChild(this.svg);
 		this._setListeners(false);
 	}
 
