@@ -67,7 +67,7 @@ class NavButtons {
 		this._onClick = opt?.onClick || null;
 		// Create element
 		this.svg = document.createElement('div');
-		this.svg.classList.add('navbuttons' + (opt?.className ? ' opt.className' : ''));
+		this.svg.className = 'navbuttons' + (opt?.className ? ' ' + opt.className : '');
 
 		this.svg.innerHTML = `<svg
 	height="100"

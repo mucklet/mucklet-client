@@ -1,0 +1,61 @@
+@import '~scss/variables';
+
+.overlaynav {
+	position: absolute;
+	top: 9px;
+	right: 14px;
+	// flex-direction: row;
+	// display: flex;
+
+	&--name {
+		line-height: 20px;
+	}
+
+	&--badge {
+		padding-right: 4px;
+		box-shadow: 0px 0px 8px 4px $color1;
+	}
+
+	&--badge > .btn.badge, &--toggle.iconbtn {
+		height: 28px;
+		background: $color1-lighter;
+		&:not(:disabled) {
+			&:hover, &:focus, &:active {
+				background: lighten($color1-lighter, 3%);
+			}
+		}
+	}
+
+	&--badgecont {
+		width: 212px;
+		overflow: hidden;
+	}
+
+	&--counter {
+		flex: 0 0 auto;
+		padding-right: 6px;
+		padding-left: 6px;
+	}
+
+	&--content {
+		position: absolute;
+		top: 34px;
+		right: 0px;
+		box-shadow: 0px 0px 8px 4px $color1;
+	}
+
+	&--toggle.iconbtn {
+		border-radius: 8px;
+		> i {
+			line-height: 19px;
+		}
+	}
+}
+
+.overlaynav-area {
+	padding-bottom: 4px;
+}
+
+.overlaynav-buttons {
+	padding: 2px 2px 0 0;
+}
