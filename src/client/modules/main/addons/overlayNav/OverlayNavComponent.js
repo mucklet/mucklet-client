@@ -14,10 +14,11 @@ import OverlayNavButtons from './OverlayNavButtons';
  */
 class OverlayNavComponent {
 
-	constructor(module, ctrl, state) {
+	constructor(module, ctrl, state, opt) {
 		this.module = module;
 		this.ctrl = ctrl;
 		this.state = state;
+		this.opt = opt;
 	}
 
 	render(el) {
@@ -26,13 +27,17 @@ class OverlayNavComponent {
 			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
 
-		let roomComponent = new Elem(n => n.elem('div', { className: 'overlaynav' }, [
+		let roomComponent = new Elem(n => n.elem('div', { className: 'overlaynav' + (this.opt?.mode == 'mobile' ? ' mobile' : '') }, [
 			n.elem('div', { className: 'flex-row' }, [
 				n.elem('div', { className: 'overlaynav--badge flex-auto' }, [
 					n.elem('div', { className: 'badge btn nooutline', events: {
 						click: (c, ev) => {
 							this.module.roomPages.openPanel();
-							this.module.pageRoom.setAreaId(this.ctrl.id, null);
+							// In mobile layout, we don't zoom in the room, but
+							// just open the panel.
+							if (this.opt?.mode != 'mobile') {
+								this.module.pageRoom.setAreaId(this.ctrl.id, null);
+							}
 							ev.stopPropagation();
 						},
 					}}, [

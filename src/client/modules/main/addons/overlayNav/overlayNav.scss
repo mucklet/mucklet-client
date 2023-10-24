@@ -4,8 +4,6 @@
 	position: absolute;
 	top: 9px;
 	right: 14px;
-	// flex-direction: row;
-	// display: flex;
 
 	&--name {
 		line-height: 20px;
@@ -49,6 +47,11 @@
 			line-height: 19px;
 		}
 	}
+}
+
+.overlaynav.mobile {
+	top: 8px;
+	right: 12px;
 }
 
 .overlaynav-area {

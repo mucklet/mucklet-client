@@ -26,6 +26,11 @@ class OverlayNav {
 			componentFactory: (char, state, layoutId) => new OverlayNavComponent(this.module, char, state),
 			filter: (char, layoutId) => layoutId == 'desktop',
 		});
+		this.module.charLog.addOverlay({
+			id: 'mobileNav',
+			componentFactory: (char, state, layoutId) => new OverlayNavComponent(this.module, char, state, { mode: 'mobile' }),
+			filter: (char, layoutId) => layoutId == 'mobile',
+		});
 	}
 
 	dispose() {
