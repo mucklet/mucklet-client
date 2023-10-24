@@ -80,13 +80,13 @@ class NavButtons {
 		<path
 			id="btn"
 			d="M 50,0 C 44.986273,0.01078937 40.009686,0.77557153 35.235929,2.262753 33.320114,2.8595921 32.431233,4.9719548 33.199296,6.826252 L 44.0625,33.052734 C 45.968389,32.370445 47.975717,32.01454 50,32 c 2.027411,8.64e-4 4.040108,0.344237 5.953125,1.015625 L 66.800728,6.8262622 C 67.568778,4.9719594 66.679886,2.8595919 64.76407,2.2627528 59.990313,0.77557146 55.013727,0.01078937 50,0 Z"
-			style="transition: fill 0.2s; stroke:none" />
+			style="transition: fill-opacity .2s, fill .2s; stroke:none" />
 		${icons
 		.map(o => `<text
 			id="icon-${o.id}"
 			x="${o.x}"
 			y="${o.y}"
-			style="transition: opacity 0.2s, fill 0.2s"${o.rotate ? `
+			style="transition: fill-opacity .2s, fill .2s"${o.rotate ? `
 			transform="rotate(${o.rotate} 50 16)"` : ''}
 		>&#x${o.char};</text>`)
 		.join('\n\t\t')}

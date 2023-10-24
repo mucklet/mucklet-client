@@ -6,10 +6,17 @@
 		filter: drop-shadow(0px 0px 8px $color1);
 	}
 
+	text {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
 	&--icon {
 		font-family:'FontAwesome';
 		fill: $color4-light;
-		opacity: 0;
+		fill-opacity: 0;
 	}
 
 	&--btn {
@@ -46,43 +53,43 @@
 			}
 		}
 		&.disabled {
-			opacity: 0.35;
+			fill-opacity: 0.35;
 		}
 		&.n .navbuttons--icon.n {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.ne .navbuttons--icon.ne {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.e .navbuttons--icon.e {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.se .navbuttons--icon.se {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.s .navbuttons--icon.s {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.sw .navbuttons--icon.sw {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.w .navbuttons--icon.w {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.nw .navbuttons--icon.nw {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.up .navbuttons--icon.up {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.down .navbuttons--icon.down {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.in .navbuttons--icon.in {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 		&.out .navbuttons--icon.out {
-			opacity: 1;
+			fill-opacity: 1;
 		}
 	}
 }
