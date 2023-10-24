@@ -65,7 +65,7 @@ class OverlayNavArea {
 			() => new AreaChildrenModel(this.ctrl, area, { eventBus: this.module.self.app.eventBus }),
 			children => children.dispose(),
 			children => this.module.pageArea.newImage(this.ctrl, area.id, area.image, children, this.model, state, {
-				className: 'overlaynav--map',
+				className: 'overlaynav-area--map',
 				vw: 156,
 				vh: 156,
 				size: 'small',

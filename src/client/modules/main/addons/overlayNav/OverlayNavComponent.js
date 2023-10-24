@@ -75,14 +75,15 @@ class OverlayNavComponent {
 			]),
 			n.component(new ModelCollapser(this.model, [{
 				condition: m => m.open,
-				factory: m => new Elem(n => n.elem('div', { className: 'flex-col flex-end' }, [
+				factory: m => new Elem(n => n.elem('div', { className: 'flex-row' }, [
+					n.component(new OverlayNavButtons(this.module, this.ctrl)),
 					n.component(new ModelComponent(
 						this.ctrl,
 						new ModelComponent(
 							null,
 							new ModelComponent(
 								null,
-								new Collapser(),
+								new Collapser(null, { horizontal: true }),
 								(m, c) => {
 									console.log("M.image: ", m?.image, c.getComponent());
 									c.setComponent(m?.image
@@ -96,7 +97,6 @@ class OverlayNavComponent {
 						),
 						(m, c) => c.setModel(m?.inRoom),
 					)),
-					n.component(new OverlayNavButtons(this.module, this.ctrl)),
 				])),
 			}], {
 				className: 'overlaynav--content',
