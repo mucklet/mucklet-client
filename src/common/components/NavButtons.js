@@ -56,12 +56,6 @@ class NavButtons {
 	 * @param {(dir: string, c: NavButtons) => void} [opt.onClick] Callback called on click
 	 */
 	constructor(state, opt) {
-
-		// state = {
-		// 	n: { icon: 'up', selected: true },
-		// 	w: { icon: 'w' },
-		// };
-
 		this.btns = {};
 		this.cbs = null;
 		this._onClick = opt?.onClick || null;

@@ -115,6 +115,24 @@ class PageEditExitComponent {
 				)),
 				n.elem('div', { className: 'flex-row pad8 common--sectionpadding' }, [
 					n.component(new PanelSection(
+						l10n.l('pageEditExit.navigation', "Navigation"),
+						new ModelComponent(
+							ctx.exit,
+							new NavButtons(null, {
+								onClick: (dir) => ctx.exit.set({ nav: ctx.exit.nav == dir ? '' : dir }),
+							}),
+							(m, c, change) => {
+								if (!change || change.hasOwnProperty('nav')) {
+									c.setState(this._getNavState(m.nav));
+								}
+							},
+						),
+						{
+							className: 'flex-1',
+							noToggle: true,
+						},
+					)),
+					n.component(new PanelSection(
 						l10n.l('pageEditExit.icon', "Icon"),
 						new Elem(n => n.elem('div', { className: 'flex-row' }, [
 							n.component(this._newIconSet(ctx.exit, [
@@ -131,24 +149,6 @@ class PageEditExitComponent {
 								className: 'pageeditexit--misc-icons flex-1',
 							})),
 						])),
-						{
-							className: 'flex-1',
-							noToggle: true,
-						},
-					)),
-					n.component(new PanelSection(
-						l10n.l('pageEditExit.navigation', "Navigation"),
-						new ModelComponent(
-							ctx.exit,
-							new NavButtons(null, {
-								onClick: (dir) => ctx.exit.set({ nav: ctx.exit.nav == dir ? '' : dir }),
-							}),
-							(m, c, change) => {
-								if (!change || change.hasOwnProperty('nav')) {
-									c.setState(this._getNavState(m.nav));
-								}
-							},
-						),
 						{
 							className: 'flex-1',
 							noToggle: true,
