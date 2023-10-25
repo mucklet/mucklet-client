@@ -5,6 +5,8 @@ import TextStep from 'classes/TextStep';
 import RepeatStep from 'classes/RepeatStep';
 import ItemList from 'classes/ItemList';
 import Err from 'classes/Err';
+import { exitIcons } from 'components/ExitIcon';
+import { directions } from 'components/NavButtons';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { communicationTooLong, keyTooLong, itemNameTooLong } from 'utils/cmdErr';
 
@@ -13,6 +15,16 @@ const shortDesc = 'Set an exit attribute';
 const helpText =
 `<p>Set an exit attribute.</p>
 <p><code class="param">Keyword</code> is the keyword of the exit to set.</p>`;
+const dirAlias = {
+	n: [ 'north' ],
+	ne: [ 'northeast' ],
+	e: [ 'east' ],
+	se: [ 'southeast' ],
+	s: [ 'south' ],
+	sw: [ 'southwest' ],
+	w: [ 'west' ],
+	nw: [ 'northwest' ],
+};
 
 const defaultAttr = [
 	{
@@ -50,6 +62,46 @@ const defaultAttr = [
 		),
 		desc: l10n.l('setExit.keywordsDesc', "Comma-separated list of case-insensitive keywords used with the <code>go</code> command."),
 		sortOrder: 20,
+	},
+	{
+		key: 'icon',
+		stepFactory: module => new ListStep('value', new ItemList({
+			items: [
+				...exitIcons.map(icon => ({
+					key: icon,
+					alias: dirAlias[icon],
+				})),
+				{
+					key: "none",
+					value: '',
+				},
+			],
+		}), { name: "is exit icon" }),
+		desc: l10n.l('setExit.iconDesc', "Icon for the exit. Value is {values} or <code>none</code>.", {
+			values: exitIcons.map(icon => `<code>${icon}</code>`).join(', '),
+		}),
+		sortOrder: 30,
+	},
+	{
+		key: 'navigation',
+		value: 'nav',
+		stepFactory: module => new ListStep('value', new ItemList({
+			items: [
+				...directions.map(dir => ({
+					key: dir,
+					alias: dirAlias[dir],
+				})),
+				{
+					key: "none",
+					value: '',
+				},
+			],
+		}), { name: "is navigation direction" }),
+		desc: l10n.l('setExit.navigationDesc', "Navigation direction for the exit. Value is {values} or <code>none</code>.", {
+			values: directions.map(dir => `<code>${dir}</code>`).join(', '),
+		}),
+		sortOrder: 40,
+		alias: [ 'nav' ],
 	},
 	{
 		key: 'hidden',

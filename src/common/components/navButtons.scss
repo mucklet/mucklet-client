@@ -1,0 +1,95 @@
+@import '~scss/variables';
+
+.navbuttons {
+
+	svg.shadow {
+		filter: drop-shadow(0px 0px 8px $color1);
+	}
+
+	text {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	&--icon {
+		font-family:'FontAwesome';
+		fill: $color4-light;
+		fill-opacity: 0;
+	}
+
+	&--btn {
+		fill: $color1-lightest;
+
+		&:not(.disabled) {
+			cursor: pointer;
+			&:hover {
+				fill: lighten($color1-lightest, 5%);
+				.navbuttons--icon {
+					fill:$color4-lighter;
+				}
+			}
+
+			&.selected {
+				fill: $color6;
+				.navbuttons--icon {
+					fill: $color1-light;
+				}
+				&:not(.disabled):hover {
+					fill: $color6-hover;
+					.navbuttons--icon {
+						fill: $color1-lighter;
+					}
+				}
+			}
+		}
+		&.selected:not(.disabled) {
+			&:hover {
+				fill: lighten($color1-lightest, 5%);
+				.navbuttons--icon {
+					fill: $color4-lighter;
+				}
+			}
+		}
+		&.disabled {
+			fill-opacity: 0.35;
+		}
+		&.n .navbuttons--icon.n {
+			fill-opacity: 1;
+		}
+		&.ne .navbuttons--icon.ne {
+			fill-opacity: 1;
+		}
+		&.e .navbuttons--icon.e {
+			fill-opacity: 1;
+		}
+		&.se .navbuttons--icon.se {
+			fill-opacity: 1;
+		}
+		&.s .navbuttons--icon.s {
+			fill-opacity: 1;
+		}
+		&.sw .navbuttons--icon.sw {
+			fill-opacity: 1;
+		}
+		&.w .navbuttons--icon.w {
+			fill-opacity: 1;
+		}
+		&.nw .navbuttons--icon.nw {
+			fill-opacity: 1;
+		}
+		&.up .navbuttons--icon.up {
+			fill-opacity: 1;
+		}
+		&.down .navbuttons--icon.down {
+			fill-opacity: 1;
+		}
+		&.in .navbuttons--icon.in {
+			fill-opacity: 1;
+		}
+		&.out .navbuttons--icon.out {
+			fill-opacity: 1;
+		}
+	}
+}
