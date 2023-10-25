@@ -28,20 +28,20 @@ function getTarget(charId, ev) {
 	return fullname(t);
 }
 
-// function countTargets(ev) {
-// 	return (ev.target ? 1 : 0) + (ev.targets?.length || 0);
-// }
+function addOoc(ev) {
+	return ev.ooc ? '>' : '';
+}
 
 const replyCmds = {
-	address: (charId, ev) => 'address ' + getTarget(charId, ev) + ' =',
-	whisper: (charId, ev) => 'whisper ' + getTarget(charId, ev) + ' =',
-	message: (charId, ev) => 'message ' + getTarget(charId, ev) + ' =',
+	address: (charId, ev) => 'address ' + getTarget(charId, ev) + ' =' + addOoc(ev),
+	whisper: (charId, ev) => 'whisper ' + getTarget(charId, ev) + ' =' + addOoc(ev),
+	message: (charId, ev) => 'message ' + getTarget(charId, ev) + ' =' + addOoc(ev),
 };
 
 const replyAllCmds = {
-	address: (charId, ev) => 'address ' + getTargetList(charId, ev) + ' =',
-	whisper: (charId, ev) => 'whisper ' + getTargetList(charId, ev) + ' =',
-	message: (charId, ev) => 'message ' + getTargetList(charId, ev) + ' =',
+	address: (charId, ev) => 'address ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
+	whisper: (charId, ev) => 'whisper ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
+	message: (charId, ev) => 'message ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
 };
 
 function countTargets(ev) {
