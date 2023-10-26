@@ -30,7 +30,7 @@ class Say {
 				errRequired: step => new Err('say.messageRequired', "What do you want to say?"),
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
-				completer: this.module.cmdLists.getInRoomChars(),
+				completer: this.module.cmdLists.getInRoomChars(true),
 				formatText: true,
 			}),
 			symbol: '"',

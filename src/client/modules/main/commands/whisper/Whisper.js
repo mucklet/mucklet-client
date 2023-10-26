@@ -51,6 +51,7 @@ class Whisper {
 					(next, idx) => this.module.cmdSteps.newInRoomAwakeCharStep({
 						id: 'charId-' + idx,
 						errRequired: null,
+						filterMuted: true,
 						next,
 					}),
 					{
@@ -70,7 +71,7 @@ class Whisper {
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => new Err('whisper.messageRequired', "What do you want to whisper?"),
-							completer: this.module.cmdLists.getInRoomChars(),
+							completer: this.module.cmdLists.getInRoomChars(true),
 							formatText: true,
 						}),
 					],

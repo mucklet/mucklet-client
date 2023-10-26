@@ -36,6 +36,7 @@ class Mail {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('mail.characterRequired', "Who do you want to send a mail to?"),
+					filterMuted: true,
 				}),
 				new DelimStep("=", {
 					next: [
@@ -49,7 +50,7 @@ class Mail {
 							maxLength: () => this.module.info.getMail().mailMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => new Err('mail.messageRequired', "What is the message you want to mail?"),
-							completer: this.module.cmdLists.getCharsAwake(),
+							completer: this.module.cmdLists.getCharsAwake(true),
 							formatText: true,
 						}),
 					],

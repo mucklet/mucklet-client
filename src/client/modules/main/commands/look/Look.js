@@ -29,6 +29,7 @@ class Look {
 			key: 'look',
 			next: this.module.cmdSteps.newInRoomCharStep({
 				errRequired: () => new Err('look.required', 'Who do you want to look at?'),
+				filterMuted: true,
 			}),
 			alias: [ 'l', 'lookat' ],
 			value: this.look.bind(this),

@@ -21,24 +21,27 @@ class CmdLists {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'player', 'auth', 'charsAwake', 'globalTeleports' ], this._init.bind(this));
+		// Bind callbacks
+		this._filterCompletionChars = this._filterCompletionChars.bind(this);
+
+		this.app.require([
+			'player',
+			'auth',
+			'charsAwake',
+			'globalTeleports',
+			'mute',
+		], this._init.bind(this));
+	}
+
+	_filterCompletionChars(ctx, getChars) {
+		let chars = getChars();
+		chars = chars?.toArray?.() || chars;
+		return chars?.filter(c => c?.id && !this.module.mute.isMutedChar(c?.id)) || null;
 	}
 
 	_init(module) {
 		this.module = module;
 		this.ownedChars = new CharList(() => this.module.player.getChars() || null);
-		this.inRoomChars = new CharList(() => {
-			let c = this.module.player.getActiveChar();
-			return (c && c.inRoom.chars) || null;
-		});
-		this.inRoomCharsAwake = new CharList(() => {
-			let c = this.module.player.getActiveChar();
-			return (c && c.inRoom.chars) || null;
-		}, {
-			validation: (key, char) => char.state != 'awake'
-				? new Err('cmdLists.charNotAwake', "Character is not awake.")
-				: null,
-		});
 		this.inRoomPuppets = new CharList(() => {
 			let c = this.module.player.getActiveChar();
 			return (c && c.inRoom.chars) || null;
@@ -47,23 +50,10 @@ class CmdLists {
 				? new Err('cmdLists.charNotAPuppet', "Character is not a puppet.")
 				: null,
 		});
-		this.charsAwake = new CharList(() => this.module.charsAwake.getCollection(), {
-			errNotFound: (l, m) => new Err('cmdList.awakeCharNotFound', 'There is no character awake named {match}.', { match: m }),
-		});
 		this.watchedChars = new CharList(() => {
 			let m = this.module.charsAwake.getWatches();
 			if (!m) return [];
 			return Object.keys(m.props).map(k => m[k].char);
-		});
-		this.allChars = new CharList(() => {
-			let c = this.module.player.getActiveChar();
-			let watches = this.module.charsAwake.getWatches();
-			return mergeCharLists([
-				this.module.player.getChars(),
-				c && c.inRoom.chars,
-				this.module.charsAwake.getCollection(),
-				watches && Object.keys(watches.props).map(k => watches[k].char),
-			]);
 		});
 		this.teleportNodes = new TokenList(() => {
 			let c = this.module.player.getActiveChar();
@@ -157,28 +147,55 @@ class CmdLists {
 		return this.ownedChars;
 	}
 
-	getInRoomChars() {
-		return this.inRoomChars;
+	getInRoomChars(filterMuted) {
+		return new CharList(() => {
+			let c = this.module.player.getActiveChar();
+			return c?.inRoom.chars;
+		}, {
+			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+		});
 	}
 
-	getInRoomCharsAwake() {
-		return this.inRoomCharsAwake;
+	getInRoomCharsAwake(filterMuted) {
+		return new CharList(() => {
+			let c = this.module.player.getActiveChar();
+			return c?.inRoom.chars || null;
+		}, {
+			validation: (key, char) => char.state != 'awake'
+				? new Err('cmdLists.charNotAwake', "Character is not awake.")
+				: null,
+			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+		});;
 	}
 
 	getInRoomPuppets() {
 		return this.inRoomPuppets;
 	}
 
-	getCharsAwake() {
-		return this.charsAwake;
+	getCharsAwake(filterMuted) {
+		return new CharList(() => this.module.charsAwake.getCollection(), {
+			errNotFound: (l, m) => new Err('cmdList.awakeCharNotFound', 'There is no character awake named {match}.', { match: m }),
+			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+		});
 	}
 
 	getWatchedChars() {
 		return this.watchedChars;
 	}
 
-	getAllChars() {
-		return this.allChars;
+	getAllChars(filterMuted) {
+		return new CharList(() => {
+			let c = this.module.player.getActiveChar();
+			let watches = this.module.charsAwake.getWatches();
+			return mergeCharLists([
+				this.module.player.getChars(),
+				c && c.inRoom.chars,
+				this.module.charsAwake.getCollection(),
+				watches && Object.keys(watches.props).map(k => watches[k].char),
+			]);
+		}, {
+			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+		});
 	}
 
 	getInRoomExits() {

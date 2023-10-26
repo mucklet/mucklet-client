@@ -12,7 +12,7 @@ class CharList {
 	 * @param {function} getChars Callback function that returns an iterable list of chars.
 	 * @param {object} [opt] Optional params.
 	 * @param {boolean} [opt.useFullname] Flag indicating if full name should be used. Defaults to false.
-	 * @param {function} [opt.getCompletionChars] Callback that returns an iterable list for chars to complete from. Defaults to getChars callback.
+	 * @param {(ctx: object, getChars: function) => object[]} [opt.getCompletionChars] Callback that returns an iterable list for chars to complete from. Defaults to getChars callback.
 	 * @param {function} [opt.validation] Char validation callback. function(key, char) -> ?{ code, message }
 	 * @param {function} [opt.errNotFound] Callback function that returns an error when items is not found. Null means mismatch is not an error: function(this, match)
 	 */
@@ -21,7 +21,11 @@ class CharList {
 		this.regex = /^([\s\p{L}\p{N}'-]*[\p{L}\p{N}'-])\s*/u;
 		this.getChars = getChars;
 		this.useFullname = !!opt.useFullname;
-		this.getCompletionChars = opt.getCompletionChars || getChars;
+		this.getCompletionChars = getChars;
+		if (opt.getCompletionChars) {
+			let f = opt.getCompletionChars;
+			this.getCompletionChars = (ctx) => f(ctx, this.getChars);
+		}
 		this.validation = opt.validation || null;
 		this.errNotFoundMsg = opt.errNotFound || null;
 	}

@@ -51,6 +51,7 @@ class Message {
 					(next, idx) => this.module.cmdSteps.newAwakeCharStep({
 						id: 'charId-' + idx,
 						errRequired: null,
+						filterMuted: true,
 						next,
 					}),
 					{
@@ -69,7 +70,7 @@ class Message {
 							errRequired: step => new Err('message.messageRequired', "What do you want to message?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getCharsAwake(),
+							completer: this.module.cmdLists.getCharsAwake(true),
 							formatText: true,
 						}),
 					],

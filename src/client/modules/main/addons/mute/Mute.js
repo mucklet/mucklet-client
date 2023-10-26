@@ -67,6 +67,15 @@ class Mute {
 		});
 	}
 
+	/**
+	 * Checks if a character is muted.
+	 * @param {string} charId Character ID
+	 * @returns {bool} True if muted, otherwise false.
+	 */
+	isMutedChar(charId) {
+		return !!(charId && this.muteChars.props[charId]);
+	}
+
 	_loadMuteTravel() {
 		if (!localStorage) return;
 

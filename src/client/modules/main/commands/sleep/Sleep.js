@@ -28,7 +28,7 @@ class Sleep {
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
 				errRequired: null,
-				completer: this.module.cmdLists.getInRoomChars(),
+				completer: this.module.cmdLists.getInRoomChars(true),
 			}),
 			alias: [ 'quit' ],
 			value: this.sleep.bind(this),
