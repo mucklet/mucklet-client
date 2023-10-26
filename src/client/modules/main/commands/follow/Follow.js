@@ -29,6 +29,7 @@ class Follow {
 			next: [
 				this.module.cmdSteps.newInRoomAwakeCharStep({
 					errRequired: step => new Err('follow.charRequired', "Who do you wish to follow?"),
+					filterMuted: true,
 				}),
 			],
 			alias: [ 'hopon' ],
