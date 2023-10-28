@@ -13,15 +13,17 @@ import {
 	anyExpandRegex,
 } from 'utils/regex';
 
-const maxTargets = 20;
 const defaultSortOrder = [ 'watch', 'room', 'awake' ];
 
 /**
  * CmdLists holds different types of lists for cmds.
  */
 class CmdLists {
-	constructor(app) {
+	constructor(app, params) {
 		this.app = app;
+
+		// Size of the prioritized characters per controlled character.
+		this.prioSize = parseInt(params?.prioSize) || 20;
 
 		this.app.require([
 			'player',
@@ -157,7 +159,7 @@ class CmdLists {
 		let idx = prioList.indexOf(charId);
 		if (idx < 0) {
 			prioList.unshift(charId);
-			if (idx.length > maxTargets) {
+			if (idx.length > this.prioSize) {
 				prioList.pop();
 			}
 		} else if (idx > 0) {
