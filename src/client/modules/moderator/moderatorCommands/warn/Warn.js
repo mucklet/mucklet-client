@@ -39,6 +39,10 @@ class Warn {
 		this.module = module;
 		this.lastCharIds = {};
 
+		let charListOpt = {
+			sortOrder: [ 'room' ],
+		};
+
 		this.module.cmd.addCmd({
 			key: 'warn',
 			next: [
@@ -48,6 +52,7 @@ class Warn {
 						id: 'charId-' + idx,
 						errRequired: null,
 						next,
+						...charListOpt,
 					}),
 					{
 						delimiter: ",",
@@ -61,7 +66,7 @@ class Warn {
 							errRequired: step => new Err('warn.messageRequired', "What warning message do you want to send?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getCharsAwake(),
+							completer: this.module.cmdLists.getCharsAwake(charListOpt),
 							formatText: true,
 						}),
 					],

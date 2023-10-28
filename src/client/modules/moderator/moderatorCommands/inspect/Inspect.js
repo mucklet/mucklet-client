@@ -45,6 +45,7 @@ class Inspect {
 					name: "character name or ID",
 					else: this.module.cmdSteps.newAnyCharStep({
 						errRequired: step => new Err('inspect.characterRequired', "Who do you want to inspect?"),
+						sortOrder: [ 'awake', 'room' ],
 					}),
 				}),
 			],

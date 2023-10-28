@@ -38,12 +38,16 @@ class Compare {
 	_init(module) {
 		this.module = module;
 
+		let charListOpt = {
+			sortOrder: [ 'awake', 'room' ],
+		};
+
 		this.module.cmd.addCmd({
 			key: 'compare',
 			next: [
 				new IDStep('charId', {
 					name: "character name or ID",
-					else: this.module.cmdSteps.newAnyCharStep(),
+					else: this.module.cmdSteps.newAnyCharStep(charListOpt),
 				}),
 				new DelimStep("=", {
 					next: [
@@ -54,6 +58,7 @@ class Compare {
 								textId: 'compareCharName',
 								name: "compare character",
 								errRequired: step => new Err('compare.compateCharacterRequired', "Which character to compare with?"),
+								...charListOpt,
 							}),
 						}),
 					],

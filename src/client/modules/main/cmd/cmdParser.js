@@ -19,10 +19,11 @@ export default function(cfg) {
 			return new CmdState(
 				cfg.step,
 				[ cfg.step ],
-				[ cfg.ctx ],
+				cfg.ctx,
 				{},
 				{},
 				null,
+				[],
 			);
 		},
 

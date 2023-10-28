@@ -30,6 +30,13 @@ class TokenList {
 		return (m && m[1]) || null;
 	}
 
+
+	/**
+	 * Gets a list item by key.
+	 * @param {string} key Item key.
+	 * @param {object} ctx Cmd context object.
+	 * @returns {{key: string, value: any, error: null | Err } | null} The formatted key and any value, or error. Null if the key was not found.
+	 */
 	getItem(key, ctx) {
 		key = key.toLowerCase().replace(/\s+/g, ' ');
 		let tokens = this.getTokens(ctx);

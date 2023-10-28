@@ -89,14 +89,11 @@ class OverlayNavComponent {
 							new ModelComponent(
 								null,
 								new Collapser(null, { horizontal: true }),
-								(m, c) => {
-									console.log("M.image: ", m?.image, c.getComponent());
-									c.setComponent(m?.image
-										? c.getComponent()?.setArea(m) ||
-											new OverlayNavArea(this.module, this.ctrl, m, this.model, this.state)
-										: null,
-									);
-								},
+								(m, c) => c.setComponent(m?.image
+									? c.getComponent()?.setArea(m) ||
+										new OverlayNavArea(this.module, this.ctrl, m, this.model, this.state)
+									: null,
+								),
 							),
 							(m, c) => c.setModel(m?.area),
 						),

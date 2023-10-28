@@ -40,6 +40,12 @@ class CharList {
 		return this.errNotFoundMsg;
 	}
 
+	/**
+	 * Gets a list item by key.
+	 * @param {string} key Key of item to get.
+	 * @param {object} ctx Cmd context object.
+	 * @returns {{key: string, value: any, error: null | Err } | null} The formatted key and any value, or error. Null if the key was not found.
+	 */
 	getItem(key, ctx) {
 		let chars = this.getChars(ctx);
 		if (!chars) {

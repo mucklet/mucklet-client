@@ -43,6 +43,7 @@ class Focus {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					filterMuted: true,
+					sortOrder: [ 'room', 'awake', 'watch' ],
 					next: [
 						new DelimStep("=", {
 							errRequired: null,

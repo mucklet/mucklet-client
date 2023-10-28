@@ -27,6 +27,7 @@ class Watch {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('watch.characterRequired', "Who do you want to watch for?"),
+					sortOrder: [ 'awake', 'room' ],
 				}),
 			],
 			alias: [ 'watchfor', 'wf' ],

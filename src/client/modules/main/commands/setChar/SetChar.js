@@ -35,6 +35,7 @@ class SetChar {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('transferChar.characterRequired', "What character do you want to set?"),
+					sortOrder: [ 'awake', 'watch', 'room' ],
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('attr', this.charAttr, {

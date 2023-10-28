@@ -19,6 +19,7 @@ class ListStep {
 	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @param {?function} [opt.errNotFound] Callback function that returns an error when items is not found. Null means mismatch is not an error: function(this, match)
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required: function(this)
+	 * @param {function} [opt.onExec] Callback function called on execution of the command. function(state, char)
 	 */
 	constructor(id, list, opt) {
 		opt = opt || {};
@@ -39,6 +40,7 @@ class ListStep {
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
 			: self => new Err('listStep.required', 'There is no {name}.', { name: self.name });
+		this.onExec = opt.onExec || null;
 
 	}
 
@@ -52,7 +54,7 @@ class ListStep {
 			return null;
 		}
 
-		let match = this.list.consume(stream);
+		let match = this.list.consume(stream, state.getCtx());
 
 		if (typeof match != 'string') {
 			state.backUp(stream);
@@ -63,7 +65,7 @@ class ListStep {
 			state.setParam(this.textId, match);
 		}
 
-		let item = this.list.getItem(match);
+		let item = this.list.getItem(match, state.getCtx());
 
 		if (!item) {
 			if (this.errNotFound) {
@@ -90,6 +92,10 @@ class ListStep {
 		}
 
 		state.setParam(this.id, item.value);
+		if (this.onExec) {
+			state.addOnExec((state) => this.onExec(state, item));
+		}
+
 		// Add follow-up steps.
 		if (this.next) {
 			state.addStep(this.next);
@@ -105,9 +111,10 @@ class ListStep {
 	 * Complete returns a completion list for the tab completion.
 	 * @param {string} str The matched text string
 	 * @param {number} pos The cursor position within the string
+	 * @param {CmdState} state State object
 	 * @returns {?object} Completion list in the format: { list, from, to }
 	 */
-	complete(str, pos) {
+	complete(str, pos, state) {
 		if (typeof this.list.complete != 'function') return null;
 
 		let trimmed = this.trimSpace ? str.trimStart() : str;
@@ -116,7 +123,7 @@ class ListStep {
 			trimmed = str.slice(pos);
 			diff = pos;
 		}
-		let range = this.list.complete(trimmed, pos - diff);
+		let range = this.list.complete(trimmed, pos - diff, state.getCtx());
 		return range
 			? { list: range.list, from: range.from + diff, to: range.to + diff }
 			: null;

@@ -24,6 +24,7 @@ class ConsoleState extends Model {
 		this._doc = "";
 		this._history = [];
 		this._historyIdx = 0;
+		this._cmLanguage = module.cmd.getCMLanguage(ctrlId);
 
 		this._load();
 		this._updateModel(false, true);
@@ -38,6 +39,14 @@ class ConsoleState extends Model {
 			isClean: !(this._doc.trim()),
 			isModified: this.isModified(),
 		}, emit, reset);
+	}
+
+	/**
+	 * returns the CodeMirror language for this character.
+	 * @returns {object} CodeMirror language object.
+	 */
+	getCMLanguage() {
+		return this._cmLanguage;
 	}
 
 	/**

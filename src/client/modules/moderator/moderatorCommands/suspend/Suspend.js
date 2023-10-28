@@ -32,6 +32,7 @@ class Suspend {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('suspend.characterRequired', "Who do you want to suspend?"),
+					sortOrder: [ 'awake', 'room' ],
 				}),
 				new DelimStep("=", {
 					next: [
@@ -40,7 +41,9 @@ class Suspend {
 							errRequired: step => new Err('suspend.reasonRequired', "What is the reason to suspend the character?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getCharsAwake(),
+							completer: this.module.cmdLists.getCharsAwake({
+								sortOrder: [ 'room' ],
+							}),
 						}),
 					],
 				}),
