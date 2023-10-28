@@ -106,14 +106,15 @@ class TextStep {
 	 * completer.
 	 * @param {string} str The matched text string
 	 * @param {number} pos The cursor position within the string
+	 * @param {CmdState} state State object
 	 * @returns {?object} Completion list in the format: { list, from, to }
 	 */
-	complete(str, pos) {
+	complete(str, pos, state) {
 		if (!this.completer) return null;
 
 		let trimmed = this.trimSpace ? str.trimStart() : str;
 		let diff = str.length - trimmed.length;
-		let range = this.completer.complete(trimmed, pos - diff, null, true);
+		let range = this.completer.complete(trimmed, pos - diff, state.getCtx(), true);
 		return range
 			? { list: range.list, from: range.from + diff, to: range.to + diff }
 			: null;

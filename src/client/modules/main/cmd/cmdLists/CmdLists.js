@@ -13,6 +13,8 @@ import {
 	anyExpandRegex,
 } from 'utils/regex';
 
+const maxTargets = 20;
+const defaultSortOrder = [ 'watch', 'room', 'awake' ];
 
 /**
  * CmdLists holds different types of lists for cmds.
@@ -20,9 +22,6 @@ import {
 class CmdLists {
 	constructor(app) {
 		this.app = app;
-
-		// Bind callbacks
-		this._filterCompletionChars = this._filterCompletionChars.bind(this);
 
 		this.app.require([
 			'player',
@@ -33,16 +32,13 @@ class CmdLists {
 		], this._init.bind(this));
 	}
 
-	_filterCompletionChars(ctx, getChars) {
-		let chars = getChars();
-		chars = chars?.toArray?.() || chars;
-		return chars?.filter(c => c?.id && !this.module.mute.isMutedChar(c?.id)) || null;
-	}
-
 	_init(module) {
 		this.module = module;
+
+		this.prioChars = {};
+
 		this.ownedChars = new CharList(() => this.module.player.getChars() || null);
-		this.inRoomPuppets = new CharList(() => {
+		this.inRoomPuppets = new CharList((ctx) => {
 			let c = this.module.player.getActiveChar();
 			return (c && c.inRoom.chars) || null;
 		}, {
@@ -143,20 +139,65 @@ class CmdLists {
 		});
 	}
 
+	/**
+	 * Prioritizes a character when using tab completion for a controlled character.
+	 * @param {string} ctrlId ID of controlled character
+	 * @param {string} charId ID of character to prioritize
+	 */
+	prioritizeChar(ctrlId, charId) {
+		if (!ctrlId || ! charId) {
+			return;
+		}
+
+		let prioList = this.prioChars[ctrlId];
+		if (!prioList) {
+			this.prioChars[ctrlId] = prioList = [];
+		}
+
+		let idx = prioList.indexOf(charId);
+		if (idx < 0) {
+			prioList.unshift(charId);
+			if (idx.length > maxTargets) {
+				prioList.pop();
+			}
+		} else if (idx > 0) {
+			prioList.splice(idx, 1);
+			prioList.unshift(charId);
+		}
+	}
+
+	/**
+	 * Get a CharList of owned characters.
+	 * @returns {CharList} List of characters.
+	 */
 	getOwnedChars() {
 		return this.ownedChars;
 	}
 
-	getInRoomChars(filterMuted) {
+	/**
+	 * Get a CharList of characters in the room.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @returns {CharList} List of characters.
+	 */
+	getInRoomChars(opt) {
 		return new CharList(() => {
 			let c = this.module.player.getActiveChar();
 			return c?.inRoom.chars;
 		}, {
-			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
 		});
 	}
 
-	getInRoomCharsAwake(filterMuted) {
+	/**
+	 * Get a CharList of awake characters in the room.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @returns {CharList} List of characters.
+	 */
+	getInRoomCharsAwake(opt) {
 		return new CharList(() => {
 			let c = this.module.player.getActiveChar();
 			return c?.inRoom.chars || null;
@@ -164,26 +205,48 @@ class CmdLists {
 			validation: (key, char) => char.state != 'awake'
 				? new Err('cmdLists.charNotAwake', "Character is not awake.")
 				: null,
-			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
-		});;
+			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
+		});
 	}
 
+	/**
+	 * Get a CharList of puppets in the room.
+	 * @returns {CharList} List of characters.
+	 */
 	getInRoomPuppets() {
 		return this.inRoomPuppets;
 	}
 
-	getCharsAwake(filterMuted) {
+	/**
+	 * Get a CharList of awake characters.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @returns {CharList} List of characters.
+	 */
+	getCharsAwake(opt) {
 		return new CharList(() => this.module.charsAwake.getCollection(), {
 			errNotFound: (l, m) => new Err('cmdList.awakeCharNotFound', 'There is no character awake named {match}.', { match: m }),
-			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
 		});
 	}
 
+	/**
+	 * Get a CharList of watched characters.
+	 * @returns {CharList} List of characters.
+	 */
 	getWatchedChars() {
 		return this.watchedChars;
 	}
 
-	getAllChars(filterMuted) {
+	/**
+	 * Get a CharList of all available characters.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @returns {CharList} List of characters.
+	 */
+	getAllChars(opt) {
 		return new CharList(() => {
 			let c = this.module.player.getActiveChar();
 			let watches = this.module.charsAwake.getWatches();
@@ -194,7 +257,7 @@ class CmdLists {
 				watches && Object.keys(watches.props).map(k => watches[k].char),
 			]);
 		}, {
-			getCompletionChars: filterMuted ? this._filterCompletionChars : null,
+			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
 		});
 	}
 
@@ -220,6 +283,89 @@ class CmdLists {
 
 	getBool() {
 		return this.bool;
+	}
+
+	/**
+	 * Gets a list of chars to use for autocompletion.
+	 * @param {object} ctx Cmd state object.
+	 * @param {(ctx: object) => object[] | null} getChars Callback function that returns available of characters.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @returns
+	 */
+	_getCompletedChars(ctx, getChars, opt) {
+		let chars = getChars(ctx);
+		if (!chars) {
+			return chars;
+		}
+
+		chars = chars.toArray?.() || chars;
+		if (opt?.filterMuted) {
+			chars = chars.filter(c => c?.id && !this.module.mute.isMutedChar(c?.id));
+		}
+
+		// Quick exit if no sorting is required
+		if (chars.length <= 1) {
+			return chars;
+		}
+
+		let charId = ctx.charId;
+
+		let prioMap = this.prioChars[ctx.charId]?.reduce((map, charId, i) => (map[charId] = i + 1, map), {}) || {};
+		let orderMaps = [];
+
+		let sortOrder = opt?.sortOrder || defaultSortOrder;
+
+		for (let s of sortOrder) {
+			switch (s) {
+				case 'watch':
+					orderMaps.push(this.module.charsAwake.getWatches().props);
+					break;
+				case 'room':
+					let inRoomChars = this.module.player.getControlledChar(charId)?.inRoom.chars;
+					if (inRoomChars) {
+						let roomMap = {};
+						for (let inRoomChar of inRoomChars) {
+							let id = inRoomChar?.id;
+							if (id) {
+								roomMap[id] = true;
+							}
+						}
+						orderMaps.push(roomMap);
+					}
+					break;
+				case 'awake':
+					orderMaps.push(this.module.charsAwake.getCharsAwake().props);
+					break;
+			}
+		}
+
+		let prioMiss = Number.MAX_SAFE_INTEGER;
+
+		return chars.sort((a, b) => {
+			let aid = a?.id;
+			let bid = b?.id;
+
+			// Prio sorting
+			let va = prioMap[aid] || prioMiss;
+			let vb = prioMap[bid] || prioMiss;
+			if (va != vb) {
+				return va - vb;
+			}
+
+			// Order map sorting
+			for (let map of orderMaps) {
+				va = !map[aid];
+				vb = !map[bid];
+				if (va != vb) {
+					return va ? 1 : -1;
+				}
+			}
+
+			// Name sorting
+			return a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname) || aid.localeCompare(b.id);
+		});
 	}
 }
 

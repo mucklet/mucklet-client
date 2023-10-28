@@ -41,19 +41,20 @@ class Cmd {
 			errRequired: null,
 			errNotFound: (step, match) => new Err('cmd.commandNotFound', 'There is no command called "{match}".', { name: step.name, match: match }),
 		});
-		this.cmdLanguage = StreamLanguage.define(cmdParser({
-			step: this.cmdStep,
-		}));
 		this.prefixes = {};
 		this.lists = {};
 	}
 
 	/**
 	 * Returns the CodeMirror language for commands.
+	 * @param {string} charId ID of character for which
 	 * @returns {object} CodeMirror language.
 	 */
-	getCMLanguage() {
-		return this.cmdLanguage;
+	getCMLanguage(charId) {
+		return StreamLanguage.define(cmdParser({
+			step: this.cmdStep,
+			ctx: { charId },
+		}));;
 	}
 
 	/**
@@ -76,11 +77,11 @@ class Cmd {
 		let pos = editorState.selection.main.head;
 		let token = getToken(editorState, t => t.to > pos || (t.to == pos && t.type !== null && t.type !== 'delim'));
 
-		let step = token && token.state.step;
-		if (step && typeof step.complete == 'function') {
+		let step = token?.state.step;
+		if (typeof step?.complete == 'function') {
 			// Get the { list, from, to } range from the completer.
 			let line = editorState.doc.lineAt(token.from);
-			let range = step.complete(line.text.slice(token.from - line.from, token.to - line.from), pos - token.from);
+			let range = step.complete(line.text.slice(token.from - line.from, token.to - line.from), pos - token.from, token.state);
 			if (range && range.list && range.list.length) {
 				return {
 					list: range.list,
@@ -116,7 +117,9 @@ class Cmd {
 			);
 		}
 		let f = p.cmd;
-		return Promise.resolve(f ? f(ctx, p) : null);
+		return Promise.resolve(f ? f(ctx, p) : null).then(() => {
+			state.callOnExec();
+		});
 	}
 
 	addCmd(def) {

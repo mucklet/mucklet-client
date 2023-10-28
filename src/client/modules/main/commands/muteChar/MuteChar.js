@@ -26,6 +26,7 @@ class MuteChar {
 			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => new Err('muteChar.characterRequired', "Who do you want to mute?"),
 				filterMuted: true,
+				sortOrder: [ 'awake', 'room' ],
 			}),
 			value: (ctx, p) => this.muteChar(ctx.player, ctx.char, p),
 		};

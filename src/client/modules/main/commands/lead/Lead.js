@@ -30,6 +30,7 @@ class Lead {
 				this.module.cmdSteps.newInRoomAwakeCharStep({
 					errRequired: step => new Err('lead.charRequired', "Who do you wish to lead?"),
 					filterMuted: true,
+					sortOrder: [ 'watch' ],
 				}),
 			],
 			alias: [ 'carry' ],

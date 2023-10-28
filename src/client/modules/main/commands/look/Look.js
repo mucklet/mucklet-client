@@ -30,6 +30,7 @@ class Look {
 			next: this.module.cmdSteps.newInRoomCharStep({
 				errRequired: () => new Err('look.required', 'Who do you want to look at?'),
 				filterMuted: true,
+				sortOrder: [ 'awake', 'watch' ],
 			}),
 			alias: [ 'l', 'lookat' ],
 			value: this.look.bind(this),

@@ -88,9 +88,10 @@ class ItemList {
 	/**
 	 * Gets the item with the specific key (or alias or token character).
 	 * @param {string} key Item key.
-	 * @returns {?object} Item value if it exists or undefined on not found.
+	 * @param {object} ctx Cmd context object.
+	 * @returns {{key: string, value: any, error: null | Err } | null} The formatted key and any value, or error. Null if the key was not found.
 	 */
-	getItem(key) {
+	getItem(key, ctx) {
 		let item = null;
 		let symbol = false;
 		if (key.length == 1 && this._symbols) {

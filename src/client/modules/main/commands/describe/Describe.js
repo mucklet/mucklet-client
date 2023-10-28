@@ -29,7 +29,10 @@ class Describe {
 				errRequired: step => new Err('describe.messageRequired', "What do you wish to describe?"),
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
-				completer: this.module.cmdLists.getInRoomChars(true),
+				completer: this.module.cmdLists.getInRoomChars({
+					filterMuted: true,
+					sortOrder: [ 'awake', 'watch' ],
+				}),
 				formatText: true,
 			}),
 			alias: [ 'desc', 'spoof' ],

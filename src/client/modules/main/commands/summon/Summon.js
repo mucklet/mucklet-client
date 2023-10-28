@@ -30,6 +30,7 @@ class Summon {
 				this.module.cmdSteps.newAwakeCharStep({
 					errRequired: step => new Err('summon.charRequired', "Who do you wish to summon?"),
 					filterMuted: true,
+					sortOrder: [ 'watch' ],
 				}),
 			],
 			alias: [ 'msummon' ],
