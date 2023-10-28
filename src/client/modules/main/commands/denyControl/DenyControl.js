@@ -34,6 +34,7 @@ class DenyControl {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: null,
+					sortOrder: [ 'awake' ],
 				}),
 				new DelimStep("=", {
 					next: new TextStep('msg', {

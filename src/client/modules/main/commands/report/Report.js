@@ -34,6 +34,7 @@ class Report {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('report.characterRequired', "Who do you want to report?"),
+					sortOrder: [ 'awake', 'room' ],
 				}),
 				new DelimStep("=", {
 					errRequired: null,

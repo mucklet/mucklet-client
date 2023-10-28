@@ -34,6 +34,7 @@ class DeleteNote {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('deleteNote.characterRequired', "Who do you want to delete the notes for?"),
+					sortOrder: [ 'awake', 'watch' ],
 				}),
 			],
 			value: (ctx, p) => this.deleteNote(ctx.player, ctx.char, p.charId

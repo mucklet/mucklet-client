@@ -27,11 +27,14 @@ class TransferChar {
 	_init(module) {
 		this.module = module;
 
+		let sortOrder = [ 'awake', 'watch', 'room' ];
+
 		this.module.cmd.addPrefixCmd('transfer', {
 			key: 'char',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('transferChar.characterRequired', "What character do you want to transfer ownership of?"),
+					sortOrder,
 				}),
 				new DelimStep("="),
 				new DelimStep("@", {
@@ -48,6 +51,7 @@ class TransferChar {
 							textId: 'ownerCharName',
 							name: "user",
 							errRequired: step => new Err('getUser.userRequired', "Which user?"),
+							sortOrder,
 						}),
 					}),
 				}),

@@ -33,6 +33,7 @@ class ListChar {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('listChar.characterRequired', "Who do you want to list things for?"),
+					sortOrder: [ 'awake', 'watch' ],
 				}),
 				new DelimStep(":", { errRequired: null }),
 				new ListStep('item', this.itemList, {

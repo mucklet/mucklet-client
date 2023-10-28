@@ -39,6 +39,7 @@ class Whois {
 			key: 'whois',
 			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => new Err('whoisCmd.characterRequired', "Who do you want to show information about?"),
+				sortOrder: [ 'awake', 'room', 'watch' ],
 			}),
 			alias: [ 'wi' ],
 			value: (ctx, p) => this.whois(ctx.char, p),

@@ -36,6 +36,7 @@ class GetNote {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('getNote.characterRequired', "Who do you want to view the notes for?"),
+					sortOrder: [ 'awake', 'watch' ],
 				}),
 			],
 			value: (ctx, p) => this.getNote(ctx.player, ctx.char, p.charId

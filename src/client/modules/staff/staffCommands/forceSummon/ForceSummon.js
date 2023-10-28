@@ -35,6 +35,7 @@ class ForceSummon {
 					next: [
 						this.module.cmdSteps.newAnyCharStep({
 							errRequired: step => new Err('join.charRequired', "Who do you wish to summon?"),
+							sortOrder: [ 'awake' ],
 						}),
 					],
 					alias: [ 'msummon' ],

@@ -31,6 +31,7 @@ class RequestAreaOwner {
 				this.module.cmdSteps.newAnyCharStep({
 					name: "new owner",
 					errRequired: step => new Err('requestAreaOwner.characterRequired', "Who do you want to transfer ownership to?"),
+					sortOrder: [ 'awake', 'watch', 'room' ],
 				}),
 			],
 			value: (ctx, p) => this.requestAreaOwner(ctx.char, Object.assign({ areaId: p.areaId }, p.charId
