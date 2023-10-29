@@ -23,7 +23,7 @@ class PageRoomComponent {
 		this.setTitle = setTitle;
 
 		// Bind callbacks
-		this._updateModel = this._updateModel.bind(this);
+		this._onAreaChange = this._onAreaChange.bind(this);
 	}
 
 	render(el) {
@@ -142,12 +142,16 @@ class PageRoomComponent {
 		this.stateModel.set({ areaId: current?.id || null });
 	}
 
+	_onAreaChange() {
+		this._updateModel();
+	}
+
 	_listenAreas(before, after) {
 		for (let b of before) {
-			b?.off('change', this._updateModel);
+			b?.off('change', this._onAreaChange);
 		}
 		for (let a of after) {
-			a?.on('change', this._updateModel);
+			a?.on('change', this._onAreaChange);
 		}
 	}
 
