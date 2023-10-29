@@ -23,6 +23,10 @@ const focusColors = {
 	none: null,
 };
 
+function isValidColor(color) {
+	return color && (focusColors.hasOwnProperty(color) || color.match(/^#(?:[0-9a-fA-F]{3,3}){1,2}$/));
+}
+
 /**
  * CharFocus lets players focus on certain characters and get notifications on
  * charLog events.
@@ -43,8 +47,21 @@ class CharFocus {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
+		/**
+		 * Stores current focus of characters and their stored color for each controlled character.
+		 * @type {{ [ctrlId: string]: { [charId: string]: { char: Model, color: string }}}}
+		 */
 		this.focus = {};
+		/**
+		 * Model with all controlled characters having focus all active. Value is always true.
+		 * @type Model<{ [ctrlId]: true }>
+		 */
 		this.focusAll = new Model({ eventBus: this.app.eventBus });
+		/**
+		 * Last color used when focusing on a character. Shared between all controlled characters.
+		 * The value is the color used.
+		 * @type { [charId: string]: string }
+		 */
 		this.focusColors = {};
 		this.focusCharList = new CharList(() => {
 			let c = this.module.player.getActiveChar();
@@ -89,7 +106,7 @@ class CharFocus {
 	 * Adds focus on a character.
 	 * @param {string} ctrlId Controlled character doing the focusing.
 	 * @param {string} char Character to focus on.
-	 * @param {string} color Focus color
+	 * @param {string} color Focus color or hex color code starting with '#'
 	 * @param {boolean} noUpdate Flag to surpress updating the focus css style and the localStorage.
 	 * @returns {this}
 	 */
@@ -107,7 +124,7 @@ class CharFocus {
 			delete f[char.id];
 		}
 
-		if (!color || !focusColors.hasOwnProperty(color)) {
+		if (!isValidColor(color)) {
 			color = this.focusColors[char.id] || this._getColor(ctrlId);
 		} else if (!noUpdate) {
 			this.focusColors[char.id] = color;
@@ -158,22 +175,22 @@ class CharFocus {
 
 	/**
 	 * Send a notification if the character is in focus.
-	 * @param {string} charId Controlled character receiving the event.
+	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnFocus(charId, ev, title) {
-		if (!this.hasFocus(charId, ev.char?.id)) {
+	notifyOnFocus(ctrlId, ev, title) {
+		if (!this.hasFocus(ctrlId, ev.char?.id)) {
 			// Check if muted event
-			if (ev.mod?.muted || !this.focusAll.props[charId]) {
+			if (ev.mod?.muted || !this.focusAll.props[ctrlId]) {
 				return false;
 			}
 		}
 		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject(ev)), {
 			tag: ev.id,
 			onClick: (ev) => {
-				this.module.player.setActiveChar(charId).catch(() => {});
+				this.module.player.setActiveChar(ctrlId).catch(() => {});
 				window.focus();
 				ev.target.close();
 			},
@@ -228,29 +245,29 @@ class CharFocus {
 
 	/**
 	 * Send a notification if the character is targeted
-	 * @param {string} charId Controlled character receiving the event.
+	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object. Should contain a target property which is the targeted character.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnTargetEvent(charId, ev, title) {
-		if (!this.hasFocus(charId, ev.char?.id)) {
+	notifyOnTargetEvent(ctrlId, ev, title) {
+		if (!this.hasFocus(ctrlId, ev.char?.id)) {
 			// Check if muted event
 			if (ev.mod?.muted) {
 				return false;
 			}
 			// Check if we should not send event
-			if (!this.focusAll.props[charId]) { // Focus
+			if (!this.focusAll.props[ctrlId]) { // Focus
 				let p = this.module.player.getPlayer();
 				if (!p?.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
 					return false;
 				}
 			}
 		}
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(charId, ev) })), {
+		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) })), {
 			tag: ev.id,
 			onClick: (ev) => {
-				this.module.player.setActiveChar(charId).catch(() => {});
+				this.module.player.setActiveChar(ctrlId).catch(() => {});
 				window.focus();
 				ev.target.close();
 			},
@@ -331,14 +348,8 @@ class CharFocus {
 
 		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.all');
-			// [TODO] Legacy behavior. Remove after v 1.40.0
-			let legacy = false; if (!raw) { legacy = true; raw = localStorage.getItem('focus.all'); }
-
 			if (raw) {
 				this.focusAll.reset(JSON.parse(raw));
-
-				// [TODO] Legacy behavior. Remove after v 1.40.0
-				if (legacy) this._saveFocus();
 			}
 		});
 	}
@@ -362,7 +373,8 @@ class CharFocus {
 			let f = this.focus[ctrlId];
 			for (let charId in f) {
 				let o = f[charId];
-				let c = focusColors[o.color];
+				let c = o.color;
+				c = c[0] == '#' ? c : focusColors[c];
 				if (c) {
 					s += '.f-' + ctrlId + '-' + charId + ' {border-left-color:' + c + '} .mf-' + ctrlId + '-' + charId + ' {border-color:' + c + '}\n';
 				}
@@ -377,14 +389,16 @@ class CharFocus {
 		let f = this.focus[ctrlId];
 		if (!f) return Object.keys(focusColors)[0];
 
+		// Count how many times each color is used.
 		let count = {};
 		for (let charId in f) {
 			let c = f[charId].color;
-			if (c && c != 'none') {
+			if (c && c != 'none' && c[0] != '#') {
 				count[c] = (count[c] || 0) + 1;
 			}
 		}
 
+		// Pick the least used focusColor
 		let i = 0;
 		while (true) {
 			for (let c in focusColors) {
