@@ -9,7 +9,8 @@ const helpText =
 <p>Alias: <code>unignore</code>, <code>unmute char</code>`;
 
 /**
- * StopMuteChar adds the stop mute char command.*/
+ * StopMuteChar adds the stop mute char command.
+ */
 class StopMuteChar {
 	constructor(app) {
 		this.app = app;
@@ -26,6 +27,7 @@ class StopMuteChar {
 		let opts = {
 			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => new Err('stopMuteChar.characterRequired', "Who do you want to stop muting?"),
+				sortOrder: [ 'awake' ],
 			}),
 			value: (ctx, p) => this.stopMuteChar(ctx.player, ctx.char, p),
 		};

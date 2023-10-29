@@ -1,0 +1,24 @@
+@import '~scss/variables';
+
+.exiticon {
+	&--ne, &--se, &--sw, &--nw {
+		-moz-transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+	&--up {
+		-moz-transform: rotate(-90deg);
+		-webkit-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}
+	&--down {
+		-moz-transform: rotate(90deg);
+		-webkit-transform: rotate(90deg);
+		transform: rotate(90deg);
+	}
+
+	&--dot {
+		font-size: 10px;
+		transform: translateY(2px)
+	}
+}

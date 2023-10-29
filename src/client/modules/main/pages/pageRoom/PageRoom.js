@@ -1,4 +1,5 @@
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Txt } from 'modapp-base-component';
+import { Model, Collection, sortOrderCompare } from 'modapp-resource';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import './pageRoom.scss';
@@ -23,15 +24,43 @@ class PageRoom {
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.areaComponentFactory = null;
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.module.roomPages.setDefaultPageFactory((ctrl, room, state, layout) => ({
-			component: new PageRoomComponent(this.module, ctrl, room, state, layout),
-		}));
+		this.charStates = {};
+		this.module.roomPages.setDefaultPageFactory({
+			componentFactory: (ctrl, stateModel, layout) => {
+				let component = new PageRoomComponent(this.module, ctrl, stateModel, layout, (txt) => title.setText(txt));
+				let title = new Txt(component.getTitle(), { tagName: 'h3', className: 'panel--titletxt' });
+				return {
+					component,
+					title,
+				};
+			},
+			stateFactory: ctrl => this._getStateModel(ctrl.id),
+		});
+	}
+
+	_getStateModel(ctrlId) {
+		let m = this.charStates[ctrlId];
+		if (!m) {
+			m = new Model({ areaId: null });
+			this.charStates[ctrlId] = m;
+		}
+		return m;
+	}
+
+	/**
+	 * Sets the area ID for the zoom bar in the room page.
+	 * @param {string} ctrlId Controlled character ID
+	 * @param {string?} areaId Area ID to show, or null to show the room.
+	 */
+	setAreaId(ctrlId, areaId) {
+		this._getStateModel(ctrlId).set({ areaId });
 	}
 
 	/**
@@ -70,6 +99,25 @@ class PageRoom {
 		this.tools.remove(toolId);
 		return this;
 	}
+
+	/**
+	 * Sets the component factory function for creating the area page.
+	 * @param {(ctrl: Model, area: Model, state: object, layoutId: string) => Component} areaComponentFactory Area component factory callback function
+	 * @returns {this}
+	 */
+	setAreaComponentFactory(areaComponentFactory) {
+		this.areaComponentFactory = areaComponentFactory;
+		return this;
+	}
+
+	/**
+	 * Gets the area component factory function.
+	 * @returns {(ctrl: Model, area: Model, state: object, layoutId: string) => Component} Area component factory callback function
+	 */
+	getAreaComponentFactory() {
+		return this.areaComponentFactory;
+	}
+
 
 	/**
 	 * Checks if a controlled character can edit a room.

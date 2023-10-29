@@ -42,7 +42,7 @@ class TeleportSettings {
 	}
 
 	/**
-	 * @typedef {Object} TeleportSettings
+	 * @typedef {object} TeleportSettings
 	 * @property {bool} showOwnRoomsInTeleports Flag telling if owned rooms should show up in teleport list.
 	 */
 

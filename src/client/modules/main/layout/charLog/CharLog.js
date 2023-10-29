@@ -149,7 +149,7 @@ class CharLog {
 	 * Returns the log collection for the given ctrlId.
 	 * @param {string} char Controlled character.
 	 * @param {number} [chunk] Chunk number. Defaults to 0;
-	 * @return {Promise.<Collection>} Promise of a log collection.
+	 * @returns {Promise.<Collection>} Promise of a log collection.
 	 */
 	getLog(char, chunk) {
 		let ctrlId = getCtrlId(char);

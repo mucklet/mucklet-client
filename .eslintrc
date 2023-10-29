@@ -1,4 +1,14 @@
 {
+	"plugins": [
+		"jsdoc"
+	],
+	"extends": ["plugin:jsdoc/recommended"],
+	"settings": {"jsdoc": {
+		"mode": "typescript",
+		"tagNamePreference": {
+			"returns": null
+		}
+	}},
 	"parserOptions": {
 		"ecmaVersion": 11,
 		"sourceType": "module",
@@ -26,11 +36,15 @@
 		}],
 		"no-dupe-keys": ["error"],
 		"no-dupe-args": ["error"],
-		"valid-jsdoc": ["error", {
-			"requireReturn": false,
-			"requireReturnDescription": false,
-			"matchDescription": ".+"
+		"jsdoc/require-jsdoc": 0,
+		"jsdoc/no-undefined-types": 0,
+		"jsdoc/valid-types": 0,
+		"jsdoc/require-returns": 0,
+		"jsdoc/check-types": ["warn", {
+			"noDefaults": true
 		}],
+		"jsdoc/check-alignment": 0,
+		"jsdoc/tag-lines": 0,
 		"array-bracket-spacing": ["error", "always", {
 			"objectsInArrays": false,
 			"arraysInArrays": false

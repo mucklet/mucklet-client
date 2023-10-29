@@ -35,7 +35,10 @@ class Pose {
 					errRequired: step => new Err('pose.messageRequired', "What is your pose message?"),
 					maxLength: () => this.module.info.getCore().communicationMaxLength,
 					errTooLong: communicationTooLong,
-					completer: this.module.cmdLists.getInRoomChars(),
+					completer: this.module.cmdLists.getInRoomChars({
+						filterMuted: true,
+						sortOrder: [ 'awake', 'watch' ],
+					}),
 					formatText: true,
 				}),
 			],

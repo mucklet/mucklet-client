@@ -43,6 +43,11 @@ class Whisper {
 		this.module = module;
 		this.lastCharIds = {};
 
+		let charListOpt = {
+			filterMuted: true,
+			sortOrder: [ 'awake', 'watch' ],
+		};
+
 		this.module.cmd.addCmd({
 			key: 'whisper',
 			next: [
@@ -52,6 +57,7 @@ class Whisper {
 						id: 'charId-' + idx,
 						errRequired: null,
 						next,
+						...charListOpt,
 					}),
 					{
 						delimiter: ",",
@@ -70,7 +76,7 @@ class Whisper {
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => new Err('whisper.messageRequired', "What do you want to whisper?"),
-							completer: this.module.cmdLists.getInRoomChars(),
+							completer: this.module.cmdLists.getInRoomChars(charListOpt),
 							formatText: true,
 						}),
 					],

@@ -29,6 +29,7 @@ class EvictPuppeteer {
 					textId: 'puppetName',
 					name: "puppet",
 					errRequired: step => new Err('evictPuppeteer.puppetRequired', "What puppet do you want to evict from?"),
+					sortOrder: [ 'awake' ],
 				}),
 			],
 			value: (ctx, p) => this.evictPuppeteer(ctx.char, Object.assign(

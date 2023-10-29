@@ -23,6 +23,7 @@ class GrantControl {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: null,
+					sortOrder: [ 'awake' ],
 				}),
 			],
 			value: (ctx, p) => this.grantControl(ctx.char, { charId: p.charId }),

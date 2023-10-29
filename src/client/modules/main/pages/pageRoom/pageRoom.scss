@@ -2,8 +2,71 @@
 @import '~scss/mixins';
 
 .pageroom {
-	padding: 8px 16px 16px 16px;
+	padding-top: 8px;
 	margin: 0;
+}
+
+.pageroom-zoombar {
+	padding: 0 12px;
+	display: flex;
+	flex-direction: row;
+
+	&--zoomin {
+		flex: 0 0 auto;
+		padding-right: 2px;
+	}
+
+	&--zoomout {
+		flex: 0 0 auto;
+		padding-left: 10px;
+	}
+
+	&--areas {
+		flex: 1 1 0px;
+		display: flex;
+		flex-direction: row;
+
+		> * {
+			flex: 1 1 0px;
+		}
+	}
+
+	&--area {
+		padding: 11px 0 0 8px;
+	}
+
+	&--bar {
+		height: 12px;
+		background: $color4;
+		border-radius: 3px;
+		opacity: 0.6;
+		cursor: pointer;
+		&:hover {
+			opacity: 0.8;
+		}
+
+		@include transition(background-color 200ms linear, opacity 200ms linear);
+
+		&.current {
+			opacity: 1;
+			background: $color2;
+			&:hover {
+				opacity: 0.8;
+				// background: darken($color2, 8%);
+			}
+		}
+	}
+}
+
+.pageroom-room {
+	padding: 0 16px;
+
+	&--population {
+		position: relative;
+		top: -8px;
+		font-size: $font-size-tiny;
+		color: $color4;
+	}
 
 	&--tools {
 		&::after {
@@ -54,7 +117,6 @@
 	&--sections {
 		position: relative;
 		top: -4px;
-		padding-bottom: 4px;
 	}
 }
 

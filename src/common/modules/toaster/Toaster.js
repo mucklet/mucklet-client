@@ -43,7 +43,7 @@ class Toaster {
 	 * @param {string} [opt.type] Type of notification. May be 'success', 'info', or 'error'. Defaults to 'info'.
 	 * @param {bool|number} [opt.autoclose] Flag telling if notification should autoclose after a while. If the value is a number, it will autoclose after that many milliseconds.
 	 * @param {Date} [opt.time] Time to show in mouse over tooltip.
-	 * @return {function} Function to close the toaster.
+	 * @returns {function} Function to close the toaster.
 	 */
 	open(opt) {
 		opt = Object.assign({
@@ -88,7 +88,7 @@ class Toaster {
 	 * @param {String|LocaleString|object} msg Error message or error object.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {object} [opt.title] Toaster title.
-	 * @return {function} Function to close the toaster.
+	 * @returns {function} Function to close the toaster.
 	 */
 	openError(msg, opt) {
 		opt = opt || {};

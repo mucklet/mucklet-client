@@ -8,7 +8,8 @@ const helpText =
 <p><code class="param">Character</code> is the name of the character to stop watching for.</p>`;
 
 /**
- * Unwatch adds the unwatch command.*/
+ * Unwatch adds the unwatch command.
+ */
 class Unwatch {
 	constructor(app) {
 		this.app = app;

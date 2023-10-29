@@ -36,6 +36,7 @@ class AddNote {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('addNote.characterRequired', "Who do you want to add a note for?"),
+					sortOrder: [ 'awake', 'watch' ],
 				}),
 				new DelimStep("=", {
 					next: [

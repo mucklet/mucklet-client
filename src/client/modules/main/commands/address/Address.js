@@ -43,6 +43,11 @@ class Address {
 		this.module = module;
 		this.lastCharIds = {};
 
+		let charListOpt = {
+			filterMuted: true,
+			sortOrder: [ 'awake', 'watch' ],
+		};
+
 		this.module.cmd.addCmd({
 			key: 'address',
 			next: [
@@ -52,6 +57,7 @@ class Address {
 						id: 'charId-' + idx,
 						errRequired: null,
 						next,
+						...charListOpt,
 					}),
 					{
 						delimiter: ",",
@@ -69,7 +75,7 @@ class Address {
 							errRequired: step => new Err('address.messageRequired', "What do you want to communicate?"),
 							maxLength: () => this.module.info.getCore().communicationMaxLength,
 							errTooLong: communicationTooLong,
-							completer: this.module.cmdLists.getInRoomChars(),
+							completer: this.module.cmdLists.getInRoomChars(charListOpt),
 							formatText: true,
 						}),
 					],

@@ -28,7 +28,10 @@ class Sleep {
 				maxLength: () => this.module.info.getCore().communicationMaxLength,
 				errTooLong: communicationTooLong,
 				errRequired: null,
-				completer: this.module.cmdLists.getInRoomChars(),
+				completer: this.module.cmdLists.getInRoomChars({
+					filterMuted: true,
+					sortOrder: [ 'awake', 'watch' ],
+				}),
 			}),
 			alias: [ 'quit' ],
 			value: this.sleep.bind(this),

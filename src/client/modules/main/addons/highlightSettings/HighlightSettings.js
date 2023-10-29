@@ -69,7 +69,7 @@ class HighlightSettings {
 	}
 
 	/**
-	 * @typedef {Object} HighlightSettings
+	 * @typedef {object} HighlightSettings
 	 * @property {bool} highlightTriggers Flag telling if mention triggers should be highlighted in chat log text.
 	 * @property {bool} highlightMentionMessages Flag telling if communication messages mentioning the character should be highlighted as a whole.
 	 * @property {bool} highlightOwnMessages Flag telling if communication from your character should be highlighted as a whole.

@@ -37,6 +37,7 @@ class Evict {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('evict.characterRequired', "Who do you want to evict?"),
+					sortOrder: [ 'awake' ],
 				}),
 				new DelimStep(":", {
 					next: new ListStep('type', this.evictType, {

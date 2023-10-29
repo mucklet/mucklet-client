@@ -117,7 +117,7 @@ class GetPlayer {
 
 				this.module.charLog.logComponent(ctx.char, 'getPlayer', elem);
 			} catch (ex) {
-				console.log(ex);
+				console.error(ex);
 			}
 		}));
 	}

@@ -1,9 +1,6 @@
 import { Model } from 'modapp-resource';
-import l10n from 'modapp-l10n';
 import Panel from 'components/Panel';
 import './charPanel.scss';
-
-const defaultTitle = l10n.l('charPanel.characterInfo', "Character Info");
 
 /**
  * CharPanel draws player char menu.
@@ -41,7 +38,7 @@ class CharPanel {
 	/**
 	 * Toggles the panel between open or close.
 	 * @param {bool} open State to toggle to. Defaults to toggle between open and close.
-	 * @return {this}
+	 * @returns {this}
 	 */
 	toggle(open) {
 		this.component.toggle(open);
@@ -83,7 +80,7 @@ class CharPanel {
 		}
 
 		this.component
-			.setTitle(pi.title || defaultTitle)
+			.setTitle(pi.title || '')
 			.setButton(pi.close || (page && page.close) || null, pi.closeIcon || 'chevron-circle-left')
 			.setComponent(pi.component, {
 				onRender: () => {

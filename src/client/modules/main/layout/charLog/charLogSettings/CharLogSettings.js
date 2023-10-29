@@ -66,7 +66,7 @@ class CharLogSettings {
 	}
 
 	/**
-	 * @typedef {Object} CharLogSettings
+	 * @typedef {object} CharLogSettings
 	 * @property {bool} useLocalStorage Flag telling if localStorage should be used, instead of sessionStorage, to store logs.
 	 */
 

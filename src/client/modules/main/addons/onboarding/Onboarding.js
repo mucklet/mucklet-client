@@ -59,7 +59,6 @@ class Onboarding {
 	 * @param {LocaleString|Component} params.content Tooltip content.
 	 * @param {string} [params.position] Position of the tooltip. May be 'left', 'right', 'top', 'bottom'. Defaults to 'right'. }
 	 * @param {Element} [params.parent] Parent element to render the tip inside. Defaults to body.
-	 * @param {LocaleString|Component} [params.title] Title text.
 	 * @param {number} [params.priority] Priority.
 	 */
 	openTip(tipId, el, params) {

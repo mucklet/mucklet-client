@@ -29,8 +29,8 @@ class DialogTag {
 	 * Opens a dialog to add a new tag to a character.
 	 * @param {Model} ctrl Controlled character.
 	 * @param {string|Model} tag Tag key or add, or tag Model to edit.
-	 * @param {object} opt Optional parameters.
-	 * @param {string} pref Preference id. May be 'like' or 'dislike'. Defaults to 'like'.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {string} [opt.pref] Preference id. May be 'like' or 'dislike'. Defaults to 'like'.
 	 */
 	open(ctrl, tag, opt) {
 		if (this.dialog) return;

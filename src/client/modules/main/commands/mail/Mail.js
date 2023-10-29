@@ -31,11 +31,17 @@ class Mail {
 		this.module = module;
 		this.lastCharId = {};
 
+		let charListOpt = {
+			filterMuted: true,
+			sortOrder: [ 'watch', 'awake', 'room' ],
+		};
+
 		this.module.cmd.addCmd({
 			key: 'mail',
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('mail.characterRequired', "Who do you want to send a mail to?"),
+					...charListOpt,
 				}),
 				new DelimStep("=", {
 					next: [
@@ -49,7 +55,7 @@ class Mail {
 							maxLength: () => this.module.info.getMail().mailMaxLength,
 							errTooLong: communicationTooLong,
 							errRequired: step => new Err('mail.messageRequired', "What is the message you want to mail?"),
-							completer: this.module.cmdLists.getCharsAwake(),
+							completer: this.module.cmdLists.getAllChars(charListOpt),
 							formatText: true,
 						}),
 					],

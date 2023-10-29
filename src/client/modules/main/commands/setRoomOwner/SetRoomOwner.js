@@ -18,6 +18,7 @@ class SetRoomOwner {
 			key: 'owner',
 			stepFactory: () => this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => new Err('setRoomOwner.characterRequired', "Who do you want to set as new owner?"),
+				sortOrder: [ 'awake', 'watch', 'room' ],
 			}),
 			desc: l10n.l('setRoomOwner.ownerDesc', "Name of the new owner. To give ownership to another player's character, use the <code>request room owner</code> command instead."),
 			value: (ctx, p) => this.setRoomOwner(ctx.char, p.charId

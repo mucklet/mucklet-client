@@ -9,7 +9,8 @@ const helpText =
 <p>Alias: <code>delete notes</code></p>`;
 
 /**
- * DeleteNote deletes the delete note command.*/
+ * DeleteNote deletes the delete note command.
+ */
 class DeleteNote {
 	constructor(app) {
 		this.app = app;
@@ -33,6 +34,7 @@ class DeleteNote {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('deleteNote.characterRequired', "Who do you want to delete the notes for?"),
+					sortOrder: [ 'awake', 'watch' ],
 				}),
 			],
 			value: (ctx, p) => this.deleteNote(ctx.player, ctx.char, p.charId

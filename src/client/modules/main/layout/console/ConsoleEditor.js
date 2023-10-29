@@ -13,11 +13,11 @@ const txtPlaceholder = l10n.l('console.enterYourCommand', "Enter your command (o
 class ConsoleEditor {
 	constructor(module, state) {
 		this.module = module;
-		this.state = state;
+		this.state = state || null;
 
 		// Bind callbacks
 		this._onEnter = this._onEnter.bind(this);
-		this._onUpdate = this._onUpdate.bind(this);
+		this._onEditorUpdate = this._onEditorUpdate.bind(this);
 		this._cyclePrev = this._cycleHistory.bind(this, true);
 		this._cycleNext = this._cycleHistory.bind(this, false);
 	}
@@ -29,16 +29,17 @@ class ConsoleEditor {
 				n.component(new Txt(txtPlaceholder, { tagName: 'div', className: 'console-editor--placeholder' })),
 			])),
 			(m, c, change) => {
-				if (change) {
-					this._onStateUpdate(m, c);
+				// Creates a new editor state if the state.doc has changed. This
+				// should not happen due to simple edits to the console as the
+				// editor's doc and the state's doc would match. This is rather
+				// an affect of changing history.
+				if (change && this.cm && m && m.doc.trim() != this.cm.state.doc.toString().trim()) {
+					this.cm.setState(this._newEditorState(m));
 				}
 			},
 		);
 		let rel = this.elem.render(el);
-		this.cm = new EditorView({
-			state: this._newState(this.state?.doc || ''),
-			parent: rel,
-		});
+		this._createEditor(this.state);
 		this._setEmpty();
 
 		return rel;
@@ -47,21 +48,57 @@ class ConsoleEditor {
 	unrender() {
 		if (this.elem) {
 			this.state?.setDoc(this._getValue());
-			this.cm.destroy();
-			this.cm = null;
+			this._destroyEditor();
 			this.elem.unrender();
 			this.elem = null;
 		}
 	}
 
-	setState(state) {
-		this.state = state || null;
-		this._setConsole(state ? this.state.doc : '');
-		if (this.elem) {
-			this.elem.setModel(this.state);
-		}
-		if (this.cm) {
+	/**
+	 * Creates the editor if we have are rendered and have a state, otherwise
+	 * destroys the editor. If an editor already exists, we set a new state.
+	 * @param {object} state State object
+	 */
+	_createEditor(state) {
+		let rel = this.elem?.getComponent().getElement();
+		if (rel && state) {
+			let editorState = this._newEditorState(state);
+			if (this.cm) {
+				this.cm.setState(editorState);
+			} else {
+				this.cm = new EditorView({
+					state: editorState,
+					parent: rel,
+				});
+			}
 			cursorDocEnd(this.cm);
+		} else {
+			this._destroyEditor();
+		}
+	}
+
+	/**
+	 * Destroys the editor if it exists.
+	 */
+	_destroyEditor() {
+		if (this.cm) {
+			this.cm.destroy();
+			this.cm = null;
+		}
+	}
+
+	/**
+	 * Set a new state. This will set a new editor state if rendered.
+	 * @param {object} state State object.
+	 */
+	setState(state) {
+		state = state || null;
+		if (state !== this.state) {
+			this.state = state;
+			if (this.elem) {
+				this.elem.setModel(this.state);
+				this._createEditor(state);
+			}
 		}
 	}
 
@@ -94,13 +131,13 @@ class ConsoleEditor {
 		tabComplete(this.cm);
 	}
 
-	_newState(doc) {
-		doc = doc || '';
-		let state = EditorState.create({
+	_newEditorState(state, doc) {
+		doc = (typeof doc != 'undefined' ? doc : state?.doc) || '';
+		let editorState = EditorState.create({
 			doc,
 			extensions: [
 				tabCompletion({
-					complete: state => this.module.cmd.getCMTabComplete(state),
+					complete: editorState => this.module.cmd.getCMTabComplete(editorState),
 				}),
 				spellcheck,
 				this.module.cmd.getCMFormattingStyle(),
@@ -117,18 +154,19 @@ class ConsoleEditor {
 					{ key: 'Cmd-N', run: this._cycleNext },
 					...standardKeymap,
 				]),
-				this.module.cmd.getCMLanguage(),
+				state.getCMLanguage(),
 				this.module.cmd.getCMHighlightStyle(),
 				EditorView.lineWrapping,
-				EditorView.updateListener.of(this._onUpdate),
+				EditorView.updateListener.of(this._onEditorUpdate),
 			],
 		});
-		return state;
+		return editorState;
 	}
 
+	// Sets a new editor state with the provided doc string value, and updates the state
 	_setConsole(doc) {
 		if (this.cm) {
-			this.cm.setState(this._newState(doc));
+			this.cm.setState(this._newEditorState(this.state, doc));
 		}
 		this.state?.setDoc(doc.trim());
 	}
@@ -164,17 +202,10 @@ class ConsoleEditor {
 		return true;
 	}
 
-	_onUpdate(update) {
+	_onEditorUpdate(update) {
 		this.state?.setDoc(this._getValue());
 
 		this._setEmpty();
-	}
-
-	_onStateUpdate(state, c) {
-		// Update cm state if state.doc differs
-		if (this.cm && state && state.doc.trim() != this.cm.state.doc.toString().trim()) {
-			this.cm.setState(this._newState(state.doc));
-		}
 	}
 
 	_setEmpty() {

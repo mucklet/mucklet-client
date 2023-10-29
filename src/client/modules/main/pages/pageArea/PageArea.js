@@ -1,7 +1,5 @@
 import { Model } from 'modapp-resource';
-import l10n from 'modapp-l10n';
-import PageAreaComponent from './PageAreaComponent';
-import PageAreaBadge from './PageAreaBadge';
+import PageAreaArea from './PageAreaArea';
 import PageAreaImage from './PageAreaImage';
 import './pageArea.scss';
 
@@ -11,16 +9,13 @@ import './pageArea.scss';
 class PageArea {
 	constructor(app, params) {
 		this.app = app;
+
+		// Bind callbacks
+		this.newArea = this.newArea.bind(this);
+
 		this.app.require([
-			'roomPages',
 			'pageRoom',
-			'dialogCropImage',
-			'confirm',
-			'deleteRoom',
-			'dialogSetRoomOwner',
 			'player',
-			'toaster',
-			'roomPanel',
 		], this._init.bind(this));
 	}
 
@@ -28,29 +23,7 @@ class PageArea {
 		this.module = Object.assign({ self: this }, module);
 
 		this.tools = new Model({ eventBus: this.app.eventBus });
-	}
-
-	/**
-	 * Opens an in-panel edit room page in the room panel.
-	 * @param {Model} ctrl Controlled char model.
-	 * @param {bool} toggleOpen Flag if the room panel should be toggled open.
-	 * @returns {function} Close function.
-	 */
-	open(ctrl, toggleOpen) {
-		let close = this.module.roomPages.openPage(
-			'area',
-			ctrl.id,
-			null,
-			(ctrl, room, state, close) => ({
-				component: new PageAreaComponent(this.module, ctrl, state, close),
-				title: l10n.l('pageArea.area', "Area"),
-			}),
-			{
-				openPanel: toggleOpen,
-			},
-		);
-
-		return close;
+		this.module.pageRoom.setAreaComponentFactory(this.newArea);
 	}
 
 	/**
@@ -91,6 +64,18 @@ class PageArea {
 	}
 
 	/**
+	 * Creates a new PageAreaArea component.
+	 * @param {Model} ctrl Controlled character.
+	 * @param {Model} area Area model.
+	 * @param {object} state State object.
+	 * @param {string} layoutId Layout ID.
+ 	 * @returns {Component} Area component.
+	 */
+	newArea(ctrl, area, state, layoutId) {
+		return new PageAreaArea(this.module, ctrl, area, state, layoutId);
+	}
+
+	/**
 	 * Creates a new PageArea image component.
 	 * @param {Model} ctrl Controlled character.
 	 * @param {string} areaId Id of area to show.
@@ -105,19 +90,11 @@ class PageArea {
 		return new PageAreaImage(this.module, ctrl, areaId, image, children, selectedModel, state, opt);
 	}
 
-	/**
-	 * Creates a new PageArea badge component.
-	 * @param {Model} ctrl Controlled character model.
-	 * @param {Model} area Area model.
-	 * @param {object} [opt] Optional Elem parameters.
- 	 * @returns {Component} Area badge component.
-	 */
-	newBadge(ctrl, area, opt) {
-		return new PageAreaBadge(this.module, ctrl, area, opt);
-	}
-
 	dispose() {
-		this.module.pageRoom.removeTool('area');
+		let pageRoom = this.module.pageRoom;
+		if (pageRoom.getAreaComponentFactory() == this.newArea) {
+			pageRoom.setAreaComponentFactory(null);
+		}
 	}
 }
 

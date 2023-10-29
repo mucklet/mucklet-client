@@ -1,5 +1,6 @@
 import { Elem } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import ExitIcon from 'components/ExitIcon';
 
 class PageRoomExit {
 	constructor(module, ctrl, room, exit) {
@@ -15,6 +16,13 @@ class PageRoomExit {
 				click: () => this._useExit(),
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
+					n.elem('div', { className: 'badge--faicon smallicon' }, [
+						n.component(new ModelComponent(
+							this.exit,
+							new ExitIcon('', { default: 'dot' }),
+							(m, c) => c.setIcon(m.icon),
+						)),
+					]),
 					n.elem('div', { className: 'badge--info' }, [
 						n.component(new ModelTxt(this.exit, m => m.name, { tagName: 'div', className: 'badge--title' })),
 						n.component(new ModelTxt(this.exit, m => m.keys.join(", "), { tagName: 'div', className: 'badge--text' })),

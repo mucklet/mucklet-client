@@ -9,7 +9,8 @@ const helpText =
 <p>Alias: <code>watchfor</code>, <code>wf</code></p>`;
 
 /**
- * Watch adds the watch command.*/
+ * Watch adds the watch command.
+ */
 class Watch {
 	constructor(app) {
 		this.app = app;
@@ -26,6 +27,7 @@ class Watch {
 			next: [
 				this.module.cmdSteps.newAnyCharStep({
 					errRequired: step => new Err('watch.characterRequired', "Who do you want to watch for?"),
+					sortOrder: [ 'awake', 'room' ],
 				}),
 			],
 			alias: [ 'watchfor', 'wf' ],

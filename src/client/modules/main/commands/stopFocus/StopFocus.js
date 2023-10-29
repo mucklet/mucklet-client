@@ -12,7 +12,8 @@ const helpText =
 <p>Alias: <code>unfocus</code>`;
 
 /**
- * StopFocus adds the stop focus command.*/
+ * StopFocus adds the stop focus command.
+ */
 class StopFocus {
 	constructor(app) {
 		this.app = app;
@@ -26,20 +27,20 @@ class StopFocus {
 
 		let opts = {
 			next: [
-				new DelimStep('@', {
-					next: [
-						new ListStep('at', new ItemList({
-							items: [{ key: 'all' }],
-						}), {
-							name: "stopFocus at",
-							errNotFound: step => new Err('focus.atNotFound', "Did you mean to stop focus @all?"),
-							errRequired: step => new Err('focus.atRequired', "Did you mean to stop focus @all?"),
-						}),
-					],
+				new ListStep('charId', this.module.charFocus.getFocusCharList(), {
+					name: "character being focused on",
 					else: [
-						new ListStep('charId', this.module.charFocus.getFocusCharList(), {
-							name: "character being focused on",
+						new DelimStep('@', {
 							errRequired: step => new Err('stopFocus.characterRequired', "Who do you want to remove focus from?"),
+							next: [
+								new ListStep('at', new ItemList({
+									items: [{ key: 'all' }],
+								}), {
+									name: "stopFocus at",
+									errNotFound: step => new Err('focus.atNotFound', "Did you mean to stop focus @all?"),
+									errRequired: step => new Err('focus.atRequired', "Did you mean to stop focus @all?"),
+								}),
+							],
 						}),
 					],
 				}),

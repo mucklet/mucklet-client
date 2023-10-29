@@ -13,6 +13,9 @@ class CmdSteps {
 	constructor(app) {
 		this.app = app;
 
+		// Bind callbacks
+		this._onCharListExec = this._onCharListExec.bind(this);
+
 		this.app.require([
 			'cmdLists',
 		], this._init.bind(this));
@@ -20,6 +23,11 @@ class CmdSteps {
 
 	_init(module) {
 		this.module = module;
+		this.charTargets = {};
+	}
+
+	_onCharListExec(state, char) {
+		this.module.cmdLists.prioritizeChar(state.getCtx().charId, char.value);
 	}
 
 	/**
@@ -28,6 +36,7 @@ class CmdSteps {
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @returns {IDStep}
 	 */
 	newOwnedCharStep(opt) {
@@ -39,6 +48,8 @@ class CmdSteps {
 				name: defaultCharIdName,
 				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});
@@ -50,6 +61,9 @@ class CmdSteps {
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters on tab completion.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
 	 * @returns {IDStep}
 	 */
 	newInRoomCharStep(opt) {
@@ -57,10 +71,12 @@ class CmdSteps {
 		let next = opt?.next;
 		return new IDStep(id, {
 			name: defaultIDStepName,
-			else: new ListStep(id, this.module.cmdLists.getInRoomChars(), {
+			else: new ListStep(id, this.module.cmdLists.getInRoomChars(opt), {
 				name: defaultCharIdName,
-				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				errRequired: opt?.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});
@@ -72,6 +88,9 @@ class CmdSteps {
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters on tab completion.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
 	 * @returns {IDStep}
 	 */
 	newInRoomAwakeCharStep(opt) {
@@ -79,10 +98,12 @@ class CmdSteps {
 		let next = opt?.next;
 		return new IDStep(id, {
 			name: defaultIDStepName,
-			else: new ListStep(id, this.module.cmdLists.getInRoomCharsAwake(), {
+			else: new ListStep(id, this.module.cmdLists.getInRoomCharsAwake(opt), {
 				name: defaultCharIdName,
-				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				errRequired: opt?.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});
@@ -94,6 +115,7 @@ class CmdSteps {
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @returns {IDStep}
 	 */
 	newInRoomPuppetStep(opt) {
@@ -103,8 +125,10 @@ class CmdSteps {
 			name: defaultIDStepName,
 			else: new ListStep(id, this.module.cmdLists.getInRoomPuppets(), {
 				name: defaultCharIdName,
-				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				errRequired: opt?.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});
@@ -116,6 +140,9 @@ class CmdSteps {
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters on tab completion.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
 	 * @returns {IDStep}
 	 */
 	newAwakeCharStep(opt) {
@@ -123,10 +150,12 @@ class CmdSteps {
 		let next = opt?.next;
 		return new IDStep(id, {
 			name: defaultIDStepName,
-			else: new ListStep(id, this.module.cmdLists.getCharsAwake(), {
+			else: new ListStep(id, this.module.cmdLists.getCharsAwake(opt), {
 				name: defaultCharIdName,
-				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				errRequired: opt?.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});
@@ -138,6 +167,7 @@ class CmdSteps {
 	 * @param {string} [opt.id] Id used as key when setting param values. Defaults to 'charId'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @returns {IDStep}
 	 */
 	newWatchedCharStep(opt) {
@@ -147,8 +177,10 @@ class CmdSteps {
 			name: defaultIDStepName,
 			else: new ListStep(id, this.module.cmdLists.getWatchedChars(), {
 				name: defaultCharIdName,
-				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				errRequired: opt?.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});
@@ -163,6 +195,9 @@ class CmdSteps {
 	 * @param {string} [opt.textId] Id used as key when param text. Defaults to 'charName'.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this). Defaults to "Which character?"
 	 * @param {Step} [opt.next] Next step after matching a character.
+	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
+	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters on tab completion.
+	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
 	 * @returns {IDStep}
 	 */
 	newAnyCharStep(opt) {
@@ -170,11 +205,13 @@ class CmdSteps {
 		let next = opt?.next;
 		return new IDStep(id, {
 			name: opt?.idName || defaultIDStepName,
-			else: new ListStep(id, this.module.cmdLists.getAllChars(), {
+			else: new ListStep(id, this.module.cmdLists.getAllChars(opt), {
 				textId: opt?.textId || 'charName',
 				name: opt?.name || defaultCharIdName,
-				errRequired: opt && opt.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
+				errRequired: opt?.hasOwnProperty('errRequired') ? opt.errRequired : (step => errCharacterRequired),
 				next,
+				else: opt?.else,
+				onExec: this._onCharListExec,
 			}),
 			next,
 		});

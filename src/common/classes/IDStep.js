@@ -13,7 +13,7 @@ class IDStep {
 	 * @param {object} [opt] Optional params.
 	 * @param {string} [opt.name] Name used in error outputs. Defaults to the id value.
 	 * @param {string} [opt.token] Token name. Defaults to 'entityid'.
-	 * @param {Array.<string>|function} [opt.list] Array or callback function returning array of available ID strings to use for tab completion.
+	 * @param {Array.<string>|(ctx: object) => string[]} [opt.list] Array or callback function returning array of available ID strings to use for tab completion.
 	 * @param {Step} [opt.next] Next step after a matched ID.
 	 * @param {Step} [opt.else] Step after if the ID is missing. Will disabled any errRequired set.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required.: function(this)
@@ -71,19 +71,19 @@ class IDStep {
 	 * Complete returns a completion list for the tab completion.
 	 * @param {string} str The matched text string
 	 * @param {number} pos The cursor position within the string
+	 * @param {CmdState} state State object
 	 * @returns {?object} Completion list in the format: { list, from, to }
 	 */
-	complete(str, pos) {
+	complete(str, pos, state) {
 		if (!this.list) return null;
 
 		let start = str.indexOf('#');
 		if (start < 0 || pos <= start) return null;
 
-		// complete(str, pos, ctx, inline)
 		let { from, to } = expandSelection(str, expandRegex, expandRegex, pos, pos);
 		var key = (str && str.slice(from, to).toLowerCase()) || '';
 
-		let ids = typeof this.list == 'function' ? this.list() : this.list;
+		let ids = typeof this.list == 'function' ? this.list(state.getCtx()) : this.list;
 		let list = ids;
 		let found = {};
 		if (key) {

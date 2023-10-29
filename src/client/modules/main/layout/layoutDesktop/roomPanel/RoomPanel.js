@@ -1,9 +1,6 @@
 import { Model } from 'modapp-resource';
-import l10n from 'modapp-l10n';
 import Panel from 'components/Panel';
 import './roomPanel.scss';
-
-const defaultTitle = l10n.l('roomPanel.roomInfo', "Room Info");
 
 /**
  * RoomPanel draws player room panel.
@@ -41,7 +38,7 @@ class RoomPanel {
 	/**
 	 * Toggles the panel between open or close.
 	 * @param {bool} open State to toggle to. Defaults to toggle between open and close.
-	 * @return {this}
+	 * @returns {this}
 	 */
 	toggle(open) {
 		this.component.toggle(open);
@@ -72,7 +69,6 @@ class RoomPanel {
 			return;
 		}
 
-
 		let m = this.model;
 		let pi = m.pageInfo;
 		let page = m.page;
@@ -83,7 +79,7 @@ class RoomPanel {
 		}
 
 		this.component
-			.setTitle(pi.title || defaultTitle)
+			.setTitle(pi.title || '')
 			.setButton(pi.close || (page && page.close) || null, pi.closeIcon || (page && page.closeIcon) || 'chevron-circle-left')
 			.setComponent(pi.component, {
 				onRender: () => {

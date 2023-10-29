@@ -33,6 +33,7 @@ class Whereis {
 			key: 'whereis',
 			next: this.module.cmdSteps.newAnyCharStep({
 				errRequired: step => new Err('whereisCmd.characterRequired', "Who do you want to locate?"),
+				sortOrder: [ 'awake', 'watch' ],
 			}),
 			alias: [ 'where' ],
 			value: (ctx, p) => this.whereis(ctx.player, ctx.char, p),

@@ -1,11 +1,12 @@
 class CmdState {
-	constructor(step, stack, ctx, params, state, error) {
+	constructor(step, stack, ctx, params, state, error, onExec) {
 		this.step = step;
 		this.stack = stack;
 		this.ctx = ctx;
 		this.params = params;
 		this.state = state;
 		this.error = error;
+		this.onExec = onExec;
 	}
 
 	addStep() {
@@ -57,6 +58,22 @@ class CmdState {
 		return this;
 	}
 
+	addOnExec(callback) {
+		if (callback) {
+			this.onExec.push(callback);
+		}
+	}
+
+	callOnExec() {
+		for (let cb of this.onExec) {
+			cb(this);
+		}
+	}
+
+	getCtx() {
+		return this.ctx;
+	}
+
 	clone() {
 		return new CmdState(
 			this.step,
@@ -65,6 +82,7 @@ class CmdState {
 			Object.assign({}, this.params),
 			Object.assign({}, this.state),
 			this.error,
+			this.onExec.slice(0),
 		);
 	}
 
