@@ -92,7 +92,7 @@ class OverlayNavButtons {
 
 		for (let exit of exits) {
 			if (exit.nav && !state[exit.nav]) {
-				state[exit.nav] = { icon: exit.icon || '' };
+				state[exit.nav] = { icon: exit.icon || '', title: exit.name };
 			}
 		}
 
