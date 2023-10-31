@@ -17,7 +17,7 @@ const icons = [
 	{ id: 'out', char: 'f08b', x: 44, y: 21.8 },
 ];
 
-const defaultBtnState = { active: false, disabled: true, icon: '' };
+const defaultBtnState = { active: false, disabled: true, icon: '', title: '' };
 
 function setClass(el, className, add) {
 	if (add) {
@@ -33,6 +33,7 @@ function prepareState(btnState) {
 			selected: !!btnState.selected,
 			disabled: !!btnState.disabled,
 			icon: btnState.icon || '',
+			title: btnState.title || '',
 		}
 		: defaultBtnState;
 }
@@ -86,6 +87,7 @@ class NavButtons {
 		.join('\n\t\t')}
 	</defs>
 	${directions.map((dir, i) => `<g class="navbuttons--btn dir-${dir}" transform="rotate(${i * 45} 50 50)" >
+	<title></title>
 	<use href="#btn"/>
 	${icons
 		.map(o => `<use class="navbuttons--icon ${o.id}" href="#icon-${o.id}" transform="rotate(${-i * 45} 50 16)" />`)
@@ -177,6 +179,7 @@ class NavButtons {
 
 		setClass(g, 'disabled', btnState.disabled);
 		setClass(g, 'selected', btnState.selected);
+		g.firstElementChild.textContent = btnState.title;
 		for (let icon of icons) {
 			setClass(g, icon.id, btnState.icon == icon.id);
 		}
