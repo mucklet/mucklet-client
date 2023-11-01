@@ -50,16 +50,19 @@ class NavButtons {
 
 	/**
 	 * Creates an instance of NavButtons
-	 * @param {object} state Button state.
+	 * @param {object} state Button state object.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Additional class names to append to font-awesome class names.
 	 * @param {bool} [opt.shadow] Add a drop shadow to the buttons.
+	 * @param {bool} [opt.center] Render a center button.
 	 * @param {(dir: string, c: NavButtons) => void} [opt.onClick] Callback called on click
 	 */
 	constructor(state, opt) {
 		this.btns = {};
 		this.cbs = null;
 		this._onClick = opt?.onClick || null;
+		this.center = !!opt?.center;
+		this.count = 0;
 		// Create element
 		this.svg = document.createElement('div');
 		this.svg.className = 'navbuttons' + (opt?.className ? ' ' + opt.className : '');
@@ -93,11 +96,24 @@ class NavButtons {
 		.map(o => `<use class="navbuttons--icon ${o.id}" href="#icon-${o.id}" transform="rotate(${-i * 45} 50 16)" />`)
 		.join('\n\t')}
 </g>`).join('\n\t')}
-	</g>
+	${this.center ? `<g class="navbuttons--btn dir-c">
+		<circle cx="50" cy="50" r="16" style="transition: fill-opacity .2s, fill .2s; stroke:none" />
+		${[ ...Array(10) ].map((e, i) => `<text
+			class="navbuttons--count count-${i + 1}"
+			x="50"
+			y="50"
+			dominant-baseline="middle"
+			text-anchor="middle"
+			style="transition: fill-opacity .2s, fill .2s"
+		>${i >= 9 ? "9+" : i + 1}</text>`).join('\n\t\t')}
+	</g>` : ''}
 </svg>`;
 
 		for (let dir of directions) {
 			this.btns[dir] = this._getByClass(`dir-${dir}`);
+		}
+		if (this.center) {
+			this.btns['c'] = this._getByClass(`dir-c`);
 		}
 
 		this.state = {};

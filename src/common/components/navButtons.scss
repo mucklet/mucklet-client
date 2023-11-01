@@ -13,6 +13,12 @@
 		user-select: none;
 	}
 
+	&--count {
+		font-family: $font-text;
+		fill: $color4-light;
+		fill-opacity: 0;
+	}
+
 	&--icon {
 		font-family:'FontAwesome';
 		fill: $color4-light;
