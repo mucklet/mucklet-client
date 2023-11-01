@@ -1,6 +1,6 @@
 const config = {
-	login: {
-		wsLogin: true,
+	auth: {
+		wsAuth: true,
 	},
 	confirmClose: { active: false },
 	serviceWorker: { active: false },
