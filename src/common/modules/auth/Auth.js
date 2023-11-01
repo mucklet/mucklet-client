@@ -2,6 +2,7 @@ import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
+import Err from 'classes/Err';
 
 const oauth2Url = AUTH_LOGIN_URL;
 const oauth2LogoutUrl = AUTH_LOGOUT_URL;
