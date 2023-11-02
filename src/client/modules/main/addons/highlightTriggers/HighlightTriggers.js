@@ -20,7 +20,6 @@ class HighlightTriggers {
 		this.app = app;
 
 		this.app.require([
-			'player',
 			'charLog',
 			'player',
 		], this._init.bind(this));
