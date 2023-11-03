@@ -1,6 +1,7 @@
 import { ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import Fader from 'components/Fader';
 import NavButtons from 'components/NavButtons';
+import * as tooltip from 'utils/tooltip';
 
 /**
  * OverlayNavButtons is the navigation component.
@@ -95,6 +96,7 @@ class OverlayNavButtons {
 				state[exit.nav] = { icon: exit.icon || '', title: exit.name };
 			}
 		}
+		state['c'] = { count: exits.length };
 
 		if (Object.keys(state).length) {
 			this.fader.setComponent(
@@ -113,12 +115,38 @@ class OverlayNavButtons {
 	}
 
 	_onClick(dir) {
+		if (dir == 'c') {
+			this._openExitsTooltip();
+			return;
+		}
+
 		let exits = this.ctrl.inRoom?.exits || [];
 		for (let exit of exits) {
 			if (exit.nav == dir) {
-				this.ctrl.call('useExit', { exitId: exit.id })
+				return this.ctrl.call('useExit', { exitId: exit.id })
 					.catch(err => this.module.toaster.openError(err));
 			}
+		}
+	}
+
+	_openExitsTooltip() {
+		let el = this.fader?.getComponent()?.getElement();
+		if (!el) {
+			return;
+		}
+
+		let exits = this.ctrl.inRoom?.exits;
+		if (exits) {
+			this.tooltip = tooltip.click(
+				el,
+				this.module.pageRoom.newRoomExits(this.ctrl, exits),
+				{
+					className: 'charlog-event--tooltip',
+					position: 'bottom',
+					padding: 's',
+					hoverDelay: true,
+				},
+			);
 		}
 	}
 }

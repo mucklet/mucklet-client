@@ -14,13 +14,21 @@ class Tooltip {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Class name for tooltip element.
 	 * @param {string} [opt.margin] Margin to use. May be 'm'.
+	 * @param {string} [opt.padding] Inner padding to use. May be 's' or 'm'.
 	 * @param {string} [opt.size] Size. May be 'auto' or 'full'. Default to 'auto'.
-	 * @param {number} [opt.position] Position of caret in pixels relative to viewport. Centered if omitted.
+	 * @param {number} [opt.offset] Position of caret in pixels relative to viewport. Centered if omitted.
+	 * @param {string} [opt.position] Position of the tooltip. May be 'top', 'bottom'. Defaults to 'top'. }
 	 * @param {function} [opt.onClose] Callback called on close.
 	 */
 	constructor(text, ref, opt) {
 		opt = opt || {};
-		opt.className = 'tooltip' + (opt.className ? ' ' + opt.className : '') + (opt.margin ? ' tooltip--margin-' + opt.margin : '');
+		this.posClass = ' tooltip--pos-' + (opt.position || 'top');
+		opt.className = 'tooltip' +
+			(opt.className ? ' ' + opt.className : '') +
+			(opt.margin ? ' tooltip--margin-' + opt.margin : '') +
+			(opt.padding ? ' tooltip--padding-' + opt.padding : '') +
+			this.posClass;
+		opt.events = Object.assign({ click: (c, ev) => ev.stopPropagation() }, opt.events);
 
 		this._close = this._close.bind(this);
 		this.opt = opt;
@@ -39,7 +47,7 @@ class Tooltip {
 		this.elem = new Elem(n => n.elem('div', this.opt, [
 			n.component(this.txt),
 		]));
-		this.caret = new Elem(n => n.elem('div', { className: 'tooltip--caret' }));
+		this.caret = new Elem(n => n.elem('div', { className: 'tooltip--caret' + this.posClass }));
 		this.elem.render(this.ref);
 		this.caret.render(this.ref);
 		// this._setListeners(true);
@@ -72,8 +80,8 @@ class Tooltip {
 		// Calculate the x offset where the caret should be placed using the ref
 		// element as reference.
 		let offset = refWidth / 2;
-		if (typeof this.opt.position == 'number') {
-			offset = Math.min(Math.max(this.opt.position - refRect.left, 0), refWidth - 1);
+		if (typeof this.opt.offset == 'number') {
+			offset = Math.min(Math.max(this.opt.offset - refRect.left, 0), refWidth - 1);
 		}
 		// Ensure the offset is well inside the container to prevent the caret
 		// from being disconnected.
@@ -90,10 +98,12 @@ class Tooltip {
 				this.elem.setStyle('margin-left', (offset - (width / 2)) + 'px');
 			}
 		}
-		this.elem.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
+		if (this.opt.position != 'bottom') {
+			this.elem.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
+			this.caret.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
+		}
 
 		// Caret positioning
-		this.caret.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
 		this.caret.setStyle('margin-left', offset + 'px');
 	}
 

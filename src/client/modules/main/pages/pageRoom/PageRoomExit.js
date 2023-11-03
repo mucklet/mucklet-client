@@ -3,17 +3,17 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import ExitIcon from 'components/ExitIcon';
 
 class PageRoomExit {
-	constructor(module, ctrl, room, exit) {
+	constructor(module, ctrl, exit, onClick) {
 		this.module = module;
 		this.ctrl = ctrl;
-		this.room = room;
 		this.exit = exit;
+		this.onClick = onClick;
 	}
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'pageroom-exit' }, [
 			n.elem('btn', 'div', { className: 'badge btn', events: {
-				click: () => this._useExit(),
+				click: (c, ev) => this.onClick(this.exit.id, ev),
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.elem('div', { className: 'badge--faicon smallicon' }, [
@@ -39,12 +39,6 @@ class PageRoomExit {
 			this.elem = null;
 		}
 	}
-
-	_useExit() {
-		this.ctrl.call('useExit', { exitId: this.exit.id })
-			.catch(err => this.module.toaster.openError(err));
-	}
-
 }
 
 export default PageRoomExit;

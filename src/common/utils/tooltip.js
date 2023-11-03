@@ -8,38 +8,59 @@ function getCtx(opt) {
 
 function setListeners(ctx, on) {
 	let cb = on ? 'addEventListener' : 'removeEventListener';
-	document[cb]('keydown', ctx.close, true);
-	document[cb]('click', ctx.close, true);
+	document[cb]('keydown', ctx.onClick, true);
+	document[cb]('click', ctx.onClick, true);
 }
 
-function tryClose(ev, ref, opt) {
+/**
+ * On click callback called when document is click on while a tooltip is
+ * rendered.
+ * @param {object} ev Click event
+ * @param {Element} ref Reference DOM element for the rendered tooltip.
+ * @param {object} opt Options as provided when opening the tooltip.
+ */
+function onClick(ev, ref, opt) {
 	let ctx = getCtx(opt);
+	// Assert it is the callback handler for the right reference element.
 	if (ctx.ref !== ref) {
 		return;
 	}
 
-	ctx.handledGlobally = ref;
-	setTimeout(() => {
-		if (ctx.handledGlobally === ref) {
-			ctx.handledGlobally = null;
-		}
+	ctx.closeTimeout = setTimeout(() => {
+		close(ref, opt);
 	}, 0);
-
-	if (!ctx.clicked && ev && ev.target && ref && ref.contains(ev.target)) {
-		ctx.clicked = true;
-		return;
-	}
-
-	close(ref, opt);
 }
 
-function createTooltip(ref, text, opt) {
+function onClose(ctx, ref) {
+	if (ctx.ref === ref) {
+		ctx.ref = null;
+		ctx.tooltip = null;
+		ctx.clicked = false;
+		clearTimeout(ctx.timeout);
+		ctx.timeout = null;
+		clearTimeout(ctx.closeTimeout);
+		ctx.closeTimeout = null;
+		setListeners(ctx, false);
+	}
+}
+
+/**
+ * Tries to create a tooltip unless a tooltip for the same reference DOM element
+ * is already open. It will also clear any ongoing mouse-leave timeout.
+ * @param {Element} ref Reference DOM element.
+ * @param {String|LocaleString|Component} text Tooltip text.
+ * @param {object} opt Optional parameters. Extends the options available for Tooltip.
+ * @returns {bool} True if a new tooltip was opened. False if a tooltip for the ref already was open.
+ */
+function tryCreateTooltip(ref, text, opt) {
 	opt = opt || {};
 
 	let ctx = getCtx(opt);
 
 	clearTimeout(ctx.timeout);
 	ctx.timeout = null;
+	clearTimeout(ctx.closeTimeout);
+	ctx.closeTimeout = null;
 
 	if (ctx.tooltip) {
 		if (ctx.ref == ref) {
@@ -52,47 +73,52 @@ function createTooltip(ref, text, opt) {
 	ctx.tooltip = new Tooltip(text, ref, {
 		className: opt.className,
 		margin: opt.margin,
+		padding: opt.padding,
 		size: opt.size,
+		offset: opt.offset,
 		position: opt.position,
-		onClose: () => {
-			if (ctx.ref === ref) {
-				ctx.ref = null;
-				ctx.tooltip = null;
-				ctx.clicked = false;
-				clearTimeout(ctx.timeout);
-				ctx.timeout = null;
-				setListeners(ctx, false);
-			}
-		},
+		onClose: () => onClose(ctx, ref),
 	});
-	ctx.close = (ev) => tryClose(ev, ref, opt);
+	ctx.onClick = (ev) => onClick(ev, ref, opt);
 	setListeners(ctx, true);
+
+	ctx.tooltip.open();
 
 	return true;
 }
 
 /**
+ * Prevents a click from closing the tooltip. Must be called while bubbling up
+ * the click event.
+ */
+export function preventClose() {
+	clearTimeout(ctx.closeTimeout);
+	ctx.closeTimeout = null;
+}
+
+/**
  * Opens a tooltip for the reference element by clicking on it.
  * @param {Element} ref Reference DOM element.
- * @param {String|LocaleString} text Tooltip text.
- * @param {object} [opt] Optional parameters.
+ * @param {String|LocaleString|Component} text Tooltip text.
+ * @param {object} [opt] Optional parameters. Extends the options available for Tooltip.
  * @param {object} [opt.ctx] Optional context object. Only one tooltip will be open at the same time for any call using the same object.
  * @returns {Tooltip} Tooltip class.
  */
 export function click(ref, text, opt) {
 	let ctx = getCtx(opt);
-	if (ctx.handledGlobally === ref) {
-		return;
-	}
 
-	if (!text || ctx.clicked) {
+	if (!text) {
 		close(ref, opt);
 		return null;
 	}
 
-	if (createTooltip(ref, text, opt)) {
-		ctx.tooltip.open();
+	// If the tooltip is opened by click, and it gets clicked a second time, we
+	// let the onClick handler close it.
+	if (ctx.ref === ref && ctx.clicked) {
+		return null;
 	}
+
+	tryCreateTooltip(ref, text, opt);
 	ctx.clicked = true;
 	return ctx.tooltip;
 }
@@ -116,9 +142,7 @@ export function mouseEnter(ref, text, opt) {
 		return null;
 	}
 
-	if (createTooltip(ref, text, opt)) {
-		ctx.tooltip.open();
-	}
+	tryCreateTooltip(ref, text, opt);
 	return ctx.tooltip;
 }
 
