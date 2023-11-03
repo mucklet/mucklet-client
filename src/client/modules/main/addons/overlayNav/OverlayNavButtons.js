@@ -32,7 +32,10 @@ class OverlayNavButtons {
 				this.fader,
 				(col, c) => this._listenExits(col),
 			),
-			(m, c) => c.setCollection(m.inRoom?.exits),
+			(m, c) => {
+				c.setCollection(m.inRoom?.exits);
+				this.tooltip?.close();
+			},
 		);
 
 		return this.elem.render(el);
@@ -145,6 +148,9 @@ class OverlayNavButtons {
 					position: 'bottom',
 					padding: 's',
 					hoverDelay: true,
+					onClose: () => {
+						this.tooltip = null;
+					},
 				},
 			);
 		}

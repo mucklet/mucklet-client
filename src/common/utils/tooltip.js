@@ -77,7 +77,10 @@ function tryCreateTooltip(ref, text, opt) {
 		size: opt.size,
 		offset: opt.offset,
 		position: opt.position,
-		onClose: () => onClose(ctx, ref),
+		onClose: () => {
+			onClose(ctx, ref);
+			opt?.onClose?.();
+		},
 	});
 	ctx.onClick = (ev) => onClick(ev, ref, opt);
 	setListeners(ctx, true);
