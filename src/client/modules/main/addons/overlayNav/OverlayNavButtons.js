@@ -1,6 +1,7 @@
 import { ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import Fader from 'components/Fader';
 import NavButtons from 'components/NavButtons';
+import SimpleBar from 'components/SimpleBar';
 import * as tooltip from 'utils/tooltip';
 
 /**
@@ -26,16 +27,20 @@ class OverlayNavButtons {
 		this.exits = {};
 
 		this.elem = new ModelComponent(
-			this.ctrl,
-			new CollectionComponent(
-				null,
-				this.fader,
-				(col, c) => this._listenExits(col),
+			this.module.charLog.getViewportModel(),
+			new ModelComponent(
+				this.ctrl,
+				new CollectionComponent(
+					null,
+					this.fader,
+					(col, c) => this._listenExits(col),
+				),
+				(m, c) => {
+					c.setCollection(m.inRoom?.exits);
+					this.tooltip?.close();
+				},
 			),
-			(m, c) => {
-				c.setCollection(m.inRoom?.exits);
-				this.tooltip?.close();
-			},
+			(m, c) => this._updateTooltip(),
 		);
 
 		return this.elem.render(el);
@@ -142,18 +147,38 @@ class OverlayNavButtons {
 		if (exits) {
 			this.tooltip = tooltip.click(
 				el,
-				this.module.pageRoom.newRoomExits(this.ctrl, exits),
+				new SimpleBar(
+					this.module.pageRoom.newRoomExits(this.ctrl, exits, { className: 'overlaynav-buttons--tooltip-list' }),
+					{
+						className: 'overlaynav-buttons--tooltip-bar',
+						autoHide: false,
+					},
+				),
 				{
-					className: 'charlog-event--tooltip',
+					className: 'overlaynav-buttons--tooltip',
 					position: 'bottom',
-					padding: 's',
+					padding: 'none',
+					size: 'auto',
 					hoverDelay: true,
 					onClose: () => {
 						this.tooltip = null;
 					},
 				},
 			);
+			this._updateTooltip();
 		}
+	}
+
+	_updateTooltip() {
+		let elem = this.tooltip?.getComponent();
+		let el = elem?.getElement();
+		if (!elem || !el) {
+			return;
+		}
+
+		let m = this.module.charLog.getViewportModel();
+		let rect = el.getBoundingClientRect();
+		elem.setStyle('max-height', (m.height - rect.top - 4 + m.y) + 'px');
 	}
 }
 

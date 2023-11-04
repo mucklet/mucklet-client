@@ -19,6 +19,9 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	&--padding-s {
 		padding: 8px 8px;
 	}
+	&--padding-none {
+		padding: 8px 0;
+	}
 
 	&.tooltip--pos-bottom {
 		transform: translateY(5px);

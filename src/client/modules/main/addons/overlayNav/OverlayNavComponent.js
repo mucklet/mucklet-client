@@ -23,7 +23,7 @@ class OverlayNavComponent {
 
 	render(el) {
 		this.model = new Model({ data: {
-			open: this.state.hasOwnProperty('open') ? this.state.open : true,
+			open: this.state.hasOwnProperty('open') ? this.state.open : this.opt?.mode != 'mobile',
 			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
 

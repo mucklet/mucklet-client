@@ -18,6 +18,7 @@ class Tooltip {
 	 * @param {string} [opt.size] Size. May be 'auto' or 'full'. Default to 'auto'.
 	 * @param {number} [opt.offset] Position of caret in pixels relative to viewport. Centered if omitted.
 	 * @param {string} [opt.position] Position of the tooltip. May be 'top', 'bottom'. Defaults to 'top'. }
+	 * @param {Element} [opt.boundary] Boundary box element. Will be used to try to set max-height.
 	 * @param {function} [opt.onClose] Callback called on close.
 	 */
 	constructor(text, ref, opt) {
@@ -50,7 +51,6 @@ class Tooltip {
 		this.caret = new Elem(n => n.elem('div', { className: 'tooltip--caret' + this.posClass }));
 		this.elem.render(this.ref);
 		this.caret.render(this.ref);
-		// this._setListeners(true);
 		this._setPosition();
 		this.open = open;
 		return this;
@@ -103,12 +103,24 @@ class Tooltip {
 			this.caret.setStyle('margin-top', (-this.ref.offsetHeight) + 'px');
 		}
 
+		if (this.opt.boundary) {
+			let boundaryRect = this.opt.boundary.getBoundingClientRect();
+			let maxHeight = this.opt.position == 'bottom'
+				? boundaryRect.height - contRect.top + boundaryRect.top
+				: boundaryRect.top - contRect.bottom;
+			this.elem.setStyle('max-height', maxHeight + 'px');
+		}
+
 		// Caret positioning
 		this.caret.setStyle('margin-left', offset + 'px');
 	}
 
 	close() {
 		this._close();
+	}
+
+	getComponent() {
+		return this.elem;
 	}
 
 	_close(e) {
@@ -120,19 +132,12 @@ class Tooltip {
 			return;
 		}
 
-		// this._setListeners(false);
 		this.elem.unrender();
 		this.caret.unrender();
 		if (this.opt.onClose) {
 			this.opt.onClose(e);
 		}
 	}
-
-	// _setListeners(on) {
-	// 	let cb = on ? 'addEventListener' : 'removeEventListener';
-	// 	document[cb]('keydown', this._close, true);
-	// 	document[cb]('click', this._close, true);
-	// }
 }
 
 export default Tooltip;
