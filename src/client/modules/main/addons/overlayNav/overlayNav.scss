@@ -71,6 +71,20 @@
 		left: auto;
 	}
 
+
+	&--tooltip-hidescroll {
+		padding: 0 10px;
+		width: 100%;
+		max-height: 100%;
+		-ms-overflow-style: none;  /* Internet Explorer 10+ */
+		scrollbar-width: none;  /* Firefox */
+		overflow: auto;
+		&::-webkit-scrollbar {
+			display: none;  /* Safari and Chrome */
+		}
+	}
+
+
 	&--tooltip-bar {
 		width: 100%;
 		max-height: 100%;

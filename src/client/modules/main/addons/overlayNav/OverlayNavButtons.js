@@ -1,7 +1,6 @@
 import { ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import Fader from 'components/Fader';
 import NavButtons from 'components/NavButtons';
-import SimpleBar from 'components/SimpleBar';
 import * as tooltip from 'utils/tooltip';
 
 /**
@@ -9,9 +8,10 @@ import * as tooltip from 'utils/tooltip';
  */
 class OverlayNavButtons {
 
-	constructor(module, ctrl) {
+	constructor(module, ctrl, opt) {
 		this.module = module;
 		this.ctrl = ctrl;
+		this.opt = opt;
 
 		this.fader = null;
 		this.exits = {};
@@ -147,13 +147,7 @@ class OverlayNavButtons {
 		if (exits) {
 			this.tooltip = tooltip.click(
 				el,
-				new SimpleBar(
-					this.module.pageRoom.newRoomExits(this.ctrl, exits, { className: 'overlaynav-buttons--tooltip-list' }),
-					{
-						className: 'overlaynav-buttons--tooltip-bar',
-						autoHide: false,
-					},
-				),
+				this.module.pageRoom.newRoomExits(this.ctrl, exits, { className: 'overlaynav-buttons--tooltip-hidescroll' }),
 				{
 					className: 'overlaynav-buttons--tooltip',
 					position: 'bottom',

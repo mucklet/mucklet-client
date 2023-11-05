@@ -81,7 +81,7 @@ class OverlayNavComponent {
 			n.component(new ModelCollapser(this.model, [{
 				condition: m => m.open,
 				factory: m => new Elem(n => n.elem('div', { className: 'flex-row' }, [
-					n.component(new OverlayNavButtons(this.module, this.ctrl)),
+					n.component(new OverlayNavButtons(this.module, this.ctrl, this.opt)),
 					n.component(new ModelComponent(
 						this.ctrl,
 						new ModelComponent(
