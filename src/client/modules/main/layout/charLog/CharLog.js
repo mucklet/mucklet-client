@@ -1,6 +1,7 @@
 import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import ObserverComponent from 'components/ObserverComponent';
 import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
@@ -108,6 +109,8 @@ class CharLog {
 		this.handlers = {};
 		this.controlled = null;
 
+
+		this.viewport = new Model({ data: { x: 0, y: 0, width: 0, height: 0 }, eventbus: this.app.eventBus });
 		this.unseen = new Model({ eventBus: this.app.eventBus });
 		this.unseenTargeted = new Model({ eventBus: this.app.eventBus });
 		this.menuItems = new Collection({
@@ -130,7 +133,8 @@ class CharLog {
 			this.addEventComponentFactory(k, componentFactories[k]);
 		}
 
-		this.component = new Transition({ className: 'charlog' });
+		this.transition = new Transition({ className: 'charlog' });
+		this.component = new ObserverComponent(this.transition, (rect) => rect && this.viewport.set(rect));
 		this.charComponents = {};
 
 		this._setListeners(true);
@@ -143,6 +147,15 @@ class CharLog {
 	 */
 	getComponent() {
 		return this.component;
+	}
+
+	/**
+	 * Returns the viewport model that gives the x, y, width, and height of the
+	 * charlog viewport.
+	 * @returns {Model} Viewport model.
+	 */
+	getViewportModel() {
+		return this.viewport;
 	}
 
 	/**
@@ -418,7 +431,7 @@ class CharLog {
 	 * @param {object} modifier EventModifier object
 	 * @param {string} modifier.id EventModifier ID.
 	 * @param {number} modifier.sortOrder Sort order.
-	 * @param {function} modifier.callback EventModifier callback: function(ctrl, ev, mod) -> mod
+	 * @param {(ctrl: Model, ev: object, mod: object) => void | Promise<void>} modifier.callback EventModifier callback. It thought mutate the mod object before returning or resolving its promise.
 	 * @returns {this}
 	 */
 	addEventModifier(modifier) {
@@ -538,11 +551,11 @@ class CharLog {
 		if (char) {
 			let c = this.charComponents[char.id];
 			if (ev.dir > 0) {
-				this.component.slideLeft(c);
+				this.transition.slideLeft(c);
 			} if (ev.dir < 0) {
-				this.component.slideRight(c);
+				this.transition.slideRight(c);
 			} else {
-				this.component.fade(c);
+				this.transition.fade(c);
 			}
 		}
 		this.activeCharId = char ? char.id : null;
@@ -558,63 +571,63 @@ class CharLog {
 	 * @param {object} ctrl Controlled character
 	 * @returns {Promise} Promise of the event being added.
 	 */
-	addEvent(ev, ctrl) {
-		return this.getLog(ctrl).then(l => {
-			// Quick exit if log entry already exists
-			if (l.get(ev.id)) {
-			 	return;
-			}
+	async addEvent(ev, ctrl) {
+		let l = await this.getLog(ctrl);
 
-			// Add event modifiers
-			let mod = this._getEventModifications(ev, ctrl);
-			if (mod) {
-				ev.mod = mod;
-			}
+		// Quick exit if log entry already exists
+		if (l.get(ev.id)) {
+			return;
+		}
 
-			// Ensure to insert it at right position
-			let i = l.length;
-			let time = ev.time;
-			if (time) {
-				while (i > 0 && (l.atIndex(i - 1).time || 0) > time) {
-					i--;
-				}
-			} else {
-				time = (new Date()).getTime();
-				if (l.length) {
-					let lastTime = l.atIndex(l.length - 1).time || 0;
-					if (time < lastTime) {
-						time = lastTime + 1;
-					}
-				}
-				ev.time = time;
-			}
-			l.add(ev, i);
+		// Add event modifiers
+		let mod = await this._getEventModifications(ev, ctrl);
+		if (mod) {
+			ev.mod = mod;
+		}
 
-			this.module.charLogStore.addEvent(getCtrlId(ctrl), ev);
-			// Call (notification) handler if we have one
-			let hs = this.handlers[ev.type];
-			if (hs) {
-				for (let h of hs) {
-					try {
-						h(ctrl.id, ev);
-					} catch (e) {
-						console.error("[CharLog] Error calling event handler: ", e);
-					}
+		// Ensure to insert it at right position
+		let i = l.length;
+		let time = ev.time;
+		if (time) {
+			while (i > 0 && (l.atIndex(i - 1).time || 0) > time) {
+				i--;
+			}
+		} else {
+			time = (new Date()).getTime();
+			if (l.length) {
+				let lastTime = l.atIndex(l.length - 1).time || 0;
+				if (time < lastTime) {
+					time = lastTime + 1;
 				}
 			}
-			// If log is not visible, increase unseen with 1
-			if (!this._isVisible(ctrl.id) &&
-				this.unseen.props.hasOwnProperty(ctrl.id) &&
-				!ignoreUnseen[ev.type] &&
-				(!mod || !mod.muted)
-			) {
-				this.unseen.set({ [ctrl.id]: this.unseen.props[ctrl.id] + 1 });
-				// Increase targeted if character is the target
-				if (isTargeted(ctrl.id, ev)) {
-					this.unseenTargeted.set({ [ctrl.id]: this.unseenTargeted.props[ctrl.id] + 1 });
+			ev.time = time;
+		}
+		l.add(ev, i);
+
+		this.module.charLogStore.addEvent(getCtrlId(ctrl), ev);
+		// Call (notification) handler if we have one
+		let hs = this.handlers[ev.type];
+		if (hs) {
+			for (let h of hs) {
+				try {
+					h(ctrl.id, ev);
+				} catch (e) {
+					console.error("[CharLog] Error calling event handler: ", e);
 				}
 			}
-		});
+		}
+		// If log is not visible, increase unseen with 1
+		if (!this._isVisible(ctrl.id) &&
+			this.unseen.props.hasOwnProperty(ctrl.id) &&
+			!ignoreUnseen[ev.type] &&
+			(!mod || !mod.muted)
+		) {
+			this.unseen.set({ [ctrl.id]: this.unseen.props[ctrl.id] + 1 });
+			// Increase targeted if character is the target
+			if (isTargeted(ctrl.id, ev)) {
+				this.unseenTargeted.set({ [ctrl.id]: this.unseenTargeted.props[ctrl.id] + 1 });
+			}
+		}
 	}
 
 	setIsHidden(hidden) {
@@ -672,10 +685,10 @@ class CharLog {
 
 	// Gets modifications to be applied client side to an event.
 	// These modifications may be things like muted, or highlighted words.
-	_getEventModifications(ev, ctrl) {
+	async _getEventModifications(ev, ctrl) {
 		let mod = {};
 		for (let m of this.modifiers) {
-			m.callback(ev, ctrl, mod);
+			await Promise.resolve(m.callback(ev, ctrl, mod));
 		}
 
 		return Object.keys(mod).length ? mod : null;

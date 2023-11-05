@@ -2,6 +2,7 @@ import { Txt } from 'modapp-base-component';
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
+import PageRoomExits from './PageRoomExits';
 import './pageRoom.scss';
 
 /**
@@ -147,6 +148,18 @@ class PageRoom {
 	 */
 	newRoomChar(ctrl, char) {
 		return new PageRoomChar(this.module, ctrl, char);
+	}
+
+	/**
+	 * Creates a new PageRoomExits collection component.
+	 * @param {Model} ctrl Controlled character.
+	 * @param {Collection} exits Exits collection
+	 * @param {object} [opt] Optional params
+	 * @param {(exitId: string, ev: object) => void} [opt.onExitClick] Callback called on exit click. Defaults to using the exit.
+	 * @returns {Component} PageRoomExits component.
+	 */
+	newRoomExits(ctrl, exits, opt) {
+		return new PageRoomExits(this.module, ctrl, exits, opt);
 	}
 
 	dispose() {

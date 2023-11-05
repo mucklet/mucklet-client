@@ -94,7 +94,7 @@ class CharLogEvent {
 	_onClick(ev) {
 		let txt = this._getTooltipText();
 		if (txt) {
-			this.tooltip = tooltip.click(ev.currentTarget, txt, { className: 'charlog-event--tooltip', position: ev.clientX, margin: 'm', hoverDelay: true });
+			this.tooltip = tooltip.click(ev.currentTarget, txt, { className: 'charlog-event--tooltip', offset: ev.clientX, margin: 'm', hoverDelay: true });
 		}
 		ev.stopPropagation();
 	}
@@ -102,7 +102,7 @@ class CharLogEvent {
 	_onMouseEnter(ev) {
 		// let txt = this._getTooltipText();
 		// if (txt) {
-		// 	this.tooltip = tooltip.mouseEnter(ev.currentTarget, txt, { position: ev.clientX, margin: 'm', hoverDelay: true });
+		// 	this.tooltip = tooltip.mouseEnter(ev.currentTarget, txt, { offset: ev.clientX, margin: 'm', hoverDelay: true });
 		// }
 		if (!this.noMenu) {
 			this._renderMenu();

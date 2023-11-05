@@ -17,19 +17,13 @@ import * as obj from 'modapp-utils/obj';
  */
 
 /**
- * Router components object
- * @typedef {object} module/Router~components
- * @property {object.<string, modapp~Component>}
- */
-
-/**
  * Route definition object
  * @typedef {object} module/Router~routeDefinition
  * @property {string} id Id of the route. Dot separated for sub routes.
- * @property {(Router~components|{modapp~Component})} component An object containing components the route uses, can be a single component.
+ * @property {(Object<string, modapp~Component>|{modapp~Component})} component An object containing components the route uses, can be a single component.
  * @property {string|class/LocaleString} name Display name of a route
- * @property {object=} [params.staticRouteParams] Optional params that is ensured to exist when a route is set.
- * 												  Caller may override these parameters by using the same keys.
+ * @property {object} [staticRouteParams] Optional params that is ensured to exist when a route is set.
+ *                                        Caller may override these parameters by using the same keys.
  * @property {?string} [icon] Optional icon name
  * @property {string} [parentId] Option id of parent route
  * @property {module/Router~setStateCallback} [setState] Set state callback. Params will be ignored if not set.
@@ -283,7 +277,7 @@ class Router {
 		let route = this.getRoute(routeId);
 
 		if (!route) {
-			Promise.reject(new Error("Route Id '" + routeId + "' not found"));
+			return Promise.reject(new Error("Route Id '" + routeId + "' not found"));
 		}
 
 		if (this.current && this.current.route && this.current.route.onBeforeUnload && !force && !params.ignoreOnBeforeUnload) {

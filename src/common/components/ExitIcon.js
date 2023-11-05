@@ -12,8 +12,8 @@ const exitIconMap = {
 	'sw': 'fa-arrow-down',
 	'w': 'fa-arrow-left',
 	'nw': 'fa-arrow-left',
-	'up': 'fa-sign-out',
-	'down': 'fa-sign-in',
+	'up': 'muicon-upstairs',
+	'down': 'muicon-downstairs',
 	'in': 'fa-sign-in',
 	'out': 'fa-sign-out',
 
@@ -55,7 +55,11 @@ class ExitIcon extends RootElem {
 		if (!cl) {
 			icon = '';
 		}
-		this.addClass('fa');
+		if (cl.startsWith('fa-')) {
+			this.addClass('fa');
+		} else {
+			this.removeClass('fa');
+		}
 		if (icon !== this.icon) {
 			if (this.icon) {
 				this.removeClass(exitIconMap[this.icon]);

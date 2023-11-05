@@ -11,7 +11,7 @@ import FormatTxt from 'components/FormatTxt';
 import ModelCollapser from 'components/ModelCollapser';
 import ImgModal from 'classes/ImgModal';
 import PageRoomChar from './PageRoomChar';
-import PageRoomExit from './PageRoomExit';
+import PageRoomExits from './PageRoomExits';
 
 
 const textNotSet = l10n.l('pageRoom.notSet', "Not set");
@@ -152,22 +152,7 @@ class PageRoomComponent {
 								),
 							)),
 						])),
-						new CollectionComponent(
-							this.room.exits,
-							new Fader(null),
-							(col, c, e) => {
-								if (!col || !col.length) {
-									c.setComponent(new Txt(l10n.l('pageRoom.noExits', "There are no exits."), { className: 'common--nolistplaceholder' }));
-									return;
-								}
-								if (!e || (col.length == 1 && e.event == 'add')) {
-									c.setComponent(new CollectionList(
-										col,
-										m => new PageRoomExit(this.module, this.ctrl, this.room, m),
-									));
-								}
-							},
-						),
+						new PageRoomExits(this.module, this.ctrl, this.room.exits),
 						{
 							className: 'pageroom-room--exits common--sectionpadding',
 							open: this.state.exitsOpen,
