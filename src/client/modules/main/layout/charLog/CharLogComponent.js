@@ -77,6 +77,9 @@ class CharLogComponent {
 						}
 						return overlay.componentFactory(this.char, state);
 					},
+					{
+						className: 'charlog--overlays',
+					},
 				),
 			)),
 		]));

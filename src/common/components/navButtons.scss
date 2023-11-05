@@ -13,6 +13,13 @@
 		user-select: none;
 	}
 
+	&--count {
+		font-family: $font-text;
+		font-size: $font-size-small;
+		fill: $color4-light;
+		fill-opacity: 0;
+	}
+
 	&--icon {
 		font-family:'FontAwesome';
 		fill: $color4-light;
@@ -89,6 +96,37 @@
 			fill-opacity: 1;
 		}
 		&.out .navbuttons--icon.out {
+			fill-opacity: 1;
+		}
+
+		&.count-1 .navbuttons--count.count-1 {
+			fill-opacity: 1;
+		}
+		&.count-2 .navbuttons--count.count-2 {
+			fill-opacity: 1;
+		}
+		&.count-3 .navbuttons--count.count-3 {
+			fill-opacity: 1;
+		}
+		&.count-4 .navbuttons--count.count-4 {
+			fill-opacity: 1;
+		}
+		&.count-5 .navbuttons--count.count-5 {
+			fill-opacity: 1;
+		}
+		&.count-6 .navbuttons--count.count-6 {
+			fill-opacity: 1;
+		}
+		&.count-7 .navbuttons--count.count-7 {
+			fill-opacity: 1;
+		}
+		&.count-8 .navbuttons--count.count-8 {
+			fill-opacity: 1;
+		}
+		&.count-9 .navbuttons--count.count-9 {
+			fill-opacity: 1;
+		}
+		&.count-10 .navbuttons--count.count-10 {
 			fill-opacity: 1;
 		}
 	}

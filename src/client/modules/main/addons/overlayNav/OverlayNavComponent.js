@@ -23,7 +23,7 @@ class OverlayNavComponent {
 
 	render(el) {
 		this.model = new Model({ data: {
-			open: this.state.hasOwnProperty('open') ? this.state.open : true,
+			open: this.state.hasOwnProperty('open') ? this.state.open : this.opt?.mode != 'mobile',
 			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
 
@@ -81,7 +81,7 @@ class OverlayNavComponent {
 			n.component(new ModelCollapser(this.model, [{
 				condition: m => m.open,
 				factory: m => new Elem(n => n.elem('div', { className: 'flex-row' }, [
-					n.component(new OverlayNavButtons(this.module, this.ctrl)),
+					n.component(new OverlayNavButtons(this.module, this.ctrl, this.opt)),
 					n.component(new ModelComponent(
 						this.ctrl,
 						new ModelComponent(

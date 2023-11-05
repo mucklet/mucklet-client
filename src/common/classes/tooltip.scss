@@ -16,6 +16,17 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	border-radius: 4px;
 	transform: translateY(-100%) translateY(-5px);
 
+	&--padding-s {
+		padding: 8px 8px;
+	}
+	&--padding-none {
+		padding: 8px 0;
+	}
+
+	&.tooltip--pos-bottom {
+		transform: translateY(5px);
+	}
+
 	&--text {
 		white-space: pre;
 		font-size: $font-size-small;
@@ -58,6 +69,9 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 		border-style: solid;
 		transform: translateY(-5px) translateX(-5px);
 		border-color: $popuptip-background transparent transparent transparent;
+	}
 
+	&--caret.tooltip--pos-bottom {
+		border-color: transparent transparent $popuptip-background transparent;
 	}
 }

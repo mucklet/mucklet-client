@@ -17,7 +17,8 @@ const icons = [
 	{ id: 'out', char: 'f08b', x: 44, y: 21.8 },
 ];
 
-const defaultBtnState = { active: false, disabled: true, icon: '', title: '' };
+const defaultBtnState = { selected: false, disabled: true, icon: '', title: '' };
+const defaultCenterState = { disabled: true, number: 0 };
 
 function setClass(el, className, add) {
 	if (add) {
@@ -38,9 +39,42 @@ function prepareState(btnState) {
 		: defaultBtnState;
 }
 
+function prepareCenterState(centerState) {
+	return centerState
+		? {
+			disabled: !!centerState.disabled,
+			count: centerState.count || 0,
+		}
+		: defaultCenterState;
+}
+
 /**
- * @typedef {object} NavButtonsState
-* @property {bool} showOwnRoomsInTeleports Flag telling if owned rooms should show up in teleport list.
+ * @typedef {object} NavButtonsBtnState
+ * @property {bool} [selected] Flags the button as selected (highlighted).
+ * @property {bool} [disabled] Flags the button as disabled.
+ * @property {string} [icon] Icon to show on the button.
+ * @property {string} [title] Title text for the button.
+ */
+
+/**
+ * @typedef {object} NavButtonsCenterState
+ * @property {number} [count] Flags the button as selected (highlighted).
+ * @property {bool} [disabled] Flags the button as disabled.
+ * @property {string} [title] Title text for the button.
+ */
+
+/**
+ * @typedef {{
+ * 	n?: NavButtonsBtnState;
+ * 	ne?: NavButtonsBtnState;
+ * 	e?: NavButtonsBtnState;
+ * 	se?: NavButtonsBtnState;
+ * 	s?: NavButtonsBtnState;
+ * 	sw?: NavButtonsBtnState;
+ * 	w?: NavButtonsBtnState;
+ * 	nw?: NavButtonsBtnState;
+ * 	c?: NavButtonsCenterState;
+ * }} NavButtonsState
  */
 
 /**
@@ -50,16 +84,19 @@ class NavButtons {
 
 	/**
 	 * Creates an instance of NavButtons
-	 * @param {object} state Button state.
+	 * @param {object} state Button state object.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Additional class names to append to font-awesome class names.
 	 * @param {bool} [opt.shadow] Add a drop shadow to the buttons.
+	 * @param {bool} [opt.center] Render a center button.
 	 * @param {(dir: string, c: NavButtons) => void} [opt.onClick] Callback called on click
 	 */
 	constructor(state, opt) {
 		this.btns = {};
 		this.cbs = null;
 		this._onClick = opt?.onClick || null;
+		this.center = !!opt?.center;
+		this.count = 0;
 		// Create element
 		this.svg = document.createElement('div');
 		this.svg.className = 'navbuttons' + (opt?.className ? ' ' + opt.className : '');
@@ -93,11 +130,25 @@ class NavButtons {
 		.map(o => `<use class="navbuttons--icon ${o.id}" href="#icon-${o.id}" transform="rotate(${-i * 45} 50 16)" />`)
 		.join('\n\t')}
 </g>`).join('\n\t')}
-	</g>
+	${this.center ? `<g class="navbuttons--btn dir-c">
+		<title></title>
+		<circle cx="50" cy="50" r="16" style="transition: fill-opacity .2s, fill .2s; stroke:none" />
+		${[ ...Array(10) ].map((e, i) => `<text
+			class="navbuttons--count count-${i + 1}"
+			x="50"
+			y="51"
+			dominant-baseline="middle"
+			text-anchor="middle"
+			style="transition: fill-opacity .2s, fill .2s"
+		>${i >= 9 ? "9+" : i + 1}</text>`).join('\n\t\t')}
+	</g>` : ''}
 </svg>`;
 
 		for (let dir of directions) {
 			this.btns[dir] = this._getByClass(`dir-${dir}`);
+		}
+		if (this.center) {
+			this.btns['c'] = this._getByClass(`dir-c`);
 		}
 
 		this.state = {};
@@ -116,10 +167,26 @@ class NavButtons {
 		this._setListeners(false);
 	}
 
+	getElement() {
+		return this.svg;
+	}
+
 	setButton(id, btnState) {
 		btnState = prepareState(btnState);
 		this.state[id] = btnState;
 		this._updateBtn(id, btnState);
+	}
+
+	/**
+	 * @param {NavButtonsCenterState} centerState Center state.
+	 */
+	setCenter(centerState) {
+		if (!this.center) {
+			return;
+		}
+		centerState = prepareCenterState(centerState);
+		this.state['c'] = centerState;
+		this._updateCenter(centerState);
 	}
 
 	/**
@@ -131,6 +198,9 @@ class NavButtons {
 		state = state || {};
 		for (let dir of directions) {
 			this.state[dir] = prepareState(state[dir]);
+		}
+		if (this.center) {
+			this.state['c'] = prepareCenterState(state['c']);
 		}
 		this._updateAll();
 		return this;
@@ -146,31 +216,42 @@ class NavButtons {
 			if (on) {
 				this.cbs = {};
 				for (let dir of directions) {
-					let cb = (ev) => {
-						this._onClick(dir, this);
-						ev.stopPropagation();
-					};
-					this.btns[dir].addEventListener('click', cb);
-					this.cbs[dir] = cb;
+					this._listen(dir);
+				}
+				if (this.center) {
+					this._listen('c');
 				}
 			} else {
 				for (let dir of directions) {
-					this.btns[dir].removeEventListener('click', this.cbs[dir]);
+					this._unlisten(dir);
+				}
+				if (this.center) {
+					this._unlisten('c');
 				}
 				this.cbs = null;
 			}
 		}
 	}
 
-	_onClick(dir) {
+	_listen(dir) {
+		let cb = (ev) => {
+			this._onClick(dir, this);
+			ev.stopPropagation();
+		};
+		this.btns[dir].addEventListener('click', cb);
+		this.cbs[dir] = cb;
+	}
 
+	_unlisten(dir) {
+		this.btns[dir].removeEventListener('click', this.cbs[dir]);
 	}
 
 	_updateAll() {
 		for (let dir of directions) {
-			let btnState = this.state[dir] || defaultBtnState;
-
-			this._updateBtn(dir, btnState);
+			this._updateBtn(dir, this.state[dir] || defaultBtnState);
+		}
+		if (this.center) {
+			this._updateCenter(this.state['c'] || defaultCenterState);
 		}
 	}
 
@@ -184,6 +265,20 @@ class NavButtons {
 			setClass(g, icon.id, btnState.icon == icon.id);
 		}
 	}
+
+	_updateCenter(centerState) {
+		let g = this.btns['c'];
+		setClass(g, 'disabled', centerState.disabled);
+		g.firstElementChild.textContent = centerState.title;
+		let count = centerState.count || 0;
+		if (count > 10) {
+			count = 10;
+		}
+		for (let i = 1; i <= 10; i++) {
+			setClass(g, `count-${i}`, i == count);
+		}
+	}
+
 
 	_getByClass(className) {
 		let col = this.svg.getElementsByClassName(className);

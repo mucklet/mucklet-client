@@ -1,6 +1,7 @@
 import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import ObserverComponent from 'components/ObserverComponent';
 import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
@@ -108,6 +109,8 @@ class CharLog {
 		this.handlers = {};
 		this.controlled = null;
 
+
+		this.viewport = new Model({ data: { x: 0, y: 0, width: 0, height: 0 }, eventbus: this.app.eventBus });
 		this.unseen = new Model({ eventBus: this.app.eventBus });
 		this.unseenTargeted = new Model({ eventBus: this.app.eventBus });
 		this.menuItems = new Collection({
@@ -130,7 +133,8 @@ class CharLog {
 			this.addEventComponentFactory(k, componentFactories[k]);
 		}
 
-		this.component = new Transition({ className: 'charlog' });
+		this.transition = new Transition({ className: 'charlog' });
+		this.component = new ObserverComponent(this.transition, (rect) => rect && this.viewport.set(rect));
 		this.charComponents = {};
 
 		this._setListeners(true);
@@ -143,6 +147,15 @@ class CharLog {
 	 */
 	getComponent() {
 		return this.component;
+	}
+
+	/**
+	 * Returns the viewport model that gives the x, y, width, and height of the
+	 * charlog viewport.
+	 * @returns {Model} Viewport model.
+	 */
+	getViewportModel() {
+		return this.viewport;
 	}
 
 	/**
@@ -538,11 +551,11 @@ class CharLog {
 		if (char) {
 			let c = this.charComponents[char.id];
 			if (ev.dir > 0) {
-				this.component.slideLeft(c);
+				this.transition.slideLeft(c);
 			} if (ev.dir < 0) {
-				this.component.slideRight(c);
+				this.transition.slideRight(c);
 			} else {
-				this.component.fade(c);
+				this.transition.fade(c);
 			}
 		}
 		this.activeCharId = char ? char.id : null;
