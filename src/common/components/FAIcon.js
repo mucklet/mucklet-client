@@ -1,5 +1,10 @@
 import { RootElem } from 'modapp-base-component';
 
+const customIcons = {
+	upstairs: true,
+	downstairs: true,
+};
+
 /**
  * FAIcon is a font-awesome icon.
  */
@@ -15,11 +20,11 @@ class FAIcon extends RootElem {
 	 */
 	constructor(icon, opt) {
 		opt = Object.assign({ attributes: null }, opt);
-		icon = String(icon || "");
-		opt.className = 'fa fa-' + icon + (opt.className ? ' ' + opt.className : '');
 		opt.attributes = Object.assign({ 'aria-hidden': 'true' }, opt.attributes);
 		super('i', opt);
-		this.icon = icon;
+		this.icon = "";
+		this.custom = false;
+		this.setIcon(icon);
 	}
 
 	/**
@@ -29,11 +34,36 @@ class FAIcon extends RootElem {
 	 */
 	setIcon(icon) {
 		icon = String(icon || "");
-		if (icon != this.icon) {
-			this.removeClass('fa-' + this.icon);
-			this.addClass('fa-' + icon);
-			this.icon = icon;
+		if (icon == this.icon) {
+			return;
 		}
+
+		let custom = !!customIcons[icon];
+
+		if (this.icon) {
+			if (this.custom) {
+				this.removeClass('muicon-' + this.icon);
+				if (!custom) {
+					this.removeClass('faicon-custom');
+				}
+			} else {
+				this.removeClass('fa-' + this.icon);
+				if (custom) {
+					this.removeClass('fa');
+				}
+			}
+		}
+		if (icon) {
+			if (custom) {
+				this.addClass('faicon-custom');
+				this.addClass('muicon-' + icon);
+			} else {
+				this.addClass('fa');
+				this.addClass('fa-' + icon);
+			}
+		}
+		this.icon = icon;
+		this.custom = custom;
 		return this;
 	}
 }

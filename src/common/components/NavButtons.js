@@ -11,8 +11,8 @@ const icons = [
 	{ id: 'sw', char: 'f062', x: 42.2, y: 21, rotate: 225 },
 	{ id: 'w', char: 'f062', x: 42.2, y: 21, rotate: 270 },
 	{ id: 'nw', char: 'f062', x: 42.2, y: 21, rotate: 315 },
-	{ id: 'up', char: 'f08b', x: 44, y: 21.8, rotate: -90 },
-	{ id: 'down', char: 'f090', x: 43, y: 21.8, rotate: 90 },
+	{ id: 'up', char: 'e900', x: 43, y: 23, className: 'navbuttons--muicon' },
+	{ id: 'down', char: 'e901', x: 43, y: 23, className: 'navbuttons--muicon' },
 	{ id: 'in', char: 'f090', x: 43, y: 21.8 },
 	{ id: 'out', char: 'f08b', x: 44, y: 21.8 },
 ];
@@ -119,7 +119,9 @@ class NavButtons {
 			x="${o.x}"
 			y="${o.y}"
 			style="transition: fill-opacity .2s, fill .2s"${o.rotate ? `
-			transform="rotate(${o.rotate} 50 16)"` : ''}
+			transform="rotate(${o.rotate} 50 16)"` : ''}${o.className ? `
+			class="${o.className}"` : ''}
+		}
 		>&#x${o.char};</text>`)
 		.join('\n\t\t')}
 	</defs>
