@@ -108,7 +108,7 @@ class CharLog {
 		this.factories = {};
 		this.handlers = {};
 		this.controlled = null;
-
+		this.addingEvent = {};
 
 		this.viewport = new Model({ data: { x: 0, y: 0, width: 0, height: 0 }, eventbus: this.app.eventBus });
 		this.unseen = new Model({ eventBus: this.app.eventBus });
@@ -575,58 +575,66 @@ class CharLog {
 		let l = await this.getLog(ctrl);
 
 		// Quick exit if log entry already exists
-		if (l.get(ev.id)) {
+		if (l.get(ev.id) || this.addingEvent[ev.id]) {
 			return;
 		}
+		this.addingEvent[ev.id] = ev;
 
-		// Add event modifiers
-		let mod = await this._getEventModifications(ev, ctrl);
-		if (mod) {
-			ev.mod = mod;
-		}
+		try {
 
-		// Ensure to insert it at right position
-		let i = l.length;
-		let time = ev.time;
-		if (time) {
-			while (i > 0 && (l.atIndex(i - 1).time || 0) > time) {
-				i--;
+			// Add event modifiers
+			let mod = await this._getEventModifications(ev, ctrl);
+			if (mod) {
+				ev.mod = mod;
 			}
-		} else {
-			time = (new Date()).getTime();
-			if (l.length) {
-				let lastTime = l.atIndex(l.length - 1).time || 0;
-				if (time < lastTime) {
-					time = lastTime + 1;
+
+			// Ensure to insert it at right position
+			let i = l.length;
+			let time = ev.time;
+			if (time) {
+				while (i > 0 && (l.atIndex(i - 1).time || 0) > time) {
+					i--;
+				}
+			} else {
+				time = (new Date()).getTime();
+				if (l.length) {
+					let lastTime = l.atIndex(l.length - 1).time || 0;
+					if (time < lastTime) {
+						time = lastTime + 1;
+					}
+				}
+				ev.time = time;
+			}
+			l.add(ev, i);
+
+
+			this.module.charLogStore.addEvent(getCtrlId(ctrl), ev);
+			// Call (notification) handler if we have one
+			let hs = this.handlers[ev.type];
+			if (hs) {
+				for (let h of hs) {
+					try {
+						h(ctrl.id, ev);
+					} catch (e) {
+						console.error("[CharLog] Error calling event handler: ", e);
+					}
 				}
 			}
-			ev.time = time;
-		}
-		l.add(ev, i);
 
-		this.module.charLogStore.addEvent(getCtrlId(ctrl), ev);
-		// Call (notification) handler if we have one
-		let hs = this.handlers[ev.type];
-		if (hs) {
-			for (let h of hs) {
-				try {
-					h(ctrl.id, ev);
-				} catch (e) {
-					console.error("[CharLog] Error calling event handler: ", e);
+			// If log is not visible, increase unseen with 1
+			if (!this._isVisible(ctrl.id) &&
+				this.unseen.props.hasOwnProperty(ctrl.id) &&
+				!ignoreUnseen[ev.type] &&
+				(!mod || !mod.muted)
+			) {
+				this.unseen.set({ [ctrl.id]: this.unseen.props[ctrl.id] + 1 });
+				// Increase targeted if character is the target
+				if (isTargeted(ctrl.id, ev)) {
+					this.unseenTargeted.set({ [ctrl.id]: this.unseenTargeted.props[ctrl.id] + 1 });
 				}
 			}
-		}
-		// If log is not visible, increase unseen with 1
-		if (!this._isVisible(ctrl.id) &&
-			this.unseen.props.hasOwnProperty(ctrl.id) &&
-			!ignoreUnseen[ev.type] &&
-			(!mod || !mod.muted)
-		) {
-			this.unseen.set({ [ctrl.id]: this.unseen.props[ctrl.id] + 1 });
-			// Increase targeted if character is the target
-			if (isTargeted(ctrl.id, ev)) {
-				this.unseenTargeted.set({ [ctrl.id]: this.unseenTargeted.props[ctrl.id] + 1 });
-			}
+		} finally {
+			delete this.addingEvent[ev.id];
 		}
 	}
 
