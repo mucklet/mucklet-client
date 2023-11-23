@@ -6,16 +6,25 @@ import l10n from 'modapp-l10n';
 import HelpComponent from './HelpComponent';
 import HelpCategory from './HelpCategory';
 import HelpTopic from './HelpTopic';
+import HelpTopics from './HelpTopics';
 import HelpRelatedTopics from './HelpRelatedTopics';
 import './help.scss';
 
 const defaultCategories = [
+	(self) => ({
+		id: 'topics',
+		title: l10n.l('help.topicTitle', "List of help topics"),
+		shortDesc: l10n.l('help.topicShortdesc', "List available help topics"),
+		desc: () => new HelpTopics(self.module, self.categories),
+		sortOrder: 1,
+		alias: [ 'topic' ],
+	}),
 	{
 		id: 'basic',
 		title: l10n.l('help.basicTitle', "Basic commands"),
 		shortDesc: l10n.l('help.basicShortdesc', "Learn some basic commands"),
 		desc: l10n.l('help.basicDesc',
-			`<p class="common--formattext">The most basic and useful command is <span class="cmd">help</span>, which will list all available help topics.</p>` +
+			`<p class="common--formattext">The most basic and useful command is <span class="cmd">help</span>, which can show you help topics.</p>` +
 			`<p class="common--formattext">The <em>help</em> command also gives details on how to use a command, including the help command itself (meta!). Try typing:</p>` +
 			`<section class="charlog--pad">` +
 			`<div class="charlog--code"><code>help help</code></div>` +
@@ -24,6 +33,7 @@ const defaultCategories = [
 		),
 		sortOrder: 10,
 		alias: [ 'basics' ],
+		promoted: true,
 	},
 	{
 		id: 'communicate',
@@ -227,17 +237,16 @@ const defaultCategories = [
 const usageText = 'help <span class="opt"><span class="param">Command</span></span>';
 const shortDesc = 'Show help about a command or topic';
 const helpText =
-`<p>Show help about a command or topic. Typing only <code>help</code> will show a list of help topics and more.</p>
+`<p>Show help about a command or topic. Typing only <code>help</code> will show the introductory help text with info on how to list topics and more.</p>
 <p><code class="param">Command</code> is either a help topic, a command (eg. <code>create room</code>), or a partial command (eg. <code>create</code> or <code>room</code>).</p>`;
+const examples = [
+	{ cmd: 'help', desc: l10n.l('help.helpDesc', "Show the introductory help text.") },
+	{ cmd: 'help roll', desc: l10n.l('help.helpRollDesc', "Show help on the roll command.") },
+	{ cmd: 'help reporting', desc: l10n.l('help.helpCommunicateDesc', "Show help on how to report a character.") },
+];
 
 function isBoundary(i, str) {
 	return i < 0 || i >= str.length || str[i] == ' ';
-}
-
-function topicMatchCategory(topic, categoryId) {
-	return topic.category
-		? (Array.isArray(topic.category) ? topic.category : [ topic.category ]).indexOf(categoryId) >= 0
-		: false;
 }
 
 // matchesCmd checks if a topic is matched by the subcommand.
@@ -280,7 +289,7 @@ class Help {
 
 		// Add all default categories
 		for (let cat of defaultCategories) {
-			this.addCategory(cat);
+			this.addCategory(typeof cat == 'function' ? cat(this) : cat);
 		}
 
 		this.module.cmd.addCmd({
@@ -315,6 +324,7 @@ class Help {
 			usage: l10n.l('help.usage', usageText),
 			shortDesc: l10n.l('help.shortDesc', shortDesc),
 			desc: l10n.l('help.helpText', helpText),
+			examples,
 			sortOrder: 10,
 		});
 	}
@@ -346,6 +356,7 @@ class Help {
 	 * @param {Array.<string|LocaleString>} category.desc Description HTML strings where each string is a stand alone paragraph.
 	 * @param {number} category.sortOrder Sort order.
 	 * @param {Array.<string>} category.alias Aliases for the help command.
+	 * @param {boolean} category.promoted Flag to add the category to the main help topic.
 	 * @returns {this}
 	 */
 	addCategory(category) {
@@ -357,7 +368,7 @@ class Help {
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.categories.add({
+		category = {
 			id: category.id,
 			cmd: category.cmd || category.id,
 			title: category.title,
@@ -365,15 +376,16 @@ class Help {
 			desc: category.desc,
 			sortOrder: category.sortOrder,
 			alias: category.alias,
+			promoted: category.promoted || false,
 			categories: category.categories,
 			topics,
-		});
+		};
+		this.categories.add(category);
 
-		for (let topicId in this.topics.props) {
-			let topic = this.topics.props[topicId];
-			if (topicMatchCategory(topic, category.id)) {
-				topics.add(topic);
-			}
+		let allTopics = this.topics.props;
+		for (let topicId in allTopics) {
+			let topic = allTopics[topicId];
+			this._tryAddTopicToCategory(topic, category);
 		}
 		return this;
 	}
@@ -392,7 +404,7 @@ class Help {
 	 * Registers a help topic.
 	 * @param {object} topic Topic object
 	 * @param {string} topic.id Topic ID.
-	 * @param {string|Array.<string>} [topic.category] Category ID or array of category IDs.
+	 * @param {string|{ [categoryId: string]: number}} [topic.category] Category ID or object with category ID and sortorder value for that category.
 	 * @param {string|LocaleString} topic.title Topic title.
 	 * @param {string} topic.cmd Topic command (eg. "create room").
 	 * @param {Array.<string>} topic.alias Topic command aliases (eg. [ "msg", "page" ]).
@@ -429,15 +441,25 @@ class Help {
 	_addRemoveTopicToCategories(topic, add) {
 		if (!topic.category) return;
 
-		let cats = Array.isArray(topic.category) ? topic.category : [ topic.category ];
-		for (let cat of cats) {
+		let cats = typeof topic.category == 'string' ? { [topic.category]: topic.sortOrder } : topic.category;
+		for (let cat in cats) {
 			let category = this.categories.get(cat);
 			if (category) {
 				if (add) {
-					category.topics.add(topic);
+					category.topics.add(Object.assign({}, topic, { sortOrder: cats[cat] || 0 }));
 				} else {
 					category.topics.remove(topic.id);
 				}
+			}
+		}
+	}
+
+	_tryAddTopicToCategory(topic, category) {
+		let catId = category.id;
+		if (topic.category) {
+			let cats = typeof topic.category == 'string' ? { [topic.category]: topic.sortOrder } : topic.category;
+			if (cats.hasOwnProperty(catId)) {
+				category.topics.add(Object.assign({}, topic, { sortOrder: cats[catId] || 0 }));
 			}
 		}
 	}

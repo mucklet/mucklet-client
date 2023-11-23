@@ -17,9 +17,9 @@
 			border-bottom: 1px solid $color4;
 		}
 	}
-	color: $color4-dark; // Info, OOC
-	color: $color4; // Events (default)
-	color: $color4-lightest; // Communication
+	// color: $color4-dark; // Info, OOC
+	// color: $color4; // Events (default)
+	// color: $color4-lightest; // Communication
 
 	&describe {
 		font-size: $font-size-small;

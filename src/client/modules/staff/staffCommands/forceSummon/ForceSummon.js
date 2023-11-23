@@ -44,7 +44,7 @@ class ForceSummon {
 
 				this.module.help.addTopic({
 					id: 'forceSummon',
-					category: [ 'transport', 'moderate', 'builder' ],
+					category: { 'transport': 1000, 'moderate': 1000, 'builder': 1000 },
 					cmd: 'force summon',
 					alias: [ 'force msummon' ],
 					usage: l10n.l('forceSummon.usage', usageText),

@@ -6,6 +6,7 @@ const defaultCtx = {};
 const typeClassNames = {
 	dark: ' popuppill--style-dark',
 	border: ' popuppill--style-border',
+	channelBorder: ' popuppill--style-channelborder',
 };
 
 /**

@@ -32,7 +32,7 @@ class WhisperEvent extends Elem {
 		]));
 	}
 
-	get isCommunication() {
+	get canHighlight() {
 		return true;
 	}
 

@@ -34,7 +34,7 @@ class CharLogEvent {
 				? ' charlog--nofocus'
 				: ec ? ' f-' + charId + '-' + ec.id : ''
 			)
-			+ (c.isCommunication && !(opt?.noMessageHighlight)
+			+ (c.canHighlight && !(opt?.noMessageHighlight)
 				? (own ? ' own' : '')
 				+ (!own && (mod?.triggers?.length || mod?.mentioned) ? ' mentioned' : '')
 				+ (ev.target?.id == charId || mod?.targeted ? ' targeted' : '')
