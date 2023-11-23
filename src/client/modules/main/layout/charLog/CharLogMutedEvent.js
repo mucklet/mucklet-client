@@ -2,6 +2,7 @@ import PopupPill from 'components/PopupPill';
 
 const dark = 'dark';
 const border = 'border';
+const channelBorder = 'channelBorder';
 const eventTypes = {
 	travel: dark,
 	arrive: dark,
@@ -23,6 +24,7 @@ const eventTypes = {
 	stopFollow: border,
 	stopLead: border,
 	dnd: border,
+	helpme: channelBorder,
 };
 
 class CharLogMutedEvent extends PopupPill {

@@ -16,7 +16,7 @@ class OocEvent extends Elem {
 		]));
 	}
 
-	get isCommunication() {
+	get canHighlight() {
 		return true;
 	}
 }

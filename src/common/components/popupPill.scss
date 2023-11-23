@@ -40,5 +40,12 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 
 	&border {
 		border-width: 1px 1px 1px 5px;
+		height: 8px;
+	}
+
+	&channelborder {
+		border-color: $color6;
+		border-width: 1px 1px 1px 5px;
+		height: 8px;
 	}
 }
