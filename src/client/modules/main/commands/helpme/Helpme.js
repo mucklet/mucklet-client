@@ -11,7 +11,7 @@ const helpText =
 const examples = [
 	{ cmd: 'helpme Hi! I am new here.' },
 	{ cmd: 'helpme How can I find people to roleplay with?' },
-	{ cmd: 'helpme Can you write bold text?' },
+	{ cmd: 'helpme Can I create my own area?' },
 	{ cmd: 'helpme I got lost! How do I get back?' },
 ];
 
@@ -45,13 +45,13 @@ class Helpme {
 
 		this.module.help.addTopic({
 			id: 'helpme',
-			category: 'communicate',
+			category: { 'basic': 15, 'helper': 110 },
 			cmd: 'helpme',
 			usage: l10n.l('helpme.usage', usageText),
 			shortDesc: l10n.l('helpme.shortDesc', shortDesc),
 			desc: l10n.l('helpme.helpText', helpText),
 			examples,
-			sortOrder: 10,
+			sortOrder: 15,
 		});
 	}
 

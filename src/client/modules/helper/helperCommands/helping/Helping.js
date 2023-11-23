@@ -9,7 +9,7 @@ import { communicationTooLong } from 'utils/cmdErr';
 const usageText = 'helping <span class="param">Character</span> =<span class="opt">:</span> <span class="param">Message</span>';
 const shortDesc = 'Send a help message to an awake characters';
 const helpText =
-`<p>Send a help message to an awake character in the realm.<br>
+`<p>Send a help message to an awake character in the realm. All other helpers on the help channel will also get the message.<br>
 If the message starts with <code>:</code> (colon), the message will be treated in the same way as a <code>pose</code> action rather than something being texted.</p>
 <p><code class="param">Character</code> is the name of the character to help. If omitted, it defaults to the character(s) last messaged.</p>
 <p><code class="param">Message</code> is the help text. It may be formatted and span multiple paragraphs.</p>`;
@@ -75,7 +75,7 @@ class Helping {
 			shortDesc: l10n.l('helping.shortDesc', shortDesc),
 			desc: l10n.l('helping.helpText', helpText),
 			examples,
-			sortOrder: 40,
+			sortOrder: 100,
 		});
 	}
 

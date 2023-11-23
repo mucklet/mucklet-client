@@ -43,7 +43,7 @@ class ForceJoin {
 
 				this.module.help.addTopic({
 					id: 'forceJoin',
-					category: [ 'transport', 'moderate', 'builder' ],
+					category: { 'transport': 1010, 'moderate': 1010, 'builder': 1010 },
 					cmd: 'force join',
 					alias: [ 'force mjoin' ],
 					usage: l10n.l('forceJoin.usage', usageText),

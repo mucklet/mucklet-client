@@ -44,7 +44,7 @@ class SetMain {
 
 				this.module.help.addTopic({
 					id: 'setMain',
-					category: [ 'moderate', 'helper' ],
+					category: { 'moderate': 200, 'helper': 200 },
 					cmd: 'set main',
 					usage: l10n.l('setMain.usage', usageText),
 					shortDesc: l10n.l('setMain.shortDesc', shortDesc),

@@ -20,7 +20,8 @@ class HelpAbout {
 			title: l10n.l('help.aboutTitle', "About the realm"),
 			shortDesc: l10n.l('help.aboutShortDesc', "Learn more about the realm"),
 			desc: () => new HelpAboutComponent(this.module),
-			sortOrder: 3,
+			sortOrder: 15,
+			promoted: true,
 		});
 	}
 

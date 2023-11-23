@@ -7,7 +7,8 @@ const usageText = 'request help <span class="opt">= <span class="param">Message<
 const shortDesc = 'Request help from the helpers';
 const helpText =
 `<p>Request help from one of the helpers who will contact you. Help requests may be about anything; how to find a place, how a command works, or how to report someone being disrespectful.</p>
-<p><code class="param">Message</code> is the optional help message. It may be formatted and span multiple paragraphs.</p>`;
+<p><code class="param">Message</code> is the optional help message. It may be formatted and span multiple paragraphs.</p>
+<p>Use <code>helpme <span class="param">Message</span></code> to chat directly with awake helpers.</p>`;
 const examples = [
 	{ cmd: 'request help', desc: l10n.l('requestHelp.requestHelpExampleDesc', "Requests help without a message") },
 	{ cmd: 'request help = How to make text bold?', desc: l10n.l('requestHelp.helpHelpWithMessageExampleDesc', "Requests help with a message") },
@@ -52,13 +53,12 @@ class RequestHelp {
 
 		this.module.help.addTopic({
 			id: 'requestHelp',
-			category: [ 'basic', 'helper', 'request' ],
+			category: { 'helper': 120, 'request': 5 },
 			cmd: 'request help',
 			usage: l10n.l('requestHelp.usage', usageText),
 			shortDesc: l10n.l('requestHelp.shortDesc', shortDesc),
 			desc: l10n.l('requestHelp.helpText', helpText),
 			examples,
-			sortOrder: 15,
 		});
 	}
 
