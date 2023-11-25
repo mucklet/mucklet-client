@@ -104,7 +104,9 @@ class OverlayNavButtons {
 				state[exit.nav] = { icon: exit.icon || '', title: exit.name };
 			}
 		}
-		state['c'] = { count: exits.length };
+		if (exits.length) {
+			state['c'] = { count: exits.length };
+		}
 
 		if (Object.keys(state).length) {
 			this.fader.setComponent(
