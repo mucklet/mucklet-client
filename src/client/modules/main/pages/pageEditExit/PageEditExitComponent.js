@@ -9,6 +9,7 @@ import FAIcon from 'components/FAIcon';
 import LabelToggleBox from 'components/LabelToggleBox';
 import ExitIcon from 'components/ExitIcon';
 import NavButtons, { directions } from 'components/NavButtons';
+import ModelCollapser from 'components/ModelCollapser';
 import prepareKeys from 'utils/prepareKeys';
 
 /**
@@ -206,13 +207,25 @@ class PageEditExitComponent {
 				n.elem('div', { className: 'pageeditexit--flags' }, [
 					n.component(new ModelComponent(
 						ctx.exit,
-						new LabelToggleBox(l10n.l('pageEditExit.hidden', "Is hidden"), false, {
+						new LabelToggleBox(l10n.l('pageEditExit.isHidden', "Is hidden"), false, {
 							className: 'common--formmargin',
 							onChange: v => ctx.exit.set({ hidden: v }),
 							popupTip: l10n.l('pageEditExit.hiddenInfo', "A hidden exit is not listed among room exits, but characters might still use it if they know the keyword(s)."),
 						}),
 						(m, c) => c.setValue(m.hidden, false),
 					)),
+					n.component(new ModelCollapser(ctx.exit, [{
+						condition: m => !m.hidden,
+						component: new ModelComponent(
+							ctx.exit,
+							new LabelToggleBox(l10n.l('pageEditExit.isTransparent', "Is transparent"), false, {
+								className: 'pad-bottom-l',
+								onChange: v => ctx.exit.set({ transparent: v }),
+								popupTip: l10n.l('pageEditExit.transparentInfo', "A transparent exit allows you to see what characters are awake in the target room."),
+							}),
+							(m, c) => c.setValue(m.transparent, false),
+						),
+					}])),
 				]),
 				n.component(this._message),
 				n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
@@ -280,15 +293,22 @@ class PageEditExitComponent {
 	}
 
 	_setSaveText(ctx, c) {
-		c.getNode('text').setText(this._isModified(ctx)
+		c.getNode('text').setText(this._getModifications(ctx)
 			? l10n.l('pageEditExit.update', "Save edits")
 			: l10n.l('pageEditExit.close', "Close"),
 		);
 	}
 
-	_isModified(ctx) {
-		return ctx.exit.isModified ||
-			!this._equalKeys(prepareKeys(ctx.model.keys), ctx.exit.keys);
+	_getModifications(ctx) {
+		let mods = ctx.exit.getModifications() || {};
+		if (mods && ctx.exit.hidden) {
+			delete mods.transparent;
+		}
+		let keys = prepareKeys(ctx.model.keys);
+		if (!this._equalKeys(keys, ctx.exit.keys)) {
+			mods.keys = keys;
+		}
+		return Object.keys(mods).length ? mods : null;
 	}
 
 	/**
@@ -308,13 +328,9 @@ class PageEditExitComponent {
 
 	_save(ctx) {
 		let p;
-		if (this._isModified(ctx)) {
-			let params = Object.assign({ exitId: this.exitId }, ctx.exit.getModifications());
-			let keys = prepareKeys(ctx.model.keys);
-			if (!this._equalKeys(keys, ctx.exit.keys)) {
-				params.keys = keys;
-			}
-
+		let params = this._getModifications(ctx);
+		if (params) {
+			params.exitId = this.exitId;
 			p = this.ctrl.call('setExit', params);
 		} else {
 			p = Promise.resolve();

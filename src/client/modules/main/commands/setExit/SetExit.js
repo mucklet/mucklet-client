@@ -110,22 +110,28 @@ const defaultAttr = [
 		sortOrder: 190,
 	},
 	{
+		key: 'transparent',
+		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is transparent flag" }),
+		desc: l10n.l('setExit.transparentDesc', "Flag telling if the exit is transparent, allowing you to see awake characters in the target room. Value is <code>yes</code> or <code>no</code>."),
+		sortOrder: 200,
+	},
+	{
 		key: 'leaveMsg',
 		name: "leave message",
 		desc: l10n.l('setExit.leaveMsgDesc', "Message seen by the origin room. Usually in present tense (eg. \"leaves ...\")."),
-		sortOrder: 200,
+		sortOrder: 300,
 	},
 	{
 		key: 'arriveMsg',
 		name: "arrival message",
 		desc: l10n.l('setExit.arriveMsgDesc', "Message seen by the arrival room. Usually in present tense (eg. \"arrives from ...\")."),
-		sortOrder: 210,
+		sortOrder: 310,
 	},
 	{
 		key: 'travelMsg',
 		name: "travel message",
 		desc: l10n.l('setExit.travelMsgDesc', "Message seen by the exit user. Usually in present tense (eg. \"goes ...\")."),
-		sortOrder: 220,
+		sortOrder: 320,
 	},
 ];
 
