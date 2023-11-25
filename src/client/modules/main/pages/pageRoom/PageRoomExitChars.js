@@ -18,7 +18,13 @@ class PageRoomExitChars {
 			idAttribute: null,
 			eventBus: this.module.self.app.eventBus,
 		});
-		this.elem = new ResizeObserverComponent(new RootElem('div', { className: 'pageroom-exitchars' }), (rect) => this._setComponent(rect));
+		this.elem = new ResizeObserverComponent(new RootElem('div', { className: 'pageroom-exitchars' }), (rect, oldRect) => {
+			if (oldRect) {
+				requestAnimationFrame(() => this._setComponent());
+			} else {
+				this._setComponent();
+			}
+		});
 		return this.elem.render(el);
 	}
 
@@ -31,11 +37,11 @@ class PageRoomExitChars {
 		}
 	}
 
-	_setComponent(rect) {
+	_setComponent() {
 		let el = this.elem?.getComponent().getElement();
 		if (!el) return;
 
-		let newPerRow = Math.max(Math.floor((rect.width + 4) / (24 + 4)), 1);
+		let newPerRow = Math.max(Math.floor((el.offsetWidth + 4) / (24 + 4)), 1);
 		if (newPerRow == this.perRow) return;
 
 		// Dispose any previously rendered component
