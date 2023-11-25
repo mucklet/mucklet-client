@@ -20,32 +20,37 @@ const txtProductFeatures = {
 	supporter: [
 		{
 			title: l10n.l('txtProduct.supporterTag', "Supporter tag"),
-			desc: l10n.l('txtProduct.supporterTagDesc', "Add the supporter tag to any character"),
+			desc: l10n.l('txtProduct.supporterTagShortDesc', "Add the supporter tag to any character"),
 			longDesc: l10n.l('txtProduct.supporterTagDesc', "Add the supporter tag to any character."),
 		},
 		{
 			title: l10n.l('txtProduct.increasedCharCap', "Increased character cap"),
-			desc: l10n.l('txtProduct.increasedCharCapDesc', "Create up to 50 characters per realm"),
+			desc: l10n.l('txtProduct.increasedCharCapShortDesc', "Create up to 50 characters per realm"),
 			longDesc: l10n.l('txtProduct.increasedCharCapDesc', "Create up to 50 characters per realm, instead of 5."),
 		},
 		{
 			title: l10n.l('txtProduct.increasedProfileCap', "Increased profile cap"),
-			desc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room"),
+			desc: l10n.l('txtProduct.increasedProfileCapShortDesc', "Create up to 20 profiles per character or room"),
 			longDesc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room, instead of 3."),
 		},
 		{
 			title: l10n.l('txtProduct.instanceRooms', "Instance rooms"),
-			desc: l10n.l('txtProduct.instanceRoomsDesc', "Create rooms hosting multiple instances"),
+			desc: l10n.l('txtProduct.instanceRoomsShortDesc', "Create rooms hosting multiple instances"),
 			longDesc: l10n.l('txtProduct.instanceRoomsDesc', "Create rooms and areas where characters can play in private instances."),
 		},
 		{
+			title: l10n.l('txtProduct.transparentExits', "Transparent exits"),
+			desc: l10n.l('txtProduct.transparentExitsShortDesc', "Create exits showing awake characters"),
+			longDesc: l10n.l('txtProduct.transparentExitsDesc', "Create exits where characters can see who is awake in the target room."),
+		},
+		{
 			title: l10n.l('txtProduct.botAccess', "Bot access"),
-			desc: l10n.l('txtProduct.botAccessDesc', "Create and connect bot characters"),
+			desc: l10n.l('txtProduct.botAccessShortDesc', "Create and connect bot characters"),
 			longDesc: l10n.l('txtProduct.botAccessDesc', "Connect your characters using bot tokens, and control them with scripts."),
 		},
 		{
 			title: l10n.l('txtProduct.comingFeatures', "... and more"),
-			desc: l10n.l('txtProduct.comingFeaturesDesc', "Upcoming supporter features"),
+			desc: l10n.l('txtProduct.comingFeaturesShortDesc', "Upcoming supporter features"),
 			longDesc: l10n.l('txtProduct.comingFeaturesDesc', "Get access to upcoming supporter features as they are added."),
 		},
 	],
