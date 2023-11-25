@@ -124,6 +124,19 @@
 	padding: 2px 0;
 }
 
+.pageroom-exitchars {
+	&--row {
+		padding-top: 4px;
+		display: flex;
+		flex-direction: row;
+		margin-left: -4px;
+	}
+
+	&--char {
+		padding-left: 4px;
+	}
+}
+
 .pageroom-char {
 	position: relative;
 

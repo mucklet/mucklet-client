@@ -20,6 +20,7 @@ class PageRoom {
 			'dialogEditNote',
 			'charPages',
 			'toaster',
+			'avatar',
 		], this._init.bind(this));
 	}
 

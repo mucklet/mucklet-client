@@ -1,7 +1,7 @@
 import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
 import { Model, Collection, sortOrderCompare } from 'modapp-resource';
-import ObserverComponent from 'components/ObserverComponent';
+import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
@@ -134,7 +134,7 @@ class CharLog {
 		}
 
 		this.transition = new Transition({ className: 'charlog' });
-		this.component = new ObserverComponent(this.transition, (rect) => rect && this.viewport.set(rect));
+		this.component = new ResizeObserverComponent(this.transition, (rect) => rect && this.viewport.set(rect));
 		this.charComponents = {};
 
 		this._setListeners(true);
