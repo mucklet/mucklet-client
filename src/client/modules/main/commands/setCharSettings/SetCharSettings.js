@@ -5,9 +5,9 @@ import ValueStep from 'classes/ValueStep';
 import { communicationTooLong } from 'utils/cmdErr';
 
 /**
- * SetCharAttr adds common character attributes to the set char command.
+ * SetCharSettings adds common character settings to the set char command.
  */
-class SetCharAttr {
+class SetCharSettings {
 	constructor(app) {
 		this.app = app;
 
@@ -55,4 +55,4 @@ class SetCharAttr {
 	}
 }
 
-export default SetCharAttr;
+export default SetCharSettings;

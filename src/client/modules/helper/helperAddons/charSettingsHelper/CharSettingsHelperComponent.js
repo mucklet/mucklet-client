@@ -25,10 +25,10 @@ class CharSettingsHelperComponent {
 				new Elem(n => n.elem('div', [
 					n.component(new ModelComponent(
 						charSettings,
-						new LabelToggleBox(l10n.l('charSettingsHelper.listenOnHelpChannel', "Listen on help channel"), false, {
+						new LabelToggleBox(l10n.l('charSettingsHelper.listenOnHelpChannel', "Listen on helper channel"), false, {
 							className: 'common--formmargin',
 							onChange: (v, c) => this._setValue(charSettings, v),
-							popupTip: l10n.l('charSettingsHelper.listenOnHelpChannelInfo', "Listen and reply to messages sent on the help channel using the helpme command."),
+							popupTip: l10n.l('charSettingsHelper.listenOnHelpChannelInfo', "Listen and reply to messages sent on the helper channel using the helpme command."),
 							popupTipClassName: 'popuptip--width-s',
 						}),
 						(m, c) => c.setValue(m.isHelping, false),
