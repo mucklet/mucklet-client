@@ -149,7 +149,9 @@ class OverlayNavButtons {
 		if (exits) {
 			this.tooltip = tooltip.click(
 				el,
-				this.module.pageRoom.newRoomExits(this.ctrl, exits, { className: 'overlaynav-buttons--tooltip-hidescroll' }),
+				this.module.pageRoom.newRoomExits(this.ctrl, exits, {
+					className: 'overlaynav-buttons--tooltip-hidescroll',
+				}),
 				{
 					className: 'overlaynav-buttons--tooltip',
 					position: 'bottom',

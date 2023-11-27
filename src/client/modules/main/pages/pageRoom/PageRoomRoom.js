@@ -152,7 +152,9 @@ class PageRoomComponent {
 								),
 							)),
 						])),
-						new PageRoomExits(this.module, this.ctrl, this.room.exits),
+						new PageRoomExits(this.module, this.ctrl, this.room.exits, {
+							clickTooltip: true,
+						}),
 						{
 							className: 'pageroom-room--exits common--sectionpadding',
 							open: this.state.exitsOpen,

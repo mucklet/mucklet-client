@@ -157,6 +157,7 @@ class PageRoom {
 	 * @param {Collection} exits Exits collection
 	 * @param {object} [opt] Optional params
 	 * @param {(exitId: string, ev: object) => void} [opt.onExitClick] Callback called on exit click. Defaults to using the exit.
+	 * @param {boolean} [opt.clickTooltip] Flag to enable custom tooltip to be opened when clicking on a character.
 	 * @returns {Component} PageRoomExits component.
 	 */
 	newRoomExits(ctrl, exits, opt) {

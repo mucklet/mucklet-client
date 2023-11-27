@@ -1,12 +1,16 @@
-import { RootElem, Elem } from 'modapp-base-component';
-import { CollectionComponent, CollectionList } from 'modapp-resource-component';
+import { RootElem, Elem, Txt } from 'modapp-base-component';
+import { CollectionComponent, CollectionList, ModelComponent } from 'modapp-resource-component';
 import { Collection, CollectionWrapper } from 'modapp-resource';
 import ResizeObserverComponent from 'components/ResizeObserverComponent';
+import * as tooltip from 'utils/tooltip';
+import firstLetterUppercase from 'utils/firstLetterUppercase';
+import idleLevels, { getCharIdleLevel } from 'utils/idleLevels';
 
 class PageRoomExitChars {
-	constructor(module, chars) {
+	constructor(module, chars, opt = {}) {
 		this.module = module;
 		this.chars = chars;
+		this.opt = opt;
 		this.perRow = 0;
 		this.elem = null;
 		this.rows = null;
@@ -58,11 +62,32 @@ class PageRoomExitChars {
 				this.rows,
 				row => new CollectionList(
 					row,
-					char => new Elem(n => n.elem('div', { className: 'pageroom-exitchars--char' }, [
-						n.component(this.module.avatar.newAvatar(char, {
-							size: 'tiny',
-						})),
-					])),
+					char => new ModelComponent(
+						char,
+						new Elem(n => n.elem('div', {
+							className: 'pageroom-exitchars--char' + (this.opt.clickTooltip ? '' : ' common--tooltip'),
+							events: {
+								click: (c, ev) => {
+									if (this.opt.clickTooltip) {
+										this._onClick(c.getNode('cont'), char);
+										ev.stopPropagation();
+									}
+								},
+							},
+						}, [
+							n.elem('cont', 'div', [
+								n.component(this.module.avatar.newAvatar(char, {
+									size: 'tiny',
+								})),
+							]),
+						])),
+						(m, c) => {
+							if (!this.opt.clickTooltip) {
+								let genderSpecies = (m.gender + ' ' + m.species).trim();
+								c.setAttribute('title', m.name + ' ' + m.surname + (genderSpecies ? '\n' + genderSpecies : ''));
+							}
+						},
+					),
 					{
 						className: 'pageroom-exitchars--row',
 						horizontal: true,
@@ -72,6 +97,55 @@ class PageRoomExitChars {
 			(chars) => this._updateRows(),
 		);
 		this.component.render(el);
+	}
+
+	_onClick(el, char) {
+		if (!el) {
+			return;
+		}
+
+		let nameComponent = new Txt();
+		let surnameComponent = new Txt();
+		let genderComponent = new Txt();
+		let speciesComponent = new Txt();
+
+		this.tooltip = tooltip.click(
+			el,
+			new ModelComponent(
+				char,
+				new Elem(n => n.elem('div', { className: 'pageroom-exitchars--tooltip' }, [
+					n.elem('fullname', 'div', { className: 'pageroom-exitchars--fullname' }, [
+						n.component(nameComponent),
+						n.text(' '),
+						n.component(surnameComponent),
+					]),
+					n.elem('div', { className: '' }, [
+						n.component(genderComponent),
+						n.text(' '),
+						n.component(speciesComponent),
+					]),
+				])),
+				(m, c) => {
+					nameComponent.setText(m.name);
+					surnameComponent.setText(m.surname);
+					genderComponent.setText(firstLetterUppercase(m.gender));
+					speciesComponent.setText(firstLetterUppercase(m.species));
+					let lvl = getCharIdleLevel(m);
+					for (let l of idleLevels) {
+						c[lvl == l ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
+					}
+				},
+			),
+			{
+				margin: 'xs',
+				padding: 'm',
+				position: 'bottom',
+				size: 'auto',
+				onClose: () => {
+					this.tooltip = null;
+				},
+			},
+		);
 	}
 
 	_updateRows() {
