@@ -19,6 +19,13 @@ const helpText =
 	<div class="charlog--code"><code>add tag helper</code></div>
 </section>
 <section class="charlog--pad">
+	<h4 class="charlog--pad">Helper channel</h4>
+	<p class="common--formattext">The main way for players to request help is through the <span class="cmd">helpme</span> command, which will send their message to the <em>helper channel</em>. To listen to the helper channel, type:</p>
+	<div class="charlog--code"><code>set helperchannel = yes</code></div>
+	<p>To learn how to reply to help messages, type:</p>
+	<div class="charlog--code"><code>help helping</code></div>
+</section>
+<section class="charlog--pad">
 	<h4 class="charlog--pad">Help requests</h4>
 	<p>The medkit-icon in the Realm panel will show help requests sent by players. Make sure to assign a help ticket to yourself before handling it, to avoid confusion between helpers.</p>
 	<p>And if you try to summon or join them, remember to send them a friendly message first, letting them know you are responding to their request for help.</p>

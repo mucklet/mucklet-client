@@ -124,6 +124,33 @@
 	padding: 2px 0;
 }
 
+.pageroom-exitchars {
+	&--row {
+		padding-top: 4px;
+		display: flex;
+		flex-direction: row;
+		margin-left: -2px;
+	}
+
+	&--char {
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+
+	&--tooltip {
+		text-align: left;
+		white-space: pre;
+		font-size: $font-size-tiny;
+		color: $color4-lighter;
+		line-height: 18px;
+	}
+
+	&--fullname {
+		@include transition(color 1s);
+		font-size: $font-size-tiny + 1px;
+	}
+}
+
 .pageroom-char {
 	position: relative;
 

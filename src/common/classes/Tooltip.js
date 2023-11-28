@@ -13,7 +13,7 @@ class Tooltip {
 	 * @param {Element} ref Reference element.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Class name for tooltip element.
-	 * @param {string} [opt.margin] Margin to use. May be 'm'.
+	 * @param {string} [opt.margin] Margin to use. May be 'm' (16px) or 'xs' (4px)
 	 * @param {string} [opt.padding] Inner padding to use. May be 's' or 'm'.
 	 * @param {string} [opt.size] Size. May be 'auto' or 'full'. Default to 'auto'.
 	 * @param {number} [opt.offset] Position of caret in pixels relative to viewport. Centered if omitted.

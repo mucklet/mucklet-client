@@ -174,31 +174,6 @@ class CharFocus {
 	}
 
 	/**
-	 * Send a notification if the character is in focus.
-	 * @param {string} ctrlId Controlled character receiving the event.
-	 * @param {object} [ev] Event object.
-	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
-	 * @returns {boolean} Returns true if a notification was sent.
-	 */
-	notifyOnFocus(ctrlId, ev, title) {
-		if (!this.hasFocus(ctrlId, ev.char?.id)) {
-			// Check if muted event
-			if (ev.mod?.muted || !this.focusAll.props[ctrlId]) {
-				return false;
-			}
-		}
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject(ev)), {
-			tag: ev.id,
-			onClick: (ev) => {
-				this.module.player.setActiveChar(ctrlId).catch(() => {});
-				window.focus();
-				ev.target.close();
-			},
-		});
-		return true;
-	}
-
-	/**
 	 * Checks if a controlled character is focusing on a specific character.
 	 * It does not take focus all into account.
 	 * @param {*} ctrlId Controlled character ID.
@@ -213,17 +188,59 @@ class CharFocus {
 	}
 
 	/**
+	 * Send a notification on other characters if the character is in focus.
+	 * @param {string} ctrlId Controlled character receiving the event.
+	 * @param {object} [ev] Event object.
+	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @returns {boolean} Returns true if a notification was sent.
+	 */
+	notifyOnFocus(ctrlId, ev, title) {
+		if (ctrlId === ev.char?.id) {
+			return false;
+		}
+
+		if (!this.hasFocus(ctrlId, ev.char?.id)) {
+			// Check if muted event
+			if (ev.mod?.muted || !this.focusAll.props[ctrlId]) {
+				return false;
+			}
+		}
+		this._notify(ctrlId, ev, typeof title == 'string'
+			? title
+			: l10n.t(title, flattenObject(ev)),
+		);
+		return true;
+	}
+
+	/**
+	 * Send a notification for other characters unless the character is muted.
+	 * @param {string} ctrlId Controlled character receiving the event.
+	 * @param {object} [ev] Event object.
+	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @returns {boolean} Returns true if a notification was sent.
+	 */
+	notifyOnEvent(ctrlId, ev, title) {
+		if (ctrlId === ev.char?.id || ev.mod?.muted) {
+			return false;
+		}
+		this._notify(ctrlId, ev, typeof title == 'string'
+			? title
+			: l10n.t(title, flattenObject(ev)),
+		);
+	}
+
+	/**
 	 * Send a notification if your controlled character is mentioned in the
 	 * ev.msg string.
-	 * @param {string} charId Controlled character receiving the event.
+	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
 	 * @param {string|LocaleString} title Event title. Will get the char passed
 	 * in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnMention(charId, ev, title) {
+	notifyOnMention(ctrlId, ev, title) {
 		// Unfocused muted events does not trigger
-		if (!this.hasFocus(charId, ev.char?.id) && ev.mod?.muted) {
+		if (ctrlId === ev.char?.id || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
 			return false;
 		}
 
@@ -232,25 +249,25 @@ class CharFocus {
 			return false;
 		}
 
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) })), {
-			tag: ev.id,
-			onClick: (ev) => {
-				this.module.player.setActiveChar(charId).catch(() => {});
-				window.focus();
-				ev.target.close();
-			},
-		});
+		this._notify(ctrlId, ev, typeof title == 'string'
+			? title
+			: l10n.t(title, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) })),
+		);
 		return true;
 	}
 
 	/**
-	 * Send a notification if the character is targeted
+	 * Send a notification for other characters if the character is targeted
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object. Should contain a target property which is the targeted character.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnTargetEvent(ctrlId, ev, title) {
+		if (ctrlId === ev.char?.id) {
+			return false;
+		}
+
 		if (!this.hasFocus(ctrlId, ev.char?.id)) {
 			// Check if muted event
 			if (ev.mod?.muted) {
@@ -264,14 +281,10 @@ class CharFocus {
 				}
 			}
 		}
-		this.module.notify.send(typeof title == 'string' ? title : l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) })), {
-			tag: ev.id,
-			onClick: (ev) => {
-				this.module.player.setActiveChar(ctrlId).catch(() => {});
-				window.focus();
-				ev.target.close();
-			},
-		});
+		this._notify(ctrlId, ev, typeof title == 'string'
+			? title
+			: l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) })),
+		);
 		return true;
 	}
 
@@ -283,6 +296,17 @@ class CharFocus {
 		return this.focusAll.set({ [ctrlId]: focusAll || undefined }).then(() => {
 			this._saveFocusAll();
 			return true;
+		});
+	}
+
+	_notify(ctrlId, ev, title) {
+		this.module.notify.send(title, {
+			tag: ev.id,
+			onClick: (ev) => {
+				this.module.player.setActiveChar(ctrlId).catch(() => {});
+				window.focus();
+				ev.target.close();
+			},
 		});
 	}
 

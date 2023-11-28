@@ -1,0 +1,15 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.ev-helpme {
+	white-space: pre-wrap;
+	padding: 8px 0 0 0;
+
+	.charlog--fieldset {
+		border-color: $color6;
+	}
+
+	.charlog--fieldset-label {
+		color: $color6;
+	}
+}

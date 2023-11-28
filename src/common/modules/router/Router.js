@@ -367,7 +367,6 @@ class Router {
 		return null;
 	}
 
-
 	/**
 	 * Helper function to parse the url parts using a definition array. It will
 	 * loop through the outer pathDef array and return first match. It is

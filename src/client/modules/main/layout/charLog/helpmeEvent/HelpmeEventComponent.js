@@ -5,25 +5,24 @@ import poseSpacing from 'utils/poseSpacing';
 import fullname from 'utils/fullname';
 import * as charEvent from 'utils/charEvent';
 
-class MessageEvent extends Elem {
+class HelpmeEvent extends Elem {
 	constructor(charId, ev) {
 		let c = ev.char;
-		let t = charEvent.extractTarget(charId, ev);
-		let more = ev.targets?.length - (ev.target ? 0 : 1);
+		let t = ev.target;
 		super(n => n.elem('div', [
 			n.elem('div', { className: 'charlog--fieldset' }, [
 				n.elem('div', { className: 'charlog--fieldset-label' }, [
-					n.component(new Txt(ev.ooc
-						? more
-							? l10n.l('charLog.messageOocTo', "Message ooc to {fullname} +{more} more", { fullname: fullname(t), more })
-							: l10n.l('charLog.messageOocTo', "Message ooc to {fullname}", { fullname: fullname(t) })
-						: more
-							? l10n.l('charLog.messageTo', "Message to {fullname} +{more} more", { fullname: fullname(t), more })
-							: l10n.l('charLog.messageTo', "Message to {fullname}", { fullname: fullname(t) }),
+					n.component(new Txt(t
+						? t.id == charId
+							? l10n.l('charLog.fromHelper', "From helper {fullname}", { fullname: fullname(c) })
+							: l10n.l('charLog.helping', "Helping {fullname}", { fullname: fullname(t) })
+						: c.id == charId
+							? l10n.l('charLog.toHelpers', "To helpers")
+							: l10n.l('charLog.fromHelper', "Help {fullname}", { fullname: fullname(c) }),
 					)),
 				]),
 				n.component(new Txt(c && c.name, { className: 'charlog--char' })),
-				n.elem('span', { className: ev.ooc ? 'charlog--ooc' : 'charlog--comm' }, [
+				n.elem('span', [
 					n.text(ev.pose ? poseSpacing(ev.msg) : ' writes, "'),
 					n.component(new Html(formatText(ev.msg, ev.mod), { tagName: 'span', className: 'common--formattext' })),
 					n.text(ev.pose ? '' : '"'),
@@ -33,7 +32,9 @@ class MessageEvent extends Elem {
 	}
 
 	get canHighlight() {
-		return true;
+		// While it technically can be highlighted as it is communication, we
+		// don't want to do that, to avoid confusing newcomers.
+		return false;
 	}
 
 	getTooltipText(ev) {
@@ -41,4 +42,4 @@ class MessageEvent extends Elem {
 	}
 }
 
-export default MessageEvent;
+export default HelpmeEvent;

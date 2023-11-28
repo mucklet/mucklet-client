@@ -15,9 +15,7 @@ class PagePuppeteerSettings {
 		this.app = app;
 
 		this.app.require([
-			'api',
 			'playerTabs',
-			'confirm',
 			'dialogUnregisterPuppet',
 			'player',
 		], this._init.bind(this));
@@ -76,6 +74,7 @@ class PagePuppeteerSettings {
 	 * @returns {Promise.<function>} Promise of a close function.
 	 */
 	open(puppeteer) {
+		console.log("PUPPETEER: ", puppeteer);
 		let puppeteerId = getPuppeteerId(puppeteer);
 		if (this.puppeteerPages[puppeteerId]) {
 			throw new Error("Char settings page already open");

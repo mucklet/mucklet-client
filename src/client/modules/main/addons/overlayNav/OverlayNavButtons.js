@@ -104,7 +104,9 @@ class OverlayNavButtons {
 				state[exit.nav] = { icon: exit.icon || '', title: exit.name };
 			}
 		}
-		state['c'] = { count: exits.length };
+		if (exits.length) {
+			state['c'] = { count: exits.length };
+		}
 
 		if (Object.keys(state).length) {
 			this.fader.setComponent(
@@ -147,7 +149,9 @@ class OverlayNavButtons {
 		if (exits) {
 			this.tooltip = tooltip.click(
 				el,
-				this.module.pageRoom.newRoomExits(this.ctrl, exits, { className: 'overlaynav-buttons--tooltip-hidescroll' }),
+				this.module.pageRoom.newRoomExits(this.ctrl, exits, {
+					className: 'overlaynav-buttons--tooltip-hidescroll',
+				}),
 				{
 					className: 'overlaynav-buttons--tooltip',
 					position: 'bottom',

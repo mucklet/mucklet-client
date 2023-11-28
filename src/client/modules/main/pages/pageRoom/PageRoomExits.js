@@ -5,7 +5,7 @@ import Fader from 'components/Fader';
 import PageRoomExit from './PageRoomExit';
 
 class PageRoomExits extends CollectionComponent {
-	constructor(module, ctrl, exits, opt) {
+	constructor(module, ctrl, exits, opt = {}) {
 
 		let onClick = opt?.onExitClick || ((exitId, ev) => {
 			ctrl.call('useExit', { exitId })
@@ -23,7 +23,7 @@ class PageRoomExits extends CollectionComponent {
 				if (!e || (col.length == 1 && e.event == 'add')) {
 					c.setComponent(new CollectionList(
 						col,
-						m => new PageRoomExit(module, ctrl, m, onClick),
+						m => new PageRoomExit(module, ctrl, m, onClick, opt),
 					));
 				}
 			},

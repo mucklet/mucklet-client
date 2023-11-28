@@ -27,16 +27,33 @@ class OverlayNavComponent {
 			selected: this.state.selected || null,
 		}, eventBus: this.module.self.app.eventBus });
 
+		let faderComponent = new Fader();
+		let nameFaderComponent = new Fader();
+		let roomNameComponent = new Txt("", {
+			tagName: 'div',
+			className: 'badge--text badge--nowrap overlaynav--name',
+		});
+		let areaNameComponent = this.opt?.mode == 'mobile'
+			? null
+			: new Txt("", {
+				tagName: 'div',
+				className: 'badge--strong badge--nowrap overlaynav--name',
+			});
+		let popComponent = new Txt("", {
+			tagName: 'div',
+			className: 'badge--text',
+			duration: 0,
+		});
 		let roomComponent = new Elem(n => n.elem('div', { className: 'overlaynav' + (this.opt?.mode == 'mobile' ? ' mobile' : '') }, [
 			n.elem('div', { className: 'flex-row' }, [
 				n.elem('div', { className: 'overlaynav--badge flex-auto' }, [
 					n.elem('div', { className: 'badge btn nooutline', events: {
 						click: (c, ev) => {
 							this.module.roomPages.openPanel();
-							// In mobile layout, we don't zoom in the room, but
+							// In mobile layout, we don't zoom in the room/area, but
 							// just open the panel.
 							if (this.opt?.mode != 'mobile') {
-								this.module.pageRoom.setAreaId(this.ctrl.id, null);
+								this.module.pageRoom.setAreaId(this.ctrl.id, this.ctrl.inRoom.area?.id || null);
 							}
 							ev.stopPropagation();
 						},
@@ -44,17 +61,10 @@ class OverlayNavComponent {
 						n.elem('div', { className: 'overlaynav--badgecont' }, [
 							n.elem('div', { className: 'badge--select badge--select-margin flex-baseline' }, [
 								n.elem('div', { className: 'badge--info' }, [
-									n.component('name', new Txt("", {
-										tagName: 'div',
-										className: 'badge--text badge--nowrap overlaynav--name',
-									})),
+									n.component(nameFaderComponent),
 								]),
 								n.elem('div', { className: 'overlaynav--counter' }, [
-									n.component('pop', new Txt("", {
-										tagName: 'div',
-										className: 'badge--text',
-										duration: 0,
-									})),
+									n.component(popComponent),
 								]),
 							]),
 						]),
@@ -109,10 +119,17 @@ class OverlayNavComponent {
 			this.ctrl,
 			new ModelComponent(
 				null,
-				new Fader(),
+				new ModelComponent(
+					null,
+					faderComponent,
+					(m, c) => this._setBadge(popComponent, nameFaderComponent, roomNameComponent, areaNameComponent),
+				),
 				(m, c) => {
-					c.setComponent(m ? roomComponent : null);
-					this._setBadge(m, roomComponent);
+					if (areaNameComponent) {
+						c.setModel(m?.area);
+					}
+					this._setBadge(popComponent, nameFaderComponent, roomNameComponent, areaNameComponent);
+					faderComponent.setComponent(m ? roomComponent : null);
 				},
 			),
 			(m, c) => c.setModel(m?.inRoom),
@@ -130,10 +147,20 @@ class OverlayNavComponent {
 		}
 	}
 
-	_setBadge(m, c) {
-		if (m && c) {
-			c.getNode('name').setText(m.name);
-			c.getNode('pop').setText(m.pop || "0");
+	_setBadge(popComponent, fader, roomNameComponent, areaNameComponent) {
+		let m = this.ctrl.inRoom;
+		if (m) {
+			let pop = m.pop;
+			let area = areaNameComponent && m.area;
+			if (area) {
+				pop = (area.pop || "0") + (area.prv ? (' (+' + area.prv + ')') : '');
+				areaNameComponent.setText(area.name);
+				fader.setComponent(areaNameComponent);
+			} else {
+				roomNameComponent.setText(m.name);
+				fader.setComponent(roomNameComponent);
+			}
+			popComponent.setText(pop || "0");
 		}
 	}
 

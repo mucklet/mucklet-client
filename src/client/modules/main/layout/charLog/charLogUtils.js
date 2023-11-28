@@ -62,7 +62,7 @@ export function toComponent(el, isComm) {
 	el.render = e => e.appendChild(el);
 	el.unrender = () => el.parentElement.removeChild(el);
 	if (isComm) {
-		el.isCommunication = true;
+		el.canHighlight = true;
 	}
 	return el;
 }

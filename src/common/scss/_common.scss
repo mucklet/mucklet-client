@@ -160,4 +160,8 @@
 		margin-bottom: 16px;
 		border-bottom: 1px solid $color2;
 	}
+
+	&--tooltip {
+		cursor: help;
+	}
 }
