@@ -150,11 +150,11 @@ class OverlayNavComponent {
 	_setBadge(popComponent, fader, roomNameComponent, areaNameComponent) {
 		let m = this.ctrl.inRoom;
 		if (m) {
-			let isArea = areaNameComponent && m.area;
 			let pop = m.pop;
-			if (isArea) {
-				pop = m.area.pop;
-				areaNameComponent.setText(m.area.name);
+			let area = areaNameComponent && m.area;
+			if (area) {
+				pop = (area.pop || "0") + (area.prv ? (' (+' + area.prv + ')') : '');
+				areaNameComponent.setText(area.name);
 				fader.setComponent(areaNameComponent);
 			} else {
 				roomNameComponent.setText(m.name);
