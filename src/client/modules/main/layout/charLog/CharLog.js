@@ -574,11 +574,17 @@ class CharLog {
 	async addEvent(ev, ctrl) {
 		let l = await this.getLog(ctrl);
 
+		// Creates a unique id for the controller and event to be used with
+		// this.addingEvent to ensure it is duplicated by being added from two
+		// sources.
+		let ctrlId = getCtrlId(ctrl);
+		let ctrlEvId = ctrlId + '_' + ev.id;
+
 		// Quick exit if log entry already exists
-		if (l.get(ev.id) || this.addingEvent[ev.id]) {
+		if (l.get(ev.id) || this.addingEvent[getCtrlId]) {
 			return;
 		}
-		this.addingEvent[ev.id] = ev;
+		this.addingEvent[ctrlEvId] = ev;
 
 		try {
 
@@ -608,7 +614,7 @@ class CharLog {
 			l.add(ev, i);
 
 
-			this.module.charLogStore.addEvent(getCtrlId(ctrl), ev);
+			this.module.charLogStore.addEvent(ctrlId, ev);
 			// Call (notification) handler if we have one
 			let hs = this.handlers[ev.type];
 			if (hs) {
@@ -634,7 +640,7 @@ class CharLog {
 				}
 			}
 		} finally {
-			delete this.addingEvent[ev.id];
+			delete this.addingEvent[ctrlEvId];
 		}
 	}
 
