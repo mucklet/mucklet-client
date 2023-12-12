@@ -20,6 +20,18 @@ const defaultAttr = [
 		sortOrder: 10,
 	},
 	{
+		key: 'genre',
+		name: "world genre",
+		desc: l10n.l('setConfig.genreDesc', "World genre."),
+		sortOrder: 12,
+	},
+	{
+		key: 'subgenre',
+		name: "world subgenre",
+		desc: l10n.l('setConfig.subgenreDesc', "World subgenre."),
+		sortOrder: 12,
+	},
+	{
 		key: 'greeting',
 		stepFactory: (module) => new TextStep('value', {
 			name: "greeting html",
