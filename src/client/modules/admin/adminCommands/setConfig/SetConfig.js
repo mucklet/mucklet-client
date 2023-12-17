@@ -140,7 +140,16 @@ const defaultAttr = [
 			spanLines: true,
 		}),
 		desc: l10n.l('setConfig.defaultDoNotDisturbMsgDesc', "Do not disturb message shown when a character doesn't have a custom do not disturb message set."),
-		sortOrder: 76,
+		sortOrder: 77,
+	},
+	{
+		key: 'sweepMsg',
+		stepFactory: () => new TextStep('value', {
+			name: "sweep message",
+			spanLines: true,
+		}),
+		desc: l10n.l('setConfig.sweepMsgDesc', "Sweep message shown to the room after sweeping."),
+		sortOrder: 78,
 	},
 
 	// Movement messages
