@@ -581,7 +581,7 @@ class CharLog {
 		let ctrlEvId = ctrlId + '_' + ev.id;
 
 		// Quick exit if log entry already exists
-		if (l.get(ev.id) || this.addingEvent[getCtrlId]) {
+		if (l.get(ev.id) || this.addingEvent[ctrlEvId]) {
 			return;
 		}
 		this.addingEvent[ctrlEvId] = ev;
