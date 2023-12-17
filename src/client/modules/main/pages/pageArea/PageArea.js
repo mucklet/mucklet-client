@@ -35,7 +35,7 @@ class PageArea {
 	}
 
 	/**
-	 * Registers a area page tool.
+	 * Registers an area page tool.
 	 * @param {object} tool Tool object
 	 * @param {string} tool.id Tool ID.
 	 * @param {number} tool.sortOrder Sort order.
