@@ -73,7 +73,7 @@ class RoomPages {
 		this.defaultPageFactory = pageFactory || null;
 		// Set it for all existing character components.
 		for (let k in this.charComponents) {
-			this.charComponents[k].setDefaultPage(pageFactory);
+			this.charComponents[k].setDefaultPageFactory(pageFactory);
 		}
 		return this;
 	}

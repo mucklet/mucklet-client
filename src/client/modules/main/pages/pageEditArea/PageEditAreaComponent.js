@@ -14,7 +14,7 @@ const txtUpdate = l10n.l('pageEditArea.update', "Save edits");
 const txtClose = l10n.l('pageEditArea.close', "Close");
 
 /**
- * PageEditAreaComponent renders a area edit page.
+ * PageEditAreaComponent renders an area edit page.
  */
 class PageEditAreaComponent {
 	constructor(module, ctrl, area, areaSettings, state, close) {

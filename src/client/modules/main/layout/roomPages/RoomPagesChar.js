@@ -78,7 +78,7 @@ class RoomPagesChar {
 
 	createFactory() {
 		let page = this.getPage();
-		return (layoutId) => page.factory(this.ctrl, this.ctrl.inRoom, page.state, page.close, layoutId);
+		return (layoutId) => page.factory?.(this.ctrl, this.ctrl.inRoom, page.state, page.close, layoutId) || null;
 	}
 
 	_getRoomPages(roomInstanceId) {
@@ -97,7 +97,7 @@ class RoomPagesChar {
 		let f = pageFactory?.componentFactory;
 		this.defaultPage = {
 			id: null,
-			state: (pageFactory.stateFactory ? pageFactory.stateFactory(this.ctrl) : {}),
+			state: (pageFactory?.stateFactory ? pageFactory.stateFactory(this.ctrl) : {}),
 			factory: f
 				? (ctrl, room, state, close, layoutId) => f(ctrl, state, layoutId)
 				: null,
