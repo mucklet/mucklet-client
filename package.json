@@ -18,6 +18,7 @@
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",
     "build:realm:test": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_test webpack",
     "build:realm:wolfery": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_wolfery webpack",
+    "build:realm:unknown": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_unknown webpack",
     "test": "jest ./src",
     "lint": "eslint --fix --ext .js src/"
   },
