@@ -48,7 +48,7 @@ class PageEditRoom {
 	open(ctrl, room) {
 		return this.module.api.get('core.room.' + room.id + '.settings').then(roomSettings => {
 			roomSettings.on();
-			return this.module.roomPages.openPage(
+			return this.module.roomPages.openRoomPage(
 				'editRoom',
 				ctrl.id,
 				getRoomInstanceId(room),

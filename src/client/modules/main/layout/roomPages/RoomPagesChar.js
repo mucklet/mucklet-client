@@ -12,16 +12,19 @@ function getPageIdx(pageId, pages) {
 }
 
 class RoomPagesChar {
-	constructor(module, ctrl, update, defaultPageFactory) {
+	constructor(module, ctrl, update, opt) {
 		this.module = module;
 		this.ctrl = ctrl;
 		this.update = update;
 
 		this.roomPages = {};
+		this.areaPages = {};
 		this.charPages = [];
 		this.defaultRoomStates = {};
+		this.defaultAreaStates = {};
 
-		this.setDefaultPageFactory(defaultPageFactory);
+		this.setDefaultRoomPageFactory(opt?.defaultRoomPageFactory);
+		this.setDefaultAreaPageFactory(opt?.defaultAreaPageFactory);
 	}
 
 	/**
@@ -34,7 +37,7 @@ class RoomPagesChar {
 	 * @param {function} [opt.stateFactory] Initial state factory function.
 	 * @returns {function} Function that closes the page.
 	 */
-	openPage(pageId, roomInstanceId, pageFactory, opt) {
+	openRoomPage(pageId, roomInstanceId, pageFactory, opt) {
 		opt = opt || {};
 		let pages = this._getRoomPages(roomInstanceId);
 		let firstIdx = roomInstanceId ? 1 : 0;
@@ -48,7 +51,7 @@ class RoomPagesChar {
 			pages.push(pages.splice(pageIdx, 1)[0]);
 		}
 
-		// Check if page didn't exists before
+		// Check if page didn't exist before
 		if (pageIdx < 0) {
 			let close = () => this._closePage(roomInstanceId, pageId, true);
 			pages.push({
@@ -87,19 +90,31 @@ class RoomPagesChar {
 		}
 		let pages = this.roomPages[roomInstanceId];
 		if (!pages) {
-			pages = [ this.defaultPage ];
+			pages = [ this.defaultRoomPage ];
 			this.roomPages[roomInstanceId] = pages;
 		}
 		return pages;
 	}
 
-	setDefaultPageFactory(pageFactory) {
+	setDefaultRoomPageFactory(pageFactory) {
 		let f = pageFactory?.componentFactory;
-		this.defaultPage = {
+		this.defaultRoomPage = {
 			id: null,
 			state: (pageFactory?.stateFactory ? pageFactory.stateFactory(this.ctrl) : {}),
 			factory: f
 				? (ctrl, room, state, close, layoutId) => f(ctrl, state, layoutId)
+				: null,
+			close: null,
+		};
+	}
+
+	setDefaultAreaPageFactory(pageFactory) {
+		let f = pageFactory?.componentFactory;
+		this.defaultAreaPage = {
+			id: null,
+			state: (pageFactory?.stateFactory ? pageFactory.stateFactory(this.ctrl) : {}),
+			factory: f
+				? (ctrl, area, state, close, layoutId) => f(ctrl, area, state, layoutId)
 				: null,
 			close: null,
 		};

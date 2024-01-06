@@ -5,7 +5,7 @@ import RoomPagesChar from './RoomPagesChar';
 const namespace = 'module.roomPages';
 
 /**
- * RoomPages holds the room panel pages.
+ * RoomPages holds the room panels room or area pages per controlled character.
  */
 class RoomPages {
 	constructor(app, params) {
@@ -25,13 +25,25 @@ class RoomPages {
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-		this.model = new Model({ data: { char: null, inRoom: null, page: null, factory: null }});
+		this.model = new Model({ data: {
+			// Controlled character
+			char: null,
+			// Current room model
+			inRoom: null,
+			// Current area model
+			area: null,
+			// Current page in display
+			page: null,
+			// Component factory function for the page
+			factory: null,
+		}});
 
 		this.playerModel = this.module.player.getModel();
 		this.ctrlModel = this.module.player.getControlledModel();
 
 		this.charComponents = {};
-		this.defaultPageFactory = null;
+		this.defaultRoomPageFactory = null;
+		this.defaultAreaPageFactory = null;
 
 		this._setListeners(true);
 	}
@@ -69,11 +81,11 @@ class RoomPages {
 	 * @param {?RoomPagesDefaultPageFactory} pageFactory Default page room factory.
 	 * @returns {this}
 	 */
-	setDefaultPageFactory(pageFactory) {
-		this.defaultPageFactory = pageFactory || null;
+	setDefaultRoomPageFactory(pageFactory) {
+		this.defaultRoomPageFactory = pageFactory || null;
 		// Set it for all existing character components.
 		for (let k in this.charComponents) {
-			this.charComponents[k].setDefaultPageFactory(pageFactory);
+			this.charComponents[k].setDefaultRoomPageFactory(pageFactory);
 		}
 		return this;
 	}
@@ -82,8 +94,30 @@ class RoomPages {
 	 * Gets the default page factory for the room pages.
 	 * @returns {?RoomPagesDefaultPageFactory} Default room page factory.
 	 */
-	getDefaultPageFactory() {
-		return this.defaultPageFactory;
+	getDefaultRoomPageFactory() {
+		return this.defaultRoomPageFactory;
+	}
+
+	/**
+	 * Sets the default page factory for the area pages.
+	 * @param {?RoomPagesDefaultPageFactory} pageFactory Default page area factory.
+	 * @returns {this}
+	 */
+	setDefaultAreaPageFactory(pageFactory) {
+		this.defaultAreaPageFactory = pageFactory || null;
+		// Set it for all existing character components.
+		for (let k in this.charComponents) {
+			this.charComponents[k].setDefaultAreaPageFactory(pageFactory);
+		}
+		return this;
+	}
+
+	/**
+	 * Gets the default page factory for the area pages.
+	 * @returns {?RoomPagesDefaultPageFactory} Default area page factory.
+	 */
+	getDefaultAreaPageFactory() {
+		return this.defaultAreaPageFactory;
 	}
 
 	/**
@@ -91,20 +125,20 @@ class RoomPages {
 	 * @param {string} pageId Page ID. If a page with the same ID is already open for that character and room, that page will be moved to the top.
 	 * @param {string} ctrlId Char ID of controlled character.
 	 * @param {string} roomInstanceId Room instance ID
-	 * @param {function} pageFactory Page factory callback function: function(ctrl, room, roomState, close, layoutId) -> { component, [title], [onClose], [closeIcon] }
+	 * @param {(ctrl: Model, room: Model, roomState: any, close: () => void, layoutId: string) => { component: Component, title?: string | LocaleString, onClose?: () => void, closeIcon?: string }} pageFactory Page factory callback function.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {bool} [opt.openPanel] Flag to tell if the panel should be opened when opening the page.
 	 * @param {function} [opt.onClose] Callback called when page is closed.
 	 * @param {(ctrl: Model) => Object} [opt.stateFactory] Initial state factory function.
  	 * @returns {function} Function that closes the page.
 	 */
-	openPage(pageId, ctrlId, roomInstanceId, pageFactory, opt) {
+	openRoomPage(pageId, ctrlId, roomInstanceId, pageFactory, opt) {
 		opt = opt || {};
 		let c = this.charComponents[ctrlId];
 		if (!c) {
 			throw new Error("No component for char " + ctrlId);
 		}
-		let ret = c.openPage(pageId, roomInstanceId, pageFactory, opt);
+		let ret = c.openRoomPage(pageId, roomInstanceId, pageFactory, opt);
 		if (opt.openPanel) {
 			this.openPanel();
 		}
@@ -144,7 +178,10 @@ class RoomPages {
 			let prev = this.charComponents[charId];
 			if (char) {
 				if (!prev) {
-					this.charComponents[charId] = new RoomPagesChar(this.module, char, this._update, this.getDefaultPageFactory());
+					this.charComponents[charId] = new RoomPagesChar(this.module, char, this._update, {
+						defaultRoomPageFactory: this.getDefaultRoomPageFactory(),
+						defaultAreaPageFactory: this.getDefaultAreaPageFactory(),
+					});
 				}
 			} else if (prev) {
 				prev.dispose();

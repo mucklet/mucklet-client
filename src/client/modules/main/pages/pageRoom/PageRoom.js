@@ -34,7 +34,7 @@ class PageRoom {
 			eventBus: this.app.eventBus,
 		});
 		this.charStates = {};
-		this.module.roomPages.setDefaultPageFactory({
+		this.module.roomPages.setDefaultRoomPageFactory({
 			componentFactory: (ctrl, stateModel, layout) => {
 				let component = new PageRoomComponent(this.module, ctrl, stateModel, layout, (txt) => title.setText(txt));
 				let title = new Txt(component.getTitle(), { tagName: 'h3', className: 'panel--titletxt' });
@@ -165,7 +165,7 @@ class PageRoom {
 	}
 
 	dispose() {
-		this.module.roomPages.setDefaultPageFactory(null);
+		this.module.roomPages.setDefaultRoomPageFactory(null);
 	}
 }
 
