@@ -72,7 +72,7 @@ class RoomPagesChar {
 		let pageIdx = getPageIdx(pageId, stack);
 
 		if (opt.reset) {
-			this._closePages(roomInstanceId);
+			this._closePages(roomInstanceId, areaId);
 		} else if (pageIdx >= firstIdx) {
 			// Move page from stack to end.
 			stack.push(stack.splice(pageIdx, 1)[0]);
@@ -80,7 +80,7 @@ class RoomPagesChar {
 
 		// Check if page didn't exist before
 		if (pageIdx < 0) {
-			let close = () => this._closePage(roomInstanceId, pageId, true);
+			let close = () => this._closePage(roomInstanceId, areaId, pageId, true);
 			stack.push({
 				id: pageId,
 				factory: pageFactory,
@@ -171,18 +171,18 @@ class RoomPagesChar {
 		};
 	}
 
-	_closePages(roomInstanceId, skipPageId) {
-		let stack = this._getPageStack(roomInstanceId);
+	_closePages(roomInstanceId, areaId, skipPageId) {
+		let stack = this._getPageStack(roomInstanceId, areaId);
 		let firstIdx = roomInstanceId ? 1 : 0;
 		for (let i = stack.length - 1; i >= firstIdx; i--) {
 			if (stack[i].id !== skipPageId) {
-				this._closePage(roomInstanceId, stack[i].id);
+				this._closePage(roomInstanceId, areaId, stack[i].id);
 			}
 		}
 	}
 
-	_closePage(roomInstanceId, pageId, triggerUpdate) {
-		let stack = this._getPageStack(roomInstanceId);
+	_closePage(roomInstanceId, areaId, pageId, triggerUpdate) {
+		let stack = this._getPageStack(roomInstanceId, areaId);
 		// Find index position of page
 		let pageIdx = getPageIdx(pageId, stack);
 
