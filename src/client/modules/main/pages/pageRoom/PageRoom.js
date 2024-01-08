@@ -1,4 +1,4 @@
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection, sortOrderCompare } from 'modapp-resource';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import PageRoomExits from './PageRoomExits';
@@ -14,51 +14,29 @@ class PageRoom {
 		this.app = app;
 		this.app.require([
 			'roomPages',
-			'pageEditExit',
 			'player',
 			'avatar',
 			'charsAwake',
 			'dialogEditNote',
 			'charPages',
 			'toaster',
-			'avatar',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-		this.areaComponentFactory = null;
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.charStates = {};
 		this.module.roomPages.setDefaultRoomPageFactory({
 			componentFactory: (ctrl, room, state, layout) => ({
 				component: new PageRoomComponent(this.module, ctrl, room, state, layout),
 				title: roomInfo,
 			}),
 		});
-	}
-
-	_getStateModel(ctrlId) {
-		let m = this.charStates[ctrlId];
-		if (!m) {
-			m = new Model({ areaId: null });
-			this.charStates[ctrlId] = m;
-		}
-		return m;
-	}
-
-	/**
-	 * Sets the area ID for the zoom bar in the room page.
-	 * @param {string} ctrlId Controlled character ID
-	 * @param {string?} areaId Area ID to show, or null to show the room.
-	 */
-	setAreaId(ctrlId, areaId) {
-		this._getStateModel(ctrlId).set({ areaId });
 	}
 
 	/**
@@ -97,25 +75,6 @@ class PageRoom {
 		this.tools.remove(toolId);
 		return this;
 	}
-
-	/**
-	 * Sets the component factory function for creating the area page.
-	 * @param {(ctrl: Model, area: Model, state: object, layoutId: string) => Component} areaComponentFactory Area component factory callback function
-	 * @returns {this}
-	 */
-	setAreaComponentFactory(areaComponentFactory) {
-		this.areaComponentFactory = areaComponentFactory;
-		return this;
-	}
-
-	/**
-	 * Gets the area component factory function.
-	 * @returns {(ctrl: Model, area: Model, state: object, layoutId: string) => Component} Area component factory callback function
-	 */
-	getAreaComponentFactory() {
-		return this.areaComponentFactory;
-	}
-
 
 	/**
 	 * Checks if a controlled character can edit a room.

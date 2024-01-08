@@ -15,7 +15,6 @@ class OverlayNav {
 			'roomPages',
 			'pageRoom',
 			'toaster',
-			'pageRoom',
 		], this._init.bind(this));
 	}
 
