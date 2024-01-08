@@ -9,6 +9,7 @@ class PlayerTabsTabs {
 	 * Creates an instance of PlayerTabsTabs.
 	 * @param {object} module Module object.
 	 * @param {object} [opt] Optional parameters as defined by CollectionList.
+	 * @param {string} [opt.className] Class name to set on the tabs component.
 	 * @param {boolean} [opt.closeOnReselect] Flag to close tabs when clicking on a tab that is already selected. Defaults to false.
 	 * @param {boolean} [opt.hideDefaultTab] Flag to hide the default tab. Defaults to false.
 	 */

@@ -27,6 +27,7 @@ class LayoutMobileComponent {
 								n.component('titleBar', new Collapser()),
 								n.elem('div', { className: 'layoutmobile--tabscont' }, [
 									n.component(this.module.playerTabs.newTabs({
+										className: 'layoutmobile--tabs',
 										closeOnReselect: true,
 									})),
 									n.component(new KebabMenu(this.module.playerTools.getTools(), {
