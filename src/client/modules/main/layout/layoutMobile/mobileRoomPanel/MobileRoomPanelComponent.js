@@ -1,6 +1,7 @@
 import { Transition } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import MobilePanel from 'components/MobilePanel';
+import OnRender from 'components/OnRender';
 
 function getAreaIdx(areas, area) {
 	return areas ? areas.indexOf(area) : -1;
@@ -43,22 +44,22 @@ class RoomPanelComponent {
 					}
 
 					let page = m.page;
-					this.transition[cb](pageInfo.component, {
-						onRender: () => {
+					this.transition[cb](new OnRender(pageInfo.component, {
+						afterRender: () => {
 							// Restore scrolling of page
 							let sb = c.getSimpleBar();
 							if (sb) {
 								sb.getScrollElement().scrollTop = page.state.scrollTop || 0;
 							}
 						},
-						onUnrender: () => {
+						beforeUnrender: () => {
 							// Store scrolling of page
 							let sb = c.getSimpleBar();
 							if (sb) {
 								page.state.scrollTop = sb.getScrollElement().scrollTop;
 							}
 						},
-					});
+					}));
 					let close = pageInfo.close || page?.close;
 
 					c
