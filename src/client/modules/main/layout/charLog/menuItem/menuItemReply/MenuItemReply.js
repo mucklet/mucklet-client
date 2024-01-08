@@ -1,52 +1,6 @@
 import l10n from 'modapp-l10n';
-import fullname from 'utils/fullname';
+import { getTargets, replyCmds, replyAllCmds, countTargets } from 'utils/replyToEvent';
 
-
-function getTargets(charId, ev) {
-	let ts = ev.target ? [ ev.target ] : [];
-	if (ev.targets) {
-		ts = ts.concat(ev.targets);
-	}
-	ts = ts.filter(t => t.id != ev.char.id);
-	ts.unshift(ev.char);
-	ts = ts.filter(t => t.id != charId);
-	if (!ts.length) {
-		ts = [ ev.char ];
-	}
-	return ts;
-}
-
-function getTargetList(charId, ev) {
-	return getTargets(charId, ev).map(t => fullname(t)).join(", ");
-}
-
-function getTarget(charId, ev) {
-	let t = ev.char;
-	if (t.id == charId) {
-		t = ev.target || ev.targets[0] || t;
-	}
-	return fullname(t);
-}
-
-function addOoc(ev) {
-	return ev.ooc ? '>' : '';
-}
-
-const replyCmds = {
-	address: (charId, ev) => 'address ' + getTarget(charId, ev) + ' =' + addOoc(ev),
-	whisper: (charId, ev) => 'whisper ' + getTarget(charId, ev) + ' =' + addOoc(ev),
-	message: (charId, ev) => 'message ' + getTarget(charId, ev) + ' =' + addOoc(ev),
-};
-
-const replyAllCmds = {
-	address: (charId, ev) => 'address ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
-	whisper: (charId, ev) => 'whisper ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
-	message: (charId, ev) => 'message ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
-};
-
-function countTargets(ev) {
-	return (ev.target ? 1 : 0) + (ev.targets?.length || 0);
-}
 
 /**
  * MenuItemReply adds the char log menu item to reply to targeted communication
