@@ -22,12 +22,6 @@ const shortcuts = [
 		desc: l10n.l('helpConsole.historyDesc', `<p>Cycle through editor history. Any text currently in the console will be saved to history.<p>`),
 		sortOrder: 30,
 	},
-	// {
-	// 	id: 'autocompletion',
-	// 	usage: '<kbd>Ctrl</kbd> + <kbd>Space</kbd>',
-	// 	desc: l10n.l('helpConsole.autocompletionDesc', `<p>Open auto-completion. Use <kbd>Up</kbd>/<kbd>Down</kbd> to change selection and confirm with <kbd>Tab</kbd> or <kbd>Enter</kbd>.<p>`),
-	// 	sortOrder: 40
-	// },
 ];
 
 /**

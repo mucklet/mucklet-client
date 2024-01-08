@@ -2,7 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
-import { standardKeymap, insertNewline, cursorDocEnd } from '@codemirror/commands';
+import { standardKeymap, insertNewline } from '@codemirror/commands';
 import l10n from 'modapp-l10n';
 import tabCompletion, { tabComplete } from 'utils/codemirrorTabCompletion';
 import spellcheck from 'utils/codemirrorSpellcheck';
@@ -24,17 +24,29 @@ class ConsoleEditor {
 
 	render(el) {
 		this.elem = new ModelComponent(
-			this.state,
-			new Elem(n => n.elem('div', { className: 'console-editor' }, [
-				n.component(new Txt(txtPlaceholder, { tagName: 'div', className: 'console-editor--placeholder' })),
-			])),
+			this.module.self.getKeymapModel(),
+			new ModelComponent(
+				this.state,
+				new Elem(n => n.elem('div', { className: 'console-editor' }, [
+					n.component(new Txt(txtPlaceholder, { tagName: 'div', className: 'console-editor--placeholder' })),
+				])),
+				(m, c, change) => {
+					if (change && this.cm && m) {
+						// Creates a new editor state if the state.doc has changed. This
+						// should not happen due to simple edits to the console as the
+						// editor's doc and the state's doc would match. This is rather
+						// an affect of changing history.
+						let selection = this.cm.state.selection.main;
+						if (m.doc.trim() != this.cm.state.doc.toString().trim() || selection.anchor != m.anchor || selection.head != m.head) {
+							this.cm.setState(this._newEditorState(m));
+						}
+					}
+				},
+			),
 			(m, c, change) => {
-				// Creates a new editor state if the state.doc has changed. This
-				// should not happen due to simple edits to the console as the
-				// editor's doc and the state's doc would match. This is rather
-				// an affect of changing history.
-				if (change && this.cm && m && m.doc.trim() != this.cm.state.doc.toString().trim()) {
-					this.cm.setState(this._newEditorState(m));
+				// If there is a change to the keymap model, set a new state.
+				if (change) {
+					this.cm.setState(this._newEditorState(this.state));
 				}
 			},
 		);
@@ -47,7 +59,8 @@ class ConsoleEditor {
 
 	unrender() {
 		if (this.elem) {
-			this.state?.setDoc(this._getValue());
+			let sel = this._getSelection();
+			this.state?.setDoc(this._getValue(), sel.anchor, sel.head);
 			this._destroyEditor();
 			this.elem.unrender();
 			this.elem = null;
@@ -60,7 +73,7 @@ class ConsoleEditor {
 	 * @param {object} state State object
 	 */
 	_createEditor(state) {
-		let rel = this.elem?.getComponent().getElement();
+		let rel = this.elem?.getComponent().getComponent().getElement();
 		if (rel && state) {
 			let editorState = this._newEditorState(state);
 			if (this.cm) {
@@ -71,7 +84,6 @@ class ConsoleEditor {
 					parent: rel,
 				});
 			}
-			cursorDocEnd(this.cm);
 		} else {
 			this._destroyEditor();
 		}
@@ -96,7 +108,7 @@ class ConsoleEditor {
 		if (state !== this.state) {
 			this.state = state;
 			if (this.elem) {
-				this.elem.setModel(this.state);
+				this.elem.getComponent().setModel(this.state);
 				this._createEditor(state);
 			}
 		}
@@ -131,29 +143,38 @@ class ConsoleEditor {
 		tabComplete(this.cm);
 	}
 
-	_newEditorState(state, doc) {
-		doc = (typeof doc != 'undefined' ? doc : state?.doc) || '';
+	_newEditorState(state) {
+		let keymapArray = [];
+
+		let keymapProps = this.module.self.getKeymapModel().props;
+		for (let key in keymapProps) {
+			let v = keymapProps[key];
+			keymapArray.push(Object.assign({}, v, { key, run: (ctx) => v.run(state, ctx) }));
+		}
+
+		keymapArray.push(...[
+			{ key: 'Enter', run: this._onEnter },
+			{ key: 'Ctrl-Enter', run: insertNewline },
+			{ key: 'Ctrl-ArrowUp', run: this._cyclePrev },
+			{ key: 'Cmd-ArrowUp', run: this._cyclePrev },
+			{ key: 'Ctrl-P', run: this._cyclePrev },
+			{ key: 'Cmd-P', run: this._cyclePrev },
+			{ key: 'Ctrl-ArrowDown', run: this._cycleNext },
+			{ key: 'Cmd-ArrowDown', run: this._cycleNext },
+			{ key: 'Ctrl-N', run: this._cycleNext },
+			{ key: 'Cmd-N', run: this._cycleNext },
+			...standardKeymap,
+		]);
 		let editorState = EditorState.create({
-			doc,
+			doc: state.doc,
+			selection: { anchor: state.anchor || 0, head: state.head || 0 },
 			extensions: [
 				tabCompletion({
 					complete: editorState => this.module.cmd.getCMTabComplete(editorState),
 				}),
 				spellcheck,
 				this.module.cmd.getCMFormattingStyle(),
-				keymap.of([
-					{ key: 'Enter', run: this._onEnter },
-					{ key: 'Ctrl-Enter', run: insertNewline },
-					{ key: 'Ctrl-ArrowUp', run: this._cyclePrev },
-					{ key: 'Cmd-ArrowUp', run: this._cyclePrev },
-					{ key: 'Ctrl-P', run: this._cyclePrev },
-					{ key: 'Cmd-P', run: this._cyclePrev },
-					{ key: 'Ctrl-ArrowDown', run: this._cycleNext },
-					{ key: 'Cmd-ArrowDown', run: this._cycleNext },
-					{ key: 'Ctrl-N', run: this._cycleNext },
-					{ key: 'Cmd-N', run: this._cycleNext },
-					...standardKeymap,
-				]),
+				keymap.of(keymapArray),
 				state.getCMLanguage(),
 				this.module.cmd.getCMHighlightStyle(),
 				EditorView.lineWrapping,
@@ -165,10 +186,10 @@ class ConsoleEditor {
 
 	// Sets a new editor state with the provided doc string value, and updates the state
 	_setConsole(doc) {
+		this.state?.setDoc(doc, doc.length);
 		if (this.cm) {
-			this.cm.setState(this._newEditorState(this.state, doc));
+			this.cm.setState(this._newEditorState(this.state));
 		}
-		this.state?.setDoc(doc.trim());
 	}
 
 	_onEnter(ctx) {
@@ -203,19 +224,25 @@ class ConsoleEditor {
 	}
 
 	_onEditorUpdate(update) {
-		this.state?.setDoc(this._getValue());
+		let view = update.view;
+		let sel = this._getSelection();
+		this.state?.setDoc(view.state.doc.toString(), sel.anchor, sel.head);
 
 		this._setEmpty();
 	}
 
 	_setEmpty() {
 		if (this.elem && this.cm) {
-			this.elem.getComponent()[this.cm.state.doc.toString() ? 'removeClass' : 'addClass']('empty');
+			this.elem.getComponent().getComponent()[this.cm.state.doc.toString() ? 'removeClass' : 'addClass']('empty');
 		}
 	}
 
 	_getValue() {
 		return (this.cm ? this.cm.state.doc.toString() : this.state?.doc || '').trim();
+	}
+
+	_getSelection() {
+		return this.cm ? this.cm.state.selection.main : { anchor: 0, head: 0 };
 	}
 
 	_cycleHistory(prev, ctx) {
@@ -225,9 +252,6 @@ class ConsoleEditor {
 				: this.state.nextHistory()
 			: '',
 		);
-		if (ctx) {
-			cursorDocEnd(ctx);
-		}
 		return true;
 	}
 }

@@ -35,6 +35,7 @@ class Console {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 		this.model = new Model({ data: { state: null, mode: this._getMode() }, eventBus: this.app.eventBus });
+		this.keymapModel = new Model({ eventBus: this.app.eventBus });
 		this.charStates = {};
 
 		this._setListeners(true);
@@ -43,6 +44,10 @@ class Console {
 
 	getModel() {
 		return this.model;
+	}
+
+	getKeymapModel() {
+		return this.keymapModel;
 	}
 
 	/**
@@ -56,7 +61,26 @@ class Console {
 		if (storeHistory) {
 			state.storeHistory();
 		}
-		state.setDoc(doc);
+		state.setDoc(doc, doc.length);
+	}
+
+	/**
+	 * Adds a keymap callback to the console.
+	 * @param {string} key Key to mapped, as defined by CodeMirror6.
+	 * @param {KeyBinding} binding Key binding, as defined by CodeMirror 6. It
+	 * differs in the run-Command getting the ConsoleState as the first
+	 * argument, and that the key is overwritten by the key.
+	 */
+	addKeymap(key, binding) {
+		this.keymapModel.set({ [key]: binding });
+	}
+
+	/**
+	 * Removes a keymap callback.
+	 * @param {string} key Key to mapped, as defined by CodeMirror6.
+	 */
+	removeKeymap(key) {
+		this.keymapModel.set({ [key]: undefined });
 	}
 
 	_setListeners(on) {
