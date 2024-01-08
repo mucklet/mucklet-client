@@ -66,7 +66,7 @@ class PageEditRoom {
 				}
 			});
 
-		return this.module.roomPages.openPage(
+		return this.module.roomPages.openRoomPage(
 			'editExits',
 			ctrl.id,
 			getRoomInstanceId(room),

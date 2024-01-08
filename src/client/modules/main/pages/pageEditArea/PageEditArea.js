@@ -46,7 +46,7 @@ class PageEditArea {
 	open(ctrl, area, toggleOpen) {
 		return this.module.api.get('core.area.' + area.id + '.settings').then(areaSettings => {
 			areaSettings.on();
-			let close = this.module.roomPages.openPage(
+			let close = this.module.roomPages.openRoomPage(
 				'editArea_' + area.id,
 				ctrl.id,
 				null,

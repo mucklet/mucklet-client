@@ -48,7 +48,7 @@ class PageEditExit {
 				}
 			});
 
-		closer = this.module.roomPages.openPage(
+		closer = this.module.roomPages.openRoomPage(
 			'editExit_' + exitId,
 			ctrl.id,
 			getRoomInstanceId(room),

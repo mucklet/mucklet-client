@@ -49,7 +49,7 @@ class PageRoomProfile {
 	 */
 	open(ctrl, room) {
 		return this.module.api.get('core.room.' + room.id + '.profiles').then(profiles => {
-			return this.module.roomPages.openPage(
+			return this.module.roomPages.openRoomPage(
 				'roomProfile',
 				ctrl.id,
 				getRoomInstanceId(room),

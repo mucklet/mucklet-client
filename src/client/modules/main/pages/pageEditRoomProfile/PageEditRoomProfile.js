@@ -40,7 +40,7 @@ class PageEditRoomProfile {
 		]).then(result => {
 			result[0].on(); // Profile
 			result[1].on(); // Room profiles
-			return this.module.roomPages.openPage(
+			return this.module.roomPages.openRoomPage(
 				'editRoomProfile',
 				ctrl.id,
 				getRoomInstanceId(room),
