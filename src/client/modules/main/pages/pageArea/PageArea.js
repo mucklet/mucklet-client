@@ -1,6 +1,7 @@
 import { Model } from 'modapp-resource';
 import PageAreaArea from './PageAreaArea';
 import PageAreaImage from './PageAreaImage';
+import { areaInfo } from './pageAreaTxt';
 import './pageArea.scss';
 
 /**
@@ -14,7 +15,7 @@ class PageArea {
 		this.newArea = this.newArea.bind(this);
 
 		this.app.require([
-			'pageRoom',
+			'roomPages',
 			'player',
 		], this._init.bind(this));
 	}
@@ -23,7 +24,12 @@ class PageArea {
 		this.module = Object.assign({ self: this }, module);
 
 		this.tools = new Model({ eventBus: this.app.eventBus });
-		this.module.pageRoom.setAreaComponentFactory(this.newArea);
+		this.module.roomPages.setDefaultAreaPageFactory({
+			componentFactory: (ctrl, area, state, layout) => ({
+				component: new PageAreaArea(this.module, ctrl, area, state, layout),
+				title: areaInfo,
+			}),
+		});
 	}
 
 	/**
@@ -91,10 +97,7 @@ class PageArea {
 	}
 
 	dispose() {
-		let pageRoom = this.module.pageRoom;
-		if (pageRoom.getAreaComponentFactory() == this.newArea) {
-			pageRoom.setAreaComponentFactory(null);
-		}
+		this.module.roomPages.setDefaultAreaPageFactory(null);
 	}
 }
 
