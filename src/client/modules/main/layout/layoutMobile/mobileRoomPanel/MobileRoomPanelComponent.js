@@ -35,7 +35,7 @@ class RoomPanelComponent {
 					}
 
 					let cb = 'fade';
-					if (change?.hasOwnProperty('area')) {
+					if (!change?.hasOwnProperty('char') && change?.hasOwnProperty('area')) {
 						let before = getAreaIdx(change?.hasOwnProperty('areas') ? change.areas : m.areas, change.area);
 						let after = getAreaIdx(m.areas, m.area);
 						if (before >= 0 && after >= 0 && before != after) {
