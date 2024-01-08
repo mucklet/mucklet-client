@@ -147,10 +147,11 @@ class RoomPages {
 
 	/**
 	 * Creates a new instance of a RoomPagesZoomBar.
-	 * @param {string} ctrlId Char ID of controlled character.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {string} [opt.className] Additional class name to add to the ZoomBar.
 	 * @returns {RoomPagesZoomBar} ZoomBar component.
 	 */
-	newZoomBar(ctrlId) {
+	newZoomBar(opt) {
 		return new ModelCollapser(this.model, [{
 			condition: m => m.areas?.length > 1,
 			factory: m => new ModelComponent(
@@ -158,7 +159,7 @@ class RoomPages {
 				new Fader(),
 				(m, c, change) => {
 					if ((!change || change.hasOwnProperty('areas') || change.hasOwnProperty('char')) && m.areas?.length > 1 && m.char) {
-						c.setComponent(new RoomPagesZoomBar(this.module, m.char.id, m.areas, m));
+						c.setComponent(new RoomPagesZoomBar(this.module, m.char.id, m.areas, m, opt));
 					}
 				},
 			),

@@ -3,4 +3,8 @@
 .roompanel {
 	width: 318px;
 	background-color: $color1-light;
+
+	&--zoombar {
+		padding: 0px 12px 8px 12px;
+	}
 }

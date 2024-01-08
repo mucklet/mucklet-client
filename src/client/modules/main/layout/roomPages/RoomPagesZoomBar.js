@@ -11,17 +11,18 @@ function getAreaId(area) {
  * RoomPagesZoomBar renders the zoom bar.
  */
 class RoomPagesZoomBar {
-	constructor(module, ctrlId, areas, model) {
+	constructor(module, ctrlId, areas, model, opt) {
 		this.module = module;
 		this.ctrlId = ctrlId;
 		this.areas = areas;
 		this.model = model;
+		this.opt = opt;
 	}
 
 	render(el) {
 		this.elem = new ModelComponent(
 			this.model,
-			new Elem(n => n.elem('div', { className: 'roompages-zoombar' }, [
+			new Elem(n => n.elem('div', { className: 'roompages-zoombar' + (this.opt?.className ? ' ' + this.opt?.className : '') }, [
 				n.elem('div', { className: 'roompages-zoombar--zoomin' }, [
 					n.elem('zoomin', 'button', { className: 'iconbtn medium', events: { click: () => this._zoom(-1) }}, [
 						n.component(new FAIcon('search-plus')),

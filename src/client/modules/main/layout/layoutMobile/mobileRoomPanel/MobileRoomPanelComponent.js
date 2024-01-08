@@ -1,20 +1,22 @@
 import { Transition } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
-import Panel from 'components/Panel';
+import MobilePanel from 'components/MobilePanel';
 
 function getAreaIdx(areas, area) {
 	return areas ? areas.indexOf(area) : -1;
 }
 
 class RoomPanelComponent {
-	constructor(module) {
+	constructor(module, opt) {
 		this.module = module;
 
 		this.transition = new Transition(null, { duration: 150 }),
-		this.panel = new Panel("", this.transition, {
+		this.panel = new MobilePanel("", null, {
+			closed: !opt?.open,
 			align: 'right',
-			className: 'roompanel',
-			subheaderComponent: this.module.roomPages.newZoomBar({ className: 'roompanel--zoombar' }),
+			className: 'mobileroompanel',
+			onClose: () => this.module.mobileActivePanel.toggleRoomPanel(false),
+			subheaderComponent: this.module.roomPages.newZoomBar({ className: 'mobileroompanel--zoombar' }),
 		});
 	}
 
@@ -24,7 +26,7 @@ class RoomPanelComponent {
 			this.panel,
 			(m, c, change) => {
 				if (!change || change.hasOwnProperty('factory')) {
-					let pageInfo = m.factory?.('desktop');
+					let pageInfo = m.factory?.('mobile');
 
 					if (!pageInfo) {
 						c.setTitle("").setButton(null).setComponent(null);
@@ -57,10 +59,11 @@ class RoomPanelComponent {
 							}
 						},
 					});
+					let close = pageInfo.close || page?.close;
 
 					c
-						.setTitle(pageInfo.title || '')
-						.setButton(pageInfo.close || page?.close || null, pageInfo.closeIcon || page?.closeIcon || 'chevron-circle-left')
+						.setTitle(pageInfo.title || "")
+						.setButton(close || (() => this.toggle(false)), close ? pageInfo.closeIcon || page?.closeIcon || 'chevron-circle-left' : 'times')
 						.setComponent(this.transition);
 				}
 			},

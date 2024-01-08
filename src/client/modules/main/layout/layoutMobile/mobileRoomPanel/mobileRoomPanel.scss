@@ -3,4 +3,8 @@
 .mobileroompanel {
 	background-color: $color1-light;
 	border-bottom: 2px solid $color1;
+
+	&--zoombar {
+		padding: 0px 8px 8px 8px;
+	}
 }

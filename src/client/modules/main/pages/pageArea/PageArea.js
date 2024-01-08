@@ -1,5 +1,5 @@
 import { Model } from 'modapp-resource';
-import PageAreaArea from './PageAreaArea';
+import PageAreaComponent from './PageAreaComponent';
 import PageAreaImage from './PageAreaImage';
 import { areaInfo } from './pageAreaTxt';
 import './pageArea.scss';
@@ -10,9 +10,6 @@ import './pageArea.scss';
 class PageArea {
 	constructor(app, params) {
 		this.app = app;
-
-		// Bind callbacks
-		this.newArea = this.newArea.bind(this);
 
 		this.app.require([
 			'roomPages',
@@ -26,7 +23,7 @@ class PageArea {
 		this.tools = new Model({ eventBus: this.app.eventBus });
 		this.module.roomPages.setDefaultAreaPageFactory({
 			componentFactory: (ctrl, area, state, layout) => ({
-				component: new PageAreaArea(this.module, ctrl, area, state, layout),
+				component: new PageAreaComponent(this.module, ctrl, area, state, layout),
 				title: areaInfo,
 			}),
 		});
@@ -67,18 +64,6 @@ class PageArea {
 	removeTool(toolId) {
 		this.tools.set({ [toolId]: undefined });
 		return this;
-	}
-
-	/**
-	 * Creates a new PageAreaArea component.
-	 * @param {Model} ctrl Controlled character.
-	 * @param {Model} area Area model.
-	 * @param {object} state State object.
-	 * @param {string} layoutId Layout ID.
- 	 * @returns {Component} Area component.
-	 */
-	newArea(ctrl, area, state, layoutId) {
-		return new PageAreaArea(this.module, ctrl, area, state, layoutId);
 	}
 
 	/**

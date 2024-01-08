@@ -22,6 +22,7 @@ class MobilePanel extends RootElem {
 	 * @param {function} [opt.onClose] Optional callback function called whenever the panel is closed.
 	 * @param {function} [opt.onClick] Optional callback function called whenever the top-right button is clicked. Button will be hidden if null.
 	 * @param {function} [opt.clickIcon] Optional icon to use for the top-right button. Defaults to 'close'.
+	 * @param {function} [opt.subheaderComponent] Optional subheader component.
 	 */
 	constructor(title, component, opt) {
 		opt = Object.assign({ align: "left" }, opt);
@@ -33,6 +34,7 @@ class MobilePanel extends RootElem {
 		this._alignLeft = opt.align != 'right';
 		this._onClose = opt.onClose;
 		this._onButtonClick = opt.onClick || null;
+		this._subheaderComponent = opt.subheaderComponent || null;
 
 		// Additional components
 		this.titleFader = new Fader(null, { className: 'mobilepanel--title' });
@@ -56,20 +58,22 @@ class MobilePanel extends RootElem {
 
 		// Main component
 		this.component = new Elem(n => n.elem('div', opt, [
-			n.elem('div', { className: 'mobilepanel--header' }, [
-				n.elem('button', {
-					className: 'mobilepanel--toggle iconbtn medium',
-					events: {
-						click: (c, e) => {
-							this.toggle();
-							e.stopPropagation();
+			n.elem('headercont', 'div', { className: 'mobilepanel--headercont' }, [
+				n.elem('div', { className: 'mobilepanel--header' }, [
+					n.elem('button', {
+						className: 'mobilepanel--toggle iconbtn medium',
+						events: {
+							click: (c, e) => {
+								this.toggle();
+								e.stopPropagation();
+							},
 						},
-					},
-				}, [
-					n.component(new FAIcon(this._alignLeft ? 'caret-left' : 'caret-right')),
+					}, [
+						n.component(new FAIcon(this._alignLeft ? 'caret-left' : 'caret-right')),
+					]),
+					n.component('btn', new Fader(null, { className: 'mobilepanel--btncont' })),
+					n.component(this.titleFader),
 				]),
-				n.component('btn', new Fader(null, { className: 'mobilepanel--btncont' })),
-				n.component(this.titleFader),
 			]),
 			n.elem('content', 'div', { className: 'mobilepanel--main' }, [
 				n.component(this.simpleBar),
@@ -111,6 +115,9 @@ class MobilePanel extends RootElem {
 		if (!this.rendered) {
 			let el = this.getElement();
 			this.component.render(el);
+			if (this._subheaderComponent) {
+				this._subheaderComponent.render(this.component.getNode('headercont'));
+			}
 			this.removeClass('mobilepanel--hidden');
 			this.rendered = true;
 		}
@@ -118,6 +125,9 @@ class MobilePanel extends RootElem {
 
 	_unrenderComponent() {
 		if (this.rendered) {
+			if (this._subheaderComponent) {
+				this._subheaderComponent.unrender();
+			}
 			this.component.unrender();
 			this.rendered = false;
 		}
