@@ -53,7 +53,7 @@ class OverlayNavComponent {
 							// In mobile layout, we don't zoom in the room/area, but
 							// just open the panel.
 							if (this.opt?.mode != 'mobile') {
-								this.module.pageRoom.setAreaId(this.ctrl.id, this.ctrl.inRoom.area?.id || null);
+								this.module.roomPages.setArea(this.ctrl.id, this.ctrl.inRoom.area?.id || null);
 							}
 							ev.stopPropagation();
 						},

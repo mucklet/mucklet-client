@@ -1,6 +1,7 @@
 import { Model } from 'modapp-resource';
-import PageAreaArea from './PageAreaArea';
+import PageAreaComponent from './PageAreaComponent';
 import PageAreaImage from './PageAreaImage';
+import { areaInfo } from './pageAreaTxt';
 import './pageArea.scss';
 
 /**
@@ -10,11 +11,8 @@ class PageArea {
 	constructor(app, params) {
 		this.app = app;
 
-		// Bind callbacks
-		this.newArea = this.newArea.bind(this);
-
 		this.app.require([
-			'pageRoom',
+			'roomPages',
 			'player',
 		], this._init.bind(this));
 	}
@@ -23,7 +21,12 @@ class PageArea {
 		this.module = Object.assign({ self: this }, module);
 
 		this.tools = new Model({ eventBus: this.app.eventBus });
-		this.module.pageRoom.setAreaComponentFactory(this.newArea);
+		this.module.roomPages.setDefaultAreaPageFactory({
+			componentFactory: (ctrl, area, state, layout) => ({
+				component: new PageAreaComponent(this.module, ctrl, area, state, layout),
+				title: areaInfo,
+			}),
+		});
 	}
 
 	/**
@@ -64,18 +67,6 @@ class PageArea {
 	}
 
 	/**
-	 * Creates a new PageAreaArea component.
-	 * @param {Model} ctrl Controlled character.
-	 * @param {Model} area Area model.
-	 * @param {object} state State object.
-	 * @param {string} layoutId Layout ID.
- 	 * @returns {Component} Area component.
-	 */
-	newArea(ctrl, area, state, layoutId) {
-		return new PageAreaArea(this.module, ctrl, area, state, layoutId);
-	}
-
-	/**
 	 * Creates a new PageArea image component.
 	 * @param {Model} ctrl Controlled character.
 	 * @param {string} areaId Id of area to show.
@@ -91,10 +82,7 @@ class PageArea {
 	}
 
 	dispose() {
-		let pageRoom = this.module.pageRoom;
-		if (pageRoom.getAreaComponentFactory() == this.newArea) {
-			pageRoom.setAreaComponentFactory(null);
-		}
+		this.module.roomPages.setDefaultAreaPageFactory(null);
 	}
 }
 

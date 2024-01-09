@@ -46,7 +46,11 @@ class PlayerPanel {
 			instant: true,
 			className: 'playerpanel',
 			footerComponent: new PlayerPanelFooter(this.module),
-			subheaderComponent: this.module.playerTabs.newTabs({ closeOnReselect: true, hideDefaultTab: true }),
+			subheaderComponent: this.module.playerTabs.newTabs({
+				className: 'playerpanel--tabs',
+				closeOnReselect: true,
+				hideDefaultTab: true,
+			}),
 			btnClass: 'light',
 		});
 

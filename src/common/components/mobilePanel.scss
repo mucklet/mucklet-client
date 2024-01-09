@@ -24,14 +24,15 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
+	}
+
+	&--headercont {
+		display: flex;
+		flex-direction: column;
+		position: relative;
 		border-bottom: 1px solid $black;
 		@include transition(opacity 200ms ease-out);
 	}
-
-	// &--header {
-	// 	flex: 0 0 42px;
-	// 	padding: 0 20px;
-	// }
 
 	&--btncont {
 		position: absolute;
@@ -100,7 +101,7 @@
 		transform: translateX(100%);
 	}
 
-	.mobilepanel--header, .mobilepanel--main {
+	.mobilepanel--headercont, .mobilepanel--main {
 		opacity: 0;
 	}
 

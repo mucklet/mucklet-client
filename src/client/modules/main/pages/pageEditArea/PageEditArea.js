@@ -46,11 +46,11 @@ class PageEditArea {
 	open(ctrl, area, toggleOpen) {
 		return this.module.api.get('core.area.' + area.id + '.settings').then(areaSettings => {
 			areaSettings.on();
-			let close = this.module.roomPages.openPage(
-				'editArea_' + area.id,
+			let close = this.module.roomPages.openAreaPage(
+				'editArea',
 				ctrl.id,
-				null,
-				(ctrl, room, state, close) => ({
+				area.id,
+				(ctrl, area, state, close) => ({
 					component: new PageEditAreaComponent(this.module, ctrl, area, areaSettings, state, close),
 					title: l10n.l('pageEditArea.editArea', "Edit Area"),
 				}),

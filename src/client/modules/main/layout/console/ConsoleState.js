@@ -22,6 +22,8 @@ class ConsoleState extends Model {
 		this._historySize = opt.historySize || 64;
 		// Store data
 		this._doc = "";
+		this._anchor = 0;
+		this._head = 0;
 		this._history = [];
 		this._historyIdx = 0;
 		this._cmLanguage = module.cmd.getCMLanguage(ctrlId);
@@ -33,12 +35,22 @@ class ConsoleState extends Model {
 	_updateModel(emit, reset) {
 		return super._update({
 			doc: this._doc,
+			anchor: this._anchor,
+			head: this._head,
 			historyIdx: this._historyIdx,
 			historyLength: this._history.length,
 			isEmpty: !this._doc,
 			isClean: !(this._doc.trim()),
 			isModified: this.isModified(),
 		}, emit, reset);
+	}
+
+	/**
+	 * Get the ID of the controlled character.
+	 * @returns {string} Controlled character ID.
+	 */
+	getCtrlId() {
+		return this._ctrlId;
 	}
 
 	/**
@@ -52,9 +64,13 @@ class ConsoleState extends Model {
 	/**
 	 * Set current text of the doc.
 	 * @param {string} doc Console doc text.
+	 * @param {number} anchor Main selection anchor.
+	 * @param {number} [head] Main selection head. Defaults to the same as anchor if omitted.
 	 */
-	setDoc(doc) {
+	setDoc(doc, anchor, head) {
 		this._doc = doc;
+		this._anchor = anchor || 0;
+		this._head = (typeof head != 'number' ? head : anchor) || 0;
 		this._saveDoc();
 		this._updateModel(true);
 	}
@@ -127,6 +143,8 @@ class ConsoleState extends Model {
 			if (raw) {
 				let dta = JSON.parse(raw);
 				this._doc = dta.doc || '';
+				this._anchor = dta.anchor || this._doc.length;
+				this._head = dta.head || this._doc.length;
 				this._historyIdx = dta.historyIdx || 0;
 			}
 		} catch (ex) {
@@ -152,6 +170,8 @@ class ConsoleState extends Model {
 		try {
 			localStorage.setItem(consoleStateStoragePrefix + this._ctrlId, JSON.stringify({
 				doc: this._doc,
+				anchor: this._anchor,
+				head: this._head,
 				historyIdx: this._historyIdx,
 			}));
 		} catch (ex) {

@@ -1,0 +1,90 @@
+import { Transition } from 'modapp-base-component';
+import { ModelComponent } from 'modapp-resource-component';
+import Panel from 'components/Panel';
+import OnRender from 'components/OnRender';
+
+function getAreaIdx(areas, area) {
+	return areas ? areas.indexOf(area) : -1;
+}
+
+class RoomPanelComponent {
+	constructor(module) {
+		this.module = module;
+
+		this.transition = new Transition(null, { duration: 150 }),
+		this.panel = new Panel("", this.transition, {
+			align: 'right',
+			className: 'roompanel',
+			subheaderComponent: this.module.roomPages.newZoomBar({ className: 'roompanel--zoombar' }),
+		});
+	}
+
+	render(el) {
+		this.elem = new ModelComponent(
+			this.module.roomPages.getModel(),
+			this.panel,
+			(m, c, change) => {
+				if (!change || change.hasOwnProperty('factory')) {
+					let pageInfo = m.factory?.('desktop');
+
+					if (!pageInfo) {
+						c.setTitle("").setButton(null).setComponent(null);
+						return;
+					}
+
+					let cb = 'fade';
+					if (!change?.hasOwnProperty('char') && change?.hasOwnProperty('area')) {
+						let before = getAreaIdx(change?.hasOwnProperty('areas') ? change.areas : m.areas, change.area);
+						let after = getAreaIdx(m.areas, m.area);
+						if (before >= 0 && after >= 0 && before != after) {
+							cb = (after - before) > 0 ? 'slideLeft' : 'slideRight';
+						}
+					}
+
+					let page = m.page;
+					this.transition[cb](new OnRender(pageInfo.component, {
+						afterRender: () => {
+							// Restore scrolling of page
+							let sb = c.getSimpleBar();
+							if (sb) {
+								sb.getScrollElement().scrollTop = page.state.scrollTop || 0;
+							}
+						},
+						beforeUnrender: () => {
+							// Store scrolling of page
+							let sb = c.getSimpleBar();
+							if (sb) {
+								page.state.scrollTop = sb.getScrollElement().scrollTop;
+							}
+						},
+					}));
+
+					c
+						.setTitle(pageInfo.title || '')
+						.setButton(pageInfo.close || page?.close || null, pageInfo.closeIcon || page?.closeIcon || 'chevron-circle-left')
+						.setComponent(this.transition);
+				}
+			},
+		);
+		this.elem.render(el);
+	}
+
+	unrender() {
+		if (this.elem) {
+			this.elem.unrender();
+			this.elem = null;
+		}
+	}
+
+	/**
+	 * Toggles the panel between open or close.
+	 * @param {bool} open State to toggle to. Defaults to toggle between open and close.
+	 * @returns {this}
+	 */
+	toggle(open) {
+		this.panel.toggle(open);
+		return this;
+	}
+}
+
+export default RoomPanelComponent;

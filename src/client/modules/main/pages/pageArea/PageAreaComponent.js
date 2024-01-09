@@ -13,9 +13,9 @@ import PageAreaLocation from './PageAreaLocation';
 import PageAreaImage from './PageAreaImage';
 
 /**
- * PageAreaArea renders an area page.
+ * PageAreaComponent renders an area page.
  */
-class PageAreaArea {
+class PageAreaComponent {
 	constructor(module, ctrl, area, state, close) {
 		state.changes = state.changes || {};
 
@@ -43,7 +43,7 @@ class PageAreaArea {
 		}, eventBus: this.module.self.app.eventBus });
 		this.inLocations = new Model({ data: this._getAndListenInLocations(), eventBus: this.module.self.app.eventBus });
 
-		let imgFader = new Fader(null, { className: 'pagearea-area--image' });
+		let imgFader = new Fader(null, { className: 'pagearea--image' });
 		let about = new PanelSection(
 			l10n.l('pageArea.about', "About"),
 			new ModelComponent(
@@ -71,7 +71,7 @@ class PageAreaArea {
 			},
 		);
 
-		this.elem = new Elem(n => n.elem('div', { className: 'pagearea-area' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'pagearea' }, [
 			n.component(new ModelComponent(
 				this.area,
 				new Context(
@@ -95,7 +95,7 @@ class PageAreaArea {
 									tools,
 									t => t.componentFactory(this.ctrl, this.area),
 									{
-										className: 'pagearea-area--tools',
+										className: 'pagearea--tools',
 										subClassName: t => t.className || null,
 										horizontal: true,
 									},
@@ -131,12 +131,12 @@ class PageAreaArea {
 			)),
 			n.component(new ModelComponent(
 				this.area,
-				new Elem(n => n.elem('div', { className: 'pagearea-area--population flex-row pad8' }, [
+				new Elem(n => n.elem('div', { className: 'pagearea--population flex-row pad8' }, [
 					n.component(new Txt(l10n.l('pageArea.population', "Population"), {
 						tagName: 'div',
-						className: 'pagearea-area--population-title flex-1',
+						className: 'pagearea--population-title flex-1',
 					})),
-					n.component('pop', new Txt(null, { className: 'pagearea-area--population-count flex-auto', duration: 0 })),
+					n.component('pop', new Txt(null, { className: 'pagearea--population-count flex-auto', duration: 0 })),
 				])),
 				(m, c) => {
 					c.getNode('pop').setText((m.pop || "0") + (m.prv ? (' (+' + m.prv + ')') : ''));
@@ -262,4 +262,4 @@ class PageAreaArea {
 	}
 }
 
-export default PageAreaArea;
+export default PageAreaComponent;

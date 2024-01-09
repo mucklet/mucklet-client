@@ -42,7 +42,7 @@ class PageInRoom {
 	 * @returns {function} Close function.
 	 */
 	open(ctrl, room) {
-		return this.module.roomPages.openPage(
+		return this.module.roomPages.openRoomPage(
 			'inRoom',
 			ctrl.id,
 			getRoomInstanceId(room),
