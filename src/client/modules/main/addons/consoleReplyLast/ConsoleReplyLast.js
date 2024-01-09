@@ -2,6 +2,9 @@ import l10n from 'modapp-l10n';
 import { replyCmds, replyAllCmds } from 'utils/replyToEvent';
 import { relistenResource } from 'utils/listenResource';
 
+function getReply(charId, ev, all) {
+	return (all ? replyAllCmds : replyCmds)[ev.type](charId, ev);
+}
 
 /**
  * ConsoleReplyLast adds Alt-R as a keymap to the console to reply to last replyable message.
@@ -11,7 +14,7 @@ class ConsoleReplyLast {
 		this.app = app;
 
 		// Size of the buffer for reply to messages.
-		this.bufferSize = parseInt(params?.bufferSize) || 5;
+		this.bufferSize = parseInt(params?.bufferSize) || 10;
 
 		// Bind callbacks
 		this._replyAll = this._replyLast.bind(this, true);
@@ -64,20 +67,27 @@ class ConsoleReplyLast {
 	_replyLast(all, state, ctx) {
 		let charId = state.getCtrlId();
 		let charEvents = this._getCharEvents(charId);
+		let l = charEvents.length;
 		// Do nothing if we have nothing to reply to.
-		if (!charEvents.length) return;
+		if (!l) return;
 
-		let idx = 0;
+		let idx = this.lastIdx || 0;
 		let storeHistory = true;
+		let reply = '';
 		// If it is the same state that we used last, we are cycling through the
-		// events list. History should not be stored.
+		// events list till we find a different one. History is not stored.
 		if (this.lastState == state) {
-			idx = (this.lastIdx + 1) % charEvents.length;
 			storeHistory = false;
+			for (let i = 0; i < l + 1; i++) {
+				idx = (idx + 1) % l;
+				reply = getReply(charId, charEvents[idx], all);
+				if (reply != this.lastReply) {
+					break;
+				}
+			}
+		} else {
+			reply = getReply(charId, charEvents[idx], all);
 		}
-
-		let ev = charEvents[idx];
-		let reply = (all ? replyAllCmds : replyCmds)[ev.type](charId, ev);
 
 		this.lastState = relistenResource(this.lastState, state, this._onStateChange);
 		this.lastIdx = idx;
@@ -87,9 +97,6 @@ class ConsoleReplyLast {
 	}
 
 	_addEvent(charId, ev) {
-		// Ignore from self
-		if (ev.char?.id == charId) return;
-
 		let charEvents = this._getCharEvents(charId);
 		charEvents.unshift(ev);
 		if (charEvents.length > this.bufferSize) {
