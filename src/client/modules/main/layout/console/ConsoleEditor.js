@@ -36,8 +36,7 @@ class ConsoleEditor {
 						// should not happen due to simple edits to the console as the
 						// editor's doc and the state's doc would match. This is rather
 						// an affect of changing history.
-						let selection = this.cm.state.selection.main;
-						if (m.doc.trim() != this.cm.state.doc.toString().trim() || selection.anchor != m.anchor || selection.head != m.head) {
+						if (m.doc.trim() != this.cm.state.doc.toString().trim()) {
 							this.cm.setState(this._newEditorState(m));
 						}
 					}

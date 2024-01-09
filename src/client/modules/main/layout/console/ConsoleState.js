@@ -70,7 +70,7 @@ class ConsoleState extends Model {
 	setDoc(doc, anchor, head) {
 		this._doc = doc;
 		this._anchor = anchor || 0;
-		this._head = (typeof head != 'number' ? head : anchor) || 0;
+		this._head = (typeof head == 'number' ? head : anchor) || 0;
 		this._saveDoc();
 		this._updateModel(true);
 	}
