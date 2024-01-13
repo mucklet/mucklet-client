@@ -298,7 +298,12 @@ class RoomPages {
 	_updateModel(char) {
 		let c = char ? this.charStates[char.id] : null;
 		if (!c) {
-			return this.model.set(emptyModelValues);
+			if (!char) {
+				relistenResource(this.model.char, null, this._onCharChange);
+				this._listenAreas(this.model.areas, null);
+				this.model.set(emptyModelValues);
+			}
+			return;
 		}
 
 		let changedChar = this.model.char !== char;
