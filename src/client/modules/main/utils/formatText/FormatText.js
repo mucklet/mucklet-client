@@ -67,8 +67,7 @@ class FormatText {
 	 * Creates an instance of FormatTxt which is a component for formatted text
 	 * with support for interactive elements such as sections.
 	 * @param {string} str Text to format
-	 * @param {object} [opt] Optional parameters.
-	 * @param {string} [opt.className] Class name
+	 * @param {object} [opt] Optional parameters as defined by RootElem.
 	 * @param {boolean} [opt.noInteraction] Flag to disable clickable interactions like toggling sections.
 	 * @returns {FormatTxt} FormatTxt component.
 	 */
