@@ -18,14 +18,22 @@ class DialogEditNote {
 		this.module = module;
 	}
 
-	open(char) {
+	/**
+	 * Opens edit note dialog for a given character ID.
+	 * @param {string} charId Character ID.
+	 */
+	open(charId) {
 		if (this.dialog) return;
 
 		this.dialog = true;
 
 		this.module.auth.getUserPromise()
-			.then(user => this.module.api.get('note.player.' + user.id + '.note.' + char.id))
-			.then(note => {
+			.then(user => Promise.all([
+				this.module.api.get('note.player.' + user.id + '.note.' + charId),
+				this.module.api.get('core.char.' + charId),
+			]))
+			.then(result => {
+				let [ note, char ] = result;
 				this.dialog = new Dialog({
 					title: l10n.l('dialogEditNote.createNewChar', "Character notes"),
 					className: 'dialogeditnote',
