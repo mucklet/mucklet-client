@@ -20,7 +20,7 @@ const typeText = 'text';
 class Token {
 	/**
 	 * Creates a new Token instance.
-	 * @param {string} type Token type. The parse
+	 * @param {string} type Token type.
 	 * @param {string} content Content that would be the output for this token.
 	 * @param {number} level Level of wrapping/applied formats for 'text' tokens. Eg. <em>level 1<strong>level 2</strong></em>
 	 */
@@ -59,7 +59,7 @@ export default function formatText(str, opt) {
  * **that** becomes bold.
  * @param {string} str Text to format.
  * @param {object} [opt] Optional parameters
- * @returns {Array.<object>}  HTML formatted string.
+ * @returns {Array.<Token>} Array of Tokens.
  */
 export function formatTextTokens(str, opt) {
 	let tokens = [ new Token(typeText, str, 0) ];
