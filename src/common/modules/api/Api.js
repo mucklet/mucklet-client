@@ -13,7 +13,15 @@ class Api extends ResClient {
 			debug: false,
 		}, params);
 		opt.debug = !!(opt.debug && opt.debug != 'false' && opt.debug != '0' && opt.debug != 'no');
-		super(API_HOST_PATH, { namespace, eventBus: app.eventBus, debug: opt.debug });
+		super(API_HOST_PATH, {
+			namespace,
+			eventBus: app.eventBus,
+			reconnectDelay: 3000,
+			subscribeStaleDelay: 2000,
+			subscribeRetryDelay: 0,
+			unsubscribeDelay: 5000,
+			debug: opt.debug,
+		 });
 
 		this.app = app;
 		this.webResourcePath = this._resolveWebResourcePath(API_WEBRESOURCE_PATH);
