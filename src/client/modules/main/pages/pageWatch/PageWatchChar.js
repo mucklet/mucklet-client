@@ -47,7 +47,7 @@ class PageWatchChar {
 						new Elem(n => n.elem('div', { className: 'badge--tools' }, [
 							n.elem('note', 'button', { className: 'pagewatch-char--note iconbtn medium tinyicon', events: {
 								click: (c, ev) => {
-									this.module.dialogEditNote.open(this.char);
+									this.module.dialogEditNote.open(this.char.id);
 									ev.stopPropagation();
 								},
 							}}, [
