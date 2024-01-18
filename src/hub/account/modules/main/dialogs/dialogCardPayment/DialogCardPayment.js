@@ -29,7 +29,7 @@ class DialogCardPayment {
 		this.dialog = true;
 
 		opt = opt || {};
-		return this.module.stripe.newCardPaymentPromise(offerId, Object.assign({}, opt, {
+		return this.module.stripe.newPaymentPromise(offerId, Object.assign({}, opt, {
 			onSuccess: paymentIntent => {
 				if (this.dialog) {
 					this.dialog.close();

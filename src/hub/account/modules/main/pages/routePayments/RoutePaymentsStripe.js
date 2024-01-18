@@ -1,16 +1,12 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
-import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
 import Collapser from 'components/Collapser';
 import * as txtCurrency from 'utils/txtCurrency';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtUnit from 'utils/txtUnit';
 import * as txtProduct from 'utils/txtProduct';
-
-const txtMethods = {
-	card: l10n.l('routePayments.cardPayment', "Card payment"),
-};
+import * as txtPaymentStatus from 'utils/txtPaymentStatus';
 
 /**
  * RoutePaymentsStripe draws a stripe card payment component
@@ -24,7 +20,7 @@ class RoutePaymentsStripe {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-stripe' }, [
-			n.component(new Txt(txtMethods[this.payment.method] || l10n.l('routePayments.payment', "Payment"), { tagName: 'h2' })),
+			n.component(new ModelTxt(this.payment, m => txtPaymentStatus.header(m), { tagName: 'h2' })),
 			n.elem('div', { className: 'common--hr' }),
 			n.elem('p', { className: 'routepayments--product' }, [
 				n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),
@@ -64,7 +60,7 @@ class RoutePaymentsStripe {
 			n.component('fader', new Fader()),
 		]));
 		// Create payment component
-		this.module.stripe.newCardPaymentPromise(this.payment.id, {
+		this.module.stripe.newPaymentPromise(this.payment.id, {
 			className: 'routepayments--cardpayment',
 			returnUrl: this.module.router.getUrl('payments', { page: 'result', paymentId: this.payment.id }, { keepQuery: true, fullPath: true }),
 		}).then(paymentComponent => {

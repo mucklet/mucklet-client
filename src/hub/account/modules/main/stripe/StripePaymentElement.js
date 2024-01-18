@@ -1,5 +1,5 @@
 import { Elem, Html, Txt, Input } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
@@ -13,6 +13,10 @@ import * as txtCurrency from 'utils/txtCurrency';
 
 const paymentUrl = HUB_PATH + 'policy/payment.html';
 const txtPaymentTermsAgreement = l10n.l('stripe.paymentTermsAgreement', `I agree to Mucklet's <a href="{paymentUrl}" class="link" target="_blank">payment terms</a>.`, { paymentUrl: escapeHtml(paymentUrl) });
+const methodIcons = {
+	card: 'credit-card',
+	paypal: 'paypal',
+};
 
 /**
  * StripePaymentElement draws a component that tests accepting a payment using
@@ -83,7 +87,11 @@ class StripePaymentElement {
 				},
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
 				n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
-				n.component(new FAIcon('credit-card')),
+				n.component(new ModelComponent(
+					this.payment,
+					new FAIcon(),
+					(m, c) => c.setIcon(methodIcons[m.method]),
+				)),
 				n.component(this.intent.intentType == 'payment'
 					? new Elem(n => n.elem('span', [
 						n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
@@ -151,7 +159,7 @@ class StripePaymentElement {
 			this.paymentElement.unmount();
 			this.elem.unrender();
 			this.elem = null;
-			this.paymentElement = null;
+			this.paymentElement = null;;
 		}
 	}
 

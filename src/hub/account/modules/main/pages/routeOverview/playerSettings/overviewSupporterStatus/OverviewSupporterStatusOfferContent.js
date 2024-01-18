@@ -1,6 +1,8 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
+import { Model } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
+import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import isError from 'utils/isError';
@@ -13,9 +15,13 @@ class OverviewSupporterStatusOfferContent {
 		this.paymentUser = paymentUser;
 		this.offer = offer;
 		this.toggle = toggle;
+		this.openingPayment = null;
+		this.model = null;
 	}
 
 	render(el) {
+		// Model storing currently opening payment method
+		this.model = new Model({ data: { method: null, promise: null }});
 		this.elem = new Elem(n => n.elem('div', { className: 'overviewsupporterstatus-offercontent' }, [
 			n.elem('div', { className: 'badge--select overviewsupporterstatus-offercontent--text' }, [
 				n.elem('div', { className: 'badge--text' }, [
@@ -24,27 +30,8 @@ class OverviewSupporterStatusOfferContent {
 			]),
 			n.elem('div', { className: 'badge--divider' }),
 			n.elem('div', { className: 'badge--select badge--margin badge--select-margin' }, [
-				n.elem('button', { className: 'btn medium primary flex-1', events: {
-					click: (c, e) => {
-						this._tryOpen(() => this._openCardPayment(c));
-						e.stopPropagation();
-					},
-				}}, [
-					n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
-					n.component(new FAIcon('credit-card')),
-					n.component(new Txt(l10n.l('overviewSupporterStatus.userCard', "Use card"))),
-				]),
-				// // In the future we want to have paypal as well.
-				//
-				// n.elem('button', { className: 'overviewsupporterstatus-offercontent--paypal btn medium primary flex-1', events: {
-				// 	click: (el, e) => {
-				// 		this._openCardPayment();
-				// 		e.stopPropagation();
-				// 	},
-				// }}, [
-				// 	n.component(new FAIcon('paypal')),
-				// 	n.component(new Txt(l10n.l('overviewSupporterStatus.userPayPal', "Use PayPal"))),
-				// ]),
+				n.component(this._newMethodButton(this.model, 'card', 'credit-card', l10n.l('overviewSupporterStatus.card', "Card"))),
+				n.component(this._newMethodButton(this.model, 'paypal', 'paypal', l10n.l('overviewSupporterStatus.paypal', "PayPal"))),
 			]),
 		]));
 		this.elem.render(el);
@@ -54,7 +41,30 @@ class OverviewSupporterStatusOfferContent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			this.model.set({ method: null, promise: null });
+			this.model = null;
 		}
+	}
+
+	_newMethodButton(model, method, icon, name) {
+		// btn small primary icon-left full-width
+		return new Elem(n => n.elem('button', { className: `overviewsupporterstatus-offercontent--${method} btn medium primary icon-center flex-1`, events: {
+			click: (el, e) => {
+				this._tryOpen(() => this._openPayment(model, method));
+				e.stopPropagation();
+			},
+		}}, [
+			n.component(new ModelFader(model, [
+				{
+					condition: m => m.method == method,
+					factory: m => new Elem(n => n.elem('div', { className: 'spinner small dark' })),
+				},
+				{
+					factory: m => new FAIcon(icon),
+				},
+			], { className: 'fa' })),
+			n.component(new Txt(name)),
+		]));
 	}
 
 	_tryOpen(callback) {
@@ -85,12 +95,23 @@ class OverviewSupporterStatusOfferContent {
 		}
 	}
 
-	_openCardPayment() {
-		this.elem?.removeNodeClass('spinner', 'hide');
+	_openPayment(model, method) {
+		// Check if we are already opening payment for this method.
+		if (model.method == method) {
+			return;
+		}
 
-		this.module.stripe.createPayment(this.offer.id)
-			.then(payment => this.module.routePayments.setRoute({ paymentId: payment.id }))
+		let promise = this.module.stripe.createPayment(this.offer.id, method)
+			.then(payment => {
+				// Validate we haven't switched payment to use
+				if (model.promise == promise) {
+					this.module.routePayments.setRoute({ paymentId: payment.id });
+				}
+			})
 			.catch(err => {
+				if (model.promise != promise) {
+					return;
+				}
 				if (isError(err, 'payment.locationPaymentBlocked')) {
 					this.module.confirm.open(null, {
 						title: l10n.l('overviewSupporterStatus.locationPaymentBlockError', "Unsupported location"),
@@ -104,7 +125,13 @@ class OverviewSupporterStatusOfferContent {
 					this.module.confirm.openError(err);
 				}
 			})
-			.then(() => this.elem?.addNodeClass('spinner', 'hide'));
+			.then(() => {
+				if (model.promise == promise) {
+					this.model.set({ method: null, promise: null });
+				}
+			});
+
+		this.model.set({ method: method, promise });
 	}
 }
 
