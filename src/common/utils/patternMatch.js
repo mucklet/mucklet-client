@@ -31,6 +31,53 @@ export default function(h, n) {
 }
 
 /**
+ * Creates a compare function based on a needle pattern.
+ * @param {string} n Needle string
+ * @param {(v: any) => string} [map] Map function to get the haystack string. Defaults to (v) => v.
+ * @returns {function} Sort compare function.
+ */
+export function patternMatchCompare(n, map) {
+	n = n.trim().toLowerCase();
+	let l = n.length;
+	return (a, b) => {
+		if (map) {
+			a = map(a);
+			b = map(b);
+		}
+		let alc = a.toLowerCase();
+		let blc = b.toLowerCase();
+		if (l) {
+			let i = 0;
+			let p = 0;
+			while (i < l) {
+				let c = n.charAt(i++);
+				if (c === ' ') {
+					p++;
+					while (n.charAt(i) === ' ') {
+						i++;
+					}
+					continue;
+				}
+				let ap = alc.indexOf(c, p) + 1;
+				let bp = blc.indexOf(c, p) + 1;
+				if (ap != bp) {
+					return !ap
+						? 1
+						: !bp
+							? -1
+							: ap - bp;
+
+				}
+				p = ap;
+				if (!p) break;
+			}
+		}
+		// Fallback on locale compare
+		return a.localeCompare(b);
+	};
+}
+
+/**
  * Appends some em and span nodes to a el div.
  * @param {HTMLElement} el Div element to append to.
  * @param {string} label String to get the text from

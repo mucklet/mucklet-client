@@ -10,6 +10,10 @@ class Stripe {
 	constructor(app, params) {
 		this.app = app;
 
+		this.params = Object.assign({
+			includeLocation: 'paypal',
+		}, params);
+
 		this.app.require([
 			'auth',
 			'api',
@@ -18,21 +22,6 @@ class Stripe {
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-
-		// this.stripe = null;
-
-		// if (this.params.status == 'payment') {
-		// 	this.module.auth.getUserPromise().then(user => {
-		// 		return this.module.api.get('payment.info').then(info => {
-		// 			if (this.params.status == 'redirect') {
-		// 				this.component = new StripeCompleted(this.module, user, info);
-		// 				this.module.screen.setComponent(this.component);
-		// 				return;
-		// 			}
-		// 			return this._createSubscription(user, info);
-		// 		});
-		// 	});
-		// }
 	}
 
 	/**

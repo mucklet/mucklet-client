@@ -1,0 +1,22 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.locationinput {
+	display: flex;
+	flex-direction: row;
+	gap: 6px;
+	margin-bottom: 6px;
+
+	h3 {
+		line-height: 28px;
+		margin-bottom: 2px;
+	}
+
+	> div.inactive {
+		display: none;
+	}
+
+	> div {
+		flex: 1 1 0px;
+	}
+}

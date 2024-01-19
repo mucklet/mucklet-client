@@ -5,11 +5,13 @@ import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import LabelToggleBox from 'components/LabelToggleBox';
+import LocationInput from 'components/LocationInput';
 import Err from 'classes/Err';
 import formatDate from 'utils/formatDate';
 import escapeHtml from 'utils/escapeHtml';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtCurrency from 'utils/txtCurrency';
+import errToL10n from 'utils/errToL10n';
 
 const paymentUrl = HUB_PATH + 'policy/payment.html';
 const txtPaymentTermsAgreement = l10n.l('stripe.paymentTermsAgreement', `I agree to Mucklet's <a href="{paymentUrl}" class="link" target="_blank">payment terms</a>.`, { paymentUrl: escapeHtml(paymentUrl) });
@@ -35,6 +37,7 @@ class StripePaymentElement {
 
 		this.payPromise = null;
 		this.paymentElement = null;
+		this.includeLocation = this.module.self.params.includeLocation == 'always' || this.module.self.params.includeLocation == payment.method;
 
 		this.info.on();
 		this.payment.on();
@@ -42,6 +45,10 @@ class StripePaymentElement {
 
 	render(el) {
 		let model = new Model({ data: { agree: false }, eventBus: this.module.self.app.eventBus });
+
+		let locationInput = this.includeLocation
+			? new LocationInput()
+			: null;
 
 		this.elem = new Elem(n => n.elem('div', { className: 'stripe' + (this.opt.className ? ' ' + this.opt.className : '') }, [
 			n.component(this.opt.includeName
@@ -56,6 +63,7 @@ class StripePaymentElement {
 				]))
 				: null,
 			),
+			n.component(locationInput),
 			n.elem('div', { className: 'stripe--payment' }, [
 				n.elem('payment', 'div'),
 			]),
@@ -83,7 +91,7 @@ class StripePaymentElement {
 			n.elem('stripe', 'button', { events: {
 				click: (c, ev) => {
 					ev.preventDefault();
-					this._onPay(model);
+					this._onPay(model, locationInput);
 				},
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
 				n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
@@ -146,6 +154,10 @@ class StripePaymentElement {
 			fields: {
 				billingDetails: {
 					name: this.opt.includeName ? 'never' : 'auto',
+					address: {
+						country: this.includeLocation ? 'never' : 'auto',
+						postalCode: this.includeLocation ? 'never' : 'auto',
+					},
 				},
 			},
 		});
@@ -169,8 +181,16 @@ class StripePaymentElement {
 		this.payment.off();
 	}
 
-	_onPay(model) {
+	_onPay(model, locationInput) {
 		if (!this.paymentElement || this.payPromise) return;
+
+		if (locationInput) {
+			let err = locationInput.getError();
+			if (err) {
+				this._setMessage(errToL10n(err));
+				return;
+			}
+		}
 
 		if (!model.agree) {
 			this._setMessage(l10n.l('stripe.mustAgree', "You must agree to the payment terms."));
@@ -186,6 +206,13 @@ class StripePaymentElement {
 				return;
 			}
 			billing_details.name = cardholder;
+		}
+
+		if (locationInput) {
+			billing_details.address = Object.assign({}, billing_details.address, {
+				country: locationInput.getCountry(),
+				postal_code: locationInput.getPostalCode() || null,
+			});
 		}
 
 		// Clear any previous message

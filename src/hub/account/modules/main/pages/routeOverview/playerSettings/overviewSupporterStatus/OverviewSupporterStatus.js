@@ -11,11 +11,12 @@ class OverviewSupporterStatus {
 	constructor(app, params) {
 		this.app = app;
 
+		this.params = params;
+
 		this.app.require([
 			'api',
 			'routeOverview',
 			'routePayments',
-			'dialogCardPayment',
 			'confirm',
 			'toaster',
 			'stripe',
