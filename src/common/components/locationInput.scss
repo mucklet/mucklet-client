@@ -12,11 +12,16 @@
 		margin-bottom: 2px;
 	}
 
-	> div.inactive {
-		display: none;
-	}
-
 	> div {
 		flex: 1 1 0px;
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.locationinput {
+		flex-direction: column;
+		> div {
+			flex: 0 0 auto;
+		}
 	}
 }

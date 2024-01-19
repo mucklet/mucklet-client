@@ -133,6 +133,7 @@ class StripePaymentElement {
 					spacingUnit: '2px',
 					borderRadius: '4px',
 					fontLineHeight: '20px',
+					gridColumnSpacing: '6px',
 				},
 				rules: {
 					'.Input': {
