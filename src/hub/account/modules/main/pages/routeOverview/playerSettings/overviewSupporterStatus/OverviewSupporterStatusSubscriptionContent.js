@@ -19,6 +19,7 @@ class OverviewSupporterStatusSubscriptionContent {
 
 		this.methodTypes = {
 			card: (method, subscription, paymentUser) => this._cardComponentFactory(method, subscription, paymentUser),
+			paypal: (method, subscription, paymentUser) => this._paypalComponentFactory(method, subscription, paymentUser),
 		};
 	}
 
@@ -91,6 +92,15 @@ class OverviewSupporterStatusSubscriptionContent {
 			n.elem('div', { className: 'badge--select' }, [
 				n.component(new Txt(l10n.l('overviewSupporterStatus.expires', "Expires"), { className: 'badge--iconcol badge--subtitle' })),
 				n.component(new ModelTxt(method, m => ("00" + m.data.expMonth).slice(-2) + " / " + m.data.expYear, { className: 'badge--info-morepad badge--text' })),
+			]),
+		]));
+	}
+
+	_paypalComponentFactory(method, subscription, paymentUser) {
+		return new Elem(n => n.elem('div', [
+			n.elem('div', { className: 'badge--select' }, [
+				n.component(new Txt(l10n.l('overviewSupporterStatus.paypal', "PayPal"), { className: 'badge--iconcol badge--subtitle' })),
+				n.component(new ModelTxt(method, m => m.data.payerEmail, { className: 'badge--info-morepad badge--text' })),
 			]),
 		]));
 	}

@@ -74,6 +74,11 @@
 	}
 }
 
+.btn.icon-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
 // Set colors for your buttons, see the button mixin at the top of this
 // file to see how the hex colors are allocated

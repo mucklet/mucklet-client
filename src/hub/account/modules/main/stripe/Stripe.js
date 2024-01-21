@@ -10,6 +10,10 @@ class Stripe {
 	constructor(app, params) {
 		this.app = app;
 
+		this.params = Object.assign({
+			includeLocation: [ 'paypal' ],
+		}, params);
+
 		this.app.require([
 			'auth',
 			'api',
@@ -18,31 +22,23 @@ class Stripe {
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-
-		// this.stripe = null;
-
-		// if (this.params.status == 'payment') {
-		// 	this.module.auth.getUserPromise().then(user => {
-		// 		return this.module.api.get('payment.info').then(info => {
-		// 			if (this.params.status == 'redirect') {
-		// 				this.component = new StripeCompleted(this.module, user, info);
-		// 				this.module.screen.setComponent(this.component);
-		// 				return;
-		// 			}
-		// 			return this._createSubscription(user, info);
-		// 		});
-		// 	});
-		// }
 	}
 
-	createPayment(offerId) {
+	/**
+	 * Creates a new Stripe payment intent. The
+	 * @param {string} offerId Offer ID.
+	 * @param {string} method  Payment method type. May be "card" or "paypal".
+	 * @returns {Model} Payment model.
+	 */
+	createPayment(offerId, method) {
 		return this.module.auth.getUserPromise()
 			.then(user => this.module.api.call('payment.user.' + user.id + '.stripe', 'createPayment', {
 				offerId,
+				method,
 			}));
 	}
 
-	newCardPaymentPromise(paymentId, opt) {
+	newPaymentPromise(paymentId, opt) {
 		let api = this.module.api;
 		let info = null;
 		let payment = null;
@@ -71,6 +67,7 @@ class Stripe {
 	_createPaymentElement(user, info, payment, intent, opt) {
 		return loadStripe(info.stripePublicKey, {
 			apiVersion: info.stripeApiVersion,
+			locale: 'en',
 		}).then(stripe => new StripePaymentElement(this.module, user, info, payment, stripe, intent, opt));
 	}
 

@@ -1,18 +1,24 @@
 import { Elem, Html, Txt, Input } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import LabelToggleBox from 'components/LabelToggleBox';
+import LocationInput from 'components/LocationInput';
 import Err from 'classes/Err';
 import formatDate from 'utils/formatDate';
 import escapeHtml from 'utils/escapeHtml';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtCurrency from 'utils/txtCurrency';
+import errToL10n from 'utils/errToL10n';
 
 const paymentUrl = HUB_PATH + 'policy/payment.html';
 const txtPaymentTermsAgreement = l10n.l('stripe.paymentTermsAgreement', `I agree to Mucklet's <a href="{paymentUrl}" class="link" target="_blank">payment terms</a>.`, { paymentUrl: escapeHtml(paymentUrl) });
+const methodIcons = {
+	card: 'credit-card',
+	paypal: 'paypal',
+};
 
 /**
  * StripePaymentElement draws a component that tests accepting a payment using
@@ -32,12 +38,23 @@ class StripePaymentElement {
 		this.payPromise = null;
 		this.paymentElement = null;
 
+		let il = this.module.self.params.includeLocation;
+		this.includeLocation = typeof il == 'string'
+			? il == 'always' || il == payment.method
+			: Array.isArray(il)
+				? il.indexOf(payment.method) >= 0
+				: false;
+
 		this.info.on();
 		this.payment.on();
 	}
 
 	render(el) {
 		let model = new Model({ data: { agree: false }, eventBus: this.module.self.app.eventBus });
+
+		let locationInput = this.includeLocation
+			? new LocationInput()
+			: null;
 
 		this.elem = new Elem(n => n.elem('div', { className: 'stripe' + (this.opt.className ? ' ' + this.opt.className : '') }, [
 			n.component(this.opt.includeName
@@ -52,6 +69,7 @@ class StripePaymentElement {
 				]))
 				: null,
 			),
+			n.component(locationInput),
 			n.elem('div', { className: 'stripe--payment' }, [
 				n.elem('payment', 'div'),
 			]),
@@ -79,11 +97,15 @@ class StripePaymentElement {
 			n.elem('stripe', 'button', { events: {
 				click: (c, ev) => {
 					ev.preventDefault();
-					this._onPay(model);
+					this._onPay(model, locationInput);
 				},
 			}, className: 'btn large primary stripe--pay pad-top-xl stripe--btn' }, [
 				n.elem('spinner', 'div', { className: 'spinner spinner--btn fade hide' }),
-				n.component(new FAIcon('credit-card')),
+				n.component(new ModelComponent(
+					this.payment,
+					new FAIcon(),
+					(m, c) => c.setIcon(methodIcons[m.method]),
+				)),
 				n.component(this.intent.intentType == 'payment'
 					? new Elem(n => n.elem('span', [
 						n.component(new Txt(l10n.l('stripe.pay', "Pay"))),
@@ -117,6 +139,7 @@ class StripePaymentElement {
 					spacingUnit: '2px',
 					borderRadius: '4px',
 					fontLineHeight: '20px',
+					gridColumnSpacing: '6px',
 				},
 				rules: {
 					'.Input': {
@@ -138,6 +161,10 @@ class StripePaymentElement {
 			fields: {
 				billingDetails: {
 					name: this.opt.includeName ? 'never' : 'auto',
+					address: {
+						country: this.includeLocation ? 'never' : 'auto',
+						postalCode: this.includeLocation ? 'never' : 'auto',
+					},
 				},
 			},
 		});
@@ -151,7 +178,7 @@ class StripePaymentElement {
 			this.paymentElement.unmount();
 			this.elem.unrender();
 			this.elem = null;
-			this.paymentElement = null;
+			this.paymentElement = null;;
 		}
 	}
 
@@ -161,8 +188,16 @@ class StripePaymentElement {
 		this.payment.off();
 	}
 
-	_onPay(model) {
+	_onPay(model, locationInput) {
 		if (!this.paymentElement || this.payPromise) return;
+
+		if (locationInput) {
+			let err = locationInput.getError();
+			if (err) {
+				this._setMessage(errToL10n(err));
+				return;
+			}
+		}
 
 		if (!model.agree) {
 			this._setMessage(l10n.l('stripe.mustAgree', "You must agree to the payment terms."));
@@ -178,6 +213,13 @@ class StripePaymentElement {
 				return;
 			}
 			billing_details.name = cardholder;
+		}
+
+		if (locationInput) {
+			billing_details.address = Object.assign({}, billing_details.address, {
+				country: locationInput.getCountry(),
+				postal_code: locationInput.getPostalCode() || null,
+			});
 		}
 
 		// Clear any previous message
