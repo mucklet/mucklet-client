@@ -29,9 +29,14 @@ const txtProductFeatures = {
 			longDesc: l10n.l('txtProduct.increasedCharCapDesc', "Create up to 50 characters per realm, instead of 5."),
 		},
 		{
-			title: l10n.l('txtProduct.increasedProfileCap', "Increased profile cap"),
-			desc: l10n.l('txtProduct.increasedProfileCapShortDesc', "Create up to 20 profiles per character or room"),
-			longDesc: l10n.l('txtProduct.increasedProfileCapDesc', "Create up to 20 profiles per character or room, instead of 3."),
+			title: l10n.l('txtProduct.increasedCharProfileCap', "Increased character profile cap"),
+			desc: l10n.l('txtProduct.increasedCharProfileCapShortDesc', "Create up to 20 profiles per character"),
+			longDesc: l10n.l('txtProduct.increasedCharProfileCapDesc', "Create up to 20 profiles per character, instead of 5."),
+		},
+		{
+			title: l10n.l('txtProduct.increasedRoomProfileCap', "Increased room profile cap"),
+			desc: l10n.l('txtProduct.increasedRoomProfileCapShortDesc', "Create up to 20 profiles per room"),
+			longDesc: l10n.l('txtProduct.increasedRoomProfileCapDesc', "Create up to 20 profiles per room, instead of 3."),
 		},
 		{
 			title: l10n.l('txtProduct.instanceRooms', "Instance rooms"),
