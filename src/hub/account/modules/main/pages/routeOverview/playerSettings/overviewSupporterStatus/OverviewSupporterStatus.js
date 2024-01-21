@@ -11,7 +11,10 @@ class OverviewSupporterStatus {
 	constructor(app, params) {
 		this.app = app;
 
-		this.params = params;
+		this.params = Object.assign({
+			includeCard: true,
+			includePaypal: true,
+		}, params);
 
 		this.app.require([
 			'api',

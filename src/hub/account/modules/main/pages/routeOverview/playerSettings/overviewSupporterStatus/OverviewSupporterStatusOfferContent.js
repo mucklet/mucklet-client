@@ -30,7 +30,7 @@ class OverviewSupporterStatusOfferContent {
 			]),
 			n.elem('div', { className: 'badge--divider' }),
 			n.elem('div', { className: 'badge--select badge--margin badge--select-margin' }, [
-				n.component(this._newMethodButton(this.model, 'card', 'credit-card', l10n.l('overviewSupporterStatus.card', "Card"))),
+				n.component(this.module.self.params.includeCard && this._newMethodButton(this.model, 'card', 'credit-card', l10n.l('overviewSupporterStatus.card', "Card"))),
 				n.component(this.module.self.params.includePaypal && this._newMethodButton(this.model, 'paypal', 'paypal', l10n.l('overviewSupporterStatus.paypal', "PayPal"))),
 			]),
 		]));

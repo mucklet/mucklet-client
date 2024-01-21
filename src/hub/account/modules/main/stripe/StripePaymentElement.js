@@ -37,7 +37,13 @@ class StripePaymentElement {
 
 		this.payPromise = null;
 		this.paymentElement = null;
-		this.includeLocation = this.module.self.params.includeLocation == 'always' || this.module.self.params.includeLocation == payment.method;
+
+		let il = this.module.self.params.includeLocation;
+		this.includeLocation = typeof il == 'string'
+			? il == 'always' || il == payment.method
+			: Array.isArray(il)
+				? il.indexOf(payment.method) >= 0
+				: false;
 
 		this.info.on();
 		this.payment.on();

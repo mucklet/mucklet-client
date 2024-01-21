@@ -11,7 +11,7 @@ class Stripe {
 		this.app = app;
 
 		this.params = Object.assign({
-			includeLocation: 'paypal',
+			includeLocation: [ 'paypal' ],
 		}, params);
 
 		this.app.require([
