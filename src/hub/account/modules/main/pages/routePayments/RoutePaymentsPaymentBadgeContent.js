@@ -16,6 +16,7 @@ class RoutePaymentsPaymentBadgeContent {
 
 		this.methodTypes = {
 			card: (method, paymentUser, payment) => this._cardComponentFactory(method, paymentUser, payment),
+			paypal: (method, paymentUser, payment) => this._paypalComponentFactory(method, paymentUser, payment),
 		};
 	}
 
@@ -87,6 +88,15 @@ class RoutePaymentsPaymentBadgeContent {
 			n.elem('div', { className: 'badge--select' }, [
 				n.component(new Txt(l10n.l('routePayments.expires', "Expires"), { className: 'badge--iconcol badge--subtitle' })),
 				n.component(new ModelTxt(method, m => ("00" + m.data.expMonth).slice(-2) + " / " + m.data.expYear, { className: 'badge--info-morepad badge--text' })),
+			]),
+		]));
+	}
+
+	_paypalComponentFactory(method, paymentUser, payment) {
+		return new Elem(n => n.elem('div', { className: 'badge--margin' }, [
+			n.elem('div', { className: 'badge--select' }, [
+				n.component(new Txt(l10n.l('routePayments.paypal', "PayPal"), { className: 'badge--iconcol badge--subtitle' })),
+				n.component(new ModelTxt(method, m => m.data.payerEmail, { className: 'badge--info-morepad badge--text' })),
 			]),
 		]));
 	}

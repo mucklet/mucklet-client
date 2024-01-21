@@ -23,6 +23,7 @@ class RoutePaymentsPayment {
 
 		this.methodTypes = {
 			card: method => this._cardComponentFactory(method),
+			paypal: method => this._paypalComponentFactory(method),
 		};
 	}
 
@@ -160,6 +161,13 @@ class RoutePaymentsPayment {
 			n.component(new ModelTxt(method, m => " •••• " + m.data.last4)),
 			n.component(new Txt(l10n.l('routePayments.expires', ", expires "))),
 			n.component(new ModelTxt(method, m => ("00" + m.data.expMonth).slice(-2) + " / " + m.data.expYear)),
+		]));
+	}
+
+	_paypalComponentFactory(method) {
+		return new Elem(n => n.elem('div', [
+			n.component(new Txt(l10n.l('routePayments.paypalAccount', "PalPal: "))),
+			n.component(new ModelTxt(method, m => m.data.payerEmail)),
 		]));
 	}
 }

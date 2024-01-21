@@ -1,3 +1,5 @@
+import l10n from 'modapp-l10n';
+
 /**
  * Err represents a local error.
  */
@@ -31,6 +33,14 @@ class Err {
 	 */
 	get data() {
 		return this._data;
+	}
+
+	/**
+	 * Returns the error as a LocaleString.
+	 * @returns {LocaleString}
+	 */
+	localeString() {
+		return l10n.l(this._code, this._message, this._data);
 	}
 }
 

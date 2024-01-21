@@ -1,0 +1,27 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.locationinput {
+	display: flex;
+	flex-direction: row;
+	gap: 6px;
+	margin-bottom: 6px;
+
+	h3 {
+		line-height: 28px;
+		margin-bottom: 2px;
+	}
+
+	> div {
+		flex: 1 1 0px;
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.locationinput {
+		flex-direction: column;
+		> div {
+			flex: 0 0 auto;
+		}
+	}
+}

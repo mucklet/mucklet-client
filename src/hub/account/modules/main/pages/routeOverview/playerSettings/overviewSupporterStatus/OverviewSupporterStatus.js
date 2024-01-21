@@ -11,11 +11,15 @@ class OverviewSupporterStatus {
 	constructor(app, params) {
 		this.app = app;
 
+		this.params = Object.assign({
+			includeCard: true,
+			includePaypal: true,
+		}, params);
+
 		this.app.require([
 			'api',
 			'routeOverview',
 			'routePayments',
-			'dialogCardPayment',
 			'confirm',
 			'toaster',
 			'stripe',
