@@ -13,6 +13,7 @@ module.exports = function(ctx) {
 	// Get policies
 	let policiesHtmlPlugins = [];
 	let policiesPath = path.resolve(ctx.commonPath, 'static/policies');
+	let pages = [ 'login', 'verify', 'reset', 'account', 'styleguide' ];
 	fs.readdirSync(policiesPath).forEach(file => {
 		let policy = JSON.parse(fs.readFileSync(path.resolve(policiesPath, file), 'utf8'));
 
@@ -35,11 +36,8 @@ module.exports = function(ctx) {
 	return {
 		entry: {
 			app: path.resolve(ctx.srcPath, 'app.js'),
-			login: path.resolve(ctx.srcPath, 'login/app-login.js'),
-			verify: path.resolve(ctx.srcPath, 'verify/app-verify.js'),
-			reset: path.resolve(ctx.srcPath, 'reset/app-reset.js'),
 			policy: path.resolve(ctx.srcPath, 'policy/app-policy.js'),
-			account: path.resolve(ctx.srcPath, 'account/app-account.js'),
+			...pages.reduce((o, page) => Object.assign(o, { [page]: path.resolve(ctx.srcPath, page + '/app-' + page + '.js') }), {}),
 		},
 		devServer: {
 			port: 6460,
@@ -78,30 +76,12 @@ module.exports = function(ctx) {
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'app' ],
 			}),
-			new HtmlWebpackPlugin({
-				filename: 'login/index.html',
-				template: path.resolve(ctx.srcPath, 'login/index.html'),
+			...pages.map(page => new HtmlWebpackPlugin({
+				filename: page + '/index.html',
+				template: path.resolve(ctx.srcPath, page + '/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
-				chunks: [ 'login' ],
-			}),
-			new HtmlWebpackPlugin({
-				filename: 'verify/index.html',
-				template: path.resolve(ctx.srcPath, 'verify/index.html'),
-				title: ctx.siteConfig.APP_TITLE,
-				chunks: [ 'verify' ],
-			}),
-			new HtmlWebpackPlugin({
-				filename: 'reset/index.html',
-				template: path.resolve(ctx.srcPath, 'reset/index.html'),
-				title: ctx.siteConfig.APP_TITLE,
-				chunks: [ 'reset' ],
-			}),
-			new HtmlWebpackPlugin({
-				filename: 'account/index.html',
-				template: path.resolve(ctx.srcPath, 'account/index.html'),
-				title: ctx.siteConfig.APP_TITLE,
-				chunks: [ 'account' ],
-			}),
+				chunks: [ page ],
+			})),
 			...policiesHtmlPlugins,
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
