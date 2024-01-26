@@ -1,0 +1,186 @@
+@import '~scss/variables';
+
+.styleguide {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	width: 100vw;
+
+	ul {
+		list-style-position: outside;
+		list-style-type: disc;
+		margin: 10px 0 10px 2em;
+	}
+
+	li {
+		margin: 8px 0;
+	}
+
+	&--container {
+		width: 90%;
+		max-width: 720px;
+		padding: 20px 0;
+	}
+	&--header {
+		padding-bottom: 20px;
+		margin: 0 0 18px 0;
+		border-bottom: 1px solid #c1a657;
+	}
+	&--foot {
+		padding-top: 24px;
+	}
+	&--btn.btn {
+		max-width: 280px;
+	}
+	&--logo {
+		height: 50px;
+		margin-right: 22px;
+	}
+
+	&--section {
+		margin-top: 20px;
+		margin-bottom: 30px;
+	}
+
+	&--color-container {
+		display: flex;
+		flex-direction: row;
+		gap: 20px;
+	}
+
+	&--color {
+		flex: 1 1 0px;
+		border: 1px solid $black;
+		display: flex;
+		flex-direction: column;
+
+		&-main {
+			flex: 1 1 0px;
+			height: 100px;
+			padding: 12px 8px;
+			text-align: center;
+		}
+
+		&-sub {
+			flex: 0 0 auto;
+			padding: 4px 8px;
+			font-size: $font-size-small;
+			text-align: center;
+		}
+
+		&.color1 {
+			color: $color3;
+			background: $color1;
+			.sub1 {
+				background: $color1-light;
+			}
+			.sub2 {
+				background: $color1-lighter;
+			}
+			.sub3 {
+				background: $color1-lightest;
+			}
+		}
+		&.color2 {
+			color: $black;
+			background: $color2;
+		}
+		&.color3 {
+			color: $black;
+			background: $color3;
+		}
+		&.color4 {
+			color: $black;
+			background: $color4;
+			.sub1 {
+				background: $color4-light;
+			}
+			.sub2 {
+				background: $color4-lighter;
+			}
+			.sub3 {
+				background: $color4-lightest;
+			}
+		}
+		&.color5 {
+			color: $black;
+			background: $color5;
+		}
+		&.color6 {
+			color: $black;
+			background: $color6;
+		}
+	}
+
+
+	&--colortitle {
+		margin-bottom: 8px;
+		font-size: $font-size;
+	}
+
+	&--colorcode {
+		font-family: $font-code;
+		font-size: $font-size-small;
+	}
+
+	&--fonttitle {
+		font-family: $font-text;
+	}
+
+	&--font {
+		margin-bottom: 20px;
+		padding: 20px 0px;
+		background: $color1-light;
+		display: flex;
+		flex-direction: row;
+	}
+
+	&--fontexample {
+		padding: 0 20px;
+		flex: 1 1 0px;
+		&.amatic {
+			color: $color2;
+			font-family: $font-header;
+			font-size: 30px;
+			line-height: 36px;
+		}
+		&.opensans {
+			color: $color4-light;
+			font-family: $font-text;
+			font-size: 18px;
+			line-height: 30px;
+		}
+		&.consolas {
+			color: $color6;
+			font-family: $font-code;
+			font-size: 18px;
+			line-height: 30px;
+		}
+	}
+
+	&--fontdesc {
+		font-size: $font-size-small;
+		padding: 0 20px;
+		flex: 1 1 0px;
+		border-left: 1px solid $color2;
+	}
+
+	&--icons {
+		display: flex;
+		gap: 12px;
+		font-size: 24px;
+		flex-wrap: wrap;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.styleguide {
+		&--foot {
+			padding-top: 16px;
+		}
+		&--btn {
+			max-width: 100%;
+		}
+	}
+}
