@@ -27,6 +27,16 @@ export function getTargets(charId, ev) {
 }
 
 /**
+ * Checks if an event targets a specific character-
+ * @param {string} charId Character ID.
+ * @param {object} ev Event object.
+ * @returns {boolean}
+ */
+export function containsTarget(charId, ev) {
+	return ev.target?.id == charId || ev.targets?.find(t => t.id == charId) || false;
+}
+
+/**
  * Get a list of all characters in the event as a comma-separated string. See
  * getTargets for more details.
  * @param {string} charId Controlled character ID.
