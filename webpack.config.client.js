@@ -59,6 +59,7 @@ module.exports = function(ctx) {
 			}),
 			new HtmlWebpackPlugin({
 				template: path.resolve(ctx.srcPath, 'index.html'),
+				filename: ctx.siteConfig.APP_ISTEMPLATE ? 'index.gohtml' : 'index.html',
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'app' ],
 			}),

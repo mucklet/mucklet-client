@@ -30,7 +30,7 @@ class GreetingScreenComponent {
 			n.elem('div', { className: 'greetingscreen--container' }, [
 				n.elem('h1', { className: 'greetingscreen--header' }, [
 					n.elem('img', { className: 'greetingscreen--logo', attributes: { src: '/img/paw.svg' }}),
-					n.text(APP_TITLE),
+					n.text(this.module.self.app.data.realmName),
 					n.elem('span', { className: 'greetingscreen--com' }, [
 						n.text(".com"),
 					]),

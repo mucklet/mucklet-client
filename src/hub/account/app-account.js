@@ -4,7 +4,7 @@ import moduleConfig from 'moduleConfig';
 import 'scss/index.scss';
 
 // Create app and load core modules
-let app = new AppExt(moduleConfig);
+let app = new AppExt(moduleConfig, { props: window.appProps });
 app.loadBundle(initModules).then(result => {
 	console.log("Init modules: ", result);
 	app.render(document.body);
