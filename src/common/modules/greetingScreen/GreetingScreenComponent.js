@@ -30,10 +30,7 @@ class GreetingScreenComponent {
 			n.elem('div', { className: 'greetingscreen--container' }, [
 				n.elem('h1', { className: 'greetingscreen--header' }, [
 					n.elem('img', { className: 'greetingscreen--logo', attributes: { src: '/img/paw.svg' }}),
-					n.text(this.module.self.app.data.realmName),
-					n.elem('span', { className: 'greetingscreen--com' }, [
-						n.text(".com"),
-					]),
+					n.text(this.module.self.app.props.realmName),
 				]),
 				n.elem('img', { className: 'greetingscreen--img', attributes: { src: '/img/miranda_269x506.png' }}),
 				n.elem('div', { className: 'greetingscreen--body common--formattext' }, sections.map(s => n.elem('div', [

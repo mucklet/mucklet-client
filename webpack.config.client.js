@@ -64,12 +64,7 @@ module.exports = function(ctx) {
 				chunks: [ 'app' ],
 			}),
 			new HtmlWebpackPlugin({
-				filename: 'error/login.html',
-				template: path.resolve(ctx.srcPath, 'error/login.html'),
-				chunks: [],
-			}),
-			new HtmlWebpackPlugin({
-				filename: 'welcome/index.html',
+				filename: 'welcome/' + (ctx.siteConfig.APP_ISTEMPLATE ? 'index.gohtml' : 'index.html'),
 				template: path.resolve(ctx.srcPath, 'welcome/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'welcome' ],
