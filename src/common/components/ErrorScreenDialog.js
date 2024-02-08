@@ -17,6 +17,7 @@ class ErrorScreen {
 	 * @param {LocaleString} [opt.titleTxt] Dialog title. Defaults to "Something went wrong".
 	 * @param {LocaleString} [opt.infoTxt] Dialog into text. Defaults to "We got this error message:".
 	 * @param {LocaleString} [opt.buttonTxt] Button text. Defaults to "Go back".
+	 * @param {function} [opt.onClose] Callback to call on close, instead of redirect.
 	 */
 	constructor(err, opt) {
 		this.err = err;
@@ -25,6 +26,7 @@ class ErrorScreen {
 
 	render(el) {
 		let opt = this.opt;
+		let cb = () => this.opt.onClose ? this.opt.onClose() : this._redirect();
 		this.elem = new ConfirmScreenDialog({
 			title: opt.titleTxt || l10n.l('errorScreenDialog.title', "Something went wrong"),
 			confirm: opt.buttonTxt || l10n.l('errorScreenDialog.goback', "Go back"),
@@ -35,8 +37,8 @@ class ErrorScreen {
 					: null,
 				),
 			])),
-			onConfirm: () => this._redirect(),
-			onClose: () => this._redirect(),
+			onConfirm: cb,
+			onClose: cb,
 		});
 		this.elem.render(el);
 	}
@@ -49,7 +51,7 @@ class ErrorScreen {
 	}
 
 	_redirect() {
-		redirect(this.opt.url || window.location.href.split('?')[0]);
+		redirect(this.opt.redirectUrl || window.location.href.split('?')[0]);
 	}
 }
 
