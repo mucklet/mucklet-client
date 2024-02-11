@@ -102,22 +102,34 @@ const defaultAttr = [
 		sortOrder: 1250,
 	},
 	{
+		key: 'builderMaxOwnedRooms',
+		stepFactory: () => new NumberStep('value', { name: "max owned rooms for builders and admins" }),
+		desc: l10n.l('setConfig.builderMaxOwnedRoomsDesc', "Max number of owned rooms for builders and admins."),
+		sortOrder: 1260,
+	},
+	{
+		key: 'builderMaxOwnedAreas',
+		stepFactory: () => new NumberStep('value', { name: "max owned areas for builders and admins" }),
+		desc: l10n.l('setConfig.builderMaxOwnedAreasDesc', "Max number of owned areas for builders and admins."),
+		sortOrder: 1362,
+	},
+	{
 		key: 'supporterMaxOwnedChars',
 		stepFactory: () => new NumberStep('value', { name: "max owned characters for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxOwnedCharsDesc', "Max number of owned characters for supporters."),
-		sortOrder: 1260,
+		sortOrder: 1270,
 	},
 	{
 		key: 'supporterMaxCharProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max character profiles for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxCharProfilesDesc', "Max number of character profiles for supporters."),
-		sortOrder: 1270,
+		sortOrder: 1280,
 	},
 	{
 		key: 'supporterMaxRoomProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max room profiles for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxRoomProfilesDesc', "Max number of room profiles for supporters."),
-		sortOrder: 1280,
+		sortOrder: 1290,
 	},
 	// Max item values (non-role dependent)
 	{
