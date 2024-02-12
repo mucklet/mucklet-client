@@ -137,7 +137,7 @@ class PasswordReset {
 
 	_showError(err) {
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
-			redirectUrl: redirectUrl,
+			redirectUrl,
 		}));
 	}
 }

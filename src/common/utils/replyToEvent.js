@@ -27,7 +27,7 @@ export function getTargets(charId, ev) {
 }
 
 /**
- * Checks if an event targets a specific character-
+ * Checks if an event targets a specific character.
  * @param {string} charId Character ID.
  * @param {object} ev Event object.
  * @returns {boolean}

@@ -59,13 +59,9 @@ module.exports = function(ctx) {
 			}),
 			new HtmlWebpackPlugin({
 				template: path.resolve(ctx.srcPath, 'index.html'),
+				filename: 'index.html',
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'app' ],
-			}),
-			new HtmlWebpackPlugin({
-				filename: 'error/login.html',
-				template: path.resolve(ctx.srcPath, 'error/login.html'),
-				chunks: [],
 			}),
 			new HtmlWebpackPlugin({
 				filename: 'welcome/index.html',

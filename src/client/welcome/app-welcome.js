@@ -16,7 +16,7 @@ const modules = {
 };
 
 // Create app and load core modules
-let app = new AppExt(moduleConfig);
+let app = new AppExt(moduleConfig, { props: window.appProps });
 app.loadBundle(modules).then(result => {
 	console.log("Welcome modules: ", result);
 	app.render(document.body);

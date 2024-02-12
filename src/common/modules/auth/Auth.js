@@ -69,6 +69,8 @@ class Auth {
 			method: 'POST',
 			mode: 'cors',
 			credentials: crossOrigin ? 'include' : 'same-origin',
+		}).catch(err => {
+			throw new Err('auth.failedToFetch', "Failed to send authentication check.");
 		}).then(resp => {
 			// Legacy behavior and other >= 400 errors
 			if (resp.status >= 400) {
