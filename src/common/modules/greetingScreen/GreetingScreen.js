@@ -23,7 +23,7 @@ class GreetingScreen {
 	}
 
 	_showGreeting() {
-		return fetch('greeting/greeting.html')
+		return fetch('/greeting/greeting.html')
 			.then(response => {
 				if (!response.ok) {
 					throw new Err('greetingScreen.responseError', "{status} - {statusText}", { statusText: response.statusText, status: response.status });
