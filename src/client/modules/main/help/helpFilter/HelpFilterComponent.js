@@ -4,8 +4,12 @@ import l10n from 'modapp-l10n';
 const helpText =
 `<section class="charlog--pad">
 	<p>The <em>Awake</em> list in the far-left <em>Realm</em> panel may be filtered to help find characters you are looking for.
-	In the <em>Search filter</em> input, type in the name, gender, species, or tag you wish to match.</p>
+	In the <em>Search filter</em> input, type in the name, gender, species, tag, or idle status you wish to match.</p>
 	<p class="common--formattext"><code class="charlog--code-inline">male</code> will match any character set as male.</p>
+</section>
+<section class="charlog--pad">
+	<h4 class="charlog--pad">Idle status</h4>
+	<p class="common--formattext"><code class="charlog--code-inline">active</code>, <code class="charlog--code-inline">idle</code> and <code class="charlog--code-inline">away</code> will match characters on idle status.</p>
 </section>
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Multiple criteria</h4>
@@ -20,12 +24,12 @@ const helpText =
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Negative criteria</h4>
 	<p>Putting an exclamation mark (!) in front of a criteria, will match characters who does not fulfil that criteria.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">!gmt timezone</code> will match characters who does not have the "gmt timezone" tag.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">!away</code> will match characters with an idle status not set to away.</p>
 </section>
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Disliked tags</h4>
 	<p>Putting a tilde (~) in front of a criteria, will match characters with a matching dislike tag.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">~males</code> will match characters who has a dislike "males" tag.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">~males</code> will match characters who have a dislike "males" tag.</p>
 </section>
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Complex critera</h4>
