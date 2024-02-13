@@ -62,14 +62,14 @@ class Whereis {
 		});
 	}
 
-	whereis(player, char, params) {
-		return (params.charId
-			? Promise.resolve({ id: params.charId })
-			: player.call('getChar', { charName: params.charName })
-		).then(c => this.module.api.get('core.char.' + c.id + '.owned')).then(c => {
-			let charName = (c.name + ' ' + c.surname).trim();
-			let r = c.inRoom;
-			this.module.charLog.logInfo(char, l10n.l('whereis.charInRoom', "{charName} is located in {roomName} (#{roomId})", { charName: charName, roomName: r.name.replace(/([^.])\.$/, "$1"), roomId: r.id }));
+	whereis(player, ctrl, p) {
+		return player.call('whereis', p.charId
+			? { charId: p.charId }
+			: { charName: p.charName },
+		).then(result => {
+			let { char, room } = result;
+			let charName = (char.name + ' ' + char.surname).trim();
+			this.module.charLog.logInfo(ctrl, l10n.l('whereis.charInRoom', "{charName} is located in {roomName} (#{roomId})", { charName: charName, roomName: room.name.replace(/([^.])\.$/, "$1"), roomId: room.id }));
 		});
 	}
 }
