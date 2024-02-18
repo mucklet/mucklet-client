@@ -2,14 +2,14 @@ import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import NumberStep from 'classes/NumberStep';
-import { keyRegex } from 'utils/regex';
+import { alphanumRegex } from 'utils/regex';
 import { itemNameTooLong, keyTooLong } from 'utils/cmdErr';
 
 const usageText = 'create taggroup <span class="param">Keyword</span> <span class="opt">: <span class="param">Order</span></span> = <span class="param">Name</span>';
 const shortDesc = 'Create a new group for global tags';
 const helpText =
-`<p>Create a new group for global tags.</p>
-<p><code class="param">Keyword</code> is the keyword for the group.</p>
+`<p>Create a new group for global tags. The keyword may not be changed once the group is created.</p>
+<p><code class="param">Keyword</code> is the keyword for the group. Only a-z, 0-9, and dash is allowed.</p>
 <p><code class="param">Order</code> is an optional sort order value. Defaults to 0 (zero).</p>
 <p><code class="param">Name</code> is the name of the group.</p>`;
 
@@ -30,7 +30,7 @@ class CreateTagGroup {
 			key: 'taggroup',
 			next: [
 				new TextStep('key', {
-					regex: keyRegex,
+					regex: alphanumRegex,
 					name: "keyword",
 					maxLength: () => this.module.info.getTag().groupKeyMaxLength,
 					errTooLong: keyTooLong,
