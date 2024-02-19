@@ -4,7 +4,7 @@
 .ev- {
 	&control {
 		font-size: $font-size-small;
-		padding-top: 9px;
+		padding-top: 29px;
 		padding-bottom: 12px;
 		line-height: 24px;
 		&--border {
@@ -13,6 +13,6 @@
 	}
 
 	&release {
-		height: 20px;
+		height: 0px;
 	}
 }

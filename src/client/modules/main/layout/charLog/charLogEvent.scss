@@ -8,15 +8,6 @@
 }
 
 .ev- {
-	&control {
-		font-size: $font-size-small;
-		padding-top: 9px;
-		padding-bottom: 12px;
-		line-height: 24px;
-		&--border {
-			border-bottom: 1px solid $color4;
-		}
-	}
 	// color: $color4-dark; // Info, OOC
 	// color: $color4; // Events (default)
 	// color: $color4-lightest; // Communication
