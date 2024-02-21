@@ -189,7 +189,7 @@ class Auth {
 					return user;
 				})
 				.catch(err => {
-					if (err.code.endsWith('.termsNotAgreed')) {
+					if (err.code?.endsWith?.('.termsNotAgreed')) {
 						redirectWithUri(oauth2Url);
 						return;
 					}

@@ -13,10 +13,10 @@
 	<script type="text/javascript">
 window.appProps = {<% if (APP_ISTEMPLATE) { %>
 {{- with .Realm }}
-	realmName: {{ .Name }},
-	apiHostPath: {{ .APIWSPath }},
-	apiWebresourcePath: {{ .APIResourcePath }},
-	apiFilePath: {{ .APIFilePath }},
+	realmName: "{{ .Name | js }}",
+	apiHostPath: "{{ .APIWSPath | js }}",
+	apiWebresourcePath: "{{ .APIResourcePath | js }}",
+	apiFilePath: "{{ .APIFilePath | js }}",
 {{- end }}
 {{- with .Error }}
 	error: {{ . }},
@@ -27,7 +27,7 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 	apiFilePath: <%= JSON.stringify(API_FILE_PATH) %>,<% } %>
 };
 	</script>
-	<title><%= APP_ISTEMPLATE ? "{{ with .Realm }}{{ .Name }}{{ end }}" : htmlWebpackPlugin.options.title %></title>
+	<title><%= APP_ISTEMPLATE ? "{{ with .Realm }}{{ .Name | html }}{{ end }}" : htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
 </body>

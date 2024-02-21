@@ -17,6 +17,7 @@
     "build": "cross-env NODE_ENV=production webpack",
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",
     "build:client": "cross-env NODE_ENV=production APP_NAME=client webpack",
+    "build:client:local": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=local webpack",
     "build:realm:test": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_test webpack",
     "build:realm:wolfery": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_wolfery webpack",
     "build:realm:unknown": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_unknown webpack",

@@ -1,19 +1,19 @@
 {
-	"name": "Wolfery",
-	"short_name": "Wolfery",
+	"name": "{{ with .Realm }}{{ .Name | js }}{{ else }}Mucklet realm{{ end }}",
+	"short_name": "{{ with .Realm }}{{ .Name | js }}{{ else }}Mucklet realm{{ end }}",
 	"icons": [
 		{
-			"src": "/android-chrome-192x192.png",
+			"src": "{{ .RootURL | js}}android-chrome-192x192.png",
 			"sizes": "192x192",
 			"type": "image/png"
 		},
 		{
-			"src": "/android-chrome-512x512.png",
+			"src": "{{ .RootURL | js }}android-chrome-512x512.png",
 			"sizes": "512x512",
 			"type": "image/png"
 		},
 		{
-			"src": "/paw-bg.svg",
+			"src": "{{ .RootURL | js }}siteicon.svg",
 			"sizes": "any",
 			"type": "image/svg+xml"
 		}
@@ -21,7 +21,7 @@
 	"theme_color": "#252a40",
 	"background_color": "#252a40",
 	"display": "standalone",
-	"description": "A textual world of roleplay.",
+	"description": "{{ with .Realm }}{{ .Desc | js }}{{ else }}A textual world of roleplay.{{ end }}",
 	"start_url": ".",
 	"dir": "ltr",
 	"lang": "en",
