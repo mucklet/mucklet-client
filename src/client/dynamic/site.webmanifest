@@ -1,19 +1,19 @@
 {
-	"name": "Wolfery",
-	"short_name": "Wolfery",
+	"name": ${ APP_NAME },
+	"short_name": ${ APP_NAME },
 	"icons": [
 		{
-			"src": "/android-chrome-192x192.png",
+			"src": ${ ICON_192x192_PNG_PATH },
 			"sizes": "192x192",
 			"type": "image/png"
 		},
 		{
-			"src": "/android-chrome-512x512.png",
+			"src": ${ ICON_512x512_PNG_PATH },
 			"sizes": "512x512",
 			"type": "image/png"
 		},
 		{
-			"src": "/paw-bg.svg",
+			"src": ${ ICON_SITEICON_SVG_PATH },
 			"sizes": "any",
 			"type": "image/svg+xml"
 		}
@@ -21,7 +21,7 @@
 	"theme_color": "#252a40",
 	"background_color": "#252a40",
 	"display": "standalone",
-	"description": "A textual world of roleplay.",
+	"description": ${ APP_DESC },
 	"start_url": ".",
 	"dir": "ltr",
 	"lang": "en",

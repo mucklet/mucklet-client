@@ -1,6 +1,6 @@
 {
   "name": "mucklet-client",
-  "version": "1.55.3",
+  "version": "1.56.0",
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
@@ -16,6 +16,8 @@
     "hub": "cross-env NODE_ENV=development APP_NAME=hub webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack",
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",
+    "build:client": "cross-env NODE_ENV=production APP_NAME=client webpack",
+    "build:client:local": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=local webpack",
     "build:realm:test": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_test webpack",
     "build:realm:wolfery": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_wolfery webpack",
     "build:realm:unknown": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_unknown webpack",
@@ -57,7 +59,7 @@
     "autocompleter": "^6.1.3",
     "core-js": "^3.26.0",
     "croppie": "^2.6.5",
-    "modapp": "^2.6.2",
+    "modapp": "^2.7.0",
     "modapp-base-component": "^1.8.1",
     "modapp-l10n": "^1.8.2",
     "modapp-resource": "^1.8.4",

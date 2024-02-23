@@ -12,9 +12,9 @@ module.exports = {
 	API_FILE_PATH: '', // Set in template
 	API_CROSS_ORIGIN: true,
 
-	AUTH_LOGIN_URL: '/auth/oauth2/login',
-	AUTH_LOGOUT_URL: '/auth/oauth2/logout',
-	AUTH_AUTHENTICATE_URL: '/auth/authenticate',
+	AUTH_LOGIN_URL: 'http://localhost:6453/oauth2/login',
+	AUTH_LOGOUT_URL: 'http://localhost:6453/oauth2/logout',
+	AUTH_AUTHENTICATE_URL: 'http://localhost:6453/authenticate',
 	AUTH_LOGIN_RID: 'auth',
 	AUTH_AUTHENTICATE_RID: 'auth',
 

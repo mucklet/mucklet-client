@@ -1,4 +1,4 @@
-import { Elem, Txt, Input, Html } from 'modapp-base-component';
+import { Elem, Txt, Input } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
@@ -194,12 +194,6 @@ class LoginComponent {
 				this.loginPromise = null;
 				if (!this.elem) return;
 				this._getNode('loginSpinner').classList.add('hide');
-				// [TODO] Remove this once the bug is fixed
-				if (err.code == 'auth.missingToken') {
-					let n = this._getNode('message');
-					n.setComponent(new Html(`We have issues with Safari and Incognito. See <a href="https://forum.wolfery.com/t/bug-missing-token/267" class="link" target="_blank">this forum post</a> for solutions.`, { className: 'login--message' }));
-					return;
-				}
 
 				this._setMessage(l10n.l(err.code, err.message, err.data));
 			});

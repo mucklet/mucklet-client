@@ -1,5 +1,5 @@
 import l10n from 'modapp-l10n';
-import { replyCmds, replyAllCmds } from 'utils/replyToEvent';
+import { replyCmds, replyAllCmds, containsTarget } from 'utils/replyToEvent';
 import { relistenResource } from 'utils/listenResource';
 
 function getReply(charId, ev, all) {
@@ -97,6 +97,12 @@ class ConsoleReplyLast {
 	}
 
 	_addEvent(charId, ev) {
+		// Ignore events, such as address, where character is neither the sender
+		// nor a target.
+		if (ev.char?.id != charId && !containsTarget(charId, ev)) {
+			return;
+		}
+
 		let charEvents = this._getCharEvents(charId);
 		charEvents.unshift(ev);
 		if (charEvents.length > this.bufferSize) {

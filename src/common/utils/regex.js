@@ -23,6 +23,9 @@ export let colonEqualDelimExpandRegex = { left: /./, right: /[^:=]/ };
 export let anyTokenRegex = /^(.*[^\s])\s*/;
 export let anyExpandRegex = { left: /./, right: /./ };
 
+// Used for tag group keys.
+export let alphanumRegex = /^[a-zA-Z0-9-]*/u;
+
 export function escapeRegex(str) {
 	return str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 };

@@ -97,7 +97,7 @@ class SetTagGroup {
 	}
 
 	setTagGroup(char, key, params) {
-		return this.module.api.call('tag.group.' + key, 'set', params)
+		return this.module.api.call('tag.group.' + key.toLowerCase(), 'set', params)
 			.then(result => this.module.charLog.logInfo(char, l10n.l('setTagGroup.groupAttributeSet', "Successfully set attribute of tag group [{key}].", { key: result.group.key })));
 	}
 }

@@ -60,6 +60,8 @@ class Whois {
 	whois(char, params) {
 		return this.module.player.getPlayer().call('getChar', params.charId ? { charId: params.charId } : { charName: params.charName })
 			.then(c => {
+				// Create an anonymous static object of char.
+				c = c.toJSON();
 				let charName = (c.name + ' ' + c.surname).trim();
 				let genderSpecies = (firstLetterUppercase(c.gender) + ' ' + firstLetterUppercase(c.species)).trim();
 				let lvl = getCharIdleLevel(c);

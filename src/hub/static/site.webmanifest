@@ -1,0 +1,36 @@
+{
+	"name": "Mucklet",
+	"short_name": "Mucklet",
+	"icons": [
+		{
+			"src": "/android-chrome-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/android-chrome-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "/siteicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml"
+		}
+	],
+	"theme_color": "#252a40",
+	"background_color": "#252a40",
+	"display": "standalone",
+	"description": "A textual world of roleplay.",
+	"start_url": ".",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "any",
+	"display_override": [
+		"standalone",
+		"fullscreen",
+		"minimal-ui",
+		"browser",
+		"window-controls-overlay"
+	]
+}

@@ -13,7 +13,7 @@ class Api extends ResClient {
 			debug: false,
 		}, params);
 		opt.debug = !!(opt.debug && opt.debug != 'false' && opt.debug != '0' && opt.debug != 'no');
-		super(API_HOST_PATH, {
+		super(app.props.apiHostPath, {
 			namespace,
 			eventBus: app.eventBus,
 			reconnectDelay: 3000,
@@ -24,7 +24,7 @@ class Api extends ResClient {
 		 });
 
 		this.app = app;
-		this.webResourcePath = this._resolveWebResourcePath(API_WEBRESOURCE_PATH);
+		this.webResourcePath = this._resolveWebResourcePath(app.props.apiWebresourcePath);
 	}
 
 	getWebResourceUri(rid) {

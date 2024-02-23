@@ -1,5 +1,12 @@
 import { escapeRegex } from 'utils/regex';
 
+const idleCodes = {
+	'active': 1,
+	'idle': 2,
+	'away': 3,
+	'inactive': 3,
+};
+
 /**
  * CharFilter parses a filter string and matches it against characters.
  */
@@ -119,12 +126,14 @@ class CharFilter {
 	}
 
 	_matchKey(char, k) {
+		let key = k.key;
 		// Dislike modifiers only matches tags
 		if (!k.dislike) {
 			if (
 				(char.species && char.species.match(k.regex)) ||
 				(char.gender && char.gender.match(k.regex)) ||
-				((char.name + ' ' + char.surname).match(k.regex))
+				((char.name + ' ' + char.surname).match(k.regex)) ||
+				(idleCodes[k.key] == char.idle)
 			) {
 				return true;
 			}
@@ -133,7 +142,6 @@ class CharFilter {
 		if (!char.tags) return false;
 
 		let props = char.tags.props || char.tags;
-		let key = k.key;
 		for (let pk in props) {
 			if ((pk.slice(pk.length - 8) == '_dislike') != k.dislike) {
 				continue;
