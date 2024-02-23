@@ -4,7 +4,8 @@ module.exports = {
 	APP_ISTEMPLATE: true,
 	APP_VERSION: '0', // Overwritten by version in package.json
 	APP_TITLE: '', // Set in template
-	APP_DESCRIPTION: '', // Set in  template
+	APP_DESCRIPTION: '', // Set in template
+	APP_ROOT: '', // Set in template
 
 	API_HOST_PATH: '', // Set in template
 	API_WEBRESOURCE_PATH: '', // Set in template

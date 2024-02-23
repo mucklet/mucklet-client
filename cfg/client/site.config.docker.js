@@ -5,6 +5,7 @@ module.exports = {
 	APP_VERSION: '0', // Overwritten by version in package.json
 	APP_TITLE: "Docker Wolfery",
 	APP_DESCRIPTION: "A textual world of role play. Create a character, wake them up, and join in.",
+	APP_ROOT: '/',
 
 	API_HOST_PATH: 'ws://api.mucklet.localhost/',
 	API_WEBRESOURCE_PATH: 'http://api.mucklet.localhost/api/',
