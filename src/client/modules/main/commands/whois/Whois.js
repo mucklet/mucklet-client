@@ -100,7 +100,7 @@ class Whois {
 						]),
 						n.component(hasTags(c.tags)
 							? new Elem(n => n.elem('div', { className: 'badge--select badge--margin' }, [
-								n.component(new CharTagsList(c.tags, { eventBus: this.app.eventBus, static: true })),
+								n.component(new CharTagsList(c.tags, { eventBus: this.app.eventBus })),
 							]))
 							: null,
 						),
