@@ -12,6 +12,7 @@ const helpText =
 <tbody>
 <tr><td><code>id</code></td><td>ID of the area.</td></tr>
 <tr><td><code>owner</code></td><td>Owner of the area.</td></tr>
+<tr><td><code>parent</code></td><td>Parent area name and ID.</td></tr>
 </tbody>
 </table>`;
 
@@ -32,6 +33,7 @@ class GetArea {
 			items: [
 				{ key: 'id' },
 				{ key: 'owner' },
+				{ key: 'parent' },
 			],
 		});
 
@@ -66,6 +68,13 @@ class GetArea {
 					break;
 				case 'owner':
 					this.module.charLog.logInfo(char, l10n.l('getArea.areaHasOwner', "{name} has owner {owner}", { name: a.name.replace(/([^.])\.$/, "$1"), owner: (a.owner.name + " " + a.owner.surname).trim() }));
+					break;
+				case 'parent':
+					if (!a.parent) {
+						this.module.charLog.logError(char, new Err('getArea.roomIsNotASubarea', "The area is not a subarea."));
+					} else {
+						this.module.charLog.logInfo(char, l10n.l('getArea.areaHasOwner', "{name} is a subarea of {parent}, with ID #{parentId}", { name: a.name.replace(/([^.])\.$/, "$1"), parent: a.parent.name.replace(/([^.])\.$/, "$1"), parentId: a.parent.id }));
+					}
 					break;
 			}
 		}
