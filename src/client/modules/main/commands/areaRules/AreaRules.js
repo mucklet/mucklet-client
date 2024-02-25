@@ -34,7 +34,7 @@ class RulesArea {
 			usage: l10n.l('areaRules.usage', usageText),
 			shortDesc: l10n.l('areaRules.shortDesc', shortDesc),
 			desc: l10n.l('areaRules.helpText', helpText),
-			sortOrder: 70,
+			sortOrder: 80,
 		});
 	}
 

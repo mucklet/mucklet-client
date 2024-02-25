@@ -34,7 +34,7 @@ class AboutArea {
 			usage: l10n.l('aboutArea.usage', usageText),
 			shortDesc: l10n.l('aboutArea.shortDesc', shortDesc),
 			desc: l10n.l('aboutArea.helpText', helpText),
-			sortOrder: 60,
+			sortOrder: 70,
 		});
 	}
 

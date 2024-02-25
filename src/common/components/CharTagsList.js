@@ -7,7 +7,7 @@ import * as tooltip from 'utils/tooltip';
 import './charTagsList.scss';
 
 function staticClone(tags) {
-	tags = Object.assign({}, tags && tags.props);
+	tags = Object.assign({}, tags?.props || tags);
 	for (let k in tags) {
 		let t = tags[k];
 		tags[k] = t && t.props ? Object.assign({}, t.props) : t;
