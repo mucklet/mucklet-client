@@ -24,7 +24,8 @@ const focusColors = {
 };
 
 function isValidColor(color) {
-	return color && (focusColors.hasOwnProperty(color) || color.match(/^#(?:[0-9a-fA-F]{3,3}){1,2}$/));
+	return color && (focusColors.hasOwnProperty(color) || color.match(/^#(?:[0-9a-fA-F]{3,3}){1,2}$/) ||
+									 color.match(/^\/(#(?:[0-9a-fA-F]{3,3}){1,2}){2,2}$/));
 }
 
 /**
@@ -398,9 +399,21 @@ class CharFocus {
 			for (let charId in f) {
 				let o = f[charId];
 				let c = o.color;
-				c = c[0] == '#' ? c : focusColors[c];
+				let focusPayload = '';
+				switch (c[0]) {
+					case '#':
+						focusPayload = '{border-color:' + c + '}';
+						break;
+					case '/':
+						let color1 = `#${c.split('#')[1]}`;
+						let color2 = `#${c.split('#')[2]}`;
+						focusPayload = `{border-image: linear-gradient(${color1},${color2}) 4;}`;
+						break;
+				  default:
+						focusPayload = `{border-color: ${focusColors[c]}}`;
+				}
 				if (c) {
-					s += '.f-' + ctrlId + '-' + charId + ' {border-left-color:' + c + '} .mf-' + ctrlId + '-' + charId + ' {border-color:' + c + '}\n';
+					s += '.f-' + ctrlId + '-' + charId + focusPayload + ' .mf-' + ctrlId + '-' + charId + focusPayload + '\n';
 				}
 			}
 		}
@@ -417,7 +430,7 @@ class CharFocus {
 		let count = {};
 		for (let charId in f) {
 			let c = f[charId].color;
-			if (c && c != 'none' && c[0] != '#') {
+			if (c && c != 'none' && c[0] != '#' && c[0] != '/') {
 				count[c] = (count[c] || 0) + 1;
 			}
 		}

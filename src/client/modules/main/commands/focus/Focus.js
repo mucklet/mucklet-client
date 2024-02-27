@@ -3,6 +3,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ErrorStep from 'classes/ErrorStep';
 import ColorStep from 'classes/ColorStep';
+import GradientStep from 'classes/GradientStep';
 import ItemList from 'classes/ItemList';
 import Err from 'classes/Err';
 
@@ -18,6 +19,7 @@ const examples = [
 	{ cmd: 'focus Jane Doe', desc: l10n.l('focus.focusNoColorDesc', "Focus on Jane Doe with a random highlight color") },
 	{ cmd: 'focus John = green', desc: l10n.l('focus.focusColorDesc', "Focus on John with green hightlight color") },
 	{ cmd: 'focus Jane = #c1a657', desc: l10n.l('focus.focusHexDesc', "Focus on Jane with a custom HTML color code") },
+	{ cmd: 'focus Jane = /#c1a657#fefefe', desc: l10n.l('focus.focusHexDesc', "Focus on Jane with a custom Gradient color") },
 	{ cmd: 'focus John = none', desc: l10n.l('focus.focusNoneDesc', "Notifications on events from Jane without highlighting") },
 	{ cmd: 'focus @all', desc: l10n.l('focus.focusAllDesc', "Notifications on all events") },
 	{ cmd: 'stop focus John', desc: l10n.l('focus.stopFocusJohnDesc', "Remove focus from John") },
@@ -62,6 +64,9 @@ class Focus {
 								name: "focus color",
 								else: new ColorStep('color', {
 									errRequired: step => new Err('focus.colorRequired', "What focus color do you want?"),
+									else: new GradientStep('color', {
+									  errRequired: step => new Err('focus.colorRequired', "What focus color/gradient do you want?"),
+									}),
 								}),
 							}),
 						}),
