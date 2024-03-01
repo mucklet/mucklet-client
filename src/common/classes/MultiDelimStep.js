@@ -7,13 +7,17 @@ class MultiDelimStep {
 
 	/**
 	 * Creates an instance of MultiDelimStep.
-	 * @param {object} delims Delimiters. Value is the option object for DelimStep.
+	 * @param {object | Array<{delim: regexp|string, step: Step}>} delims Delimiters. Value is the option object for DelimStep.
 	 * @param {object} [opt] Optional params.
 	 * @param {boolean} [opt.trimSpace] Flag indicating if initial space should be trimmed. Defaults to true.
 	 */
 	constructor(delims, opt) {
 		this.opt = opt || {};
-		this.delims = Object.assign({}, delims);
+		if (!Array.isArray(delims)) {
+			delims = delims || {};
+			delims = Object.keys(delims).map(k => ({ delim: k, step: delims[k] }));
+		}
+		this.delims = delims;
 		this.trimSpace = this.opt.hasOwnProperty('trimSpace') ? !!this.opt.trimSpace : true;
 	}
 
@@ -26,18 +30,18 @@ class MultiDelimStep {
 			stream.eatSpace();
 		}
 
-		for (let delim in this.delims) {
-			let isMatch = stream.match(delim, true, true);
+		for (let i = 0; i < this.delims.length; i++) {
+			let d = this.delims[i];
+			let isMatch = stream.match(d.delim, true, true);
 			if (isMatch) {
 				state.backUp(stream);
 
-				let delims = Object.assign({}, this.delims);
-				delete delims[delim];
+				let delims = this.delims.toSpliced(i, 0);
 				// Add a new MultiDelimStep, but without the matched delim.
-				if (Object.keys(delims).length) {
+				if (delims.length) {
 					state.addStep(new MultiDelimStep(delims, this.opt));
 				}
-				state.addStep(new DelimStep(delim, this.delims[delim]));
+				state.addStep(new DelimStep(d.delim, Object.assign({ token: this.opt.token }, d.step)));
 				return false;
 			}
 		}
