@@ -18,6 +18,8 @@ const unmutableEvents = {
 	dnd: true,
 };
 
+const oocEventType = 'ooc';
+
 /**
  * Mute handles muting of events.
  */
@@ -33,6 +35,7 @@ class Mute {
 
 		this.muteTravel = new Model({ eventBus: this.app.eventBus });
 		this.muteChars = new Model({ eventBus: this.app.eventBus });
+		this.muteOoc = new Model({ eventBus: this.app.eventBus });
 
 		this.module.charLog.addEventModifier({
 			id: 'mute',
@@ -43,6 +46,7 @@ class Mute {
 		// Load muted
 		this._loadMuteTravel();
 		this._loadMuteChars();
+		this._loadMuteOoc();
 	}
 
 	toggleMuteTravel(ctrlId, muteTravel) {
@@ -63,6 +67,17 @@ class Mute {
 
 		return this.muteChars.set({ [charId]: muteChar || undefined }).then(() => {
 			this._saveMuteChars();
+			return true;
+		});
+	}
+
+	toggleMuteOoc(ctrlId, muteOoc) {
+		muteOoc = typeof muteOoc == 'undefined' ? !this.muteOoc.props[ctrlId] : !!muteOoc;
+		let v = this.muteOoc.props.hasOwnProperty(ctrlId);
+		if (muteOoc == v) return Promise.resolve(false);
+
+		return this.muteOoc.set({ [ctrlId]: muteOoc || undefined }).then(() => {
+			this._saveMuteOoc();
 			return true;
 		});
 	}
@@ -94,6 +109,24 @@ class Mute {
 		});
 	}
 
+	_loadMuteOoc() {
+		if (!localStorage) return;
+
+		this.module.auth.getUserPromise().then(user => {
+			let raw = localStorage.getItem(muteStoragePrefix + user.id + '.ooc');
+			if (raw) {
+				this.muteOoc.reset(JSON.parse(raw));
+			}
+		});
+	}
+
+	_saveMuteOoc() {
+		if (!localStorage) return;
+		this.module.auth.getUserPromise().then(user => {
+			localStorage.setItem(muteStoragePrefix + user.id + '.ooc', JSON.stringify(this.muteOoc.props));
+		});
+	}
+
 	_loadMuteChars() {
 		if (!localStorage) return;
 
@@ -120,6 +153,11 @@ class Mute {
 				muted = true;
 			}
 		}
+
+		if (charId != ctrl.id && this.muteOoc.props[ctrl.id] && (ev.ooc || ev.type === oocEventType)) {
+			muted = true;
+		}
+
 		if (!muted && charId && this.muteChars.props[charId] && !unmutableEvents[ev.type]) {
 			muted = true;
 		}
