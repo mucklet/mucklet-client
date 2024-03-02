@@ -44,9 +44,9 @@ class Mute {
 		});
 
 		// Load muted
-		this._loadMuteTravel();
-		this._loadMuteChars();
-		this._loadMuteOoc();
+		this._loadMute('.travel', this.muteTravel);
+		this._loadMute('.chars', this.muteChars);
+		this._loadMute('.ooc', this.muteOoc);
 	}
 
 	toggleMuteTravel(ctrlId, muteTravel) {
@@ -55,7 +55,7 @@ class Mute {
 		if (muteTravel == v) return Promise.resolve(false);
 
 		return this.muteTravel.set({ [ctrlId]: muteTravel || undefined }).then(() => {
-			this._saveMuteTravel();
+			this._saveMute('.travel', this.muteTravel);
 			return true;
 		});
 	}
@@ -66,7 +66,7 @@ class Mute {
 		if (muteChar == v) return Promise.resolve(false);
 
 		return this.muteChars.set({ [charId]: muteChar || undefined }).then(() => {
-			this._saveMuteChars();
+			this._saveMuteChars('.chars', this.muteChars);
 			return true;
 		});
 	}
@@ -77,7 +77,7 @@ class Mute {
 		if (muteOoc == v) return Promise.resolve(false);
 
 		return this.muteOoc.set({ [ctrlId]: muteOoc || undefined }).then(() => {
-			this._saveMuteOoc();
+			this._saveMute('.ooc', this.muteOoc);
 			return true;
 		});
 	}
@@ -91,57 +91,22 @@ class Mute {
 		return !!(charId && this.muteChars.props[charId]);
 	}
 
-	_loadMuteTravel() {
+	_loadMute(type, model) {
 		if (!localStorage) return;
 
 		this.module.auth.getUserPromise().then(user => {
-			let raw = localStorage.getItem(muteStoragePrefix + user.id + '.travel');
+			let raw = localStorage.getItem(muteStoragePrefix + user.id + type);
 			if (raw) {
-				this.muteTravel.reset(JSON.parse(raw));
+				model.reset(JSON.parse(raw));
 			}
 		});
 	}
 
-	_saveMuteTravel() {
-		if (!localStorage) return;
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(muteStoragePrefix + user.id + '.travel', JSON.stringify(this.muteTravel.props));
-		});
-	}
-
-	_loadMuteOoc() {
+	_saveMute(type, model) {
 		if (!localStorage) return;
 
 		this.module.auth.getUserPromise().then(user => {
-			let raw = localStorage.getItem(muteStoragePrefix + user.id + '.ooc');
-			if (raw) {
-				this.muteOoc.reset(JSON.parse(raw));
-			}
-		});
-	}
-
-	_saveMuteOoc() {
-		if (!localStorage) return;
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(muteStoragePrefix + user.id + '.ooc', JSON.stringify(this.muteOoc.props));
-		});
-	}
-
-	_loadMuteChars() {
-		if (!localStorage) return;
-
-		this.module.auth.getUserPromise().then(user => {
-			let raw = localStorage.getItem(muteStoragePrefix + user.id + '.chars');
-			if (raw) {
-				this.muteChars.reset(JSON.parse(raw));
-			}
-		});
-	}
-
-	_saveMuteChars() {
-		if (!localStorage) return;
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(muteStoragePrefix + user.id + '.chars', JSON.stringify(this.muteChars.props));
+			localStorage.setItem(muteStoragePrefix + user.id + type, JSON.stringify(model.props));
 		});
 	}
 
