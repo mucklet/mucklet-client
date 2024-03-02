@@ -113,8 +113,9 @@ class Address {
 		if (!charIds.length) {
 			charIds = this.lastCharIds[char.id];
 			let inRoom = true;
+			var irca = this.module.cmdLists.getInRoomCharsAwake();
 			for (let c of charIds) {
-				if (!this.module.cmdLists.getInRoomCharsAwake().getItemByID(c)) {
+				if (!irca.getItemByID(c)) {
 					inRoom = false;
 				}
 			}
