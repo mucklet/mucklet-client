@@ -112,8 +112,16 @@ class Address {
 		let charIds = params.charIds || [];
 		if (!charIds.length) {
 			charIds = this.lastCharIds[char.id];
+			let inRoom = true;
+			for (let c of charIds) {
+				if (!this.module.cmdLists.getInRoomCharsAwake().getItemByID(c)) {
+					inRoom = false;
+				}
+			}
 			if (!charIds) {
 				return Promise.reject(new Err('address.noCharacter', "Who do you want to address?"));
+			} else if (!inRoom) {
+				return Promise.reject(new Err('address.notInRoomCharacter', "Someone isn't here or isn't awake."));
 			}
 			params.charIds = charIds;
 		} else {

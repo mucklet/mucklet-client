@@ -40,6 +40,19 @@ class CharList {
 		return this.errNotFoundMsg;
 	}
 
+	getItemByID(key) {
+		let chars = this.getChars();
+		if (!chars) {
+			return null;
+		}
+		for (let c of chars) {
+			if (c.id === key) {
+				return c;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Gets a list item by key.
 	 * @param {string} key Key of item to get.
