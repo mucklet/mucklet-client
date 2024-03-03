@@ -2,6 +2,7 @@ import DelimStep from 'classes/DelimStep';
 import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
+import Err from 'classes/Err';
 
 /**
  * ListArea adds command to show list of items belonging to an area.

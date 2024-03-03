@@ -7,11 +7,20 @@ const shortDesc = 'List all locations of an area';
 const helpText =
 `<p>Get a list of all rooms and subareas belonging to an area.</p>`;
 
-const childTypes = {
-	room: l10n.l('listAreaLocations.room', "Room"),
-	instanceRoom: l10n.l('listAreaLocations.room', "Room"),
-	area: l10n.l('listAreaLocations.subarea', "Subarea"),
-};
+const txtRoom = l10n.l('listAreaLocations.room', "Room");
+const txtSubarea = l10n.l('listAreaLocations.subarea', "Subarea");
+const txtPrivateRoom = l10n.l('listAreaLocations.privateRoom', "Private room");
+const txtPrivateSubarea = l10n.l('listAreaLocations.privateSubarea', "Private subarea");
+
+function getTypeName(loc) {
+	return loc.type == 'area'
+		? loc.private
+			? txtPrivateSubarea
+			: txtSubarea
+		: loc.private
+			? txtPrivateRoom
+			: txtRoom;
+}
 
 const typeOrder = {
 	room: 0,
@@ -57,13 +66,16 @@ class ListAreaLocations {
 	}
 
 	listLocations(char, areaId) {
-		this.module.api.get(`core.area.${areaId}.details`).then(area => {
-			let props = area.children?.props || {};
-			let children = Object.keys(props).map(k => props[k].toJSON?.() || {});
-			let locations = children
+		let apiModule = this.module.api;
+		return Promise.all([
+			apiModule.get(`core.area.${areaId}.children`),
+			apiModule.get(`core.area.${areaId}.children.private`),
+		]).then(result => {
+			let allChildren = Object.assign({}, result[0]?.props, result[1]?.props);
+			let locations = Object.keys(allChildren).map(k => allChildren[k].toJSON?.() || {})
 				.filter(m => m.id)
-				.sort((a, b) => (typeOrder[a.type] - typeOrder[b.type]) || a.name.localeCompare(b.name))
-				.map(m => '<tr><td><code>#' + escapeHtml(m.id) + '</code></td><td>' + escapeHtml(m.name) + '</td><td>' + escapeHtml(l10n.t(childTypes[m.type])) + '</td></tr>');
+				.sort((a, b) => (typeOrder[a.type] - typeOrder[b.type]) || ((a.private || 0) - (b.private || 0)) || a.name.localeCompare(b.name))
+				.map(m => '<tr><td><code>#' + escapeHtml(m.id) + '</code></td><td>' + escapeHtml(m.name) + '</td><td>' + escapeHtml(l10n.t(getTypeName(m))) + '</td></tr>');
 
 			if (locations.length) {
 				this.module.charLog.logComponent(char, 'listAreaLocations', new Elem(n => n.elem('div', { className: 'listareas charlog--pad' }, [
