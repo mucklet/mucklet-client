@@ -121,7 +121,7 @@ class DialogAboutChar {
 						n.component(new ModelComponent(
 							char.tags,
 							new Collapser(),
-							(m, c) => c.setComponent(Object.keys(m.props).length
+							(m, c) => c.setComponent(Object.keys(m.props || {}).length
 								? tags
 								: null,
 							),

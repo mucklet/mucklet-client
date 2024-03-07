@@ -63,7 +63,6 @@ const defaultAttr = [
 	},
 	{
 		key: 'parent',
-		value: 'parentId',
 		stepFactory: module => new IDStep('value', {
 			name: "parent area ID",
 			list: () => {
@@ -75,6 +74,7 @@ const defaultAttr = [
 			}),
 		}),
 		desc: l10n.l('setArea.parentDesc', "#AreaID, or name of owned area, to set as parent area. Or <code>none</code> to unset current parent area. List owned areas with <code>list areas</code>."),
+		value: (ctx, p, self) => self.setAreaParent(ctx.char, p.areaId, p.value),
 		sortOrder: 50,
 	},
 ];
@@ -156,6 +156,19 @@ class SetArea {
 			}).then(() => {
 				this.module.charLog.logInfo(ctx.char, l10n.l('setArea.updatedArea', "Area attribute was successfully set."));
 			});;
+	}
+
+	setAreaParent(ctrl, areaId, parentId) {
+		// When removing the area from a parent area, we use removeLocation instead,
+		// as both parent area and child area owners can call it.
+		return (parentId
+			? ctrl.call('setArea', { areaId, parentId }).then(() => {
+				this.module.charLog.logInfo(ctrl, l10n.l('setArea.parentAreaSet', "Area parent was successfully set."));
+			})
+			: ctrl.call('removeLocation', { locationId: areaId, type: 'area' }).then(() => {
+				this.module.charLog.logInfo(ctrl, l10n.l('setArea.areaRemovedFromParentArea', "Area from successfully removed from parent area."));
+			})
+		);
 	}
 }
 
