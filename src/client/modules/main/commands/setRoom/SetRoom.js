@@ -39,7 +39,6 @@ const defaultAttr = [
 	},
 	{
 		key: 'area',
-		value: 'areaId',
 		stepFactory: module => new IDStep('value', {
 			name: "area ID",
 			list: () => {
@@ -51,6 +50,7 @@ const defaultAttr = [
 			}),
 		}),
 		desc: l10n.l('setRoom.areaDesc', "#AreaID, or name of owned area, to set for the room. Or <code>none</code> to unset current area. List owned areas with <code>list areas</code>."),
+		value: (ctx, p, self) => self.setRoomArea(ctx.char, p.value),
 		sortOrder: 25,
 	},
 	{
@@ -176,6 +176,19 @@ class SetRoom {
 			}).then(() => {
 				this.module.charLog.logInfo(ctx.char, l10n.l('setRoom.updatedRoom', "Room attribute was successfully set."));
 			});
+	}
+
+	setRoomArea(ctrl, areaId) {
+		// When removing the room from an area, we use removeLocation instead,
+		// as both area and room owners can call it.
+		return (areaId
+			? ctrl.call('setRoom', { areaId }).then(() => {
+				this.module.charLog.logInfo(ctrl, l10n.l('setRoom.roomAreaSet', "Room area was successfully set."));
+			})
+			: ctrl.call('removeLocation', { locationId: ctrl.inRoom.id, type: 'room' }).then(() => {
+				this.module.charLog.logInfo(ctrl, l10n.l('setRoom.roomRemovedFromArea', "Room was successfully removed from area."));
+			})
+		);
 	}
 }
 
