@@ -13,10 +13,6 @@ const helpText =
 class StopMuteMessage {
 	constructor(app) {
 		this.app = app;
-
-		// Bind callbacks
-		this._exec = this._exec.bind(this);
-
 		this.app.require([ 'stopMute', 'help', 'charLog', 'mute' ], this._init.bind(this));
 	}
 
@@ -38,14 +34,6 @@ class StopMuteMessage {
 			desc: l10n.l('stopMuteMessage.helpText', helpText),
 			sortOrder: 60,
 		});
-	}
-
-	_exec(ctx, p) {
-		let f = p.object;
-		if (typeof f != 'function') {
-			throw new Error("Object value is not a function");
-		}
-		return f(ctx, p);
 	}
 
 	stopMuteMessage(char) {

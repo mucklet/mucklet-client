@@ -69,7 +69,7 @@ class Mute {
 		if (muteChar == v) return Promise.resolve(false);
 
 		return this.muteChars.set({ [charId]: muteChar || undefined }).then(() => {
-			this._saveMuteChars('.chars', this.muteChars);
+			this._saveMute('.chars', this.muteChars);
 			return true;
 		});
 	}
