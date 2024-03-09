@@ -2,6 +2,8 @@ let chars = {};
 
 let cfg = {
 	serviceUri: '/api/core',
+	authenticateUrl: AUTH_AUTHENTICATE_URL,
+	crossOrigin: API_CROSS_ORIGIN,
 	duration: 1000 * 60 * 15,
 	threshold: 1000 * 60 * 60,
 	retry: 1000 * 60 * 1,
@@ -26,17 +28,31 @@ function pingChar(charId, puppeteerId, since) {
 	let url = cfg.serviceUri + '/char/' + (puppeteerId ? puppeteerId + '/puppet/' : '') + charId + '/ctrl/ping';
 	fetch(url, {
 		method: 'POST',
-		credentials: 'include',
+		mode: 'cors',
+		credentials: cfg.crossOrigin ? 'include' : 'same-origin',
 	}).then(resp => {
 		if (resp.status < 200 || resp.status >= 300) {
 			// Access denied likely means the token cookie wasn't included
-			// We should switch to use WebSocket pinging for the character
+			// We try to refresh the token by calling authenticate endpoint.
 			if (resp.status == 401) {
-				postMessage({
-					cmd: 'useWs',
-					params: { charId, puppeteerId },
+				return fetch(cfg.authenticateUrl, {
+					method: 'POST',
+					mode: 'cors',
+					credentials: cfg.crossOrigin ? 'include' : 'same-origin',
+				}).then(resp => {
+					return resp.text().then(text => {
+						let result = JSON.parse(text);
+						if (result?.error) {
+							// A proper error messages means we are not logged in.
+							postMessage({
+								cmd: 'notLoggedIn',
+							});
+							return Promise.reject(result.error);
+						}
+					});
+				}).then(() => {
+					throw resp;
 				});
-				return;
 			}
 			return Promise.reject(resp);
 		}
