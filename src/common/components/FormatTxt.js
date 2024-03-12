@@ -41,7 +41,7 @@ class FormatTxt extends Fader {
 	}
 
 	setFormatText(str) {
-		str = str || null;
+		str = str || '';
 
 		if (str === this.setStr) return;
 

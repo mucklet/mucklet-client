@@ -29,7 +29,7 @@ class CharsAwake {
 
 	_init(module) {
 		this.module = module;
-		this.model = new Model({ data: { charsAwake: null, watches: null, notes: null, showAll: true, filter: '' }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { charsAwake: null, watches: null, notes: null, showLfrp: false, filter: '' }, eventBus: this.app.eventBus });
 		this.filter = new CharFilter('');
 		this.charsAwake = new ModelWrapper(null, {
 			map: (k, v) => new ModifyModel(v, {
@@ -94,10 +94,11 @@ class CharsAwake {
 		return this.unwatchedAwake;
 	}
 
-	toggleShowAll(showAll) {
-		showAll = typeof showAll == 'undefined' ? !this.model.showAll : !!showAll;
-		let p = this.model.set({ showAll });
+	toggleShowLfrp(showLfrp) {
+		showLfrp = typeof showLfrp == 'undefined' ? !this.model.showLfrp : !!showLfrp;
+		let p = this.model.set({ showLfrp });
 		this._saveSettings();
+		this._trySetFilter();
 		return p;
 	}
 
@@ -108,10 +109,14 @@ class CharsAwake {
 		}
 		let p = this.model.set({ filter });
 		this._saveSettings();
-		if (this.filter.setFilter(filter)) {
+		this._trySetFilter();
+		return p;
+	}
+
+	_trySetFilter() {
+		if (this.filter.setFilter(this.model.filter, { showLfrp: this.model.showLfrp })) {
 			this._updateFilter();
 		}
-		return p;
 	}
 
 	filterIsEmpty() {
@@ -221,9 +226,7 @@ class CharsAwake {
 			if (data) {
 				let o = JSON.parse(data);
 				this.model.set(o);
-				if (this.filter.setFilter(this.model.filter)) {
-					this._updateFilter();
-				}
+				this._trySetFilter();
 			}
 		}
 	}
@@ -231,7 +234,7 @@ class CharsAwake {
 	_saveSettings() {
 		if (localStorage && this.user) {
 			localStorage.setItem(charsAwakeStoragePrefix + this.user.id, JSON.stringify({
-				showAll: this.model.showAll,
+				showLfrp: this.model.showLfrp,
 				filter: this.model.filter,
 			}));
 		}

@@ -8,9 +8,9 @@ const helpText =
 <p>Alias: <code>dropoff</code></p>`;
 
 /**
- * Lead adds the stopLead command.
+ * StopLead adds the stopLead command.
  */
-class Lead {
+class StopLead {
 	constructor(app) {
 		this.app = app;
 
@@ -51,4 +51,4 @@ class Lead {
 	}
 }
 
-export default Lead;
+export default StopLead;

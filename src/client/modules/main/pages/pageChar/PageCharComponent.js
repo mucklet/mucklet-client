@@ -8,6 +8,7 @@ import PanelSection from 'components/PanelSection';
 import NameSection from 'components/NameSection';
 import Fader from 'components/Fader';
 import FormatTxt from 'components/FormatTxt';
+import ModelCollapser from 'components/ModelCollapser';
 import CharTagsList, { hasTags } from 'components/CharTagsList';
 import ImgModal from 'classes/ImgModal';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
@@ -26,6 +27,7 @@ class PageCharComponent {
 		this.charState = this.state['char_' + char.id] || {};
 		this.state['char_' + char.id] = this.charState;
 		this.charState.description = this.charState.description || {};
+		this.charState.lfrp = this.charState.lfrp || {};
 	}
 
 	render(el) {
@@ -134,6 +136,30 @@ class PageCharComponent {
 					]),
 				]),
 			]),
+			n.component(new ModelCollapser(this.char, [
+				{
+					condition: m => m.rp == 'lfrp' && m.lfrpDesc,
+					factory: m => new PanelSection(
+						l10n.l('pageChar.lookingForRoleplay', "Looking for roleplay"),
+						new ModelComponent(
+							m,
+							new FormatTxt("", { className: 'common--desc-size', state: this.charState.lfrp }),
+							(m, c) => c.setFormatText(m.lfrpDesc),
+						),
+						{
+							className: 'common--sectionpadding',
+							open: this.state.lfrpOpen,
+							onToggle: (c, v) => this.state.lfrpOpen = v,
+						},
+					),
+				},
+				{
+					condition: m => m.rp == 'lfrp',
+					factory: m => new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."), {
+						className: 'dialogaboutchar--lfrp-placeholder',
+					}),
+				},
+			])),
 			n.component(new PanelSection(
 				l10n.l('pageChar.description', "Description"),
 				new ModelComponent(

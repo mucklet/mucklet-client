@@ -54,6 +54,7 @@ class PageRoomChar {
 										(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote'),
 									)),
 								]),
+								n.elem('lfrp', 'div', { className: 'counter small highlight indent' }),
 							]),
 						]),
 					])),
@@ -75,6 +76,8 @@ class PageRoomChar {
 				for (let l of idleLevels) {
 					sc[lvl == l ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
 				}
+				// Set lfrp marker
+				sc[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'hide');
 			},
 		);
 		return this.elem.render(el);
