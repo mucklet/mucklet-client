@@ -23,4 +23,11 @@
 	&--lastawake, &--puppeteer {
 		font-size: $font-size-small;
 	}
+
+	&--lfrp-placeholder {
+		display: block;
+		font-style: italic;
+		font-size: $font-size-small;
+		padding-bottom: 10px;
+	}
 }

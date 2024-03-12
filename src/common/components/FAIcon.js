@@ -3,6 +3,7 @@ import { RootElem } from 'modapp-base-component';
 const customIcons = {
 	upstairs: true,
 	downstairs: true,
+	icosahedron: true,
 };
 
 /**

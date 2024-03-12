@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'muicon';
-  src:  url('fonts/muicon.eot?6bb7k9');
-  src:  url('fonts/muicon.eot?6bb7k9#iefix') format('embedded-opentype'),
-    url('fonts/muicon.ttf?6bb7k9') format('truetype'),
-    url('fonts/muicon.woff?6bb7k9') format('woff'),
-    url('fonts/muicon.svg?6bb7k9#muicon') format('svg');
+  src:  url('fonts/muicon.eot?dwxhpr');
+  src:  url('fonts/muicon.eot?dwxhpr#iefix') format('embedded-opentype'),
+    url('fonts/muicon.ttf?dwxhpr') format('truetype'),
+    url('fonts/muicon.woff?dwxhpr') format('woff'),
+    url('fonts/muicon.svg?dwxhpr#muicon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.muicon-icosahedron:before {
+  content: "\e902";
+}
 .muicon-upstairs:before {
   content: "\e900";
 }
