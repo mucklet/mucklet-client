@@ -22,7 +22,11 @@ class CharPing {
 		this._onWorkerError = this._onWorkerError.bind(this);
 		this._onWorkerMessage = this._onWorkerMessage.bind(this);
 
-		this.app.require([ 'player', 'api' ], this._init.bind(this));
+		this.app.require([
+			'auth',
+			'player',
+			'api',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -155,6 +159,13 @@ class CharPing {
 		}
 
 		this[cmd](dta.params || {});
+	}
+
+	// _notLoggedInCmd is called by the worker if authentication failed due to
+	// not having a valid token.
+	_notLoggedInCmd(p) {
+		// Just redirect to login. We might want to show a popup here.
+		this.module.auth.redirectToLogin(true);
 	}
 
 	_useWsWorkerCmd(p) {
