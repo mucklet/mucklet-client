@@ -146,6 +146,10 @@ class CharFocus {
 		return this.focusCharList;
 	}
 
+	getFocusCharColors() {
+		return this.focusColors;
+	}
+
 	/**
 	 * Gets an object with supported focus highlight colors.
 	 * @returns {object} Focus colors where key is the color name and value is
