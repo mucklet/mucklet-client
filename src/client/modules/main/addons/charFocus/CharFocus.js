@@ -126,7 +126,9 @@ class CharFocus {
 
 		if (!isValidColor(color)) {
 			color = this.focusColors[char.id] || this._getColor(ctrlId);
-		} else if (!noUpdate) {
+		}
+		
+		if (!noUpdate) {
 			this.focusColors[char.id] = color;
 			this._saveFocusColors();
 		}
