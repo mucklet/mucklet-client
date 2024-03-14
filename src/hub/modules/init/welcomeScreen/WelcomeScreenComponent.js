@@ -11,6 +11,7 @@ class WelcomeScreenComponent {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'welcomescreen' }, [
 			n.elem('div', { className: 'welcomescreen--container' }, [
+				n.elem('img', { className: 'welcomescreen--logo', attributes: { src: '/mucklet-logo.svg' }}),
 				n.elem('div', { className: 'welcomescreen--header' }, [
 					n.component(new Txt(APP_TITLE, { tagName: 'h1' })),
 				]),
