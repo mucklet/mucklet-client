@@ -7,10 +7,10 @@ import './errorScreenDialog.scss';
 /**
  * Draws an error screen dialog with a button that redirects to a given URL.
  */
-class ErrorScreen {
+class ErrorScreenDialog {
 
 	/**
-	 * Creates a new ErrorScreen instance.
+	 * Creates a new ErrorScreenDialog instance.
 	 * @param {object} err Error object
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.redirectUrl] Redirect URL for the back button. Defaults to the same page without queries.
@@ -55,4 +55,4 @@ class ErrorScreen {
 	}
 }
 
-export default ErrorScreen;
+export default ErrorScreenDialog;

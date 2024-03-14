@@ -2,7 +2,7 @@ import { Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import escapeHtml from 'utils/escapeHtml';
 
-const url = escapeHtml(window.location.href.split('?')[0].replace(/\/+$/, '') + '/paw.png');
+const url = escapeHtml(window.location.href.split('?')[0].replace(/\/+$/, '') + '/siteicon.svg');
 const helpText =
 `<section class="charlog--pad">
 	<p>Texts such as descriptions and communication may be formatted to better express meaning.</p>
