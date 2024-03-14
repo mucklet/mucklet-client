@@ -20,7 +20,7 @@ class Notify {
 
 	constructor(app, params) {
 		this.app = app;
-		this.defaultIcon = params.defaultIcon || '/paw.png';
+		this.defaultIcon = params.defaultIcon || '/android-chrome-192x192.png';
 		this.alwaysNotify = !!params.alwaysNotify;
 
 		this.app.require([ 'confirm', 'auth' ], this._init.bind(this));
