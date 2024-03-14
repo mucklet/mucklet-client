@@ -12,7 +12,7 @@ class HelpComponent extends Html {
 			list.push('<tr><td><code class="common--nowrap">help ' + escapeHtml(m.cmd) + '</code></td><td>' + escapeHtml(l10n.t(m.shortDesc || m.title)) + '</td></tr>');
 		}
 
-		super(`<h3 class="margin-bottom-m">${l10n.t('help.help', "Welcome to Wolfery")}</h3>
+		super(`<h3 class="margin-bottom-m">${l10n.t('help.help', "Welcome to {name}", { name: module.info.getCore()?.title || l10n.t('help.thisRealm', "this realm") })}</h3>
 <div class="help--desc">
 	<section class="charlog--pad">
 		<p>${l10n.t('help.helpIntro', "This is a social game of roleplaying with characters blissfully unaware of the real world.")}</p>

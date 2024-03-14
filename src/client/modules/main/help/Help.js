@@ -271,7 +271,12 @@ class Help {
 
 	constructor(app, params) {
 		this.app = app;
-		this.app.require([ 'cmd', 'player', 'charLog' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'player',
+			'charLog',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
