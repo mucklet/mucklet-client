@@ -126,7 +126,9 @@ class CharFocus {
 
 		if (!isValidColor(color)) {
 			color = this.focusColors[char.id] || this._getColor(ctrlId);
-		} else if (!noUpdate) {
+		}
+
+		if (!noUpdate) {
 			this.focusColors[char.id] = color;
 			this._saveFocusColors();
 		}
@@ -140,8 +142,21 @@ class CharFocus {
 		return this;
 	}
 
+	/**
+	 * Returns a CharList with the currently focused characters
+	 * @returns	{CharList}	Focused characters of the currently controlled character.
+	 */
 	getFocusCharList() {
 		return this.focusCharList;
+	}
+
+	/**
+	 * Returns an object with focused character ids as keys and their focus colors as values.
+	 * Shared between all controlled characters.
+	 * @returns { [charId: string]: string }	Object containing focus character -> color mapping.
+	 */
+	getFocusCharColors() {
+		return this.focusColors;
 	}
 
 	/**
