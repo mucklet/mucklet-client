@@ -124,7 +124,7 @@ class LoginRecover {
 	_defaultState() {
 		return {
 			username: "",
-			realm: this.realm,
+			realmKey: this.realm.key,
 			charName: "",
 		};
 	}
@@ -144,7 +144,7 @@ class LoginRecover {
 			this.elem.getComponent().getNode('submit').getComponent().getNode('spinner').classList.remove('hide');
 		}
 
-		this.recoverPromise = this.module.self.recover(model.username, model.realm, model.charName)
+		this.recoverPromise = this.module.self.recover(model.username, model.realmKey, model.charName)
 			.then(() => {
 				this._clearState();
 				this.module.screen.addSubcomponent('recoverConfirm', new ConfirmScreenDialog({

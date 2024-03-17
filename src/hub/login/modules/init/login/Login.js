@@ -177,7 +177,7 @@ class Login {
 	/**
 	 * Send a recover mail for an account.
 	 * @param {string} username Account username.
-	 * @param {string} [realm] Realm ID.
+	 * @param {string} [realm] Realm key.
 	 * @param {string} [charName] Full name of a realm character.
 	 * @returns {Promise} Promise to reponse of recover request.
 	 */
