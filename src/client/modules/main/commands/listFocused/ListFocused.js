@@ -44,27 +44,21 @@ class ListFocused {
 		});
 	}
 
-	listFocused(char, attr) {
-		let focusList = this.module.charFocus.getFocusCharList().getChars();
-		let colors = this.module.charFocus.getFocusCharColors();
-		let ctrlId = char.id;
+	listFocused(ctrl) {
+		let ctrlId = ctrl.id;
+		let focusList = this.module.charFocus.getFocusCharColors(ctrlId);
 
 		if (!focusList){
-			this.module.charLog.logInfo(char, l10n.l('listFocused.noFocuses', "{charName} has no focused characters.", { charName: char.name }));
+			this.module.charLog.logInfo(ctrl, l10n.l('listFocused.noFocuses', "{charName} has no focused characters.", { charName: ctrl.name }));
 			return;
 		}
 
-		let outputList = focusList.map(c => {
-			let charName = escapeHtml(c.name) + ' ' + escapeHtml(c.surname);
-			let color = escapeHtml(colors[c.id]);
-			
-			// charlog--ev used here just to match the way the color is displayed to the actual log
-			return (`<tr>
-				<td>${charName}</td>
-				<td><div class="charlog--ev f-${ctrlId}-${c.id}">${color}</div></td></tr>`);
-		});
+		let outputList = focusList.map(o => (`<tr>
+			<td>${escapeHtml(o.char.name + ' ' + o.char.surname)}</td>
+			<td><i style="color:${o.hex}" class="fa fa-circle" aria-hidden></i></td><td>${escapeHtml(o.color)}</div></td></tr>`
+		));
 
-		this.module.charLog.logComponent(char, 'listFocused', new Elem(n => n.elem('div', { className: 'listfocused charlog--pad' }, [
+		this.module.charLog.logComponent(ctrl, 'listFocused', new Elem(n => n.elem('div', { className: 'listfocused charlog--pad' }, [
 			n.component(new Txt(l10n.l('listFocused.charFocusColors', "Character focus colors"), { tagName: 'h4', className: 'charlog--pad' })),
 			n.elem('div', { className: 'charlog--code' }, [
 				n.elem('table', { className: 'tbl-small tbl-nomargin' }, [

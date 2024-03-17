@@ -144,19 +144,29 @@ class CharFocus {
 
 	/**
 	 * Returns a CharList with the currently focused characters
-	 * @returns	{CharList}	Focused characters of the currently controlled character.
+	 * @returns	{CharList} Focused characters of the currently controlled character.
 	 */
 	getFocusCharList() {
 		return this.focusCharList;
 	}
 
 	/**
-	 * Returns an object with focused character ids as keys and their focus colors as values.
-	 * Shared between all controlled characters.
-	 * @returns { [charId: string]: string }	Object containing focus character -> color mapping.
+	 * Returns an object with focused character ids as keys and an object of the
+	 * focus colors and translated color hex code as values.
+	 * @param {string} charId Character ID to list focused characters for.
+	 * @returns {[]{ char: object, color: string, hex: string }} Array of objects containing focused characters.
 	 */
-	getFocusCharColors() {
-		return this.focusColors;
+	getFocusCharColors(charId) {
+		let f = this.focus[charId];
+		if (!f) return [];
+
+		let list = Object.keys(f).map(k => {
+			let o = f[k];
+			let c = o.color;
+			return Object.assign({ hex: c[0] == '#' ? c : focusColors[c] }, o);
+		});
+		list.sort((a, b) => a.char.name.localeCompare(b.char.name) || a.char.surname.localeCompare(b.char.surname));
+		return list;
 	}
 
 	/**
