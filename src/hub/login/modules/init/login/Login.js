@@ -26,10 +26,17 @@ class Login {
 		this.params = Object.assign({
 			player: '',
 			pass: '',
-			realm: 'wolfery',
+			clientId: null,
 		}, params);
 
-		this.app.require([ 'screen', 'policies' ], this._init.bind(this));
+		this.query = uri.getQuery();
+		this.params.clientId = this.params.clientId || this.query.client_id || null;
+
+		this.app.require([
+			'api',
+			'screen',
+			'policies',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -227,10 +234,9 @@ class Login {
 		// redirect back to the oauth2, but instead to a local URL. If we have a
 		// required_uri query parameter, validate that it is a local path or
 		// belongs to the same origin.
-		let q = uri.getQuery();
-		if (!q.hasOwnProperty('client_id')) {
+		if (!this.query.hasOwnProperty('client_id')) {
 			includeQuery = false;
-			url = q.redirect_uri || '/';
+			url = this.query.redirect_uri || '/';
 			if (!url.startsWith('/')) {
 				let origin = window.location.origin;
 				if (url != origin && !url.startsWith(origin + '/')) {

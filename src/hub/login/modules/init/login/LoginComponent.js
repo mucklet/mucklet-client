@@ -19,8 +19,8 @@ class LoginComponent {
 			player: opt.player || '',
 			password: opt.pass || '',
 		}, state.login);
+		this.clientId = opt.clientId;
 		this.autoLogin = !!opt.hasOwnProperty('auto');
-		this.realm = opt.realm || 'wolfery';
 	}
 
 	render(el) {
@@ -205,12 +205,25 @@ class LoginComponent {
 	}
 
 	_onRecover() {
-		let state = this.elem ? this._getState() : this.state.login;
-		let close = () => this.module.screen.removeSubcomponent('recover');
-		this.module.screen.addSubcomponent('recover', new LoginRecover(this.module, this.state, close, {
-			username: state.player.trim() || '',
-			realm: this.realm,
-		}));
+		return Promise.resolve(this.clientId
+			? this.module.api.call('identity', 'getClientRealm', { clientId: this.clientId })
+			: null,
+		).then(realm => {
+			if (this.module.api.isError(realm)) {
+				throw realm;
+			}
+			return realm;
+		}).catch(err => {
+			console.error("Error getting client realm: ", err);
+		}).then(realm => {
+			let state = this.elem ? this._getState() : this.state.login;
+			let close = () => this.module.screen.removeSubcomponent('recover');
+
+			this.module.screen.addSubcomponent('recover', new LoginRecover(this.module, this.state, close, {
+				username: state.player.trim() || '',
+				realm,
+			}));
+		});
 	}
 
 	_setMessage(msg) {
