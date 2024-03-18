@@ -53,9 +53,9 @@ class ListFocused {
 			return;
 		}
 
-		let outputList = focusList.map(o => (`<tr>
+		let outputList = focusList.filter(o => o.char).map(o => (`<tr>
 			<td>${escapeHtml(o.char.name + ' ' + o.char.surname)}</td>
-			<td><i style="color:${o.hex}" class="fa fa-circle" aria-hidden></i></td><td>${escapeHtml(o.color)}</div></td></tr>`
+			<td>${o.hex ? '<i style="color:' + o.hex + '" class="fa fa-circle" aria-hidden></i>' : ''}</td><td>${escapeHtml(o.color)}</div></td></tr>`
 		));
 
 		this.module.charLog.logComponent(ctrl, 'listFocused', new Elem(n => n.elem('div', { className: 'listfocused charlog--pad' }, [
