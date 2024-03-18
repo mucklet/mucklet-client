@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+.pageeditlfrp {
+	padding: 16px;
+	margin: 0;
+
+	&--info {
+		display: block;
+		font-size: $font-size-small;
+		margin-bottom: 10px;
+	}
+}
+
+.pageeditlfrp-btn {
+	position: relative;
+}

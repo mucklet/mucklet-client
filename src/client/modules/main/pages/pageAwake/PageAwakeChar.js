@@ -53,6 +53,7 @@ class PageAwakeChar {
 								(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote'),
 							)),
 						]),
+						n.elem('lfrp', 'div', { className: 'counter small highlight indent' }),
 						// n.component(new ModelComponent(
 						// 	this.model,
 						// 	new Collapser(null),
@@ -88,6 +89,8 @@ class PageAwakeChar {
 				if (change && (change.hasOwnProperty('match') || change.hasOwnProperty('watch'))) {
 					this.onChange();
 				}
+				// Set lfrp marker
+				c[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'hide');
 			},
 		);
 		return this.elem.render(el);

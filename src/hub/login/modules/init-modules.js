@@ -1,7 +1,9 @@
+import Api from 'modules/api/Api';
 import Screen from 'modules/screen/Screen';
 import Policies from 'modules/policies/Policies';
 
 const modules = {
+	api: Api,
 	screen: Screen,
 	policies: Policies,
 };

@@ -39,6 +39,18 @@ class DialogAboutChar {
 				className: 'common--sectionpadding',
 				eventBus: this.app.eventBus,
 			});
+			let lfrpComponent = new PanelSection(
+				l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"),
+				new ModelComponent(
+					charInfo,
+					new FormatTxt("", { className: 'common--desc-size' }),
+					(m, c) => c.setFormatText(m.lfrpDesc || ''),
+				),
+				{
+					className: 'common--sectionpadding',
+					open: true,
+				},
+			);
 			let about = new PanelSection(
 				l10n.l('dialogAboutChar.about', "About"),
 				new ModelComponent(
@@ -116,12 +128,24 @@ class DialogAboutChar {
 						n.component(new ModelComponent(
 							charInfo,
 							new Collapser(),
+							(m, c) => c.setComponent(typeof m.lfrpDesc == 'string'
+								? m.lfrpDesc
+									? lfrpComponent
+									: new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."), {
+										className: 'dialogaboutchar--lfrp-placeholder',
+									})
+								: null,
+							),
+						)),
+						n.component(new ModelComponent(
+							charInfo,
+							new Collapser(),
 							(m, c) => c.setComponent(m.about ? about : null),
 						)),
 						n.component(new ModelComponent(
 							char.tags,
 							new Collapser(),
-							(m, c) => c.setComponent(Object.keys(m.props).length
+							(m, c) => c.setComponent(Object.keys(m.props || m).length
 								? tags
 								: null,
 							),

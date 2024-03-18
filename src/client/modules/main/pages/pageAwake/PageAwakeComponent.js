@@ -68,11 +68,11 @@ class PageAwakeComponent {
 			n.component(new ModelComponent(
 				charsAwakeModel,
 				new Elem(n => n.elem('div', [
-					n.component('show', new LabelToggleBox(l10n.l('pageAwake.showAll', "Show all"), false, {
+					n.component('show', new LabelToggleBox(l10n.l('pageAwake.showLfrp', "Show looking for RP"), false, {
 						className: 'common--formmargin ',
-						onChange: v => this.module.charsAwake.toggleShowAll(v),
-						popupTip: l10n.l('pageAwake.showAllInfo', "Show all awake characters, not only those being watched for."),
-						popupTipClassName: 'popuptip--width-s',
+						onChange: v => this.module.charsAwake.toggleShowLfrp(v),
+						popupTip: l10n.l('pageAwake.showLfrpInfo', "Filter the list to show characters currently set as looking for roleplay."),
+						popupTipClassName: 'popuptip--width-s popuptip--position-left-bottom',
 					})),
 					n.elem('div', { className: 'pageawake--filter' }, [
 						n.component('filter', new Input('', {
@@ -116,43 +116,34 @@ class PageAwakeComponent {
 						className: 'pageawake--watched',
 					})),
 					// Non-watched for characters
-					n.component('unwatched', new Collapser()),
+					n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
+						className: 'pageawake--unwatched',
+					})),
+					n.component(new CollectionComponent(
+						unwatchedAwake,
+						new Collapser(),
+						(col, c, ev) => c.setComponent(col.length
+							? null
+							: new CollectionComponent(
+								this.module.charsAwake.getCollection(),
+								new Txt("", { className: 'common--nolistplaceholder' }),
+								(col, c) => c.setText(col.length
+									? l10n.l('pageAwake.butNooneElseAwake', "... everyone else is asleep.")
+									: l10n.l('pageAwake.nooneAwake', "... and so is everyone else."),
+								),
+							),
+						),
+					)),
 				])),
 				(m, c, change) => {
-					if (!change || change.hasOwnProperty('showAll')) {
-						// Update show all togglebox
-						c.getNode('show').setValue(m.showAll, false);
-						// Show/hide unwatched
-						c.getNode('unwatched').setComponent(m.showAll
-							? new Elem(n => n.elem('div', [
-								n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
-									className: 'pageawake--unwatched',
-								})),
-								n.component(new CollectionComponent(
-									unwatchedAwake,
-									new Collapser(),
-									(col, c, ev) => c.setComponent(col.length
-										? null
-										: new CollectionComponent(
-											this.module.charsAwake.getCollection(),
-											new Txt("", { className: 'common--nolistplaceholder' }),
-											(col, c) => c.setText(col.length
-												? l10n.l('pageAwake.butNooneElseAwake', "... everyone else is asleep.")
-												: l10n.l('pageAwake.nooneAwake', "... and so is everyone else."),
-											),
-										),
-									),
-								)),
-							]))
-							: null,
-						);
-					}
+					// Update show all togglebox
+					c.getNode('show').setValue(m.showLfrp, false);
 					// Set filter input value
 					c.getNode('filter').setValue(m.filter, false);
 					// Set clear button enabled/disabled
 					c.setNodeProperty('clear', 'disabled', m.filter ? null : 'disabled');
 					// Update count
-					if (change && (change.hasOwnProperty('showAll') || change.hasOwnProperty('filter'))) {
+					if (change && (change.hasOwnProperty('showLfrp') || change.hasOwnProperty('filter'))) {
 						this._onCountChange();
 					}
 				},
@@ -196,22 +187,16 @@ class PageAwakeComponent {
 		let charsAwake = this.module.charsAwake;
 		let total = charsAwake.getCollection().length;
 		let filterIsEmpty = charsAwake.filterIsEmpty();
-		let showAll = charsAwake.getModel().showAll;
-		let col = showAll ? charsAwake.getCollection() : charsAwake.getWatchedAwake();
+		let showLfrp = charsAwake.getModel().showLfrp;
 
 		let str = null;
 		let state = "";
-		if (filterIsEmpty) {
-			if (showAll) {
-				state = 't';
-				str = l10n.l('pageAwake.totalAwake', "{total} awake", { total });
-			} else {
-				state = 'woa';
-				str = l10n.l('pageAwake.watchingOfTotalAwake', "Watching {showCount} of {total} awake", { showCount: col.length, total });
-			}
+		if (filterIsEmpty && !showLfrp) {
+			state = 't';
+			str = l10n.l('pageAwake.totalAwake', "{total} awake", { total });
 		} else {
-			state = showAll ? 'moa' : 'mwoa';
-			str = l10n.l('pageAwake.matchingOfTotalAwake', "Matching {matchCount} of {total} awake", { matchCount: countMatches(col), total });
+			state = 'moa';
+			str = l10n.l('pageAwake.matchingOfTotalAwake', "Matching {matchCount} of {total} awake", { matchCount: countMatches(charsAwake.getCollection()), total });
 		}
 
 		// Determine if we should create a new Txt.

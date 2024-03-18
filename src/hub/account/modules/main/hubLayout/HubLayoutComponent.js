@@ -44,7 +44,7 @@ class HubLayoutComponent {
 											new Fader(),
 											(m, c, changed) => c.setComponent(new RootElem('img', {
 												className: 'hublayout--profileimage',
-												attributes: { src: m ? m.href : '/paw-bg.svg' },
+												attributes: { src: m ? m.href : '/mucklet-logo.svg' },
 											})),
 										),
 										(m, c, changed) => {
@@ -108,7 +108,7 @@ class HubLayoutComponent {
 									})),
 									n.elem('div', { className: 'hublayout-common--maxwidth' }, [
 										n.elem('a', { className: 'flex-row flex-center sm', events: { click: () => this.module.router.setDefaultRoute() }}, [
-											n.elem('img', { className: 'hublayout--logo flex-auto', attributes: { src: '/paw-bg.svg' }}),
+											n.elem('img', { className: 'hublayout--logo flex-auto', attributes: { src: '/mucklet-logo.svg' }}),
 											n.component(new Txt(l10n.l('hubLayout.account', "Mucklet account"), { tagName: 'h3' })),
 											n.component(new Context(
 												() => new CollectionWrapper(this.module.self.getTools(), {

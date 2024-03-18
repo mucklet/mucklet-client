@@ -15,59 +15,70 @@ class CharFilter {
 	/**
 	 * Creates an instance of CharFilter.
 	 * @param {string} filter Filter string.
+	 * @param {object} [opt] Optional filters.
+	 * @param {bool} [opt.showLfrp] Flag to filter out those not set as lrfp.
 	 */
-	constructor(filter) {
-		this.setFilter(filter);
+	constructor(filter, opt) {
+		this.opt = { showLfrp: false };
+		this.setFilter(filter, opt);
 	}
 
 	/**
 	 * Sets the filter string.
 	 * @param {string} filter Filter string.
+	 * @param {object} [opt] Optional filters.
+	 * @param {bool} [opt.showLfrp] Flag to filter out those not set as lrfp.
 	 * @returns {this}
 	 */
-	setFilter(filter) {
+	setFilter(filter, opt) {
 		filter = filter ? String(filter).toLowerCase() : '';
-		if (filter == this.filter) {
+		opt = Object.assign({}, this.opt, opt);
+
+		if (filter == this.filter && this.opt.showLfrp == opt.showLfrp) {
 			return false;
 		}
-		this.filter = filter;
 
-		let steps = [];
-		let stepStrs = filter.split(',');
-		for (let stepStr of stepStrs) {
-			let keys = [];
-			let keyStrs = stepStr.split(/[|]/);
+		this.opt.showLfrp = !!opt.showLfrp;
+		if (filter != this.filter) {
+			this.filter = filter;
 
-			for (let key of keyStrs) {
-				key = key.trim();
+			let steps = [];
+			let stepStrs = filter.split(',');
+			for (let stepStr of stepStrs) {
+				let keys = [];
+				let keyStrs = stepStr.split(/[|]/);
 
-				let match = true;
-				let dislike = false;
-				if (key[0] == '!') {
-					match = false;
-					key = key.slice(1).trim();
+				for (let key of keyStrs) {
+					key = key.trim();
+
+					let match = true;
+					let dislike = false;
+					if (key[0] == '!') {
+						match = false;
+						key = key.slice(1).trim();
+					}
+					if (key[0] == '~') {
+						dislike = true;
+						key = key.slice(1).trim();
+					}
+					// In case of reverse order ~!
+					if (key[0] == '!' && match) {
+						match = false;
+						key = key.slice(1).trim();
+					}
+
+					if (key) {
+						keys.push({ key, match, dislike, regex: new RegExp('\\b' + escapeRegex(key) + '\\b', 'i') });
+					}
 				}
-				if (key[0] == '~') {
-					dislike = true;
-					key = key.slice(1).trim();
-				}
-				// In case of reverse order ~!
-				if (key[0] == '!' && match) {
-					match = false;
-					key = key.slice(1).trim();
-				}
 
-				if (key) {
-					keys.push({ key, match, dislike, regex: new RegExp('\\b' + escapeRegex(key) + '\\b', 'i') });
+				if (keys.length) {
+					steps.push({ keys });
 				}
 			}
 
-			if (keys.length) {
-				steps.push({ keys });
-			}
+			this.steps = steps.length ? steps : null;
 		}
-
-		this.steps = steps.length ? steps : null;
 		return true;
 	}
 
@@ -77,7 +88,12 @@ class CharFilter {
 	 * @returns {boolean} True on match, otherwise false.
 	 */
 	match(char) {
-		// Quick exit
+		// Quick check if showLfrp is set.
+		if (this.opt.showLfrp && char.rp != 'lfrp') {
+			return false;
+		}
+
+		// Quick exit if no filter is set
 		if (!this.steps) return true;
 
 		for (let step of this.steps) {

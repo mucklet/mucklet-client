@@ -5,8 +5,7 @@ import escapeHtml from 'utils/escapeHtml';
 const usageText = 'list areas';
 const shortDesc = 'List all areas your character owns';
 const helpText =
-`<p>Get a list of all areas owned by the character.</p>
-<p>Alias: <code>list area</code></p>`;
+`<p>Get a list of all areas owned by the character.</p>`;
 
 /**
  * ListAreas adds command to list all area destinations.
@@ -23,7 +22,6 @@ class ListAreas {
 
 		this.module.cmd.addPrefixCmd('list', {
 			key: 'areas',
-			alias: [ 'area' ],
 			value: (ctx, p) => this.listAreas(ctx.char),
 		});
 

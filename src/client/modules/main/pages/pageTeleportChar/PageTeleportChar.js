@@ -17,7 +17,7 @@ class PageTeleportChar {
 		this.module = Object.assign({ self: this }, module);
 		this.module.pageChar.addTool({
 			id: 'teleport',
-			sortOrder: 30,
+			sortOrder: 40,
 			componentFactory: (ctrl, char) => new Elem(n => n.elem('button', { className: 'iconbtn small', events: {
 				click: () => this.open(ctrl),
 			}}, [

@@ -9,7 +9,10 @@ class HelpAbout {
 
 	constructor(app, params) {
 		this.app = app;
-		this.app.require([ 'help' ], this._init.bind(this));
+		this.app.require([
+			'help',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {

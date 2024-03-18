@@ -44,7 +44,7 @@ class ClientBoot {
 			} catch (e) {
 				err = new Err('clientBoot.failedToParse', "Failed to parse error: {message}", { message: e.message });
 			}
-			this._showError(err);
+			this._showError(null, err);
 		} else {
 			this.module.auth.authenticate(true)
 				.then(user => {

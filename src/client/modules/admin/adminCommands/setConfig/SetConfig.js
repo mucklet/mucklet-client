@@ -41,6 +41,15 @@ const defaultAttr = [
 		sortOrder: 20,
 	},
 	{
+		key: 'about',
+		stepFactory: (module) => new TextStep('value', {
+			name: "about the world",
+			spanLines: true,
+		}),
+		desc: l10n.l('setConfig.aboutDesc', "Info about the world displayed under <code>help about</code>. May be formatted and span multiple lines."),
+		sortOrder: 25,
+	},
+	{
 		key: 'arrivalRoom',
 		stepFactory: (module) => new ValueStep('valueRoomId', true),
 		desc: l10n.l('setConfig.arrivalRoomDesc', "Value is omitted. Sets current room as arrival room."),

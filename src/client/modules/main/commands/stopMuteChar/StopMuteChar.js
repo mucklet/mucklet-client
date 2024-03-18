@@ -14,10 +14,6 @@ const helpText =
 class StopMuteChar {
 	constructor(app) {
 		this.app = app;
-
-		// Bind callbacks
-		this._exec = this._exec.bind(this);
-
 		this.app.require([ 'cmd', 'stopMute', 'help', 'charLog', 'mute', 'cmdSteps' ], this._init.bind(this));
 	}
 
@@ -45,14 +41,6 @@ class StopMuteChar {
 			desc: l10n.l('stopMuteChar.helpText', helpText),
 			sortOrder: 40,
 		});
-	}
-
-	_exec(ctx, p) {
-		let f = p.object;
-		if (typeof f != 'function') {
-			throw new Error("Object value is not a function");
-		}
-		return f(ctx, p);
 	}
 
 	stopMuteChar(player, char, params) {
