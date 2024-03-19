@@ -36,10 +36,9 @@ class MultiDelimStep {
 			if (isMatch) {
 				state.backUp(stream);
 
-				let delims = this.delims.toSpliced(i, 0);
 				// Add a new MultiDelimStep, but without the matched delim.
-				if (delims.length) {
-					state.addStep(new MultiDelimStep(delims, this.opt));
+				if (this.delims.length > 1) {
+					state.addStep(new MultiDelimStep(Array.from(this.delims).splice(i, 1), this.opt));
 				}
 				state.addStep(new DelimStep(d.delim, Object.assign({ token: this.opt.token }, d.step)));
 				return false;
