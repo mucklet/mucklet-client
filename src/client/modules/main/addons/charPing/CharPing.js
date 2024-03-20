@@ -2,6 +2,9 @@ const defaultDuration = 1000 * 60 * 15; // 15 minutes between successful pings
 const defaultThreshold = 1000 * 60 * 60; // 60 minutes until character is put to sleep
 const defaultRetry = 1000 * 60 * 1; // 1 minute between retries
 
+const authenticateUrl = AUTH_AUTHENTICATE_URL;
+const crossOrigin = API_CROSS_ORIGIN;
+
 /**
  * CharPing periodically sends a ping for all controlled characters
  * to ensure they are not released out of inactivity
@@ -19,8 +22,6 @@ class CharPing {
 		this._onModelChange = this._onModelChange.bind(this);
 		this._onAdd = this._onAdd.bind(this);
 		this._onRemove = this._onRemove.bind(this);
-		this._onWorkerError = this._onWorkerError.bind(this);
-		this._onWorkerMessage = this._onWorkerMessage.bind(this);
 
 		this.app.require([
 			'auth',
@@ -36,20 +37,6 @@ class CharPing {
 		this.playerModel = this.module.player.getModel();
 		this.playerModel.on('change', this._onModelChange);
 		this._onModelChange();
-		if (!this.useWs) {
-			this.worker = new Worker(new URL('./CharPing.worker.js', import.meta.url));
-			this.worker.onerror = this._onWorkerError;
-			this.worker.onmessage = this._onWorkerMessage;
-			this.worker.postMessage({
-				cmd: 'config',
-				params: {
-					serviceUri: this.module.api.getWebResourceUri('core'),
-					duration: this.duration,
-					threshold: this.threshold,
-					retry: this.retry,
-				},
-			});
-		}
 	}
 
 	_onModelChange() {
@@ -80,13 +67,82 @@ class CharPing {
 		}
 	}
 
-	_ping(char, since) {
+	/**
+	 * Sends a ping POST for the controlled char
+	 * @param {*} charId ID of character to ping.
+	 * @param {*} puppeteerId ID of the character puppeteer.
+	 * @param {*} since Time since last successful ping when called
+	 *
+	 */
+	_pingChar(charId, puppeteerId, since) {
+		since = since || 0;
+
+		// Clear any previous ping timer
+		let t = this.timers[charId];
+		if (t) {
+			clearTimeout(t);
+		}
+
+		let url = this.module.api.getWebResourceUri('core') + '/char/' + (puppeteerId ? puppeteerId + '/puppet/' : '') + charId + '/ctrl/ping';
+		fetch(url, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: crossOrigin ? 'include' : 'same-origin',
+		}).then(resp => {
+			if (resp.status < 200 || resp.status >= 300) {
+				// Access denied likely means the token cookie wasn't included
+				// We try to refresh the token by calling authenticate endpoint.
+				if (resp.status == 401) {
+					return fetch(authenticateUrl, {
+						method: 'POST',
+						mode: 'cors',
+						credentials: crossOrigin ? 'include' : 'same-origin',
+					}).then(authResp => {
+						return authResp.text().then(text => {
+							if (text) {
+								try {
+									let result = JSON.parse(text);
+									if (result?.error) {
+										// A proper error messages means we are not logged in.
+										this.module.auth.redirectToLogin(true);
+										return Promise.reject(result.error);
+									}
+								} catch (ex) {}
+							}
+						});
+					}).then(() => {
+						throw resp;
+					});
+				}
+				return Promise.reject(resp);
+			}
+			// On successful ping
+			t = setTimeout(() => {
+				if (this.timers[charId] === t) {
+					this._pingChar(charId, puppeteerId);
+				}
+			}, this.duration);
+			this.timers[charId] = t;
+		}).catch(resp => {
+			// On failed ping
+			let d = since < this.threshold ? this.retry : this.duration;
+			console.error("[CharPing worker] Error pinging " + charId + ". Retrying in " + (d / 1000) + " seconds:", resp);
+			t = setTimeout(() => {
+				if (this.timers[charId] === t) {
+					this._pingChar(charId, puppeteerId, since + d);
+				}
+			}, d);
+			this.timers[charId] = t;
+		});
+	}
+
+	_wsPingChar(char, since) {
 		since = since || 0;
 		char.call('ping').then(() => {
 			// On successful ping
 			let t = setTimeout(() => {
 				if (this.timers[char.id] === t) {
-					this._ping(char);
+					this._wsPingChar(char);
 				}
 			}, this.duration);
 			this.timers[char.id] = t;
@@ -96,7 +152,7 @@ class CharPing {
 			console.error("Error pinging " + char.id + ". Retrying in " + (d / 1000) + " seconds: ", err);
 			let t = setTimeout(() => {
 				if (this.timers[char.id] === t) {
-					this._ping(char, since + d);
+					this._wsPingChar(char, since + d);
 				}
 			}, d);
 			this.timers[char.id] = t;
@@ -105,31 +161,17 @@ class CharPing {
 
 	_addChar(char, forceWs) {
 		if (this.useWs || forceWs) {
-			this._ping(char);
+			this._wsPingChar(char);
 		} else {
-			this.worker.postMessage({
-				cmd: 'addCtrl',
-				params: {
-					charId: char.id,
-					puppeteerId: char.puppeteer ? char.puppeteer.id : null,
-				},
-			});
+			this._pingChar(char.id, char.puppeteer ? char.puppeteer.id : null, 0);
 		}
 	}
 
 	_removeChar(char) {
-		if (this.timers[char.id]) {
-			clearTimeout(this.timers[char.id]);
+		let t = this.timers[char.id];
+		if (t) {
+			clearTimeout(t);
 			delete this.timers[char.id];
-		}
-		if (!this.useWs) {
-			this.worker.postMessage({
-				cmd: 'removeCtrl',
-				params: {
-					charId: char.id,
-					puppeteerId: char.puppeteer ? char.puppeteer.id : null,
-				},
-			});
 		}
 	}
 
@@ -139,47 +181,6 @@ class CharPing {
 
 	_onRemove(ev) {
 		this._removeChar(ev.item);
-	}
-
-	_onWorkerError(ev) {
-		console.error("CharPing worker error: ", ev);
-	}
-
-	_onWorkerMessage(event) {
-		let dta = event.data;
-		if (!dta || typeof dta != 'object') {
-			console.error("[CharPing] Invalid worker message: ", dta);
-			return;
-		}
-
-		let cmd = '_' + dta.cmd + 'WorkerCmd';
-		if (typeof this[cmd] != 'function') {
-			console.error("[CharPing] Unknown worker command: ", dta);
-			return;
-		}
-
-		this[cmd](dta.params || {});
-	}
-
-	// _notLoggedInCmd is called by the worker if authentication failed due to
-	// not having a valid token.
-	_notLoggedInCmd(p) {
-		// Just redirect to login. We might want to show a popup here.
-		this.module.auth.redirectToLogin(true);
-	}
-
-	_useWsWorkerCmd(p) {
-		let char = this.module.player.getControlledChar(p.charId);
-		if (!char) {
-			console.error("[CharPing] Char not controlled in useWs worker command: ", p);
-			return;
-		}
-		if (p.puppeteerId && (!char.puppeteer || !char.puppeteer.id != p.puppeteerId)) {
-			console.error("[CharPing] Char not controlled by puppeteer in useWs worker command: ", p);
-			return;
-		}
-		console.log("[CharPing] Switch to WebSocket for char: ", p);
-		this._addChar(char, true);
 	}
 
 	dispose() {
