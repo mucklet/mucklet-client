@@ -38,7 +38,9 @@ class MultiDelimStep {
 
 				// Add a new MultiDelimStep, but without the matched delim.
 				if (this.delims.length > 1) {
-					state.addStep(new MultiDelimStep(Array.from(this.delims).splice(i, 1), this.opt));
+					let splicedDelims = Array.from(this.delims);
+					splicedDelims.splice(i, 1);
+					state.addStep(new MultiDelimStep(splicedDelims, this.opt));
 				}
 				state.addStep(new DelimStep(d.delim, Object.assign({ token: this.opt.token }, d.step)));
 				return false;
