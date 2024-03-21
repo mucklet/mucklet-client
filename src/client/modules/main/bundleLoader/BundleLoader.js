@@ -15,6 +15,7 @@ class BundleLoader {
 	_init(module) {
 		this.module = module;
 		this.loaded = {};
+		this.promises = {};
 		this.playerModel = this.module.player.getModel();
 		this.playerModel.on('change', this._onModelChange);
 		this._onModelChange();
@@ -44,14 +45,14 @@ class BundleLoader {
 		if (!change || change.hasOwnProperty('idRoles')) {
 			let idRoles = this.playerModel.idRoles;
 			if (idRoles) {
+				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0 || idRoles.indexOf('supporter') >= 0) {
+					this._loadBonusModules();
+				}
 				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0) {
 					this._loadPioneerModules();
 				}
 				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('supporter') >= 0) {
 					this._loadSupporterModules();
-				}
-				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0 || idRoles.indexOf('supporter') >= 0) {
-					this._loadBonusModules();
 				}
 				if (idRoles.indexOf('overseer') >= 0) {
 					this._loadOverseerModules();
@@ -70,9 +71,10 @@ class BundleLoader {
 		this.loaded.admin = true;
 		// Load admin modules
 		import(/* webpackChunkName: "admin" */ 'modules/admin-modules').then(({ default: modules }) => {
-			app.loadBundle(modules).then(result => {
+			this._getPromise('staff').then(() => app.loadBundle(modules).then(result => {
 				console.log("Admin modules: ", result);
-			});
+				this._resolvePromise('admin');
+			}));
 		});
 	}
 
@@ -81,9 +83,10 @@ class BundleLoader {
 		this.loaded.moderator = true;
 		// Load moderator modules
 		import(/* webpackChunkName: "moderator" */ 'modules/moderator-modules').then(({ default: modules }) => {
-			app.loadBundle(modules).then(result => {
+			this._getPromise('staff').then(() => app.loadBundle(modules).then(result => {
 				console.log("Moderator modules: ", result);
-			});
+				this._resolvePromise('moderator');
+			}));
 		});
 	}
 
@@ -92,9 +95,10 @@ class BundleLoader {
 		this.loaded.builder = true;
 		// Load builder modules
 		import(/* webpackChunkName: "builder" */ 'modules/builder-modules').then(({ default: modules }) => {
-			app.loadBundle(modules).then(result => {
+			this._getPromise('staff').then(() => app.loadBundle(modules).then(result => {
 				console.log("Builder modules: ", result);
-			});
+				this._resolvePromise('builder');
+			}));
 		});
 	}
 
@@ -103,9 +107,10 @@ class BundleLoader {
 		this.loaded.helper = true;
 		// Load helper modules
 		import(/* webpackChunkName: "helper" */ 'modules/helper-modules').then(({ default: modules }) => {
-			app.loadBundle(modules).then(result => {
+			this._getPromise('staff').then(() => app.loadBundle(modules).then(result => {
 				console.log("Helper modules: ", result);
-			});
+				this._resolvePromise('helper');
+			}));
 		});
 	}
 
@@ -114,9 +119,10 @@ class BundleLoader {
 		this.loaded.overseer = true;
 		// Load overseer modules
 		import(/* webpackChunkName: "overseer" */ 'modules/overseer-modules').then(({ default: modules }) => {
-			app.loadBundle(modules).then(result => {
+			this._getPromise('admin').then(() => app.loadBundle(modules).then(result => {
 				console.log("Overseer modules: ", result);
-			});
+				this._resolvePromise('overseer');
+			}));
 		});
 	}
 
@@ -127,6 +133,7 @@ class BundleLoader {
 		import(/* webpackChunkName: "pioneer" */ 'modules/pioneer-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
 				console.log("Pioneer modules: ", result);
+				this._resolvePromise('pioneer');
 			});
 		});
 	}
@@ -138,6 +145,7 @@ class BundleLoader {
 		import(/* webpackChunkName: "supporter" */ 'modules/supporter-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
 				console.log("Supporter modules: ", result);
+				this._resolvePromise('supporter');
 			});
 		});
 	}
@@ -149,6 +157,7 @@ class BundleLoader {
 		import(/* webpackChunkName: "staff" */ 'modules/staff-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
 				console.log("Staff modules: ", result);
+				this._resolvePromise('staff');
 			});
 		});
 	}
@@ -160,8 +169,34 @@ class BundleLoader {
 		import(/* webpackChunkName: "bonus" */ 'modules/bonus-modules').then(({ default: modules }) => {
 			app.loadBundle(modules).then(result => {
 				console.log("Bonus modules: ", result);
+				this._resolvePromise('bonus');
 			});
 		});
+	}
+
+	_resolvePromise(bundle) {
+		let o = this.promises[bundle];
+		if (o) {
+			if (o.resolve) {
+				o.resolve();
+				delete o.resolve;
+			}
+		} else {
+			o = { promise: Promise.resolve() };
+			this.promises[bundle] = o;
+		}
+	}
+
+	_getPromise(bundle) {
+		let o = this.promises[bundle];
+		if (!o) {
+			o = {};
+			o.promise = new Promise((resolve) => {
+				o.resolve = resolve;
+			});
+			this.promises[bundle] = o;
+		}
+		return o.promise;
 	}
 
 	dispose() {
