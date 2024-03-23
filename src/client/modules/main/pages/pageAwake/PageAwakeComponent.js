@@ -117,11 +117,18 @@ class PageAwakeComponent {
 					})),
 					n.component('hideuw', new LabelToggleBox("Hide Unwatched", false, {
 						className: 'pageawake--unwatched--hide',
-						onChange: v => { this.module.charsAwake.setHideUnwatched(v); console.log("Hiding! " + v + " " + this.module.charsAwake.getHideUnwatched()); },
+						onChange: v => { this.module.charsAwake.setHideUnwatched(v); },
 					})),
 					// Non-watched for characters
-					n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), { className: this.module.charsAwake.getHideUnwatched() ? 'pageawake--unwatched--hide' : 'pageawake--unwatched',
-					})),
+					n.component(new ModelComponent(
+						charsAwakeModel,
+						new Collapser(),
+						(m, c, ev) => {
+							c.setComponent(
+								m.hideuw
+									? null
+									: new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), { className: 'pageawake--unwatched' }));
+					 })),
 					n.component(new CollectionComponent(
 						unwatchedAwake,
 						new Collapser(),
