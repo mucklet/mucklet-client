@@ -115,9 +115,12 @@ class PageAwakeComponent {
 					n.component(new CollectionList(watchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
 						className: 'pageawake--watched',
 					})),
+					n.component('hideuw', new LabelToggleBox("Hide Unwatched", false, {
+						className: 'pageawake--unwatched--hide',
+						onChange: v => { this.module.charsAwake.setHideUnwatched(v); console.log("Hiding! " + v + " " + this.module.charsAwake.getHideUnwatched()); },
+					})),
 					// Non-watched for characters
-					n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
-						className: 'pageawake--unwatched',
+					n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), { className: this.module.charsAwake.getHideUnwatched() ? 'pageawake--unwatched--hide' : 'pageawake--unwatched',
 					})),
 					n.component(new CollectionComponent(
 						unwatchedAwake,

@@ -29,7 +29,7 @@ class CharsAwake {
 
 	_init(module) {
 		this.module = module;
-		this.model = new Model({ data: { charsAwake: null, watches: null, notes: null, showLfrp: false, filter: '' }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { charsAwake: null, watches: null, notes: null, showLfrp: false, filter: '', hideuw: false }, eventBus: this.app.eventBus });
 		this.filter = new CharFilter('');
 		this.charsAwake = new ModelWrapper(null, {
 			map: (k, v) => new ModifyModel(v, {
@@ -66,6 +66,10 @@ class CharsAwake {
 		});
 	}
 
+	getHideUnwatched() {
+		return this.model.hideuw;
+	}
+
 	getModel() {
 		return this.model;
 	}
@@ -77,6 +81,7 @@ class CharsAwake {
 	getWatches() {
 		return this.model.watches;
 	}
+
 
 	getCollection() {
 		return this.collection;
@@ -92,6 +97,11 @@ class CharsAwake {
 
 	getUnwatchedAwake() {
 		return this.unwatchedAwake;
+	}
+
+	setHideUnwatched(hideuw) {
+		hideuw = typeof hideuw == 'undefined' ? !this.model.hideuw : !!hideuw;
+		this.model.set({ hideuw });
 	}
 
 	toggleShowLfrp(showLfrp) {
