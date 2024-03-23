@@ -101,7 +101,10 @@ class CharsAwake {
 
 	setHideUnwatched(hideuw) {
 		hideuw = typeof hideuw == 'undefined' ? !this.model.hideuw : !!hideuw;
-		this.model.set({ hideuw });
+		let p = this.model.set({ hideuw });
+		this._saveSettings();
+		this._trySetFilter();
+		return p;
 	}
 
 	toggleShowLfrp(showLfrp) {
@@ -246,6 +249,7 @@ class CharsAwake {
 			localStorage.setItem(charsAwakeStoragePrefix + this.user.id, JSON.stringify({
 				showLfrp: this.model.showLfrp,
 				filter: this.model.filter,
+				hideuw: this.model.hideuw,
 			}));
 		}
 	}

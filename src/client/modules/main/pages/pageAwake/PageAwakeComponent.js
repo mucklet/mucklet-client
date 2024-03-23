@@ -115,10 +115,13 @@ class PageAwakeComponent {
 					n.component(new CollectionList(watchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
 						className: 'pageawake--watched',
 					})),
-					n.component('hideuw', new LabelToggleBox("Hide Unwatched", false, {
-						className: 'pageawake--unwatched--hide',
-						onChange: v => { this.module.charsAwake.setHideUnwatched(v); },
-					})),
+					n.component('hideuw', new LabelToggleBox(
+						l10n.l('pageAwake.hideUnwatched', "Hide Unwatched"), false, {
+						 className: 'pageawake--unwatched--hide',
+						 onChange: v => this.module.charsAwake.setHideUnwatched(v),
+							popupTip: l10n.l('pageAwake.hideUnwatchedInfo', "Toggle showing the online list of unwatched players."),
+							popupTipClassName: 'popuptip--width-s popuptip--position-left-bottom',
+					 })),
 					// Non-watched for characters
 					n.component(new ModelComponent(
 						charsAwakeModel,
@@ -150,6 +153,8 @@ class PageAwakeComponent {
 					c.getNode('show').setValue(m.showLfrp, false);
 					// Set filter input value
 					c.getNode('filter').setValue(m.filter, false);
+					// set hide unwatched filter
+					c.getNode('hideuw').setValue(m.hideuw, false);
 					// Set clear button enabled/disabled
 					c.setNodeProperty('clear', 'disabled', m.filter ? null : 'disabled');
 					// Update count
