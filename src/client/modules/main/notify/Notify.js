@@ -1,8 +1,10 @@
 import { Html } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import * as base64 from 'utils/base64.js';
 
 const notifyStoragePrefix = 'notify.user.';
+const pushSubIdStorage = 'notify.pushSubId';
 
 function isVisible() {
 	return document.visibilityState == 'visible';
@@ -22,8 +24,13 @@ class Notify {
 		this.app = app;
 		this.defaultIcon = params.defaultIcon || '/android-chrome-192x192.png';
 		this.alwaysNotify = !!params.alwaysNotify;
+		this.usePush = params.mode != 'push';
 
-		this.app.require([ 'confirm', 'auth' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'confirm',
+			'auth',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -93,6 +100,13 @@ class Notify {
 			.then(() => {
 				if (this.permissionPromise == promise) {
 					this.permissionPromise = null;
+					if (this.usePush) {
+						return this._subscribeToPush().catch(err => {
+							console.error("Error subscriping to push: ", err);
+							this.usePush = false;
+							this._setEnabled(true);
+						});
+					}
 					return this._setEnabled(true);
 				}
 			})
@@ -167,6 +181,40 @@ class Notify {
 		});
 	}
 
+	_subscribeToPush() {
+		return (this.app.getModule('serviceWorker')?.getPromise() || Promise.reject())
+			.then(registration => {
+				return registration.pushManager.subscribe({
+					userVisibleOnly: true,
+					applicationServerKey: 'BAV4xgzXU-h-BzK8s7-DWbi4EufJJJfb3_YHrYptpr35Bx_lwYecwZwRolL-nukkEgwI5XZV_ydBfJJvwi7hdaA',
+				});
+			})
+			.then((pushSubscription) => {
+				let pushSubId = localStorage?.getItem(pushSubIdStorage) || undefined;
+				this.module.api.call(`core.player.${this.user.id}`, 'registerPushSub', {
+					pushSubId: pushSubId,
+					subscription: {
+						endpoint: pushSubscription.endpoint,
+						publicKey: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
+						authToken: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
+					},
+				}).then(result => {
+					this.pushSubId = result.pushSubId;
+					localStorage?.setItem(pushSubIdStorage, this.pushSubId);
+				});
+				// Example output
+				// {
+				// 	"endpoint":"https://fcm.googleapis.com/fcm/send/cgz7oSHyOAk:APA91bGEfNaIhub95oliqafXpOANTZ7s7wBfJR_QsPo0ZABzrV6Q2fNAdwUE5UK3uqxLfdvUPC5lHK1CkbpJGHwsVDkUIjFfGSsvCgq26Z8nMSBdo3E6ftXZR5lc2gz_KKRdtm_Oq9zZ",
+				// 	"expirationTime":null,
+				// 	"keys":{"p256dh":"BMvtwTen-toQlaqHp2LW0KLXUi1uMwiWUEC5XFffUMMVxJpHXNcaA1sViPVDYZ-0V4Plsw4jY4IWgs7-qgiogG8","auth":"HSNeWxRBHdohTOWD9PLR8g"}
+				// }
+				console.log(
+					'Received PushSubscription: ',
+					JSON.stringify(pushSubscription),
+				);
+				return pushSubscription;
+			});
+	}
 
 	dispose() {
 

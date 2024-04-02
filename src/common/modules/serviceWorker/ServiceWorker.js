@@ -9,7 +9,17 @@ class ServiceWorker {
 	constructor(app, params) {
 		this.app = app;
 
-		this._register();
+		this.promise = new Promise((resolve, reject) => {
+			this._register(resolve, reject);
+		});
+	}
+
+	/**
+	 * Gets the promise of the registration.
+	 * @returns {Promise.<ServiceWorkerRegistration>} Service worker registration.
+	 */
+	getPromise() {
+		return this.promise;
 	}
 
 	/**
@@ -24,17 +34,20 @@ class ServiceWorker {
 		})).then(() => reload(true));
 	}
 
-	_register() {
+	_register(resolve, reject) {
 		if (!serviceWorkerSupported) {
 			console.log("[ServiceWorker] Not supported");
+			reject("not supported");
 			return;
 		}
 
 		navigator.serviceWorker.register('/service-worker.js').then(registration => {
 			this.registration = registration;
 			console.log("[ServiceWorker] Registered: ", registration);
+			resolve(registration);
 		}).catch(registrationError => {
 			console.log("[ServiceWorker] Registration failed: ", registrationError);
+			reject(registrationError);
 		});
 	}
 
