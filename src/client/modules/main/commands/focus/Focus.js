@@ -18,7 +18,7 @@ const examples = [
 	{ cmd: 'focus Jane Doe', desc: l10n.l('focus.focusNoColorDesc', "Focus on Jane Doe with a random highlight color") },
 	{ cmd: 'focus John = green', desc: l10n.l('focus.focusColorDesc', "Focus on John with green hightlight color") },
 	{ cmd: 'focus Jane = #c1a657', desc: l10n.l('focus.focusHexDesc', "Focus on Jane with a custom HTML color code") },
-	{ cmd: 'focus John = none', desc: l10n.l('focus.focusNoneDesc', "Notifications on events from Jane without highlighting") },
+	{ cmd: 'focus John = none', desc: l10n.l('focus.focusNoneDesc', "Notifications on events from John without highlighting") },
 	{ cmd: 'focus @all', desc: l10n.l('focus.focusAllDesc', "Notifications on all events") },
 	{ cmd: 'stop focus John', desc: l10n.l('focus.stopFocusJohnDesc', "Remove focus from John") },
 	{ cmd: 'unfocus @all', desc: l10n.l('focus.unfocusJohnDesc', "Remove focus on all event but not individually focused characters") },
