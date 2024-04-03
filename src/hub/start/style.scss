@@ -1,0 +1,244 @@
+@import '~scss/variables';
+
+.start {
+	--gap: 64px;
+	min-height: 100vh;
+	width: 100%;
+	background: $color1;
+
+	ul {
+		list-style-position: outside;
+		list-style-type: disc;
+		margin: 10px 0 10px 2em;
+	}
+
+	li {
+		margin: 8px 0;
+	}
+
+	&--top {
+		background: $color1-light;
+		height: 480px;
+	}
+	&--topcontainer {
+		width: 90%;
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	&--topbar {
+		display: flex;
+		flex-direction: row;
+		padding-top: 58px;
+		width: 100%;
+	}
+	&--logo {
+		flex: 0 0 auto;
+		height: 70px;
+	}
+	&--topbartools {
+		display: flex;
+		flex-direction: row;
+		flex: 1 1 0px;
+		justify-content: flex-end;
+		align-items: center;
+		column-gap: 32px;
+	}
+
+	&--btn {
+		background: linear-gradient(180deg, $color6 0%, lighten($color6, 8%) 50%, $color6 100%);
+		color: $color1-light;
+
+		&:not(:disabled) {
+			&:hover {
+				background: linear-gradient(180deg, $color6-hover 0%, lighten($color6-hover, 8%) 50%, $color6-hover 100%);
+				color: $color1-lighter;
+			}
+
+			&:active, &:focus {
+				background: linear-gradient(180deg, $color6-active 0%, lighten($color6-active, 8%) 50%, $color6-active 100%);
+				color: $color1-light;
+			}
+		}
+	}
+
+	&--helpbtn {
+		border-radius: 50%;
+		height: 48px;
+		width: 48px;
+		padding: 3px;
+
+		> div {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			width: 100%;
+			border: 3px solid $color1-light;
+			border-radius: 50%;
+			font-size: 28px;
+		}
+	}
+	&--joinbtn, &--loginbtn {
+		// color: $color1;
+		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%);
+		width: 160px;
+		height: 56px;
+		font-weight: bold;
+		font-size: 16px;
+		text-transform: uppercase;
+		border-radius: 10px;
+	}
+
+
+	&--heading {
+		text-align: center;
+		padding-top: 128px;
+		font-size: 96px;
+	}
+	&--subheading {
+		text-align: center;
+		padding-top: 20px;
+		font-size: 24px;
+	}
+
+	&--main {
+	}
+	&--maincontainer {
+		width: 90%;
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 48px 0;
+	}
+
+	&--search {
+		align-items: center;
+		padding-top: 96px;
+
+		> h2 {
+			text-align: center;
+			font-size: 48px;
+		}
+	}
+
+	&--searchbar {
+		position: relative;
+		margin: 32px auto 0;
+		align-items: center;
+		width: 100%;
+		max-width: 624px;
+	}
+
+	&--searchinput {
+
+		background: $color3;
+		padding: 14px 16px;
+		border-radius: 8px;
+		color: $black;
+		padding-right: 136px;
+		font-size: 20px;
+	}
+
+	&--searchbtn {
+		padding: 8px 0 9px;
+		width: 128px;
+		font-weight: bold;
+		text-transform: uppercase;
+		position: absolute;
+		right: 4px;
+		top: 4px;
+		height: calc(100% - 8px);
+	}
+
+	&--realms {
+		display: flex;
+		flex-direction: row;
+		column-gap: var(--gap);
+		margin-top: 96px;
+	}
+
+	&--realm {
+		flex: 1 1 0px;
+		background-color: $color1-light;
+		aspect-ratio: 1 / 1;
+	}
+
+	&--about {
+		margin-top: 128px;
+	}
+
+	&--aboutsection {
+		margin-left: calc(0px - var(--gap));
+		display: flex;
+		flex-direction: row;
+		// column-gap: 32px;
+
+		> div > * {
+			padding-left: var(--gap);
+		}
+	}
+
+	&--aboutimgs {
+		position: relative;
+		flex: 2;
+	}
+	&--abouttext {
+		align-self: center;
+		flex: 1;
+		align-items: center;
+		// padding-top: 96px;
+		h2 {
+			text-align: center;
+			font-size: 48px;
+			margin-bottom: 48px;
+		}
+		p {
+			text-align: center;
+			font-size: 20px;
+		}
+	}
+
+	&--aboutworld {
+		display: flex;
+		flex-direction: row;
+		column-gap: var(--gap);
+
+		&-col1 {
+			display: flex;
+			flex-direction: column;
+			row-gap: var(--gap);
+			justify-content: center;
+			flex: 2 2 0px;
+		}
+		&-col2 {
+			flex: 3 3 0px;
+			display: flex;
+			flex-direction: column;
+			row-gap: var(--gap);
+		}
+
+
+		&-study {
+			padding-right: var(--gap);
+		}
+	}
+
+	&--aboutimg {
+		width: 100%;
+		border-radius: 20px;
+		-webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+      	mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%,rgba(0,0,0,0) 100%);
+	}
+
+}
+
+@media screen and (max-width: 600px) {
+	.start {
+		&--foot {
+			padding-top: 16px;
+		}
+		&--btn {
+			max-width: 100%;
+		}
+	}
+}

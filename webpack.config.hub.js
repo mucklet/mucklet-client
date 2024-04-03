@@ -13,7 +13,7 @@ module.exports = function(ctx) {
 	// Get policies
 	let policiesHtmlPlugins = [];
 	let policiesPath = path.resolve(ctx.commonPath, 'static/policies');
-	let pages = [ 'login', 'verify', 'reset', 'account', 'styleguide' ];
+	let pages = [ 'login', 'verify', 'reset', 'account', 'styleguide', 'start' ];
 	fs.readdirSync(policiesPath).forEach(file => {
 		let policy = JSON.parse(fs.readFileSync(path.resolve(policiesPath, file), 'utf8'));
 
