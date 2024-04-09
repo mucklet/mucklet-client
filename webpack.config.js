@@ -103,13 +103,8 @@ for (let app of apps) {
 					use: 'babel-loader',
 				},
 				{
-					test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
-					use: {
-						loader: 'file-loader',
-						options: {
-							name: '[path][name].[ext]',
-						},
-					},
+					test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/i,
+					type: 'asset/resource',
 				},
 				{
 					test: /\.(sa|sc|c)ss$/,

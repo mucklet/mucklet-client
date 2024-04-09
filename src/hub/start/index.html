@@ -13,19 +13,47 @@
 	<title>Mucklet</title>
 </head>
 <body>
+	<script type="text/javascript">
+		const onScroll = () => {
+			document.body.style.setProperty(
+			"--scroll",
+			window.pageYOffset,
+			);
+		};
+		window.addEventListener(
+			"scroll",
+			onScroll,
+			false
+		);
+		onScroll();
+	</script>
 	<div class="start">
 		<div class="start--top">
+			<div class="start--top-bg">
+				<div class="start--top-overlay1">
+					<div class="start--top-overlay2">
+						<div class="start--top-overlay3">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="start--top-hills3"></div>
+			<div class="start--top-hills2"></div>
+			<div class="start--top-hills1"></div>
 			<div class="start--topcontainer">
 				<div class="start--topbar">
-					<img src="/mucklet-logo.svg" class="start--logo">
+					<div class="start--logo">
+						<img src="/mucklet-logo.svg" class="start--logo-img">
+						<span class="start--logo-text">Mucklet</span>
+					</div>
 					<div class="start--topbartools">
 						<button class="start--helpbtn start--btn iconbtn"><div><i class="fa fa-question"></i></div></button>
 						<button class="start--joinbtn start--btn btn">Join Mucklet</button>
 						<button class="start--loginbtn start--btn btn">Login</button>
 					</div>
 				</div>
-				<h1 class="start--heading">Mucklet</h1>
-				<div class="start--subheading">A world of roleplay</div>
+				<div class="start--subheading">step into</div>
+				<h1 class="start--heading">A world of role play</h1>
 			</div>
 		</div>
 		<div class="start--main">
