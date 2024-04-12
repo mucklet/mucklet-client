@@ -30,3 +30,16 @@ self.addEventListener(
 	},
 	false,
 );
+
+
+self.addEventListener('push', function(event) {
+	if (event.data) {
+		console.log('This push event has data: ', event.data.json());
+	} else {
+		console.log('This push event has no data.');
+	}
+
+	self.registration.showNotification('Hello, World.', {
+		body: JSON.stringify(event.data.json()),
+	});
+});

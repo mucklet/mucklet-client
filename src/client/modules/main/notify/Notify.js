@@ -4,7 +4,6 @@ import l10n from 'modapp-l10n';
 import * as base64 from 'utils/base64.js';
 
 const notifyStoragePrefix = 'notify.user.';
-const pushSubIdStorage = 'notify.pushSubId';
 
 function isVisible() {
 	return document.visibilityState == 'visible';
@@ -184,23 +183,28 @@ class Notify {
 	_subscribeToPush() {
 		return (this.app.getModule('serviceWorker')?.getPromise() || Promise.reject())
 			.then(registration => {
-				return registration.pushManager.subscribe({
-					userVisibleOnly: true,
-					applicationServerKey: 'BAV4xgzXU-h-BzK8s7-DWbi4EufJJJfb3_YHrYptpr35Bx_lwYecwZwRolL-nukkEgwI5XZV_ydBfJJvwi7hdaA',
+				return this.module.api.get('core.info').then(coreInfo => {
+					return registration.pushManager.getSubscription()
+						.then(pushSubscription => {
+							// If we have a pushSubscription using a different public key, we first need to unsubscribe it.
+							if (pushSubscription && pushSubscription.options.applicationServerKey != coreInfo.vapidPublicKey) {
+								return this._unsubscribeToPush(pushSubscription)
+									.catch(err => console.error("Error unsubscribing to pushSubscription " + pushSubscription.endpoint, err));
+							}
+						})
+						.then(() => {
+							return registration.pushManager.subscribe({
+								userVisibleOnly: true,
+								applicationServerKey: coreInfo.vapidPublicKey,
+							});
+						});
 				});
 			})
 			.then((pushSubscription) => {
-				let pushSubId = localStorage?.getItem(pushSubIdStorage) || undefined;
 				this.module.api.call(`core.player.${this.user.id}`, 'registerPushSub', {
-					pushSubId: pushSubId,
-					subscription: {
-						endpoint: pushSubscription.endpoint,
-						publicKey: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
-						authToken: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
-					},
-				}).then(result => {
-					this.pushSubId = result.pushSubId;
-					localStorage?.setItem(pushSubIdStorage, this.pushSubId);
+					endpoint: pushSubscription.endpoint,
+					p256dh: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
+					auth: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
 				});
 				// Example output
 				// {
@@ -214,6 +218,15 @@ class Notify {
 				);
 				return pushSubscription;
 			});
+	}
+
+	_unsubscribeToPush(pushSubscription) {
+		let endpoint = pushSubscription.endpoint;
+		return pushSubscription.unsubscribe().then(() => {
+			return this.module.api.call(`core.player.${this.user.id}`, 'unregisterPushSub', {
+				endpoint,
+			});
+		});
 	}
 
 	dispose() {
