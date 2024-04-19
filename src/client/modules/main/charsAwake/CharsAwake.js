@@ -159,7 +159,6 @@ class CharsAwake {
 			) {
 				this.module.notify.send(
 					l10n.l('charsAwake.charWokeUp', "{name} woke up.", { name: (char.name + ' ' + char.surname).trim() }),
-					{ char: char.getModel() },
 				);
 			}
 		}

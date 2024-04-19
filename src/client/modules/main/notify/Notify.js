@@ -5,13 +5,13 @@ import * as base64 from 'utils/base64.js';
 
 const notifyStoragePrefix = 'notify.user.';
 
-function isVisible() {
-	return document.visibilityState == 'visible';
-}
-
 function defaultOnClick(ev) {
 	window.focus();
 	ev.target.close();
+}
+
+function isVisible() {
+	return document.visibilityState == 'visible';
 }
 
 /**
@@ -23,7 +23,7 @@ class Notify {
 		this.app = app;
 		this.defaultIcon = params.defaultIcon || '/android-chrome-192x192.png';
 		this.alwaysNotify = !!params.alwaysNotify;
-		this.usePush = params.mode != 'push';
+		this.mode = [ 'push', 'local' ].find(v => v == params.mode) || 'auto';
 
 		this.app.require([
 			'api',
@@ -35,9 +35,10 @@ class Notify {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
-		this.model = new Model({ data: { enabled: false }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { enabled: false, usePush: false }, eventBus: this.app.eventBus });
 		this.tags = {};
 		this.user = null;
+		this.registration = null;
 		this.module.auth.getUserPromise().then(user => {
 			this.user = user;
 			this._loadSettings();
@@ -56,29 +57,37 @@ class Notify {
 	 * @param {function} [opt.onClick] Callback called when notifications is clicked. Defaults to: n => { window.focus(); notification.close(); }
 	 */
 	send(title, opt) {
-		if (!this.model.enabled || (isVisible() && !this.alwaysNotify)) return;
+		if (!this.user || !this.model.enabled) return;
 
+		let tag = opt?.tag;
 		// Prevent new notifications on the same tag
-		if (opt?.tag) {
-			let tag = opt.tag;
+		if (tag) {
 			if (this.tags[tag]) {
 				return;
 			}
 			this.tags[tag] = true;
 			setTimeout(() => delete this.tags[tag], 200);
 		}
-
-		opt = Object.assign({ icon: this.defaultIcon, duration: 5000, onClick: defaultOnClick }, opt);
+		opt = Object.assign({ icon: this.defaultIcon, /*duration: 5000, */onClick: defaultOnClick, alwaysNotify: this.alwaysNotify }, opt);
 		title = typeof title == 'string' ? title : l10n.t(title);
-		let n = new Notification(title, opt);
 
-		if (opt.duration) {
-			setTimeout(() => n.close(), opt.duration);
-		}
-
-		if (opt.onClick) {
-			n.onclick = opt.onClick;
-		}
+		const serviceWorker = this.app.getModule('serviceWorker');
+		(serviceWorker?.getPromise() || Promise.reject()).then((registration) => {
+			return registration
+				? serviceWorker.showNotification(title, opt)
+				: Promise.reject();
+		}).catch(() => {
+			if (typeof Notification != 'undefined' && (isVisible() && !this.alwaysNotify)) {
+				// Fallback using new Notifcation
+				let n = new Notification(title, opt);
+				if (opt.duration) {
+					setTimeout(() => n.close(), opt.duration);
+				}
+				if (opt.onClick) {
+					n.onclick = opt.onClick;
+				}
+			}
+		});
 	}
 
 	/**
@@ -89,24 +98,24 @@ class Notify {
 	 */
 	toggle(enable, noRequest) {
 		enable = typeof enable == 'boolean' ? enable : !this.model.enabled;
-		if (this.model.enabled == enable) return;
+		if (this.model.enabled == enable) return Promise.resolve();
 
 		if (!enable) {
-			return this._setEnabled(false);
+			return this._setEnabled(false, false);
 		}
 
 		let promise = this._requestPermission(noRequest)
 			.then(() => {
 				if (this.permissionPromise == promise) {
 					this.permissionPromise = null;
-					if (this.usePush) {
+					if (this._usePush()) {
 						return this._subscribeToPush().catch(err => {
 							console.error("Error subscriping to push: ", err);
-							this.usePush = false;
-							this._setEnabled(true);
+							this.mode = false;
+							this._setEnabled(true, true);
 						});
 					}
-					return this._setEnabled(true);
+					return this._setEnabled(true, false);
 				}
 			})
 			.catch(err => {
@@ -121,6 +130,7 @@ class Notify {
 					}
 					this.permissionPromise = null;
 				}
+				this._setEnabled(false, false);
 				return Promise.reject(err);
 			});
 
@@ -140,8 +150,8 @@ class Notify {
 		}
 	}
 
-	_setEnabled(enabled) {
-		let p = this.model.set({ enabled });
+	_setEnabled(enabled, usePush) {
+		let p = this.model.set({ enabled, usePush });
 		if (localStorage && this.user) {
 			localStorage.setItem(notifyStoragePrefix + this.user.id, JSON.stringify(this.model.props));
 		}
@@ -181,13 +191,14 @@ class Notify {
 	}
 
 	_subscribeToPush() {
-		return (this.app.getModule('serviceWorker')?.getPromise() || Promise.reject())
+		let serviceWorker = this.app.getModule('serviceWorker');
+		return (serviceWorker?.getPromise() || Promise.reject())
 			.then(registration => {
 				return this.module.api.get('core.info').then(coreInfo => {
 					return registration.pushManager.getSubscription()
 						.then(pushSubscription => {
 							// If we have a pushSubscription using a different public key, we first need to unsubscribe it.
-							if (pushSubscription && pushSubscription.options.applicationServerKey != coreInfo.vapidPublicKey) {
+							if (pushSubscription && base64.fromArrayBuffer(pushSubscription.options.applicationServerKey, true, true) != coreInfo.vapidPublicKey) {
 								return this._unsubscribeToPush(pushSubscription)
 									.catch(err => console.error("Error unsubscribing to pushSubscription " + pushSubscription.endpoint, err));
 							}
@@ -227,6 +238,16 @@ class Notify {
 				endpoint,
 			});
 		});
+	}
+
+	/**
+	 * Tests if the Push API should be used instead of just using WebSocket
+	 * triggered notifications. If this.mode is 'auto', then push will be used
+	 * if the app is running in display-mode: standalone.
+	 * @returns {Boolean}
+	 */
+	_usePush() {
+		return this.mode == 'push' || (this.mode == 'auto' && window.matchMedia('(display-mode: standalone)').matches);
 	}
 
 	dispose() {
