@@ -56,13 +56,20 @@ class ServiceWorker {
 	/**
 	 * Clears the CacheStorage of all keys, and then performs a reload of the
 	 * client using no-cache headers.
+	 * @param {boolean} [updateServiceWorker] Flag to tell if the service-worker itself should be update. Defaults to false.
 	 */
-	clearCacheAndReload() {
+	clearCacheAndReload(updateServiceWorker) {
 		Promise.resolve(caches?.keys().then(keys => {
 			for (let key of keys) {
 				caches.delete(key);
 			}
-		})).then(() => reload(true));
+		})).then(() => {
+			if (updateServiceWorker && this.registration) {
+				return this.registration.update();
+			}
+		}).then(() => {
+			reload(true);
+		});
 	}
 
 	/**
