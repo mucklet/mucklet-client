@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import Err from 'classes/Err';
 
 const usageText = 'stop mute travel';
 const shortDesc = 'Stop muting travel messages';
@@ -37,14 +36,8 @@ class StopMuteTravel {
 	}
 
 	stopMuteTravel(char) {
-		return this.module.mute.toggleMuteTravel(char.id, false)
-			.then(change => {
-				if (change) {
-					this.module.charLog.logInfo(char, l10n.l('stopMuteTravel.stopMuteTravel', "Deactivated muting of travel messages."));
-				} else {
-					this.module.charLog.logError(char, new Err('stopMuteTravel.notMutingTravel', "Travel messages are not being muted."));
-				}
-			});
+		return this.module.mute.toggleMuteTravel(char, false, true)
+			.then(() => this.module.charLog.logInfo(char, l10n.l('stopMuteTravel.stopMuteTravel', "Deactivated muting of travel messages.")));
 	}
 }
 
