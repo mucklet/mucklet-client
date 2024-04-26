@@ -355,8 +355,6 @@ class CharFocus {
 
 		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.focus');
-			// [TODO] Legacy behavior. Remove after v 1.40.0
-			let legacy = false; if (!raw) { legacy = true; raw = localStorage.getItem('focus'); }
 
 			if (raw) {
 				let dta = JSON.parse(raw);
@@ -366,9 +364,6 @@ class CharFocus {
 				if (Object.keys(dta).length) {
 					this._updateStyle();
 				}
-
-				// [TODO] Legacy behavior. Remove after v 1.40.0
-				if (legacy) this._saveFocus();
 			}
 		});
 	}

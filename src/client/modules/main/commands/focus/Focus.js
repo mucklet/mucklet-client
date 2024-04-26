@@ -43,7 +43,6 @@ class Focus {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		this.colors = new ItemList({
 			items: Object.keys(this.module.charFocus.getFocusColors()).map(key => ({ key })),

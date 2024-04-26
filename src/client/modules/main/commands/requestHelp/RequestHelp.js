@@ -33,7 +33,6 @@ class RequestHelp {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		this.module.cmd.addPrefixCmd('request', {
 			key: 'help',

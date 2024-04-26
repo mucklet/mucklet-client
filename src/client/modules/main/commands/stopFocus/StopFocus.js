@@ -23,7 +23,6 @@ class StopFocus {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		let opts = {
 			next: [
