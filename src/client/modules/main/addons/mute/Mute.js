@@ -155,6 +155,7 @@ class Mute {
 								throw err;
 							}
 						});
+						await new Promise(resolve => setTimeout(resolve, 1000)); // Migrate one every second to avoid flooding.
 					}
 				}
 				// Once successfully migrated, delete key.

@@ -4,6 +4,8 @@ import flattenObject from 'utils/flattenObject';
 import * as charEvent from 'utils/charEvent';
 import { firstTriggerWord } from 'utils/formatText';
 
+const focusStoragePrefix = 'charFocus.';
+
 const focusTitle = l10n.l('charLog.newPost', "New post from {char.name}");
 const mentionTitle = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}");
 
@@ -69,6 +71,12 @@ class CharFocus {
 		 * @type {{ [ctrlId: string]: CharSettings | PuppetSettings }}
 		 */
 		this.settings = {};
+		/**
+		 * Last colors used when focusing on characters. Shared between all controlled characters.
+		 * The value is the color used.
+		 * @type { [charId: string]: string }
+		 */
+		this.lastColors = {};
 
 		this.focusCharList = new CharList(() => {
 			let c = this.module.player.getActiveChar();
@@ -103,6 +111,14 @@ class CharFocus {
 			this.module.charLog.addEventHandler(k, notificationHandlers[k]);
 		}
 
+		// Load last used colors
+		this._loadLastColors();
+
+		// Migrate localStorage stored settings to server.
+		// [TODO] Remove after 2025-01-01
+		this._migrateFocus() // Currently focused
+			.then(() => this._migrateFocusAll());
+
 		this._setListeners(true);
 	}
 
@@ -116,20 +132,23 @@ class CharFocus {
 	addFocus(ctrl, charId, color) {
 		// Convert color to lowercase if we have a string
 		color = typeof color == 'string' ? color.toLowerCase() : '';
-		let updateExisting = isValidColor(color);
-		if (!updateExisting) {
-			// Get next suggested color code.
-			color = this._getSuggestedColor(ctrl);
+
+		if (!isValidColor(color)) {
+			// Get last used color or next suggested color code.
+			color = this.lastColors[charId] || this._getSuggestedColor(ctrl);
 		}
+
+		this.lastColors[charId] = color;
+		this._saveLastColors();
+
 		// Turn color name into hex code.
 		color = focusColors.hasOwnProperty(color) ? focusColors[color] : color;
 
 		return this.module.player.getPlayer().call('focusChar', {
 			charId: ctrl.id,
-			puppeteer: ctrl.puppeteer?.id || undefined,
+			puppeteerId: ctrl.puppeteer?.id || undefined,
 			targetId: charId,
 			color,
-			updateExisting,
 		});
 	}
 
@@ -142,7 +161,7 @@ class CharFocus {
 	removeFocus(ctrl, charId) {
 		return this.module.player.getPlayer().call('unfocusChar', {
 			charId: ctrl.id,
-			puppeteer: ctrl.puppeteer?.id || undefined,
+			puppeteerId: ctrl.puppeteer?.id || undefined,
 			targetId: charId,
 		});
 	}
@@ -351,11 +370,15 @@ class CharFocus {
 		let settings = ev.char.settings;
 		if (this.focusChars && settings) {
 			let charId = ev.char.id;
+			let puppeteerId = ev.char.puppeteer?.id;
 			// Start listening to focus change
 			this.settings[charId] = settings;
 			settings.focus.on('change', this._onFocusChange);
 
-			let promise = this.module.api.get(`core.char.${charId}.focus.chars`).then(chars => {
+			let promise = (puppeteerId
+				? this.module.api.get(`core.char.${puppeteerId}.puppet.${charId}.focus.chars`)
+				: this.module.api.get(`core.char.${charId}.focus.chars`)
+			).then(chars => {
 				// Assert the promise matches and no other event has replaced it.
 				if (this.focusChars[charId] == promise) {
 					// Replace the promise with the chars model
@@ -388,6 +411,89 @@ class CharFocus {
 
 	_onFocusChange(ev) {
 		this._updateStyle();
+	}
+
+	_saveLastColors() {
+		if (!localStorage) return;
+
+		this.module.auth.getUserPromise().then(user => {
+			localStorage.setItem(focusStoragePrefix + user.id + '.colors', JSON.stringify(this.lastColors));
+		});
+	}
+
+	_loadLastColors() {
+		if (!localStorage) return;
+
+		this.module.auth.getUserPromise().then(user => {
+			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.colors');
+			if (raw) {
+				this.lastColors = JSON.parse(raw);
+			}
+		});
+	}
+
+	// Migrates focus settings from local storage over to backend. Remove after 2025-01-01.
+	async _migrateFocus() {
+		if (!localStorage) return;
+
+		let player = await this.module.player.getPlayerPromise();
+		let key = focusStoragePrefix + player.id + '.focus';
+		let raw = localStorage.getItem(key);
+		if (raw) {
+			try {
+				let dta = JSON.parse(raw);
+				for (let o of dta) {
+					// Translate focus color to hex
+					let color = focusColors.hasOwnProperty(o.color) ? focusColors[o.color] : o.color;
+					if (color && isValidColor(color)) {
+						await player.call('focusChar', {
+							charId: o.ctrlId,
+							targetId: o.charId,
+							color,
+						}).catch(err => {
+							// Char or target not found is considered non-errors.
+							// It may happen because of character deletion, or that controlled character was a puppet.
+							if (err.code != 'core.charNotFound' && err.code != 'core.targetCharNotFound') {
+								throw err;
+							}
+						});
+						await new Promise(resolve => setTimeout(resolve, 1000)); // Migrate one every second to avoid flooding.
+					}
+				}
+				// Once successfully migrated, delete key.
+				localStorage.removeItem(key);
+			} catch (ex) {
+				console.log("Error migrating focus:", ex);
+			}
+		}
+	}
+
+	async _migrateFocusAll() {
+		if (!localStorage) return;
+
+		let player = await this.module.player.getPlayerPromise();
+		let key = focusStoragePrefix + player.id + '.all';
+		let raw = localStorage.getItem(key);
+		if (raw) {
+			try {
+				let dta = JSON.parse(raw);
+				for (let charId in dta) {
+					await player.call('setCharSettings', {
+						charId,
+						notifyOnAll: true,
+					}).catch(err => {
+						// Char not found is considered a non-error.
+						if (err.code != 'core.charNotFound') {
+							throw err;
+						}
+					});
+				}
+				// Once successfully migrated, delete key.
+				localStorage.removeItem(key);
+			} catch (ex) {
+				console.log("Error migrating focusAll:", ex);
+			}
+		}
 	}
 
 	_updateStyle() {
