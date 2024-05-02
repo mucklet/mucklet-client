@@ -151,10 +151,9 @@ class PageReports {
 			this.module.notify.send(
 				l10n.l('pageReports.charReported', "{name} was reported.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
-					onClick: (ev) => {
+					onClick: () => {
 						this.open();
 						window.focus();
-						ev.target.close();
 					},
 				},
 			);

@@ -151,10 +151,9 @@ class PageTickets {
 			this.module.notify.send(
 				l10n.l('pageTickets.charRequestedHelp', "{name} requested help.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
-					onClick: (ev) => {
+					onClick: () => {
 						this.open();
 						window.focus();
-						ev.target.close();
 					},
 				},
 			);

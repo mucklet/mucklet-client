@@ -77,15 +77,17 @@ class Notify {
 				? serviceWorker.showNotification(title, opt)
 				: Promise.reject();
 		}).catch(() => {
-			if (typeof Notification != 'undefined' && (isVisible() && !this.alwaysNotify)) {
+			if (typeof Notification != 'undefined' && (!isVisible() || this.alwaysNotify)) {
 				// Fallback using new Notifcation
 				let n = new Notification(title, opt);
 				if (opt.duration) {
 					setTimeout(() => n.close(), opt.duration);
 				}
-				if (opt.onClick) {
-					n.onclick = opt.onClick;
-				}
+				// Click callback
+				n.onclick = (ev) => {
+					ev.target.close();
+					opt?.onClick?.(ev);
+				};
 			}
 		});
 	}
@@ -212,22 +214,11 @@ class Notify {
 				});
 			})
 			.then((pushSubscription) => {
-				this.module.api.call(`core.player.${this.user.id}`, 'registerPushSub', {
+				return this.module.api.call(`core.player.${this.user.id}`, 'registerPushSub', {
 					endpoint: pushSubscription.endpoint,
 					p256dh: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
 					auth: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
-				});
-				// Example output
-				// {
-				// 	"endpoint":"https://fcm.googleapis.com/fcm/send/cgz7oSHyOAk:APA91bGEfNaIhub95oliqafXpOANTZ7s7wBfJR_QsPo0ZABzrV6Q2fNAdwUE5UK3uqxLfdvUPC5lHK1CkbpJGHwsVDkUIjFfGSsvCgq26Z8nMSBdo3E6ftXZR5lc2gz_KKRdtm_Oq9zZ",
-				// 	"expirationTime":null,
-				// 	"keys":{"p256dh":"BMvtwTen-toQlaqHp2LW0KLXUi1uMwiWUEC5XFffUMMVxJpHXNcaA1sViPVDYZ-0V4Plsw4jY4IWgs7-qgiogG8","auth":"HSNeWxRBHdohTOWD9PLR8g"}
-				// }
-				console.log(
-					'Received PushSubscription: ',
-					JSON.stringify(pushSubscription),
-				);
-				return pushSubscription;
+				}).then(() => pushSubscription);
 			});
 	}
 

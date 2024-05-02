@@ -2,6 +2,18 @@ import { precacheAndRoute } from 'workbox-precaching';
 
 precacheAndRoute(self.__WB_MANIFEST);
 
+const SW_VERSION = '1';
+
+self.addEventListener('install', (event) => {
+	console.log("[Service Worker] Install v" + SW_VERSION);
+	skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+	console.log("[Service Worker] Activate v" + SW_VERSION);
+	skipWaiting();
+});
+
 // {
 // 	event: "asleep",
 // 	params: {
@@ -135,6 +147,7 @@ self.addEventListener(
 	'notificationclick',
 	(event) => {
 		let tag = event.notification.tag;
+		// Always close on click
 		event.notification.close();
 
 		// Split tag and data

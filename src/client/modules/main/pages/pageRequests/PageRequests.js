@@ -150,10 +150,9 @@ class PageRequests {
 			this.module.notify.send(
 				l10n.l('pageReports.charSentRequest', "{name} sent a request.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
-					onClick: (ev) => {
+					onClick: () => {
 						this.open();
 						window.focus();
-						ev.target.close();
 					},
 				},
 			);

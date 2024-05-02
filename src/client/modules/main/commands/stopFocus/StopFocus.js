@@ -64,21 +64,16 @@ class StopFocus {
 
 	stopFocus(player, char, params) {
 		return params.at == 'all'
-			? this.module.charFocus.toggleFocusAll(char.id, false)
-				.then(change => {
-					if (change) {
-						this.module.charLog.logInfo(char, l10n.l('focus.stopFocusOnAll', "Removed focus from all events."));
-					} else {
-						this.module.charLog.logError(char, new Err('focus.alreadyFocusOnAll', "Already focusing on all events."));
+			? this.module.charFocus.toggleNotifyOnAll(char, false, true)
+				.then((change) => {
+					if (!change) {
+						throw new Err('focus.alreadyNotNotifyOnAll', "{charName} is already not being notified on all events.", { charName: char.name });
 					}
+					this.module.charLog.logInfo(char, l10n.l('focus.stopNotifyOnAll', "Removed notifications on all events."));
 				})
-			: Promise.resolve(this.module.charFocus.removeFocus(char.id, params.charId))
-				.then(c => {
-					if (!c) {
-						this.module.charLog.logError(char, new Err('stopFocus.charNotFocusedOn', "Character is not being focused on."));
-					} else {
-						this.module.charLog.logInfo(char, l10n.l('stopFocus.stopFocusingOnChar', "Removed focus from {charName}.", { charName: c.name }));
-					}
+			: Promise.resolve(this.module.charFocus.removeFocus(char, params.charId))
+				.then(result => {
+					this.module.charLog.logInfo(char, l10n.l('stopFocus.stopFocusingOnChar', "Removed focus from {charName}.", { charName: result.char.name }));
 				});
 	}
 }
