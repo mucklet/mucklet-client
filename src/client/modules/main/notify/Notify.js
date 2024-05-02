@@ -23,7 +23,13 @@ class Notify {
 		this.app = app;
 		this.defaultIcon = params.defaultIcon || '/android-chrome-192x192.png';
 		this.alwaysNotify = !!params.alwaysNotify;
-		this.mode = [ 'push', 'local' ].find(v => v == params.mode) || 'auto';
+
+		// Notify modes:
+		// * push   - Use service worker with Push API
+		// * local  - Use service worker without Push API (local notifications)
+		// * auto   - Behave like 'push' if app is running in display-mode: standalone, otherwise behave like 'local'. Default.
+		// * legacy - Don't use service worker or Push API (uses new Notification instead).
+		this.mode = [ 'push', 'local', 'legacy' ].find(v => v == params.mode) || 'auto';
 
 		this.app.require([
 			'api',
@@ -72,7 +78,7 @@ class Notify {
 		title = typeof title == 'string' ? title : l10n.t(title);
 
 		const serviceWorker = this.app.getModule('serviceWorker');
-		(serviceWorker?.getPromise() || Promise.reject()).then((registration) => {
+		((this.mode != 'legacy' && serviceWorker?.getPromise()) || Promise.reject()).then((registration) => {
 			return registration
 				? serviceWorker.showNotification(title, opt)
 				: Promise.reject();
@@ -113,7 +119,7 @@ class Notify {
 					if (this._usePush()) {
 						return this._subscribeToPush().catch(err => {
 							console.error("Error subscriping to push: ", err);
-							this.mode = false;
+							this.mode = 'local';
 							this._setEnabled(true, true);
 						});
 					}
