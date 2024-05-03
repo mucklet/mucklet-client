@@ -445,7 +445,7 @@ class CharFocus {
 				for (let o of dta) {
 					// Translate focus color to hex
 					let color = focusColors.hasOwnProperty(o.color) ? focusColors[o.color] : o.color;
-					if (color && isValidColor(color)) {
+					if (!color || isValidColor(color)) {
 						await player.call('focusChar', {
 							charId: o.ctrlId,
 							targetId: o.charId,
