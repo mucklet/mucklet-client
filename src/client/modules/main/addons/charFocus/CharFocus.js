@@ -462,6 +462,7 @@ class CharFocus {
 				}
 				// Once successfully migrated, delete key.
 				localStorage.removeItem(key);
+				localStorage.removeItem('focus'); // Legacy key
 			} catch (ex) {
 				console.log("Error migrating focus:", ex);
 			}
