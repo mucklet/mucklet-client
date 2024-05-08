@@ -123,7 +123,7 @@ class ServiceWorker {
 			}
 		}
 
-		// If the data contains an 'event' in itself, emit it toether with data.params.
+		// If the data contains an 'event' in itself, emit it together with data.params.
 		if (data?.event) {
 			this.app.eventBus.emit(this, namespace + '.' + data.event, data.params);
 		}

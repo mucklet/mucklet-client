@@ -205,7 +205,7 @@ class Mute {
 			muted = true;
 		}
 
-		if (!muted && charId && settings.muteChars && !unmutableEvents[ev.type]) {
+		if (!muted && this.isMutedChar(charId) && !unmutableEvents[ev.type]) {
 			muted = true;
 		}
 
