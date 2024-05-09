@@ -5,6 +5,8 @@ import * as base64 from 'utils/base64.js';
 
 const notifyStoragePrefix = 'notify.user.';
 
+const notifySettingKeys = [ 'notifyOnWakeup', 'notifyOnWatched', 'notifyOnMatched', 'notifyOnEvent', 'notifyOnMention', 'notifyOnRequests' ];
+
 function defaultOnClick(ev) {
 	window.focus();
 	ev.target.close();
@@ -56,7 +58,7 @@ class Notify {
 		}, eventBus: this.app.eventBus });
 		this.tags = {};
 		this.player = null;
-		this.registration = null;
+		this.endpoint = null;
 		this.module.player.getPlayerPromise().then(player => {
 			this.player = player;
 			this._loadSettings();
@@ -123,20 +125,36 @@ class Notify {
 		if (this.model.enabled == enable) return Promise.resolve();
 
 		if (!enable) {
-			this._tryUnsubscribeToPush();
+			if (this.endpoint) {
+				this._unregisterPushSub(this.endpoint);
+				this.endpoint = null;
+			}
+			this.permissionPromise = null;
 			return this._setEnabled(false, false);
 		}
 
 		let promise = this._requestPermission(noRequest)
 			.then(() => {
 				if (this.permissionPromise == promise) {
-					this.permissionPromise = null;
 					if (this._usePush()) {
-						return this._subscribeToPush().catch(err => {
-							console.error("Error subscriping to push: ", err);
-							this.mode = 'local';
-							this._setEnabled(true, false);
-						});
+						return this._subscribeToPush()
+							.then(pushSubscription => {
+								// On successful subscribe to push, make sure
+								// the promise hasn't changed. If not, set as
+								// enabled and store the endpoint. Else,
+								// unregister the endpoint again.
+								if (this.permissionPromise == promise) {
+									this.endpoint = pushSubscription.endpoint;
+									this._setEnabled(true, true);
+								} else {
+									this._unregisterPushSub(this.endpoint);
+								}
+							})
+							.catch(err => {
+								console.error("Error subscribing to push: ", err);
+								this.mode = 'local';
+								this._setEnabled(true, false);
+							});
 					}
 					return this._setEnabled(true, false);
 				}
@@ -151,10 +169,14 @@ class Notify {
 							cancel: null,
 						});
 					}
-					this.permissionPromise = null;
 				}
 				this._setEnabled(false, false);
 				return Promise.reject(err);
+			})
+			.finally(() => {
+				if (this.permissionPromise == promise) {
+					this.permissionPromise = null;
+				}
 			});
 
 		this.permissionPromise = promise;
@@ -167,7 +189,7 @@ class Notify {
 			if (data) {
 				let o = JSON.parse(data);
 				// Set notify settings with the priority order; localStorage, player settings, model default
-				this.model.set([ 'notifyOnWakeup', 'notifyOnWatched', 'notifyOnMatched', 'notifyOnEvent', 'notifyOnMention', 'notifyOnRequests' ]
+				this.model.set(notifySettingKeys
 					.reduce((a, k) => ({
 						...a,
 						[k]: !!(o.hasOwnProperty(k)
@@ -187,6 +209,21 @@ class Notify {
 
 	_onModelChange(change) {
 		this._saveSettings();
+
+		// If notify settings are change, as we use push, updating push settings
+		if (this.model.usePush && notifySettingKeys.filter(k => change.hasOwnProperty(k)).length) {
+			this._getServiceWorker()
+				.then(registration => registration.pushManager.getSubscription())
+				.then(pushSubscription => {
+					// Assert we still use push
+					if (this.model.usePush) {
+						// Re-register to update notification settings
+						return this._registerPushSub(pushSubscription);
+					}
+				})
+				.catch(err => console.error("Error updating pushSub settings: ", err));
+
+		}
 	}
 
 	_saveSettings() {
@@ -236,7 +273,7 @@ class Notify {
 	}
 
 	_subscribeToPush() {
-		this._getServiceWorker()
+		return this._getServiceWorker()
 			.then(registration => {
 				return this.module.api.get('core.info').then(coreInfo => {
 					return registration.pushManager.getSubscription()
@@ -255,29 +292,40 @@ class Notify {
 				});
 			})
 			.then((pushSubscription) => {
-				return this.player.call('registerPushSub', {
-					endpoint: pushSubscription.endpoint,
-					p256dh: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
-					auth: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
-				}).then(() => {
-					this._setEnabled(true, true);
-					return pushSubscription;
-				});
+				return this._registerPushSub(pushSubscription)
+					.then(() => pushSubscription);
 			});
 	}
 
-	_tryUnsubscribeToPush() {
-		return this._getServiceWorker()
-			.then(registration => registration.pushManager.getSubscription())
-			.then(pushSubscription => this._unsubscribeToPush(pushSubscription))
-			.catch(err => {}); // Swallow any error. We try. That is all.
+	_registerPushSub(pushSubscription) {
+		return this.player.call('registerPushSub', {
+			endpoint: pushSubscription.endpoint,
+			p256dh: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
+			auth: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
+			...this._getNotifySettings(),
+		});
+	}
+
+	_getNotifySettings() {
+		return notifySettingKeys.reduce((a, k) => ({ ...a, [k]: this.model.props[k] }), {});
 	}
 
 	_unsubscribeToPush(pushSubscription) {
 		let endpoint = pushSubscription.endpoint;
 		return pushSubscription.unsubscribe()
-			.then(() => this.player.call('unregisterPushSub', { endpoint }))
-			.catch(err => console.error("Error unsubscribing to pushSubscription " + endpoint, err));
+			.catch(err => console.error("Error unsubscribing to pushSubscription " + endpoint, err))
+			.then(() => this._unregisterPushSub(endpoint));
+	}
+
+	/**
+	 * Unregister the pushSub from the core service for the specific
+	 * pushSubscription endpoint. It does not attempt to unsubscribe to the
+	 * pushSubscription. Any error is caught.
+	 * @param {string} endpoint Endpoint string.
+	 */
+	_unregisterPushSub(endpoint) {
+		return this.player.call('unregisterPushSub', { endpoint })
+			.catch(err => console.error("Error unregistering pushSub " + endpoint + ": ", err));
 	}
 
 	/**
