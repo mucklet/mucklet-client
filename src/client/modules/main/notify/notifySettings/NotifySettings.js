@@ -7,7 +7,10 @@ class NotifySettings {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'notify', 'pagePlayerSettings', 'toaster' ], this._init.bind(this));
+		this.app.require([
+			'notify',
+			'pagePlayerSettings',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -16,7 +19,7 @@ class NotifySettings {
 		this.module.pagePlayerSettings.addTool({
 			id: 'notify',
 			sortOrder: 10,
-			componentFactory: (user, player, state) => new NotifySettingsComponent(this.module, user, player, state),
+			componentFactory: (user, player, state) => new NotifySettingsComponent(this.module),
 		});
 	}
 

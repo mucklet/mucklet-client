@@ -274,8 +274,8 @@ class CharFocus {
 			return false;
 		}
 
-		let p = this.module.player.getPlayer();
-		if (!p || !p.notifyOnMention || !ev.mod?.triggers) {
+		let nm = this.module.notify.getModel();
+		if (!nm.notifyOnMention || !ev.mod?.triggers) {
 			return false;
 		}
 
@@ -305,8 +305,8 @@ class CharFocus {
 			}
 			// Check if we should not send event
 			if (!this.isNotifyOnAll(ctrlId)) { // Notify on all
-				let p = this.module.player.getPlayer();
-				if (!p?.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
+				let nm = this.module.notify.getModel();
+				if (!nm.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
 					return false;
 				}
 			}

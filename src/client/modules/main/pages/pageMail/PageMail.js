@@ -19,7 +19,6 @@ class PageMail {
 
 		this.app.require([
 			'playerTabs',
-			'player',
 			'confirm',
 			'auth',
 			'api',
@@ -93,8 +92,8 @@ class PageMail {
 	}
 
 	_onUnreadChange(change, unread) {
-		let p = this.module.player.getPlayer();
-		if (!p || !p.notifyOnRequests) return;
+		let nm = this.module.notify.getModel();
+		if (!nm.notifyOnRequests) return;
 
 		for (let k in change) {
 			if (!change[k]) {

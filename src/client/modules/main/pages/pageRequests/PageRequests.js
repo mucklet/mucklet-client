@@ -142,10 +142,8 @@ class PageRequests {
 	}
 
 	_onRequestAdd(ev) {
-		let p = this.module.player.getPlayer();
-		if (!p) return;
-
-		if (p.notifyOnRequests) {
+		let nm = this.module.notify.getModel();
+		if (nm.notifyOnRequests) {
 			let c = ev.item.from;
 			this.module.notify.send(
 				l10n.l('pageReports.charSentRequest', "{name} sent a request.", { name: (c.name + ' ' + c.surname).trim() }),

@@ -5,11 +5,8 @@ import LabelToggleBox from 'components/LabelToggleBox';
 import l10n from 'modapp-l10n';
 
 class NotifySettingsComponent {
-	constructor(module, user, player, state) {
+	constructor(module) {
 		this.module = module;
-		this.user = user;
-		this.player = player;
-		this.state = state;
 	}
 
 	render(el) {
@@ -29,31 +26,25 @@ class NotifySettingsComponent {
 			n.component(new ModelComponent(
 				this.module.notify.getModel(),
 				new Collapser(),
-				(m, c, change) => {
+				(model, c, change) => {
 					if (change && !change.hasOwnProperty('enabled')) return;
-					c.setComponent(m.enabled
+					c.setComponent(model.enabled
 						? new Elem(n => n.elem('div', { className: 'common--formsubsection' }, [
 							n.component(new ModelComponent(
-								this.player,
+								model,
 								new LabelToggleBox(l10n.l('notify.notifyOnWakeup', "Notify on any wakeup"), false, {
 									className: 'common--formmargin small',
-									onChange: (v, c) => this.player.call('setPreference', { notifyOnWakeup: v }).catch(err => {
-										c.setValue(this.player.notifyOnWakeup, false);
-										this.module.toaster.openError(err);
-									}),
+									onChange: (v, c) => model.set({ notifyOnWakeup: v }),
 									popupTip: l10n.l('notify.notifyOnWakeupInfo', "Notify whenever any character wakes up."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => c.setValue(m.notifyOnWakeup, false),
 							)),
 							n.component(new ModelComponent(
-								this.player,
+								model,
 								new LabelToggleBox(l10n.l('notify.notifyOnWatched', "Notify on watched"), false, {
 									className: 'common--formmargin small',
-									onChange: (v, c) => this.player.call('setPreference', { notifyOnWatched: v }).catch(err => {
-										c.setValue(this.player.notifyOnWatched, false);
-										this.module.toaster.openError(err);
-									}),
+									onChange: (v, c) => model.set({ notifyOnWatched: v }),
 									popupTip: l10n.l('notify.notifyOnWatchedInfo', "Notify whenever a watched character wakes up."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
@@ -63,13 +54,10 @@ class NotifySettingsComponent {
 								},
 							)),
 							n.component(new ModelComponent(
-								this.player,
+								model,
 								new LabelToggleBox(l10n.l('notify.notifyOnMatched', "Notify on matched"), false, {
 									className: 'common--formmargin small',
-									onChange: (v, c) => this.player.call('setPreference', { notifyOnMatched: v }).catch(err => {
-										c.setValue(this.player.notifyOnMatched, false);
-										this.module.toaster.openError(err);
-									}),
+									onChange: (v, c) => model.set({ notifyOnMatched: v }),
 									popupTip: l10n.l('notify.notifyOnMatchedInfo', "Notify whenever a character wakes up that matches current filter."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
@@ -79,39 +67,30 @@ class NotifySettingsComponent {
 								},
 							)),
 							n.component(new ModelComponent(
-								this.player,
+								model,
 								new LabelToggleBox(l10n.l('notify.notifyOnEvent', "Notify when targeted"), false, {
 									className: 'common--formmargin small',
-									onChange: (v, c) => this.player.call('setPreference', { notifyOnEvent: v }).catch(err => {
-										c.setValue(this.player.notifyOnEvent, false);
-										this.module.toaster.openError(err);
-									}),
+									onChange: (v, c) => model.set({ notifyOnEvent: v }),
 									popupTip: l10n.l('notify.notifyOnEventInfo', "Notify on events targeting your character. Eg. whispers, summons, etc."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => c.setValue(m.notifyOnEvent, false),
 							)),
 							n.component(new ModelComponent(
-								this.player,
+								model,
 								new LabelToggleBox(l10n.l('notify.notifyOnMention', "Notify when mentioned"), false, {
 									className: 'common--formmargin small',
-									onChange: (v, c) => this.player.call('setPreference', { notifyOnMention: v }).catch(err => {
-										c.setValue(this.player.notifyOnMention, false);
-										this.module.toaster.openError(err);
-									}),
+									onChange: (v, c) => model.set({ notifyOnMention: v }),
 									popupTip: l10n.l('notify.notifyOnMentionInfo', "Notify whenever someone mentions the name of your character."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => c.setValue(m.notifyOnMention, false),
 							)),
 							n.component(new ModelComponent(
-								this.player,
+								model,
 								new LabelToggleBox(l10n.l('notify.notifyOnRequests', "Notify on mail & requests"), false, {
 									className: 'common--formmargin small',
-									onChange: (v, c) => this.player.call('setPreference', { notifyOnRequests: v }).catch(err => {
-										c.setValue(this.player.notifyOnRequests, false);
-										this.module.toaster.openError(err);
-									}),
+									onChange: (v, c) => model.set({ notifyOnRequests: v }),
 									popupTip: l10n.l('notify.notifyOnRequestsInfo', "Notify on new mail, requests, or other incoming events that may happen even if your character is asleep."),
 									popupTipClassName: 'popuptip--width-s',
 								}),

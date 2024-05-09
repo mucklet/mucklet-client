@@ -22,7 +22,6 @@ class CharsAwake {
 		this.app.require([
 			'auth',
 			'api',
-			'player',
 			'notify',
 		], this._init.bind(this));
 	}
@@ -144,8 +143,7 @@ class CharsAwake {
 	}
 
 	_onChange(change, m) {
-		let p = this.module.player.getPlayer();
-		if (!p) return;
+		let nm = this.module.notify.getModel();
 
 		for (let k in change) {
 			// No notification if the character was removed (fell asleep).
@@ -153,9 +151,9 @@ class CharsAwake {
 			if (!char) {
 				continue;
 			}
-			if (p.notifyOnWakeup ||
-				(p.notifyOnWatched && char.watch) ||
-				(p.notifyOnMatched && !this.filter.isEmpty() && char.match)
+			if (nm.notifyOnWakeup ||
+				(nm.notifyOnWatched && char.watch) ||
+				(nm.notifyOnMatched && !this.filter.isEmpty() && char.match)
 			) {
 				this.module.notify.send(
 					l10n.l('charsAwake.charWokeUp', "{name} woke up.", { name: (char.name + ' ' + char.surname).trim() }),

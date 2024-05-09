@@ -143,10 +143,9 @@ class PageTickets {
 	}
 
 	_onTicketAdd(ev) {
-		let p = this.module.player.getPlayer();
-		if (!p) return;
+		let nm = this.module.notify.getModel();
 
-		if (p.notifyOnRequests) {
+		if (nm.notifyOnRequests) {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageTickets.charRequestedHelp', "{name} requested help.", { name: (c.name + ' ' + c.surname).trim() }),

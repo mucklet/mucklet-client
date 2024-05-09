@@ -143,10 +143,8 @@ class PageReports {
 	}
 
 	_onReportAdd(ev) {
-		let p = this.module.player.getPlayer();
-		if (!p) return;
-
-		if (p.notifyOnRequests) {
+		let nm = this.module.notify.getModel();
+		if (nm.notifyOnRequests) {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageReports.charReported', "{name} was reported.", { name: (c.name + ' ' + c.surname).trim() }),

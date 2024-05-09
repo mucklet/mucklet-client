@@ -31,23 +31,36 @@ class Notify {
 		// * legacy - Don't use service worker or Push API (uses new Notification instead).
 		this.mode = [ 'push', 'local', 'legacy' ].find(v => v == params.mode) || 'auto';
 
+		// Bind callbacks
+		this._onModelChange = this._onModelChange.bind(this);
+
 		this.app.require([
 			'api',
 			'confirm',
-			'auth',
+			'player',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
-		this.model = new Model({ data: { enabled: false, usePush: false }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: {
+			enabled: false,
+			usePush: false,
+			notifyOnWakeup: true,
+			notifyOnWatched: true,
+			notifyOnMatched: true,
+			notifyOnEvent: true,
+			notifyOnMention: true,
+			notifyOnRequests: true,
+		}, eventBus: this.app.eventBus });
 		this.tags = {};
-		this.user = null;
+		this.player = null;
 		this.registration = null;
-		this.module.auth.getUserPromise().then(user => {
-			this.user = user;
+		this.module.player.getPlayerPromise().then(player => {
+			this.player = player;
 			this._loadSettings();
+			this.model.on('change', this._onModelChange);
 		});
 	}
 
@@ -56,14 +69,15 @@ class Notify {
 	}
 
 	/**
-	 * Send a notification.
+	 * Send a local notification.
 	 * @param {string|LocaleString} title Title of the notification.
 	 * @param {object} [opt] Optional parameters. Same as the Notification API with some additions.
+	 * @param {string} [opt.tag] Tag to set on the notification.
 	 * @param {number} [opt.duration] Duration the notification will be open in milliseconds. Defaults to 5000.
-	 * @param {function} [opt.onClick] Callback called when notifications is clicked. Defaults to: n => { window.focus(); notification.close(); }
+	 * @param {function} [opt.onClick] Callback called when notifications is clicked.
 	 */
 	send(title, opt) {
-		if (!this.user || !this.model.enabled) return;
+		if (!this.player || !this.model.enabled) return;
 
 		let tag = opt?.tag;
 		// Prevent new notifications on the same tag
@@ -109,6 +123,7 @@ class Notify {
 		if (this.model.enabled == enable) return Promise.resolve();
 
 		if (!enable) {
+			this._tryUnsubscribeToPush();
 			return this._setEnabled(false, false);
 		}
 
@@ -120,7 +135,7 @@ class Notify {
 						return this._subscribeToPush().catch(err => {
 							console.error("Error subscriping to push: ", err);
 							this.mode = 'local';
-							this._setEnabled(true, true);
+							this._setEnabled(true, false);
 						});
 					}
 					return this._setEnabled(true, false);
@@ -147,10 +162,22 @@ class Notify {
 	}
 
 	_loadSettings() {
-		if (localStorage && this.user) {
-			let data = localStorage.getItem(notifyStoragePrefix + this.user.id);
+		if (localStorage && this.player) {
+			let data = localStorage.getItem(notifyStoragePrefix + this.player.id);
 			if (data) {
 				let o = JSON.parse(data);
+				// Set notify settings with the priority order; localStorage, player settings, model default
+				this.model.set([ 'notifyOnWakeup', 'notifyOnWatched', 'notifyOnMatched', 'notifyOnEvent', 'notifyOnMention', 'notifyOnRequests' ]
+					.reduce((a, k) => ({
+						...a,
+						[k]: !!(o.hasOwnProperty(k)
+							? o[k]
+							: this.player.props.hasOwnProperty(k)
+								? this.player.props[k]
+								: this.model.props[k]
+						),
+					}), {}),
+				);
 				if (o.hasOwnProperty('enabled')) {
 					this.toggle(o.enabled, true);
 				}
@@ -158,12 +185,18 @@ class Notify {
 		}
 	}
 
-	_setEnabled(enabled, usePush) {
-		let p = this.model.set({ enabled, usePush });
-		if (localStorage && this.user) {
-			localStorage.setItem(notifyStoragePrefix + this.user.id, JSON.stringify(this.model.props));
+	_onModelChange(change) {
+		this._saveSettings();
+	}
+
+	_saveSettings() {
+		if (localStorage && this.player) {
+			localStorage.setItem(notifyStoragePrefix + this.player.id, JSON.stringify(this.model.props));
 		}
-		return p;
+	}
+
+	_setEnabled(enabled, usePush) {
+		return this.model.set({ enabled, usePush });
 	}
 
 	_requestPermission(noRequest) {
@@ -198,17 +231,19 @@ class Notify {
 		});
 	}
 
+	_getServiceWorker() {
+		return (this.app.getModule('serviceWorker')?.getPromise() || Promise.reject());
+	}
+
 	_subscribeToPush() {
-		let serviceWorker = this.app.getModule('serviceWorker');
-		return (serviceWorker?.getPromise() || Promise.reject())
+		this._getServiceWorker()
 			.then(registration => {
 				return this.module.api.get('core.info').then(coreInfo => {
 					return registration.pushManager.getSubscription()
 						.then(pushSubscription => {
 							// If we have a pushSubscription using a different public key, we first need to unsubscribe it.
 							if (pushSubscription && base64.fromArrayBuffer(pushSubscription.options.applicationServerKey, true, true) != coreInfo.vapidPublicKey) {
-								return this._unsubscribeToPush(pushSubscription)
-									.catch(err => console.error("Error unsubscribing to pushSubscription " + pushSubscription.endpoint, err));
+								return this._unsubscribeToPush(pushSubscription);
 							}
 						})
 						.then(() => {
@@ -220,21 +255,29 @@ class Notify {
 				});
 			})
 			.then((pushSubscription) => {
-				return this.module.api.call(`core.player.${this.user.id}`, 'registerPushSub', {
+				return this.player.call('registerPushSub', {
 					endpoint: pushSubscription.endpoint,
 					p256dh: base64.fromArrayBuffer(pushSubscription.getKey("p256dh")),
 					auth: base64.fromArrayBuffer(pushSubscription.getKey("auth")),
-				}).then(() => pushSubscription);
+				}).then(() => {
+					this._setEnabled(true, true);
+					return pushSubscription;
+				});
 			});
+	}
+
+	_tryUnsubscribeToPush() {
+		return this._getServiceWorker()
+			.then(registration => registration.pushManager.getSubscription())
+			.then(pushSubscription => this._unsubscribeToPush(pushSubscription))
+			.catch(err => {}); // Swallow any error. We try. That is all.
 	}
 
 	_unsubscribeToPush(pushSubscription) {
 		let endpoint = pushSubscription.endpoint;
-		return pushSubscription.unsubscribe().then(() => {
-			return this.module.api.call(`core.player.${this.user.id}`, 'unregisterPushSub', {
-				endpoint,
-			});
-		});
+		return pushSubscription.unsubscribe()
+			.then(() => this.player.call('unregisterPushSub', { endpoint }))
+			.catch(err => console.error("Error unsubscribing to pushSubscription " + endpoint, err));
 	}
 
 	/**
@@ -248,7 +291,7 @@ class Notify {
 	}
 
 	dispose() {
-
+		this.model.off('change', this._onModelChange);
 	}
 }
 
