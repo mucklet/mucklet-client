@@ -77,9 +77,10 @@ class Notify {
 	 * @param {string} [opt.tag] Tag to set on the notification.
 	 * @param {number} [opt.duration] Duration the notification will be open in milliseconds. Defaults to 5000.
 	 * @param {function} [opt.onClick] Callback called when notifications is clicked.
+	 * @param {boolean} [opt.skipOnPush] Flag to skip sending the notification if push is enabled.
 	 */
 	send(title, opt) {
-		if (!this.player || !this.model.enabled) return;
+		if (!this.player || !this.model.enabled || (opt?.skipOnPush && this.model.usePush)) return;
 
 		let tag = opt?.tag;
 		// Prevent new notifications on the same tag
@@ -194,6 +195,7 @@ class Notify {
 						...a,
 						[k]: !!(o.hasOwnProperty(k)
 							? o[k]
+							// [TODO] Delete once player.props no longer contains notify preferences.
 							: this.player.props.hasOwnProperty(k)
 								? this.player.props[k]
 								: this.model.props[k]

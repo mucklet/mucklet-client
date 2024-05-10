@@ -78,6 +78,8 @@ class CharFocus {
 		 */
 		this.lastColors = {};
 
+		this.notifyModel = this.module.notify.getModel();
+
 		this.focusCharList = new CharList(() => {
 			let c = this.module.player.getActiveChar();
 			if (!c) return null;
@@ -225,7 +227,7 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnFocus(ctrlId, ev, title) {
-		if (ctrlId === ev.char?.id) {
+		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
 
@@ -250,7 +252,7 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnEvent(ctrlId, ev, title) {
-		if (ctrlId === ev.char?.id || ev.mod?.muted) {
+		if (ctrlId === ev.char?.id || this._usePush() || ev.mod?.muted) {
 			return false;
 		}
 		this._notify(ctrlId, ev, typeof title == 'string'
@@ -270,12 +272,11 @@ class CharFocus {
 	 */
 	notifyOnMention(ctrlId, ev, title) {
 		// Unfocused muted events does not trigger
-		if (ctrlId === ev.char?.id || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
+		if (ctrlId === ev.char?.id || this._usePush() || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
 			return false;
 		}
 
-		let nm = this.module.notify.getModel();
-		if (!nm.notifyOnMention || !ev.mod?.triggers) {
+		if (!this.notifyModel.notifyOnMention || !ev.mod?.triggers) {
 			return false;
 		}
 
@@ -294,7 +295,7 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnTargetEvent(ctrlId, ev, title) {
-		if (ctrlId === ev.char?.id) {
+		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
 
@@ -305,8 +306,7 @@ class CharFocus {
 			}
 			// Check if we should not send event
 			if (!this.isNotifyOnAll(ctrlId)) { // Notify on all
-				let nm = this.module.notify.getModel();
-				if (!nm.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
+				if (!this.notifyModel.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
 					return false;
 				}
 			}
@@ -358,6 +358,10 @@ class CharFocus {
 				window.focus();
 			},
 		});
+	}
+
+	_usePush() {
+		return this.notifyModel.usePush;
 	}
 
 	_setListeners(on) {
