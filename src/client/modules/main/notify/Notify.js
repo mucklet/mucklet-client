@@ -126,10 +126,6 @@ class Notify {
 		if (this.model.enabled == enable) return Promise.resolve();
 
 		if (!enable) {
-			if (this.endpoint) {
-				this._unregisterPushSub(this.endpoint);
-				this.endpoint = null;
-			}
 			this.permissionPromise = null;
 			return this._setEnabled(false, false);
 		}
@@ -145,10 +141,9 @@ class Notify {
 								// enabled and store the endpoint. Else,
 								// unregister the endpoint again.
 								if (this.permissionPromise == promise) {
-									this.endpoint = pushSubscription.endpoint;
-									this._setEnabled(true, true);
+									this._setEnabled(true, true, pushSubscription.endpoint);
 								} else {
-									this._unregisterPushSub(this.endpoint);
+									this._unregisterPushSub(pushSubscription.endpoint);
 								}
 							})
 							.catch(err => {
@@ -234,8 +229,29 @@ class Notify {
 		}
 	}
 
-	_setEnabled(enabled, usePush) {
+	_setEnabled(enabled, usePush, endpoint) {
+		this._setEndpoint(endpoint);
 		return this.model.set({ enabled, usePush });
+	}
+
+	// Stores the endpoint in the local storage. If another endpoint exists
+	// there, it unregisters it.
+	_setEndpoint(endpoint) {
+		if (localStorage && this.player) {
+			endpoint = endpoint || null;
+			let key = notifyStoragePrefix + this.player.id + '.endpoint';
+			let oldEndpoint = localStorage.getItem(key) || null;
+			if (endpoint === oldEndpoint) {
+				return;
+			}
+
+			this._unregisterPushSub(oldEndpoint);
+			if (endpoint) {
+				localStorage.setItem(key, endpoint);
+			} else {
+				localStorage.removeItem(key);
+			}
+		}
 	}
 
 	_requestPermission(noRequest) {

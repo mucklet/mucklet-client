@@ -16,6 +16,7 @@ class PageMail {
 
 		// Bind callbacks
 		this._onUnreadChange = this._onUnreadChange.bind(this);
+		this._onNotificationNewMailEvent = this._onNotificationNewMailEvent.bind(this);
 
 		this.app.require([
 			'playerTabs',
@@ -24,6 +25,7 @@ class PageMail {
 			'api',
 			'avatar',
 			'notify',
+			'playerEvent',
 		], this._init.bind(this));
 	}
 
@@ -73,6 +75,8 @@ class PageMail {
 					}
 				});
 		});
+
+		this._listenNotification(true);
 	}
 
 	/**
@@ -88,6 +92,15 @@ class PageMail {
 		let m = this.unread.getModel();
 		if (m) {
 			m[on ? 'on' : 'off']('change', this._onUnreadChange);
+		}
+	}
+
+	_listenNotification(on) {
+		// Listen to serviceWorker newMail triggered by clicking a newMail
+		// notification.
+		let serviceWorker = this.app.getModule('serviceWorker');
+		if (serviceWorker) {
+			serviceWorker[on ? 'on' : 'off']('newMail', this._onNotificationNewMailEvent);
 		}
 	}
 
@@ -114,11 +127,18 @@ class PageMail {
 					this.open();
 					window.focus();
 				},
+				skipOnPush: true,
 			},
 		);
 	}
 
+	_onNotificationNewMailEvent(params) {
+		this.open();
+	}
+
 	dispose() {
+		this._listenNotification(false);
+		this._listen(false);
 		this.module.playerTabs.removeTab('mail');
 		this.unread.dispose();
 		this.unread = null;

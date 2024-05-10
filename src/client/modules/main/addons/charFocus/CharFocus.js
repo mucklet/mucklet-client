@@ -47,6 +47,7 @@ class CharFocus {
 		this._onCtrlAdd = this._onCtrlAdd.bind(this);
 		this._onCtrlRemove = this._onCtrlRemove.bind(this);
 		this._onFocusChange = this._onFocusChange.bind(this);
+		this._onNotificationCharEvent = this._onNotificationCharEvent.bind(this);
 
 		this.app.require([
 			'auth',
@@ -369,6 +370,12 @@ class CharFocus {
 		let cb = on ? 'on' : 'off';
 		p[cb]('ctrlAdd', this._onCtrlAdd);
 		p[cb]('ctrlRemove', this._onCtrlRemove);
+		// Listen to serviceWorker charEvent triggered by clicking a charEvent
+		// notification.
+		let serviceWorker = this.app.getModule('serviceWorker');
+		if (serviceWorker) {
+			serviceWorker[cb]('charEvent', this._onNotificationCharEvent);
+		}
 	}
 
 	_onCtrlAdd(ev) {
@@ -542,6 +549,12 @@ class CharFocus {
 				}
 			}
 			i++;
+		}
+	}
+
+	_onNotificationCharEvent(params) {
+		if (params.charId) {
+			this.module.player.setActiveChar(params.charId).catch(() => {});
 		}
 	}
 
