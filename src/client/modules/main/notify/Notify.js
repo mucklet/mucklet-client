@@ -179,6 +179,33 @@ class Notify {
 		return promise;
 	}
 
+	/**
+	 * Adds a push notification click handler for a specific notification event.
+	 * If serviceWorker module isn't loaded, this is a non-op.
+	 * @param {string} event Event name. Eg. 'charFocus', 'newMail', 'newReport', etc.
+	 * @param {(params: any) => void} callback Callback function on click.
+	 */
+	addNotificationHandler(event, callback) {
+		let serviceWorker = this.app.getModule('serviceWorker');
+		if (serviceWorker) {
+			serviceWorker.on(event, callback);
+		}
+	}
+
+	/**
+	 * Removes a push notification click handler previously registered with
+	 * addNotificationHandler.
+	 * If serviceWorker module isn't loaded, this is a non-op.
+	 * @param {string} event Event name. Eg. 'charFocus', 'newMail', 'newReport', etc.
+	 * @param {(params: any) => void} callback Callback function on click.
+	 */
+	removeNotificationHandler(event, callback) {
+		let serviceWorker = this.app.getModule('serviceWorker');
+		if (serviceWorker) {
+			serviceWorker.off(event, callback);
+		}
+	}
+
 	_loadSettings() {
 		if (localStorage && this.player) {
 			let data = localStorage.getItem(notifyStoragePrefix + this.player.id);

@@ -370,12 +370,7 @@ class CharFocus {
 		let cb = on ? 'on' : 'off';
 		p[cb]('ctrlAdd', this._onCtrlAdd);
 		p[cb]('ctrlRemove', this._onCtrlRemove);
-		// Listen to serviceWorker charEvent triggered by clicking a charEvent
-		// notification.
-		let serviceWorker = this.app.getModule('serviceWorker');
-		if (serviceWorker) {
-			serviceWorker[cb]('charEvent', this._onNotificationCharEvent);
-		}
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('charEvent', this._onNotificationCharEvent);
 	}
 
 	_onCtrlAdd(ev) {

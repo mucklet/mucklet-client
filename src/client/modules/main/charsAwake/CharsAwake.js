@@ -156,7 +156,7 @@ class CharsAwake {
 				(nm.notifyOnMatched && !this.filter.isEmpty() && char.match)
 			) {
 				this.module.notify.send(
-					l10n.l('charsAwake.charWokeUp', "{name} woke up.", { name: (char.name + ' ' + char.surname).trim() }),
+					l10n.l('charsAwake.charWokeUp', "{name} woke up", { name: (char.name + ' ' + char.surname).trim() }),
 				);
 			}
 		}

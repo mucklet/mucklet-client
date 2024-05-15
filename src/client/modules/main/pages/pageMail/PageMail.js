@@ -96,12 +96,7 @@ class PageMail {
 	}
 
 	_listenNotification(on) {
-		// Listen to serviceWorker newMail triggered by clicking a newMail
-		// notification.
-		let serviceWorker = this.app.getModule('serviceWorker');
-		if (serviceWorker) {
-			serviceWorker[on ? 'on' : 'off']('newMail', this._onNotificationNewMailEvent);
-		}
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('newMail', this._onNotificationNewMailEvent);
 	}
 
 	_onUnreadChange(change, unread) {
@@ -121,7 +116,7 @@ class PageMail {
 	_notifyMail(mail) {
 		let c = mail.from;
 		this.module.notify.send(
-			l10n.l('pageMail.mailFrom', "Mail from {name}.", { name: (c.name + ' ' + c.surname).trim() }),
+			l10n.l('pageMail.mailFrom', "Mail from {name}", { name: (c.name + ' ' + c.surname).trim() }),
 			{
 				onClick: () => {
 					this.open();
