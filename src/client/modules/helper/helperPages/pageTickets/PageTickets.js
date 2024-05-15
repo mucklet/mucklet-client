@@ -17,6 +17,7 @@ class PageTickets {
 
 		// Bind callbacks
 		this._onTicketAdd = this._onTicketAdd.bind(this);
+		this._onNotificationNewTicketEvent = this._onNotificationNewTicketEvent.bind(this);
 
 		this.app.require([
 			'playerTabs',
@@ -140,12 +141,13 @@ class PageTickets {
 		if (m) {
 			m[on ? 'on' : 'off']('add', this._onTicketAdd);
 		}
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('newTicket', this._onNotificationNewTicketEvent);
 	}
 
 	_onTicketAdd(ev) {
 		let nm = this.module.notify.getModel();
-
-		if (nm.notifyOnRequests) {
+		// Only notify if notifyOnRequest is set and the user is a helper
+		if (nm.notifyOnRequests && this.module.player.hasRole('helper')) {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageTickets.charRequestedHelp', "{name} requested help", { name: (c.name + ' ' + c.surname).trim() }),
@@ -154,9 +156,14 @@ class PageTickets {
 						this.open();
 						window.focus();
 					},
+					skipOnPush: true,
 				},
 			);
 		}
+	}
+
+	_onNotificationNewTicketEvent(params) {
+		this.open();
 	}
 
 	dispose() {

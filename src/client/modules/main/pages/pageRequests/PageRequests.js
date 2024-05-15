@@ -154,6 +154,7 @@ class PageRequests {
 						this.open();
 						window.focus();
 					},
+					skipOnPush: true,
 				},
 			);
 		}
