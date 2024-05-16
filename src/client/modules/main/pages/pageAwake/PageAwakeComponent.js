@@ -32,7 +32,6 @@ class PageAwakeComponent {
 		this.model = new Model({ data: this.state, eventBus: this.module.self.app.eventBus });
 		let charsAwakeModel = this.module.charsAwake.getModel();
 		let watchedAwake = this.module.charsAwake.getWatchedAwake();
-		let unwatchedAwake = this.module.charsAwake.getUnwatchedAwake();
 		this.countCtx = { fader: new Fader() };
 
 		this.elem = new Elem(n => n.elem('div', { className: 'pageawake' }, [
@@ -68,7 +67,7 @@ class PageAwakeComponent {
 			n.component(new ModelComponent(
 				charsAwakeModel,
 				new Elem(n => n.elem('div', [
-					n.component('show', new LabelToggleBox(l10n.l('pageAwake.showLfrp', "Show looking for RP"), false, {
+					n.component('showLfrp', new LabelToggleBox(l10n.l('pageAwake.showLfrp', "Show looking for RP"), false, {
 						className: 'common--formmargin ',
 						onChange: v => this.module.charsAwake.toggleShowLfrp(v),
 						popupTip: l10n.l('pageAwake.showLfrpInfo', "Filter the list to show characters currently set as looking for roleplay."),
@@ -115,50 +114,34 @@ class PageAwakeComponent {
 					n.component(new CollectionList(watchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
 						className: 'pageawake--watched',
 					})),
-					n.component('hideuw', new LabelToggleBox(
-						l10n.l('pageAwake.hideUnwatched', "Hide Unwatched"), false, {
-						 className: 'pageawake--unwatched--hide',
-						 onChange: v => this.module.charsAwake.setHideUnwatched(v),
-							popupTip: l10n.l('pageAwake.hideUnwatchedInfo', "Toggle showing the online list of unwatched players."),
-							popupTipClassName: 'popuptip--width-s popuptip--position-left-bottom',
-					 })),
+					n.elem('div', {
+						className: 'pageawake--showall',
+						events: {
+							click: (c, ev) => {
+								this.module.charsAwake.toggleShowAll();
+								ev.stopPropagation();
+							},
+						},
+					}, [
+						n.elem('div', { className: 'pageawake--showall-line' }),
+						n.component('showAll', new FAIcon(null, { className: 'pageawake--showall-icon' })),
+					]),
 					// Non-watched for characters
-					n.component(new ModelComponent(
-						charsAwakeModel,
-						new Collapser(),
-						(m, c, ev) => {
-							c.setComponent(
-								m.hideuw
-									? null
-									: new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), { className: 'pageawake--unwatched' }));
-					 })),
-					n.component(new CollectionComponent(
-						unwatchedAwake,
-						new Collapser(),
-						(col, c, ev) => c.setComponent(col.length
-							? null
-							: new CollectionComponent(
-								this.module.charsAwake.getCollection(),
-								new Txt("", { className: 'common--nolistplaceholder' }),
-								(col, c) => c.setText(col.length
-									? l10n.l('pageAwake.butNooneElseAwake', "... everyone else is asleep.")
-									: l10n.l('pageAwake.nooneAwake', "... and so is everyone else."),
-								),
-							),
-						),
-					)),
+					n.component('unwatched', new Collapser()),
 				])),
 				(m, c, change) => {
-					// Update show all togglebox
-					c.getNode('show').setValue(m.showLfrp, false);
+					// Update unwatched
+					this._setUnwatched(m, c.getNode('unwatched'));
+					// Update show lfrp togglebox
+					c.getNode('showLfrp').setValue(m.showLfrp, false);
 					// Set filter input value
 					c.getNode('filter').setValue(m.filter, false);
 					// set hide unwatched filter
-					c.getNode('hideuw').setValue(m.hideuw, false);
+					c.getNode('showAll').setIcon(m.showAll ? 'minus-square-o' : 'plus-square-o');
 					// Set clear button enabled/disabled
 					c.setNodeProperty('clear', 'disabled', m.filter ? null : 'disabled');
 					// Update count
-					if (change && (change.hasOwnProperty('showLfrp') || change.hasOwnProperty('filter'))) {
+					if (change && (change.hasOwnProperty('showLfrp') || change.hasOwnProperty('showAll') || change.hasOwnProperty('filter'))) {
 						this._onCountChange();
 					}
 				},
@@ -203,15 +186,22 @@ class PageAwakeComponent {
 		let total = charsAwake.getCollection().length;
 		let filterIsEmpty = charsAwake.filterIsEmpty();
 		let showLfrp = charsAwake.getModel().showLfrp;
+		let showAll = charsAwake.getModel().showAll;
+		let col = showAll ? charsAwake.getCollection() : charsAwake.getWatchedAwake();
 
 		let str = null;
 		let state = "";
 		if (filterIsEmpty && !showLfrp) {
-			state = 't';
-			str = l10n.l('pageAwake.totalAwake', "{total} awake", { total });
+			if (showAll) {
+				state = 't';
+				str = l10n.l('pageAwake.totalAwake', "{total} awake", { total });
+			} else {
+				state = 'woa';
+				str = l10n.l('pageAwake.watchingOfTotalAwake', "Watching {showCount} of {total} awake", { showCount: col.length, total });
+			}
 		} else {
-			state = 'moa';
-			str = l10n.l('pageAwake.matchingOfTotalAwake', "Matching {matchCount} of {total} awake", { matchCount: countMatches(charsAwake.getCollection()), total });
+			state = showAll ? 'moa' : 'mwoa';
+			str = l10n.l('pageAwake.matchingOfTotalAwake', "Matching {matchCount} of {total} awake", { matchCount: countMatches(col), total });
 		}
 
 		// Determine if we should create a new Txt.
@@ -224,6 +214,33 @@ class PageAwakeComponent {
 		let txtComp = ctx.txt;
 		txtComp.setText(str);
 		ctx.fader.setComponent(txtComp);
+	}
+
+	_setUnwatched(model, collapser) {
+		let unwatchedAwake = this.module.charsAwake.getUnwatchedAwake();
+		collapser.setComponent(model.showAll
+			? collapser.getComponent() || new Elem(n => n.elem('div', [
+				n.component(new CollectionList(unwatchedAwake, m => new PageAwakeChar(this.module, m, this._onCountChange), {
+					className: 'pageawake--unwatched',
+				})),
+				n.component(new CollectionComponent(
+					unwatchedAwake,
+					new Collapser(),
+					(col, c, ev) => c.setComponent(col.length
+						? null
+						: new CollectionComponent(
+							this.module.charsAwake.getCollection(),
+							new Txt("", { className: 'common--nolistplaceholder' }),
+							(col, c) => c.setText(col.length
+								? l10n.l('pageAwake.butNooneElseAwake', "... everyone else is asleep.")
+								: l10n.l('pageAwake.nooneAwake', "... and so is everyone else."),
+							),
+						),
+					),
+				)),
+			]))
+			: null,
+		);
 	}
 }
 
