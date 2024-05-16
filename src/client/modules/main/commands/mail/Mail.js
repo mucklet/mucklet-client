@@ -29,7 +29,6 @@ class Mail {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		let charListOpt = {
 			filterMuted: true,

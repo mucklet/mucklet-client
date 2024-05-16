@@ -16,15 +16,16 @@ class PageMail {
 
 		// Bind callbacks
 		this._onUnreadChange = this._onUnreadChange.bind(this);
+		this._onNotificationNewMailEvent = this._onNotificationNewMailEvent.bind(this);
 
 		this.app.require([
 			'playerTabs',
-			'player',
 			'confirm',
 			'auth',
 			'api',
 			'avatar',
 			'notify',
+			'playerEvent',
 		], this._init.bind(this));
 	}
 
@@ -74,6 +75,8 @@ class PageMail {
 					}
 				});
 		});
+
+		this._listenNotification(true);
 	}
 
 	/**
@@ -92,9 +95,13 @@ class PageMail {
 		}
 	}
 
+	_listenNotification(on) {
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('newMail', this._onNotificationNewMailEvent);
+	}
+
 	_onUnreadChange(change, unread) {
-		let p = this.module.player.getPlayer();
-		if (!p || !p.notifyOnRequests) return;
+		let nm = this.module.notify.getModel();
+		if (!nm.notifyOnRequests) return;
 
 		for (let k in change) {
 			if (!change[k]) {
@@ -109,18 +116,24 @@ class PageMail {
 	_notifyMail(mail) {
 		let c = mail.from;
 		this.module.notify.send(
-			l10n.l('pageMail.mailFrom', "Mail from {name}.", { name: (c.name + ' ' + c.surname).trim() }),
+			l10n.l('pageMail.mailFrom', "Mail from {name}", { name: (c.name + ' ' + c.surname).trim() }),
 			{
-				onClick: (ev) => {
+				onClick: () => {
 					this.open();
 					window.focus();
-					ev.target.close();
 				},
+				skipOnPush: true,
 			},
 		);
 	}
 
+	_onNotificationNewMailEvent(params) {
+		this.open();
+	}
+
 	dispose() {
+		this._listenNotification(false);
+		this._listen(false);
 		this.module.playerTabs.removeTab('mail');
 		this.unread.dispose();
 		this.unread = null;

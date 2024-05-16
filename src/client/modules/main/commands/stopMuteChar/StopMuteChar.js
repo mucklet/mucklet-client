@@ -45,8 +45,8 @@ class StopMuteChar {
 
 	stopMuteChar(player, char, params) {
 		return player.call('getChar', params.charId ? { charId: params.charId } : { charName: params.charName })
-			.then(c => this.module.mute.toggleMuteChar(c.id, false).then(change => {
-				if (change) {
+			.then(c => this.module.mute.toggleMuteChar(c.id, false).then(changed => {
+				if (changed[c.id]) {
 					this.module.charLog.logInfo(char, l10n.l('stopMuteChar.stopMuteChar', "Deactivated muting of {name}.", { name: c.name }));
 				} else {
 					this.module.charLog.logError(char, new Err('stopMuteChar.notMutingChar', "Not currently muting {name}.", { name: c.name }));

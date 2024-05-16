@@ -43,7 +43,6 @@ class Focus {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		this.colors = new ItemList({
 			items: Object.keys(this.module.charFocus.getFocusColors()).map(key => ({ key })),
@@ -100,18 +99,18 @@ class Focus {
 
 	focus(player, char, params) {
 		return params.at == 'all'
-			? this.module.charFocus.toggleFocusAll(char.id, true)
+			? this.module.charFocus.toggleNotifyOnAll(char, true)
 				.then(change => {
-					if (change) {
-						this.module.charLog.logInfo(char, l10n.l('focus.focusingOnAll', "{charName} focuses on all events.", { charName: char.name }));
-					} else {
-						this.module.charLog.logError(char, new Err('focus.alreadyFocusOnAll', "{charName} is already focusing on all events.", { charName: char.name }));
+					if (!change) {
+						throw new Err('focus.alreadyNotifyOnAll', "{charName} already gets notified on all events.", { charName: char.name });
 					}
+					this.module.charLog.logInfo(char, l10n.l('focus.notifiedOnAll', "{charName} gets notified on all events.", { charName: char.name }));
 				})
-			: player.call('getChar', params).then(c => {
-				this.module.charFocus.addFocus(char.id, c, params.color);
-				this.module.charLog.logInfo(char, l10n.l('focus.focusingOnChar', "Focusing on {targetName}.", { targetName: c.name }));
-			});
+			: player.call('getChar', params)
+				.then(c => this.module.charFocus.addFocus(char, c.id, params.color))
+				.then(result => {
+					this.module.charLog.logInfo(char, l10n.l('focus.focusingOnChar', "Focusing on {targetName}.", { targetName: result.char.name }));
+				});
 	}
 }
 

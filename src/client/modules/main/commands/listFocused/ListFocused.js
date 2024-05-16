@@ -48,7 +48,7 @@ class ListFocused {
 		let ctrlId = ctrl.id;
 		let focusList = this.module.charFocus.getFocusCharColors(ctrlId);
 
-		if (!focusList){
+		if (!focusList?.length){
 			this.module.charLog.logInfo(ctrl, l10n.l('listFocused.noFocuses', "{charName} has no focused characters.", { charName: ctrl.name }));
 			return;
 		}

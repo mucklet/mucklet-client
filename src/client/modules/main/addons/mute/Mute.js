@@ -1,4 +1,4 @@
-import { Model } from 'modapp-resource';
+import Err from 'classes/Err';
 
 const muteStoragePrefix = 'mute.';
 
@@ -21,6 +21,18 @@ const unmutableEvents = {
 const oocEventType = 'ooc';
 const messageEventType = 'message';
 
+const alreadyMutedErrs = {
+	muteOoc: new Err('mute.oocAlreadyMuted', "OOC messages are already getting muted."),
+	muteMessage: new Err('mute.messagesAlreadyMuted', "Messages are already getting muted."),
+	muteTravel: new Err('mute.travelAlreadyMuted', "Travel messages are already getting muted."),
+};
+
+const notMutedErrs = {
+	muteOoc: new Err('mute.oocNotMuted', "OOC messages are not being muted."),
+	muteMessage: new Err('mute.messagesNotMuted', "Messages are not being muted."),
+	muteTravel: new Err('mute.travelNotMuted', "Travel messages are not being muted."),
+};
+
 /**
  * Mute handles muting of events.
  */
@@ -28,16 +40,15 @@ class Mute {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'auth', 'charLog', 'charFocus' ], this._init.bind(this));
+		this.app.require([
+			'player',
+			'charLog',
+			'charFocus',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-
-		this.muteTravel = new Model({ eventBus: this.app.eventBus });
-		this.muteChars = new Model({ eventBus: this.app.eventBus });
-		this.muteOoc = new Model({ eventBus: this.app.eventBus });
-		this.muteMessage = new Model({ eventBus: this.app.eventBus });
 
 		this.module.charLog.addEventModifier({
 			id: 'mute',
@@ -45,54 +56,71 @@ class Mute {
 			callback: this._applyModifications.bind(this),
 		});
 
-		// Load muted
-		this._loadMute('.travel', this.muteTravel);
-		this._loadMute('.chars', this.muteChars);
-		this._loadMute('.ooc', this.muteOoc);
-		this._loadMute('.message', this.muteMessage);
+		// Migrate localStorage stored settings to server.
+		// [TODO] Remove after 2025-01-01
+		this._migrateMute('.ooc', 'muteOoc');
+		this._migrateMute('.message', 'muteMessage');
+		this._migrateMute('.travel', 'muteTravel');
+		this._migrateMuteChars();
 	}
 
-	toggleMuteTravel(ctrlId, muteTravel) {
-		muteTravel = typeof muteTravel == 'undefined' ? !this.muteTravel.props[ctrlId] : !!muteTravel;
-		let v = this.muteTravel.props.hasOwnProperty(ctrlId);
-		if (muteTravel == v) return Promise.resolve(false);
-
-		return this.muteTravel.set({ [ctrlId]: muteTravel || undefined }).then(() => {
-			this._saveMute('.travel', this.muteTravel);
-			return true;
-		});
+	/**
+	 * Sets the mute ooc character setting.
+	 * @param {Model} ctrl Controlled character model.
+	 * @param {boolean} [muteOoc] Flag to set mute ooc to. Defaults to toggle.
+	 * @param {boolean} [strict] Flag to set reject the promise if the value is already set.
+	 * @returns {Promise} Promise to setting being set.
+	 */
+	toggleMuteOoc(ctrl, muteOoc, strict) {
+		return this._toggleMute('muteOoc', ctrl, muteOoc, strict);
 	}
 
+	/**
+	 * Sets the mute messages character setting.
+	 * @param {Model} ctrl Controlled character model.
+	 * @param {boolean} muteMessage Flag to set mute messages to. Detaults to toggle.
+	 * @param {boolean} [strict] Flag to set reject the promise if the value is already set.
+	 * @returns {Promise} Promise to setting being set.
+	 */
+	toggleMuteMessage(ctrl, muteMessage, strict) {
+		return this._toggleMute('muteMessage', ctrl, muteMessage, strict);
+	}
+
+	/**
+	 * Sets the mute travel character setting.
+	 * @param {Model} ctrl Controlled character model.
+	 * @param {boolean} muteTravel Flag to set mute travel to. Defaults to toggle.
+	 * @param {boolean} [strict] Flag to set reject the promise if the value is already set.
+	 * @returns {Promise} Promise to setting being set.
+	 */
+	toggleMuteTravel(ctrl, muteTravel, strict) {
+		return this._toggleMute('muteTravel', ctrl, muteTravel, strict);
+	}
+
+	/**
+	 * Mutes or unmutes a characters.
+	 * @param {Model} charId ID of character to mute.
+	 * @param {boolean} [muteChar] Flag to mute or unmute character. Toggle if omitted.
+	 * @returns {Promise} Promise to the character being muted/unmuted.
+	 */
 	toggleMuteChar(charId, muteChar) {
-		muteChar = typeof muteChar == 'undefined' ? !this.muteChars.props[charId] : !!muteChar;
-		let v = this.muteChars.props.hasOwnProperty(charId);
-		if (muteChar == v) return Promise.resolve(false);
-
-		return this.muteChars.set({ [charId]: muteChar || undefined }).then(() => {
-			this._saveMute('.chars', this.muteChars);
-			return true;
+		let player = this.module.player.getPlayer();
+		muteChar = typeof muteChar == 'undefined' ? !player.mutedChars.props[charId] : !!muteChar;
+		return player.call('muteChars', {
+			chars: { [charId]: muteChar },
 		});
 	}
 
-	toggleMuteOoc(ctrlId, muteOoc) {
-		muteOoc = typeof muteOoc == 'undefined' ? !this.muteOoc.props[ctrlId] : !!muteOoc;
-		let v = this.muteOoc.props.hasOwnProperty(ctrlId);
-		if (muteOoc == v) return Promise.resolve(false);
-
-		return this.muteOoc.set({ [ctrlId]: muteOoc || undefined }).then(() => {
-			this._saveMute('.ooc', this.muteOoc);
-			return true;
-		});
-	}
-
-	toggleMuteMessage(ctrlId, muteMessage) {
-		muteMessage = typeof muteMessage == 'undefined' ? !this.muteMessage.props[ctrlId] : !!muteMessage;
-		let v = this.muteMessage.props.hasOwnProperty(ctrlId);
-		if (muteMessage == v) return Promise.resolve(false);
-
-		return this.muteMessage.set({ [ctrlId]: muteMessage || undefined }).then(() => {
-			this._saveMute('.message', this.muteMessage);
-			return true;
+	_toggleMute(prop, ctrl, mute, strict) {
+		let oldMute = ctrl.settings[prop];
+		mute = typeof mute == 'undefined' ? !oldMute : !!mute;
+		if (strict && mute == oldMute) {
+			return Promise.reject((mute ? alreadyMutedErrs : notMutedErrs)[prop]);
+		}
+		return this.module.player.getPlayer().call('setCharSettings', {
+			charId: ctrl.id,
+			puppeteerId: ctrl.puppeteer?.id || undefined,
+			[prop]: mute,
 		});
 	}
 
@@ -102,46 +130,82 @@ class Mute {
 	 * @returns {bool} True if muted, otherwise false.
 	 */
 	isMutedChar(charId) {
-		return !!(charId && this.muteChars.props[charId]);
+		return !!(charId && this.module.player.getPlayer()?.mutedChars.props[charId]);
 	}
 
-	_loadMute(type, model) {
+	// Migrates mute settings from local storage over to backend. Remove after 2025-01-01.
+	async _migrateMute(type, prop) {
 		if (!localStorage) return;
 
-		this.module.auth.getUserPromise().then(user => {
-			let raw = localStorage.getItem(muteStoragePrefix + user.id + type);
-			if (raw) {
-				model.reset(JSON.parse(raw));
+		let player = await this.module.player.getPlayerPromise();
+		let key = muteStoragePrefix + player.id + type;
+		let raw = localStorage.getItem(key);
+		if (raw) {
+			try {
+				let chars = JSON.parse(raw);
+				for (let charId in chars) {
+					if (chars[charId]) {
+						// Await to avoid spamming too much
+						await player.call('setCharSettings', {
+							charId: charId,
+							[prop]: true,
+						}).catch(err => {
+							// Char not found is considered a non-error.
+							if (err.code != 'core.charNotFound') {
+								throw err;
+							}
+						});
+						await new Promise(resolve => setTimeout(resolve, 1000)); // Migrate one every second to avoid flooding.
+					}
+				}
+				// Once successfully migrated, delete key.
+				localStorage.removeItem(key);
+			} catch (ex) {
+				console.log("Error migrating " + prop + ":", ex);
 			}
-		});
+		}
 	}
 
-	_saveMute(type, model) {
+	// Migrates muted chars from local storage over to backend. Remove after 2025-01-01.
+	async _migrateMuteChars() {
 		if (!localStorage) return;
 
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(muteStoragePrefix + user.id + type, JSON.stringify(model.props));
-		});
+		let player = await this.module.player.getPlayerPromise();
+		let key = muteStoragePrefix + player.id + '.chars';
+		let raw = localStorage.getItem(key);
+		if (raw) {
+			try {
+				let chars = JSON.parse(raw);
+				if (Object.keys(chars).length) {
+					await player.call('muteChars', { chars });
+				}
+				// Once successfully migrated, delete key.
+				localStorage.removeItem(key);
+			} catch (ex) {
+				console.log("Error migrating muted chars: ", ex);
+			}
+		}
 	}
 
 	_applyModifications(ev, ctrl, mod) {
 		let muted = false;
+		let settings = ctrl.settings;
 		let charId = ev.char && ev.char.id;
-		if (this.muteTravel.props[ctrl.id]) {
+		if (settings.muteTravel) {
 			if (travelEvents[ev.type] && charId != ctrl.id && !this.module.charFocus.hasFocus(ctrl.id, charId)) {
 				muted = true;
 			}
 		}
 
-		if (charId != ctrl.id && this.muteOoc.props[ctrl.id] && (ev.ooc || ev.type === oocEventType)) {
+		if (charId != ctrl.id && settings.muteOoc && (ev.ooc || ev.type === oocEventType)) {
 			muted = true;
 		}
 
-		if (charId != ctrl.id && this.muteMessage.props[ctrl.id] && ev.type === messageEventType) {
+		if (charId != ctrl.id && settings.muteMessage && ev.type === messageEventType) {
 			muted = true;
 		}
 
-		if (!muted && charId && this.muteChars.props[charId] && !unmutableEvents[ev.type]) {
+		if (!muted && this.isMutedChar(charId) && !unmutableEvents[ev.type]) {
 			muted = true;
 		}
 

@@ -48,8 +48,8 @@ class MuteChar {
 
 	muteChar(player, char, params) {
 		return player.call('getChar', params.charId ? { charId: params.charId } : { charName: params.charName })
-			.then(c => this.module.mute.toggleMuteChar(c.id, true).then(change => {
-				if (change) {
+			.then(c => this.module.mute.toggleMuteChar(c.id, true).then(changed => {
+				if (changed[c.id]) {
 					this.module.charLog.logInfo(char, l10n.l('muteChar.muteCharStart', "Activated muting of {name}.", { name: c.name }));
 				} else {
 					this.module.charLog.logError(char, new Err('muteChar.alreadyMutingTravel', "Already muting {name}.", { name: c.name }));

@@ -138,7 +138,14 @@ class Version {
 							// fetch.
 							let serviceWorker = this.app.getModule('serviceWorker');
 							if (serviceWorker) {
-								serviceWorker.clearCacheAndReload();
+								serviceWorker.clearCacheAndReload(true).catch(err => {
+									this.module.confirm.open(() => reload(true), {
+										title: l10n.l('version.error', "An error occurred"),
+										confirm: l10n.l('version.ok', "Okay"),
+										body: typeof err == 'string' ? err : err?.message || JSON.stringify(err),
+										cancel: null,
+									});
+								});
 							} else {
 								reload(true);
 							}

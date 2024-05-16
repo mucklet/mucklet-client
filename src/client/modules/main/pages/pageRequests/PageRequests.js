@@ -17,6 +17,7 @@ class PageRequests {
 
 		// Bind callbacks
 		this._onRequestAdd = this._onRequestAdd.bind(this);
+		this._onNotificationNewRequestEvent = this._onNotificationNewRequestEvent.bind(this);
 
 		this.app.require([
 			'playerTabs',
@@ -139,25 +140,28 @@ class PageRequests {
 		if (out) {
 			out[cb]();
 		}
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('newRequest', this._onNotificationNewRequestEvent);
 	}
 
 	_onRequestAdd(ev) {
-		let p = this.module.player.getPlayer();
-		if (!p) return;
-
-		if (p.notifyOnRequests) {
+		let nm = this.module.notify.getModel();
+		if (nm.notifyOnRequests) {
 			let c = ev.item.from;
 			this.module.notify.send(
-				l10n.l('pageReports.charSentRequest', "{name} sent a request.", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageReports.charSentRequest', "{name} sent a request", { name: (c.name + ' ' + c.surname).trim() }),
 				{
-					onClick: (ev) => {
+					onClick: () => {
 						this.open();
 						window.focus();
-						ev.target.close();
 					},
+					skipOnPush: true,
 				},
 			);
 		}
+	}
+
+	_onNotificationNewRequestEvent(params) {
+		this.open();
 	}
 
 	dispose() {

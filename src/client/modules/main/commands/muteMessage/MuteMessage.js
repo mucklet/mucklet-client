@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import Err from 'classes/Err';
 
 const usageText = 'mute message';
 const shortDesc = 'Mute messages from other characters';
@@ -37,14 +36,8 @@ class MuteMessage {
 	}
 
 	muteMessage(char) {
-		return this.module.mute.toggleMuteMessage(char.id, true)
-			.then(change => {
-				if (change) {
-					this.module.charLog.logInfo(char, l10n.l('muteMessage.muteMessageStart', "Activated muting of messages."));
-				} else {
-					this.module.charLog.logError(char, new Err('muteMessage.alreadyMutingMessage', "Messages are already getting muted."));
-				}
-			});
+		return this.module.mute.toggleMuteMessage(char, true, true)
+			.then(() => this.module.charLog.logInfo(char, l10n.l('muteMessage.muteMessageStart', "Activated muting of messages.")));
 	}
 }
 
