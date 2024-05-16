@@ -314,7 +314,7 @@ class Notify {
 	}
 
 	_getServiceWorker() {
-		return (this.app.getModule('serviceWorker')?.getPromise() || Promise.reject());
+		return (this.app.getModule('serviceWorker')?.getPromise() || Promise.reject("ServiceWorker module not loaded."));
 	}
 
 	_subscribeToPush() {

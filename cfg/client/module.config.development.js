@@ -3,7 +3,7 @@ const config = {
 		method: 'ws',
 	},
 	confirmClose: { active: false },
-	serviceWorker: { active: true },
+	serviceWorker: { active: false },
 };
 
 export default config;

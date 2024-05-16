@@ -147,7 +147,7 @@ class PageTickets {
 	_onTicketAdd(ev) {
 		let nm = this.module.notify.getModel();
 		// Only notify if notifyOnRequest is set and the user is a helper
-		if (nm.notifyOnRequests && this.module.player.hasRole('helper')) {
+		if (nm.notifyOnRequests && this.module.player.hasRoles('helper')) {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageTickets.charRequestedHelp', "{name} requested help", { name: (c.name + ' ' + c.surname).trim() }),

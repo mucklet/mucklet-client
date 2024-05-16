@@ -147,7 +147,7 @@ class PageReports {
 	_onReportAdd(ev) {
 		let nm = this.module.notify.getModel();
 		// Only notify if notifyOnRequest is set and the user is a moderator
-		if (nm.notifyOnRequests && this.module.player.hasRole('moderator')) {
+		if (nm.notifyOnRequests && this.module.player.hasRoles('moderator')) {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageReports.charReported', "{name} was reported", { name: (c.name + ' ' + c.surname).trim() }),

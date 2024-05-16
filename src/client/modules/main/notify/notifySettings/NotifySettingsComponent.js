@@ -45,7 +45,7 @@ class NotifySettingsComponent {
 								new LabelToggleBox(l10n.l('notify.notifyOnWatched', "Notify on watched"), false, {
 									className: 'common--formmargin small',
 									onChange: (v, c) => model.set({ notifyOnWatched: v }),
-									popupTip: l10n.l('notify.notifyOnWatchedInfo', "Notify whenever a watched character wakes up."),
+									popupTip: l10n.l('notify.notifyOnWatchedInfo', "Notify whenever a watched character wakes up. Limited support on mobile devices."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => {
@@ -58,7 +58,7 @@ class NotifySettingsComponent {
 								new LabelToggleBox(l10n.l('notify.notifyOnMatched', "Notify on matched"), false, {
 									className: 'common--formmargin small',
 									onChange: (v, c) => model.set({ notifyOnMatched: v }),
-									popupTip: l10n.l('notify.notifyOnMatchedInfo', "Notify whenever a character wakes up that matches current filter."),
+									popupTip: l10n.l('notify.notifyOnMatchedInfo', "Notify whenever a character wakes up that matches current filter. Limited support on mobile devices."),
 									popupTipClassName: 'popuptip--width-s',
 								}),
 								(m, c) => {

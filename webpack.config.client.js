@@ -105,7 +105,7 @@ module.exports = function(ctx) {
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,
 			}),
-			...[
+			...ctx.devMode ? [] : [
 				new WorkboxPlugin.InjectManifest({
 					swSrc: path.resolve(ctx.commonPath, 'workers/service-worker.js'),
 					swDest: 'service-worker.js',
