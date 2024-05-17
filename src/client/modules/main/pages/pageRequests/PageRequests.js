@@ -148,12 +148,14 @@ class PageRequests {
 		if (nm.notifyOnRequests) {
 			let c = ev.item.from;
 			this.module.notify.send(
-				l10n.l('pageReports.charSentRequest', "{name} sent a request", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageRequests.newRequest', "New request"),
+				l10n.l('pageRequests.charSentRequest', "{name} sent a request.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();
 						window.focus();
 					},
+					duration: 1000 * 60 * 60 * 24, // Max 1 day
 					skipOnPush: true,
 				},
 			);

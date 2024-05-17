@@ -24,6 +24,7 @@ class Notify {
 	constructor(app, params) {
 		this.app = app;
 		this.defaultIcon = params.defaultIcon || '/android-chrome-192x192.png';
+		this.defaultBadge = params.defaultBadge || '/badgemask-96x96.png';
 		this.alwaysNotify = !!params.alwaysNotify;
 
 		// Notify modes:
@@ -73,13 +74,14 @@ class Notify {
 	/**
 	 * Send a local notification.
 	 * @param {string|LocaleString} title Title of the notification.
+	 * @param {string|LocaleString} body Message body of the notification.
 	 * @param {object} [opt] Optional parameters. Same as the Notification API with some additions.
 	 * @param {string} [opt.tag] Tag to set on the notification.
 	 * @param {number} [opt.duration] Duration the notification will be open in milliseconds. Defaults to 5000.
 	 * @param {function} [opt.onClick] Callback called when notifications is clicked.
 	 * @param {boolean} [opt.skipOnPush] Flag to skip sending the notification if push is enabled.
 	 */
-	send(title, opt) {
+	send(title, body, opt) {
 		if (!this.player || !this.model.enabled || (opt?.skipOnPush && this.model.usePush)) return;
 
 		let tag = opt?.tag;
@@ -91,7 +93,13 @@ class Notify {
 			this.tags[tag] = true;
 			setTimeout(() => delete this.tags[tag], 200);
 		}
-		opt = Object.assign({ icon: this.defaultIcon, /*duration: 5000, */onClick: defaultOnClick, alwaysNotify: this.alwaysNotify }, opt);
+		opt = Object.assign({
+			body: (body && (typeof body == 'string' ? body : l10n.t(body))) || undefined,
+			icon: this.defaultIcon,
+			badge: this.defaultBadge,
+			onClick: defaultOnClick,
+			alwaysNotify: this.alwaysNotify,
+		}, opt);
 		title = typeof title == 'string' ? title : l10n.t(title);
 
 		const serviceWorker = this.app.getModule('serviceWorker');
@@ -257,6 +265,9 @@ class Notify {
 	}
 
 	_setEnabled(enabled, usePush, endpoint) {
+		if (enabled) {
+			console.log("[Notify] Enabled notification: " + (usePush ? "push" : "local"));
+		}
 		this._setEndpoint(endpoint);
 		return this.model.set({ enabled, usePush });
 	}
@@ -282,7 +293,7 @@ class Notify {
 	}
 
 	_requestPermission(noRequest) {
-		// Test if browser supports Noticication
+		// Test if browser supports Notification
 		if (!('Notification' in window)) {
 			return Promise.reject(l10n.l('notify.notSupported', "<p>Notifications are not supported by this browser.</p>"));
 		}

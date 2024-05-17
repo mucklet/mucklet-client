@@ -150,12 +150,14 @@ class PageReports {
 		if (nm.notifyOnRequests && this.module.player.hasRoles('moderator')) {
 			let c = ev.item.char;
 			this.module.notify.send(
-				l10n.l('pageReports.charReported', "{name} was reported", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageReports.newReport', "New report"),
+				l10n.l('pageReports.charReported', "{name} was reported.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();
 						window.focus();
 					},
+					duration: 1000 * 60 * 60 * 24, // Max 1 day
 					skipOnPush: true,
 				},
 			);

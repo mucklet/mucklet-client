@@ -14,19 +14,8 @@ self.addEventListener('activate', (event) => {
 	skipWaiting();
 });
 
-// {
-// 	event: "asleep",
-// 	params: {
-// 		tag: "event_1234567"
-// 		title: "Accipiter fell asleep",
-// 		body: null,
-// 		params: {
-//			charId: 12312,
-// 		}
-// 	}
-// }
-
 const defaultIcon = '/android-chrome-192x192.png';
+const defaultBadge = '/badgemask-96x96.png';
 
 function getNotificationWithTag(tag) {
 	if (!tag) {
@@ -64,7 +53,22 @@ function showNotification(title, opt) {
 			if (notification) {
 				compositeTag = notification.tag;
 			}
-			self.registration.showNotification(title, Object.assign({}, opt, { tag: compositeTag }));
+			return self.registration.showNotification(title, Object.assign({}, opt, { tag: compositeTag }))
+				.then(() => {
+					if (opt?.duration) {
+						// If we have a duration, set a timeout to close it afterwards.
+						self.setTimeout(() => {
+							self.registration.getNotifications()
+								.then(notifications => {
+									let notification = notifications.find(notification => notification.tag === compositeTag);
+									if (notification) {
+										notification.close();
+									}
+								});
+
+						}, opt.duration);
+					}
+				});
 		});
 	});
 }
@@ -127,7 +131,9 @@ self.addEventListener(
 				body: notification.body || undefined,
 				alwaysNotify: notification.alwaysNotify,
 				icon: notification.icon || defaultIcon,
+				badge: notification.badge || defaultBadge,
 				vibrate: notification.vibrate,
+				duration: notification.duration || undefined,
 				data: data.event || data.params
 					? { event: data.event || undefined, params: data.params || undefined }
 					: undefined,

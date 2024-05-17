@@ -150,12 +150,14 @@ class PageTickets {
 		if (nm.notifyOnRequests && this.module.player.hasRoles('helper')) {
 			let c = ev.item.char;
 			this.module.notify.send(
-				l10n.l('pageTickets.charRequestedHelp', "{name} requested help", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageTickets.helpRequest', "Help request"),
+				l10n.l('pageTickets.charRequestedHelp', "{name} requested help.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();
 						window.focus();
 					},
+					duration: 1000 * 60 * 60 * 24, // Max 1 day
 					skipOnPush: true,
 				},
 			);

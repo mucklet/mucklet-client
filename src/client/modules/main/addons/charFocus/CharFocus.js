@@ -6,8 +6,10 @@ import { firstTriggerWord } from 'utils/formatText';
 
 const focusStoragePrefix = 'charFocus.';
 
-const focusTitle = l10n.l('charLog.newPost', "New post from {char.name}");
-const mentionTitle = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}");
+const focusTitle = l10n.l('charLog.newPost', "New post");
+const focusBody = l10n.l('charLog.newPost', "{char.name} made a new post.");
+const mentionTitle = l10n.l('charLog.mention', "Mention");
+const mentionBody = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}.");
 
 const focusColors = {
 	red: '#a00808',
@@ -95,21 +97,23 @@ class CharFocus {
 		document.head.appendChild(this.style);
 
 		const notificationHandlers = {
-			say: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, focusTitle),
-			pose: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, focusTitle),
-			sleep: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charFellAsleep', "{char.name} fell asleep")),
-			leave: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charLeft', "{char.name} left")),
-			arrive: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charArrived', "{char.name} arrived")),
-			whisper: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charWhisperTo', "{char.name} whispered to {target.name}")),
-			message: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charMessagedTo', "{char.name} messaged to {target.name}")),
-			describe: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newDescBy', "New description by {char.name}")),
-			summon: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charSummoned', "{char.name} summons {target.name}")),
-			join: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charSummoned', "{char.name} wants to join {target.name}")),
-			ooc: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newOocPost', "New Out of Character post from {char.name}")),
-			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}")),
+			say: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, focusTitle, focusBody),
+			pose: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, focusTitle, focusBody),
+			sleep: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.asleep', "Asleep"), l10n.l('charLog.charFellAsleep', "{char.name} fell asleep.")),
+			leave: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.departure', "Departure"), l10n.l('charLog.charLeft', "{char.name} left.")),
+			arrive: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.arrival', "Arrival"), l10n.l('charLog.charArrived', "{char.name} arrived.")),
+			whisper: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.whisper', "Whisper"), l10n.l('charLog.charWhisperTo', "{char.name} whispered to {target.name}.")),
+			message: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.message', "Message"), l10n.l('charLog.charMessagedTo', "{char.name} messaged {target.name}.")),
+			describe: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newDesc', "Description"), l10n.l('charLog.newDescBy', "{char.name} made a description.")),
+			summon: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.summonRequest', "Summon request"), l10n.l('charLog.charSummoned', "{char.name} summons {target.name}.")),
+			join: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.joinRequest', "Join request"), l10n.l('charLog.charJoin', "{char.name} wants to join {target.name}.")),
+			leadRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.leadRequest', "Lead request"), l10n.l('charLog.charLead', "{char.name} wants to lead {target.name}.")),
+			followRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.followRequest', "Follow request"), l10n.l('charLog.charFollow', "{char.name} wants to follow {target.name}.")),
+			ooc: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newOocPost', "{char.name} made an Out of Character post.")),
+			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.warning', "Warning"), l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}.")),
 			action: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.newAction', "{char.name} {msg}")),
-			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}")) || this.notifyOnMention(charId, ev, mentionTitle),
-			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charRolled', "{char.name} rolled")),
+			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.address', "Address"), l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}.")) || this.notifyOnMention(charId, ev, mentionTitle, mentionBody),
+			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.roll', "Roll"), l10n.l('charLog.charRolled', "{char.name} rolled the dice.")),
 		};
 		for (let k in notificationHandlers) {
 			this.module.charLog.addEventHandler(k, notificationHandlers[k]);
@@ -225,9 +229,10 @@ class CharFocus {
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnFocus(ctrlId, ev, title) {
+	notifyOnFocus(ctrlId, ev, title, body) {
 		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
@@ -238,10 +243,7 @@ class CharFocus {
 				return false;
 			}
 		}
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject(ev)),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject(ev));
 		return true;
 	}
 
@@ -250,16 +252,14 @@ class CharFocus {
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnEvent(ctrlId, ev, title) {
+	notifyOnEvent(ctrlId, ev, title, body) {
 		if (ctrlId === ev.char?.id || this._usePush() || ev.mod?.muted) {
 			return false;
 		}
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject(ev)),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject(ev));
 	}
 
 	/**
@@ -267,11 +267,11 @@ class CharFocus {
 	 * ev.msg string.
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
-	 * @param {string|LocaleString} title Event title. Will get the char passed
-	 * in as data.
+	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnMention(ctrlId, ev, title) {
+	notifyOnMention(ctrlId, ev, title, body) {
 		// Unfocused muted events does not trigger
 		if (ctrlId === ev.char?.id || this._usePush() || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
 			return false;
@@ -281,10 +281,7 @@ class CharFocus {
 			return false;
 		}
 
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) })),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) }));
 		return true;
 	}
 
@@ -293,9 +290,10 @@ class CharFocus {
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object. Should contain a target property which is the targeted character.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnTargetEvent(ctrlId, ev, title) {
+	notifyOnTargetEvent(ctrlId, ev, title, body) {
 		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
@@ -312,10 +310,7 @@ class CharFocus {
 				}
 			}
 		}
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) })),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) }));
 		return true;
 	}
 
@@ -350,14 +345,24 @@ class CharFocus {
 		return !!(this.settings[ctrlId]?.notifyOnAll);
 	}
 
-	_notify(ctrlId, ev, title) {
-		this.module.notify.send(title, {
+	_notify(ctrlId, ev, title, body, params) {
+		title = typeof title == 'string'
+			? title
+			: l10n.t(title, params);
+		body = body && (
+			typeof body == 'string'
+				? body
+				: l10n.t(body, params)
+		) || null;
+
+		this.module.notify.send(title, body, {
 			tag: ev.id,
 			closeOnClick: true,
 			onClick: () => {
 				this.module.player.setActiveChar(ctrlId).catch(() => {});
 				window.focus();
 			},
+			duration: 1000 * 60 * 15, // Max 15 min
 		});
 	}
 

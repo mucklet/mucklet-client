@@ -116,12 +116,14 @@ class PageMail {
 	_notifyMail(mail) {
 		let c = mail.from;
 		this.module.notify.send(
-			l10n.l('pageMail.mailFrom', "Mail from {name}", { name: (c.name + ' ' + c.surname).trim() }),
+			l10n.l('pageMail.newMail', "New mail"),
+			l10n.l('pageMail.sentAMail', "{name} sent a mail.", { name: (c.name + ' ' + c.surname).trim() }),
 			{
 				onClick: () => {
 					this.open();
 					window.focus();
 				},
+				duration: 1000 * 60 * 60 * 24, // Max 1 day
 				skipOnPush: true,
 			},
 		);
