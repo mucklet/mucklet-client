@@ -29,7 +29,6 @@ class AddNote {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		this.module.cmd.addPrefixCmd('add', {
 			key: 'note',

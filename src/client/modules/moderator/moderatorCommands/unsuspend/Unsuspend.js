@@ -20,7 +20,6 @@ class Unsuspend {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		this.module.cmd.addCmd({
 			key: 'unsuspend',

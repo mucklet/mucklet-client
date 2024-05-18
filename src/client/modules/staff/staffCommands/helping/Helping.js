@@ -35,7 +35,6 @@ class Helping {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharIds = {};
 
 		let charListOpt = {
 			sortOrder: [ 'room' ],

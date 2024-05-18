@@ -1,4 +1,3 @@
-import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import CharList from 'classes/CharList';
 import flattenObject from 'utils/flattenObject';
@@ -7,8 +6,10 @@ import { firstTriggerWord } from 'utils/formatText';
 
 const focusStoragePrefix = 'charFocus.';
 
-const focusTitle = l10n.l('charLog.newPost', "New post from {char.name}");
-const mentionTitle = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}");
+const focusTitle = l10n.l('charLog.newPost', "New post");
+const focusBody = l10n.l('charLog.newPost', "{char.name} made a new post.");
+const mentionTitle = l10n.l('charLog.mention', "Mention");
+const mentionBody = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}.");
 
 const focusColors = {
 	red: '#a00808',
@@ -24,16 +25,31 @@ const focusColors = {
 };
 
 function isValidColor(color) {
-	return color && (focusColors.hasOwnProperty(color) || color.match(/^#(?:[0-9a-fA-F]{3,3}){1,2}$/));
+	return !!(color && (focusColors.hasOwnProperty(color) || color.match(/^#(?:[0-9a-fA-F]{3,3}){1,2}$/)));
+}
+
+function isPredefined(color) {
+	for (let k in focusColors) {
+		if (color === focusColors[k]) {
+			return k;
+		}
+	}
+	return null;
 }
 
 /**
- * CharFocus lets players focus on certain characters and get notifications on
+ * CharFocus handles focus on certain characters and sending of notifications on
  * charLog events.
  */
 class CharFocus {
 	constructor(app, params) {
 		this.app = app;
+
+		// Bind callbacks
+		this._onCtrlAdd = this._onCtrlAdd.bind(this);
+		this._onCtrlRemove = this._onCtrlRemove.bind(this);
+		this._onFocusChange = this._onFocusChange.bind(this);
+		this._onNotificationCharEvent = this._onNotificationCharEvent.bind(this);
 
 		this.app.require([
 			'auth',
@@ -49,27 +65,31 @@ class CharFocus {
 
 		/**
 		 * Stores current focus of characters and their stored color for each controlled character.
-		 * @type {{ [ctrlId: string]: { [charId: string]: { char: Model, color: string }}}}
+		 * @type {{ [ctrlId: string]: CharFocusChars | PuppetFocusChars }}}
 		 */
-		this.focus = {};
+		this.focusChars = {};
+
 		/**
-		 * Model with all controlled characters having focus all active. Value is always true.
-		 * @type Model<{ [ctrlId]: true }>
+		 * Holds focus models for all currently controlled characters.
+		 * @type {{ [ctrlId: string]: CharSettings | PuppetSettings }}
 		 */
-		this.focusAll = new Model({ eventBus: this.app.eventBus });
+		this.settings = {};
 		/**
-		 * Last color used when focusing on a character. Shared between all controlled characters.
+		 * Last colors used when focusing on characters. Shared between all controlled characters.
 		 * The value is the color used.
 		 * @type { [charId: string]: string }
 		 */
-		this.focusColors = {};
+		this.lastColors = {};
+
+		this.notifyModel = this.module.notify.getModel();
+
 		this.focusCharList = new CharList(() => {
 			let c = this.module.player.getActiveChar();
 			if (!c) return null;
-			let f = this.focus[c.id];
+			let f = this.focusChars[c.id]?.props;
 			if (!f) return null;
 
-			let list = Object.keys(f).map(k => f[k].char);
+			let list = Object.keys(f).map(k => f[k]);
 			list.sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
 			return list;
 		});
@@ -77,69 +97,81 @@ class CharFocus {
 		document.head.appendChild(this.style);
 
 		const notificationHandlers = {
-			say: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, focusTitle),
-			pose: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, focusTitle),
-			sleep: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charFellAsleep', "{char.name} fell asleep")),
-			leave: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charLeft', "{char.name} left")),
-			arrive: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charArrived', "{char.name} arrived")),
-			whisper: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charWhisperTo', "{char.name} whispered to {target.name}")),
-			message: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charMessagedTo', "{char.name} messaged to {target.name}")),
-			describe: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newDescBy', "New description by {char.name}")),
-			summon: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charSummoned', "{char.name} summons {target.name}")),
-			ooc: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newOocPost', "New Out of Character post from {char.name}")),
-			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}")),
+			say: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, focusTitle, focusBody),
+			pose: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, focusTitle, focusBody),
+			sleep: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.asleep', "Asleep"), l10n.l('charLog.charFellAsleep', "{char.name} fell asleep.")),
+			leave: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.departure', "Departure"), l10n.l('charLog.charLeft', "{char.name} left.")),
+			arrive: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.arrival', "Arrival"), l10n.l('charLog.charArrived', "{char.name} arrived.")),
+			whisper: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.whisper', "Whisper"), l10n.l('charLog.charWhisperTo', "{char.name} whispered to {target.name}.")),
+			message: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.message', "Message"), l10n.l('charLog.charMessagedTo', "{char.name} messaged {target.name}.")),
+			describe: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newDesc', "Description"), l10n.l('charLog.newDescBy', "{char.name} made a description.")),
+			summon: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.summonRequest', "Summon request"), l10n.l('charLog.charSummoned', "{char.name} summons {target.name}.")),
+			join: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.joinRequest', "Join request"), l10n.l('charLog.charJoin', "{char.name} wants to join {target.name}.")),
+			leadRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.leadRequest', "Lead request"), l10n.l('charLog.charLead', "{char.name} wants to lead {target.name}.")),
+			followRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.followRequest', "Follow request"), l10n.l('charLog.charFollow', "{char.name} wants to follow {target.name}.")),
+			ooc: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newOocPost', "{char.name} made an Out of Character post.")),
+			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.warning', "Warning"), l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}.")),
 			action: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.newAction', "{char.name} {msg}")),
-			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}")),
-			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.charRolled', "{char.name} rolled")),
+			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.address', "Address"), l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}.")) || this.notifyOnMention(charId, ev, mentionTitle, mentionBody),
+			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.roll', "Roll"), l10n.l('charLog.charRolled', "{char.name} rolled the dice.")),
 		};
 		for (let k in notificationHandlers) {
 			this.module.charLog.addEventHandler(k, notificationHandlers[k]);
 		}
 
-		// Load focused characters
-		this._loadFocusColors();
-		this._loadFocus();
-		this._loadFocusAll();
+		// Load last used colors
+		this._loadLastColors();
+
+		// Migrate localStorage stored settings to server.
+		// [TODO] Remove after 2025-01-01
+		this._migrateFocus() // Currently focused
+			.then(() => this._migrateFocusAll());
+
+		this._setListeners(true);
 	}
 
 	/**
-	 * Adds focus on a character.
-	 * @param {string} ctrlId Controlled character doing the focusing.
-	 * @param {string} char Character to focus on.
-	 * @param {string} color Focus color or hex color code starting with '#'
-	 * @param {boolean} noUpdate Flag to surpress updating the focus css style and the localStorage.
-	 * @returns {this}
+	 * Adds focus on a character by calling focusChar on the player.
+	 * @param {Model} ctrl Controlled character doing the focusing.
+	 * @param {string} charId ID of character to focus on.
+	 * @param {string} color Focus color (e.g. 'red', 'blue', 'none') or hex color code starting with '#'
+	 * @returns {Promise}
 	 */
-	addFocus(ctrlId, char, color, noUpdate) {
-		let f = this.focus[ctrlId];
-		if (!f) {
-			f = {};
-			this.focus[ctrlId] = f;
-		}
-
-		// Unlisten to previous char
-		let o = f[char.id];
-		if (o && o.char) {
-			o.char.off();
-			delete f[char.id];
-		}
+	addFocus(ctrl, charId, color) {
+		// Convert color to lowercase if we have a string
+		color = typeof color == 'string' ? color.toLowerCase() : '';
 
 		if (!isValidColor(color)) {
-			color = this.focusColors[char.id] || this._getColor(ctrlId);
+			// Get last used color or next suggested color code.
+			color = this.lastColors[charId] || this._getSuggestedColor(ctrl);
 		}
 
-		if (!noUpdate) {
-			this.focusColors[char.id] = color;
-			this._saveFocusColors();
-		}
+		this.lastColors[charId] = color;
+		this._saveLastColors();
 
-		char.on();
-		f[char.id] = { char, color };
-		if (!noUpdate) {
-			this._updateStyle();
-			this._saveFocus();
-		}
-		return this;
+		// Turn color name into hex code.
+		color = focusColors.hasOwnProperty(color) ? focusColors[color] : color;
+
+		return this.module.player.getPlayer().call('focusChar', {
+			charId: ctrl.id,
+			puppeteerId: ctrl.puppeteer?.id || undefined,
+			targetId: charId,
+			color,
+		});
+	}
+
+	/**
+	 * Removes focus from a character by calling unfocusChar on the player.
+	 * @param {string} ctrl Controlled character doing the focusing.
+	 * @param {string} charId Character to remove focus from.
+	 * @returns {Promise} Promise of the character being unfocused.
+	 */
+	removeFocus(ctrl, charId) {
+		return this.module.player.getPlayer().call('unfocusChar', {
+			charId: ctrl.id,
+			puppeteerId: ctrl.puppeteer?.id || undefined,
+			targetId: charId,
+		});
 	}
 
 	/**
@@ -153,18 +185,20 @@ class CharFocus {
 	/**
 	 * Returns an object with focused character ids as keys and an object of the
 	 * focus colors and translated color hex code as values.
-	 * @param {string} charId Character ID to list focused characters for.
+	 * @param {string} ctrlId Controlled character ID to list focused characters for.
 	 * @returns {[]{ char: object, color: string, hex: string }} Array of objects containing focused characters.
 	 */
-	getFocusCharColors(charId) {
-		let f = this.focus[charId];
-		if (!f) return [];
+	getFocusCharColors(ctrlId) {
+		let chars = this.focusChars[ctrlId]?.props;
+		let focus = this.settings[ctrlId]?.focus.props;
+		// Assert we have focusChars and controlled characters focus list.
+		if (!chars || !focus) return [];
 
-		let list = Object.keys(f).map(k => {
-			let o = f[k];
-			let c = o.color;
-			return Object.assign({ hex: c[0] == '#' ? c : focusColors[c] }, o);
-		});
+		let list = Object.keys(focus).map(k => {
+			let color = focus[k].color;
+			let char = chars[k];
+			return { char, hex: color, color: isPredefined(color) || color };
+		}).filter(o => o.char);
 		list.sort((a, b) => a.char.name.localeCompare(b.char.name) || a.char.surname.localeCompare(b.char.surname));
 		return list;
 	}
@@ -179,26 +213,6 @@ class CharFocus {
 	}
 
 	/**
-	 * Removes focus from a character.
-	 * @param {string} ctrlId Controlled character doing the focusing.
-	 * @param {string} charId Character to remove focus from.
-	 * @returns {?object} Removed character or null if character was not focused on.
-	 */
-	removeFocus(ctrlId, charId) {
-		let f = this.focus[ctrlId];
-		let o = f && f[charId];
-		if (!o) {
-			return null;
-		}
-
-		o.char.off();
-		delete f[charId];
-		this._updateStyle();
-		this._saveFocus();
-		return o.char;
-	}
-
-	/**
 	 * Checks if a controlled character is focusing on a specific character.
 	 * It does not take focus all into account.
 	 * @param {*} ctrlId Controlled character ID.
@@ -206,10 +220,8 @@ class CharFocus {
 	 * @returns {boolean} True if character is focused on, otherwise false.
 	 */
 	hasFocus(ctrlId, charId) {
-		if (!this.focus || !charId) return false;
-
-		let f = this.focus[ctrlId];
-		return !!(f && f[charId]);
+		let f = this.focusChars[ctrlId]?.props;
+		return !!(f && charId && f[charId]);
 	}
 
 	/**
@@ -217,23 +229,21 @@ class CharFocus {
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnFocus(ctrlId, ev, title) {
-		if (ctrlId === ev.char?.id) {
+	notifyOnFocus(ctrlId, ev, title, body) {
+		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
 
 		if (!this.hasFocus(ctrlId, ev.char?.id)) {
 			// Check if muted event
-			if (ev.mod?.muted || !this.focusAll.props[ctrlId]) {
+			if (ev.mod?.muted || !this.isNotifyOnAll(ctrlId)) {
 				return false;
 			}
 		}
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject(ev)),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject(ev));
 		return true;
 	}
 
@@ -242,16 +252,14 @@ class CharFocus {
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnEvent(ctrlId, ev, title) {
-		if (ctrlId === ev.char?.id || ev.mod?.muted) {
+	notifyOnEvent(ctrlId, ev, title, body) {
+		if (ctrlId === ev.char?.id || this._usePush() || ev.mod?.muted) {
 			return false;
 		}
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject(ev)),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject(ev));
 	}
 
 	/**
@@ -259,25 +267,21 @@ class CharFocus {
 	 * ev.msg string.
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object.
-	 * @param {string|LocaleString} title Event title. Will get the char passed
-	 * in as data.
+	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnMention(ctrlId, ev, title) {
+	notifyOnMention(ctrlId, ev, title, body) {
 		// Unfocused muted events does not trigger
-		if (ctrlId === ev.char?.id || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
+		if (ctrlId === ev.char?.id || this._usePush() || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
 			return false;
 		}
 
-		let p = this.module.player.getPlayer();
-		if (!p || !p.notifyOnMention || !ev.mod?.triggers) {
+		if (!this.notifyModel.notifyOnMention || !ev.mod?.triggers) {
 			return false;
 		}
 
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) })),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject({ char: ev.char, mention: firstTriggerWord(ev.msg, ev.mod.triggers) }));
 		return true;
 	}
 
@@ -286,10 +290,11 @@ class CharFocus {
 	 * @param {string} ctrlId Controlled character receiving the event.
 	 * @param {object} [ev] Event object. Should contain a target property which is the targeted character.
 	 * @param {string|LocaleString} title Event title. Will get the char passed in as data.
+	 * @param {string|LocaleString} body Event message body. Will get the char passed in as data.
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
-	notifyOnTargetEvent(ctrlId, ev, title) {
-		if (ctrlId === ev.char?.id) {
+	notifyOnTargetEvent(ctrlId, ev, title, body) {
+		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
 
@@ -299,131 +304,217 @@ class CharFocus {
 				return false;
 			}
 			// Check if we should not send event
-			if (!this.focusAll.props[ctrlId]) { // Focus
-				let p = this.module.player.getPlayer();
-				if (!p?.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
+			if (!this.isNotifyOnAll(ctrlId)) { // Notify on all
+				if (!this.notifyModel.notifyOnEvent || !ev.mod?.targeted) { // Targeted event
 					return false;
 				}
 			}
 		}
-		this._notify(ctrlId, ev, typeof title == 'string'
-			? title
-			: l10n.t(title, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) })),
-		);
+		this._notify(ctrlId, ev, title, body, flattenObject({ char: ev.char, target: charEvent.extractTarget(ctrlId, ev) }));
 		return true;
 	}
 
-	toggleFocusAll(ctrlId, focusAll) {
-		focusAll = typeof focusAll == 'undefined' ? !this.focusAll.props[ctrlId] : !!focusAll;
-		let v = this.focusAll.props.hasOwnProperty(ctrlId);
-		if (focusAll == v) return Promise.resolve(false);
+	/**
+	 * Toggles or sets the notifyOnAll value in character settings.
+	 * @param {CharCtrlModel} ctrl Controlled character.
+	 * @param {boolean} [notifyOnAll] Notify on all flag to set. Defaults to toggle.
+	 * @returns {Promise<boolean>} Promise of a flag telling of notifyOnAll was changed.
+	 */
+	toggleNotifyOnAll(ctrl, notifyOnAll) {
+		let oldNotifyOnAll = ctrl.settings.notifyOnAll;
+		notifyOnAll = typeof notifyOnAll == 'undefined' ? !oldNotifyOnAll : !!notifyOnAll;
 
-		return this.focusAll.set({ [ctrlId]: focusAll || undefined }).then(() => {
-			this._saveFocusAll();
-			return true;
-		});
+		// No attempt to set the value if it is already set.
+		if (oldNotifyOnAll == notifyOnAll) {
+			return Promise.resolve(false);
+		}
+
+		return this.module.player.getPlayer().call('setCharSettings', {
+			charId: ctrl.id,
+			puppeteerId: ctrl.puppeteer?.id || undefined,
+			notifyOnAll,
+		}).then(() => true);
 	}
 
-	_notify(ctrlId, ev, title) {
-		this.module.notify.send(title, {
+	/**
+	 * Checks if a controlled character has notifyOnAll set to true.
+	 * @param {string} ctrlId ID of a controlled character.
+	 * @returns {boolean}
+	 */
+	isNotifyOnAll(ctrlId) {
+		return !!(this.settings[ctrlId]?.notifyOnAll);
+	}
+
+	_notify(ctrlId, ev, title, body, params) {
+		title = typeof title == 'string'
+			? title
+			: l10n.t(title, params);
+		body = body && (
+			typeof body == 'string'
+				? body
+				: l10n.t(body, params)
+		) || null;
+
+		this.module.notify.send(title, body, {
 			tag: ev.id,
-			onClick: (ev) => {
+			closeOnClick: true,
+			onClick: () => {
 				this.module.player.setActiveChar(ctrlId).catch(() => {});
 				window.focus();
-				ev.target.close();
 			},
+			duration: 1000 * 60 * 15, // Max 15 min
 		});
 	}
 
-	_saveFocus() {
-		if (!localStorage) return;
+	_usePush() {
+		return this.notifyModel.usePush;
+	}
 
-		let dta = [];
-		for (let ctrlId in this.focus) {
-			let f = this.focus[ctrlId];
-			for (let charId in f) {
-				dta.push({ ctrlId, charId, color: f[charId].color });
-			}
+	_setListeners(on) {
+		let p = this.module.player;
+		let cb = on ? 'on' : 'off';
+		p[cb]('ctrlAdd', this._onCtrlAdd);
+		p[cb]('ctrlRemove', this._onCtrlRemove);
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('charEvent', this._onNotificationCharEvent);
+	}
+
+	_onCtrlAdd(ev) {
+		let settings = ev.char.settings;
+		if (this.focusChars && settings) {
+			let charId = ev.char.id;
+			let puppeteerId = ev.char.puppeteer?.id;
+			// Start listening to focus change
+			this.settings[charId] = settings;
+			settings.focus.on('change', this._onFocusChange);
+
+			let promise = (puppeteerId
+				? this.module.api.get(`core.char.${puppeteerId}.puppet.${charId}.focus.chars`)
+				: this.module.api.get(`core.char.${charId}.focus.chars`)
+			).then(chars => {
+				// Assert the promise matches and no other event has replaced it.
+				if (this.focusChars[charId] == promise) {
+					// Replace the promise with the chars model
+
+					chars.on();
+					this.focusChars[charId] = chars;
+				}
+			});
+			this.focusChars[charId] = promise;
+
+			this._updateStyle();
 		}
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(focusStoragePrefix + user.id + '.focus', JSON.stringify(dta));
-		});
 	}
 
-	_loadFocus() {
+	_onCtrlRemove(ev) {
+		if (this.focusChars) {
+			let charId = ev.char.id;
+			// Assert we have an off function. If not, it might be a promise of
+			// the focused characters being loaded.
+			this.focusChars[charId]?.off?.();
+			delete this.focusChars[charId];
+
+			// Stop listening to focus change
+			this.settings[charId]?.focus.off('change', this._onFocusChange);
+			delete this.settings[charId];
+
+			this._updateStyle();
+		}
+	}
+
+	_onFocusChange(ev) {
+		this._updateStyle();
+	}
+
+	_saveLastColors() {
 		if (!localStorage) return;
 
 		this.module.auth.getUserPromise().then(user => {
-			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.focus');
-			// [TODO] Legacy behavior. Remove after v 1.40.0
-			let legacy = false; if (!raw) { legacy = true; raw = localStorage.getItem('focus'); }
-
-			if (raw) {
-				let dta = JSON.parse(raw);
-				for (let o of dta) {
-					this._addFocus(o.ctrlId, o.charId, o.color);
-				}
-				if (Object.keys(dta).length) {
-					this._updateStyle();
-				}
-
-				// [TODO] Legacy behavior. Remove after v 1.40.0
-				if (legacy) this._saveFocus();
-			}
+			localStorage.setItem(focusStoragePrefix + user.id + '.colors', JSON.stringify(this.lastColors));
 		});
 	}
 
-	_saveFocusColors() {
-		if (!localStorage) return;
-
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(focusStoragePrefix + user.id + '.colors', JSON.stringify(this.focusColors));
-		});
-	}
-
-	_loadFocusColors() {
+	_loadLastColors() {
 		if (!localStorage) return;
 
 		this.module.auth.getUserPromise().then(user => {
 			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.colors');
 			if (raw) {
-				this.focusColors = JSON.parse(raw);
+				this.lastColors = JSON.parse(raw);
 			}
 		});
 	}
 
-	_loadFocusAll() {
+	// Migrates focus settings from local storage over to backend. Remove after 2025-01-01.
+	async _migrateFocus() {
 		if (!localStorage) return;
 
-		this.module.auth.getUserPromise().then(user => {
-			let raw = localStorage.getItem(focusStoragePrefix + user.id + '.all');
-			if (raw) {
-				this.focusAll.reset(JSON.parse(raw));
+		let player = await this.module.player.getPlayerPromise();
+		let key = focusStoragePrefix + player.id + '.focus';
+		let raw = localStorage.getItem(key);
+		if (raw) {
+			try {
+				let dta = JSON.parse(raw);
+				for (let o of dta) {
+					// Translate focus color to hex
+					let color = focusColors.hasOwnProperty(o.color) ? focusColors[o.color] : o.color;
+					if (!color || isValidColor(color)) {
+						await player.call('focusChar', {
+							charId: o.ctrlId,
+							targetId: o.charId,
+							color,
+						}).catch(err => {
+							// Char or target not found is considered non-errors.
+							// It may happen because of character deletion, or that controlled character was a puppet.
+							if (err.code != 'core.charNotFound' && err.code != 'core.targetCharNotFound') {
+								throw err;
+							}
+						});
+						await new Promise(resolve => setTimeout(resolve, 1000)); // Migrate one every second to avoid flooding.
+					}
+				}
+				// Once successfully migrated, delete key.
+				localStorage.removeItem(key);
+				localStorage.removeItem('focus'); // Legacy key
+			} catch (ex) {
+				console.log("Error migrating focus:", ex);
 			}
-		});
+		}
 	}
 
-	_saveFocusAll() {
+	async _migrateFocusAll() {
 		if (!localStorage) return;
-		this.module.auth.getUserPromise().then(user => {
-			localStorage.setItem(focusStoragePrefix + user.id + '.all', JSON.stringify(this.focusAll.props));
-		});
-	}
 
-	_addFocus(ctrlId, charId, color) {
-		this.module.api.get('core.char.' + charId).then(char => {
-			this.addFocus(ctrlId, char, color, false);
-		}).catch(err => console.error("Failed to load focused char " + charId + ": ", err));
+		let player = await this.module.player.getPlayerPromise();
+		let key = focusStoragePrefix + player.id + '.all';
+		let raw = localStorage.getItem(key);
+		if (raw) {
+			try {
+				let dta = JSON.parse(raw);
+				for (let charId in dta) {
+					await player.call('setCharSettings', {
+						charId,
+						notifyOnAll: true,
+					}).catch(err => {
+						// Char not found is considered a non-error.
+						if (err.code != 'core.charNotFound') {
+							throw err;
+						}
+					});
+				}
+				// Once successfully migrated, delete key.
+				localStorage.removeItem(key);
+			} catch (ex) {
+				console.log("Error migrating focusAll:", ex);
+			}
+		}
 	}
 
 	_updateStyle() {
 		let s = '';
-		for (let ctrlId in this.focus) {
-			let f = this.focus[ctrlId];
-			for (let charId in f) {
-				let o = f[charId];
-				let c = o.color;
-				c = c[0] == '#' ? c : focusColors[c];
+		for (let ctrlId in this.settings) {
+			let focus = this.settings[ctrlId].focus.props;
+			for (let charId in focus) {
+				let c = focus[charId].color;
 				if (c) {
 					s += '.f-' + ctrlId + '-' + charId + ' {border-left-color:' + c + '} .mf-' + ctrlId + '-' + charId + ' {border-color:' + c + '}\n';
 				}
@@ -434,41 +525,52 @@ class CharFocus {
 	}
 
 	/* Get the next suggested color. */
-	_getColor(ctrlId) {
-		let f = this.focus[ctrlId];
+	_getSuggestedColor(ctrl) {
+		let f = ctrl?.settings?.focus.props;
+
+		// Assert we have focus list. Else just return first color.
 		if (!f) return Object.keys(focusColors)[0];
 
-		// Count how many times each color is used.
+		// Count how many times each predefined focusColor is used.
 		let count = {};
 		for (let charId in f) {
-			let c = f[charId].color;
-			if (c && c != 'none' && c[0] != '#') {
-				count[c] = (count[c] || 0) + 1;
+			let k = isPredefined(f[charId].color);
+			if (k) {
+				count[k] = (count[k] || 0) + 1;
 			}
 		}
 
-		// Pick the least used focusColor
+		// Pick the least used predefined focusColor
 		let i = 0;
 		while (true) {
-			for (let c in focusColors) {
-				if (c !== 'none' && (count[c] || 0) === i) {
-					return c;
+			for (let k in focusColors) {
+				if (k !== 'none' && (count[k] || 0) === i) {
+					return k;
 				}
 			}
 			i++;
 		}
 	}
 
+	_onNotificationCharEvent(params) {
+		if (params.charId) {
+			this.module.player.setActiveChar(params.charId).catch(() => {});
+		}
+	}
+
 	dispose() {
 		document.head.removeChild(this.style);
 		// Unlisten to focused chars.
-		for (let ctrlId in this.focus) {
-			let f = this.focus[ctrlId];
-			for (let charId in f) {
-				f[charId].char.off();
-			}
+		this._setListeners(false);
+		for (let ctrlId in this.focusChars) {
+			// Assert we have an off function, or else it might just be a
+			// promise of the characters loading.
+			this.focusChars[ctrlId]?.off?.();
+			// Stop listening to focus models.
+			this.settings[ctrlId]?.focus.off();
 		}
-		this.focus = null;
+		this.focusChars = null;
+		this.settings = null;
 	}
 }
 

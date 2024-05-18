@@ -18,7 +18,7 @@ const examples = [
 	{ cmd: 'focus Jane Doe', desc: l10n.l('focus.focusNoColorDesc', "Focus on Jane Doe with a random highlight color") },
 	{ cmd: 'focus John = green', desc: l10n.l('focus.focusColorDesc', "Focus on John with green hightlight color") },
 	{ cmd: 'focus Jane = #c1a657', desc: l10n.l('focus.focusHexDesc', "Focus on Jane with a custom HTML color code") },
-	{ cmd: 'focus John = none', desc: l10n.l('focus.focusNoneDesc', "Notifications on events from Jane without highlighting") },
+	{ cmd: 'focus John = none', desc: l10n.l('focus.focusNoneDesc', "Notifications on events from John without highlighting") },
 	{ cmd: 'focus @all', desc: l10n.l('focus.focusAllDesc', "Notifications on all events") },
 	{ cmd: 'stop focus John', desc: l10n.l('focus.stopFocusJohnDesc', "Remove focus from John") },
 	{ cmd: 'unfocus @all', desc: l10n.l('focus.unfocusJohnDesc', "Remove focus on all event but not individually focused characters") },
@@ -43,7 +43,6 @@ class Focus {
 
 	_init(module) {
 		this.module = module;
-		this.lastCharId = {};
 
 		this.colors = new ItemList({
 			items: Object.keys(this.module.charFocus.getFocusColors()).map(key => ({ key })),
@@ -100,18 +99,18 @@ class Focus {
 
 	focus(player, char, params) {
 		return params.at == 'all'
-			? this.module.charFocus.toggleFocusAll(char.id, true)
+			? this.module.charFocus.toggleNotifyOnAll(char, true)
 				.then(change => {
-					if (change) {
-						this.module.charLog.logInfo(char, l10n.l('focus.focusingOnAll', "{charName} focuses on all events.", { charName: char.name }));
-					} else {
-						this.module.charLog.logError(char, new Err('focus.alreadyFocusOnAll', "{charName} is already focusing on all events.", { charName: char.name }));
+					if (!change) {
+						throw new Err('focus.alreadyNotifyOnAll', "{charName} already gets notified on all events.", { charName: char.name });
 					}
+					this.module.charLog.logInfo(char, l10n.l('focus.notifiedOnAll', "{charName} gets notified on all events.", { charName: char.name }));
 				})
-			: player.call('getChar', params).then(c => {
-				this.module.charFocus.addFocus(char.id, c, params.color);
-				this.module.charLog.logInfo(char, l10n.l('focus.focusingOnChar', "Focusing on {targetName}.", { targetName: c.name }));
-			});
+			: player.call('getChar', params)
+				.then(c => this.module.charFocus.addFocus(char, c.id, params.color))
+				.then(result => {
+					this.module.charLog.logInfo(char, l10n.l('focus.focusingOnChar', "Focusing on {targetName}.", { targetName: result.char.name }));
+				});
 	}
 }
 
