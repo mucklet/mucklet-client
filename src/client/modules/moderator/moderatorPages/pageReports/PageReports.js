@@ -17,6 +17,7 @@ class PageReports {
 
 		// Bind callbacks
 		this._onReportAdd = this._onReportAdd.bind(this);
+		this._onNotificationNewReportEvent = this._onNotificationNewReportEvent.bind(this);
 
 		this.app.require([
 			'playerTabs',
@@ -140,25 +141,31 @@ class PageReports {
 		if (m) {
 			m[on ? 'on' : 'off']('add', this._onReportAdd);
 		}
+		this.module.notify[on ? 'addNotificationHandler' : 'removeNotificationHandler']('newReport', this._onNotificationNewReportEvent);
 	}
 
 	_onReportAdd(ev) {
-		let p = this.module.player.getPlayer();
-		if (!p) return;
-
-		if (p.notifyOnRequests) {
+		let nm = this.module.notify.getModel();
+		// Only notify if notifyOnRequest is set and the user is a moderator
+		if (nm.notifyOnRequests && this.module.player.hasRoles('moderator')) {
 			let c = ev.item.char;
 			this.module.notify.send(
+				l10n.l('pageReports.newReport', "New report"),
 				l10n.l('pageReports.charReported', "{name} was reported.", { name: (c.name + ' ' + c.surname).trim() }),
 				{
-					onClick: (ev) => {
+					onClick: () => {
 						this.open();
 						window.focus();
-						ev.target.close();
 					},
+					duration: 1000 * 60 * 60 * 24, // Max 1 day
+					skipOnPush: true,
 				},
 			);
 		}
+	}
+
+	_onNotificationNewReportEvent(params) {
+		this.open();
 	}
 
 	dispose() {

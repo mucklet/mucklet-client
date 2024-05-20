@@ -1,5 +1,4 @@
 import l10n from 'modapp-l10n';
-import Err from 'classes/Err';
 
 const usageText = 'stop mute ooc';
 const shortDesc = 'Stop muting out of character messages';
@@ -37,14 +36,8 @@ class StopMuteOoc {
 	}
 
 	stopMuteOoc(char) {
-		return this.module.mute.toggleMuteOoc(char.id, false)
-			.then(change => {
-				if (change) {
-					this.module.charLog.logInfo(char, l10n.l('stopMuteOoc.stopMuteOoc', "Deactivated muting of OOC messages."));
-				} else {
-					this.module.charLog.logError(char, new Err('stopMuteOoc.notMutingOoc', "OOC messages are not being muted."));
-				}
-			});
+		return this.module.mute.toggleMuteOoc(char, false, true)
+			.then(() => this.module.charLog.logInfo(char, l10n.l('stopMuteOoc.stopMuteOoc', "Deactivated muting of OOC messages.")));
 	}
 }
 

@@ -34,9 +34,39 @@
 		padding-bottom: 4px;
 	}
 
+	&--showall {
+		transition: color 0.2s, background-color 0.2s, opacity 0.4s;
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		&:hover, &:focus {
+			.pageawake--showall-line {
+				background: $color4-lighter;
+			}
+			.pageawake--showall-icon {
+				color: $color4-lighter;
+			}
+		}
+	}
+	&--showall-line {
+		flex: 1 1 0px;
+		height: 1px;
+		margin-right: 4px;
+		margin-bottom: 1px; // aligning with icon
+		background: $color4;
+		transition: background-color 0.2s;
+	}
+	&--showall-icon {
+		color: $color4;
+		flex: 0 0 auto;
+		transition: color 0.2s;
+	}
+
 	&--unwatched {
 		padding-top: 4px;
-		border-top: 1px solid $color2;
+		// border-top: 1px solid $color2;
 		// > *:first-child {
 		// 	padding-top: 4px;
 		// 	border-top: 1px solid $color2;
