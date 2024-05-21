@@ -1,4 +1,17 @@
 @import '~scss/variables';
+@import '~scss/mixins';
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+::-webkit-scrollbar-button {
+	display: none;
+}
+
+body {
+	-ms-overflow-style:none;
+}
 
 .start {
 	--gap: 64px;
@@ -77,14 +90,14 @@
 		position: relative;
 		height: 100%;
 		width: 90%;
-		max-width: 1500px;
+		max-width: 1617px;
 		margin: 0 auto;
 	}
 
 	&--topbar {
 		display: flex;
 		flex-direction: row;
-		padding-top: 58px;
+		padding-top: 40px;
 		width: 100%;
 	}
 	&--logo {
@@ -100,6 +113,7 @@
 			font-size: 56px;
 			margin-left: 20px;
 			vertical-align: middle;
+			text-transform: lowercase;
 		}
 	}
 	&--topbartools {
@@ -108,92 +122,88 @@
 		flex: 1 1 0px;
 		justify-content: flex-end;
 		align-items: center;
-		column-gap: 32px;
+		column-gap: 24px;
 	}
 
-	&--btn {
-		background: linear-gradient(180deg, $color6 0%, lighten($color6, 8%) 50%, $color6 100%);
-		color: $color1-light;
 
-		&:not(:disabled) {
-			&:hover {
-				background: linear-gradient(180deg, $color6-hover 0%, lighten($color6-hover, 8%) 50%, $color6-hover 100%);
-				color: $color1-lighter;
-			}
 
-			&:active, &:focus {
-				background: linear-gradient(180deg, $color6-active 0%, lighten($color6-active, 8%) 50%, $color6-active 100%);
-				color: $color1-light;
-			}
-		}
+	&--headerbtn.btn, &--headerbtn.iconbtn {
+		@include btn-style($color1, $color1-light, $color1-lighter, $color4-light, $color4-lightest);
 	}
+
 
 	&--helpbtn {
 		border-radius: 50%;
-		height: 48px;
-		width: 48px;
-		padding: 3px;
-
-		> div {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 100%;
-			width: 100%;
-			border: 3px solid $color1-light;
-			border-radius: 50%;
-			font-size: 28px;
-		}
+		height: 40px;
+		width: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 20px;
 	}
 	&--joinbtn, &--loginbtn {
 		// color: $color1;
 		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%);
-		width: 160px;
-		height: 56px;
-		font-weight: bold;
+		padding: 4px 18px;
+		width: 120px;
+		height: 40px;
 		font-size: 16px;
-		text-transform: uppercase;
+		font-weight: bold;
 		border-radius: 10px;
+		> .fa {
+			margin-left: 12px;
+			margin-right: -2px;
+		}
 	}
 
 
 	&--heading {
-		color: $color4-lightest;
+		margin-top: 0px;
+		color: $color2;
 		text-align: center;
-		font-size: 96px;
+		font-size: 108px;
 		line-height: initial;
+		letter-spacing: -2.16px;
+		margin-top: -8px;
 	}
 	&--subheading {
+		text-transform: uppercase;
 		line-height: initial;
-		color: $color2;
-		font-family: $font-header;
+		color: $color4;
+		font-family: $font-text;
+		font-weight: 300;
+		letter-spacing: 11.4px;
 		text-align: center;
-		padding-top: 120px;
-		font-size: 48px;
+		padding-top: 146px;
+		font-size: 38px;
 	}
 
 	&--main {
 	}
 	&--maincontainer {
 		width: 90%;
-		max-width: 1400px;
+		max-width: 1617px;
 		margin: 0 auto;
-		padding: 48px 0;
+		padding: 44px 0;
 	}
 
 	&--search {
 		align-items: center;
-		padding-top: 96px;
 
 		> h2 {
+			text-transform: uppercase;
+			color: $color4;
+			font-family: $font-text;
+			font-weight: 300;
+			letter-spacing: 3.42px;
 			text-align: center;
-			font-size: 48px;
+			font-size: 18px;
 		}
 	}
 
 	&--searchbar {
 		position: relative;
-		margin: 32px auto 0;
+		margin: 46px auto 0;
 		align-items: center;
 		width: 100%;
 		max-width: 624px;
@@ -201,36 +211,121 @@
 
 	&--searchinput {
 
-		background: $color3;
-		padding: 14px 16px;
-		border-radius: 8px;
-		color: $black;
-		padding-right: 136px;
-		font-size: 20px;
+		background: $color1-light;
+		padding: 18px 16px;
+		border-radius: 14px;
+		border: 1px solid $color1-lightest;
+		color: $color4-lighter;
+		padding-left: 64px;
+		font-size: 16px;
+		box-shadow: 0px 3px 6px #00000029;
+
+		// &::placeholder {
+		// 	background: $color1;
+		// 	opacity: 1; /* Firefox */
+		// }
+		// &::-ms-input-placeholder { /* Edge 12 -18 */
+		// 	background: $color1;
+		// }
 	}
 
 	&--searchbtn {
+		width: 48px;
 		padding: 8px 0 9px;
-		width: 128px;
 		font-weight: bold;
 		text-transform: uppercase;
 		position: absolute;
-		right: 4px;
-		top: 4px;
-		height: calc(100% - 8px);
+		left: 6px;
+		top: 6px;
+		height: calc(100% - 12px);
+		border-radius: 8px;
 	}
 
 	&--realms {
 		display: flex;
 		flex-direction: row;
 		column-gap: var(--gap);
-		margin-top: 96px;
+		margin-top: 71px;
 	}
 
 	&--realm {
 		flex: 1 1 0px;
 		background-color: $color1-light;
 		aspect-ratio: 1 / 1;
+		border-radius: 16px;
+		box-shadow: 0px 3px 6px #00000029;
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--realm-img {
+		border-radius: 10px;
+		width: 100%;
+		display: block;
+	}
+
+	&--realm-tags {
+		padding-top: 12px;
+	}
+
+	&--realm-header {
+		display: flex;
+		flex-direction: row;
+		column-gap: 16px;
+		padding-top: 12px;
+		align-items: center;
+	}
+
+	&--realm-icon {
+		width: 48px;
+		height: 48px;
+		border-radius: 10px;
+	}
+
+	&--realm-title {
+		font-family: $font-text;
+		color: $color3;
+		font-size: 24px;
+		line-height: 24px;
+	}
+
+	&--realm-desc {
+		padding-top: 10px;
+		font-size: $font-size;
+	}
+
+	&--realm-footer {
+		align-items: flex-end;
+		justify-content: space-between;
+		flex: 1 1 0px;
+		padding-top: 12px;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		gap: 12px;
+	}
+
+	&--realm-counters {
+		display: flex;
+		flex-direction: row;
+		column-gap: 24px;
+	}
+
+	&--realm-counter {
+		font-size: $font-size-small;
+	}
+
+	&--realm-signin {
+		flex: 0 0 auto;
+		font-weight: bold;
+		height: 46px;
+		padding: 4px 24px;
+		border-radius: 8px;
+		> .fa {
+			margin-left: 12px;
+			margin-right: -2px;
+		}
 	}
 
 	&--about {
@@ -309,6 +404,128 @@
 		}
 		&--btn {
 			max-width: 100%;
+		}
+	}
+}
+
+
+.taglist {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	row-gap: 8px;
+	column-gap: 8px;
+}
+
+.taglist--item {
+	flex: 0 0 auto;
+}
+
+.taglist--tag {
+	position: relative;
+	line-height: 16px;
+	font-size: $font-size-small;
+	text-align: left;
+	white-space: nowrap;
+	padding: 4px 16px 4px 13px;
+	color: $color4;
+	border: 1px solid $color4;
+	border-radius: 4px;
+	border-left: 13px solid;
+
+	&::before {
+		font-family: FontAwesome;
+		font-style: normal;
+		position: absolute;
+		color: $color1;
+		left: -11px;
+		font-size: 10px;
+	}
+
+	&.like::before {
+		content: "\f00c";
+	}
+
+	&.dislike {
+		color: $color5;
+		border-color: $color5;
+		&::before {
+			content: "\f05e";
+		}
+	}
+
+	&.warn {
+		color: $color5;
+		border-color: $color5;
+		&::before {
+			content: "\f071";
+			left: -12px;
+		}
+	}
+
+	&.title {
+		color: $color6;
+		border-color: $color6;
+		&::before {
+			content: "\f132";
+			left: -10px;
+		}
+	}
+
+	&.hasdesc {
+		cursor: help;
+	}
+
+	&.custom {
+		font-style: italic;
+	}
+
+	&.editable {
+		cursor: pointer;
+		transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+
+		&:hover {
+			color: $color4-lighter;
+			border-color: $color4-lighter;
+			&.dislike {
+				color: $color5-light;
+				border-color: $color5-light;
+			}
+			&.title {
+				color: $color6-hover;
+				border-color: $color6-hover;
+			}
+		}
+	}
+}
+
+.dot {
+	background: $color4;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	top: -1px;
+	position: relative;
+	vertical-align: middle;
+	margin-right: 10px;
+	&.highlight {
+		background: $color6;
+	}
+}
+
+
+
+@media screen and (max-width: 1200px) {
+	.start {
+		&--realm-footer  {
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+
+		&--realm-signin {
+			width: 100%;
 		}
 	}
 }
