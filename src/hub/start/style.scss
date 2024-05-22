@@ -268,7 +268,6 @@ body {
 			flex-direction: row;
 			column-gap: 16px;
 			padding-top: 12px;
-			align-items: center;
 		}
 
 		&-icon {
@@ -277,7 +276,15 @@ body {
 			border-radius: 10px;
 		}
 
+		&-title-cont {
+			display: flex;
+			flex-direction: column;
+		}
+
 		&-title {
+			display: flex;
+			align-items: center;
+			flex: 1 1 0px;
 			font-family: $font-text;
 			color: $color3;
 			font-size: 24px;
@@ -312,7 +319,7 @@ body {
 		}
 
 		&-counter {
-			// font-size: $font-size-small;
+			line-height: $font-size-small;
 		}
 
 		&-signin {
@@ -710,16 +717,8 @@ body {
 			&-header {
 				padding-top: 0px;
 			}
-			&-title-cont {
-				display: flex;
-				flex-direction: column;
-				height: 100%;
-			}
 
 			&-title {
-				display: flex;
-				align-items: center;
-				flex: 1 1 0px;
 				font-size: 22px;
 				line-height: 22px;
 			}
