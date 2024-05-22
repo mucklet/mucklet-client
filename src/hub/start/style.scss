@@ -37,7 +37,7 @@ body {
 		&-bg {
 			position: absolute;
 			width: 100%;
-			height: 100%;
+			height: 667px;
 			top: calc(var(--scroll) * 0.6px);
 			background: $color1-light url('./top_bg.jpg') no-repeat padding-box center;
 		}
@@ -156,16 +156,6 @@ body {
 		}
 	}
 
-
-	&--heading {
-		margin-top: 0px;
-		color: $color2;
-		text-align: center;
-		font-size: 108px;
-		line-height: initial;
-		letter-spacing: -2.16px;
-		margin-top: -8px;
-	}
 	&--subheading {
 		text-transform: uppercase;
 		line-height: initial;
@@ -177,9 +167,18 @@ body {
 		padding-top: 146px;
 		font-size: 38px;
 	}
+	&--heading {
+		color: $color2;
+		text-align: center;
+		font-size: 108px;
+		line-height: initial;
+		letter-spacing: -2.16px;
+		margin-top: -8px;
+	}
 
 	&--main {
 	}
+
 	&--maincontainer {
 		width: 90%;
 		max-width: 1617px;
@@ -219,14 +218,6 @@ body {
 		padding-left: 64px;
 		font-size: 16px;
 		box-shadow: 0px 3px 6px #00000029;
-
-		// &::placeholder {
-		// 	background: $color1;
-		// 	opacity: 1; /* Firefox */
-		// }
-		// &::-ms-input-placeholder { /* Edge 12 -18 */
-		// 	background: $color1;
-		// }
 	}
 
 	&--searchbtn {
@@ -244,92 +235,105 @@ body {
 	&--realms {
 		display: flex;
 		flex-direction: row;
-		column-gap: var(--gap);
+		gap: var(--gap);
 		margin-top: 71px;
 	}
 
 	&--realm {
-		flex: 1 1 0px;
+		position: relative;
 		background-color: $color1-light;
-		aspect-ratio: 1 / 1;
-		border-radius: 16px;
 		box-shadow: 0px 3px 6px #00000029;
-		padding: 12px;
-		display: flex;
-		flex-direction: column;
-	}
+		border-radius: 16px;
 
-	&--realm-img {
-		border-radius: 10px;
-		width: 100%;
-		display: block;
-	}
+		&-cont {
+			flex: 1 1 0px;
+			padding: 12px;
+			display: flex;
+			flex-direction: column;
+			min-height: 100%;
+		}
 
-	&--realm-tags {
-		padding-top: 12px;
-	}
+		&-img {
+			border-radius: 10px;
+			width: 100%;
+			display: block;
+		}
 
-	&--realm-header {
-		display: flex;
-		flex-direction: row;
-		column-gap: 16px;
-		padding-top: 12px;
-		align-items: center;
-	}
+		&-tags {
+			padding-top: 12px;
+		}
 
-	&--realm-icon {
-		width: 48px;
-		height: 48px;
-		border-radius: 10px;
-	}
+		&-header {
+			display: flex;
+			flex-direction: row;
+			column-gap: 16px;
+			padding-top: 12px;
+			align-items: center;
+		}
 
-	&--realm-title {
-		font-family: $font-text;
-		color: $color3;
-		font-size: 24px;
-		line-height: 24px;
-	}
+		&-icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 10px;
+		}
 
-	&--realm-desc {
-		padding-top: 10px;
-		font-size: $font-size;
-	}
+		&-title {
+			font-family: $font-text;
+			color: $color3;
+			font-size: 24px;
+			line-height: 24px;
+		}
 
-	&--realm-footer {
-		align-items: flex-end;
-		justify-content: space-between;
-		flex: 1 1 0px;
-		padding-top: 12px;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-end;
-		gap: 12px;
-	}
+		&-counters-top {
+			display: none;
+		}
 
-	&--realm-counters {
-		display: flex;
-		flex-direction: row;
-		column-gap: 24px;
-	}
+		&-desc {
+			padding-top: 10px;
+			font-size: $font-size;
+		}
 
-	&--realm-counter {
-		font-size: $font-size-small;
-	}
+		&-footer {
+			align-items: flex-end;
+			justify-content: space-between;
+			flex: 1 1 0px;
+			padding-top: 12px;
+			display: flex;
+			flex-direction: row;
+			align-items: flex-end;
+			gap: 12px;
+		}
 
-	&--realm-signin {
-		flex: 0 0 auto;
-		font-weight: bold;
-		height: 46px;
-		padding: 4px 24px;
-		border-radius: 8px;
-		> .fa {
-			margin-left: 12px;
-			margin-right: -2px;
+		&-counters {
+			display: flex;
+			flex-direction: row;
+			column-gap: 24px;
+			font-size: $font-size-small;
+		}
+
+		&-counter {
+			// font-size: $font-size-small;
+		}
+
+		&-signin {
+			flex: 0 0 auto;
+			font-weight: bold;
+			height: 46px;
+			padding: 4px 24px;
+			border-radius: 8px;
+			> .fa {
+				margin-left: 12px;
+				margin-right: -2px;
+			}
+		}
+
+		&-more {
+			display: none;
 		}
 	}
 
 	&--about {
-		margin-top: 128px;
+		margin-top: 308px;
 	}
 
 	&--aboutsection {
@@ -518,14 +522,262 @@ body {
 
 @media screen and (max-width: 1200px) {
 	.start {
-		&--realm-footer  {
-			flex-direction: column;
-			align-items: flex-start;
-			justify-content: flex-end;
+		--gap: 4vw;
+
+		&--topcontainer {
+			position: relative;
+			height: 100%;
+			width: 90%;
+			max-width: 1617px;
+			margin: 0 auto;
 		}
 
-		&--realm-signin {
+		&--topbar {
+			display: flex;
+			flex-direction: row;
+			padding-top: 40px;
 			width: 100%;
+		}
+		&--logo {
+			flex: 0 0 auto;
+			&-img {
+				height: 70px;
+				display: inline;
+				vertical-align: middle;
+			}
+			&-text {
+				color: $color3;
+				font-family: $font-header;
+				font-size: 56px;
+				margin-left: 20px;
+				vertical-align: middle;
+				text-transform: lowercase;
+			}
+		}
+		&--topbartools {
+			display: flex;
+			flex-direction: row;
+			flex: 1 1 0px;
+			justify-content: flex-end;
+			align-items: center;
+			column-gap: 24px;
+		}
+
+		&--realm {
+			&-footer  {
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: flex-end;
+			}
+
+			&-signin {
+				width: 100%;
+			}
+		}
+	}
+}
+
+
+@media screen and (max-width: 720px) {
+	.start {
+		--gap: 5vw;
+
+
+		&--top {
+			height: 537px;
+
+			&-bg {
+				height: 537px;
+				background-size: cover;
+				background-position: calc(50% + 0px) 50%;
+			}
+
+			&-hills1 {
+				width: 100%;
+				height: 74px;
+				top: 487px;
+				background-position: 0% 0%;
+				background-size: cover;
+			}
+			&-hills2 {
+				position: absolute;
+				top: calc(var(--scroll) * 0.1px + 440px);
+				left: 0px;
+				width: 100%;
+				height: 121px;
+				background-position: 60% 0%;
+				background-size: cover;
+			}
+			&-hills3 {
+				position: absolute;
+				top: calc(var(--scroll) * 0.2px + 405px);
+				left: 0px;
+				width: 100%;
+				height: 141px;
+				background: transparent url('./hills3_mobile.svg') no-repeat padding-box;
+				background-position: 0% 0%;
+				background-size: cover;
+			}
+		}
+
+		&--topbar {
+			display: flex;
+			flex-direction: row;
+			padding-top: 40px;
+			width: 100%;
+		}
+		&--logo {
+			&-img {
+				height: 42px;
+			}
+			&-text {
+				font-size: 33px;
+				margin-left: 11px;
+			}
+		}
+		&--topbartools {
+			display: none;
+		}
+
+		&--subheading {
+			letter-spacing: 6.6px;
+			padding-top: 109px;
+			font-size: 22px;
+		}
+		&--heading {
+			margin-top: 4px;
+			font-size: 90px;
+			line-height: 90px;
+			letter-spacing: -1.8px;
+		}
+
+		&--search {
+			align-items: center;
+
+			> h2 {
+				text-transform: uppercase;
+				color: $color4;
+				font-family: $font-text;
+				font-weight: 300;
+				letter-spacing: 3.42px;
+				text-align: center;
+				font-size: 18px;
+			}
+		}
+
+		&--searchbar {
+			position: relative;
+			margin: 46px auto 0;
+			align-items: center;
+			width: 100%;
+			max-width: 624px;
+		}
+
+		&--searchinput {
+
+			background: $color1-light;
+			padding: 18px 16px;
+			border-radius: 14px;
+			border: 1px solid $color1-lightest;
+			color: $color4-lighter;
+			padding-left: 64px;
+			font-size: 16px;
+			box-shadow: 0px 3px 6px #00000029;
+		}
+
+		&--searchbtn {
+			width: 48px;
+			padding: 8px 0 9px;
+			font-weight: bold;
+			text-transform: uppercase;
+			position: absolute;
+			left: 6px;
+			top: 6px;
+			height: calc(100% - 12px);
+			border-radius: 8px;
+		}
+
+		&--realms {
+			flex-direction: column;
+			margin-top: 71px;
+		}
+
+		&--realm {
+			&-img {
+				display: none;
+			}
+
+			&-header {
+				padding-top: 0px;
+			}
+			&-title-cont {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+			}
+
+			&-title {
+				display: flex;
+				align-items: center;
+				flex: 1 1 0px;
+				font-size: 22px;
+				line-height: 22px;
+			}
+
+			&-icon {
+				width: 64px;
+				height: 64px;
+			}
+
+			&-counters-top {
+				flex: 0 0 auto;
+				font-size: $font-size-tiny;
+				display: flex;
+				flex-direction: row;
+				column-gap: 18px;
+			}
+
+			&-desc {
+				padding-top: 8px;
+			}
+
+			&-counters {
+				display: none;
+			}
+
+			&-footer  {
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: flex-end;
+			}
+
+			&-signin {
+				width: 100%;
+			}
+
+			&:not(.active) {
+				height: 204px;
+				overflow: hidden;
+
+				.start--realm-more {
+					display: block;
+					position: absolute;
+					width: 100%;
+					bottom: 0;
+					height: 93px;
+					background: transparent linear-gradient(180deg, #00000000 0%, $color1-light 63px) 0% 0% no-repeat padding-box;
+				}
+
+				.start--realm-caret {
+					position: absolute;
+					display: flex;
+					justify-content: center;
+					bottom: 12px;
+					width: 100%;
+					font-size: 24px;
+				}
+			}
+
 		}
 	}
 }
