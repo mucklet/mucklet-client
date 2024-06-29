@@ -90,7 +90,7 @@ class CharFocus {
 			if (!f) return null;
 
 			let list = Object.keys(f).map(k => f[k]);
-			list.sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
+			list.filter(c => c?.name).sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
 			return list;
 		});
 		this.style = document.createElement('style');
@@ -198,7 +198,7 @@ class CharFocus {
 			let color = focus[k].color;
 			let char = chars[k];
 			return { char, hex: color, color: isPredefined(color) || color };
-		}).filter(o => o.char);
+		}).filter(o => o.char?.name);
 		list.sort((a, b) => a.char.name.localeCompare(b.char.name) || a.char.surname.localeCompare(b.char.surname));
 		return list;
 	}
