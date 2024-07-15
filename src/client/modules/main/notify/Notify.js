@@ -99,7 +99,13 @@ class Notify {
 			badge: this.defaultBadge,
 			onClick: defaultOnClick,
 			alwaysNotify: this.alwaysNotify,
-		}, opt);
+		}, opt, {
+			// Append any provided tag with the user ID prefix, separated with a
+			// colon (:). This is to prevent notification spamming, ensuring we
+			// only have a single event showing on the phone per player, any one
+			// time.
+			tag: "user_" + this.player.id + ":" + (opt.tag || ''),
+		});
 		title = typeof title == 'string' ? title : l10n.t(title);
 
 		const serviceWorker = this.app.getModule('serviceWorker');
@@ -275,6 +281,7 @@ class Notify {
 	// Stores the endpoint in the local storage. If another endpoint exists
 	// there, it unregisters it.
 	_setEndpoint(endpoint) {
+		this.endpoint = endpoint;
 		if (localStorage && this.player) {
 			endpoint = endpoint || null;
 			let key = notifyStoragePrefix + this.player.id + '.endpoint';
