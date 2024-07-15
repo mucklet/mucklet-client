@@ -36,6 +36,7 @@ class Notify {
 
 		// Bind callbacks
 		this._onModelChange = this._onModelChange.bind(this);
+		this._onVisibilityChange = this._onVisibilityChange.bind(this);
 
 		this.app.require([
 			'api',
@@ -65,6 +66,8 @@ class Notify {
 			this._loadSettings();
 			this.model.on('change', this._onModelChange);
 		});
+
+		document.addEventListener('visibilitychange', this._onVisibilityChange);
 	}
 
 	getModel() {
@@ -104,7 +107,7 @@ class Notify {
 			// colon (:). This is to prevent notification spamming, ensuring we
 			// only have a single event showing on the phone per player, any one
 			// time.
-			tag: "user_" + this.player.id + ":" + (opt.tag || ''),
+			tag: this._tagPrefix() + (opt.tag || ''),
 		});
 		title = typeof title == 'string' ? title : l10n.t(title);
 
@@ -264,6 +267,16 @@ class Notify {
 		}
 	}
 
+	_onVisibilityChange() {
+		if (!this.alwaysNotify && isVisible()) {
+			this.app.getModule('serviceWorker')?.closeNotification(this._tagPrefix());
+		}
+	}
+
+	_tagPrefix() {
+		return this.player ? `user_${this.player.id}:` : '';
+	}
+
 	_saveSettings() {
 		if (localStorage && this.player) {
 			localStorage.setItem(notifyStoragePrefix + this.player.id, JSON.stringify(this.model.props));
@@ -402,6 +415,7 @@ class Notify {
 	}
 
 	dispose() {
+		document.removeEventListener('visibilitychange', this._onVisibilityChange);
 		this.model.off('change', this._onModelChange);
 	}
 }

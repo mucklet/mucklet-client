@@ -98,6 +98,16 @@ class ServiceWorker {
 		});
 	}
 
+	/**
+	 * Tries to close any notification with a tag prefix matching tag.
+	 * @param {string} tag Tag or tag prefix (ends with colon (:)).
+	 */
+	closeNotification(tag) {
+		this.promise.then(registration => {
+			registration?.active.postMessage({ method: 'closeNotification', tag });
+		});
+	}
+
 	_onMessage(ev) {
 		let event = ev.data?.event;
 		if (!event) {
