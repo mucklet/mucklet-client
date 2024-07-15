@@ -18,19 +18,17 @@ const defaultIcon = '/android-chrome-192x192.png';
 const defaultBadge = '/badgemask-96x96.png';
 
 /**
- * Closes all existing notifications that matches the tag's prefix (which is the
- * first part of the tag, separated from the rest by a colon (:)), and returns a
- * promise to the eventCount that the closed notifications represent.
- * @param {string} tag Tag to match prefix against when closing notifications.
- * @returns {Promise<number>} EventCount that the closed notifications represent.
+ * Closes all existing notifications that matches the tag or the tag's prefix
+ * (which is the first part of the tag, separated from the rest by a colon (:)),
+ * and returns a promise to the eventCount that the closed notifications
+ * represent.
+ * @param {string} tag Tag to match either by whole tag name or tag prefix.
+ * @returns {Promise<number>} EventCount that the closed notifications
+ * represent.
  */
 function closeNotifications(tag) {
 	let idx = tag.indexOf(':');
-	// Quick exit if no prefix separator was found
-	if (idx < 0) {
-		return Promise.resolve(0);
-	}
-	let prefix = tag.slice(0, idx + 1);
+	let prefix = idx < 0 ? '' : tag.slice(0, idx + 1);
 
 	return self.registration.getNotifications().then((notifications) => {
 		// Create copy to ensure the notifications list does not change during
@@ -39,7 +37,7 @@ function closeNotifications(tag) {
 		let count = 0;
 		for (let n of notifications || []) {
 			// If the tag has the tag prefix, we close it and increase the count.
-			if (n.tag?.startsWith(prefix)) {
+			if ((prefix && n.tag?.startsWith(prefix)) || n.tag === tag) {
 				count += (parseCompositeTag(n.tag).data?.eventCount || 0) + 1;
 				n.close();
 			}
@@ -179,6 +177,10 @@ self.addEventListener(
 		switch (data?.method) {
 			case 'showNotification':
 				event.waitUntil(showNotification(data.title, data.opt));
+				break;
+
+			case 'closeNotification':
+				event.waitUntil(closeNotifications(data.tag));
 				break;
 		}
 	},
