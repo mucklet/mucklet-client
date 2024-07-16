@@ -2,6 +2,7 @@ import { Html } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import * as base64 from 'utils/base64.js';
+import isVisible from 'utils/isVisible.js';
 
 const notifyStoragePrefix = 'notify.user.';
 
@@ -10,10 +11,6 @@ const notifySettingKeys = [ 'notifyOnWakeup', 'notifyOnWatched', 'notifyOnMatche
 function defaultOnClick(ev) {
 	window.focus();
 	ev.target.close();
-}
-
-function isVisible() {
-	return document.visibilityState == 'visible';
 }
 
 /**
