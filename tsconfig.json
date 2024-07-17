@@ -16,7 +16,9 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "paths": {
-      "utils/*": ["./common/utils/*"]
+      "utils/*": ["./common/utils/*"],
+      "components/*": ["./common/components/*"],
+      "classes/*": ["./common/classes/*"]
     }
   },
 }
