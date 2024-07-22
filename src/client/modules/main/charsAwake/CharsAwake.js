@@ -165,7 +165,7 @@ class CharsAwake {
 			) {
 				this.module.notify.send(
 					l10n.l('charsAwake.wakeup', "Character awake"),
-					l10n.l('charsAwake.charWokeUp', "{name} woke up.", { name: (char.name + ' ' + char.surname).trim() }),
+					l10n.l('charsAwake.charWokeUp', "{name} woke up", { name: (char.name + ' ' + char.surname).trim() }),
 					{
 						duration: 1000 * 60 * 15, // Max 15 min
 					},

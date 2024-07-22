@@ -149,7 +149,7 @@ class PageRequests {
 			let c = ev.item.from;
 			this.module.notify.send(
 				l10n.l('pageRequests.newRequest', "New request"),
-				l10n.l('pageRequests.charSentRequest', "{name} sent a request.", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageRequests.charSentRequest', "{name} sent a request", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();

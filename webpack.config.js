@@ -6,6 +6,7 @@ const pkg = require('./package.json');
 const env = process.env.NODE_ENV || 'development';
 const appName = process.env.APP_NAME || null;
 const cfgName = process.env.CFG_NAME || env;
+const disableServiceWorker = !!process.env.DISABLE_SERVICEWORKER;
 const devMode = env != 'production';
 const commonPath = path.resolve(__dirname, 'src/common/');
 
@@ -37,7 +38,7 @@ for (let app of apps) {
 	if (appName && app != appName) {
 		continue;
 	}
-	let ctx = { app, env, devMode, commonPath, pkg, jsonEncodeObject };
+	let ctx = { app, env, devMode, commonPath, pkg, jsonEncodeObject, disableServiceWorker };
 	ctx.srcPath = path.resolve(__dirname, 'src/', app);
 	ctx.buildPath = path.resolve(__dirname, 'build/', app);
 	ctx.cfgPath = path.resolve(__dirname, 'cfg/', app);

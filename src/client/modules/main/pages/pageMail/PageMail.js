@@ -117,7 +117,7 @@ class PageMail {
 		let c = mail.from;
 		this.module.notify.send(
 			l10n.l('pageMail.newMail', "New mail"),
-			l10n.l('pageMail.sentAMail', "{name} sent a mail.", { name: (c.name + ' ' + c.surname).trim() }),
+			l10n.l('pageMail.sentAMail', "{name} sent a mail", { name: (c.name + ' ' + c.surname).trim() }),
 			{
 				onClick: () => {
 					this.open();
