@@ -151,7 +151,7 @@ class PageReports {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageReports.newReport', "New report"),
-				l10n.l('pageReports.charReported', "{name} was reported.", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageReports.charReported', "{name} was reported", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();
