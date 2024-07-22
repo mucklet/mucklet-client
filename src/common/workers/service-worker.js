@@ -119,8 +119,8 @@ function showNotification(title, opt) {
 				// Append "+X other event(s)" to event body.
 				body = (body ? body + "\n" : '') +
 					(count == 1
-						? "+1 other event."
-						: `+${count} other events.`
+						? "+1 other event"
+						: `+${count} other events`
 					);
 			}
 			return self.registration.showNotification(title, Object.assign({}, opt, { tag, body }))
