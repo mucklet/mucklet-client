@@ -104,7 +104,7 @@ class Notify {
 			// colon (:). This is to prevent notification spamming, ensuring we
 			// only have a single event showing on the phone per player, any one
 			// time.
-			tag: this._tagPrefix() + (opt.tag || ''),
+			tag: this._tagPrefix() + (opt?.tag || ''),
 		});
 		title = typeof title == 'string' ? title : l10n.t(title);
 
@@ -123,7 +123,7 @@ class Notify {
 				// Click callback
 				n.onclick = (ev) => {
 					ev.target.close();
-					opt?.onClick?.(ev);
+					opt.onClick?.(ev);
 				};
 			}
 		});
