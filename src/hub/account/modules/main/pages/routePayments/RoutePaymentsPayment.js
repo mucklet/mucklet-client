@@ -10,7 +10,7 @@ import * as txtUnit from 'utils/txtUnit';
 import * as txtProduct from 'utils/txtProduct';
 import * as txtPaymentStatus from 'utils/txtPaymentStatus';
 import * as txtCurrency from 'utils/txtCurrency';
-import * as txtCardbrand from 'utils/txtCardbrand';
+import * as txtCardBrand from 'utils/txtCardBrand';
 
 /**
  * RoutePaymentsPayment draws a payment component
@@ -157,7 +157,7 @@ class RoutePaymentsPayment {
 
 	_cardComponentFactory(method) {
 		return new Elem(n => n.elem('div', [
-			n.component(new ModelTxt(method, m => txtCardbrand.toLocaleString(m.data.brand))),
+			n.component(new ModelTxt(method, m => txtCardBrand.toLocaleString(m.data.brand))),
 			n.component(new ModelTxt(method, m => " •••• " + m.data.last4)),
 			n.component(new Txt(l10n.l('routePayments.expires', ", expires "))),
 			n.component(new ModelTxt(method, m => ("00" + m.data.expMonth).slice(-2) + " / " + m.data.expYear)),

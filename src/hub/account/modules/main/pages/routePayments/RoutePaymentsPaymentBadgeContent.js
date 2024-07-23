@@ -3,7 +3,7 @@ import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import formatDateTime from 'utils/formatDateTime';
-import * as txtCardbrand from 'utils/txtCardbrand';
+import * as txtCardBrand from 'utils/txtCardBrand';
 
 
 class RoutePaymentsPaymentBadgeContent {
@@ -81,7 +81,7 @@ class RoutePaymentsPaymentBadgeContent {
 			n.elem('div', { className: 'badge--select' }, [
 				n.component(new Txt(l10n.l('routePayments.card', "Card"), { className: 'badge--iconcol badge--subtitle' })),
 				n.elem('div', { className: 'badge--info-morepad badge--text' }, [
-					n.component(new ModelTxt(method, m => txtCardbrand.toLocaleString(m.data.brand))),
+					n.component(new ModelTxt(method, m => txtCardBrand.toLocaleString(m.data.brand))),
 					n.component(new ModelTxt(method, m => " •••• " + m.data.last4)),
 				]),
 			]),
