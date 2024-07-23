@@ -20,6 +20,10 @@ jobs:
         cache-dependency-path: package-lock.json
     - name: Install dependencies
       run: npm install
+    - name: Run test
+      run: npm run test
+    - name: Run lint
+      run: npm run test:lint
     - name: Build client
       run: npm run build:client
     - name: Build hub

@@ -23,7 +23,8 @@
     "build:realm:wolfery": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_wolfery webpack",
     "build:realm:unknown": "cross-env NODE_ENV=production APP_NAME=client CFG_NAME=prod_realm_unknown webpack",
     "test": "jest ./src",
-    "lint": "eslint --fix --ext .js src/"
+    "lint": "eslint --fix --ext .js src/",
+    "test:lint": "eslint --ext .js src/"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
