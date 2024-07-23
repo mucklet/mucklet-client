@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+# Make sure the GITHUB_TOKEN has permission to upload to our releases
+permissions:
+  contents: write
+
+jobs:
+
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create release draft
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
+        shell: bash
+        run: |
+          gh release create ${{ github.ref_name }} \
+              --title="Release ${{ github.ref_name }}" \
+              --generate-notes
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [client, hub]
+    env:
+      dir_name: 'mucklet-${{ matrix.app }}-${{ github.ref_name }}'
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build ${{ matrix.app }}
+      run: npm run build:${{ matrix.app }}
+    - name: Rename ${{ matrix.app }} folder
+      run: mv ${{ matrix.app }} ${{ env.dir_name }}
+    - name: Zip ${{ matrix.app }} package
+      run: zip -q ${{ env.dir_name }}.zip -r ${{ env.dir_name }}
+    - name: '📦 Upload package ${{ env.dir_name }}.zip'
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
+      shell: bash
+      run: |
+          gh release upload ${{ github.ref_name }} ${{ env.file_name }}.zip
