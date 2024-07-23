@@ -19,6 +19,8 @@ jobs:
         node-version: 20
         cache: 'npm'
         cache-dependency-path: package-lock.json
+    - name: Install dependencies
+      run: npm install
     - name: Build client
       run: npm run build:client
     - name: Build hub
