@@ -48,12 +48,15 @@ jobs:
     - name: Build ${{ matrix.app }}
       run: npm run build:${{ matrix.app }}
     - name: Rename ${{ matrix.app }} folder
+      working-directory: ./build
       run: mv ${{ matrix.app }} ${{ env.dir_name }}
     - name: Zip ${{ matrix.app }} package
+      working-directory: ./build
       run: zip -q ${{ env.dir_name }}.zip -r ${{ env.dir_name }}
     - name: '📦 Upload package ${{ env.dir_name }}.zip'
+      working-directory: ./build
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
       shell: bash
       run: |
-          gh release upload ${{ github.ref_name }} ${{ env.file_name }}.zip
+          gh release upload ${{ github.ref_name }} ${{ env.dir_name }}.zip
