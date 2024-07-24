@@ -100,11 +100,11 @@ class Notify {
 			onClick: defaultOnClick,
 			alwaysNotify: this.alwaysNotify,
 		}, opt, {
-			// Append any provided tag with the user ID prefix, separated with a
-			// colon (:). This is to prevent notification spamming, ensuring we
-			// only have a single event showing on the phone per player, any one
-			// time.
-			tag: this._tagPrefix() + (opt?.tag || ''),
+			// Replace the provided tag with the user ID. This is because iPhone won't
+			// allow us to close previous notifications, so the tag must be the group
+			// identifier. This is to prevent notification spamming, ensuring we only
+			// have a single event showing on the phone per player, at any one time.
+			tag: this._userTag(),
 		});
 		title = typeof title == 'string' ? title : l10n.t(title);
 
@@ -266,12 +266,12 @@ class Notify {
 
 	_onVisibilityChange() {
 		if (!this.alwaysNotify && isVisible()) {
-			this.app.getModule('serviceWorker')?.closeNotification(this._tagPrefix());
+			this.app.getModule('serviceWorker')?.closeNotification(this._userTag());
 		}
 	}
 
-	_tagPrefix() {
-		return this.player ? `user_${this.player.id}:` : '';
+	_userTag() {
+		return this.player ? `user_${this.player.id}` : '';
 	}
 
 	_saveSettings() {
