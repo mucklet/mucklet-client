@@ -59,4 +59,4 @@ jobs:
         GITHUB_TOKEN: ${{ github.TOKEN }}
       shell: bash
       run: |
-          gh release upload ${{ github.ref_name }} ${{ env.file_name }}.zip
+          gh release upload ${{ github.ref_name }} ${{ env.dir_name }}.zip
