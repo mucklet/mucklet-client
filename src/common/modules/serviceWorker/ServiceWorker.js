@@ -99,8 +99,8 @@ class ServiceWorker {
 	}
 
 	/**
-	 * Tries to close any notification with a tag prefix matching tag.
-	 * @param {string} tag Tag or tag prefix (ends with colon (:)).
+	 * Tries to close a notification with a specific tag.
+	 * @param {string} tag Tag.
 	 */
 	closeNotification(tag) {
 		this.promise.then(registration => {

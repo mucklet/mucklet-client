@@ -18,68 +18,57 @@ const defaultIcon = '/android-chrome-192x192.png';
 const defaultBadge = '/badgemask-96x96.png';
 
 /**
- * Closes all existing notifications that matches the tag or the tag's prefix
- * (which is the first part of the tag, separated from the rest by a colon (:)),
- * and returns a promise to the eventCount that the closed notifications
- * represent.
- * @param {string} tag Tag to match either by whole tag name or tag prefix.
- * @returns {Promise<number>} EventCount that the closed notifications
- * represent.
+ * Gets a single notification by tag.
+ * @param {string} tag Tag.
+ * @returns {Promise<Notification|null>} Promise to the notification or null if no notification matches the tag.
  */
-function closeNotifications(tag) {
-	let idx = tag.indexOf(':');
-	let prefix = idx < 0 ? '' : tag.slice(0, idx + 1);
+function getNotification(tag) {
+	return tag
+		? self.registration.getNotifications()
+			.then(notifications => (notifications.find(notification => notification.tag === tag) || null))
+		: Promise.resolve(null);
+}
 
-	return self.registration.getNotifications().then((notifications) => {
-		// Create copy to ensure the notifications list does not change during
-		// iteration when closing them. Just a precaution.
-		notifications = Array.from(notifications);
-		let count = 0;
-		for (let n of notifications || []) {
-			// If the tag has the tag prefix, we close it and increase the count.
-			if ((prefix && n.tag?.startsWith(prefix)) || n.tag === tag) {
-				count += (parseCompositeTag(n.tag).data?.eventCount || 0) + 1;
-				n.close();
-			}
+/**
+ * Closes the notification matching the tag.
+ * @param {string} tag Tag.
+ * @returns {Promise<Notification|null>} Promise of the closed notification, or null if no notification was closed.
+ */
+function closeNotification(tag) {
+	return getNotification(tag).then(notification => {
+		// Try close, and swallow any error.
+		try {
+			notification?.close();
+		} catch (ex) {
+			notification = null;
 		}
-		return count;
+		return notification;
 	});
 }
 
 /**
- * Splits a composite tag (tag + "#" + JSON.stringify(data)) and returns the tag
- * and the data part as a string, or null if no separator existed.
- * @param {string} tag Composite tag.
- * @returns {{ tag: string, data: string | null }} Tag and data.
+ * Calculates the number of events the notification represents. If notification
+ * is null, 0 is returned. Otherwise it returns 1 + any "+X other events" found.
+ * @param {Notification|null} notification Notification
+ * @returns {number}
  */
-function splitCompositeTag(tag) {
-	let data = undefined;
-	if (tag) {
-		let separator = tag.indexOf('#');
-		if (separator >= 0) {
-			data = tag.slice(separator + 1);
-			tag = tag.slice(0, separator);
-		}
-	}
-	return { tag, data };
-}
+function getEventCount(notification) {
+	if (!notification) return 0;
 
-
-/**
- * Parses a composite tag (tag + "#" + JSON.stringify(data)) and returns the tag
- * and any parsed data.
- * @param {string} compositeTag Composite tag.
- * @returns {{ tag: string, data: any }} Tag and data.
- */
-function parseCompositeTag(compositeTag) {
-	let { tag, data } = splitCompositeTag(compositeTag);
+	// If we have data, use eventCount there.
+	let data = notification.data;
 	if (data) {
-		// Try parse data as json
-		try { data = JSON.parse(data); } catch (ex) {
-			console.error(`error parsing composite notification tag: ${compositeTag}`, ex);
+		return (data.eventCount || 0) + 1;
+	}
+	// If we have a body, extract the +X other events from it.
+	let body = notification.body;
+	if (body) {
+		let m = body.match(/^\+(\d+) other events?/m);
+		if (m) {
+			return Number(m[1]) + 1;
 		}
 	}
-	return { tag, data };
+	return 1;
 }
 
 /**
@@ -103,18 +92,17 @@ function showNotification(title, opt) {
 		if (isFocused && !opt?.alwaysNotify) {
 			return;
 		}
-		let tag = opt?.tag;
-		return closeNotifications(tag).then(eventCount => {
+
+		return getNotification(opt?.tag).then(notification => {
+			let count = getEventCount(notification) || 0;
 			let data = opt?.data || null;
-			// If existing notifications matched the by tag prefix, increase the eventCount.
-			if (eventCount) {
+			// If an existing notification was found, increase the event count.
+			if (count) {
 				data = Object.assign({ eventCount: 0 }, data);
-				data.eventCount += eventCount;
+				data.eventCount += count;
+				count = data.eventCount;
 			}
-			// Extend tag with data to make it a composite tag.
-			tag += data ? '#' + JSON.stringify(data) : '';
 			let body = opt?.body;
-			let count = data?.eventCount;
 			if (count) {
 				// Append "+X other event(s)" to event body.
 				body = (body ? body + "\n" : '') +
@@ -123,22 +111,18 @@ function showNotification(title, opt) {
 						: `+${count} other events`
 					);
 			}
-			return self.registration.showNotification(title, Object.assign({}, opt, { tag, body }))
-				.then(() => {
-					if (opt?.duration) {
-						// If we have a duration, set a timeout to close it afterwards.
-						self.setTimeout(() => {
-							self.registration.getNotifications()
-								.then(notifications => {
-									let notification = notifications.find(notification => notification.tag === tag);
-									if (notification) {
-										notification.close();
-									}
-								});
 
-						}, opt.duration);
-					}
-				});
+			return self.registration.showNotification(title, Object.assign({
+				renotify: notification ? true : undefined,
+			}, opt, {
+				body,
+				data,
+			})).then(() => {
+				if (opt?.duration && opt?.tag) {
+					// If we have a duration, set a timeout to close it afterwards.
+					self.setTimeout(() => closeNotification(opt.tag), opt.duration);
+				}
+			});
 		});
 	});
 }
@@ -180,7 +164,7 @@ self.addEventListener(
 				break;
 
 			case 'closeNotification':
-				event.waitUntil(closeNotifications(data.tag));
+				event.waitUntil(closeNotification(data.tag));
 				break;
 		}
 	},
@@ -229,8 +213,9 @@ self.addEventListener(
 		// Always close on click
 		event.notification.close();
 
-		// Split tag and data
-		let { tag, data } = parseCompositeTag(event.notification.tag);
+		// Get tag and data
+		let tag = event.notification.tag || null;
+		let data = event.notification.data || null;
 
 		// This looks to see if the client is already open and
 		// focuses if it is
