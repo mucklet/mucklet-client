@@ -39,6 +39,11 @@ module.exports = function(ctx) {
 			app: path.resolve(ctx.srcPath, 'app.js'),
 			welcome: path.resolve(ctx.srcPath, 'welcome/app-welcome.js'),
 		},
+		performance: {
+			hints: 'warning',
+			maxEntrypointSize: 512000,
+			maxAssetSize: 2048000,
+		},
 		devServer: {
 			port: 6450,
 			allowedHosts: [
