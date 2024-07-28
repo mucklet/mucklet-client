@@ -40,7 +40,7 @@ module.exports = function(ctx) {
 			welcome: path.resolve(ctx.srcPath, 'welcome/app-welcome.js'),
 		},
 		performance: {
-			hints: 'warning',
+			hints: ctx.devMode ? false : 'warning',
 			maxEntrypointSize: 512000,
 			maxAssetSize: 2048000,
 		},

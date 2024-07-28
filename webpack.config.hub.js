@@ -40,7 +40,7 @@ module.exports = function(ctx) {
 			...pages.reduce((o, page) => Object.assign(o, { [page]: path.resolve(ctx.srcPath, page + '/app-' + page + '.js') }), {}),
 		},
 		performance: {
-			hints: 'warning',
+			hints: ctx.devMode ? false : 'warning',
 			maxEntrypointSize: 512000,
 			maxAssetSize: 2048000,
 		},
