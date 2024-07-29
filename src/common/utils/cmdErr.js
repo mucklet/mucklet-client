@@ -23,3 +23,7 @@ export function keyTooLong(step, maxLength) {
 export function propertyTooLong(step, maxLength) {
 	return new Err('cmdErr.propertyTooLong', "The property exceeds the max length of {maxLength} characters.", { maxLength });
 }
+
+export function scriptTooLong(step, maxLength) {
+	return new Err('cmdErr.scriptTooLong', "The script exceeds the max length of {maxLength} characters.", { maxLength });
+}

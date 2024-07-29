@@ -13,7 +13,7 @@ const shortDesc = 'Get moderation information about a character';
 const helpText =
 `<p>Get moderation information about a character and its player.</p>
 <p><code class="param">Character</code> is the name of any of the characters to inspect.</p>
-<p><code class="param">#CharacterID</code> is the ID of the character.</p>
+<p><code class="param">#Character ID</code> is the ID of the character.</p>
 <p>Example: <code>inspect Jane Doe</code></p>`;
 
 let trustFlags = {

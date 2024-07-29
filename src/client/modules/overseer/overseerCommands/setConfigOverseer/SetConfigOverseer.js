@@ -156,6 +156,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.maxFollowsDesc', "Max number of character's following someone."),
 		sortOrder: 1330,
 	},
+	{
+		key: 'maxRoomScripts',
+		stepFactory: () => new NumberStep('value', { name: "max room scripts" }),
+		desc: l10n.l('setConfig.maxRoomScriptsDesc', "Max number of room scripts per room."),
+		sortOrder: 1340,
+	},
 ];
 
 /**
