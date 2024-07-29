@@ -1,7 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
-import FAIcon from 'components/FAIcon';
 import ListStep from 'classes/ListStep';
 import IDStep from 'classes/IDStep';
 
@@ -38,7 +36,7 @@ class RoomScript {
 					name: "room script",
 				}),
 			}),
-			value: (ctx, p) => this.roomScript(ctx.char, p.scriptId, true),
+			value: (ctx, p) => this.roomScript(ctx.char, p.scriptId),
 		});
 
 		this.module.help.addTopic({
@@ -52,43 +50,15 @@ class RoomScript {
 		});
 	}
 
-	roomScript(char, scriptId, safe) {
-		return char.call('useRoomScript', { scriptId, safe })
-			.then(result => {
-				this.module.charLog.logInfo(char, l10n.l('roomScript.changedToRoomScript', "Changed room to script \"{scriptName}\".", { scriptName: result.script.name }));
-				return result;
-			})
-			.catch(err => {
-				if (err.code != 'core.roomScriptNotStored') {
-					return Promise.reject(err);
-				}
-
-				return this.module.api.get('core.roomscript.' + scriptId).then(script => new Promise((resolve, reject) => {
-					let cb = { resolve, reject };
-					// Confirm to overwrite current appearance
-					this.module.confirm.open(() => this.roomScript(char, scriptId, false).then(result => {
-						cb && cb.resolve(result);
-					}, err => cb && cb.reject(err)).then(() => cb = null), {
-						title: l10n.l('roomScript.discardChanges', "Discard changes"),
-						body: new Elem(n => n.elem('div', [
-							n.component(new Txt(l10n.l('roomScript.discardChangesBody', "Current appearance is not stored in any room script. Do you wish to apply this script?"), { tagName: 'p' })),
-							n.component(script ? new ModelTxt(script, m => m.name, { tagName: 'p', className: 'dialog--strong' }) : null),
-							n.elem('p', { className: 'dialog--error' }, [
-								n.component(new FAIcon('exclamation-triangle')),
-								n.html("&nbsp;&nbsp;"),
-								n.component(new Txt(l10n.l('roomScript.discardWarning', "Changes made to the room's appearance will be lost."))),
-							]),
-						])),
-						confirm: l10n.l('roomScript.applyRoomScript', "Apply script"),
-						onClose: () => {
-							if (cb) {
-								cb.resolve(null);
-							}
-							cb = null;
-						},
-					});
-				}));
-			});
+	roomScript(char, scriptId) {
+		return this.module.api.get(`core.roomscript.${scriptId}.details`).then(script => {
+			this.module.charLog.logComponent(char, 'roomScript', new Elem(n => n.elem('div', { className: 'charlog--pad' }, [
+				n.component(new Txt(l10n.l('roomScript.worldConfig', "Room script - {scriptKey}", { scriptKey: script.key }), { tagName: 'h4' })),
+				n.elem('div', { className: 'charlog--code' }, [
+					n.elem('pre', { className: 'common--pre-wrap' }, [ n.text(script.script) ]),
+				]),
+			])));
+		});
 	}
 }
 
