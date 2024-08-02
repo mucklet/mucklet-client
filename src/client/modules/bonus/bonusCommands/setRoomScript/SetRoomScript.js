@@ -31,10 +31,11 @@ const defaultAttr = [
 		key: 'script',
 		stepFactory: module => new TextStep('value', {
 			name: "room script",
+			token: 'code',
 			maxLength: () => module.info.getCore().scriptMaxLength,
 			errTooLong: scriptTooLong,
 			spanLines: true,
-			formatText: true,
+			spellcheck: false,
 		}),
 		desc: l10n.l('setRoomScript.scriptDesc', "Room script. It may be formatted and span multiple paragraphs."),
 		sortOrder: 20,

@@ -42,9 +42,12 @@ class CreateRoomScript {
 					next: [
 						new TextStep('script', {
 							name: "room script",
+							token: 'code',
 							maxLength: () => this.module.info.getCore().scriptMaxLength,
 							errTooLong: scriptTooLong,
 							errRequired: null,
+							spanLines: true,
+							spellcheck: false,
 						}),
 					],
 				}),
