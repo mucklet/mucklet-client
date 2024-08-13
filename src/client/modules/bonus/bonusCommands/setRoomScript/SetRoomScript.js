@@ -35,6 +35,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().scriptMaxLength,
 			errTooLong: scriptTooLong,
 			spanLines: true,
+			trimSpace: false,
 			spellcheck: false,
 		}),
 		desc: l10n.l('setRoomScript.scriptDesc', "Room script. It may be formatted and span multiple paragraphs."),

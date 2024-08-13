@@ -52,12 +52,35 @@ class RoomScript {
 
 	roomScript(char, scriptId) {
 		return this.module.api.get(`core.roomscript.${scriptId}.details`).then(script => {
-			this.module.charLog.logComponent(char, 'roomScript', new Elem(n => n.elem('div', { className: 'charlog--pad' }, [
-				n.component(new Txt(l10n.l('roomScript.worldConfig', "Room script - {scriptKey}", { scriptKey: script.key }), { tagName: 'h4' })),
-				n.elem('div', { className: 'charlog--code' }, [
-					n.elem('pre', { className: 'common--pre-wrap' }, [ n.text(script.script) ]),
-				]),
-			])));
+
+			try {
+				let rows = [
+					[ "ID", "#" + script.id ],
+					[ "Keyword", script.key ],
+					[ "Post address", script.address ],
+					[ "Active", user.trust ? user.trust : "No trust flags set" ],
+				];
+
+				let elem = new Elem(n => n.elem('div', { className: 'charlog--pad' }, [
+					n.component(new Txt(l10n.t('roomScript.roomScriptInfo', "Room script info"), { tagName: 'h4' })),
+					n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, rows.map(m => n.elem('tr', [
+						n.elem('td', { className: 'charlog--strong' }, [
+							n.component(new Txt(m[0])),
+						]),
+						n.elem('td', [
+							n.component(new Txt(m[1])),
+						]),
+					]))),
+					n.component(new Txt(l10n.t('roomScript.script', "Script"), { tagName: 'h4', className: 'charlog--pad' })),
+					n.elem('div', { className: 'charlog--code' }, [
+						n.elem('pre', { className: 'common--pre-wrap' }, [ n.text(script.script) ]),
+					]),
+				]));
+
+				this.module.charLog.logComponent(ctx.char, 'roomScript', elem);
+			} catch (ex) {
+				console.error(ex);
+			}
 		});
 	}
 }

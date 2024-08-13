@@ -47,6 +47,7 @@ class CreateRoomScript {
 							errTooLong: scriptTooLong,
 							errRequired: null,
 							spanLines: true,
+							trimSpace: false,
 							spellcheck: false,
 						}),
 					],
