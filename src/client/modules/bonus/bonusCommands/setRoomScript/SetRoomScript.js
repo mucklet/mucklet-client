@@ -28,9 +28,9 @@ const defaultAttr = [
 		sortOrder: 10,
 	},
 	{
-		key: 'script',
+		key: 'source',
 		stepFactory: module => new TextStep('value', {
-			name: "room script",
+			name: "source code",
 			token: 'code',
 			maxLength: () => module.info.getCore().scriptMaxLength,
 			errTooLong: scriptTooLong,
@@ -38,7 +38,7 @@ const defaultAttr = [
 			trimSpace: false,
 			spellcheck: false,
 		}),
-		desc: l10n.l('setRoomScript.scriptDesc', "Room script. It may be formatted and span multiple paragraphs."),
+		desc: l10n.l('setRoomScript.sourceDesc', "Source code. It may be formatted and span multiple paragraphs."),
 		sortOrder: 20,
 	},
 	{

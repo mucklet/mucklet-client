@@ -40,8 +40,8 @@ class CreateRoomScript {
 				}),
 				new DelimStep("=", {
 					next: [
-						new TextStep('script', {
-							name: "room script",
+						new TextStep('source', {
+							name: "source code",
 							token: 'code',
 							maxLength: () => this.module.info.getCore().scriptMaxLength,
 							errTooLong: scriptTooLong,
@@ -55,7 +55,7 @@ class CreateRoomScript {
 			],
 			value: (ctx, p) => this.createRoomScript(ctx.char, {
 				key: p.key,
-				script: p.script,
+				source: p.source,
 			}),
 		});
 

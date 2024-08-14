@@ -25,5 +25,5 @@ export function propertyTooLong(step, maxLength) {
 }
 
 export function scriptTooLong(step, maxLength) {
-	return new Err('cmdErr.scriptTooLong', "The script exceeds the max length of {maxLength} characters.", { maxLength });
+	return new Err('cmdErr.scriptTooLong', "The script source code exceeds the max length of {maxLength} characters.", { maxLength });
 }
