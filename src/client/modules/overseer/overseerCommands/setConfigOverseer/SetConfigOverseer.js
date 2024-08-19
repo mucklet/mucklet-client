@@ -111,7 +111,7 @@ const defaultAttr = [
 		key: 'builderMaxOwnedAreas',
 		stepFactory: () => new NumberStep('value', { name: "max owned areas for builders and admins" }),
 		desc: l10n.l('setConfig.builderMaxOwnedAreasDesc', "Max number of owned areas for builders and admins."),
-		sortOrder: 1362,
+		sortOrder: 1262,
 	},
 	{
 		key: 'supporterMaxOwnedChars',
@@ -161,6 +161,12 @@ const defaultAttr = [
 		stepFactory: () => new NumberStep('value', { name: "max room scripts" }),
 		desc: l10n.l('setConfig.maxRoomScriptsDesc', "Max number of room scripts per room."),
 		sortOrder: 1340,
+	},
+	{
+		key: 'maxScheduledPosts',
+		stepFactory: () => new NumberStep('value', { name: "max scheduled script posts" }),
+		desc: l10n.l('setConfig.maxScheduledPostsDesc', "Max number of scheduled posts per script."),
+		sortOrder: 1350,
 	},
 ];
 
