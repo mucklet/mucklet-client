@@ -6,6 +6,8 @@ import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { scriptTooLong, keyTooLong } from 'utils/cmdErr';
+import isError from 'utils/isError';
+import ScriptCompileError from 'components/ScriptCompileError';
 
 const usageText = 'set roomscript <span class="param">Keyword<span class="comment">/</span>#Script ID</span> : <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set a room script attribute';
@@ -127,7 +129,13 @@ class SetRoomScript {
 
 	setRoomScript(char, params) {
 		return char.call('setRoomScript', params)
-			.then(result => this.module.charLog.logInfo(char, l10n.l('setRoomScript.roomScriptSet', "Successfully updated room script \"{key}\".", result.script)));
+			.then(result => this.module.charLog.logInfo(char, l10n.l('setRoomScript.roomScriptSet', "Successfully updated room script \"{key}\".", result.script)))
+			.catch(err => {
+				if (!isError(err, 'core.compileError')) {
+					throw err;
+				}
+				throw new ScriptCompileError(err);
+			});
 	}
 }
 

@@ -1,0 +1,18 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.scriptcompileerror {
+	@include log-pad(large);
+
+	color: $log-error;
+
+	&--msg {
+		padding-top: 8px;
+		white-space: pre-wrap;
+		color: $log-text;
+		font-family: $font-code;
+		font-style: normal;
+		font-size: $font-size-small;
+	}
+}
+

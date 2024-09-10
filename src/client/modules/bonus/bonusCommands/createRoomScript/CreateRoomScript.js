@@ -2,6 +2,8 @@ import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import { keyTooLong, scriptTooLong } from 'utils/cmdErr';
+import isError from 'utils/isError';
+import ScriptCompileError from 'components/ScriptCompileError';
 
 const usageText = 'create roomscript <span class="param">Keyword</span> = <span class="param">Script</span>';
 const shortDesc = 'Create a room script';
@@ -77,6 +79,11 @@ class CreateRoomScript {
 		}
 		return char.call('createRoomScript', params).then(result => {
 		 	this.module.charLog.logInfo(char, l10n.l('createRoomScript.scriptCreated', "Created script \"{scriptKey}\" for room \"{roomName}\".", { scriptKey: result.script.key, roomName: result.room.name }));
+		}).catch(err => {
+			if (!isError(err, 'core.compileError')) {
+				throw err;
+			}
+			throw new ScriptCompileError(err);
 		});
 	}
 }
