@@ -47,34 +47,8 @@ function closeNotification(tag) {
 }
 
 /**
- * Calculates the number of events the notification represents. If notification
- * is null, 0 is returned. Otherwise it returns 1 + any "+X other events" found.
- * @param {Notification|null} notification Notification
- * @returns {number}
- */
-function getEventCount(notification) {
-	if (!notification) return 0;
-
-	// If we have data, use eventCount there.
-	let data = notification.data;
-	if (data) {
-		return (data.eventCount || 0) + 1;
-	}
-	// If we have a body, extract the +X other events from it.
-	let body = notification.body;
-	if (body) {
-		let m = body.match(/^\+(\d+) other events?/m);
-		if (m) {
-			return Number(m[1]) + 1;
-		}
-	}
-	return 1;
-}
-
-/**
  * Shows a notification. If opt.tag is set, any other notification with the same
- * tag is closed, and opt.data.eventCount will be increased to show an
- * additional text in the body: "+X other events"
+ * tag is closed.
  * @param {string} title Notification title
  * @param {object} opt Optional parameters.
  * @param {string} opt.tag Tag identifying the notification.
@@ -84,7 +58,7 @@ function getEventCount(notification) {
  * @param {string} opt.badge Badge image path. Defaults to mucklet logo.
  * @param {boolean} opt.vibrate Flag to tell phone to vibrate on notification. Defaults to false.
  * @param {string} opt.duration Duration in millseconds to show the notification before removing it. Defaults to no auto removal.
- * @param {{ event?: string, params?: any, eventCount?: number }} opt.data Data attached to the notification.
+ * @param {{ event?: string, params?: any }} opt.data Data attached to the notification.
  * @returns {Promise<any>}
  */
 function showNotification(title, opt) {
@@ -94,30 +68,9 @@ function showNotification(title, opt) {
 		}
 
 		return getNotification(opt?.tag).then(notification => {
-			let count = getEventCount(notification) || 0;
-			let data = opt?.data || null;
-			// If an existing notification was found, increase the event count.
-			if (count) {
-				data = Object.assign({ eventCount: 0 }, data);
-				data.eventCount += count;
-				count = data.eventCount;
-			}
-			let body = opt?.body;
-			if (count) {
-				// Append "+X other event(s)" to event body.
-				body = (body ? body + "\n" : '') +
-					(count == 1
-						? "+1 other event"
-						: `+${count} other events`
-					);
-			}
-
 			return self.registration.showNotification(title, Object.assign({
 				renotify: notification ? true : undefined,
-			}, opt, {
-				body,
-				data,
-			})).then(() => {
+			}, opt)).then(() => {
 				if (opt?.duration && opt?.tag) {
 					// If we have a duration, set a timeout to close it afterwards.
 					self.setTimeout(() => closeNotification(opt.tag), opt.duration);
