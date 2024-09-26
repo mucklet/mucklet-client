@@ -5,12 +5,12 @@ import { keyTooLong, scriptTooLong } from 'utils/cmdErr';
 import isError from 'utils/isError';
 import ScriptCompileError from 'components/ScriptCompileError';
 
-const usageText = 'create roomscript <span class="param">Keyword</span> = <span class="param">Script</span>';
+const usageText = 'create roomscript <span class="param">Keyword</span> = <span class="param">Source</span>';
 const shortDesc = 'Create a room script';
 const helpText =
-`<p>Create a room script. For more information, see the room scripting resources.</p>
+`<p class="common--formattext">Create a room script. For more information, see the <a href="https://github.com/mucklet/mucklet-script" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
 <p><code class="param">Keyword</code> is the keyword to use for the script.</p>
-<p><code class="param">Script</code> is the LUA room script.</p>`;
+<p><code class="param">Source</code> is the room script source code.</p>`;
 
 /**
  * CreateRoomScript adds command to create a room script.

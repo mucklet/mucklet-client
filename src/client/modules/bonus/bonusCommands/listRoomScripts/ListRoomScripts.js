@@ -11,7 +11,7 @@ const helpText =
 `<p>Get a list of the room's scripts.</p>
 <p>Alias: <code>list roomscript</code></p>`;
 
-const errAccessDenied = new Err('listScripts.accessToScriptsDenied', "You must own the room to list room scripts.");
+const errAccessDenied = new Err('listRoomScripts.accessToScriptsDenied', "You must own the room to list room scripts.");
 
 /**
  * ListRoomScripts adds command to list all scripts of current room.

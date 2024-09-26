@@ -109,6 +109,7 @@ class Auth {
 			});
 		});
 	}
+
 	/**
 	 * Tries to refresh access tokens by calling the authenticate endpoint.
 	 *
