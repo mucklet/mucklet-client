@@ -56,7 +56,7 @@ class ListRoomProfiles {
 			}
 			if (list.length) {
 				this.module.charLog.logComponent(char, 'listRoomProfiles', new Elem(n => n.elem('div', { className: 'listprofiles charlog--pad' }, [
-					n.component(new Txt(l10n.l('listRoomProfiles.charProfiles', "Character profiles"), { tagName: 'h4', className: 'charlog--pad' })),
+					n.component(new Txt(l10n.l('listRoomProfiles.roomProfiles', "Room profiles"), { tagName: 'h4', className: 'charlog--pad' })),
 					n.elem('div', { className: 'charlog--code' }, [
 						n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
 							n.component(new Html(list.join(''), { tagName: 'tbody' })),

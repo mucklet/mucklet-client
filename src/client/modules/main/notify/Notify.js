@@ -122,7 +122,7 @@ class Notify {
 				}
 				// Click callback
 				n.onclick = (ev) => {
-					ev.target.close();
+					ev.target?.close();
 					opt.onClick?.(ev);
 				};
 			}

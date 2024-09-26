@@ -12,8 +12,17 @@
 	transition: 0.2s opacity, 0.2s background-color;
 	text-align: center;
 
+	&.withtitle {
+		pointer-events: initial;
+		cursor: help;
+	}
+
 	&.hide {
 		opacity: 0;
+		&.withtitle {
+			pointer-events: none;
+			cursor: inherit;
+		}
 	}
 
 	&.alert {

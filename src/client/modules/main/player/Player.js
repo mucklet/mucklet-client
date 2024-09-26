@@ -123,14 +123,94 @@ class Player {
 		return Promise.reject(new Error("Char " + charId + " not controlled"));
 	}
 
-	isBuilder() {
-		let r = this.model.roles;
-		return r && (r.indexOf('admin') >= 0 || r.indexOf('builder') >= 0);
+	/**
+	 * Returns true if the player is an admin, builder, moderator, or helper.
+	 * @param {Array<string>} [roles] Player roles. Uses current player roles by default.
+	 * @returns {boolean}
+	 */
+	isStaff(roles) {
+		roles = roles || this.model.roles;
+		return roles && (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0 || roles.indexOf('moderator') >= 0 || roles.indexOf('helper') >= 0);
 	}
 
-	isAdmin() {
-		let r = this.model.roles;
-		return r && r.indexOf('admin') >= 0 ;
+	/**
+	 * Returns true if the player is an admin, or moderator.
+	 * @param {Array<string>} [roles] Player roles. Uses current player roles by default.
+	 * @returns {boolean}
+	 */
+	isModerator(roles) {
+		roles = roles || this.model.roles;
+		return roles && (roles.indexOf('admin') >= 0 || roles.indexOf('moderator') >= 0);
+	}
+
+	/**
+	 * Returns true if the player is an admin or a builder.
+	 * @param {Array<string>} [roles] Player roles. Uses current player roles by default.
+	 * @returns {boolean}
+	 */
+	isBuilder(roles) {
+		roles = roles || this.model.roles;
+		return roles && (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0);
+	}
+
+	/**
+	 * Returns true if the player is an admin or a helper.
+	 * @param {Array<string>} [roles] Player roles. Uses current player roles by default.
+	 * @returns {boolean}
+	 */
+	isHelper(roles) {
+		roles = roles || this.model.roles;
+		return roles && (roles.indexOf('admin') >= 0 || roles.indexOf('helper') >= 0);
+	}
+
+	/**
+	 * Returns true if the player is an admin.
+	 * @param {Array<string>} [roles] Player roles. Uses current player roles by default.
+	 * @returns {boolean}
+	 */
+	isAdmin(roles) {
+		roles = roles || this.model.roles;
+		return roles && roles.indexOf('admin') >= 0 ;
+	}
+
+	/**
+	 * Returns true if the player is a supporter or a pioneer.
+	 * @param {Array<string>} [roles] Player ID roles. Uses current player ID roles by default.
+	 * @returns {boolean}
+	 */
+	isBonus(roles) {
+		roles = roles || this.model.idRoles;
+		return roles && (roles.indexOf('overseer') >= 0 || roles.indexOf('pioneer') >= 0 || roles.indexOf('supporter') >= 0);
+	}
+
+	/**
+	 * Returns true if the player is a pioneer.
+	 * @param {Array<string>} [roles] Player ID roles. Uses current player ID roles by default.
+	 * @returns {boolean}
+	 */
+	isPioneer(roles) {
+		roles = roles || this.model.idRoles;
+		return roles && (roles.indexOf('overseer') >= 0 || roles.indexOf('pioneer') >= 0);
+	}
+
+	/**
+	 * Returns true if the player is a supporter.
+	 * @param {Array<string>} [roles] Player ID roles. Uses current player ID roles by default.
+	 * @returns {boolean}
+	 */
+	isSupporter(roles) {
+		roles = roles || this.model.idRoles;
+		return roles && (roles.indexOf('overseer') >= 0 || roles.indexOf('supporter') >= 0);
+	}
+
+	/**
+	 * Returns true if the player is an overseer.
+	 * @param {Array<string>} [roles] Player ID roles. Uses current player ID roles by default.
+	 * @returns {boolean}
+	 */
+	isOverseer(roles) {
+		roles = roles || this.model.idRoles;
+		return roles && roles.indexOf('overseer') >= 0;
 	}
 
 	ownsChar(charId) {

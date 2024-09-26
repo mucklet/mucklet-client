@@ -9,7 +9,7 @@ class PageRoomExits extends CollectionComponent {
 
 		let onClick = opt?.onExitClick || ((exitId, ev) => {
 			ctrl.call('useExit', { exitId })
-				.catch(err => this.module.toaster.openError(err));
+				.catch(err => module.toaster.openError(err));
 		});
 
 		super(
