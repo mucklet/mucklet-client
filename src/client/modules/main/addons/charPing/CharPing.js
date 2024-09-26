@@ -2,7 +2,6 @@ const defaultDuration = 1000 * 60 * 15; // 15 minutes between successful pings
 const defaultThreshold = 1000 * 60 * 60; // 60 minutes until character is put to sleep
 const defaultRetry = 1000 * 60 * 1; // 1 minute between retries
 
-const authenticateUrl = AUTH_AUTHENTICATE_URL;
 const crossOrigin = API_CROSS_ORIGIN;
 
 /**
@@ -93,24 +92,7 @@ class CharPing {
 				// Access denied likely means the token cookie wasn't included
 				// We try to refresh the token by calling authenticate endpoint.
 				if (resp.status == 401) {
-					return fetch(authenticateUrl, {
-						method: 'POST',
-						mode: 'cors',
-						credentials: crossOrigin ? 'include' : 'same-origin',
-					}).then(authResp => {
-						return authResp.text().then(text => {
-							if (text) {
-								try {
-									let result = JSON.parse(text);
-									if (result?.error) {
-										// A proper error messages means we are not logged in.
-										this.module.auth.redirectToLogin(true);
-										return Promise.reject(result.error);
-									}
-								} catch (ex) {}
-							}
-						});
-					}).then(() => {
+					return this.module.auth.refreshTokens(true).then(() => {
 						throw resp;
 					});
 				}

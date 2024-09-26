@@ -27,6 +27,7 @@ class RoomScript {
 			'help',
 			'charLog',
 			'roomAccess',
+			'auth',
 		], this._init.bind(this));
 	}
 
@@ -59,16 +60,15 @@ class RoomScript {
 			let fetchError = true;
 			return (isResError(script.source)
 				? Promise.resolve(l10n.t(errToL10n(script.source)))
-				: fetch(script.source.href, {
+				// First refresh the tokens as the access token may have expired.
+				: this.module.auth.refreshTokens().then(() => fetch(script.source.href, {
 					credentials: 'include',
-				})
-					.then(response => {
-						fetchError = response.status >= 300;
-						return response.text();
-					})
-					.catch(err => {
-						return "Error fetching script: " + String(err);
-					})
+				}).then(response => {
+					fetchError = response.status >= 300;
+					return response.text();
+				}).catch(err => {
+					return "Error fetching script: " + String(err);
+				}))
 			).then(source => {
 				try {
 					let rows = [
