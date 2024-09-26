@@ -262,6 +262,7 @@ class CharLog {
 			time: this._getTimestamp(l, opt?.time),
 			component,
 			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
+			noReport: true,
 		}));
 	}
 
@@ -280,6 +281,7 @@ class CharLog {
 			time: this._getTimestamp(l, opt?.time),
 			msg,
 			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
+			noReport: true,
 		}));
 	}
 
@@ -298,6 +300,7 @@ class CharLog {
 			time: this._getTimestamp(l, opt?.time),
 			error: err,
 			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
+			noReport: true,
 		}));
 	}
 
