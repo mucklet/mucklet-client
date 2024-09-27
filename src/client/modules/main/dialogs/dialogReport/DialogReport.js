@@ -20,39 +20,6 @@ function toTime(ev, diff) {
 		: '-';
 }
 
-const serverEvents = {
-	action: true,
-	address: true,
-	arrive: true,
-	broadcast: true,
-	controlLost: true,
-	controlRequest: true,
-	describe: true,
-	dnd: true,
-	follow: true,
-	followRequest: true,
-	helpme: true,
-	info: true,
-	join: true,
-	leadRequest: true,
-	leave: true,
-	mail: true,
-	message: true,
-	ooc: true,
-	pose: true,
-	roll: true,
-	say: true,
-	sleep: true,
-	stopFollow: true,
-	stopLead: true,
-	summon: true,
-	suspend: true,
-	travel: true,
-	wakeup: true,
-	warn: true,
-	whisper: true,
-};
-
 class DialogReport {
 	constructor(app, params) {
 		this.app = app;
@@ -301,7 +268,7 @@ class DialogReport {
 						end = i;
 					}
 					if (ev.time < startTime) {
-						return l.slice(i + 1, end).filter(ev => serverEvents[ev.type] || ev.sig).concat(log);
+						return l.slice(i + 1, end).filter(ev => !ev.noReport).concat(log);
 					}
 				}
 			}

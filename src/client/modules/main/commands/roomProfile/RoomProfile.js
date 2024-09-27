@@ -23,7 +23,7 @@ class RoomProfile {
 			'help',
 			'charLog',
 			'confirm',
-			'roomProfiles',
+			'roomAccess',
 		], this._init.bind(this));
 	}
 
@@ -31,7 +31,7 @@ class RoomProfile {
 		this.module = module;
 		this.module.cmd.addCmd({
 			key: 'roomprofile',
-			next: new ListStep('profileId', this.module.roomProfiles.getInRoomProfileTokens(), {
+			next: new ListStep('profileId', this.module.roomAccess.getInRoomProfileTokens(), {
 				name: "room profile",
 			}),
 			value: (ctx, p) => this.roomProfile(ctx.char, p.profileId, true),

@@ -61,7 +61,7 @@ class SetRoomProfile {
 			'charLog',
 			'help',
 			'info',
-			'roomProfiles',
+			'roomAccess',
 		], this._init.bind(this));
 	}
 
@@ -77,7 +77,7 @@ class SetRoomProfile {
 		this.module.cmd.addPrefixCmd('set', {
 			key: 'roomprofile',
 			next: [
-				new ListStep('profileId', this.module.roomProfiles.getInRoomProfileTokens(), {
+				new ListStep('profileId', this.module.roomAccess.getInRoomProfileTokens(), {
 					name: "room profile",
 				}),
 				new DelimStep(":", { errRequired: null }),

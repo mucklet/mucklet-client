@@ -1,6 +1,7 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { Model } from 'modapp-resource';
+import l10n from 'modapp-l10n';
 import ModelFader from 'components/ModelFader';
 import ModelCollapser from 'components/ModelCollapser';
 import Fader from 'components/Fader';
@@ -44,6 +45,12 @@ class OverlayNavComponent {
 			className: 'badge--text',
 			duration: 0,
 		});
+		let listenComponent = new Elem(n => n.elem('div', {
+			className: 'overlaynav--listen counter small alert hide withtitle',
+			attributes: {
+				title: l10n.t('overlayNav.somethingIsListening', "Something is listening"),
+			},
+		}));
 		let roomComponent = new Elem(n => n.elem('div', { className: 'overlaynav' + (this.opt?.mode == 'mobile' ? ' mobile' : '') }, [
 			n.elem('div', { className: 'flex-row' }, [
 				n.elem('div', { className: 'overlaynav--badge flex-auto' }, [
@@ -58,6 +65,7 @@ class OverlayNavComponent {
 							ev.stopPropagation();
 						},
 					}}, [
+						n.component(listenComponent),
 						n.elem('div', { className: 'overlaynav--badgecont' }, [
 							n.elem('div', { className: 'badge--select badge--select-margin flex-baseline' }, [
 								n.elem('div', { className: 'badge--info' }, [
@@ -129,6 +137,7 @@ class OverlayNavComponent {
 						c.setModel(m?.area);
 					}
 					this._setBadge(popComponent, nameFaderComponent, roomNameComponent, areaNameComponent);
+					this._setListen(listenComponent);
 					faderComponent.setComponent(m ? roomComponent : null);
 				},
 			),
@@ -161,6 +170,14 @@ class OverlayNavComponent {
 				fader.setComponent(roomNameComponent);
 			}
 			popComponent.setText(pop || "0");
+		}
+	}
+
+	_setListen(listenComponent) {
+		if (this.ctrl.inRoom?.listen) {
+			listenComponent.removeClass('hide');
+		} else {
+			listenComponent.addClass('hide');
 		}
 	}
 

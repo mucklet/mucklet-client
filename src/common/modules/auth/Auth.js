@@ -110,6 +110,36 @@ class Auth {
 		});
 	}
 
+	/**
+	 * Tries to refresh access tokens by calling the authenticate endpoint.
+	 *
+	 * The returned promise will be rejected if refresh failed.
+	 * @param {boolean} redirectOnerror Flag to redirect to login on error. Defaults to false.
+	 * @returns {Promise} Promise to tokens being refreshed.
+	 */
+	refreshTokens(redirectOnerror) {
+		return fetch(authenticateUrl, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: crossOrigin ? 'include' : 'same-origin',
+		}).then(authResp => {
+			return authResp.text().then(text => {
+				if (text) {
+					try {
+						let result = JSON.parse(text);
+						if (result?.error) {
+							// A proper error messages means we are not logged in.
+							if (redirectOnError) {
+								this.redirectToLogin(true);
+							}
+							return Promise.reject(result.error);
+						}
+					} catch (ex) {}
+				}
+			});
+		});
+	}
+
 	getModel() {
 		return this.model;
 	}

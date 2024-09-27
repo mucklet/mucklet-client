@@ -136,6 +136,11 @@
 		color: $color2;
 	}
 
+	&--source {
+		color: $log-text;
+		font-family: $font-code;
+	}
+
 	&--code, &--code-inline {
 		font-style: normal;
 		font-size: $font-size-small;
