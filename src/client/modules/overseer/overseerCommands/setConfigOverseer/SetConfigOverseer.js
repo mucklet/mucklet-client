@@ -39,6 +39,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.keyMaxLengthDesc', "Keyword (teleport, exit, etc.) max length."),
 		sortOrder: 1050,
 	},
+	{
+		key: 'scriptMaxLength',
+		stepFactory: () => new NumberStep('value', { name: "script max length" }),
+		desc: l10n.l('setConfig.scriptMaxLengthDesc', "Script max length."),
+		sortOrder: 1060,
+	},
 	// Max/min name lengths
 	{
 		key: 'charNameMinLength',
