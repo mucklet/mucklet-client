@@ -24,7 +24,6 @@ class CreateRoomScript {
 			'charLog',
 			'help',
 			'info',
-			'createLimits',
 		], this._init.bind(this));
 	}
 
@@ -73,10 +72,6 @@ class CreateRoomScript {
 	}
 
 	createRoomScript(char, params) {
-		let errComponent = this.module.createLimits.getCharProfilesError(char);
-		if (errComponent) {
-			return this.module.charLog.logComponent(char, 'error', errComponent);
-		}
 		return char.call('createRoomScript', params).then(result => {
 		 	this.module.charLog.logInfo(char, l10n.l('createRoomScript.scriptCreated', "Created script \"{scriptKey}\" for room \"{roomName}\".", { scriptKey: result.script.key, roomName: result.room.name }));
 		}).catch(err => {
