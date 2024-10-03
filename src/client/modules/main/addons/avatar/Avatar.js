@@ -20,14 +20,32 @@ class Avatar {
 
 	/**
 	 * Creates a new avatar component instance
-	 * @param {Model|object} char Char model or object. Should contain properties id, name, surname, and optionally avatar.
+	 * @param {Model|object} char Char or profile model or object.
 	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.char] Character object used to fetch initials in profile is not a character.
+	 * @param {string} [opt.size] Avatar size. May be 'small', 'medium', 'large', or 'xlarge'.
+	 * @param {string} [opt.property] Char property to get the image ID. Defaults to 'avatar'.
+	 * @param {string} [opt.resolve] Resolves the image ID from the property. Defaults to v => v.
+	 * @param {string} [opt.placeholder] Placeholder image to use instead of initials. May be 'avatar', 'room', or 'area'.
+	 * @param {boolean} [opt.modalOnClick] Flag if clicking on the image should show the full image in a modal.
 	 * @returns {Component} Avatar component.
 	 */
 	newAvatar(char, opt) {
 		return new AvatarComponent(char, Object.assign({ pattern: this.avatarPattern }, opt));
 	}
 
+	/**
+	 * Creates a new avatar component instance for char images.
+	 * @param {Model|object} char Char or profile model or object.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.char] Character object used to fetch initials in profile is not a character.
+	 * @param {string} [opt.size] Avatar size. May be 'small', 'medium', 'large', or 'xlarge'.
+	 * @param {string} [opt.property] Char property to get the image ID. Defaults to 'image'.
+	 * @param {string} [opt.resolve] Resolves the image ID from the property. Defaults to v => v.
+	 * @param {string} [opt.placeholder] Placeholder image to use instead of initials. May be 'avatar'. Defaults to 'avatar'.
+	 * @param {boolean} [opt.modalOnClick] Flag if clicking on the image should show the full image in a modal.
+	 * @returns {Component} Avatar component.
+	 */
 	newCharImg(char, opt) {
 		return new AvatarComponent(char, Object.assign({
 			pattern: this.charImgPattern,
@@ -36,6 +54,18 @@ class Avatar {
 		}, opt));
 	}
 
+	/**
+	 * Creates a new avatar component instance for room images.
+	 * @param {Model|object} room Room or profile model or object.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.char] Character object used to fetch initials in profile is not a character.
+	 * @param {string} [opt.size] Avatar size. May be 'small', 'medium', 'large', or 'xlarge'.
+	 * @param {string} [opt.property] Char property to get the image ID. Defaults to 'room'.
+	 * @param {string} [opt.resolve] Resolves the image ID from the property. Defaults to v => v.
+	 * @param {string} [opt.placeholder] Placeholder image to use instead of initials. May be 'avatar'. Defaults to 'avatar'.
+	 * @param {boolean} [opt.modalOnClick] Flag if clicking on the image should show the full image in a modal.
+	 * @returns {Component} Avatar component.
+	 */
 	newRoomImg(room, opt) {
 		return new AvatarComponent(room, Object.assign({
 			pattern: this.roomImgPattern,

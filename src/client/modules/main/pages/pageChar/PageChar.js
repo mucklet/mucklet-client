@@ -56,6 +56,7 @@ class PageChar {
 	 * @param {function} tool.componentFactory Tool component factory: function(ctrl, char) -> Component
 	 * @param {number} [tool.filter] Filter function: function(ctrl, char) -> bool
 	 * @param {number} [tool.className] Class to give to the list item container.
+	 * @param {string} [tool.type] Target type. May be 'header', or 'footer'. Defaults to 'header';
 	 * @returns {this}
 	 */
 	addTool(tool) {

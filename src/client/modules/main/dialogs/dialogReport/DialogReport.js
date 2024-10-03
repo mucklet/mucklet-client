@@ -42,9 +42,11 @@ class DialogReport {
 	 * @param {string} ctrlId ID of controlled character sending the report.
 	 * @param {string} charId ID of target character of the report.
 	 * @param {string} puppeteerId ID of target puppeteer of the report.
-	 * @param {object} [ev] Event object attached to the report.
+	 * @param {object} [opt] Optional params
+	 * @param {object} [opt.attachEvent] Event object attached to the report.
+	 * @param {boolean} [opt.attachProfile] Flag to tell if the current charater profile should be attached.
 	 */
-	open(ctrlId, charId, puppeteerId, ev) {
+	open(ctrlId, charId, puppeteerId, opt) {
 		if (this.dialog) return;
 
 		this.dialog = true;
@@ -57,10 +59,19 @@ class DialogReport {
 
 		this.module.api.get('core.char.' + charId)
 			.then(char => {
-				let model = new Model({ data: { msg: "", attachLog: !!ev, start: -20, end: 10 }, eventBus: this.app.eventBus });
+				let model = new Model({ data: {
+					msg: "",
+					attachLog: !!opt?.attachEvent,
+					attachProfile: !!opt?.attachProfile,
+					start: -20,
+					end: 10,
+					snapshotPromise: null,
+				}, eventBus: this.app.eventBus });
+
+				this._setCharSnapshot(model, charId);
 
 				let logAttachComponent = null;
-				if (ev) {
+				if (opt?.attachEvent) {
 					logAttachComponent = new Elem(n => n.elem('div', [
 						n.component(new LabelToggleBox(l10n.l('dialogReport.attachLog', "Attach log to report"), model.attachLog, {
 							className: 'common--sectionpadding',
@@ -78,11 +89,11 @@ class DialogReport {
 								c.setComponent(model.attachLog
 									? new PanelSection(
 										l10n.l('dialogReport.logInterval', "Log interval"),
-										new Elem(n => n.elem('div', [
+										new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
 											n.elem('div', [
 												n.component(new ModelTxt(
 													model,
-													m => toTime(ev, m.start),
+													m => toTime(opt?.attachEvent, m.start),
 													{ duration: 0 },
 												)),
 												n.text(" – "),
@@ -96,7 +107,7 @@ class DialogReport {
 															if (change && !change.hasOwnProperty('end')) return;
 
 															clearTimeout(o.timer);
-															let endTime = addMin(ev.time, m.end);
+															let endTime = addMin(opt?.attachEvent.time, m.end);
 															let diff = endTime - (new Date().getTime());
 															c.setText(diff > 0
 																? l10n.l('dialogReport.now', "now")
@@ -121,7 +132,7 @@ class DialogReport {
 													density: 60,
 													filter: v => v == 0 ? 0 : -1,
 													format: {
-														to: v => toTime(ev, v),
+														to: v => toTime(opt?.attachEvent, v),
 														from: v => v,
 													},
 												},
@@ -180,10 +191,19 @@ class DialogReport {
 							},
 						)),
 						n.component(logAttachComponent),
+						n.component(new LabelToggleBox(l10n.l('dialogReport.attachProfile', "Attach character profile to report"), model.attachProfile, {
+							className: 'common--sectionpadding',
+							onChange: (v, c) => {
+								model.set({ attachProfile: v });
+								this._setCharSnapshot(model, charId);
+							},
+							popupTip: l10n.l('dialogReport.attachProfileInfo', "Attaches the character's current profile to the report. This includes information such as image, name, gender, species, description, about, and tags."),
+							popupTipClassName: 'popuptip--width-m',
+						})),
 						n.component('message', new Collapser(null)),
 						n.elem('div', { className: 'pad-top-xl' }, [
 							n.elem('submit', 'button', {
-								events: { click: () => this._sendReport(ctrlId, charId, puppeteerId, ev, model) },
+								events: { click: () => this._sendReport(ctrlId, charId, puppeteerId, opt?.attachEvent, model) },
 								className: 'btn primary dialog-btn dialogreport--submit',
 							}, [
 								n.component(new Txt(l10n.l('dialogReport.sendReport', "Send report"))),
@@ -211,35 +231,52 @@ class DialogReport {
 			return;
 		}
 
+		let attachments = [];
+
+		// Attach logs if needed
 		this.reportPromise = (model.attachLog
-			? this._getLog(ctrl, addMin(ev.time, model.start).getTime(), addMin(ev.time, model.end).getTime())
-			: Promise.resolve()
-		).then(events => {
-			return this.module.api.call('report.reports', 'create', {
-				charId: ctrlId,
-				targetId: charId,
-				puppeteer: puppeteerId || undefined,
-				msg: model.msg,
-				attachment: model.attachLog ? {
+			? this._getLog(ctrl, addMin(ev.time, model.start).getTime(), addMin(ev.time, model.end).getTime()).then(events => {
+				attachments.push({
 					type: 'log',
 					params: { events },
-				} : undefined,
-			}).then(() => {
-				if (this.dialog) {
-					this.dialog.close();
-				}
-				this.module.toaster.open({
-					title: l10n.l('dialogReport.reportSent', "Report sent"),
-					content: new Txt(l10n.l('dialogReport.reportSentBody', "The report was successfully sent to the moderators.")),
-					closeOn: 'click',
-					type: 'success',
-					autoclose: true,
 				});
-			}).catch(err => {
-				if (!this.dialog) return;
-				this._setMessage(l10n.l(err.code, err.message, err.data));
-			}).then(() => {
-				this.reportPromise = null;
+			})
+			: Promise.resolve()
+		).then(() => {
+			// Attach charSnapshot if needed
+			return (model.attachProfile
+				? model.snapshotPromise.then(snapshotId => {
+					attachments.push({
+						type: 'charSnapshot',
+						params: { snapshotId },
+					});
+				})
+				: Promise.resolve()
+			).then(() => {
+				// Create report
+				return this.module.api.call('report.reports', 'create', {
+					charId: ctrlId,
+					targetId: charId,
+					puppeteer: puppeteerId || undefined,
+					msg: model.msg,
+					attachments: attachments.length ? attachments : undefined,
+				}).then(() => {
+					if (this.dialog) {
+						this.dialog.close();
+					}
+					this.module.toaster.open({
+						title: l10n.l('dialogReport.reportSent', "Report sent"),
+						content: new Txt(l10n.l('dialogReport.reportSentBody', "The report was successfully sent to the moderators.")),
+						closeOn: 'click',
+						type: 'success',
+						autoclose: true,
+					});
+				}).catch(err => {
+					if (!this.dialog) return;
+					this._setMessage(l10n.l(err.code, err.message, err.data));
+				}).then(() => {
+					this.reportPromise = null;
+				});
 			});
 		});
 
@@ -274,6 +311,27 @@ class DialogReport {
 			}
 
 			return this._getLog(char, startTime, endTime, chunk + 1, end ? l.slice(0, end).filter(ev => ev.sig).concat(log) : log);
+		});
+	}
+
+	/**
+	 * Checks if a charSnapshot needs to be created, and if so creates it.
+	 * Subsequent calls to this function will not create a new snapshot.
+	 * @param {Model} model Dialog model.
+	 * @param {string} charId Character ID.
+	 */
+	_setCharSnapshot(model, charId) {
+		if (model.snapshotPromise || !model.attachProfile) {
+			return;
+		}
+		model.set({ snapshotPromise: this.module.api.call('report.charsnapshots', 'create', { charId })
+			.catch(err => {
+				this._setMessage(l10n.l(err.code, err.message, err.data));
+				model.set({
+					attachProfile: false,
+					snapshotPromise: null,
+				});
+			}),
 		});
 	}
 }

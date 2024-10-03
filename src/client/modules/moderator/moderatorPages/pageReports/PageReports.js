@@ -100,7 +100,7 @@ class PageReports {
 	 * Gets a collection of attachment types.
 	 * @returns {Collection} Collection of attachment types.
 	 */
-	 getAttachmentTypes() {
+	getAttachmentTypes() {
 		return this.attachmentTypes;
 	}
 
