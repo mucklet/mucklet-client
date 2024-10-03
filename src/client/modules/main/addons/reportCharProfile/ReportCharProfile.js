@@ -10,6 +10,7 @@ class ReportCharProfile {
 		this.app = app;
 
 		this.app.require([
+			'api',
 			'pageChar',
 			'player',
 			'dialogReport',
@@ -45,8 +46,13 @@ class ReportCharProfile {
 	 * @param {Model} char Charater whose profile to report.
 	 */
 	reportProfile(ctrl, char) {
-		this.module.dialogReport.open(ctrl.id, char.id, null, {
-			attachProfile: true,
+		this.module.api.get('core.char.' + char.id).catch((err) => {
+			console.error("Error getting char: ", err);
+			return char;
+		}).then(c => {
+			this.module.dialogReport.open(ctrl.id, c.id, c.puppeteer?.id, {
+				attachProfile: true,
+			});
 		});
 	}
 

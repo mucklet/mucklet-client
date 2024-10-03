@@ -108,7 +108,7 @@ class PageReports {
 	 * Registers a tags type.
 	 * @param {object} type Attachment type object
 	 * @param {string} type.id Attachment type ID.
-	 * @param {function} type.componentFactory Attachment type component factory: function(ctrl, state) -> Component
+	 * @param {(attachmentInfo: any, reporter: ReporterModel) => Component} type.componentFactory Attachment type component factory.
 	 * @returns {this}
 	 */
 	addAttachmentType(type) {
