@@ -1,5 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelHtml, ModelTxt, ModelComponent } from 'modapp-resource-component';
+import { ModelHtml, ModelTxt, ModelComponent, CollectionList } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
@@ -74,29 +74,21 @@ class PageReportsReporter {
 			n.elem('div', { className: 'badge--text' }, [
 				n.component(new ModelHtml(this.reporter, m => formatText(m.msg), { tagName: 'span', className: 'common--formattext' })),
 			]),
-			n.component(new ModelComponent(
-				this.reporter,
-				new Collapser(),
-				(m, c, change) => {
-					if (!change || change.hasOwnProperty('attachmentType') || change.hasOwnProperty('attachmentInfo')) {
-						if (!m.attachmentType) {
-							c.setComponent(null);
-							return;
-						}
-						let typ = this.module.self.getAttachmentTypes().get(m.attachmentType);
-						c.setComponent(typ
-							? typ.componentFactory(m.attachmentInfo, m)
-							: new Elem(n => n.elem('div', [
-								n.elem('div', { className: 'flex-row' }, [
-									n.component(new Txt(txtType, { className: 'badge--iconcol badge--subtitle' })),
-									n.component(new ModelTxt(this.reporter, m => m.attachmentType, {
-										className: 'badge--info badge--text',
-									})),
-								]),
-								n.component(new ModelTxt(m, m => m.attachmentInfo ? JSON.stringify(m.attachmentInfo, null, 2) : "", { tagName: 'pre', className: 'badge--text common--formattext' })),
-							])),
-						);
-					}
+			n.component(new CollectionList(
+				this.reporter.attachments,
+				(attachment) => {
+					let typ = this.module.self.getAttachmentTypes().get(attachment.type);
+					return typ
+						? typ.componentFactory(attachment.info, this.reporter)
+						: new Elem(n => n.elem('div', [
+							n.elem('div', { className: 'flex-row' }, [
+								n.component(new Txt(txtType, { className: 'badge--iconcol badge--subtitle' })),
+								n.component(new ModelTxt(this.reporter, m => attachment.type, {
+									className: 'badge--info badge--text',
+								})),
+							]),
+							n.component(new ModelTxt(attachment, m => m.info ? JSON.stringify(m.info, null, 2) : "", { tagName: 'pre', className: 'badge--text common--formattext' })),
+						]));
 				},
 			)),
 		]));

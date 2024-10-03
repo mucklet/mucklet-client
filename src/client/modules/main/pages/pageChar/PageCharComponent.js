@@ -66,7 +66,7 @@ class PageCharComponent {
 		let elem = new Elem(n => n.elem('div', [
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.filter ? t.filter(this.ctrl, this.char) : true,
+					filter: t => (t.type || 'header') == 'header' && (!t.filter || t.filter(this.ctrl, this.char)),
 				}),
 				tools => tools.dispose(),
 				tools => new CollectionComponent(
@@ -108,10 +108,10 @@ class PageCharComponent {
 					}
 				},
 			)),
-			n.elem('div', { className: 'pagechar--details flex-row pad8 common--sectionpadding' }, [
+			n.elem('div', { className: 'flex-row pad8 common--sectionpadding' }, [
 				n.elem('div', { className: 'flex-1' }, [
 					n.component(new Txt(l10n.l('pageChar.gender', "Gender"), { tagName: 'h3', className: 'margin-bottom-m' })),
-					n.elem('div', { className: 'pagechar--gender' }, [
+					n.elem('div', [
 						n.component(new ModelComponent(
 							this.char,
 							new Txt(),
@@ -124,7 +124,7 @@ class PageCharComponent {
 				]),
 				n.elem('div', { className: 'flex-1' }, [
 					n.component(new Txt(l10n.l('pageChar.species', "Species"), { tagName: 'h3', className: 'margin-bottom-m' })),
-					n.elem('div', { className: 'pagechar--species' }, [
+					n.elem('div', [
 						n.component(new ModelComponent(
 							this.char,
 							new Txt(),
@@ -213,6 +213,35 @@ class PageCharComponent {
 					(m, c) => this._showAbout(c, about),
 				),
 				(m, c) => this._showAbout(c.getComponent(), about),
+			)),
+			n.component(new Context(
+				() => new CollectionWrapper(this.module.self.getTools(), {
+					filter: t => t.type == 'footer' && (!t.filter || t.filter(this.ctrl, this.char)),
+				}),
+				tools => tools.dispose(),
+				tools => new CollectionComponent(
+					tools,
+					new Collapser(),
+					(col, c, ev) => {
+						// Collapse if we have no tools to show
+						if (!col.length) {
+							c.setComponent(null);
+							return;
+						}
+
+						if (!ev || (col.length == 1 && ev.event == 'add')) {
+							c.setComponent(new CollectionList(
+								tools,
+								t => t.componentFactory(this.ctrl, this.char),
+								{
+									className: 'pagechar--footertools',
+									subClassName: t => t.className || null,
+									horizontal: true,
+								},
+							));
+						}
+					},
+				),
 			)),
 		]));
 

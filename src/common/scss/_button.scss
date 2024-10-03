@@ -56,6 +56,11 @@
 	width: 100%;
 }
 
+.btn[title], .iconbtn[title] {
+	pointer-events: initial;
+	cursor: help;
+}
+
 // .btn.icon-left .fa {
 // 	padding: 0 7px;
 // 	left: -16px;
@@ -170,10 +175,10 @@
 
 	> .fa, > * > .fa {
 		width: 16px;
-		font-size: 14px;
+		font-size: 12px;
 	}
 	> .fa + *, > * > .fa + * {
-		padding-left: 4px;
+		padding-left: 6px;
 	}
 }
 
