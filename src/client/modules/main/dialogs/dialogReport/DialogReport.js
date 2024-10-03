@@ -6,6 +6,7 @@ import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
 import LabelToggleBox from 'components/LabelToggleBox';
 import NoUiSlider from 'components/NoUiSlider';
+import ModelCollapser from 'components/ModelCollapser';
 import Dialog from 'classes/Dialog';
 import formatTime from 'utils/formatTime';
 import './dialogReport.scss';
@@ -14,10 +15,8 @@ function addMin(time, minDiff) {
 	return new Date(time + 60 * 1000 * minDiff);
 }
 
-function toTime(ev, diff) {
-	return ev && ev.time
-		? formatTime(addMin(ev.time, diff))
-		: '-';
+function toTime(time, diff) {
+	return formatTime(addMin(time, diff));
 }
 
 class DialogReport {
@@ -43,7 +42,8 @@ class DialogReport {
 	 * @param {string} charId ID of target character of the report.
 	 * @param {string} puppeteerId ID of target puppeteer of the report.
 	 * @param {object} [opt] Optional params
-	 * @param {object} [opt.attachEvent] Event object attached to the report.
+	 * @param {object} [opt.msg] Message to use initially.
+	 * @param {object} [opt.attachEvent] Event object to use as time reference for the report.
 	 * @param {boolean} [opt.attachProfile] Flag to tell if the current charater profile should be attached.
 	 */
 	open(ctrlId, charId, puppeteerId, opt) {
@@ -59,111 +59,19 @@ class DialogReport {
 
 		this.module.api.get('core.char.' + charId)
 			.then(char => {
+				let hasEvent = !!opt?.attachEvent;
 				let model = new Model({ data: {
-					msg: "",
-					attachLog: !!opt?.attachEvent,
+					msg: opt?.msg || "",
+					attachLog: hasEvent,
 					attachProfile: !!opt?.attachProfile,
+					time: opt?.attachEvent?.time || Date.now(),
 					start: -20,
 					end: 10,
 					snapshotPromise: null,
+
 				}, eventBus: this.app.eventBus });
 
 				this._setCharSnapshot(model, charId);
-
-				let logAttachComponent = null;
-				if (opt?.attachEvent) {
-					logAttachComponent = new Elem(n => n.elem('div', [
-						n.component(new LabelToggleBox(l10n.l('dialogReport.attachLog', "Attach log to report"), model.attachLog, {
-							className: 'common--sectionpadding',
-							onChange: (v, c) => {
-								model.set({ attachLog: v });
-							},
-							popupTip: l10n.l('dialogReport.attachLogInfo', "Attaches a section of your character's log to the report.\nIt will only be seen by moderators."),
-							popupTipClassName: 'popuptip--width-m',
-						})),
-						n.component(new ModelComponent(
-							model,
-							new Collapser(),
-							(m, c, change) => {
-								if (change && !change.hasOwnProperty('attachLog')) return;
-								c.setComponent(model.attachLog
-									? new PanelSection(
-										l10n.l('dialogReport.logInterval', "Log interval"),
-										new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
-											n.elem('div', [
-												n.component(new ModelTxt(
-													model,
-													m => toTime(opt?.attachEvent, m.start),
-													{ duration: 0 },
-												)),
-												n.text(" – "),
-												n.component(new Context(
-													() => ({ timer: null }),
-													o => clearTimeout(o.timer),
-													o => new ModelComponent(
-														model,
-														new Txt('', { duration: 0 }),
-														(m, c, change) => {
-															if (change && !change.hasOwnProperty('end')) return;
-
-															clearTimeout(o.timer);
-															let endTime = addMin(opt?.attachEvent.time, m.end);
-															let diff = endTime - (new Date().getTime());
-															c.setText(diff > 0
-																? l10n.l('dialogReport.now', "now")
-																: formatTime(endTime),
-															);
-															if (diff > 0) {
-																o.timer = setTimeout(() => {
-																	c.setText(formatTime(endTime));
-																}, diff);
-															}
-														},
-													),
-												)),
-											]),
-											n.component(new NoUiSlider({
-												start: [ model.start, model.end ],
-												step: 5,
-												range: { min: [ -60 ], '50%': [ 0, 5 ], max: [ 60 ] },
-												connect: [ false, true, false ],
-												pips: {
-													mode: 'steps',
-													density: 60,
-													filter: v => v == 0 ? 0 : -1,
-													format: {
-														to: v => toTime(opt?.attachEvent, v),
-														from: v => v,
-													},
-												},
-												className: 'dialogreport--slider pips-centered',
-												onUpdate: (c, v, handle, unencoded, tap, positions, slider) => {
-													let start = parseInt(v[0]);
-													let end = parseInt(v[1]);
-													if (start > 0) {
-														start = 0;
-														slider.setHandle(0, 0, false);
-													}
-													if (end < 0) {
-														end = 0;
-														slider.setHandle(1, 0, false);
-													}
-													model.set({ start, end });
-												},
-											})),
-										])),
-										{
-											className: 'common--sectionpadding small',
-											noToggle: true,
-											popupTip: l10n.l('dialogReport.logIntevalInfo', "Time interval of log events to include in the attachment."),
-										},
-									)
-									: null,
-								);
-							},
-						)),
-					]));
-				}
 
 				this.dialog = new Dialog({
 					title: l10n.l('dialogReport.reportCharacter', "Report character"),
@@ -190,7 +98,95 @@ class DialogReport {
 								popupTip: l10n.l('dialogReport.messageInfo', "Describe what you wish to report. This will only be seen by moderators."),
 							},
 						)),
-						n.component(logAttachComponent),
+						n.elem('div', [
+							n.component(new LabelToggleBox(l10n.l('dialogReport.attachLog', "Attach log to report"), model.attachLog, {
+								className: 'common--sectionpadding',
+								onChange: (v, c) => {
+									model.set({ attachLog: v });
+								},
+								popupTip: l10n.l('dialogReport.attachLogInfo', "Attaches a section of your character's log to the report.\nIt will only be seen by moderators."),
+								popupTipClassName: 'popuptip--width-m',
+							})),
+							n.component(new ModelCollapser(model, [{
+								condition: m => m.attachLog,
+								factory: m => new PanelSection(
+									l10n.l('dialogReport.logInterval', "Log interval"),
+									new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
+										n.elem('div', [
+											n.component(new ModelTxt(
+												model,
+												m => toTime(m.time, m.start),
+												{ duration: 0 },
+											)),
+											n.text(" – "),
+											n.component(new Context(
+												() => ({ timer: null }),
+												o => clearTimeout(o.timer),
+												o => new ModelComponent(
+													model,
+													new Txt('', { duration: 0 }),
+													(m, c, change) => {
+														if (change && !change.hasOwnProperty('end')) return;
+
+														clearTimeout(o.timer);
+														let endTime = addMin(m.time, m.end);
+														let diff = endTime - Date.now();
+														c.setText(diff > 0
+															? l10n.l('dialogReport.now', "now")
+															: formatTime(endTime),
+														);
+														if (diff > 0) {
+															o.timer = setTimeout(() => {
+																c.setText(formatTime(endTime));
+															}, diff);
+														}
+													},
+												),
+											)),
+										]),
+										n.component(new NoUiSlider({
+											start: [ model.start, model.end ],
+											step: 5,
+											range: hasEvent
+												? { min: [ -60 ], max: [ 60 ] }
+												: { min: [ -150 ], max: [ 10 ] },
+											connect: [ false, true, false ],
+											pips: {
+												mode: 'steps',
+												density: 60,
+												filter: v => v == 0 ? 0 : -1,
+												format: {
+													to: v => toTime(model.time, v),
+													from: v => v,
+												},
+											},
+											className: 'dialogreport--slider pips-centered',
+											onUpdate: (c, v, handle, unencoded, tap, positions, slider) => {
+												let start = parseInt(v[0]);
+												let end = parseInt(v[1]);
+												// If we have an event, always include it (pos 0).
+												if (hasEvent) {
+													if (start > 0) {
+														start = 0;
+														slider.setHandle(0, 0, false);
+													}
+													if (end < 0) {
+														end = 0;
+														slider.setHandle(1, 0, false);
+													}
+												}
+												model.set({ start, end });
+											},
+										})),
+									])),
+									{
+										className: 'common--sectionpadding small',
+										noToggle: true,
+										popupTip: l10n.l('dialogReport.logIntevalInfo', "Time interval of log events to include in the attachment."),
+									},
+								),
+							}])),
+						]),
 						n.component(new LabelToggleBox(l10n.l('dialogReport.attachProfile', "Attach character profile to report"), model.attachProfile, {
 							className: 'common--sectionpadding',
 							onChange: (v, c) => {
@@ -203,7 +199,7 @@ class DialogReport {
 						n.component('message', new Collapser(null)),
 						n.elem('div', { className: 'pad-top-xl' }, [
 							n.elem('submit', 'button', {
-								events: { click: () => this._sendReport(ctrlId, charId, puppeteerId, opt?.attachEvent, model) },
+								events: { click: () => this._sendReport(ctrlId, charId, puppeteerId, model) },
 								className: 'btn primary dialog-btn dialogreport--submit',
 							}, [
 								n.component(new Txt(l10n.l('dialogReport.sendReport', "Send report"))),
@@ -222,7 +218,7 @@ class DialogReport {
 			});
 	}
 
-	_sendReport(ctrlId, charId, puppeteerId, ev, model) {
+	_sendReport(ctrlId, charId, puppeteerId, model) {
 		if (this.reportPromise) return this.reportPromise;
 
 		let ctrl = this.module.player.getControlledChar(ctrlId);
@@ -235,7 +231,7 @@ class DialogReport {
 
 		// Attach logs if needed
 		this.reportPromise = (model.attachLog
-			? this._getLog(ctrl, addMin(ev.time, model.start).getTime(), addMin(ev.time, model.end).getTime()).then(events => {
+			? this._getLog(ctrl, addMin(model.time, model.start).getTime(), addMin(model.time, model.end).getTime()).then(events => {
 				attachments.push({
 					type: 'log',
 					params: { events },
