@@ -18,7 +18,7 @@ class DeleteRoomProfile {
 			'cmd',
 			'charLog',
 			'help',
-			'roomProfiles',
+			'roomAccess',
 		], this._init.bind(this));
 	}
 
@@ -28,7 +28,7 @@ class DeleteRoomProfile {
 		this.module.cmd.addPrefixCmd('delete', {
 			key: 'roomprofile',
 			next: [
-				new ListStep('profileId', this.module.roomProfiles.getInRoomProfileTokens(), {
+				new ListStep('profileId', this.module.roomAccess.getInRoomProfileTokens(), {
 					name: "room profile to delete",
 				}),
 			],

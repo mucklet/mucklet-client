@@ -54,6 +54,11 @@ const txtProductFeatures = {
 			longDesc: l10n.l('txtProduct.botAccessDesc', "Connect your characters using bot tokens, and control them with scripts."),
 		},
 		{
+			title: l10n.l('txtProduct.roomScripts', "Room scripts"),
+			desc: l10n.l('txtProduct.roomScriptsShortDesc', "Create and run room scripts"),
+			longDesc: l10n.l('txtProduct.roomScriptsDesc', "Create interactive rooms using a Typescript-like scripting language."),
+		},
+		{
 			title: l10n.l('txtProduct.comingFeatures', "... and more"),
 			desc: l10n.l('txtProduct.comingFeaturesShortDesc', "Upcoming supporter features"),
 			longDesc: l10n.l('txtProduct.comingFeaturesDesc', "Get access to upcoming supporter features as they are added."),

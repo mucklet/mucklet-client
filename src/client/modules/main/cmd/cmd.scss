@@ -13,6 +13,10 @@
 	&--entityid { color: $log-entityid; } // keyword
 	&--listitem { color: $log-listitem; } // attributeValue
 	&--ooc { color: $color4-semidark; } // meta
+	&--code {
+		color: $log-text;
+		font-family: $font-code;
+	} // macroName
 
 	// Formatted text
 	&--format-formatter &--text, &--format-formatter &--ooc {

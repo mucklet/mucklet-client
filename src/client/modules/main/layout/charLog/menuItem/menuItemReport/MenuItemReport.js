@@ -24,7 +24,9 @@ class MenuItemReport {
 	}
 
 	_onClick(charId, ev) {
-		this.module.dialogReport.open(charId, ev.char.id, ev.puppeteer && ev.puppeteer.id, ev);
+		this.module.dialogReport.open(charId, ev.char.id, ev.puppeteer && ev.puppeteer.id, {
+			attachEvent: ev,
+		});
 	}
 
 	dispose() {

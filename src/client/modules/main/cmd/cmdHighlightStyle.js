@@ -11,6 +11,7 @@ export const highlightStyle = HighlightStyle.define([
 	{ tag: t.comment, class: 'cmd--unknown' },
 	{ tag: t.keyword, class: 'cmd--entityid' },
 	{ tag: t.meta, class: 'cmd--ooc' },
+	{ tag: t.macroName, class: 'cmd--code' },
 ]);
 
 export default syntaxHighlighting(highlightStyle);

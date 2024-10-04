@@ -3,6 +3,12 @@
 .dialogreport {
 	max-width: 380px;
 
+	&--disclaimer {
+		padding-bottom: 12px;
+		font-size: 13px;
+		font-style: italic;
+	}
+
 	&--fullname {
 		display: block;
 		margin-bottom: 12px;
@@ -13,6 +19,10 @@
 
 	&--submit {
 		width: 152px;
+	}
+
+	&--attachlog {
+		padding-left: 8px;
 	}
 
 	&--interval {
