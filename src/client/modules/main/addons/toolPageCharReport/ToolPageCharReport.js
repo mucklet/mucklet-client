@@ -3,9 +3,9 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 
 /**
- * ReportCharProfile adds the report char profile tool to PageChar.
+ * ToolPageCharReport adds the report char profile tool to PageChar footer.
  */
-class ReportCharProfile {
+class ToolPageCharReport {
 	constructor(app, params) {
 		this.app = app;
 
@@ -24,7 +24,7 @@ class ReportCharProfile {
 		this.module.pageChar.addTool({
 			id: 'reportProfile',
 			type: 'footer',
-			sortOrder: 10,
+			sortOrder: 20,
 			componentFactory: (ctrl, char) => new Elem(n => n.elem('button', {
 				className: 'btn tiny tinyicon',
 				events: {
@@ -32,7 +32,7 @@ class ReportCharProfile {
 				},
 			}, [
 				n.component(new FAIcon('flag')),
-				n.component(new Txt(l10n.l('reportCharProfile.report', "Report"))),
+				n.component(new Txt(l10n.l('toolPageCharReport.report', "Report"))),
 			])),
 			filter: (ctrl, char) => !this.module.player.ownsChar(char.id),
 		});
@@ -61,4 +61,4 @@ class ReportCharProfile {
 	}
 }
 
-export default ReportCharProfile;
+export default ToolPageCharReport;
