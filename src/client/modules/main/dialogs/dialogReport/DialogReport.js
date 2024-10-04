@@ -9,6 +9,7 @@ import NoUiSlider from 'components/NoUiSlider';
 import ModelCollapser from 'components/ModelCollapser';
 import Dialog from 'classes/Dialog';
 import formatTime from 'utils/formatTime';
+import { isTargeted } from 'utils/charEvent';
 import './dialogReport.scss';
 
 function addMin(time, minDiff) {
@@ -17,6 +18,22 @@ function addMin(time, minDiff) {
 
 function toTime(time, diff) {
 	return formatTime(addMin(time, diff));
+}
+
+const privateEvents = {
+	dnd: true,
+	whisper: true,
+	mail: true,
+	message: true,
+	warn: true,
+	helpme: true,
+};
+
+function isPrivateWithOthers(ev, charId, puppeteerId) {
+	if (!privateEvents[ev.type]) {
+		return false;
+	}
+	return !(ev.char.id == charId && (!puppeteerId || ev.puppeteer?.id == puppeteerId)) && !isTargeted(charId, ev);
 }
 
 class DialogReport {
@@ -51,12 +68,6 @@ class DialogReport {
 
 		this.dialog = true;
 
-		// let eventComponent = null;
-		// if (ev) {
-		// 	let f = this.module.charLog.getEventComponentFactory(ev.type);
-		// 	eventComponent = (f && f(charId, ev, { noCode: true, noButton: true })) || null;
-		// }
-
 		this.module.api.get('core.char.' + charId)
 			.then(char => {
 				let hasEvent = !!opt?.attachEvent;
@@ -64,6 +75,7 @@ class DialogReport {
 					msg: opt?.msg || "",
 					attachLog: hasEvent,
 					attachProfile: !!opt?.attachProfile,
+					excludePrivate: true,
 					time: opt?.attachEvent?.time || Date.now(),
 					start: -20,
 					end: 10,
@@ -77,6 +89,7 @@ class DialogReport {
 					title: l10n.l('dialogReport.reportCharacter', "Report character"),
 					className: 'dialogreport',
 					content: new Elem(n => n.elem('div', [
+						n.component(new Txt(l10n.l('dialogReport.thanksForReport', "Thanks for helping us keep this place friendly and safe!"), { tagName: 'div', className: 'dialogreport--disclaimer' })),
 						n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogreport--fullname flex-1' })),
 						// n.component(eventComponent),
 						n.component('msg', new PanelSection(
@@ -90,7 +103,11 @@ class DialogReport {
 										model.set({ msg: v });
 									},
 								},
-								attributes: { name: 'dialogreport-msg', spellcheck: 'true' },
+								attributes: {
+									name: 'dialogreport-msg',
+									spellcheck: 'true',
+									placeholder: l10n.t('dialogReport.messagePlaceholder', "What do you wish for us to look into?"),
+								},
 							}),
 							{
 								className: 'common--sectionpadding',
@@ -109,82 +126,90 @@ class DialogReport {
 							})),
 							n.component(new ModelCollapser(model, [{
 								condition: m => m.attachLog,
-								factory: m => new PanelSection(
-									l10n.l('dialogReport.logInterval', "Log interval"),
-									new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
-										n.elem('div', [
-											n.component(new ModelTxt(
-												model,
-												m => toTime(m.time, m.start),
-												{ duration: 0 },
-											)),
-											n.text(" – "),
-											n.component(new Context(
-												() => ({ timer: null }),
-												o => clearTimeout(o.timer),
-												o => new ModelComponent(
+								factory: m => new Elem(n => n.elem('div', { className: 'common--formsubsection' }, [
+									n.component(new LabelToggleBox(l10n.l('dialogReport.excludePrivateWithOthers', "Exclude private communication with others"), model.excludePrivate, {
+										className: 'common--formmargin small',
+										onChange: (v, c) => model.set({ excludePrivate: v }),
+										popupTip: l10n.l('dialogReport.excludePrivateWithOthersdInfo', "Exclude private communication, such as whispers or messages, with other characters. Private communication with the reported character will still be included."),
+										popupTipClassName: 'popuptip--width-m',
+									})),
+									n.component(new PanelSection(
+										l10n.l('dialogReport.logInterval', "Log interval"),
+										new Elem(n => n.elem('div', { className: 'pad-bottom-l' }, [
+											n.elem('div', [
+												n.component(new ModelTxt(
 													model,
-													new Txt('', { duration: 0 }),
-													(m, c, change) => {
-														if (change && !change.hasOwnProperty('end')) return;
+													m => toTime(m.time, m.start),
+													{ duration: 0 },
+												)),
+												n.text(" – "),
+												n.component(new Context(
+													() => ({ timer: null }),
+													o => clearTimeout(o.timer),
+													o => new ModelComponent(
+														model,
+														new Txt('', { duration: 0 }),
+														(m, c, change) => {
+															if (change && !change.hasOwnProperty('end')) return;
 
-														clearTimeout(o.timer);
-														let endTime = addMin(m.time, m.end);
-														let diff = endTime - Date.now();
-														c.setText(diff > 0
-															? l10n.l('dialogReport.now', "now")
-															: formatTime(endTime),
-														);
-														if (diff > 0) {
-															o.timer = setTimeout(() => {
-																c.setText(formatTime(endTime));
-															}, diff);
-														}
+															clearTimeout(o.timer);
+															let endTime = addMin(m.time, m.end);
+															let diff = endTime - Date.now();
+															c.setText(diff > 0
+																? l10n.l('dialogReport.now', "now")
+																: formatTime(endTime),
+															);
+															if (diff > 0) {
+																o.timer = setTimeout(() => {
+																	c.setText(formatTime(endTime));
+																}, diff);
+															}
+														},
+													),
+												)),
+											]),
+											n.component(new NoUiSlider({
+												start: [ model.start, model.end ],
+												step: 5,
+												range: hasEvent
+													? { min: [ -60 ], max: [ 60 ] }
+													: { min: [ -150 ], max: [ 10 ] },
+												connect: [ false, true, false ],
+												pips: {
+													mode: 'steps',
+													density: 60,
+													filter: v => v == 0 ? 0 : -1,
+													format: {
+														to: v => toTime(model.time, v),
+														from: v => v,
 													},
-												),
-											)),
-										]),
-										n.component(new NoUiSlider({
-											start: [ model.start, model.end ],
-											step: 5,
-											range: hasEvent
-												? { min: [ -60 ], max: [ 60 ] }
-												: { min: [ -150 ], max: [ 10 ] },
-											connect: [ false, true, false ],
-											pips: {
-												mode: 'steps',
-												density: 60,
-												filter: v => v == 0 ? 0 : -1,
-												format: {
-													to: v => toTime(model.time, v),
-													from: v => v,
 												},
-											},
-											className: 'dialogreport--slider pips-centered',
-											onUpdate: (c, v, handle, unencoded, tap, positions, slider) => {
-												let start = parseInt(v[0]);
-												let end = parseInt(v[1]);
-												// If we have an event, always include it (pos 0).
-												if (hasEvent) {
-													if (start > 0) {
-														start = 0;
-														slider.setHandle(0, 0, false);
+												className: 'dialogreport--slider pips-centered',
+												onUpdate: (c, v, handle, unencoded, tap, positions, slider) => {
+													let start = parseInt(v[0]);
+													let end = parseInt(v[1]);
+													// If we have an event, always include it (pos 0).
+													if (hasEvent) {
+														if (start > 0) {
+															start = 0;
+															slider.setHandle(0, 0, false);
+														}
+														if (end < 0) {
+															end = 0;
+															slider.setHandle(1, 0, false);
+														}
 													}
-													if (end < 0) {
-														end = 0;
-														slider.setHandle(1, 0, false);
-													}
-												}
-												model.set({ start, end });
-											},
-										})),
-									])),
-									{
-										className: 'common--sectionpadding small',
-										noToggle: true,
-										popupTip: l10n.l('dialogReport.logIntevalInfo', "Time interval of log events to include in the attachment."),
-									},
-								),
+													model.set({ start, end });
+												},
+											})),
+										])),
+										{
+											className: 'common--sectionpadding small',
+											noToggle: true,
+											popupTip: l10n.l('dialogReport.logIntevalInfo', "Time interval of log events to include in the attachment."),
+										},
+									)),
+								])),
 							}])),
 						]),
 						n.component(new LabelToggleBox(l10n.l('dialogReport.attachProfile', "Attach character profile to report"), model.attachProfile, {
@@ -228,10 +253,13 @@ class DialogReport {
 		}
 
 		let attachments = [];
+		let filter = model.excludePrivate
+			? (ev) => !ev.noReport && !isPrivateWithOthers(ev, charId, puppeteerId)
+			: (ev) => !ev.noReport;
 
 		// Attach logs if needed
 		this.reportPromise = (model.attachLog
-			? this._getLog(ctrl, addMin(model.time, model.start).getTime(), addMin(model.time, model.end).getTime()).then(events => {
+			? this._getLog(ctrl, addMin(model.time, model.start).getTime(), addMin(model.time, model.end).getTime(), filter).then(events => {
 				attachments.push({
 					type: 'log',
 					params: { events },
@@ -285,7 +313,7 @@ class DialogReport {
 		n.setComponent(msg ? new Txt(msg, { className: 'dialog--error' }) : null);
 	}
 
-	_getLog(char, startTime, endTime, chunk, log) {
+	_getLog(char, startTime, endTime, filter, chunk, log) {
 		chunk = chunk || 0;
 		log = log || [];
 		return this.module.charLog.getLog(char, chunk).then(l => {
@@ -301,12 +329,12 @@ class DialogReport {
 						end = i;
 					}
 					if (ev.time < startTime) {
-						return l.slice(i + 1, end).filter(ev => !ev.noReport).concat(log);
+						return l.slice(i + 1, end).filter(filter).concat(log);
 					}
 				}
 			}
 
-			return this._getLog(char, startTime, endTime, chunk + 1, end ? l.slice(0, end).filter(ev => ev.sig).concat(log) : log);
+			return this._getLog(char, startTime, endTime, filter, chunk + 1, end ? l.slice(0, end).filter(filter).concat(log) : log);
 		});
 	}
 
