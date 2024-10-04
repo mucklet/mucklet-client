@@ -20,8 +20,13 @@
 	}
 
 	&--footertools {
+		margin: 0 -2px;
 		border-top: 1px solid $color1-dark;
 		padding-top: 8px;
+
+		> div {
+			padding: 0px 2px;
+		}
 	}
 
 	&--image-cont {
