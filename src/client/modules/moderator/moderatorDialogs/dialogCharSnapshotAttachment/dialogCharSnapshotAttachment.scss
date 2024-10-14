@@ -33,23 +33,15 @@
 		line-height: 20px;
 	}
 
-	&--image {
-		display: block;
-		border-radius: 10px;
-		width: 140px;
-		height: 140px;
+	&--image, &--avatar {
 		background: $color1-lighter;
-
-		&:not(.placeholder) {
-			cursor: pointer;
-		}
 	}
 
-	// &--imagebtn {
-	// 	> .btn + .btn {
-	// 		margin-top: 8px;
-	// 	}
-	// }
+	&--imagebtn {
+		> .btn + .btn {
+			margin-top: 8px;
+		}
+	}
 
 	&--lfrp-placeholder {
 		display: block;

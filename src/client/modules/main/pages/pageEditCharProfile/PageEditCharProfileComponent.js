@@ -64,7 +64,6 @@ class PageEditCharProfileComponent {
 														n.component(new Txt(l10n.l('pageEditCharProfile.deleteImageBody', "Do you really wish to update the profile with current character image?"), { tagName: 'p' })),
 														n.component(this.module.avatar.newCharImg(this.ctrl, {
 															size: 'xlarge',
-															resolve: v => v.href,
 														})),
 													])),
 													confirm: l10n.l('pageEditCharProfile.update', "Update"),

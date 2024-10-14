@@ -4,10 +4,12 @@ import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
 import FormatTxt from 'components/FormatTxt';
-import Img from 'components/Img';
+// import Img from 'components/Img';
 import ModelCollapser from 'components/ModelCollapser';
+import ModelFader from 'components/ModelFader';
 import CharTagsList, { hasTags } from 'components/CharTagsList';
-import ImgModal from 'classes/ImgModal';
+import FAIcon from 'components/FAIcon';
+// import ImgModal from 'classes/ImgModal';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
 import errString from 'utils/errString';
 import formatDateTime from 'utils/formatDateTime';
@@ -63,7 +65,11 @@ class DialogCharSnapshotAttachmentSnapshot {
 
 			n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 				n.elem('div', { className: 'flex-auto' }, [
-					n.component(this.module.avatar.newAvatar(this.snapshot, { className: 'badge--icon', size: 'large' })),
+					n.component(this.module.avatar.newAvatar(this.snapshot, {
+						className: 'dialogcharsnapshotattachment--image badge--icon',
+						size: 'large',
+						resolve: (v) => v.href,
+					})),
 				]),
 				n.elem('div', { className: 'flex-1' }, [
 					n.component(new ModelTxt(this.snapshot, m => errString(m, m => (m.name + ' ' + m.surname).trim(), txtUnknown), { tagName: 'div', className: 'dialogcharsnapshotattachment--fullname' })),
@@ -95,41 +101,61 @@ class DialogCharSnapshotAttachmentSnapshot {
 						n.component(new ModelTxt(this.snapshot, m => formatDateTime(new Date(m.timestamp)))),
 					]),
 				]),
+				// Wipe avatar button
+				n.component(new ModelFader(this.snapshot.avatar, [{
+					condition: avatar => avatar?.href && !avatar?.deleted,
+					factory: avatar => new Elem(n => n.elem('div', { className: 'dialogcharsnapshotattachment--imagebtn' }, [
+						n.elem('button', {
+							className: 'btn medium icon-left lighten',
+							events: {
+								click: () => this.module.confirm.open(() => this._wipeCharAvatar(), {
+									title: l10n.l('dialogCharSnapshotAttachment.confirmWipe', "Confirm avatar wipe"),
+									body: l10n.l('dialogCharSnapshotAttachment.wipeAvatarBody', "Do you really wish to wipe the avatar from the character's profiles?"),
+									confirm: l10n.l('dialogCharSnapshotAttachment.wipeAvatar', "Wipe avatar"),
+								}),
+							},
+						}, [
+							n.component(new FAIcon('trash')),
+							n.component(new Txt(l10n.l('dialogCharSnapshotAttachment.wipeAvatar', "Wipe avatar"))),
+						]),
+					])),
+				}], {
+					className: 'flex-auto',
+				})),
 			]),
 
 			n.component(new ModelCollapser(this.snapshot, [{
 				condition: m => m.image,
 				factory: m => new PanelSection(
 					l10n.l('dialogCharSnapshotAttachment.image', "Image"),
-					new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
+					new Elem(n => n.elem('div', { className: 'flex-row flex-stretch gap8' }, [
 						n.elem('div', { className: 'flex-1' }, [
-							n.component(new Img(m.image.href + '?thumb=xl', { className: 'dialogcharsnapshotattachment--image', events: {
-								click: c => {
-									if (!c.hasClass('placeholder')) {
-										new ImgModal(m.image.href).open();
-									}
-								},
-							}})),
+							n.component(this.module.avatar.newCharImg(this.snapshot, {
+								className: 'dialogcharsnapshotattachment--image',
+								size: 'xlarge',
+								modalOnClick: true,
+								resolve: v => v.href,
+							})),
 						]),
-						// n.elem('div', { className: 'dialogcharsnapshotattachment--imagebtn flex-1' }, [
-						// 	n.component(new ModelComponent(
-						// 		this.snapshot,
-						// 		new Elem(n => n.elem('button', {
-						// 			className: 'btn medium icon-left',
-						// 			events: {
-						// 				click: () => this.module.confirm.open(() => this._deleteCharImage(), {
-						// 					title: l10n.l('dialogCharSnapshotAttachment.confirmDelete', "Confirm deletion"),
-						// 					body: l10n.l('dialogCharSnapshotAttachment.deleteImageBody', "Do you really wish to delete the image?"),
-						// 					confirm: l10n.l('dialogCharSnapshotAttachment.delete', "Delete"),
-						// 				}),
-						// 			},
-						// 		}, [
-						// 			n.component(new FAIcon('trash')),
-						// 			n.component(new Txt(l10n.l('dialogCharSnapshotAttachment.delete', "Delete"))),
-						// 		])),
-						// 		(m, c) => c.setProperty('disabled', m.image ? null : 'disabled'),
-						// 	)),
-						// ]),
+						// Wipe image button
+						n.component(new ModelFader(m.image, [{
+							condition: image => image?.href && !image?.deleted,
+							factory: image => new Elem(n => n.elem('div', { className: 'dialogcharsnapshotattachment--imagebtn flex-auto' }, [
+								n.elem('button', {
+									className: 'btn medium icon-left lighten',
+									events: {
+										click: () => this.module.confirm.open(() => this._wipeCharImage(), {
+											title: l10n.l('dialogCharSnapshotAttachment.confirmWipe', "Confirm image wipe"),
+											body: l10n.l('dialogCharSnapshotAttachment.wipeImageBody', "Do you really wish to wipe the image from the character's profiles?"),
+											confirm: l10n.l('dialogCharSnapshotAttachment.wipeImage', "Wipe image"),
+										}),
+									},
+								}, [
+									n.component(new FAIcon('trash')),
+									n.component(new Txt(l10n.l('dialogCharSnapshotAttachment.wipeImage', "Wipe image"))),
+								]),
+							])),
+						}])),
 					])),
 					{
 						className: 'common--sectionpadding',
@@ -250,6 +276,41 @@ class DialogCharSnapshotAttachmentSnapshot {
 			? about
 			: null,
 		);
+	}
+
+	_wipeCharAvatar() {
+		let imgRidParts = this.snapshot.avatar.getResourceId().split('.');
+
+		return this.module.player.getPlayer().call('wipeCharAvatar', {
+			charId: this.snapshot.id,
+			avatar: imgRidParts[imgRidParts.length - 1],
+		}).then(() => this.module.toaster.open({
+			title: l10n.l('dialogCharSnapshotAttachment.avatarWiped', "Avatar wiped"),
+			content: new Txt(l10n.l('dialogCloseTicket.avatarWipedInfo', "The avatar was wiped from the character.")),
+			closeOn: 'click',
+			type: 'success',
+			autoclose: true,
+		})).catch(err => this.module.toaster.openError(err, {
+			title: l10n.l('dialogCharSnapshotAttachment.failedToWipeAvatar', "Failed to wipe avatar"),
+		}));
+
+	}
+
+	_wipeCharImage() {
+		let imgRidParts = this.snapshot.image.getResourceId().split('.');
+
+		return this.module.player.getPlayer().call('wipeCharImage', {
+			charId: this.snapshot.id,
+			image: imgRidParts[imgRidParts.length - 1],
+		}).then(() => this.module.toaster.open({
+			title: l10n.l('dialogCharSnapshotAttachment.imageWiped', "Image wiped"),
+			content: new Txt(l10n.l('dialogCloseTicket.imageWipedInfo', "The image was wiped from the character.")),
+			closeOn: 'click',
+			type: 'success',
+			autoclose: true,
+		})).catch(err => this.module.toaster.openError(err, {
+			title: l10n.l('dialogCharSnapshotAttachment.failedToWipeImage', "Failed to wipe image"),
+		}));
 	}
 }
 

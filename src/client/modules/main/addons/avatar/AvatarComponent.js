@@ -2,10 +2,8 @@ import { isResError } from 'resclient';
 import { ModelListener, ModelTxt } from 'modapp-resource-component';
 import Fader from 'components/Fader';
 import Img from 'components/Img';
-import FAIcon from 'components/FAIcon';
 import ImgModal from 'classes/ImgModal';
-
-let defaultPattern = '/file/core/char/avatar/{0}';
+import { relistenResource } from 'utils/listenResource';
 
 // Get character initials.
 function getInitials(c) {
@@ -21,10 +19,14 @@ const sizeMap = {
 };
 
 const placeholderMap = {
-	avatar: '/img/avatar-l.png',
-	room: '/img/room-l.png',
-	area: '/img/area-l.png',
+	avatar: { img: '/img/avatar-l.png', err: '/img/avatar-error-l.png' },
+	room: { img: '/img/room-l.png', err: '/img/room-error-l.png' },
+	area: { img: '/img/area-l.png', err: '/img/area-error-l.png' },
 };
+
+function getHref(v) {
+	return v.href;
+}
 
 /**
  * AvatarComponent is a character avatar component.
@@ -35,11 +37,11 @@ class AvatarComponent extends Fader {
 	 * Creates an instance of AvatarComponent
 	 * @param {object} profile Character or profile object.
 	 * @param {object} [opt] Optional parameters.
-	 * @param {object} [opt.char] Character object used to fetch initials in profile is not a character.
+	 * @param {object} [opt.char] Character object used to fetch initials if profile is not a character.
 	 * @param {string} [opt.size] Avatar size. May be 'small', 'medium', or 'large.
-	 * @param {string} [opt.pattern] URL pattern for the avatar. Should contain "{0}" to replace with the avatar ID.
-	 * @param {string} [opt.property] Char property to get the image ID. Defaults to 'avatar'.
-	 * @param {string} [opt.resolve] Resolves the image ID from the property. Defaults to v => v.
+	 * @param {string} [opt.property] Char property to get the image object or ID. Defaults to 'avatar'.
+	 * @param {boolean} [opt.initials] Use initials if no image is available. Defaults to false.
+	 * @param {(v: object) => string} [opt.resolve] Resolves the image href from the image property. Defaults to: (v) => v?.href
 	 * @param {string} [opt.placeholder] Placeholder image to use instead of initials. May be 'avatar', 'room', or 'area'.
 	 * @param {boolean} [opt.modalOnClick] Flag if clicking on the image should show the full image in a modal.
 	 */
@@ -50,16 +52,17 @@ class AvatarComponent extends Fader {
 		this.char = opt.char || profile;
 		this.saturation = opt.saturation || 0.5;
 		this.lightness = opt.lightness || 0.33;
-		this.pattern = opt.pattern || defaultPattern;
 		this.property = opt.property || 'avatar';
+		this.initials = !!opt.initials;
 		this.placeholder = (opt.placeholder && placeholderMap[opt.placeholder]) || null;
 		this.modalOnClick = !!opt.modalOnClick;
 		this.query = sizeMap[opt.size] || sizeMap['medium'];
-		this.resolve = opt.resolve || (v => this.pattern.replace("{0}", v));
+		this.resolve = opt.resolve || getHref;
 		this.isError = isResError(profile);
+		this.model = null;
 
+		this._update = this._update.bind(this);
 		this.ml = new ModelListener(profile, this, this._changeHandler.bind(this));
-		this._setHue(this.char);
 	}
 
 	render(el) {
@@ -69,6 +72,7 @@ class AvatarComponent extends Fader {
 	}
 
 	unrender() {
+		this.model = relistenResource(this.model, null, this._update);
 		this.ml.onUnrender();
 		super.unrender();
 	}
@@ -76,39 +80,64 @@ class AvatarComponent extends Fader {
 	setChar(char) {
 		this.char = char;
 		this.ml.setModel(char);
-		this._setHue(char);
 		return this;
 	}
 
 	_changeHandler(m, c, change) {
-		if (change && !change.hasOwnProperty(this.property)) return;
+		if (!change || change.hasOwnProperty(this.property)) {
+			this._update();
+		}
+	}
 
-		let imageId = m ? m[this.property] : null;
-		let src = imageId
-			? this.resolve(imageId) + this.query
-			: this.placeholder;
+	_update() {
+		let src = null;
+		let isError = this.isError;
+		let m = this.ml.getModel();
+		if (!isError) {
+			let v = m?.[this.property] || null;
+			if (v) {
+				this.model = relistenResource(this.model, v, this._update);
+				src = this.resolve(v);
+				isError = !src || v?.deleted;
+			}
+		}
 
-		c.setComponent(m
-			? this.isError
-				? new FAIcon('times')
-				: src
-					? new Img(src, this.modalOnClick && imageId ? {
-						className: 'clickable',
-						events: {
-							click: c => {
-								if (!c.hasClass('placeholder')) {
-									new ImgModal(this.resolve(imageId)).open();
-								}
-							},
+		this.setComponent(isError || !(src || this.initials)
+			? this.placeholder
+				? new Img(isError ? this.placeholder.err : this.placeholder.img)
+				: null
+			: src
+				? new Img(src + this.query, this.modalOnClick ? {
+					className: 'clickable',
+					errorPlaceholder: this.placeholder.err,
+					errorClassName: 'avatar--error',
+					events: {
+						click: c => {
+							if (!c.hasClass('avatar--error')) {
+								new ImgModal(src).open();
+							}
 						},
-					} : null)
-					: new ModelTxt(this.char || m, m => getInitials(m), { tagName: 'span' })
-			: null,
+					},
+				} : {
+					errorPlaceholder: this.placeholder.err,
+				})
+				: new ModelTxt(this.char || m, m => getInitials(m), { tagName: 'span' }),
 		);
+		if (isError || src || !this.initials) {
+			this._clearHue();
+		} else {
+			this._setHue(this.char);
+		}
+	}
+
+	_clearHue() {
+		if (this.initials) return;
+		this.setStyle('backgroundColor', null);
+		this.setStyle('color', null);
 	}
 
 	_setHue(char) {
-		if (this.placeholder) return;
+		if (!this.initials) return;
 
 		let h = 0;
 		if (!this.isError) {

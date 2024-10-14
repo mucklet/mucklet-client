@@ -13,6 +13,8 @@ class DialogCharSnapshotAttachment {
 			'charLog',
 			'confirm',
 			'avatar',
+			'toaster',
+			'player',
 		], this._init.bind(this));
 	}
 
