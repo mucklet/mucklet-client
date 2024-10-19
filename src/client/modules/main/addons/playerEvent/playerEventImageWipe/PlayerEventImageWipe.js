@@ -1,4 +1,4 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 
 const imageTxt = {
@@ -19,6 +19,9 @@ const avatarTxt = {
 		// area: l10n.l('playerEventImageWipe.areaAvatarRemovedInfo', "An avatar has been removed from your area:"),
 	},
 };
+
+const moreInfoTxt = l10n.l('playerEventImageWipe.moreInfo', `<div class="pad-bottom-m">If you have questions or objections, get in contact with the moderator team. Type:</div>` +
+	`<div class="charlog--code"><code>help helpme</code></div>`);
 
 /**
  * PlayerEventImageWipe registers the imageWipe playerEvent handler.
@@ -47,6 +50,7 @@ class PlayerEventImageWipe {
 			content: close => new Elem(n => n.elem('div', [
 				n.component(new Txt(info, { tagName: 'p' })),
 				n.component(new Txt(ev.name, { tagName: 'p', className: 'dialog--strong dialog--large' })),
+				n.component(new Html(moreInfoTxt, { tagName: 'div', className: 'common--sectionpadding' })),
 			])),
 			closeOn: 'click',
 			onClose,
