@@ -9,6 +9,7 @@ const shortDesc = 'Suspend a character';
 const helpText =
 `<p>Suspend a character by putting it to sleep and disabling the option of waking them up again for a period of time.</p>
 <p>The duration is automatically set for an hour, a day, or a week, depending on previous suspensions. The penalty period that increases suspend duration is reset after a maximum of 2 weeks. </p>
+<p>A moderator action will be added to an existing report. If a report doesn't exist for the character, one will be created and assigned to you.</p>
 <p><code class="param">Character</code> is the full name of the character to suspend.</p>
 <p><code class="param">Reason</code> is the reason why the character was suspended, as shown to that player.</p>
 <p>Example: <code>suspend John Doe = Being abusive by calling another player an idiot.</code></p>`;

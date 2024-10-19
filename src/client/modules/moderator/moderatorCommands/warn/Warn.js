@@ -12,6 +12,7 @@ const helpText =
 `<p>Send a warning message to one or more awake characters in the realm. The warning is shown as a red colored message.<br>
 A warning is always considered an out of character (OOC) message.<br>
 If the message starts with <code>:</code> (colon), the message will be treated in the same way as a <code>pose</code> action rather than something being texted.</p>
+<p>A moderator action will be added to an existing report. If a report doesn't exist for the character, one will be created and assigned to you.</p>
 <p><code class="param">Character</code> is the name of the character to warn. If omitted, it defaults to the characters last warned.</p>
 <p><code class="param">Message</code> is the warning text. It may be formatted and span multiple paragraphs.</p>`;
 const examples = [
