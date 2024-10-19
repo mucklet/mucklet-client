@@ -6,6 +6,7 @@ const shortDesc = 'Unsuspend a currently suspended character';
 const helpText =
 `<p>Unsuspend a currently suspended character.</p>
 <p>The command also reduces the penalty period which increments the duration a character is suspended.</p>
+<p>A moderator action will be added to an existing report. If a report doesn't exist for the character, one will be created and assigned to you.</p>
 <p><code class="param">Character</code> is the full name of the character to unsuspend.</p>`;
 
 /**

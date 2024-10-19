@@ -10,7 +10,7 @@ const usageText = 'compare <span class="param">Character<span class="comment">/<
 const shortDesc = 'Compare two characters to see if their players match';
 const helpText =
 `<p>Compare a reported character with another character to see if their players match by account, email address, or IPs used.</p>
-<p>If a report doesn't exist for the character, one will be created and assigned to you.</p>
+<p>A moderator action will be added to an existing report. If a report doesn't exist for the character, one will be created and assigned to you.</p>
 <p><code class="param">Character</code> is the name of the reported characters.</p>
 <p><code class="param">#Character ID</code> is the ID of the reported character.</p>
 <p><code class="param">Compare Character</code> is the name of the character to compare with.</p>

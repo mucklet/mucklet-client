@@ -81,15 +81,15 @@ class Avatar {
 	}
 
 	charImgHref(char) {
-		return char.image ? this.charImgPattern.replace("{0}", char.image) : null;
+		return char.image ? this.charImgPattern(char.image) : null;
 	}
 
 	avatarHref(char) {
-		return char.avatar ? this.avatarPattern.replace("{0}", char.avatar) : null;
+		return char.avatar ? this.avatarPattern(char.avatar) : null;
 	}
 
 	roomImgHref(room) {
-		return room.image ? this.roomImgPattern.replace("{0}", room.image) : null;
+		return room.image ? this.roomImgPattern(room.image) : null;
 	}
 
 }

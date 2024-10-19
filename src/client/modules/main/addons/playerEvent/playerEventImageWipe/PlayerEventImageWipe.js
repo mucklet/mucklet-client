@@ -3,20 +3,20 @@ import l10n from 'modapp-l10n';
 
 const imageTxt = {
 	title: l10n.l('playerEventImageWipe.imageRemoved', "Image removed"),
-	default: l10n.l('playerEventImageWipe.imageRemovedInfo', "An image was removed:"),
+	default: l10n.l('playerEventImageWipe.imageRemovedInfo', "An image has been removed:"),
 	target: {
-		char: l10n.l('playerEventImageWipe.charImageRemovedInfo', "An image was removed from your character:"),
-		room: l10n.l('playerEventImageWipe.roomImageRemovedInfo', "An image was removed from your room:"),
-		area: l10n.l('playerEventImageWipe.areaImageRemovedInfo', "An image was removed from your area:"),
+		char: l10n.l('playerEventImageWipe.charImageRemovedInfo', "An image has been removed from your character:"),
+		room: l10n.l('playerEventImageWipe.roomImageRemovedInfo', "An image has been removed from your room:"),
+		area: l10n.l('playerEventImageWipe.areaImageRemovedInfo', "An image has been removed from your area:"),
 	},
 };
 const avatarTxt = {
 	title: l10n.l('playerEventImageWipe.avatarRemoved', "Avatar removed"),
-	default: l10n.l('playerEventImageWipe.avatarRemovedInfo', "An avatar was removed:"),
+	default: l10n.l('playerEventImageWipe.avatarRemovedInfo', "An avatar has been removed:"),
 	target: {
-		char: l10n.l('playerEventImageWipe.charAvatarRemovedInfo', "An avatar was removed from your character:"),
-		room: l10n.l('playerEventImageWipe.roomAvatarRemovedInfo', "An avatar was removed from your room:"),
-		area: l10n.l('playerEventImageWipe.areaAvatarRemovedInfo', "An avatar was removed from your area:"),
+		char: l10n.l('playerEventImageWipe.charAvatarRemovedInfo', "An avatar has been removed from your character:"),
+		// room: l10n.l('playerEventImageWipe.roomAvatarRemovedInfo', "An avatar has been removed from your room:"),
+		// area: l10n.l('playerEventImageWipe.areaAvatarRemovedInfo', "An avatar has been removed from your area:"),
 	},
 };
 

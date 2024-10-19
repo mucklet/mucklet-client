@@ -13,6 +13,7 @@ const usageText = 'ban player <span class="param">@Username<span class="comment"
 const shortDesc = 'Ban a player from the realm';
 const helpText =
 `<p>Ban a player from the realm. Everything the player owns will remain, but the player can no longer connect to the realm.</p>
+<p>A moderator action will be added to an existing report. If a report doesn't exist for the character, one will be created and assigned to you.</p>
 <p><code class="param">@Username</code> is the username of the player. Admins only.</p>
 <p><code class="param">Character</code> is the name of a character owned by the player.</p>`;
 const examples = [
