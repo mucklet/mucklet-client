@@ -1,6 +1,9 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+$charlog-textpad: 6px;
+$charlog-labelpad: 8px;
+
 .charlog-event {
 	&--tooltip {
 		font-style: normal;
@@ -16,54 +19,54 @@
 		font-size: $font-size-small;
 		white-space: pre-wrap;
 		// color: $color4;
-		padding: 4px 0 0 0;
+		padding-top: $charlog-textpad;
 	}
 
 	&error, &errorComponent {
 		color: $log-error;
 		font-style: italic;
-		padding-top: 4px;
+		padding-top: $charlog-textpad;
 	}
 
 	&info {
 		// color: $color4-dark;
 		font-style: italic;
-		padding-top: 4px;
+		padding-top: $charlog-textpad;
 	}
 
 	&whisper, &message, &mail {
 		white-space: pre-wrap;
 		// color: $color4-lightest;
-		padding: 8px 0 0 0;
+		padding-top: $charlog-labelpad;
 	}
 
 	&dnd {
 		white-space: pre-wrap;
 		// color: $color4;
-		padding: 8px 0 0 0;
+		padding-top: $charlog-labelpad;
 	}
 
 	&say, &pose {
 		white-space: pre-wrap;
-		padding: 2px 0 0 0;
+		padding-top: $charlog-textpad;
 	}
 
 	&ooc, &address {
 		white-space: pre-wrap;
 		// color: $color4-lightest;
-		padding: 7px 0 0 0;
+		padding-top: $charlog-labelpad;
 	}
 
 	&msg, &wakeup, &sleep, &leave, &arrive, &travel, &action {
 		// color: $color4;
-		padding: 7px 0 0 0;
+		padding-top: $charlog-labelpad;
 		font-style: italic;
 	}
 
 	&warn {
 		white-space: pre-wrap;
 		// color: $log-error;
-		padding: 8px 0 0 0;
+		padding-top: $charlog-labelpad;
 
 		.charlog--fieldset {
 			border-color: $log-error;
@@ -76,7 +79,7 @@
 
 	&summon, &join, &leadRequest, &followRequest, &follow, &stopFollow, &stopLead, &controlRequest {
 		// color: $color4;
-		padding: 8px 0 0 0;
+		padding-top: $charlog-labelpad;
 		font-style: italic;
 	}
 
@@ -84,7 +87,7 @@
 		font-size: $font-size-small;
 		white-space: pre-wrap;
 		// color: $color4;
-		padding: 4px 0 0 0;
+		padding-top: $charlog-textpad;
 	}
 
 	&travel {
