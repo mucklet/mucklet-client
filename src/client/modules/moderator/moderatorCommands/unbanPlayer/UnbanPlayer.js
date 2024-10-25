@@ -8,6 +8,7 @@ const usageText = 'unban player <span class="param">@Username<span class="commen
 const shortDesc = 'Unban a previously banned player';
 const helpText =
 `<p>Unban a previously banned player, allowing them to connect to the realm.</p>
+<p>A moderator action will be added to an existing report. If a report doesn't exist for the character, one will be created and assigned to you.</p>
 <p><code class="param">@Username</code> is the username of the player. Admins only.</p>
 <p><code class="param">Character</code> is the name of a character owned by the player.</p>
 <p>Example: <code>unban player Jane Innocent</code></p>`;

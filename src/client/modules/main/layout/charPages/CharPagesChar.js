@@ -168,7 +168,7 @@ class CharPagesChar {
 		let props = this.char.props;
 		if (this.isSeen) {
 			let c = this.char;
-			let timestamp = new Date().getTime();
+			let timestamp = Date.now();
 			this.module.charPagesStore.setChar(this.ctrl.id, {
 				id: c.id,
 				image: c.image ? c.image.toJSON() : null,

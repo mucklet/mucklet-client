@@ -89,9 +89,10 @@ class CharFocus {
 			let f = this.focusChars[c.id]?.props;
 			if (!f) return null;
 
-			let list = Object.keys(f).map(k => f[k]);
-			list.filter(c => c?.name).sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
-			return list;
+			return Object.keys(f)
+				.map(k => f[k])
+				.filter(c => c?.name)
+				.sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
 		});
 		this.style = document.createElement('style');
 		document.head.appendChild(this.style);

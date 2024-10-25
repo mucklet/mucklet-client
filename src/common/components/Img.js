@@ -1,26 +1,24 @@
 import { anim } from 'modapp-utils';
 import { RootElem } from 'modapp-base-component';
 
-function whenImageLoaded(src) {
+function whenImageLoaded(src, opt) {
 	return src
 		? new Promise((resolve, reject) => {
 			let im = new Image();
 			let clear = () => im = im.onerror = im.onabort = im.onload = null;
+			let onErr = ev => {
+				clear();
+				resolve({ src, url: opt?.errorPlaceholder || '', cl: opt?.errorClassName || null });
+			};
 			im.onload = ev => {
 				clear();
-				resolve(ev);
+				resolve({ src, url: src, cl: null });
 			};
-			im.onerror = ev => {
-				clear();
-				reject(ev);
-			};
-			im.onabort = ev => {
-				clear();
-				reject(ev);
-			};
+			im.onerror = onErr;
+			im.onabort = onErr;
 			im.src = src;
 		})
-		: Promise.reject("No image");
+		: Promise.resolve({ src, url: opt?.placeholder || '', cl: opt?.placeholderClassName || null });
 }
 
 /**
@@ -34,7 +32,10 @@ class Img extends RootElem {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Class name
 	 * @param {object} [opt.attributes] Key/value attributes object
-	 * @param {object} [opt.events] Key/value events object, where the key is the event name, and value is the callback.
+	 * @param {object} [opt.placeholder] Placeholder image to use if no src is set.
+	 * @param {object} [opt.errorPlaceholder] Placeholder image to use on error.
+	 * @param {string} [opt.placeholderClassName] ClassName to add when using placeholder.
+	 * @param {string} [opt.errorClassName] ClassName to add on error.
 	 */
 	constructor(src, opt) {
 		opt = Object.assign({}, opt);
@@ -43,6 +44,8 @@ class Img extends RootElem {
 		this.animId = null;
 		this.current = null;
 		this.loadPromise = null;
+		this.loaded = null;
+		this.opt = opt;
 
 		this.setSrc(src);
 	}
@@ -59,11 +62,11 @@ class Img extends RootElem {
 
 		// Start loading image
 		this.src = src;
-		this.loaded = false;
-		this.loadPromise = whenImageLoaded(src).catch(() => {}).then(() => {
+		this.loaded = null;
+		this.loadPromise = whenImageLoaded(src, this.opt).then(result => {
 			// Make sure the image src hasn't changed while loading.
 			if (src === this.src) {
-				this.loaded = true;
+				this.loaded = result;
 			}
 		});
 
@@ -72,15 +75,17 @@ class Img extends RootElem {
 
 		anim.stop(this.animId);
 
-		if (this.current === src && src) {
+		// Same src as currently showing? Fade it to visibility again.
+		if (this.current?.src === src && this.current?.url) {
 			this.animId = anim.fade(el, 1);
 			return this;
 		}
 
 		this.animId = anim.fade(el, 0, {
 			callback: () => {
-				if (this.src !== src) return;
-				this._setCurrent();
+				if (this.src === src) {
+					this._setCurrent();
+				}
 			},
 		});
 		return this;
@@ -96,9 +101,8 @@ class Img extends RootElem {
 
 	render(el) {
 		let e = super.render(el);
-		if (this.loaded) {
-			this.current = this.src;
-			this._setSrcAttr(this.src);
+		if (this.loaded && this.loaded?.src === this.src) {
+			this._setSrcAttr(this.loaded);
 		} else {
 			e.style.opacity = 0;
 			this._setCurrent();
@@ -108,6 +112,7 @@ class Img extends RootElem {
 	unrender() {
 		anim.stop(this.animId);
 		super.unrender();
+		this.current = null;
 	}
 
 	/**
@@ -115,26 +120,37 @@ class Img extends RootElem {
 	 * It assumes opacity is 0 when called.
 	 */
 	_setCurrent() {
-		let src = this.src;
-		this._setSrcAttr(src);
-		this.current = src;
-		if (src) {
-			this.loadPromise.then(() => {
-				let el = super.getElement();
-				if (!el || this.current !== src || this.src !== src) {
-					return;
-				}
+		this.loadPromise.then(() => {
+			let el = super.getElement();
+			// Assert we the element is rendered and that the loaded data is for
+			// this source.
+			if (!el || this.src !== this.loaded?.src) {
+				return;
+			}
+			this._setSrcAttr(this.loaded);
+			// Show if we have something to show
+			if (this.loaded?.url) {
 				this.animId = anim.fade(el, 1);
-			});
-		}
+			}
+		});
 	}
 
-	_setSrcAttr(src) {
-		if (src) {
-			this._rootElem.setAttribute('src', src);
+	_setSrcAttr(next) {
+		let prev = this.current;
+		if (next?.url) {
+			this._rootElem.setAttribute('src', next.url);
 		} else {
 			this._rootElem.removeAttribute('src');
 		}
+		if (prev?.cl != next?.cl) {
+			if (prev?.cl) {
+				this._rootElem.removeClass(prev.cl);
+			}
+			if (next?.cl) {
+				this._rootElem.addClass(next.cl);
+			}
+		}
+		this.current = next;
 	}
 }
 

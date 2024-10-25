@@ -4,7 +4,7 @@
 	padding: 8px 16px 16px 16px;
 	margin: 0;
 
-	&--tools {
+	&--tools, &--footertools {
 		display: flex;
 
 		&::after {
@@ -16,6 +16,16 @@
 
 		> * {
 			display: inline-block;
+		}
+	}
+
+	&--footertools {
+		margin: 0 -2px;
+		border-top: 1px solid $color1-dark;
+		padding-top: 8px;
+
+		> div {
+			padding: 0px 2px;
 		}
 	}
 
