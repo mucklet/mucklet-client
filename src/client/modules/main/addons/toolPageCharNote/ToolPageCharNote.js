@@ -33,7 +33,7 @@ class ToolPageCharNote {
 				},
 			}, [
 				n.component(new FAIcon('file-text')),
-				n.component(new Txt(l10n.l('toolPageCharNote.note', "Note"))),
+				n.component(new Txt(l10n.l('toolPageCharNote.notes', "Notes"))),
 			])),
 			filter: (ctrl, char) => !this.module.player.ownsChar(char.id),
 		});
