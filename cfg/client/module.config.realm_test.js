@@ -1,6 +1,6 @@
 const config = {
 	auth: {
-		wsAuth: true,
+		mode: 'pass', // Authentication using url ?auth.player=xxx&auth.pass=yyy
 	},
 	confirmClose: { active: false },
 	serviceWorker: { active: false },
