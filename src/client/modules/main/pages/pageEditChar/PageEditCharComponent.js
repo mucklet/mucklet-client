@@ -55,7 +55,7 @@ class PageEditCharComponent {
 								let footer = new LabelToggleBox(l10n.l('pageEditChar.useThumbAsAvatar', "Use thumbnail as avatar"), !this.ctrl.avatar);
 								this.module.dialogCropImage.open(
 									dataUrl,
-									(dataUrl, points) => this._setCharImage(dataUrl, points, footer.getValue()),
+									(dataUrl, points) => this._setCharImage(file, points, footer.getValue()),
 									{ footer },
 								);
 							},
@@ -99,7 +99,7 @@ class PageEditCharComponent {
 							])),
 							(file, dataUrl) => this.module.dialogCropImage.open(
 								dataUrl,
-								(dataUrl, points) => this._setCharAvatar(dataUrl, points),
+								(dataUrl, points) => this._setCharAvatar(file, points),
 							),
 							{ className: 'btn small icon-left' },
 						)),
@@ -466,21 +466,22 @@ class PageEditCharComponent {
 		);
 	}
 
-	_setCharImage(dataUrl, points, thumbAsAvatar) {
-		return this.ctrl.call('setImage', {
-			dataUrl,
-			x1: parseInt(points[0]),
-			y1: parseInt(points[1]),
-			x2: parseInt(points[2]),
-			y2: parseInt(points[3]),
-			thumbAsAvatar,
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditChar.imageUploaded', "Image uploaded"),
-			content: new Txt(l10n.l('pageEditChar.imageUploadedBody', "Image was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setCharImage(file, points, thumbAsAvatar) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setImage', {
+				uploadId: result.uploadId,
+				x1: parseInt(points[0]),
+				y1: parseInt(points[1]),
+				x2: parseInt(points[2]),
+				y2: parseInt(points[3]),
+				thumbAsAvatar,
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditChar.imageUploaded', "Image uploaded"),
+				content: new Txt(l10n.l('pageEditChar.imageUploadedBody', "Image was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_deleteCharImage() {
@@ -495,20 +496,21 @@ class PageEditCharComponent {
 			.catch(err => this.module.confirm.openError(err));
 	}
 
-	_setCharAvatar(dataUrl, points) {
-		return this.ctrl.call('setAvatar', {
-			dataUrl,
-			x1: parseInt(points[0]),
-			y1: parseInt(points[1]),
-			x2: parseInt(points[2]),
-			y2: parseInt(points[3]),
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditChar.avatarUploaded', "Avatar uploaded"),
-			content: new Txt(l10n.l('pageEditChar.avatarUploadedBody', "The avatar was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setCharAvatar(file, points) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setAvatar', {
+				uploadId: result.uploadId,
+				x1: parseInt(points[0]),
+				y1: parseInt(points[1]),
+				x2: parseInt(points[2]),
+				y2: parseInt(points[3]),
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditChar.avatarUploaded', "Avatar uploaded"),
+				content: new Txt(l10n.l('pageEditChar.avatarUploadedBody', "The avatar was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_deleteCharAvatar() {

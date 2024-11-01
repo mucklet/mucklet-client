@@ -64,8 +64,11 @@ class PageEditAreaComponent {
 								n.component(new FAIcon('camera')),
 								n.component(new Txt(l10n.l('pageEditArea.upload', "Upload"))),
 							])),
-							(file, dataUrl) => this._setAreaImage(dataUrl),
-							{ className: 'btn medium icon-left' },
+							(file) => this._setAreaImage(file),
+							{
+								className: 'btn medium icon-left',
+								noFileReader: true,
+							},
 						)),
 						n.component(new ModelComponent(
 							this.area,
@@ -348,17 +351,18 @@ class PageEditAreaComponent {
 		this.state.changes = {};
 	}
 
-	_setAreaImage(dataUrl) {
-		return this.ctrl.call('setAreaImage', {
-			areaId: this.area.id,
-			dataUrl,
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditArea.mapImageUploaded', "Map image uploaded"),
-			content: new Txt(l10n.l('pageEditArea.mapImageUploadedBody', "Map image was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setAreaImage(file) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setAreaImage', {
+				areaId: this.area.id,
+				uploadId: result.uploadId,
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditArea.mapImageUploaded', "Map image uploaded"),
+				content: new Txt(l10n.l('pageEditArea.mapImageUploadedBody', "Map image was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_deleteAreaImage() {

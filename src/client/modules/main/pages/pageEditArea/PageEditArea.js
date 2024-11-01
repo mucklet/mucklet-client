@@ -18,6 +18,7 @@ class PageEditArea {
 			'dialogSetAreaOwner',
 			'player',
 			'toaster',
+			'file',
 		], this._init.bind(this));
 	}
 

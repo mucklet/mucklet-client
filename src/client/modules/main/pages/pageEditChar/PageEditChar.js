@@ -11,7 +11,18 @@ import './pageEditChar.scss';
 class PageEditChar {
 	constructor(app, params) {
 		this.app = app;
-		this.app.require([ 'charPages', 'dialogCropImage', 'pageChar', 'confirm', 'avatar', 'toaster', 'api', 'tags', 'player' ], this._init.bind(this));
+		this.app.require([
+			'charPages',
+			'dialogCropImage',
+			'pageChar',
+			'confirm',
+			'avatar',
+			'toaster',
+			'api',
+			'tags',
+			'player',
+			'file',
+		], this._init.bind(this));
 	}
 
 	_init(module) {

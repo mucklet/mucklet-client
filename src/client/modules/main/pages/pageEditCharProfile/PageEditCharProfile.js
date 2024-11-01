@@ -17,6 +17,7 @@ class PageEditCharProfile {
 			'avatar',
 			'deleteProfile',
 			'toaster',
+			'file',
 		], this._init.bind(this));
 	}
 

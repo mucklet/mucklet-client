@@ -21,6 +21,7 @@ class PageEditRoom {
 			'dialogSetRoomOwner',
 			'player',
 			'toaster',
+			'file',
 		], this._init.bind(this));
 	}
 

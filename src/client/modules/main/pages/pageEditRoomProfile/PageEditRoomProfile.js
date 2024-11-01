@@ -19,6 +19,7 @@ class PageEditRoomProfile {
 			'avatar',
 			'deleteRoomProfile',
 			'toaster',
+			'file',
 		], this._init.bind(this));
 	}
 

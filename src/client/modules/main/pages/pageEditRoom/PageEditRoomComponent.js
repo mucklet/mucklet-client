@@ -70,7 +70,7 @@ class PageEditRoomComponent {
 								])),
 								(file, dataUrl) => this.module.dialogCropImage.open(
 									dataUrl,
-									(dataUrl, points) => this._setRoomImage(dataUrl, points),
+									(dataUrl, points) => this._setRoomImage(file, points),
 								),
 								{ className: 'btn medium icon-left' },
 							)),
@@ -425,20 +425,21 @@ class PageEditRoomComponent {
 		this.state.changes = {};
 	}
 
-	_setRoomImage(dataUrl, points) {
-		return this.ctrl.call('setRoomImage', {
-			dataUrl,
-			x1: parseInt(points[0]),
-			y1: parseInt(points[1]),
-			x2: parseInt(points[2]),
-			y2: parseInt(points[3]),
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditRoom.imageUploaded', "Image uploaded"),
-			content: new Txt(l10n.l('pageEditRoom.imageUploadedBody', "Image was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setRoomImage(file, points) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setRoomImage', {
+				uploadId: result.uploadId,
+				x1: parseInt(points[0]),
+				y1: parseInt(points[1]),
+				x2: parseInt(points[2]),
+				y2: parseInt(points[3]),
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditRoom.imageUploaded', "Image uploaded"),
+				content: new Txt(l10n.l('pageEditRoom.imageUploadedBody', "Image was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_deleteRoomImage() {
