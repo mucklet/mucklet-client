@@ -66,6 +66,7 @@ class PageEditRoomProfileComponent {
 														n.component(new Txt(l10n.l('pageEditRoomProfile.deleteImageBody', "Do you really wish to update the profile with current room image?"), { tagName: 'p' })),
 														n.component(this.module.avatar.newRoomImg(this.room, {
 															size: 'xlarge',
+															resolve: v => v.href,
 														})),
 													])),
 													confirm: l10n.l('pageEditRoomProfile.update', "Update"),
