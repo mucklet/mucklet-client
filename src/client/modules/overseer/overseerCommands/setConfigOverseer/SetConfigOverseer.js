@@ -174,6 +174,19 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.maxScheduledPostsDesc', "Max number of scheduled posts per script."),
 		sortOrder: 1350,
 	},
+	// Max upload limits
+	{
+		key: 'maxImageSize',
+		stepFactory: () => new NumberStep('value', { name: "max image size" }),
+		desc: l10n.l('setConfig.maxImageSizeDesc', "Max image size in bytes."),
+		sortOrder: 1400,
+	},
+	{
+		key: 'supporterMaxImageSize',
+		stepFactory: () => new NumberStep('value', { name: "max image size for supporters" }),
+		desc: l10n.l('setConfig.supporterMaxImageSizeDesc', "Max image size in bytes for supporters."),
+		sortOrder: 1410,
+	},
 ];
 
 /**

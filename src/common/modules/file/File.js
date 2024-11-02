@@ -27,15 +27,19 @@ class File {
 			xhr.open('POST', url, true);
 
 			xhr.onload = () => {
-				if (xhr.status >= 200 && xhr.status < 300) {
-					try {
-						let result = JSON.parse(xhr.response);
+				try {
+					let result = JSON.parse(xhr.response);
+					if (xhr.status >= 200 && xhr.status < 300) {
 						resolve(result);
-					} catch (e) {
-						reject(new Err('file.invalidJson', "Error parsing json response: {message}", { message: e.message }));
+					} else {
+						if (result?.code && result?.message) {
+							reject(new Err(result.code, result.message, result.data));
+						} else {
+							reject(new Err('file.uploadFailed', "Upload failed with status {status}", { status: xhr.status }));
+						}
 					}
-				} else {
-					reject(new Err('file.uploadFailed', "Upload failed with status {status}", { status: xhr.status }));
+				} catch (e) {
+					reject(new Err('file.invalidJson', "Upload failed with status {status}: {message}", { message: e.message }));
 				}
 			};
 			xhr.onerror = () => {
