@@ -125,14 +125,14 @@ class NavButtons {
 		>&#x${o.char};</text>`)
 		.join('\n\t\t')}
 	</defs>
-	${directions.map((dir, i) => `<g class="navbuttons--btn dir-${dir}" transform="rotate(${i * 45} 50 50)" >
+	${directions.map((dir, i) => `<g class="navbuttons--btn dir-${dir}" transform="rotate(${i * 45} 50 50)" tabindex="0">
 	<title></title>
 	<use href="#btn"/>
 	${icons
 		.map(o => `<use class="navbuttons--icon ${o.id}" href="#icon-${o.id}" transform="rotate(${-i * 45} 50 16)" />`)
 		.join('\n\t')}
 </g>`).join('\n\t')}
-	${this.center ? `<g class="navbuttons--btn dir-c">
+	${this.center ? `<g class="navbuttons--btn dir-c" tabindex="0">
 		<title></title>
 		<circle cx="50" cy="50" r="16" style="transition: fill-opacity .2s, fill .2s; stroke:none" />
 		${[ ...Array(10) ].map((e, i) => `<text
@@ -236,16 +236,30 @@ class NavButtons {
 	}
 
 	_listen(dir) {
-		let cb = (ev) => {
-			this._onClick(dir, this);
-			ev.stopPropagation();
+		let cb = {
+			click: (ev) => {
+				this._onClick(dir, this);
+				ev.stopPropagation();
+			},
+			keydown: (ev) => {
+				if (ev.key == 'Enter' || ev.key == ' ') {
+					this._onClick(dir, this);
+					ev.stopPropagation();
+					ev.preventDefault();
+				}
+			},
 		};
-		this.btns[dir].addEventListener('click', cb);
+
+		let btn = this.btns[dir];
+		btn.addEventListener('click', cb.click);
+		btn.addEventListener('keydown', cb.keydown);
 		this.cbs[dir] = cb;
 	}
 
 	_unlisten(dir) {
-		this.btns[dir].removeEventListener('click', this.cbs[dir]);
+		let btn = this.btns[dir];
+		btn.removeEventListener('click', this.cbs[dir].click);
+		btn.removeEventListener('keydown', this.cbs[dir].keydown);
 	}
 
 	_updateAll() {
