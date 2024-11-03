@@ -68,9 +68,12 @@ class PageEditRoomComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditRoom.upload', "Upload"))),
 								])),
-								(file, dataUrl) => this.module.dialogCropImage.open(
-									dataUrl,
-									(dataUrl, points) => this._setRoomImage(file, points),
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
+										dataUrl,
+										(dataUrl, points) => this._setRoomImage(file, points),
+									),
 								),
 								{ className: 'btn medium icon-left' },
 							)),

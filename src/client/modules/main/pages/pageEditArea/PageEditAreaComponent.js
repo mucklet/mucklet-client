@@ -64,7 +64,10 @@ class PageEditAreaComponent {
 								n.component(new FAIcon('camera')),
 								n.component(new Txt(l10n.l('pageEditArea.upload', "Upload"))),
 							])),
-							(file) => this._setAreaImage(file),
+							(file) => this.module.createLimits.validateImageSize(
+								file.size,
+								() => this._setAreaImage(file),
+							),
 							{
 								className: 'btn medium icon-left',
 								noFileReader: true,

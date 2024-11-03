@@ -22,6 +22,7 @@ class PageEditChar {
 			'tags',
 			'player',
 			'file',
+			'createLimits',
 		], this._init.bind(this));
 	}
 

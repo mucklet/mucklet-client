@@ -19,6 +19,7 @@ class PageEditArea {
 			'player',
 			'toaster',
 			'file',
+			'createLimits',
 		], this._init.bind(this));
 	}
 

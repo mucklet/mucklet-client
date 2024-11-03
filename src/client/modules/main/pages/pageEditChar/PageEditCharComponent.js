@@ -51,14 +51,17 @@ class PageEditCharComponent {
 								n.component(new FAIcon('camera')),
 								n.component(new Txt(l10n.l('pageEditChar.upload', "Upload"))),
 							])),
-							(file, dataUrl) => {
-								let footer = new LabelToggleBox(l10n.l('pageEditChar.useThumbAsAvatar', "Use thumbnail as avatar"), !this.ctrl.avatar);
-								this.module.dialogCropImage.open(
-									dataUrl,
-									(dataUrl, points) => this._setCharImage(file, points, footer.getValue()),
-									{ footer },
-								);
-							},
+							(file, dataUrl) => this.module.createLimits.validateImageSize(
+								file.size,
+								() => {
+									let footer = new LabelToggleBox(l10n.l('pageEditChar.useThumbAsAvatar', "Use thumbnail as avatar"), !this.ctrl.avatar);
+									this.module.dialogCropImage.open(
+										dataUrl,
+										(dataUrl, points) => this._setCharImage(file, points, footer.getValue()),
+										{ footer },
+									);
+								},
+							),
 							{ className: 'btn medium icon-left' },
 						)),
 						n.component(new ModelComponent(
@@ -97,9 +100,12 @@ class PageEditCharComponent {
 								n.component(new FAIcon('camera')),
 								n.component(new Txt(l10n.l('pageEditChar.upload', "Upload"))),
 							])),
-							(file, dataUrl) => this.module.dialogCropImage.open(
-								dataUrl,
-								(dataUrl, points) => this._setCharAvatar(file, points),
+							(file, dataUrl) => this.module.createLimits.validateImageSize(
+								file.size,
+								() => this.module.dialogCropImage.open(
+									dataUrl,
+									(dataUrl, points) => this._setCharAvatar(file, points),
+								),
 							),
 							{ className: 'btn small icon-left' },
 						)),

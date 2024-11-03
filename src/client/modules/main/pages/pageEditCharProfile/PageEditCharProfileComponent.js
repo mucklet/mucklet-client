@@ -40,12 +40,13 @@ class PageEditCharProfileComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditCharProfile.upload', "Upload"))),
 								])),
-								(file, dataUrl) => {
-									this.module.dialogCropImage.open(
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
 										dataUrl,
 										(dataUrl, points) => this._setProfileImage(file, points),
-									);
-								},
+									),
+								),
 								{ className: 'btn medium icon-left' },
 							)),
 							n.component(new Context(
@@ -119,9 +120,12 @@ class PageEditCharProfileComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditCharProfile.upload', "Upload"))),
 								])),
-								(file, dataUrl) => this.module.dialogCropImage.open(
-									dataUrl,
-									(dataUrl, points) => this._setProfileAvatar(file, points),
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
+										dataUrl,
+										(dataUrl, points) => this._setProfileAvatar(file, points),
+									),
 								),
 								{ className: 'btn small icon-left' },
 							)),

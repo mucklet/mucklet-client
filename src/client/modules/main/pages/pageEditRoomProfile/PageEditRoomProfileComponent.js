@@ -42,12 +42,13 @@ class PageEditRoomProfileComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditRoomProfile.upload', "Upload"))),
 								])),
-								(file, dataUrl) => {
-									this.module.dialogCropImage.open(
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
 										dataUrl,
 										(dataUrl, points) => this._setRoomProfileImage(file, points),
-									);
-								},
+									),
+								),
 								{ className: 'btn medium icon-left' },
 							)),
 							n.component(new Context(
