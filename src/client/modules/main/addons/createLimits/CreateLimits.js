@@ -1,13 +1,16 @@
 import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import escapeHtml from 'utils/escapeHtml';
+import formatByteSize from 'utils/formatByteSize';
 
 const txtBecomeSupporter = l10n.l('createLimits.becomeSupporter', "Become supporter");
 const txtNevermind = l10n.l('createLimits.nervermind', "Nevermind");
 const txtCharLimitReached = l10n.l('createLimits.charLimitReached', "Character limit reached");
-const txtProfileLimitReached = l10n.l('createLimits.profileLimitReached', "Profile limit reached");
 const txtCharProfileLimitReachedPrune = (maxCharProfiles) => l10n.l('createLimits.charProfileLimitReachedPrune', "You've reached the limit of {maxCharProfiles} profiles. Maybe it is time to prune some of them?", { maxCharProfiles });
+const txtProfileLimitReached = l10n.l('createLimits.profileLimitReached', "Profile limit reached");
 const txtRoomProfileLimitReachedPrune = (maxRoomProfiles) => l10n.l('createLimits.roomProfileLimitReachedPrune', "You've reached the limit of {maxRoomProfiles} profiles. Maybe it is time to prune some of them?", { maxRoomProfiles });
+const txtImageTooLarge = l10n.l('createLimits.imageTooLarge', "Image too large");
+const txtImageTooLargeResize = (size) => l10n.l('createLimits.imageTooLargeResize', "The max size of an image is {maxSize}. Maybe you can make it a bit smaller by resizing it?", { maxSize: formatByteSize(size) });
 const accountOverviewUrl = HUB_PATH + 'account#overview';
 
 /**
@@ -122,7 +125,7 @@ class CreateLimits {
 	}
 
 	/**
-	 * Validates that char profiles is not at its limit, and that a new profile
+	 * Validates that room profiles is not at its limit, and that a new profile
 	 * can be created. If limit is reached, a confirm dialog will be opened to
 	 * inform the player.
 	 * @param {Collection} profiles Room profiles collection.
@@ -175,15 +178,50 @@ class CreateLimits {
 		);
 	}
 
-	_limitSelector(count, all, admin, supporter, onMax, onPromote, onProceed) {
+	/**
+	 * Validates that the image file size is not exceeding the upload limits. If
+	 * limit is reached, a confirm dialog will be opened to inform the player.
+	 * @param {number} size File size in bytes.
+	 * @param {function} cb Callback called if limit is not reached.
+	 */
+	validateImageSize(size, cb) {
+		this._limitSelector(
+			size,
+			this.coreInfo.maxImageSize,
+			this.coreInfo.maxImageSize,
+			this.coreInfo.supporterMaxImageSize,
+			// On limit reached
+			(maxImageSize) => this.module.confirm.open(null, {
+				title: txtImageTooLarge,
+				body: txtImageTooLargeResize(maxImageSize),
+				cancel: null,
+			}),
+			// On promote supporter
+			(maxImageSize, supporterMaxImageSize) => this.module.confirm.open(() => this._redirectToAccount(), {
+				title: txtImageTooLarge,
+				confirm: txtBecomeSupporter,
+				body: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedBody', "The max size of an image is {maxSize}.", { maxSize: formatByteSize(maxImageSize) }), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedSupporterLink', "By becoming a supporter, you can increase the image max size to {supporterMaxSize}.", { supporterMaxSize: formatByteSize(supporterMaxImageSize) }), { tagName: 'p' })),
+				])),
+				cancel: txtNevermind,
+				size: 'wide',
+			}),
+			// On limit not reached
+			cb,
+			true,
+		);
+	}
+
+	_limitSelector(count, all, admin, supporter, onMax, onPromote, onProceed, inclusive = false) {
 		let playerMod = this.module.player;
 		let max = Math.max(
 			all,
 			playerMod.hasAnyRole('admin') || playerMod.hasAnyIdRole('overseer') ? admin : 0,
 			playerMod.hasAnyIdRole('overseer', 'pioneer', 'supporter') ? supporter : 0,
 		);
-		if (max <= count) {
-			if (supporter > max && supporter > count) {
+		if (inclusive ? max < count : max <= count) {
+			if (inclusive ? supporter >= max && supporter >= count : supporter > max && supporter > count) {
 				return onPromote(max, supporter);
 			}
 			return onMax(max);

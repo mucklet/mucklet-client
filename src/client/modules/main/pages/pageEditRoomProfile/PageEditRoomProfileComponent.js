@@ -42,12 +42,13 @@ class PageEditRoomProfileComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditRoomProfile.upload', "Upload"))),
 								])),
-								(file, dataUrl) => {
-									this.module.dialogCropImage.open(
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
 										dataUrl,
-										(dataUrl, points) => this._setRoomProfileImage(dataUrl, points),
-									);
-								},
+										(dataUrl, points) => this._setRoomProfileImage(file, points),
+									),
+								),
 								{ className: 'btn medium icon-left' },
 							)),
 							n.component(new Context(
@@ -238,21 +239,22 @@ class PageEditRoomProfileComponent {
 		this.state.changes = {};
 	}
 
-	_setRoomProfileImage(dataUrl, points) {
-		return this.ctrl.call('setRoomProfileImage', {
-			profileId: this.profile.id,
-			dataUrl,
-			x1: parseInt(points[0]),
-			y1: parseInt(points[1]),
-			x2: parseInt(points[2]),
-			y2: parseInt(points[3]),
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditRoomProfile.imageUploaded', "Image uploaded"),
-			content: new Txt(l10n.l('pageEditRoomProfile.imageUploadedBody', "Room profile image was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setRoomProfileImage(file, points) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setRoomProfileImage', {
+				profileId: this.profile.id,
+				uploadId: result.uploadId,
+				x1: parseInt(points[0]),
+				y1: parseInt(points[1]),
+				x2: parseInt(points[2]),
+				y2: parseInt(points[3]),
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditRoomProfile.imageUploaded', "Image uploaded"),
+				content: new Txt(l10n.l('pageEditRoomProfile.imageUploadedBody', "Room profile image was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_copyRoomProfileImage() {

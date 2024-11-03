@@ -18,6 +18,8 @@ class PageEditArea {
 			'dialogSetAreaOwner',
 			'player',
 			'toaster',
+			'file',
+			'createLimits',
 		], this._init.bind(this));
 	}
 
