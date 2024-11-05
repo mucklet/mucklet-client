@@ -21,6 +21,8 @@ class PageEditRoom {
 			'dialogSetRoomOwner',
 			'player',
 			'toaster',
+			'file',
+			'createLimits',
 		], this._init.bind(this));
 	}
 

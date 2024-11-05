@@ -37,7 +37,12 @@ class DialogCropImage {
 				n.elem('div', { className: 'dialogcropimage--container' }, [
 					n.component(croppie),
 				]),
-				n.component(opt.footer ? opt.footer : null),
+				n.component(opt.footer
+					? new Elem(n => n.elem('div', { className: 'common--sectionpadding' }, [
+						n.component(opt.footer),
+			 		]))
+					: null,
+				),
 				n.component('message', new Collapser()),
 				n.elem('div', { className: 'dialogcropimage--footer' }, [
 					n.elem('button', { events: {
