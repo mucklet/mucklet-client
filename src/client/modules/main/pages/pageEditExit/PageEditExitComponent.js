@@ -207,10 +207,21 @@ class PageEditExitComponent {
 				n.elem('div', { className: 'pageeditexit--flags' }, [
 					n.component(new ModelComponent(
 						ctx.exit,
+						new LabelToggleBox(l10n.l('pageEditExit.isInactive', "Is inactive"), false, {
+							className: 'common--formmargin',
+							onChange: v => ctx.exit.set({ inactive: v }),
+							popupTip: l10n.l('pageEditExit.activeInfo', "An inactive exit is not listed, and may not be used. Room scripts may still redirect to the exit."),
+						}),
+						(m, c) => c.setValue(m.inactive, false),
+					)),
+				]),
+				n.elem('div', { className: 'pageeditexit--flags' }, [
+					n.component(new ModelComponent(
+						ctx.exit,
 						new LabelToggleBox(l10n.l('pageEditExit.isHidden', "Is hidden"), false, {
 							className: 'common--formmargin',
 							onChange: v => ctx.exit.set({ hidden: v }),
-							popupTip: l10n.l('pageEditExit.hiddenInfo', "A hidden exit is not listed among room exits, but characters might still use it if they know the keyword(s)."),
+							popupTip: l10n.l('pageEditExit.hiddenInfo', "A hidden exit is not listed among room exits, but characters may still use it if they know the keyword(s)."),
 						}),
 						(m, c) => c.setValue(m.hidden, false),
 					)),
