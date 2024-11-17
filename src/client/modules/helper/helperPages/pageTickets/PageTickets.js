@@ -151,7 +151,7 @@ class PageTickets {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageTickets.helpRequest', "Help request"),
-				l10n.l('pageTickets.charRequestedHelp', "{name} requested help.", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageTickets.charRequestedHelp', "{name} requested help", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();

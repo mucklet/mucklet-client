@@ -22,46 +22,41 @@ class BundleLoader {
 	}
 
 	_onModelChange(change) {
+		let playerMod = this.module.player;
 		if (!change || change.hasOwnProperty('roles')) {
-			let roles = this.playerModel.roles;
-			if (roles) {
-				if (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0 || roles.indexOf('moderator') >= 0 || roles.indexOf('helper') >= 0) {
-					this._loadStaffModules();
-				}
-				if (roles.indexOf('admin') >= 0) {
-					this._loadAdminModules();
-				}
-				if (roles.indexOf('admin') >= 0 || roles.indexOf('moderator') >= 0) {
-					this._loadModModules();
-				}
-				if (roles.indexOf('admin') >= 0 || roles.indexOf('builder') >= 0) {
-					this._loadBuildModules();
-				}
-				if (roles.indexOf('admin') >= 0 || roles.indexOf('helper') >= 0) {
-					this._loadHelperModules();
-				}
+			if (playerMod.isStaff()) {
+				this._loadStaffModules();
+			}
+			if (playerMod.isAdmin()) {
+				this._loadAdminModules();
+			}
+			if (playerMod.isModerator()) {
+				this._loadModModules();
+			}
+			if (playerMod.isBuilder()) {
+				this._loadBuildModules();
+			}
+			if (playerMod.isHelper()) {
+				this._loadHelperModules();
 			}
 		}
 		if (!change || change.hasOwnProperty('idRoles')) {
-			let idRoles = this.playerModel.idRoles;
-			if (idRoles) {
-				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0 || idRoles.indexOf('supporter') >= 0) {
-					this._loadBonusModules();
-				}
-				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('pioneer') >= 0) {
-					this._loadPioneerModules();
-				}
-				if (idRoles.indexOf('overseer') >= 0 || idRoles.indexOf('supporter') >= 0) {
-					this._loadSupporterModules();
-				}
-				if (idRoles.indexOf('overseer') >= 0) {
-					this._loadOverseerModules();
-					this._loadAdminModules();
-					this._loadModModules();
-					this._loadBuildModules();
-					this._loadStaffModules();
-					this._loadHelperModules();
-				}
+			if (playerMod.isBonus()) {
+				this._loadBonusModules();
+			}
+			if (playerMod.isPioneer()) {
+				this._loadPioneerModules();
+			}
+			if (playerMod.isSupporter()) {
+				this._loadSupporterModules();
+			}
+			if (playerMod.isOverseer()) {
+				this._loadOverseerModules();
+				this._loadAdminModules();
+				this._loadModModules();
+				this._loadBuildModules();
+				this._loadStaffModules();
+				this._loadHelperModules();
 			}
 		}
 	}

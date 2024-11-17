@@ -39,6 +39,11 @@ module.exports = function(ctx) {
 			app: path.resolve(ctx.srcPath, 'app.js'),
 			welcome: path.resolve(ctx.srcPath, 'welcome/app-welcome.js'),
 		},
+		performance: {
+			hints: ctx.devMode ? false : 'warning',
+			maxEntrypointSize: 512000,
+			maxAssetSize: 2048000,
+		},
 		devServer: {
 			port: 6450,
 			allowedHosts: [
@@ -105,7 +110,7 @@ module.exports = function(ctx) {
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,
 			}),
-			...ctx.devMode ? [] : [
+			...ctx.disableServiceWorker ? [] : [
 				new WorkboxPlugin.InjectManifest({
 					swSrc: path.resolve(ctx.commonPath, 'workers/service-worker.js'),
 					swDest: 'service-worker.js',

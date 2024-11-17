@@ -40,12 +40,13 @@ class PageEditCharProfileComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditCharProfile.upload', "Upload"))),
 								])),
-								(file, dataUrl) => {
-									this.module.dialogCropImage.open(
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
 										dataUrl,
-										(dataUrl, points) => this._setProfileImage(dataUrl, points),
-									);
-								},
+										(dataUrl, points) => this._setProfileImage(file, points),
+									),
+								),
 								{ className: 'btn medium icon-left' },
 							)),
 							n.component(new Context(
@@ -119,9 +120,12 @@ class PageEditCharProfileComponent {
 									n.component(new FAIcon('camera')),
 									n.component(new Txt(l10n.l('pageEditCharProfile.upload', "Upload"))),
 								])),
-								(file, dataUrl) => this.module.dialogCropImage.open(
-									dataUrl,
-									(dataUrl, points) => this._setProfileAvatar(dataUrl, points),
+								(file, dataUrl) => this.module.createLimits.validateImageSize(
+									file.size,
+									() => this.module.dialogCropImage.open(
+										dataUrl,
+										(dataUrl, points) => this._setProfileAvatar(file, points),
+									),
 								),
 								{ className: 'btn small icon-left' },
 							)),
@@ -436,21 +440,22 @@ class PageEditCharProfileComponent {
 		this.state.changes = {};
 	}
 
-	_setProfileImage(dataUrl, points) {
-		return this.ctrl.call('setProfileImage', {
-			profileId: this.profile.id,
-			dataUrl,
-			x1: parseInt(points[0]),
-			y1: parseInt(points[1]),
-			x2: parseInt(points[2]),
-			y2: parseInt(points[3]),
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditCharProfile.imageUploaded', "Image uploaded"),
-			content: new Txt(l10n.l('pageEditCharProfile.imageUploadedBody', "Profile image was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setProfileImage(file, points) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setProfileImage', {
+				profileId: this.profile.id,
+				uploadId: result.uploadId,
+				x1: parseInt(points[0]),
+				y1: parseInt(points[1]),
+				x2: parseInt(points[2]),
+				y2: parseInt(points[3]),
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditCharProfile.imageUploaded', "Image uploaded"),
+				content: new Txt(l10n.l('pageEditCharProfile.imageUploadedBody', "Profile image was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_copyProfileImage() {
@@ -476,21 +481,22 @@ class PageEditCharProfileComponent {
 			.catch(err => this.module.confirm.openError(err));
 	}
 
-	_setProfileAvatar(dataUrl, points) {
-		return this.ctrl.call('setProfileAvatar', {
-			profileId: this.profile.id,
-			dataUrl,
-			x1: parseInt(points[0]),
-			y1: parseInt(points[1]),
-			x2: parseInt(points[2]),
-			y2: parseInt(points[3]),
-		}).then(() => this.module.toaster.open({
-			title: l10n.l('pageEditCharProfile.avatarUploaded', "Avatar uploaded"),
-			content: new Txt(l10n.l('pageEditCharProfile.avatarUploadedBody', "Profile avatar was uploaded and saved.")),
-			closeOn: 'click',
-			type: 'success',
-			autoclose: true,
-		}));
+	_setProfileAvatar(file, points) {
+		return this.module.file.upload(file, 'core.upload.image')
+			.then(result => this.ctrl.call('setProfileAvatar', {
+				profileId: this.profile.id,
+				uploadId: result.uploadId,
+				x1: parseInt(points[0]),
+				y1: parseInt(points[1]),
+				x2: parseInt(points[2]),
+				y2: parseInt(points[3]),
+			})).then(() => this.module.toaster.open({
+				title: l10n.l('pageEditCharProfile.avatarUploaded', "Avatar uploaded"),
+				content: new Txt(l10n.l('pageEditCharProfile.avatarUploadedBody', "Profile avatar was uploaded and saved.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}));
 	}
 
 	_copyProfileAvatar() {

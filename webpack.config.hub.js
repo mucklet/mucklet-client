@@ -39,6 +39,11 @@ module.exports = function(ctx) {
 			policy: path.resolve(ctx.srcPath, 'policy/app-policy.js'),
 			...pages.reduce((o, page) => Object.assign(o, { [page]: path.resolve(ctx.srcPath, page + '/app-' + page + '.js') }), {}),
 		},
+		performance: {
+			hints: ctx.devMode ? false : 'warning',
+			maxEntrypointSize: 512000,
+			maxAssetSize: 2048000,
+		},
 		devServer: {
 			port: 6460,
 			allowedHosts: [

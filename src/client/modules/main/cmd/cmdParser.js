@@ -11,6 +11,7 @@ const tokenTags = {
 	unknown: 'comment',
 	entityid: 'keyword',
 	ooc: 'meta',
+	code: 'macroName',
 };
 
 export default function(cfg) {

@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+    - name: Install dependencies
+      run: npm install
+    - name: Run test
+      run: npm run test
+    - name: Run lint
+      run: npm run test:lint
+    - name: Build client
+      run: npm run build:client
+    - name: Build hub
+      run: npm run build:hub

@@ -39,6 +39,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.keyMaxLengthDesc', "Keyword (teleport, exit, etc.) max length."),
 		sortOrder: 1050,
 	},
+	{
+		key: 'scriptMaxLength',
+		stepFactory: () => new NumberStep('value', { name: "script max length" }),
+		desc: l10n.l('setConfig.scriptMaxLengthDesc', "Script max length."),
+		sortOrder: 1060,
+	},
 	// Max/min name lengths
 	{
 		key: 'charNameMinLength',
@@ -111,7 +117,7 @@ const defaultAttr = [
 		key: 'builderMaxOwnedAreas',
 		stepFactory: () => new NumberStep('value', { name: "max owned areas for builders and admins" }),
 		desc: l10n.l('setConfig.builderMaxOwnedAreasDesc', "Max number of owned areas for builders and admins."),
-		sortOrder: 1362,
+		sortOrder: 1262,
 	},
 	{
 		key: 'supporterMaxOwnedChars',
@@ -155,6 +161,31 @@ const defaultAttr = [
 		stepFactory: () => new NumberStep('value', { name: "max follows" }),
 		desc: l10n.l('setConfig.maxFollowsDesc', "Max number of character's following someone."),
 		sortOrder: 1330,
+	},
+	{
+		key: 'maxRoomScripts',
+		stepFactory: () => new NumberStep('value', { name: "max room scripts" }),
+		desc: l10n.l('setConfig.maxRoomScriptsDesc', "Max number of room scripts per room."),
+		sortOrder: 1340,
+	},
+	{
+		key: 'maxScheduledPosts',
+		stepFactory: () => new NumberStep('value', { name: "max scheduled script posts" }),
+		desc: l10n.l('setConfig.maxScheduledPostsDesc', "Max number of scheduled posts per script."),
+		sortOrder: 1350,
+	},
+	// Max upload limits
+	{
+		key: 'maxImageSize',
+		stepFactory: () => new NumberStep('value', { name: "max image size" }),
+		desc: l10n.l('setConfig.maxImageSizeDesc', "Max image size in bytes."),
+		sortOrder: 1400,
+	},
+	{
+		key: 'supporterMaxImageSize',
+		stepFactory: () => new NumberStep('value', { name: "max image size for supporters" }),
+		desc: l10n.l('setConfig.supporterMaxImageSizeDesc', "Max image size in bytes for supporters."),
+		sortOrder: 1410,
 	},
 ];
 

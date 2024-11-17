@@ -1,0 +1,53 @@
+@import '~scss/variables';
+
+.dialogcharsnapshotattachment {
+	&.dialog {
+		width: 80%;
+		max-height: 80%;
+		max-width: 652px;
+	}
+
+	.dialog--content {
+		padding: 16px;
+	}
+
+	&--tags {
+		padding-top: 6px;
+	}
+
+	&--notset {
+		font-style: italic;
+		font-size: $font-size;
+		color: $color4-dark;
+	}
+
+	&--fullname {
+		font-family: $font-text;
+		color: $color3;
+		font-size: $font-size-large;
+		line-height: 24px;
+	}
+
+	&--status, &--timestamp {
+		font-size: $font-size-small;
+		line-height: 20px;
+	}
+
+	&--image, &--avatar {
+		background: $color1-lighter;
+	}
+
+	&--imagebtn {
+		> .btn + .btn {
+			margin-top: 8px;
+		}
+	}
+
+	&--lfrp-placeholder {
+		display: block;
+		font-style: italic;
+		font-size: $font-size-small;
+		padding-bottom: 10px;
+	}
+
+}

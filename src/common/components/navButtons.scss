@@ -35,8 +35,9 @@
 
 		&:not(.disabled) {
 			cursor: pointer;
-			&:hover {
+			&:hover, &:focus {
 				fill: lighten($color1-lightest, 5%);
+				outline: 0;
 				.navbuttons--icon {
 					fill:$color4-lighter;
 				}
@@ -47,7 +48,7 @@
 				.navbuttons--icon {
 					fill: $color1-light;
 				}
-				&:not(.disabled):hover {
+				&:not(.disabled):hover, &:not(.disabled):focus {
 					fill: $color6-hover;
 					.navbuttons--icon {
 						fill: $color1-lighter;
@@ -56,7 +57,7 @@
 			}
 		}
 		&.selected:not(.disabled) {
-			&:hover {
+			&:hover, &:focus {
 				fill: lighten($color1-lightest, 5%);
 				.navbuttons--icon {
 					fill: $color4-lighter;

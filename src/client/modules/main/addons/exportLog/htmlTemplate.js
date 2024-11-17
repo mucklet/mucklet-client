@@ -10,7 +10,7 @@ export const bodyEnd = `</div></body>`;
 export const htmlEnd = `</html>`;
 
 export const style = `
-body { font-family: "Open Sans", sans-serif; font-size: 16px; color: #7d818c; background-color: #161926; margin: 0; line-height: 125%; padding: 8px 16px; }
+body { font-family: "Open Sans", sans-serif; font-size: 16px; color: #7d818c; background-color: #161926; margin: 0; line-height: 1.4em; padding: 8px 16px; }
 .cont {
 	width: 100%;
 	max-width: 720px;

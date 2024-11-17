@@ -7,12 +7,12 @@ import { communicationTooLong } from 'utils/cmdErr';
 const usageText = 'report <span class="param">Character</span> <span class="opt">= <span class="param">Message</span></span>';
 const shortDesc = 'Report a character';
 const helpText =
-`<p>Report a character to the moderators. If the character is a puppet, the current puppeteer is reported.</p>
+`<p>Open a dialog to report a character to the moderators. If the character is a puppet, the current puppeteer is reported.</p>
 <p>For more info on creating reports, type: <code>help reporting</code></p>
 <p><code class="param">Character</code> is the name of the character to report.</p>
 <p><code class="param">Message</code> is the optional report message. It may be formatted and span multiple paragraphs.</p>`;
 const examples = [
-	{ cmd: 'report John Mischief = Excessive spamming.', desc: l10n.l('report.reportExampleDesc', "Reports John Mischief to the moderators") },
+	{ cmd: 'report John Mischief = Excessive spamming.', desc: l10n.l('report.reportExampleDesc', "Opens a dialog to report John Mischief to the moderators") },
 ];
 
 /**
@@ -22,7 +22,14 @@ class Report {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'cmdSteps', 'help', 'api', 'charLog', 'info' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'cmdSteps',
+			'help',
+			'info',
+			'dialogReport',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -68,13 +75,10 @@ class Report {
 		return (params.charId
 			? Promise.resolve({ id: params.charId })
 			: player.call('getChar', { charName: params.charName })
-		).then(c => this.module.api.call('report.reports', 'create', {
-			charId: char.id,
-			targetId: c.id,
-			currentPuppeteer: true,
-			msg: params.msg || null,
-		})).then(() => {
-			this.module.charLog.logInfo(char, l10n.l('report.reportSent', "The report was sent to the moderators."));
+		).then(c => {
+			this.module.dialogReport.open(char.id, c.id, c.puppeteer?.id, {
+				msg: params.msg || null,
+			});
 		});
 	}
 }

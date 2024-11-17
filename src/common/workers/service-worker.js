@@ -17,58 +17,65 @@ self.addEventListener('activate', (event) => {
 const defaultIcon = '/android-chrome-192x192.png';
 const defaultBadge = '/badgemask-96x96.png';
 
-function getNotificationWithTag(tag) {
-	if (!tag) {
-		return Promise.resolve(null);
-	}
-	return self.registration.getNotifications().then((notifications) => {
-		for (let n of notifications || []) {
-			let ntag = n.tag;
-			if (ntag) {
-				let separatorIdx = ntag.indexOf('#');
-				if (separatorIdx >= 0) {
-					ntag = ntag.slice(0, separatorIdx);
-				}
-				if (tag === ntag) {
-					return n;
-				}
-			}
+/**
+ * Gets a single notification by tag.
+ * @param {string} tag Tag.
+ * @returns {Promise<Notification|null>} Promise to the notification or null if no notification matches the tag.
+ */
+function getNotification(tag) {
+	return tag
+		? self.registration.getNotifications()
+			.then(notifications => (notifications.find(notification => notification.tag === tag) || null))
+		: Promise.resolve(null);
+}
+
+/**
+ * Closes the notification matching the tag.
+ * @param {string} tag Tag.
+ * @returns {Promise<Notification|null>} Promise of the closed notification, or null if no notification was closed.
+ */
+function closeNotification(tag) {
+	return getNotification(tag).then(notification => {
+		// Try close, and swallow any error.
+		try {
+			notification?.close();
+		} catch (ex) {
+			notification = null;
 		}
-		return null;
+		return notification;
 	});
 }
 
+/**
+ * Shows a notification. If opt.tag is set, any other notification with the same
+ * tag is closed.
+ * @param {string} title Notification title
+ * @param {object} opt Optional parameters.
+ * @param {string} opt.tag Tag identifying the notification.
+ * @param {string} opt.body Body text. Defaults to no body.
+ * @param {boolean} opt.alwaysNotify Flag to tell to send notification even if client is in focus. Defaults to false.
+ * @param {string} opt.icon Icon path. Defaults to realm icon.,
+ * @param {string} opt.badge Badge image path. Defaults to mucklet logo.
+ * @param {boolean} opt.vibrate Flag to tell phone to vibrate on notification. Defaults to false.
+ * @param {string} opt.duration Duration in millseconds to show the notification before removing it. Defaults to no auto removal.
+ * @param {{ event?: string, params?: any }} opt.data Data attached to the notification.
+ * @returns {Promise<any>}
+ */
 function showNotification(title, opt) {
 	return isClientFocused().then(isFocused => {
 		if (isFocused && !opt?.alwaysNotify) {
 			return;
 		}
-		let dataStr = '';
-		if (typeof opt?.data != 'undefined') {
-			dataStr = '#' + JSON.stringify(opt.data);
-		}
-		let compositeTag = (opt?.tag || '') + dataStr;
-		return getNotificationWithTag(opt?.tag).then(notification => {
-			// If an existing notification matches the by tag prefix, use its tag as composite tag.
-			if (notification) {
-				compositeTag = notification.tag;
-			}
-			return self.registration.showNotification(title, Object.assign({}, opt, { tag: compositeTag }))
-				.then(() => {
-					if (opt?.duration) {
-						// If we have a duration, set a timeout to close it afterwards.
-						self.setTimeout(() => {
-							self.registration.getNotifications()
-								.then(notifications => {
-									let notification = notifications.find(notification => notification.tag === compositeTag);
-									if (notification) {
-										notification.close();
-									}
-								});
 
-						}, opt.duration);
-					}
-				});
+		return getNotification(opt?.tag).then(notification => {
+			return self.registration.showNotification(title, Object.assign({
+				renotify: notification ? true : undefined,
+			}, opt)).then(() => {
+				if (opt?.duration && opt?.tag) {
+					// If we have a duration, set a timeout to close it afterwards.
+					self.setTimeout(() => closeNotification(opt.tag), opt.duration);
+				}
+			});
 		});
 	});
 }
@@ -107,6 +114,10 @@ self.addEventListener(
 		switch (data?.method) {
 			case 'showNotification':
 				event.waitUntil(showNotification(data.title, data.opt));
+				break;
+
+			case 'closeNotification':
+				event.waitUntil(closeNotification(data.tag));
 				break;
 		}
 	},
@@ -152,21 +163,12 @@ self.addEventListener(
 self.addEventListener(
 	'notificationclick',
 	(event) => {
-		let tag = event.notification.tag;
 		// Always close on click
 		event.notification.close();
 
-		// Split tag and data
-		let data = null;
-		if (tag) {
-			let separator = tag.indexOf('#');
-			if (separator >= 0) {
-				data = tag.slice(separator + 1);
-				tag = tag.slice(0, separator);
-				// Try parse data as json
-				try { data = JSON.parse(data); } catch (ex) {}
-			}
-		}
+		// Get tag and data
+		let tag = event.notification.tag || null;
+		let data = event.notification.data || null;
 
 		// This looks to see if the client is already open and
 		// focuses if it is

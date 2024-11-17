@@ -100,7 +100,7 @@ class PageReports {
 	 * Gets a collection of attachment types.
 	 * @returns {Collection} Collection of attachment types.
 	 */
-	 getAttachmentTypes() {
+	getAttachmentTypes() {
 		return this.attachmentTypes;
 	}
 
@@ -108,7 +108,7 @@ class PageReports {
 	 * Registers a tags type.
 	 * @param {object} type Attachment type object
 	 * @param {string} type.id Attachment type ID.
-	 * @param {function} type.componentFactory Attachment type component factory: function(ctrl, state) -> Component
+	 * @param {(attachmentInfo: any, reporter: ReporterModel) => Component} type.componentFactory Attachment type component factory.
 	 * @returns {this}
 	 */
 	addAttachmentType(type) {
@@ -151,7 +151,7 @@ class PageReports {
 			let c = ev.item.char;
 			this.module.notify.send(
 				l10n.l('pageReports.newReport', "New report"),
-				l10n.l('pageReports.charReported', "{name} was reported.", { name: (c.name + ' ' + c.surname).trim() }),
+				l10n.l('pageReports.charReported', "{name} was reported", { name: (c.name + ' ' + c.surname).trim() }),
 				{
 					onClick: () => {
 						this.open();

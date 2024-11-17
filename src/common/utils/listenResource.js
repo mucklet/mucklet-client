@@ -8,7 +8,7 @@
  * @returns {Model|Collection} Resource being listened to.
  */
 export default function listenResource(resource, on, onEvent, event) {
-	if (resource) {
+	if (resource && typeof resource == 'object') {
 		let method = on || typeof on == 'undefined' ? 'on' : 'off';
 		if (typeof resource[method] == 'function') {
 			if (onEvent) {
@@ -33,7 +33,9 @@ export default function listenResource(resource, on, onEvent, event) {
  */
 export function relistenResource(oldResource, newResource, onEvent, event) {
 	newResource = newResource || null;
-	listenResource(oldResource, false, onEvent, event);
-	listenResource(newResource, true, onEvent, event);
+	if (oldResource !== newResource) {
+		listenResource(oldResource, false, onEvent, event);
+		listenResource(newResource, true, onEvent, event);
+	}
 	return newResource;
 }

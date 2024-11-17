@@ -24,6 +24,7 @@
 		border-left: 4px solid transparent;
 		overflow-wrap: break-word;
 		padding: 2px 0 2px 6px;
+		line-height: 1.4em;
 
 		pre {
 			white-space: pre-wrap;
@@ -96,7 +97,7 @@
 	&--fieldset {
 		position: relative;
 		border: 1px solid $color4-dark;
-		padding: 6px 10px;
+		padding: 5px 10px;
 		border-radius: 8px;
 	}
 
@@ -134,6 +135,11 @@
 		font-size: $font-size-small;
 		font-family: $font-code;
 		color: $color2;
+	}
+
+	&--source {
+		color: $log-text;
+		font-family: $font-code;
 	}
 
 	&--code, &--code-inline {

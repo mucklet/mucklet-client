@@ -33,7 +33,7 @@ const helpText =
 	<table class="tbl-small tbl-nomargin charlog--font-small"><tbody>
 		<tr><td class="charlog--strong">No&nbsp;canon&nbsp;characters</td><td>Roleplaying real people, established figures, or characters created or owned by someone else is not allowed.</td></tr>
 		<tr><td class="charlog--strong">No&nbsp;object&nbsp;characters</td><td>Characters representing objects or props without personality are not allowed. Bot scripts are exempted from this rule.</td></tr>
-		<tr><td class="charlog--strong">English&nbsp;only</td><td>While characters may occasionally use other languages, communication should be kept in English.</td></tr>
+		<tr><td class="charlog--strong">English&nbsp;only</td><td>While characters may occasionally use other languages, communication should be kept in English. The first name of your character must be able to be typed on an English keyboard - diacritics (accent marks) may be used.</td></tr>
 	</tbody></table>
 </section>
 <section class="charlog--pad">

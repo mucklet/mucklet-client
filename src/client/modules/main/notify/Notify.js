@@ -2,6 +2,7 @@ import { Html } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import * as base64 from 'utils/base64.js';
+import isVisible from 'utils/isVisible.js';
 
 const notifyStoragePrefix = 'notify.user.';
 
@@ -10,10 +11,6 @@ const notifySettingKeys = [ 'notifyOnWakeup', 'notifyOnWatched', 'notifyOnMatche
 function defaultOnClick(ev) {
 	window.focus();
 	ev.target.close();
-}
-
-function isVisible() {
-	return document.visibilityState == 'visible';
 }
 
 /**
@@ -36,6 +33,7 @@ class Notify {
 
 		// Bind callbacks
 		this._onModelChange = this._onModelChange.bind(this);
+		this._onVisibilityChange = this._onVisibilityChange.bind(this);
 
 		this.app.require([
 			'api',
@@ -65,6 +63,8 @@ class Notify {
 			this._loadSettings();
 			this.model.on('change', this._onModelChange);
 		});
+
+		document.addEventListener('visibilitychange', this._onVisibilityChange);
 	}
 
 	getModel() {
@@ -99,7 +99,13 @@ class Notify {
 			badge: this.defaultBadge,
 			onClick: defaultOnClick,
 			alwaysNotify: this.alwaysNotify,
-		}, opt);
+		}, opt, {
+			// Replace the provided tag with the user ID. This is because iPhone won't
+			// allow us to close previous notifications, so the tag must be the group
+			// identifier. This is to prevent notification spamming, ensuring we only
+			// have a single event showing on the phone per player, at any one time.
+			tag: this._userTag(),
+		});
 		title = typeof title == 'string' ? title : l10n.t(title);
 
 		const serviceWorker = this.app.getModule('serviceWorker');
@@ -116,8 +122,8 @@ class Notify {
 				}
 				// Click callback
 				n.onclick = (ev) => {
-					ev.target.close();
-					opt?.onClick?.(ev);
+					ev.target?.close();
+					opt.onClick?.(ev);
 				};
 			}
 		});
@@ -258,6 +264,16 @@ class Notify {
 		}
 	}
 
+	_onVisibilityChange() {
+		if (!this.alwaysNotify && isVisible()) {
+			this.app.getModule('serviceWorker')?.closeNotification(this._userTag());
+		}
+	}
+
+	_userTag() {
+		return this.player ? `user_${this.player.id}` : '';
+	}
+
 	_saveSettings() {
 		if (localStorage && this.player) {
 			localStorage.setItem(notifyStoragePrefix + this.player.id, JSON.stringify(this.model.props));
@@ -275,6 +291,7 @@ class Notify {
 	// Stores the endpoint in the local storage. If another endpoint exists
 	// there, it unregisters it.
 	_setEndpoint(endpoint) {
+		this.endpoint = endpoint;
 		if (localStorage && this.player) {
 			endpoint = endpoint || null;
 			let key = notifyStoragePrefix + this.player.id + '.endpoint';
@@ -395,6 +412,7 @@ class Notify {
 	}
 
 	dispose() {
+		document.removeEventListener('visibilitychange', this._onVisibilityChange);
 		this.model.off('change', this._onModelChange);
 	}
 }

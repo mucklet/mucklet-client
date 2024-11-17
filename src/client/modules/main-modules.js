@@ -2,6 +2,7 @@ import Viewport from 'modules/viewport/Viewport';
 import PlayerTools from 'modules/playerTools/PlayerTools';
 import Confirm from 'modules/confirm/Confirm';
 import Toaster from 'modules/toaster/Toaster';
+import File from 'modules/file/File';
 import AccountEmail from 'modules/accountEmail/AccountEmail';
 import VerifyEmail from 'modules/verifyEmail/VerifyEmail';
 import DialogChangeEmail from 'modules/dialogs/dialogChangeEmail/DialogChangeEmail';
@@ -12,6 +13,7 @@ const modules = {
 	playerTools: PlayerTools,
 	confirm: Confirm,
 	toaster: Toaster,
+	file: File,
 	accountEmail: AccountEmail,
 	verifyEmail: VerifyEmail,
 	dialogChangeEmail: DialogChangeEmail,

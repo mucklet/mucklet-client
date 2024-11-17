@@ -7,9 +7,9 @@ import { firstTriggerWord } from 'utils/formatText';
 const focusStoragePrefix = 'charFocus.';
 
 const focusTitle = l10n.l('charLog.newPost', "New post");
-const focusBody = l10n.l('charLog.newPost', "{char.name} made a new post.");
+const focusBody = l10n.l('charLog.newPost', "{char.name} made a new post");
 const mentionTitle = l10n.l('charLog.mention', "Mention");
-const mentionBody = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}.");
+const mentionBody = l10n.l('charLog.mentioned', "{char.name} mentioned {mention}");
 
 const focusColors = {
 	red: '#a00808',
@@ -89,9 +89,10 @@ class CharFocus {
 			let f = this.focusChars[c.id]?.props;
 			if (!f) return null;
 
-			let list = Object.keys(f).map(k => f[k]);
-			list.sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
-			return list;
+			return Object.keys(f)
+				.map(k => f[k])
+				.filter(c => c?.name)
+				.sort((a, b) => a.name.localeCompare(b.name) || a.surname.localeCompare(b.surname));
 		});
 		this.style = document.createElement('style');
 		document.head.appendChild(this.style);
@@ -99,21 +100,21 @@ class CharFocus {
 		const notificationHandlers = {
 			say: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, focusTitle, focusBody),
 			pose: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, focusTitle, focusBody),
-			sleep: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.asleep', "Asleep"), l10n.l('charLog.charFellAsleep', "{char.name} fell asleep.")),
-			leave: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.departure', "Departure"), l10n.l('charLog.charLeft', "{char.name} left.")),
-			arrive: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.arrival', "Arrival"), l10n.l('charLog.charArrived', "{char.name} arrived.")),
-			whisper: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.whisper', "Whisper"), l10n.l('charLog.charWhisperTo', "{char.name} whispered to {target.name}.")),
-			message: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.message', "Message"), l10n.l('charLog.charMessagedTo', "{char.name} messaged {target.name}.")),
-			describe: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newDesc', "Description"), l10n.l('charLog.newDescBy', "{char.name} made a description.")),
-			summon: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.summonRequest', "Summon request"), l10n.l('charLog.charSummoned', "{char.name} summons {target.name}.")),
-			join: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.joinRequest', "Join request"), l10n.l('charLog.charJoin', "{char.name} wants to join {target.name}.")),
-			leadRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.leadRequest', "Lead request"), l10n.l('charLog.charLead', "{char.name} wants to lead {target.name}.")),
-			followRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.followRequest', "Follow request"), l10n.l('charLog.charFollow', "{char.name} wants to follow {target.name}.")),
-			ooc: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newOocPost', "{char.name} made an Out of Character post.")),
-			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.warning', "Warning"), l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}.")),
+			sleep: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.asleep', "Asleep"), l10n.l('charLog.charFellAsleep', "{char.name} fell asleep")),
+			leave: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.departure', "Departure"), l10n.l('charLog.charLeft', "{char.name} left")),
+			arrive: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.arrival', "Arrival"), l10n.l('charLog.charArrived', "{char.name} arrived")),
+			whisper: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.whisper', "Whisper"), l10n.l('charLog.charWhisperTo', "{char.name} whispered to {target.name}")),
+			message: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.message', "Message"), l10n.l('charLog.charMessagedTo', "{char.name} messaged {target.name}")),
+			describe: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newDesc', "Description"), l10n.l('charLog.newDescBy', "{char.name} made a description")),
+			summon: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.summonRequest', "Summon request"), l10n.l('charLog.charSummoned', "{char.name} summons {target.name}")),
+			join: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.joinRequest', "Join request"), l10n.l('charLog.charJoin', "{char.name} wants to join {target.name}")),
+			leadRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.leadRequest', "Lead request"), l10n.l('charLog.charLead', "{char.name} wants to lead {target.name}")),
+			followRequest: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.followRequest', "Follow request"), l10n.l('charLog.charFollow', "{char.name} wants to follow {target.name}")),
+			ooc: (charId, ev) => this.notifyOnMention(charId, ev, mentionTitle, mentionBody) || this.notifyOnFocus(charId, ev, l10n.l('charLog.newOocPost', "{char.name} made an Out of Character post")),
+			warn: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.warning', "Warning"), l10n.l('charLog.charWarningTo', "{char.name} warned {target.name}")),
 			action: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.newAction', "{char.name} {msg}")),
-			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.address', "Address"), l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}.")) || this.notifyOnMention(charId, ev, mentionTitle, mentionBody),
-			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.roll', "Roll"), l10n.l('charLog.charRolled', "{char.name} rolled the dice.")),
+			address: (charId, ev) => this.notifyOnTargetEvent(charId, ev, l10n.l('charLog.address', "Address"), l10n.l('charLog.charAddressed', "{char.name} addressed {target.name}")) || this.notifyOnMention(charId, ev, mentionTitle, mentionBody),
+			roll: (charId, ev) => this.notifyOnFocus(charId, ev, l10n.l('charLog.roll', "Roll"), l10n.l('charLog.charRolled', "{char.name} rolled the dice")),
 		};
 		for (let k in notificationHandlers) {
 			this.module.charLog.addEventHandler(k, notificationHandlers[k]);
@@ -198,7 +199,7 @@ class CharFocus {
 			let color = focus[k].color;
 			let char = chars[k];
 			return { char, hex: color, color: isPredefined(color) || color };
-		}).filter(o => o.char);
+		}).filter(o => o.char?.name);
 		list.sort((a, b) => a.char.name.localeCompare(b.char.name) || a.char.surname.localeCompare(b.char.surname));
 		return list;
 	}

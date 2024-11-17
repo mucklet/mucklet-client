@@ -39,6 +39,11 @@ const txtProductFeatures = {
 			longDesc: l10n.l('txtProduct.increasedRoomProfileCapDesc', "Create up to 30 profiles per room, instead of 3."),
 		},
 		{
+			title: l10n.l('txtProduct.increasedImageSize', "Increased image upload size"),
+			desc: l10n.l('txtProduct.increasedImageSizeShortDesc', "Upload images up to 4 MiB in size"),
+			longDesc: l10n.l('txtProduct.increasedImageSizeDesc', "Upload images up to 4 MiB in size, instead of 1 MiB."),
+		},
+		{
 			title: l10n.l('txtProduct.instanceRooms', "Instance rooms"),
 			desc: l10n.l('txtProduct.instanceRoomsShortDesc', "Create rooms hosting multiple instances"),
 			longDesc: l10n.l('txtProduct.instanceRoomsDesc', "Create rooms and areas where characters can play in private instances."),
@@ -52,6 +57,11 @@ const txtProductFeatures = {
 			title: l10n.l('txtProduct.botAccess', "Bot access"),
 			desc: l10n.l('txtProduct.botAccessShortDesc', "Create and connect bot characters"),
 			longDesc: l10n.l('txtProduct.botAccessDesc', "Connect your characters using bot tokens, and control them with scripts."),
+		},
+		{
+			title: l10n.l('txtProduct.roomScripts', "Room scripts"),
+			desc: l10n.l('txtProduct.roomScriptsShortDesc', "Create and run room scripts"),
+			longDesc: l10n.l('txtProduct.roomScriptsDesc', "Create interactive rooms using a Typescript-like scripting language."),
 		},
 		{
 			title: l10n.l('txtProduct.comingFeatures', "... and more"),

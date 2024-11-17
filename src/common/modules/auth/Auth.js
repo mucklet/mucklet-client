@@ -19,12 +19,21 @@ function redirectWithUri(url, pushHistory) {
  * Auth authenticates and fetches the user, or redirects to login on fail.
  */
 class Auth {
+
+	/**
+	 * Creates a new Auth instance.
+	 * @param {App} app App instance.
+	 * @param {object} params Module params
+	 * @param {string} [params.player] Login username. Ignored if mode is not 'pass'.
+	 * @param {string} [params.pass] Hashed password. Ignored if mode is not 'pass'.
+	 * @param {"http"|"ws"|"pass"} [params.mode] Auth mode. http=header authentication on http handshake, ws=authenticate call over WebSocket, pass=password authentication
+	 */
 	constructor(app, params) {
 		this.app = app;
 		this.params = Object.assign({
 			player: '',
 			pass: '',
-			wsAuth: false,
+			mode: 'http',
 		}, params);
 
 		// Bind callbacks
@@ -61,7 +70,7 @@ class Auth {
 	 * @returns {Promise} Promise to the authenticate.
 	 */
 	authenticate(noRedirect) {
-		if (this.params.wsAuth) {
+		if (this.params.mode == 'pass') {
 			return this._getCurrentUser(true);
 		}
 
@@ -106,6 +115,36 @@ class Auth {
 					// A 200 response with invalid JSON is legacy success.
 				}
 				return this._getCurrentUser(true);
+			});
+		});
+	}
+
+	/**
+	 * Tries to refresh access tokens by calling the authenticate endpoint.
+	 *
+	 * The returned promise will be rejected if refresh failed.
+	 * @param {boolean} redirectOnerror Flag to redirect to login on error. Defaults to false.
+	 * @returns {Promise} Promise to tokens being refreshed.
+	 */
+	refreshTokens(redirectOnerror) {
+		return fetch(authenticateUrl, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: crossOrigin ? 'include' : 'same-origin',
+		}).then(authResp => {
+			return authResp.text().then(text => {
+				if (text) {
+					try {
+						let result = JSON.parse(text);
+						if (result?.error) {
+							// A proper error messages means we are not logged in.
+							if (redirectOnError) {
+								this.redirectToLogin(true);
+							}
+							return Promise.reject(result.error);
+						}
+					} catch (ex) {}
+				}
 			});
 		});
 	}
@@ -204,12 +243,14 @@ class Auth {
 	}
 
 	_onConnect() {
-		return (this.params.wsAuth
+		return (this.params.mode == 'pass'
 			? this.module.api.authenticate(wsLoginRid, 'login', {
 				name: this.params.player,
 				hash: hmacsha256(this.params.pass.trim(), publicPepper),
 			})
-			: this.module.api.authenticate(wsAuthRid, 'authenticate')
+			: this.params.mode == 'ws'
+				? this.module.api.authenticate(wsAuthRid, 'authenticate')
+				: Promise.resolve() // 'http'
 		).catch(err => {
 			return this.model.set({ authError: err });
 		});

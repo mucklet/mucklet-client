@@ -18,7 +18,7 @@ class UpdateRoomProfile {
 			'cmd',
 			'help',
 			'charLog',
-			'roomProfiles',
+			'roomAccess',
 		], this._init.bind(this));
 	}
 
@@ -26,7 +26,7 @@ class UpdateRoomProfile {
 		this.module = module;
 		this.module.cmd.addPrefixCmd('update', {
 			key: 'roomprofile',
-			next: new ListStep('profileId', this.module.roomProfiles.getInRoomProfileTokens(), {
+			next: new ListStep('profileId', this.module.roomAccess.getInRoomProfileTokens(), {
 				name: "room profile",
 			}),
 			value: (ctx, p) => this.updateRoomProfile(ctx.char, p),
