@@ -110,10 +110,16 @@ const defaultAttr = [
 		sortOrder: 190,
 	},
 	{
+		key: 'inactive',
+		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is inactive flag" }),
+		desc: l10n.l('setExit.hiddenDesc', "Flag telling if the exit is inactive, preventing it from being listed and used. Value is <code>yes</code> or <code>no</code>."),
+		sortOrder: 200,
+	},
+	{
 		key: 'transparent',
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is transparent flag" }),
 		desc: l10n.l('setExit.transparentDesc', "Flag telling if the exit is transparent, allowing you to see awake characters in the target room. Value is <code>yes</code> or <code>no</code>."),
-		sortOrder: 200,
+		sortOrder: 210,
 	},
 	{
 		key: 'leaveMsg',
