@@ -234,6 +234,10 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnFocus(ctrlId, ev, title, body) {
+		// No notification on script events
+		if (ev.script) {
+			return false;
+		}
 		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
@@ -257,6 +261,10 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnEvent(ctrlId, ev, title, body) {
+		// No notification on script events
+		if (ev.script) {
+			return false;
+		}
 		if (ctrlId === ev.char?.id || this._usePush() || ev.mod?.muted) {
 			return false;
 		}
@@ -273,6 +281,10 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnMention(ctrlId, ev, title, body) {
+		// No notification on script events
+		if (ev.script) {
+			return false;
+		}
 		// Unfocused muted events does not trigger
 		if (ctrlId === ev.char?.id || this._usePush() || (!this.hasFocus(ctrlId, ev.char?.id) && ev.mod?.muted)) {
 			return false;
@@ -295,6 +307,10 @@ class CharFocus {
 	 * @returns {boolean} Returns true if a notification was sent.
 	 */
 	notifyOnTargetEvent(ctrlId, ev, title, body) {
+		// No notification on script events
+		if (ev.script) {
+			return false;
+		}
 		if (ctrlId === ev.char?.id || this._usePush()) {
 			return false;
 		}
