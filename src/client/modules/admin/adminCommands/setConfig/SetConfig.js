@@ -160,6 +160,15 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.sweepMsgDesc', "Sweep message shown to the room after sweeping."),
 		sortOrder: 78,
 	},
+	{
+		key: 'exitTimeoutMsg',
+		stepFactory: () => new TextStep('value', {
+			name: "exit timeout message",
+			spanLines: true,
+		}),
+		desc: l10n.l('setConfig.exitTimeoutMsgDesc', "Exit info message shown on room script exit use timeout."),
+		sortOrder: 79,
+	},
 
 	// Movement messages
 	{
