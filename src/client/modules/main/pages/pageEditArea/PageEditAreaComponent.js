@@ -365,6 +365,8 @@ class PageEditAreaComponent {
 				closeOn: 'click',
 				type: 'success',
 				autoclose: true,
+			})).catch(err => this.module.confirm.openError(err, {
+				title: l10n.l('pageEditArea.mapImageNotUploaded', "Map image not uploaded"),
 			}));
 	}
 
