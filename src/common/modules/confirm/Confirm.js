@@ -117,14 +117,22 @@ class Confirm {
 		return this.dialog;
 	}
 
-	openError(msg) {
+	/**
+	 * Opens an error confirm dialog.
+	 * @param {string|Err|ResError} msg Error message.
+	 * @param {function} [opt] Optional parameters
+	 * @param {string} [opt.className] Class name to use instead of 'confirm'.
+	 * @param {string|LocaleString|Component} [opt.title] Title text or component.
+	 * @param {string|LocaleString|Component} [opt.confirm] Confirm button text or component.
+	 */
+	openError(msg, opt) {
 		// Turn error into a LocaleString
 		if (typeof msg === 'object' && msg !== null && msg.code && msg.message) {
 			msg = l10n.l(msg.code, msg.message, msg.data);
 		}
 		this.open(null, {
-			title: l10n.l('confirm.error', "An error occurred"),
-			confirm: l10n.l('confirm.ok', "Okay"),
+			title: opt?.title || l10n.l('confirm.error', "An error occurred"),
+			confirm: opt?.confirm || l10n.l('confirm.ok', "Okay"),
 			body: msg || l10n.l('confirm.bodyPlaceholder', "An unexpected error was encountered. That's all I know."),
 			cancel: null,
 		});
