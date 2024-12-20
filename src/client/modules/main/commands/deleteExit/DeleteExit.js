@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
+import * as translateErr from 'utils/translateErr';
 
 const usageText = 'delete exit <span class="param">Keyword</span>';
 const shortDesc = 'Delete an exit';
@@ -14,7 +15,12 @@ class DeleteExit {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'cmdLists',
+			'charLog',
+			'help',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -24,8 +30,10 @@ class DeleteExit {
 			key: 'exit',
 			next: new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
 				name: "exit",
+				textId: 'exitKey',
+				errRequired: step => new Err('deleteExit.keyRequired', "What exit do you want to delete?"),
 			}),
-			value: (ctx, p) => this.deleteExit(ctx.char, { exitId: p.exitId }),
+			value: (ctx, p) => this.deleteExit(ctx.char, p),
 		});
 
 		this.module.help.addTopic({
@@ -40,8 +48,13 @@ class DeleteExit {
 	}
 
 	deleteExit(char, params) {
-		return char.call('deleteExit', params).then(() => {
+		return char.call('deleteExit', params.exitId
+			? { exitId: params.exitId }
+			: { exitKey: params.exitKey },
+		).then(() => {
 			this.module.charLog.logInfo(char, l10n.l('deleteExit.deletedExit', "Exit was successfully deleted."));
+		}).catch(err => {
+			throw translateErr.exitNotFound(err, params.exitKey);
 		});
 	}
 }
