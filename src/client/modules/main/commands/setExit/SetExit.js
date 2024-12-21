@@ -9,6 +9,7 @@ import { exitIcons } from 'components/ExitIcon';
 import { directions } from 'components/NavButtons';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { communicationTooLong, keyTooLong, itemNameTooLong } from 'utils/cmdErr';
+import * as translateErr from 'utils/translateErr';
 
 const usageText = 'set exit <span class="param">Keyword</span> : <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set an exit attribute';
@@ -217,6 +218,8 @@ class SetExit {
 			: { exitKey: p.exitKey },
 		)).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('setExit.updatedExit', "Exit attribute was successfully set."));
+		}).catch(err => {
+			throw translateErr.exitNotFound(err, p.exitKey);
 		});
 	}
 }

@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
 import Err from 'classes/Err';
+import * as translateErr from 'utils/translateErr';
 
 const usageText = 'go <span class="param">Keyword</span>';
 const shortDesc = 'Go to another room';
@@ -45,7 +46,9 @@ class Go {
 		return ctx.char.call('useExit', p.exitId
 			? { exitId: p.exitId }
 			: { exitKey: p.exitKey },
-		);
+		).catch(err => {
+			throw translateErr.exitNotFound(err, p.exitKey);
+		});
 	}
 }
 
