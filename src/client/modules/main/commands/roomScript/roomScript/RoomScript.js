@@ -14,6 +14,14 @@ const helpText =
 <p><code class="param">Keyword</code> is the keyword for the script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
 
+const logLvlClass = {
+	log: 'charlog--default',
+	debug: 'charlog--ooc',
+	info: 'charlog--strong',
+	warn: 'charlog--cmd',
+	error: 'charlog--error',
+};
+
 /**
  * RoomScript adds the room script command.
  */
@@ -96,16 +104,16 @@ class RoomScript {
 								]),
 							]),
 						];
-						if (script.errors.length) {
-							inner.push(n.component(new Txt(l10n.t('roomScript.recentErrors', "Recent errors"), { tagName: 'h4', className: 'charlog--pad' })));
+						if (script.logs.length) {
+							inner.push(n.component(new Txt(l10n.t('roomScript.recentErrors', "Recent logs"), { tagName: 'h4', className: 'charlog--pad' })));
 							inner.push(n.elem('div', { className: 'charlog--code' }, [
-								n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, script.errors.toArray().map(m => n.elem('tr', [
+								n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, script.logs.toArray().reverse().map(m => n.elem('tr', [
 									n.elem('td', { className: 'charlog--strong' }, [
 										n.text(formatDateTime(new Date(m.time), { showMilliseconds: true })),
 									]),
 									n.elem('td', [
-										n.elem('pre', { className: 'common--pre-wrap charlog--source' }, [
-											n.text(m.error),
+										n.elem('pre', { className: 'common--pre-wrap ' + (logLvlClass[m.lvl] || '') }, [
+											n.text(m.msg),
 										]),
 									]),
 								]))),

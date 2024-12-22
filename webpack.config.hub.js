@@ -52,12 +52,12 @@ module.exports = function(ctx) {
 			],
 			proxy: {
 				'/identity': {
-					target: 'http://localhost:6451',
+					target: 'http://127.0.0.1:6451',
 					pathRewrite: { '^/identity': '' },
 					// logLevel: 'debug'
 				},
 				'/api': {
-					target: 'http://localhost:8080',
+					target: 'http://127.0.0.1:8080',
 					// logLevel: 'debug'
 				},
 			},

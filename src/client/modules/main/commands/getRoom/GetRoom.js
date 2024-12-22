@@ -11,7 +11,7 @@ import Err from 'classes/Err';
 
 const itemsPerPage = 50;
 
-const usageText = 'get room <span class="opt"><span class="param">Attribute</span> <span class="opt">page <span class="param">Page</span></span></span>';
+const usageText = 'get room <span class="param">Attribute</span> <span class="opt">page <span class="param">Page</span></span>';
 const shortDesc = 'Get info about current room';
 const helpText =
 `<p>Get the value of a room attribute.</p>
@@ -37,7 +37,6 @@ class GetRoom {
 			'charLog',
 			'help',
 			'player',
-			'info',
 		], this._init.bind(this));
 	}
 

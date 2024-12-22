@@ -1,6 +1,6 @@
 import l10n from 'modapp-l10n';
 import NumberStep from 'classes/NumberStep';
-
+import * as translateErr from 'utils/translateErr';
 
 /**
  * SetExitOrder adds command to set exit attributes.
@@ -30,6 +30,8 @@ class SetExitOrder {
 	setExitOrder(char, params) {
 		return char.call('setExitOrder', params).then(result => {
 			this.module.charLog.logInfo(char, l10n.l('setExitOrder.exitOrderSet', "Exit order was successfully set."));
+		}).catch(err => {
+			throw translateErr.exitNotFound(err, params.exitKey);
 		});
 	}
 }
