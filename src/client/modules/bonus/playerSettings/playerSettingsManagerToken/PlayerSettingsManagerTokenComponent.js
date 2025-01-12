@@ -108,7 +108,7 @@ class PlayerSettingsManagerTokenComponent {
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('playerSettingsManagerToken.managerTokenInfo', "The token is used as credentials when accessing the API to manager room scripts and other resources using external tools such as mucklet-script.\nCreate or renew the token by clicking the key-icon."),
+					popupTip: l10n.l('playerSettingsManagerToken.managerTokenInfo', "The token is used as credentials when accessing the API to manage room scripts and other resources using external tools such as mucklet-script.\nCreate or renew the token by clicking the key-icon."),
 					popupTipClassName: 'popuptip--width-s',
 				},
 			),
