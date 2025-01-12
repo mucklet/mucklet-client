@@ -10,7 +10,7 @@ import objectDefault from 'utils/objectDefault';
 import formatDateTime from 'utils/formatDateTime';
 import CharSettingsBotTokenContent from './CharSettingsBotTokenContent';
 
-const txtNotIssued = l10n.l('charSettingsBotToken.notIssue', "No token issued");;
+const txtNotIssued = l10n.l('charSettingsBotToken.notIssue', "No token issued");
 
 class CharSettingsBotTokenComponent {
 	constructor(module, char, charSettings, state) {
