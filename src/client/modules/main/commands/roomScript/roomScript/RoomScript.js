@@ -84,7 +84,6 @@ class RoomScript {
 						[ l10n.t('roomScript.keyword', "Keyword"), script.key ],
 						[ l10n.t('roomScript.scriptId', "Script ID"), '<span class="charlog--code-simple">#' + script.id + '</span>', true ],
 						[ l10n.t('roomScript.postAddress', "Post address"), '<span class="charlog--code-simple">' + script.address + '</span>', true ],
-						[ l10n.t('roomScript.active', "Active"), '<i class="fa fa-circle listroomscripts-' + (script.active ? 'active' : 'inactive') + '" aria-hidden></i>', true ],
 					];
 
 					let binary = script.binary;
@@ -95,6 +94,12 @@ class RoomScript {
 							true,
 						]);
 					}
+
+					rows.push([
+						l10n.t('roomScript.active', "Active"),
+						'<i class="fa fa-circle listroomscripts-' + (script.active ? 'active' : 'inactive') + '" aria-hidden></i>',
+						true,
+					]);
 
 					let elem = new Elem(n => {
 						let inner = [
