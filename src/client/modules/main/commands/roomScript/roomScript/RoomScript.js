@@ -6,6 +6,7 @@ import IDStep from 'classes/IDStep';
 import escapeHtml from 'utils/escapeHtml';
 import formatDateTime from 'utils/formatDateTime';
 import errToL10n from 'utils/errToL10n';
+import formatByteSize from 'utils/formatByteSize';
 
 const usageText = 'roomscript <span class="param">Keyword<span class="comment">/</span>#Script ID</span>';
 const shortDesc = "Show room script info";
@@ -66,8 +67,8 @@ class RoomScript {
 	roomScript(char, scriptId) {
 		return this.module.api.get(`core.roomscript.${scriptId}.details`).then(script => {
 			let fetchError = true;
-			return (isResError(script.source)
-				? Promise.resolve(l10n.t(errToL10n(script.source)))
+			return (!script.source || isResError(script.source)
+				? Promise.resolve(script.source ? l10n.t(errToL10n(script.source)) : null)
 				// First refresh the tokens as the access token may have expired.
 				: this.module.auth.refreshTokens().then(() => fetch(script.source.href, {
 					credentials: 'include',
@@ -80,11 +81,20 @@ class RoomScript {
 			).then(source => {
 				try {
 					let rows = [
-						[ "Keyword", script.key ],
-						[ "Script ID", '<span class="charlog--code-simple">#' + script.id + '</span>', true ],
-						[ "Post address", '<span class="charlog--code-simple">' + script.address + '</span>', true ],
-						[ "Active", '<i class="fa fa-circle listroomscripts-' + (script.active ? 'active' : 'inactive') + '" aria-hidden></i>', true ],
+						[ l10n.t('roomScript.keyword', "Keyword"), script.key ],
+						[ l10n.t('roomScript.scriptId', "Script ID"), '<span class="charlog--code-simple">#' + script.id + '</span>', true ],
+						[ l10n.t('roomScript.postAddress', "Post address"), '<span class="charlog--code-simple">' + script.address + '</span>', true ],
+						[ l10n.t('roomScript.active', "Active"), '<i class="fa fa-circle listroomscripts-' + (script.active ? 'active' : 'inactive') + '" aria-hidden></i>', true ],
 					];
+
+					let binary = script.binary;
+					if (binary?.href) {
+						rows.push([
+							l10n.t('roomScript.binaryFile', "Binary file"),
+							`<a href="${escapeHtml(binary.href)}" class="link" download>${escapeHtml(binary.filename)}</a> (${formatByteSize(script.binary.size)})`,
+							true,
+						]);
+					}
 
 					let elem = new Elem(n => {
 						let inner = [
@@ -97,13 +107,15 @@ class RoomScript {
 									n.html(m[2] ? m[1] : escapeHtml(m[1])),
 								]),
 							]))),
-							n.component(new Txt(l10n.t('roomScript.sourceCode', "Source code"), { tagName: 'h4', className: 'charlog--pad' })),
-							n.elem('div', { className: 'charlog--code' }, [
+						];
+						if (source) {
+							inner.push(n.component(new Txt(l10n.t('roomScript.sourceCode', "Source code"), { tagName: 'h4', className: 'charlog--pad' })));
+							inner.push(n.elem('div', { className: 'charlog--code' }, [
 								n.elem('pre', { className: fetchError ? 'common--error' : 'common--pre-wrap charlog--source' }, [
 									n.text(source),
 								]),
-							]),
-						];
+							]));
+						}
 						if (script.logs.length) {
 							inner.push(n.component(new Txt(l10n.t('roomScript.recentErrors', "Recent logs"), { tagName: 'h4', className: 'charlog--pad' })));
 							inner.push(n.elem('div', { className: 'charlog--code' }, [
