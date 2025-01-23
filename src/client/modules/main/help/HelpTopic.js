@@ -23,6 +23,7 @@ class HelpTopic {
 				examples = helpAttribDesc('', items, {
 					attribute: l10n.l('help.example', "Example"),
 					value: hasDesc ? l10n.l('help.description', "Description") : '',
+					attributeClass: 'common--pre-wrap',
 				});
 			}
 		}
