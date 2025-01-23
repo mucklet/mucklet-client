@@ -83,7 +83,7 @@ class WipeUser {
 		).then(identity => {
 			identity = identity.toJSON();
 			this.module.confirm.open(() => this.module.api.call('identity.overseer', 'wipeUser', { userId: identity.id }).then(result => {
-				this.module.charLog.logInfo(ctx.char, l10n.l('wipeUser.teleportNodeDeleted', 'Successfully wiped user "{name}".', identity));
+				this.module.charLog.logInfo(ctx.char, l10n.l('wipeUser.userWiped', 'Successfully wiped user "{name}".', identity));
 			}).catch(err => {
 				this.module.charLog.logError(ctx.char, err);
 			}), {
