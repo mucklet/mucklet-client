@@ -12,8 +12,13 @@ const usageText = 'roomscript <span class="param">Keyword<span class="comment">/
 const shortDesc = "Show room script info";
 const helpText =
 `<p>Show detailed info and source code content of a room script.</p>
+<p>For info on how to create a room script, type: <code>help create roomscript</code></p>
+<p class="common--formattext">For more information and script examples, see the <a href="https://github.com/mucklet/mucklet-script#readme" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
 <p><code class="param">Keyword</code> is the keyword for the script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
+const examples = [
+	{ cmd: 'roomscript test', desc: l10n.l('roomScript.exampletDesc', "Shows information and logs for the <code>test</code> room script.") },
+];
 
 const logLvlClass = {
 	log: 'charlog--default',
@@ -60,6 +65,7 @@ class RoomScript {
 			usage: l10n.l('roomScript.usage', usageText),
 			shortDesc: l10n.l('roomScript.shortDesc', shortDesc),
 			desc: l10n.l('roomScript.helpText', helpText),
+			examples,
 			sortOrder: 200,
 		});
 	}

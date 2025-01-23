@@ -13,8 +13,13 @@ const usageText = 'set roomscript <span class="param">Keyword<span class="commen
 const shortDesc = 'Set a room script attribute';
 const helpText =
 `<p>Set a room script attribute.</p>
+<p>For info on how to see room script info, type: <code>help roomscript</code></p>
+<p class="common--formattext">For more information and script examples, see the <a href="https://github.com/mucklet/mucklet-script#readme" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
 <p><code class="param">Keyword</code> is the keyword for the room script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
+const examples = [
+	{ cmd: 'set roomscript test : active = yes', desc: l10n.l('setRoomScript.activateTestDesc', "Activates the <code>test</code> room script.") },
+];
 
 const defaultAttr = [
 	{
@@ -107,6 +112,7 @@ class SetRoomScript {
 			usage: l10n.l('setRoomScript.usage', usageText),
 			shortDesc: l10n.l('setRoomScript.shortDesc', shortDesc),
 			desc: () => helpAttribDesc(l10n.t('setRoomScript.helpText', helpText), this.scriptAttr.getItems()),
+			examples,
 			sortOrder: 230,
 		});
 	}
