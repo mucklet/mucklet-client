@@ -29,7 +29,6 @@ class CharSettingsBotToken {
 	}
 
 	dispose() {
-		this._listen(false);
 		this.module.pageCharSettings.removeTool('botToken');
 	}
 }

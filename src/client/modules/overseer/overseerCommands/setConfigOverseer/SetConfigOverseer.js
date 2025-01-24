@@ -187,6 +187,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.supporterMaxImageSizeDesc', "Max image size in bytes for supporters."),
 		sortOrder: 1410,
 	},
+	{
+		key: 'maxScriptBinarySize',
+		stepFactory: () => new NumberStep('value', { name: "max script binary file size" }),
+		desc: l10n.l('setConfig.maxScriptBinarySizeDesc', "Max script binary file size in bytes."),
+		sortOrder: 1420,
+	},
 ];
 
 /**
