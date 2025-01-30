@@ -32,7 +32,7 @@ class DialogCharSnapshotAttachmentSnapshot {
 
 	render(el) {
 		let lvl = getCharIdleLevel(this.snapshot);
-		let isAwake = this.snapshot.status != 'asleep';
+		let isAwake = this.snapshot.state != 'asleep';
 
 		let about = new PanelSection(
 			l10n.l('dialogCharSnapshotAttachment.about', "About"),
@@ -98,7 +98,10 @@ class DialogCharSnapshotAttachmentSnapshot {
 						),
 					]),
 					n.elem('div', { className: 'dialogcharsnapshotattachment--timestamp flex-1' }, [
-						n.component(new ModelTxt(this.snapshot, m => formatDateTime(new Date(m.timestamp)))),
+						n.component(this.snapshot.deleted
+							? new Txt(l10n.l('dialogCharSnapshotAttachment.deletedTime', "Deleted {time}", { time: formatDateTime(new Date(this.snapshot.deleted)) }))
+							: new ModelTxt(this.snapshot, m => formatDateTime(new Date(m.timestamp))),
+						),
 					]),
 				]),
 				// Wipe avatar button
