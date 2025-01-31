@@ -1,7 +1,7 @@
-import Err from 'classes/Err';
 import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
 import { uri } from 'modapp-utils';
+import responseParseError from 'utils/responseParseError';
 import LoginComponent from './LoginComponent';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';
@@ -70,7 +70,7 @@ class Login {
 						return;
 					}
 					throw err;
-				});
+				}, responseParseError(resp));
 			}
 
 			return resp.json().then(user => {
@@ -79,7 +79,7 @@ class Login {
 				} else {
 					this._redirect(true);
 				}
-			});
+			}, responseParseError(resp));
 		});
 	}
 
@@ -98,7 +98,7 @@ class Login {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				});
+				}, responseParseError(resp));
 			}
 			this._redirect();
 		});
@@ -145,7 +145,7 @@ class Login {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				});
+				}, responseParseError(resp));
 			}
 			this._redirect();
 		});
@@ -168,7 +168,7 @@ class Login {
 						return;
 					}
 					throw err;
-				});
+				}, responseParseError(resp));
 			}
 			return this._redirect();
 		});
@@ -196,11 +196,9 @@ class Login {
 			credentials: crossOrigin ? 'include' : 'same-origin',
 		}).then(resp => {
 			if (resp.status >= 400) {
-				return resp.json()
-					.catch(() => new Err('login.errorResponse', "Request returned with status {status}.", { status: resp.status }))
-					.then(err => {
-						throw err;
-					});
+				return resp.json().then(err => {
+					throw err;
+				}, responseParseError(resp));
 			}
 		});
 	}
