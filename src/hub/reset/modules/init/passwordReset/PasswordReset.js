@@ -42,7 +42,7 @@ class PasswordReset {
 			this.validateCode(this.code)
 				.then(result => {
 					if (result.isValid) {
-						this._showPasswordReset(this.code);
+						this._showPasswordReset(this.code, result.requireProof);
 					} else {
 						this._showInvalidCode();
 					}
@@ -54,7 +54,7 @@ class PasswordReset {
 	/**
 	 * Validates the reset code.
 	 * @param {string} code Code to verify.
-	 * @returns {Promise} Promise of the code being verified.
+	 * @returns {Promise<{isValid: boolean, requireProof: boolean}} Promise of the code being verified.
 	 */
 	validateCode(code) {
 		let formData = new FormData();
@@ -69,7 +69,7 @@ class PasswordReset {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				}).catch(err => {
+				}, () => {
 					throw new Err('passwordReset.failedToVerifyCode', "Code verification failed with status {status}.", { status: resp.status });
 				});
 			}
@@ -77,11 +77,31 @@ class PasswordReset {
 		});
 	}
 
-	resetPassword(code, pass) {
+	/**
+	 * Sends a resetPassword request to the server.
+	 * @param {string} code Reset ticket code.
+	 * @param {string} pass New password
+	 * @param {object} [opt] Optional parameters
+	 * @param {string} [opt.username] Username as proof.
+	 * @param {string} [opt.realm] Realm name as proof.
+	 * @param {string} [opt.charName] Char name as proof.
+	 * @returns Promise
+	 */
+	resetPassword(code, pass, opt) {
 		let formData = new FormData();
 		formData.append('code', code);
 		formData.append('pass', sha256(pass.trim()));
 		formData.append('hash', hmacsha256(pass.trim(), publicPepper));
+		if (opt?.username) {
+			formData.append('username', opt?.username.trim());
+		} else {
+			if (opt?.realm) {
+				formData.append('realm', opt?.realm.trim());
+			}
+			if (opt?.charName) {
+				formData.append('charName', opt?.charName.trim());
+			}
+		}
 
 		return fetch(resetUrl, {
 			body: formData,
@@ -92,24 +112,38 @@ class PasswordReset {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				}).catch(err => {
+				}, () => {
 					throw new Err('passwordReset.resetFailed', "Reset failed with status {status}.", { status: resp.status });
 				});
 			}
-			this._showResetComplete();
+			return resp.json()
+				.then(result => this._showResetComplete(result.username, result.emailVerified))
+				.catch(() => this._showResetComplete());
 		});
 	}
 
-	_showPasswordReset(code) {
-		this.module.screen.setComponent(new PasswordResetComponent(this.module, code, this.state, this.params));
+	_showPasswordReset(code, requireProof) {
+		this.module.screen.setComponent(new PasswordResetComponent(this.module, code, requireProof, this.state, this.params));
 	}
 
-	_showResetComplete(email) {
+	_showResetComplete(username, emailVerified) {
 		this.module.screen.setComponent(new ConfirmScreenDialog({
 			title: l10n.l('passwordReset.passwordSuccessfullyReset', "Password reset completed"),
 			body: new Elem(n => n.elem('div', [
-				n.component(new Txt(l10n.l('passwordReset.passwordUpdateInfo1', "Your password has been updated."), { tagName: 'p' })),
-				n.component(new Txt(l10n.l('passwordReset.passwordUpdateInfo2', "Go to the login and try it out!"), { tagName: 'p' })),
+				n.component(new Txt(
+					emailVerified
+						? l10n.l('passwordReset.passwordUpdatedAndVerified', "Your password has been updated, and your email has been verified.")
+						: l10n.l('passwordReset.passwordUpdated', "Your password has been updated."),
+					{ tagName: 'p' },
+				)),
+				n.component(username
+					? new Txt(l10n.l('passwordReset.goToLoginWithAccount', "Go to the login and use it together with your account name:"), { tagName: 'p' })
+					: new Txt(l10n.l('passwordReset.goToLoginAndTry', "Go to the login and try it out!"), { tagName: 'p' }),
+				),
+				n.component(username
+					? new Txt(username, { tagName: 'p', className: 'passwordreset--username' })
+					: null,
+				),
 			])),
 			onConfirm: () => this._redirect(),
 		}));
