@@ -15,24 +15,6 @@
 		color: $color5;
 	}
 
-	&--divider {
-		width: 100%;
-		height: 2px;
-		background: $color2;
-		margin: 32px 0;
-		position: relative;
-
-		> * {
-			position: absolute;
-			display: block;
-			padding: 0 10px;
-			background: $color1;
-			left: 50%;
-			margin: 0 -50% 0 0;
-			transform: translate(-50%, -50%);
-		}
-	}
-
 	&--disclaimer {
 		display: block;
 		margin-bottom: 20px;
