@@ -7,6 +7,7 @@ import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
 import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
+import responseParseError from 'utils/responseParseError';
 import LoginVerifyComponent from './LoginVerifyComponent';
 import './loginVerify.scss';
 
@@ -72,7 +73,7 @@ class LoginVerify {
 				}
 				return resp.json().then(err => {
 					throw err;
-				});
+				}, responseParseError(resp));
 			}
 
 			return resp.json().then(user => {
@@ -81,7 +82,7 @@ class LoginVerify {
 				} else {
 					this._verifyCode();
 				}
-			});
+			}, responseParseError(resp));
 		}).catch(err => {
 			this._showError(err);
 		});
@@ -115,7 +116,7 @@ class LoginVerify {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				});
+				}, responseParseError(resp));
 			}
 			this._verifyCode();
 		});
@@ -183,9 +184,7 @@ class LoginVerify {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				}).catch(err => {
-					throw new Err('loginVerify.verificationFailedWithStatus', "Verification failed with status {status}.", { status: resp.status });
-				});
+				}, responseParseError(resp));
 			}
 			return resp.json().then(result => {
 				if (result.emailVerified) {
@@ -193,7 +192,7 @@ class LoginVerify {
 				} else {
 					this._showNotVerified();
 				}
-			});
+			}, responseParseError(resp));
 		}).catch(err => this._showError(err));
 	}
 

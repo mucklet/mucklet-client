@@ -6,6 +6,7 @@ import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import { redirect } from 'utils/reload';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
 import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
+import responseParseError from 'utils/responseParseError';
 import PasswordResetComponent from './PasswordResetComponent';
 import './passwordReset.scss';
 
@@ -69,11 +70,9 @@ class PasswordReset {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				}, () => {
-					throw new Err('passwordReset.failedToVerifyCode', "Code verification failed with status {status}.", { status: resp.status });
-				});
+				}, responseParseError(resp));
 			}
-			return resp.json();
+			return resp.json().catch(responseParseError(resp));
 		});
 	}
 
@@ -112,9 +111,7 @@ class PasswordReset {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
 					throw err;
-				}, () => {
-					throw new Err('passwordReset.resetFailed', "Reset failed with status {status}.", { status: resp.status });
-				});
+				}, responseParseError(resp));
 			}
 			return resp.json()
 				.then(result => this._showResetComplete(result.username, result.emailVerified))
