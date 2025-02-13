@@ -9,6 +9,7 @@ import { exitIcons } from 'components/ExitIcon';
 import { directions } from 'components/NavButtons';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { communicationTooLong, keyTooLong, itemNameTooLong } from 'utils/cmdErr';
+import * as translateErr from 'utils/translateErr';
 
 const usageText = 'set exit <span class="param">Keyword</span> : <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set an exit attribute';
@@ -110,10 +111,16 @@ const defaultAttr = [
 		sortOrder: 190,
 	},
 	{
+		key: 'inactive',
+		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is inactive flag" }),
+		desc: l10n.l('setExit.hiddenDesc', "Flag telling if the exit is inactive, preventing it from being listed and used. Value is <code>yes</code> or <code>no</code>."),
+		sortOrder: 200,
+	},
+	{
 		key: 'transparent',
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is transparent flag" }),
 		desc: l10n.l('setExit.transparentDesc', "Flag telling if the exit is transparent, allowing you to see awake characters in the target room. Value is <code>yes</code> or <code>no</code>."),
-		sortOrder: 200,
+		sortOrder: 210,
 	},
 	{
 		key: 'leaveMsg',
@@ -211,6 +218,8 @@ class SetExit {
 			: { exitKey: p.exitKey },
 		)).then(() => {
 			this.module.charLog.logInfo(ctx.char, l10n.l('setExit.updatedExit', "Exit attribute was successfully set."));
+		}).catch(err => {
+			throw translateErr.exitNotFound(err, p.exitKey);
 		});
 	}
 }

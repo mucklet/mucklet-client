@@ -1,0 +1,12 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.playersettingsmanagertoken {
+
+}
+
+.playersettingsmanagertoken-content {
+	&--token {
+		font-size: $font-size-micro;
+	}
+}

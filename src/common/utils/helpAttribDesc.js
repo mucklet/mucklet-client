@@ -11,6 +11,8 @@ const txtValue = l10n.t('helpAttribDesc.value', `<code class="param">Value</code
  * @param {object} [opt] Optional parameters
  * @param {LocaleString} [opt.attribute] Attribute column title.
  * @param {LocaleString} [opt.value] Value column title.
+ * @param {string} [opt.attributeClass] Attribute column class.
+ * @param {string} [opt.valueClass] Attribute column class.
  * @returns {string} Help description.
  */
 export default function helpAttribDesc(str, attrs, opt) {
@@ -23,8 +25,10 @@ export default function helpAttribDesc(str, attrs, opt) {
 			'<th>' + valueTxt + '</th>' +
 		'</tr></thead>' +
 		'<tbody>';
+	let attribClass = opt.attributeClass ? ' class="' + escapeHtml(opt.attributeClass) + '"' : '';
+	let valueClass = opt.valueClass ? ' class="' + escapeHtml(opt.valueClass) + '"' : '';
 	for (let attr of attrs) {
-		txt += '<tr><td><code>' + escapeHtml(attr.key) + '</code></td><td>' + (attr.desc ? l10n.t(attr.desc) : '') + '</td></tr>';
+		txt += '<tr><td><code' + attribClass + '>' + escapeHtml(attr.key) + '</code></td><td' + valueClass + '>' + (attr.desc ? l10n.t(attr.desc) : '') + '</td></tr>';
 	}
 	return txt + '</tbody></table>';
 }

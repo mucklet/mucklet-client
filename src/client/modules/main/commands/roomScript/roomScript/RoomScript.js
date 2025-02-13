@@ -6,13 +6,27 @@ import IDStep from 'classes/IDStep';
 import escapeHtml from 'utils/escapeHtml';
 import formatDateTime from 'utils/formatDateTime';
 import errToL10n from 'utils/errToL10n';
+import formatByteSize from 'utils/formatByteSize';
 
 const usageText = 'roomscript <span class="param">Keyword<span class="comment">/</span>#Script ID</span>';
 const shortDesc = "Show room script info";
 const helpText =
 `<p>Show detailed info and source code content of a room script.</p>
+<p>For info on how to create a room script, type: <code>help create roomscript</code></p>
+<p class="common--formattext">For more information and script examples, see the <a href="https://github.com/mucklet/mucklet-script#readme" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
 <p><code class="param">Keyword</code> is the keyword for the script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
+const examples = [
+	{ cmd: 'roomscript test', desc: l10n.l('roomScript.exampletDesc', "Shows information and logs for the <code>test</code> room script.") },
+];
+
+const logLvlClass = {
+	log: 'charlog--default',
+	debug: 'charlog--ooc',
+	info: 'charlog--strong',
+	warn: 'charlog--cmd',
+	error: 'charlog--error',
+};
 
 /**
  * RoomScript adds the room script command.
@@ -51,6 +65,7 @@ class RoomScript {
 			usage: l10n.l('roomScript.usage', usageText),
 			shortDesc: l10n.l('roomScript.shortDesc', shortDesc),
 			desc: l10n.l('roomScript.helpText', helpText),
+			examples,
 			sortOrder: 200,
 		});
 	}
@@ -58,8 +73,8 @@ class RoomScript {
 	roomScript(char, scriptId) {
 		return this.module.api.get(`core.roomscript.${scriptId}.details`).then(script => {
 			let fetchError = true;
-			return (isResError(script.source)
-				? Promise.resolve(l10n.t(errToL10n(script.source)))
+			return (!script.source || isResError(script.source)
+				? Promise.resolve(script.source ? l10n.t(errToL10n(script.source)) : null)
 				// First refresh the tokens as the access token may have expired.
 				: this.module.auth.refreshTokens().then(() => fetch(script.source.href, {
 					credentials: 'include',
@@ -72,11 +87,25 @@ class RoomScript {
 			).then(source => {
 				try {
 					let rows = [
-						[ "Keyword", script.key ],
-						[ "Script ID", '<span class="charlog--code-simple">#' + script.id + '</span>', true ],
-						[ "Post address", '<span class="charlog--code-simple">' + script.address + '</span>', true ],
-						[ "Active", '<i class="fa fa-circle listroomscripts-' + (script.active ? 'active' : 'inactive') + '" aria-hidden></i>', true ],
+						[ l10n.t('roomScript.keyword', "Keyword"), script.key ],
+						[ l10n.t('roomScript.scriptId', "Script ID"), '<span class="charlog--code-simple">#' + script.id + '</span>', true ],
+						[ l10n.t('roomScript.postAddress', "Post address"), '<span class="charlog--code-simple">' + script.address + '</span>', true ],
 					];
+
+					let binary = script.binary;
+					if (binary?.href) {
+						rows.push([
+							l10n.t('roomScript.binaryFile', "Binary file"),
+							`<a href="${escapeHtml(binary.href)}" class="link" download>${escapeHtml(binary.filename)}</a> (${formatByteSize(script.binary.size)})`,
+							true,
+						]);
+					}
+
+					rows.push([
+						l10n.t('roomScript.active', "Active"),
+						'<i class="fa fa-circle listroomscripts-' + (script.active ? 'active' : 'inactive') + '" aria-hidden></i>',
+						true,
+					]);
 
 					let elem = new Elem(n => {
 						let inner = [
@@ -89,23 +118,25 @@ class RoomScript {
 									n.html(m[2] ? m[1] : escapeHtml(m[1])),
 								]),
 							]))),
-							n.component(new Txt(l10n.t('roomScript.sourceCode', "Source code"), { tagName: 'h4', className: 'charlog--pad' })),
-							n.elem('div', { className: 'charlog--code' }, [
+						];
+						if (source) {
+							inner.push(n.component(new Txt(l10n.t('roomScript.sourceCode', "Source code"), { tagName: 'h4', className: 'charlog--pad' })));
+							inner.push(n.elem('div', { className: 'charlog--code' }, [
 								n.elem('pre', { className: fetchError ? 'common--error' : 'common--pre-wrap charlog--source' }, [
 									n.text(source),
 								]),
-							]),
-						];
-						if (script.errors.length) {
-							inner.push(n.component(new Txt(l10n.t('roomScript.recentErrors', "Recent errors"), { tagName: 'h4', className: 'charlog--pad' })));
+							]));
+						}
+						if (script.logs.length) {
+							inner.push(n.component(new Txt(l10n.t('roomScript.recentErrors', "Recent logs"), { tagName: 'h4', className: 'charlog--pad' })));
 							inner.push(n.elem('div', { className: 'charlog--code' }, [
-								n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, script.errors.toArray().map(m => n.elem('tr', [
+								n.elem('table', { className: 'tbl-small tbl-nomargin charlog--font-small' }, script.logs.toArray().reverse().map(m => n.elem('tr', [
 									n.elem('td', { className: 'charlog--strong' }, [
 										n.text(formatDateTime(new Date(m.time), { showMilliseconds: true })),
 									]),
 									n.elem('td', [
-										n.elem('pre', { className: 'common--pre-wrap charlog--source' }, [
-											n.text(m.error),
+										n.elem('pre', { className: 'common--pre-wrap ' + (logLvlClass[m.lvl] || '') }, [
+											n.text(m.msg),
 										]),
 									]),
 								]))),

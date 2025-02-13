@@ -6,4 +6,8 @@
 
 .pageeditexits-exit {
 	padding: 2px 0;
+
+	&.inactive .pageeditexits-exit--title {
+		color: $color5;
+	}
 }

@@ -8,6 +8,9 @@ const helpText =
 `<p>Delete a room script.</p>
 <p><code class="param">Keyword</code> is the keyword for the room script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
+const examples = [
+	{ cmd: 'delete roomscript test', desc: l10n.l('deleteRoomScript.deleteTestDesc', "Deletes the <code>test</code> room script.") },
+];
 
 /**
  * DeleteRoomScript adds command to delete a room script.
@@ -49,6 +52,7 @@ class DeleteRoomScript {
 			usage: l10n.l('deleteRoomScript.usage', usageText),
 			shortDesc: l10n.l('deleteRoomScript.shortDesc', shortDesc),
 			desc: l10n.l('deleteRoomScript.helpText', helpText),
+			examples,
 			sortOrder: 250,
 		});
 	}

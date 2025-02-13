@@ -91,7 +91,7 @@ class Auth {
 						return null;
 					}
 					throw err;
-				}).catch(err => resp.text().then(
+				}, err => resp.text().then(
 					text => {
 						throw new Err('auth.failedToAuthenticateMsg', "Failed to authenticate: {text}", resp.text());
 					},

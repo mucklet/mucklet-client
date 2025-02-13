@@ -10,7 +10,7 @@ export default function formatTime(date, opt) {
 	let s = date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2);
 	if (opt) {
 		if (opt.showMilliseconds) {
-			s += ":" + ("0" + date.getSeconds()).slice(-2) + '.' + ("000" + date.getMilliseconds()).slice(-4);
+			s += ":" + ("0" + date.getSeconds()).slice(-2) + '.' + ("00" + date.getMilliseconds()).slice(-3);
 		} else if (opt.showSeconds) {
 			s += ":" + ("0" + date.getSeconds()).slice(-2);
 		}
