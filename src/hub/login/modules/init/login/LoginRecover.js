@@ -63,7 +63,7 @@ class LoginRecover {
 								n.component(new Txt(l10n.l('login.characterName', "Character name"))),
 							]),
 						]),
-						n.component(new PopupTip(l10n.l('login.characterNameInfo', "Full name of one of your characters from the realm. It is case insensitive."), { className: 'popuptip--width-m flex-auto' })),
+						n.component(new PopupTip(l10n.l('login.characterNameInfo', "Full name of one of your characters in the realm."), { className: 'popuptip--width-m flex-auto' })),
 					]),
 					n.component('charName', new Input(this.model.charName, {
 						className: 'common--formmargin',
@@ -124,7 +124,7 @@ class LoginRecover {
 	_defaultState() {
 		return {
 			username: "",
-			realmKey: this.realm.key,
+			realmKey: this.realm?.key || '',
 			charName: "",
 		};
 	}
