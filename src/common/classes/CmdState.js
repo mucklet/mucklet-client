@@ -1,3 +1,7 @@
+
+/**
+ * Command state object used when parsing commands.
+ */
 class CmdState {
 	constructor(step, stack, ctx, params, state, error, onExec) {
 		this.step = step;

@@ -11,7 +11,8 @@ class ListStep {
 	 * @param {TokenList} list Token list.
 	 * @param {object} [opt] Optional params.
 	 * @param {string} [opt.name] Name used in error outputs. Defaults to the id value.
-	 * @param {string} [opt.textId] Id used as key for the matched text even when no match is found. Sets errNotFound to default to null.
+	 * @param {string} [opt.textId] Id used as key for the matched text even when no match is found. Sets errNotFound to null.
+	 * @param {boolean} [opt.textIdOnMatch] Sets textId only if a match is made. Ignored if textId is not set. Defaults to false.
 	 * @param {string} [opt.token] Token name. Defaults to 'listitem'.
 	 * @param {string} [opt.delimToken] Token name for delimiters. Defaults to 'delim'.
 	 * @param {boolean} [opt.trimSpace] Flag indicating if initial space should be trimmed. Defaults to true.
@@ -27,6 +28,7 @@ class ListStep {
 		this.list = list;
 		this.name = opt.name || id;
 		this.textId = opt.textId || null;
+		this.textIdOnMatch = !!opt.textIdOnMatch;
 		this.token = opt.hasOwnProperty('token') ? opt.token : 'listitem';
 		this.delimToken = opt.delimToken || 'delim';
 		this.trimSpace = opt.hasOwnProperty('trimSpace') ? !!opt.trimSpace : true;
@@ -44,6 +46,30 @@ class ListStep {
 
 	}
 
+	/**
+	 * Sets the next step.
+	 * @param {Step | null} step Step.
+	 * @returns {this}
+	 */
+	setNext(step) {
+		this.next = step || null;
+	}
+
+	/**
+	 * Sets the else step.
+	 * @param {Step | null} step Step.
+	 * @returns {this}
+	 */
+	setElse(step) {
+		this.else = step || null;
+	}
+
+	/**
+	 * Parses the stream input stream.
+	 * @param {import('@codemirror/language').StringStream | null} stream String stream.
+	 * @param {import('classes/CmdState').default} state Command state.
+	 * @returns {null | string | false} Null if no token, string on token, false if no match
+	 */
 	parse(stream, state) {
 		if (!stream) {
 			return this._setRequired(state);
@@ -61,11 +87,12 @@ class ListStep {
 			return this._setRequired(state);
 		}
 
-		if (this.textId) {
+		let item = this.list.getItem(match, state.getCtx());
+
+		let useTextId = this.textId && (item || !this.textIdOnMatch);
+		if (useTextId) {
 			state.setParam(this.textId, match);
 		}
-
-		let item = this.list.getItem(match, state.getCtx());
 
 		if (!item) {
 			if (this.errNotFound) {
@@ -74,7 +101,7 @@ class ListStep {
 			}
 
 			// No item but with textId is still considered a successful match
-			if (this.textId) {
+			if (useTextId) {
 				// Add follow-up steps.
 				if (this.next) {
 					state.addStep(this.next);
@@ -82,8 +109,9 @@ class ListStep {
 				return this.token;
 			}
 
+			// Backup and return error base on if it is required or not
 			state.backUp(stream);
-			return false;
+			return this._setRequired(state);
 		}
 
 		if (item.error) {
@@ -111,7 +139,7 @@ class ListStep {
 	 * Complete returns a completion list for the tab completion.
 	 * @param {string} str The matched text string
 	 * @param {number} pos The cursor position within the string
-	 * @param {CmdState} state State object
+	 * @param {import('classes/CmdState').default} state State object
 	 * @returns {?object} Completion list in the format: { list, from, to }
 	 */
 	complete(str, pos, state) {

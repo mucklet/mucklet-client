@@ -1,4 +1,4 @@
-import CmdState from './CmdState';
+import CmdState from 'classes/CmdState';
 import UnknownStep from 'classes/UnknownStep';
 
 const tokenTags = {

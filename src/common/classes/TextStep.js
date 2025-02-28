@@ -106,7 +106,7 @@ class TextStep {
 	 * completer.
 	 * @param {string} str The matched text string
 	 * @param {number} pos The cursor position within the string
-	 * @param {CmdState} state State object
+	 * @param {import('classes/CmdState').default} state State object
 	 * @returns {?object} Completion list in the format: { list, from, to }
 	 */
 	complete(str, pos, state) {
