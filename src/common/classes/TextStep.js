@@ -3,6 +3,7 @@ import Err from './Err';
 
 /**
  * TextStep consumes a string of text.
+ * @implements {import('types/interfaces/Step').default}
  */
 class TextStep {
 
@@ -51,6 +52,21 @@ class TextStep {
 		state.setParam(this.id, (state.getParam(this.id) || "") + "\n");
 	}
 
+	/**
+	 * Sets the next step.
+	 * @param {Step | null} step Step.
+	 * @returns {this}
+	 */
+	setNext(step) {
+		this.next = step || null;
+	}
+
+	/**
+	 * Parses the stream input stream.
+	 * @param {import('@codemirror/language').StringStream | null} stream String stream.
+	 * @param {import('classes/CmdState').default} state Command state.
+	 * @returns {null | string | false} Null if no token, string on token, false if no match
+	 */
 	parse(stream, state) {
 		if (!stream) {
 			return this._setRequired(state);

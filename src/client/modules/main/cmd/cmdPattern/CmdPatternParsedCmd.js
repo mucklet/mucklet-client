@@ -35,9 +35,12 @@ class CmdPatternParsedCmd {
 
 	/**
 	 * Initializes a new ParsedCmd instance.
+	 * @param {CmdPatternModules} module CmdPattern modules.
 	 * @param {CmdPattern} cmd Command pattern object.
 	 */
-	constructor(cmd) {
+	constructor(module, cmd) {
+		this.module = module;
+		this.cmd = cmd;
 		this.tokens = this._parse(cmd);
 		this.step = this._createStep();
 	}
@@ -52,6 +55,7 @@ class CmdPatternParsedCmd {
 	}
 
 	_matches(s, idx) {
+		let ns;
 
 		for (; idx < this.tokens.length; idx++) {
 			let t = this.tokens[idx];
@@ -89,7 +93,7 @@ class CmdPatternParsedCmd {
 				case tokenOptStart:
 					s = s.trimStart();
 					// If the optional path has any type of match, we choose it.
-					let ns = this._matches(s, idx + 1);
+					ns = this._matches(s, idx + 1);
 					if (ns != s) {
 						return ns;
 					}
@@ -99,8 +103,20 @@ class CmdPatternParsedCmd {
 					break;
 
 				case tokenField:
-					// [TODO] Handle parsing for different types of fields
-					return "";
+					let field = this.cmd.fields[t.value];
+					let fieldType = this.module.self.getFieldType(field.type);
+					if (!fieldType) {
+						console.error("missing handler for fieldType: " + field.type);
+						return s;
+					}
+
+					ns = fieldType.match(s, field.opts);
+					// Null (non-string) is a no-match
+					if (typeof ns != 'string') {
+						return s;
+					}
+					s = ns;
+					break;
 			}
 		}
 
@@ -243,6 +259,9 @@ class CmdPatternParsedCmd {
 					break;
 
 				case tokenField:
+					let field = this.cmd.fields[t.value];
+					let fieldType = this.module.self.getFieldType(field.type);
+					next = fieldType?.stepFactory(t.value, field.opts);
 					break;
 			}
 

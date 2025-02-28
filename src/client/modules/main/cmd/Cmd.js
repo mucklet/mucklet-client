@@ -119,7 +119,7 @@ class Cmd {
 	 * @param {object} ctx Call context
 	 * @param {object} ctx.player Player object.
 	 * @param {object} ctx.char Controlled char object.
-	 * @param {object} state State returned by the chartale mode parser.
+	 * @param {import('classes/CmdState').default} state State returned by the chartale mode parser.
 	 * @returns {Promise} Promise to the call.
 	 */
 	exec(ctx, state) {

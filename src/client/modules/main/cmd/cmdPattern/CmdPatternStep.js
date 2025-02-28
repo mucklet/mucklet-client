@@ -17,7 +17,7 @@ class CmdPatternStep {
 	/**
 	 * Creates an instance of CmdPatternStep.
 	 * @param {CmdPatternModules} module CmdPattern modules.
-	 * @param {Array<CmdPattern> | () => Array<CmdPattern>} list Sorted pattern list, or function that returns a sorted pattern list.
+	 * @param {Array<{id: string, cmd: CmdPattern}> | () => Array<{id: string, cmd: CmdPattern}>} list Sorted pattern list, or function that returns a sorted pattern list.
 	 * @param {object} [opt] Optional params.
 	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required: function(this)
@@ -111,17 +111,14 @@ class CmdPatternStep {
 		let parsed = [];
 		let ids = {};
 		// Parse commands or get them from cache
-		for (let cmd of list) {
-			let id = cmd.id;
+		for (let { id, cmd } of list) {
 			ids[id] = true;
 			let o = this.parseCache[id];
-			if (o) {
-				parsed.push(o);
-				continue;
+			if (!o) {
+				o = new CmdPatternParsedCmd(this.module, cmd);
+				this.parseCache[id] = o;
 			}
-
-			o = new CmdPatternParsedCmd(cmd);
-			this.parseCache[id] = o;
+			parsed.push(o);
 		}
 
 		// Delete unused items

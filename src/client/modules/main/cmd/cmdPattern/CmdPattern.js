@@ -15,12 +15,45 @@ class CmdPattern {
 	}
 
 	_init(module) {
-		this.module = module;
+		this.module = Object.assign({ self: this }, module);
+		this.fieldTypes = {};
 		this.module.cmd.addCmdHandler({
 			id: 'cmdPatterns',
 			factory: (elseStep) => new CmdPatternStep(this.module, () => this._getPatterns(), { else: elseStep }),
 			sortOrder: 10,
 		});
+	}
+
+
+	/**
+	 * Adds a custom command field type.
+	 * @param {import('types/modules/cmdPattern').FieldType} fieldType Field type object.
+	 * @returns {this}
+	 */
+	addFieldType(fieldType) {
+		if (this.fieldTypes[fieldType.id]) {
+			throw new Error("FieldType ID already registered: ", fieldType.id);
+		}
+		this.fieldTypes[fieldType.id] = fieldType;
+		return this;
+	}
+
+	/**
+	 * Removes a custom command field type registered with addFieldType.
+	 * @param {string} fieldTypeId ID of field type.
+	 */
+	removeFieldType(fieldTypeId) {
+		delete this.fieldTypes[fieldTypeId];
+		return this;
+	}
+
+	/**
+	 * Gets a registred field type.
+	 * @param {string} fieldTypeId ID of field type.
+	 * @returns {import('types/modules/cmdPattern').FieldType | undefined} Registered field type of undefined if not found.
+	 */
+	getFieldType(fieldTypeId) {
+		return this.fieldTypes[fieldTypeId];
 	}
 
 	_getPatterns() {
@@ -32,8 +65,7 @@ class CmdPattern {
 		return Object.keys(props)
 			.map(key => props[key])
 			.filter(o => o.cmd)
-			.sort((a, b) => a.priority - b.priority)
-			.map(o => o.cmd);
+			.sort((a, b) => a.priority - b.priority);
 	}
 
 	dispose() {
