@@ -36,10 +36,12 @@ class CmdPatternParsedCmd {
 	/**
 	 * Initializes a new ParsedCmd instance.
 	 * @param {CmdPatternModules} module CmdPattern modules.
+	 * @param {string} id Command ID.
 	 * @param {CmdPattern} cmd Command pattern object.
 	 */
-	constructor(module, cmd) {
+	constructor(module, id, cmd) {
 		this.module = module;
+		this.id = id;
 		this.cmd = cmd;
 		this.tokens = this._parse(cmd);
 		this.step = this._createStep();
@@ -272,8 +274,20 @@ class CmdPatternParsedCmd {
 			}
 		}
 
-		let last = new ValueStep('cmd', (ctx, params) => {
-			console.log("YAY! We executed this command!", ctx, params);
+		let last = new ValueStep('cmd', async (ctx, params) => {
+			let values = null;
+			if (this.cmd.fields) {
+				values = {};
+				for (let fieldKey in this.cmd.fields) {
+					let field = this.cmd.fields[fieldKey];
+					let fieldType = this.module.self.getFieldType(field.type);
+					values[fieldKey] = await Promise.resolve(fieldType.inputValue(fieldKey, field.opts, params));
+				}
+			}
+			return ctx.char.call('execRoomCmd', {
+				cmdId: this.id,
+				values,
+			});
 		});
 		step?.setNext(last);
 

@@ -115,7 +115,7 @@ class CmdPatternStep {
 			ids[id] = true;
 			let o = this.parseCache[id];
 			if (!o) {
-				o = new CmdPatternParsedCmd(this.module, cmd);
+				o = new CmdPatternParsedCmd(this.module, id, cmd);
 				this.parseCache[id] = o;
 			}
 			parsed.push(o);

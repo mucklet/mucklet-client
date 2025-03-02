@@ -1,4 +1,16 @@
 
+function getNested(p, keys) {
+	for (let k of keys) {
+		let o = p[k];
+		if (!o || typeof o != 'object') {
+			o = {};
+			p[k] = o;
+		}
+		p = o;
+	}
+	return p;
+}
+
 /**
  * Command state object used when parsing commands.
  */
@@ -39,22 +51,53 @@ class CmdState {
 		return this;
 	}
 
+	/**
+	 * Sets a parameter.
+	 * @param {string | Array<string|number>} key Parameter key or array of keys for a nested object.
+	 * @param {*} value Value to set
+	 * @returns {this}
+	 */
 	setParam(key, value) {
-		this.params[key] = value;
+		let p = this.params;
+		if (Array.isArray(key)) {
+			p = getNested(p, key.slice(0, -1));
+			key = key[key.length - 1];
+		}
+		p[key] = value;
 		return this;
 	}
 
+	/**
+	 * Gets a parameter.
+	 * @param {string | Array<string|number>} key Parameter key or array of keys for a nested object.
+	 * @returns {*} Value.
+	 */
 	getParam(key) {
-		return this.params[key];
+		let p = this.params;
+		if (Array.isArray(key)) {
+			p = getNested(p, key.slice(0, -1));
+			key = key[key.length - 1];
+		}
+		return p[key];
 	}
 
 	setState(key, value) {
-		this.state[key] = value;
+		let s = this.state;
+		if (Array.isArray(key)) {
+			s = getNested(s, key.slice(0, -1));
+			key = key[key.length - 1];
+		}
+		s[key] = value;
 		return this;
 	}
 
 	getState(key) {
-		return this.state[key];
+		let s = this.state;
+		if (Array.isArray(key)) {
+			s = getNested(s, key.slice(0, -1));
+			key = key[key.length - 1];
+		}
+		return s[key];
 	}
 
 	backUp(stream) {

@@ -17,4 +17,9 @@ export interface FieldType {
 	 * Step factory function.
 	 */
 	stepFactory(fieldKey: string, opts: any): Step;
+
+	/**
+	 * Input value to be passed to the server.
+	 */
+	inputValue(fieldKey: string, opts: any, params: any): Promise<any> | any;
 }

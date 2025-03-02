@@ -25,7 +25,8 @@ class CmdFieldTypeText {
 				// Only consume maxLength characters.
 				return str.slice(opts.maxLength || this.module.info.getTag().tagDescMaxLength);
 			},
-			stepFactory: (fieldKey, opts) => new TextStep('msg', {
+			stepFactory: (fieldKey, opts) => new TextStep([ 'fields', fieldKey ], {
+				name: fieldKey,
 				spanLines: !!opts?.spanLines,
 				spellcheck: !!opts?.spellCheck,
 				formatText: !!opts?.formatText,
@@ -34,6 +35,11 @@ class CmdFieldTypeText {
 				errTooLong: textTooLong,
 				errRequired: null,
 			}),
+			inputValue: (fieldKey, opts, params) => {
+				return {
+					value: params.fields[fieldKey],
+				};
+			},
 		});
 	}
 
