@@ -1,5 +1,5 @@
 import Err from 'classes/Err';
-import { mergeTabCompleteResults } from 'utils/codemirrorTabCompletion';
+import { mergeCompleteResults, expandCompleteResult } from 'utils/codemirrorTabCompletion';
 import CmdPatternParsedCmd from './CmdPatternParsedCmd';
 
 /**
@@ -106,12 +106,58 @@ class CmdPatternStep {
 		let list = this._getParsedList();
 		let result = null;
 
-		for (let cmd of list) {
+		for (let i = 0; i < list.length; i++) {
+			let cmd = list[i];
 			// Get complete results from the cmd
-			result = mergeTabCompleteResults(doc, result, cmd.complete(doc, pos));
+			let cmdResult = cmd.complete(doc, pos);
+			if (cmdResult) {
+				// Filter if any previous command might overshadow this command's complete result.
+				if (i > 0 && cmdResult.list.length) {
+					if (result) {
+						cmdResult = expandCompleteResult(cmdResult, doc, result.from, result.to);
+						result = expandCompleteResult(result, doc, cmdResult.from, cmdResult.to);
+					}
+					cmdResult.list = cmdResult.list.filter(txt => {
+						return !(result?.list.includes(txt)) && // Filter out duplicates.
+							!this._isOvershadowed(doc.slice(0, cmdResult.from) + txt + doc.slice(cmdResult.to), cmd, list);
+					});
+				}
+				result = mergeCompleteResults(doc, result, cmdResult);
+			}
 		}
 
 		return result;
+	}
+
+	/**
+	 * Tests if testCmd is overshadowed by other commands.
+	 * @param {string} doc Text to test against.
+	 * @param {CmdPatternParsedCmd} testCmd Parsed command to test.
+	 * @param {Array<CmdPatternParsedCmd>} list List of parsed commands.
+	 * @returns {boolean} True if overshadowed.
+	 */
+	_isOvershadowed(doc, testCmd, list) {
+		let maxMatch = 0;
+		let bestMatch = null;
+		for (let cmd of list) {
+			if (cmd == testCmd) {
+				return false;
+			}
+			// If the command matches, add its step and exit.
+			let m = cmd.matches(doc);
+			// If all was matched, select this command by adding its step.
+			if (m.complete) {
+				return cmd != testCmd;
+			}
+
+			let matched = doc.length - m.remaining.length;
+			if (maxMatch < matched) {
+				maxMatch = matched;
+				bestMatch = cmd;
+			}
+		}
+
+		return testCmd != bestMatch;
 	}
 
 	_setRequired(state) {

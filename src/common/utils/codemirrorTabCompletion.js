@@ -104,6 +104,33 @@ export default function consoleTabCompletion(cfg) {
 };
 
 /**
+ * Expands the complete result to encompass the from/to positions. If the result
+ * is larger in any direction, that value will not be changed.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} result Complete result.
+ * @param {string} text Text.
+ * @param {number} from From value to expand to.
+ * @param {number} to To value to expand to
+ * @returns {import('types/interfaces/Completer').CompleteResult | null} An expandedresult set.
+ *
+ */
+export function expandCompleteResult(result, text, from, to) {
+	if (!result) {
+		return result;
+	}
+	from = Math.min(result.from, from);
+	to = Math.max(result.to, to);
+	// Return the result on no change
+	if (from == result.from && to == result.to) {
+		return result;
+	}
+	let list = [];
+	for (let v of result.list) {
+		list.push(text.slice(from, result.from) + v + text.slice(result.to, to));
+	}
+	return { list, from, to };
+}
+
+/**
  * Merges two complete result sets and removed duplicates. If either a or b is
  * null or contains an empty list, the other result set is returned.
  * @param {string} text Text.
@@ -111,7 +138,7 @@ export default function consoleTabCompletion(cfg) {
  * @param {import('types/interfaces/Completer').CompleteResult | null} b Second result set.
  * @returns {import('types/interfaces/Completer').CompleteResult | null} A merged result set.
  */
-export function mergeTabCompleteResults(text, a, b) {
+export function mergeCompleteResults(text, a, b) {
 	if (!a || !a.list?.length) {
 		return b;
 	}

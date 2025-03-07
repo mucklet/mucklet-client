@@ -8,7 +8,7 @@ import ErrorStep from 'classes/ErrorStep';
 import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 import { getToken } from 'utils/codemirror';
-import { mergeTabCompleteResults, offsetCompleteResults } from 'utils/codemirrorTabCompletion';
+import { mergeCompleteResults, offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import cmdParser from './cmdParser';
 import cmdHighlightStyle from './cmdHighlightStyle';
 import cmdFormattingStyle from './cmdFormattingStyle';
@@ -108,14 +108,14 @@ class Cmd {
 		let step = state?.step;
 
 		// Start with completer results from cmdStep
-		let result = mergeTabCompleteResults(doc, null, this._cmdStepComplete(doc, pos, state?.getCtx()));
+		let result = mergeCompleteResults(doc, null, this._cmdStepComplete(doc, pos, state?.getCtx()));
 
 		// Add completer results from the current token
 		if (typeof step?.complete == 'function') {
 			// Get the range from the completer.
 			let range = step.complete(doc.slice(token.from, token.to), pos - token.from, state);
 			if (range && range.list && range.list.length) {
-				result = mergeTabCompleteResults(doc, result, offsetCompleteResults(range, token.from));
+				result = mergeCompleteResults(doc, result, offsetCompleteResults(range, token.from));
 			}
 		}
 
@@ -124,7 +124,7 @@ class Cmd {
 			for (let cmdHandler of this.cmdHandlers) {
 				let step = this.cmdHandlerSteps[cmdHandler.id];
 				if (cmdHandler.complete && step) {
-					result = mergeTabCompleteResults(doc, result, cmdHandler.complete(step, doc, pos, state));
+					result = mergeCompleteResults(doc, result, cmdHandler.complete(step, doc, pos, state));
 				}
 			}
 		}
