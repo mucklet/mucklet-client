@@ -52,6 +52,7 @@ class Cmd {
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
+		this.cmdHandlerSteps = {};
 		this.cmds = new ItemList({ regex: /^\s*([\p{L}\p{N}/][\p{L}\p{N}]*)/u }); // The / is for /msg type commands
 		this.cmdStep = new ListStep('cmd', this.cmds, {
 			textId: 'cmdText',
@@ -101,10 +102,6 @@ class Cmd {
 
 		let doc = editorState.doc.toString();
 
-		// /** @type {import('types/interfaces/Completer').CompleteResult | null} */
-		// let result = null;
-
-
 		/** @type {import('classes/CmdState').default | undefined} */
 		let state = token?.state;
 		/** @type {import('types/interfaces/Completer').default | undefined} */
@@ -123,12 +120,14 @@ class Cmd {
 		}
 
 		// Add completer suggestions from other cmdHandlers
-		for (let cmdHandler of this.cmdHandlers) {
-			if (cmdHandler.complete) {
-				result = mergeTabCompleteResults(doc, result, cmdHandler.complete(doc, pos));
+		if (state) {
+			for (let cmdHandler of this.cmdHandlers) {
+				let step = this.cmdHandlerSteps[cmdHandler.id];
+				if (cmdHandler.complete && step) {
+					result = mergeTabCompleteResults(doc, result, cmdHandler.complete(step, doc, pos, state));
+				}
 			}
 		}
-
 
 		return result;
 	}
@@ -239,7 +238,7 @@ class Cmd {
 	 * @param {object} cmdHandler Command handler object
 	 * @param {string} cmdHandler.id Command handler ID.
 	 * @param {(else: Step) => Step} cmdHandler.factory Function that creates a handler step.
-	 * @param {() => import('types/interfaces/Completer').CompleteResult | null} [cmdHandler.complete] Complete callback
+	 * @param {(step: Step, doc: string, pos: number: state: import('classes/CmdState').default) => import('types/interfaces/Completer').CompleteResult | null} [cmdHandler.complete] Complete callback using the full document as text.
 	 * @param {number} cmdHandler.sortOrder Sort order.
 	 * @returns {this}
 	 */
@@ -273,10 +272,13 @@ class Cmd {
 			/^\s*([\p{L}\p{N}/][\p{L}\p{N}\s]*)/u,
 			(match) => this.newCommandNotFound(match),
 		);
+		let steps = {};
 		for (let i = this.cmdHandlers.length - 1; i >= 0; i--) {
-			step = this.cmdHandlers.atIndex(i).factory(step);
+			let h = this.cmdHandlers.atIndex(i);
+			step = h.factory(step);
+			steps[h.id] = step;
 		}
-
+		this.cmdHandlerSteps = steps;
 		this.cmdStep.setElse(step);
 	}
 
@@ -321,7 +323,6 @@ class Cmd {
 		if (stream.pos >= pos) {
 			// Eg. "  hejsa|n ":  pos = 7, stream.pos = 8, match = "hejsan"
 			let offset = stream.pos - match.length;
-			this.cmds.complete(match, pos - offset, ctx);
 			return offsetCompleteResults(this.cmds.complete(match, pos - offset, ctx), offset);
 		}
 

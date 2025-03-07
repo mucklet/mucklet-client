@@ -2,6 +2,7 @@ import ListStep from 'classes/ListStep';
 import DelimStep from 'classes/DelimStep';
 import ValueStep from 'classes/ValueStep';
 import ItemList from 'classes/ItemList';
+import expandSelection from 'utils/expandSelection';
 
 const charTypeNone = 0;
 const charTypeLetter = 1;
@@ -50,56 +51,163 @@ class CmdPatternParsedCmd {
 	/**
 	 * Matches against a string and returns the length matched.
 	 * @param {string} s String to match against.
-	 * @returns {string} Remaining part that didn't match.
+	 * @returns {{remaining: string, complete: boolean} | null} Remaining string and a flag to tell if it is a complete match.
 	 */
 	matches(s) {
-		return this._matches(s, 0);
+		return this._matches(s);
 	}
 
-	_matches(s, idx) {
+	/**
+	 * Get results for tab completion.
+	 * @param {text} doc Full document text.
+	 * @param {number} pos Cursor position
+	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
+	 */
+	complete(doc, pos) {
+		let result = null;
+		this._matches(doc, 0, 0, (idx, from, to) => {
+			// Assert the cursor is within the token.
+			if (pos < from || pos > to) {
+				// If we've passed the cursor, we return true to indicate that
+				// no more matching is needed.
+				return pos < from;
+			}
+
+			let str = doc.slice(from, to);
+			pos -= from;
+			let t = this.tokens[idx];
+
+			switch (t.token) {
+				case tokenWord:
+					let sel = expandSelection(str, /[a-zA-Z0-9]/, /[a-zA-Z0-9]/, pos, pos);
+				 	// Check if we have a prefix match
+				 	if (t.value.startsWith(str.slice(sel.from, sel.to).toLowerCase())) {
+						// We have a match. Set the result and return true to
+						// stop matching.
+						result = {
+							list: [ t.value ],
+							from: sel.from + from,
+							to: sel.to + from,
+						};
+						return true;
+				 	}
+					break;
+
+				case tokenField:
+					let field = this.cmd.fields[t.value];
+					let fieldType = this.module.self.getFieldType(field.type);
+					if (!fieldType) {
+						console.error("missing handler for fieldType: " + field.type);
+						return true;
+					}
+
+					// Try to get complete results.
+					result = fieldType.complete?.(str, offset) || null;
+					if (result) {
+						return true;
+					}
+					break;
+			}
+
+		});
+		return result;
+	}
+
+	_findOptEnd(idx) {
+		let depth = 0;
+		for (; idx < this.tokens.length; idx++) {
+			let t = this.tokens[idx];
+			if (t.token == tokenOptEnd) {
+				if (depth == 0) {
+					break;
+				}
+				depth--;
+			} else if (t.token == tokenOptStart) {
+				depth++;
+			}
+		}
+		return idx;
+	}
+
+	/**
+	 * Matches against a string. Pos is the position in the complete document
+	 * where the string starts.
+	 * @param {string} s String to match against.
+	 * @param {number} idx Token index matching against
+	 * @param {number} pos Position in the complete document where the string starts.
+	 * @param {{tokenIdx: number, from: number, to: number} => boolean} [cb] Token callback. If it returns true, the matching stops and "" is returned.
+	 * @returns {{remaining: string, complete: boolean} | null} Remaining string and a flag to tell if it is complete, or null if stopped by the callback.
+	 */
+	_matches(s, idx = 0, pos = 0, cb = null) {
 		let ns;
 
 		for (; idx < this.tokens.length; idx++) {
+			let tokenStart = pos;
+			let tokenStr = s;
 			let t = this.tokens[idx];
-			s = s.trimStart();
-			if (s == "") {
-				// The full string was matched.
-				return s;
+			ns = s.trimStart();
+			pos += s.length - ns.length;
+			s = ns;
+			if (ns == "") {
+				// No match should still be sent to the callback as it
+				// may be use by the completer.
+				cb?.(idx, tokenStart, pos);
+				// The full string was matched, but tokens remain.
+				return { remaining: ns, complete: false };
 			}
+
 			switch (t.token) {
 				case tokenWord:
 					let m = s.match(/^[a-zA-Z0-9]+/);
 					// Check if we have a prefix match
 					if (!m || !t.value.startsWith(m[0].toLowerCase())) {
+						// No match should still be sent to the callback as it
+						// may be use by the completer.
+						if (cb?.(idx, tokenStart, pos + (m ? m[0].length : 0))) {
+							return null;
+						}
 						// No match
-						return s;
+						return { remaining: s, complete: false };
 					}
 
 					// Check if we have a partial match
-					let remaining = t.value.length - m[0].length;
+					let len = t.value.length;
+					let remaining = len - m[0].length;
 					if (remaining > 0) {
-						return s.slice(m[0].length);
+						// Partial match and stop traversing.
+						if (cb?.(idx, tokenStart, pos + m[0].length)) {
+							return null;
+						}
+						return { remaining: s.slice(m[0].length), complete: false };
 					}
 					// Slice away the matching word
-					s = s.slice(t.value.length);
+					if (cb?.(idx, tokenStart, pos + len)) {
+						return null;
+					}
+					s = s.slice(len);
+					pos += len;
+
 					break;
 
 				case tokenSymbol:
 					// Check if the symbol matches.
 					if (s.charAt(0) != t.value) {
-						return str.length - s.length;
+						return { remaining: s, complete: false };
+					}
+					if (cb?.(idx, tokenStart, pos + 1)) {
+						return null;
 					}
 					s = s.slice(1);
+					pos++;
 					break;
 
 				case tokenOptStart:
-					s = s.trimStart();
 					// If the optional path has any type of match, we choose it.
-					ns = this._matches(s, idx + 1);
-					if (ns != s) {
-						return ns;
+					let optResult = this._matches(tokenStr, idx + 1, tokenStart, cb);
+					if (optResult && len(optResult.remaining) < len(s)) {
+						return optResult;
 					}
-					return this._matches(s, this._findOptEnd(idx + 1) + 1);
+					return this._matches(tokenStr, this._findOptEnd(idx + 1) + 1, tokenStart, cb);
 
 				case tokenOptEnd:
 					break;
@@ -109,20 +217,32 @@ class CmdPatternParsedCmd {
 					let fieldType = this.module.self.getFieldType(field.type);
 					if (!fieldType) {
 						console.error("missing handler for fieldType: " + field.type);
-						return s;
+						return { remaining: s, complete: false };
 					}
 
-					ns = fieldType.match(s, field.opts);
-					// Null (non-string) is a no-match
-					if (typeof ns != 'string') {
-						return s;
+					let fieldMatch = fieldType.match(tokenStr, field.opts);
+					// Null is a non-match
+					if (!fieldMatch) {
+						if (cb?.(idx, tokenStart, tokenStart)) {
+							return null;
+						}
+						return { remaining: s, complete: false };
 					}
-					s = ns;
+
+					if (cb?.(idx, pos + fieldMatch.from, pos + fieldMatch.to)) {
+						return null;
+					}
+					pos = tokenStart + fieldMatch.to;
+					s = tokenStr.slice(fieldMatch.to);
+					// If only partial match, we end here
+					if (fieldMatch.partial) {
+						return { remaining: s, complete: false };
+					}
 					break;
 			}
 		}
 
-		return s;
+		return { remaining: s, complete: !s };
 	}
 
 	_findOptEnd(idx) {

@@ -1,4 +1,5 @@
 import Err from 'classes/Err';
+import { mergeTabCompleteResults } from 'utils/codemirrorTabCompletion';
 import CmdPatternParsedCmd from './CmdPatternParsedCmd';
 
 /**
@@ -41,9 +42,8 @@ class CmdPatternStep {
 	 * @returns {null | string | false} Null if no token, string on token, false if no match
 	 */
 	parse(stream, state) {
-		if (!stream) {
-			return this._setRequired(state);
-		}
+		// Set state to mark that this step has been called.
+		state.setParam('cmdPattern', true);
 
 		// Consume space
 		if (stream.eatSpace()) {
@@ -65,15 +65,14 @@ class CmdPatternStep {
 		let bestMatch = null;
 		for (let cmd of list) {
 			// If the command matches, add its step and exit.
-			let remaining = cmd.matches(str);
+			let m = cmd.matches(str);
 			// If all was matched, select this command by adding its step.
-			if (remaining == "") {
-				state.backUp(stream);
-				state.addStep(cmd.getStep());
+			if (m.complete) {
+				this._setStepAndBackup(stream, state, cmd);
 				return false;
 			}
 
-			let matched = str.length - remaining.length;
+			let matched = str.length - m.remaining.length;
 			if (maxMatch < matched) {
 				maxMatch = matched;
 				bestMatch = cmd;
@@ -82,14 +81,37 @@ class CmdPatternStep {
 
 		// While not a perfect match, we select this command by adding its step.
 		if (bestMatch) {
-			state.backUp(stream);
-			state.addStep(bestMatch.getStep());
+			this._setStepAndBackup(stream, state, bestMatch);
 			return false;
 		}
 
 		// No match
 		state.backUp(stream);
 		return this._setRequired(state);
+	}
+
+	/**
+	 * Get results for tab completion.
+	 * Will return null unless state.params has 'cmdPattern' set.
+	 * @param {text} doc Full document text.
+	 * @param {number} pos Cursor position
+	 * @param {import('classes/CmdState').default} state Command state.
+	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
+	 */
+	complete(doc, pos, state) {
+		if (!state.getParam('cmdPattern')) {
+			return null;
+		}
+
+		let list = this._getParsedList();
+		let result = null;
+
+		for (let cmd of list) {
+			// Get complete results from the cmd
+			result = mergeTabCompleteResults(doc, result, cmd.complete(doc, pos));
+		}
+
+		return result;
 	}
 
 	_setRequired(state) {
@@ -99,6 +121,11 @@ class CmdPatternStep {
 			state.setError(this.errRequired(this));
 		}
 		return false;
+	}
+
+	_setStepAndBackup(stream, state, cmd) {
+		state.backUp(stream);
+		state.addStep(cmd.getStep());
 	}
 
 	/**

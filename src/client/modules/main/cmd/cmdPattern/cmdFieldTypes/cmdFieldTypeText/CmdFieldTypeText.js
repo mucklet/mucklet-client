@@ -19,11 +19,13 @@ class CmdFieldTypeText {
 		this.module.cmdPattern.addFieldType({
 			id: 'text',
 			match: (str, opts) => {
+				let len = str.length;
 				if (opts.trimSpace) {
 					str = str.trimStart();
 				}
-				// Only consume maxLength characters.
-				return str.slice(opts.maxLength || this.module.info.getTag().tagDescMaxLength);
+				let from = len - str.length;
+				let to = from + Math.min(str.length, opts.maxLength || this.module.info.getTag().tagDescMaxLength);
+				return { from, to, partial: false };
 			},
 			stepFactory: (fieldKey, opts) => new TextStep([ 'fields', fieldKey ], {
 				name: fieldKey,

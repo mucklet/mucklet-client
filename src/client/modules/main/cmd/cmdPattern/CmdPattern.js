@@ -20,6 +20,7 @@ class CmdPattern {
 		this.module.cmd.addCmdHandler({
 			id: 'cmdPattern',
 			factory: (elseStep) => new CmdPatternStep(this.module, () => this._getPatterns(), { else: elseStep }),
+			complete: (step, doc, pos, state) => step.complete(doc, pos, state),
 			sortOrder: 10,
 		});
 	}
@@ -65,7 +66,7 @@ class CmdPattern {
 		return Object.keys(props)
 			.map(key => props[key])
 			.filter(o => o.cmd)
-			.sort((a, b) => a.priority - b.priority);
+			.sort((a, b) => b.priority - a.priority);
 	}
 
 	dispose() {

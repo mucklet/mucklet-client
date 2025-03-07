@@ -139,8 +139,15 @@ class TextStep {
 	}
 
 	_setRequired(state) {
-		if (!state.getState(this.id) && this.errRequired) {
-			state.setError(this.errRequired(this));
+		if (!state.getState(this.id)) {
+			if (this.errRequired) {
+				state.setError(this.errRequired(this));
+			}
+			// Empty text is still considered a match (without token).
+			state.setParam(this.id, "");
+			if (this.next) {
+				state.addStep(this.next);
+			}
 		}
 		return false;
 	}
