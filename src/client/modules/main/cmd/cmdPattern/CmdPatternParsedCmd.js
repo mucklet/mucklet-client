@@ -139,25 +139,20 @@ class CmdPatternParsedCmd {
 	 * @returns {{remaining: string, complete: boolean} | null} Remaining string and a flag to tell if it is complete, or null if stopped by the callback.
 	 */
 	_matches(s, idx = 0, pos = 0, cb = null) {
-		let ns;
+		const eatSpace = () => {
+			let ns = s.trimStart();
+			pos += s.length - ns.length;
+			s = ns;
+		};
 
 		for (; idx < this.tokens.length; idx++) {
 			let tokenStart = pos;
 			let tokenStr = s;
 			let t = this.tokens[idx];
-			ns = s.trimStart();
-			pos += s.length - ns.length;
-			s = ns;
-			if (ns == "") {
-				// No match should still be sent to the callback as it
-				// may be use by the completer.
-				cb?.(idx, tokenStart, pos);
-				// The full string was matched, but tokens remain.
-				return { remaining: ns, complete: false };
-			}
 
 			switch (t.token) {
 				case tokenWord:
+					eatSpace();
 					let m = s.match(/^[a-zA-Z0-9]+/);
 					// Check if we have a prefix match
 					if (!m || !t.value.startsWith(m[0].toLowerCase())) {
@@ -190,8 +185,9 @@ class CmdPatternParsedCmd {
 					break;
 
 				case tokenSymbol:
+					eatSpace();
 					// Check if the symbol matches.
-					if (s.charAt(0) != t.value) {
+					if (!s || s.charAt(0) != t.value) {
 						return { remaining: s, complete: false };
 					}
 					if (cb?.(idx, tokenStart, pos + 1)) {
@@ -202,8 +198,10 @@ class CmdPatternParsedCmd {
 					break;
 
 				case tokenOptStart:
-					// If the optional path has any type of match, we choose it.
+					eatSpace();
+					// Match against the optional path.
 					let optResult = this._matches(tokenStr, idx + 1, tokenStart, cb);
+					// If the optional path matches more than space, we select it.
 					if (optResult && len(optResult.remaining) < len(s)) {
 						return optResult;
 					}
@@ -217,7 +215,7 @@ class CmdPatternParsedCmd {
 					let fieldType = this.module.self.getFieldType(field.type);
 					if (!fieldType) {
 						console.error("missing handler for fieldType: " + field.type);
-						return { remaining: s, complete: false };
+						return { remaining: tokenStr, complete: false };
 					}
 
 					let fieldMatch = fieldType.match(tokenStr, field.opts);
@@ -226,7 +224,7 @@ class CmdPatternParsedCmd {
 						if (cb?.(idx, tokenStart, tokenStart)) {
 							return null;
 						}
-						return { remaining: s, complete: false };
+						return { remaining: tokenStr, complete: false };
 					}
 
 					if (cb?.(idx, pos + fieldMatch.from, pos + fieldMatch.to)) {
