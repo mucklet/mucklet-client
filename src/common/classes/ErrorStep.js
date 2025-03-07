@@ -9,7 +9,7 @@ class ErrorStep {
 		this.err = err || (match => new Err('errorStep.errorCommand', 'Erronous command "{match}".', { match }));
 	}
 
-	parse(stream, s) {
+	parse(stream, state) {
 		if (!stream) return false;
 
 		let m = stream.match(this.regex);
@@ -17,7 +17,7 @@ class ErrorStep {
 			return false;
 		}
 
-		s.setError(typeof this.err == 'function' ? this.err(m[1]) : this.err);
+		state.setError(typeof this.err == 'function' ? this.err(m[1]) : this.err);
 		return 'error';
 	}
 }

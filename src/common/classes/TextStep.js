@@ -1,3 +1,4 @@
+import { offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import ErrorStep from './ErrorStep';
 import Err from './Err';
 
@@ -130,10 +131,7 @@ class TextStep {
 
 		let trimmed = this.trimSpace ? str.trimStart() : str;
 		let diff = str.length - trimmed.length;
-		let range = this.completer.complete(trimmed, pos - diff, state.getCtx(), true);
-		return range
-			? { list: range.list, from: range.from + diff, to: range.to + diff }
-			: null;
+		return offsetCompleteResults(this.completer.complete(trimmed, pos - diff, state.getCtx(), true), diff);
 	}
 
 	formatText() {

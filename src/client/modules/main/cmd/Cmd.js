@@ -1,6 +1,6 @@
 import { Html } from 'modapp-base-component';
 import { Collection, sortOrderCompare } from 'modapp-resource';
-import { StreamLanguage } from '@codemirror/language';
+import { StreamLanguage, StringStream } from '@codemirror/language';
 import l10n from 'modapp-l10n';
 import ItemList from 'classes/ItemList';
 import ListStep from 'classes/ListStep';
@@ -8,6 +8,7 @@ import ErrorStep from 'classes/ErrorStep';
 import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 import { getToken } from 'utils/codemirror';
+import { mergeTabCompleteResults, offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import cmdParser from './cmdParser';
 import cmdHighlightStyle from './cmdHighlightStyle';
 import cmdFormattingStyle from './cmdFormattingStyle';
@@ -46,7 +47,7 @@ class Cmd {
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
 		});
-		this.cmdHandler = new Collection({
+		this.cmdHandlers = new Collection({
 			idAttribute: m => m.id,
 			compare: sortOrderCompare,
 			eventBus: this.app.eventBus,
@@ -98,20 +99,38 @@ class Cmd {
 		let pos = editorState.selection.main.head;
 		let token = getToken(editorState, t => t.to > pos || (t.to == pos && t.type !== null && t.type !== 'delim'));
 
-		let step = token?.state.step;
+		let doc = editorState.doc.toString();
+
+		// /** @type {import('types/interfaces/Completer').CompleteResult | null} */
+		// let result = null;
+
+
+		/** @type {import('classes/CmdState').default | undefined} */
+		let state = token?.state;
+		/** @type {import('types/interfaces/Completer').default | undefined} */
+		let step = state?.step;
+
+		// Start with completer results from cmdStep
+		let result = mergeTabCompleteResults(doc, null, this._cmdStepComplete(doc, pos, state?.getCtx()));
+
+		// Add completer results from the current token
 		if (typeof step?.complete == 'function') {
-			// Get the { list, from, to } range from the completer.
-			let line = editorState.doc.lineAt(token.from);
-			let range = step.complete(line.text.slice(token.from - line.from, token.to - line.from), pos - token.from, token.state);
+			// Get the range from the completer.
+			let range = step.complete(doc.slice(token.from, token.to), pos - token.from, state);
 			if (range && range.list && range.list.length) {
-				return {
-					list: range.list,
-					from: range.from + token.from,
-					to: range.to + token.from,
-				};
+				result = mergeTabCompleteResults(doc, result, offsetCompleteResults(range, token.from));
 			}
 		}
-		return null;
+
+		// Add completer suggestions from other cmdHandlers
+		for (let cmdHandler of this.cmdHandlers) {
+			if (cmdHandler.complete) {
+				result = mergeTabCompleteResults(doc, result, cmdHandler.complete(doc, pos));
+			}
+		}
+
+
+		return result;
 	}
 
 	/**
@@ -220,14 +239,15 @@ class Cmd {
 	 * @param {object} cmdHandler Command handler object
 	 * @param {string} cmdHandler.id Command handler ID.
 	 * @param {(else: Step) => Step} cmdHandler.factory Function that creates a handler step.
+	 * @param {() => import('types/interfaces/Completer').CompleteResult | null} [cmdHandler.complete] Complete callback
 	 * @param {number} cmdHandler.sortOrder Sort order.
 	 * @returns {this}
 	 */
 	addCmdHandler(cmdHandler) {
-		if (this.cmdHandler.get(cmdHandler.id)) {
+		if (this.cmdHandlers.get(cmdHandler.id)) {
 			throw new Error("CmdHandler ID already registered: ", cmdHandler.id);
 		}
-		this.cmdHandler.add(cmdHandler);
+		this.cmdHandlers.add(cmdHandler);
 		this._setCmdHandlers();
 		return this;
 	}
@@ -238,7 +258,7 @@ class Cmd {
 	 * @returns {this}
 	 */
 	removeCmdHandler(cmdHandlerId) {
-		this.cmdHandler.remove(cmdHandlerId);
+		this.cmdHandlers.remove(cmdHandlerId);
 		this._setCmdHandlers();
 		return this;
 	}
@@ -253,8 +273,8 @@ class Cmd {
 			/^\s*([\p{L}\p{N}/][\p{L}\p{N}\s]*)/u,
 			(match) => this.newCommandNotFound(match),
 		);
-		for (let i = this.cmdHandler.length - 1; i >= 0; i--) {
-			step = this.cmdHandler.atIndex(i).factory(step);
+		for (let i = this.cmdHandlers.length - 1; i >= 0; i--) {
+			step = this.cmdHandlers.atIndex(i).factory(step);
 		}
 
 		this.cmdStep.setElse(step);
@@ -280,6 +300,33 @@ class Cmd {
 			l10n.t('cmd.commandNotFound', 'There is no command named "{match}".', { match: escapeHtml(match) }) + ' Type <span class="cmd">help</span> to learn more.',
 			{ className: 'common--formattext' },
 		);
+	}
+
+	/**
+	 * Gets tab completion results for cmdSteps.
+	 * @param {string} doc Console text.
+	 * @param {number} pos Cursor position.
+	 * @param {any} ctx Context.
+	 * @returns {import('types/interfaces/Completer').CompleteResult | null} Results or null if not applicable.
+	 */
+	_cmdStepComplete(doc, pos, ctx) {
+		let stream = new StringStream(doc, 0, 0, 0);
+		stream.eatSpace();
+		// If the cursor position is before any text starts
+		if (stream.pos > pos) {
+			return offsetCompleteResults(this.cmds.complete("", 0, ctx), pos);
+		}
+
+		let match = this.cmds.consume(stream);
+		if (stream.pos >= pos) {
+			// Eg. "  hejsa|n ":  pos = 7, stream.pos = 8, match = "hejsan"
+			let offset = stream.pos - match.length;
+			this.cmds.complete(match, pos - offset, ctx);
+			return offsetCompleteResults(this.cmds.complete(match, pos - offset, ctx), offset);
+		}
+
+		// Beyond the initial cmd step
+		return null;
 	}
 }
 

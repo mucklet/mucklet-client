@@ -15,7 +15,7 @@ function getNested(p, keys) {
  * Command state object used when parsing commands.
  */
 class CmdState {
-	constructor(step, stack, ctx, params, state, error, onExec) {
+	constructor(step, stack, ctx, params = {}, state = {}, error = null, onExec = []) {
 		this.step = step;
 		this.stack = stack;
 		this.ctx = ctx;

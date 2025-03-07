@@ -18,7 +18,7 @@ class CmdPattern {
 		this.module = Object.assign({ self: this }, module);
 		this.fieldTypes = {};
 		this.module.cmd.addCmdHandler({
-			id: 'cmdPatterns',
+			id: 'cmdPattern',
 			factory: (elseStep) => new CmdPatternStep(this.module, () => this._getPatterns(), { else: elseStep }),
 			sortOrder: 10,
 		});
@@ -69,7 +69,7 @@ class CmdPattern {
 	}
 
 	dispose() {
-		this.module.cmd.removeCmdHandler('cmdPatterns');
+		this.module.cmd.removeCmdHandler('cmdPattern');
 	}
 }
 

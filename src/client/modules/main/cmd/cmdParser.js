@@ -21,10 +21,6 @@ export default function(cfg) {
 				cfg.step,
 				[ cfg.step ],
 				cfg.ctx,
-				{},
-				{},
-				null,
-				[],
 			);
 		},
 

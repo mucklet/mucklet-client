@@ -102,3 +102,54 @@ export default function consoleTabCompletion(cfg) {
 		tabCompletionKeymap(cfg),
 	];
 };
+
+/**
+ * Merges two complete result sets and removed duplicates. If either a or b is
+ * null or contains an empty list, the other result set is returned.
+ * @param {string} text Text.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} a First result set.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} b Second result set.
+ * @returns {import('types/interfaces/Completer').CompleteResult | null} A merged result set.
+ */
+export function mergeTabCompleteResults(text, a, b) {
+	if (!a || !a.list?.length) {
+		return b;
+	}
+	if (!b || !b.list?.length) {
+		return a;
+	}
+	let list = [];
+	let from = Math.min(a.from, b.from);
+	let to = Math.max(a.to, b.to);
+	let txts = {};
+	// Run twice, first with a, then with b.
+	for (let i = 0; i < 2; i++) {
+		for (let v of a.list) {
+			// Add prefix/suffix to match the extended from/to size.
+			let txt = text.slice(from, a.from) + v + text.slice(a.to, to);
+			// Add if not already included
+			if (!txts[txt]) {
+				list.push(txt);
+				txts[txt] = true;
+			}
+		}
+		a = b;
+	}
+	return { list, from, to };
+}
+
+/**
+ * Adds the offset to the results to/from values.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} result Complete result.
+ * @param {number} offset Offset position.
+ * @returns {import('types/interfaces/Completer').CompleteResult | null} Offsetted complete result.
+ */
+export function offsetCompleteResults(result, offset) {
+	return result
+		? {
+			list: result.list,
+			from: result.from + offset,
+			to: result.to + offset,
+		}
+		: result;
+}

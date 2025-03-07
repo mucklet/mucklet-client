@@ -1,3 +1,4 @@
+import { offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import Err from './Err';
 
 /**
@@ -151,10 +152,7 @@ class ListStep {
 			trimmed = str.slice(pos);
 			diff = pos;
 		}
-		let range = this.list.complete(trimmed, pos - diff, state.getCtx());
-		return range
-			? { list: range.list, from: range.from + diff, to: range.to + diff }
-			: null;
+		return offsetCompleteResults(this.list.complete(trimmed, pos - diff, state.getCtx()), diff);
 	}
 
 	_setRequired(state) {
