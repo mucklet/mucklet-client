@@ -49,12 +49,23 @@ class CmdPatternParsedCmd {
 	}
 
 	/**
+	 * Tests if the token at index idx is a word-token matching the given word.
+	 * @param {number} idx Index of token.
+	 * @param {string} word Word string.
+	 * @returns {boolean} True on match.
+	 */
+	isWordToken(idx, word) {
+		return this.tokens.length > idx && this.tokens[idx].token == tokenWord && this.tokens[idx].value == word.toLowerCase();
+	}
+
+	/**
 	 * Matches against a string and returns the length matched.
 	 * @param {string} s String to match against.
+	 * @param {number} idx Token index to start from. Defaults to 0.
 	 * @returns {{remaining: string, complete: boolean} | null} Remaining string and a flag to tell if it is a complete match.
 	 */
-	matches(s) {
-		return this._matches(s);
+	matches(s, idx = 0) {
+		return this._matches(s, idx);
 	}
 
 	/**
@@ -263,6 +274,11 @@ class CmdPatternParsedCmd {
 		return this.step;
 	}
 
+	/**
+	 * Parses a command into tokens.
+	 * @param {import('types/modules/cmdPattern').CmdPattern} cmd Command object.
+	 * @returns {Array<{token: "word"|"symbol"|"field"|"optStart"|"optEnd", value: string}>} Array of parsed tokens objects.
+	 */
 	_parse(cmd) {
 		let charType = charTypeNone;
 		let state = tokenNone;

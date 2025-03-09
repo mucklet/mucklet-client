@@ -23,3 +23,15 @@ export interface FieldType {
 	 */
 	inputValue(fieldKey: string, opts: any, params: any): Promise<any> | any;
 }
+
+
+export interface CmdPattern {
+	/** Command ID */
+ 	id: string;
+	/** Command pattern. Eg. "push <Color> [button]" */
+	pattern: string;
+	/** Command help text. */
+	help: string;
+	/** Command fields. */
+	fields: Record<string, { type: string, desc: string, opts?: any }>;
+}

@@ -173,27 +173,33 @@ class Cmd {
 	 * @param {function} exec Command execution callback.
 	 */
 	addPrefixCmd(prefix, def, exec) {
-		let list = this.prefixes[prefix];
-		if (!list) {
-			list = new ItemList('object', {
+		let cmdPrefix = this.prefixes[prefix];
+		if (!cmdPrefix) {
+			let list = new ItemList('object', {
 				name: "object type",
 			});
-			this.prefixes[prefix] = list;
+			let step = new ListStep('object', list, {
+				name: "object type",
+				token: 'name',
+				errRequired: null,
+				errNotFound: null,
+			});
+			cmdPrefix = { list, step };
+			this.prefixes[prefix] = cmdPrefix;
 			this.addCmd({
 				key: prefix,
-				next: new ListStep('object', list, {
-					name: "object type",
-					token: 'name',
-				}),
+				next: step,
 				value: this._execPrefix,
 			});
+
+			this._setCmdPrefixHandlers(prefix, cmdPrefix);
 		}
 
 		if (typeof exec == 'function') {
 			def = Object.assign({}, def, { value: exec });
 		}
 
-		list.addItem(def);
+		cmdPrefix.list.addItem(def);
 	}
 
 	getList(id) {
@@ -263,10 +269,6 @@ class Cmd {
 	}
 
 	_setCmdHandlers() {
-		if (!this.cmdStep) {
-			return;
-		}
-
 		// Last step is always a commandNotFound error.
 		let step = new ErrorStep(
 			/^\s*([\p{L}\p{N}/][\p{L}\p{N}\s]*)/u,
@@ -275,11 +277,37 @@ class Cmd {
 		let steps = {};
 		for (let i = this.cmdHandlers.length - 1; i >= 0; i--) {
 			let h = this.cmdHandlers.atIndex(i);
-			step = h.factory(step);
-			steps[h.id] = step;
+			let newStep = h.factory(step);
+			if (newStep) {
+				steps[h.id] = newStep;
+				step = newStep;
+			}
 		}
 		this.cmdHandlerSteps = steps;
 		this.cmdStep.setElse(step);
+
+		// Update all cmd prefixes ("create", "get", "set", etc.)
+		for (let prefix in this.prefixes) {
+			this._setCmdPrefixHandlers(prefix, this.prefixes[prefix]);
+		}
+	}
+
+	_setCmdPrefixHandlers(prefix, cmdPrefix) {
+		// Last step is always a commandNotFound error.
+		let step = new ErrorStep(
+			/^\s*([\p{L}\p{N}/][\p{L}\p{N}\s]*)/u,
+			(match) => new Err('cmd.commandObjectTypeNotFound', `There is nothing called "{match}" to {prefix}.`, { prefix, match }),
+			new Err('cmd.cmdObjectTypeRequired', `What would you like to {prefix}?`, { prefix }),
+		);
+
+		for (let i = this.cmdHandlers.length - 1; i >= 0; i--) {
+			let h = this.cmdHandlers.atIndex(i);
+			let newStep = h.factory(step, prefix);
+			if (newStep) {
+				step = newStep;
+			}
+		}
+		cmdPrefix.step.setElse(step);
 	}
 
 	_execPrefix(ctx, p) {

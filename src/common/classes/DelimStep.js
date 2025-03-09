@@ -41,6 +41,14 @@ class DelimStep {
 	}
 
 	/**
+	 * Gets the next step.
+	 * @returns {Step | null} Next step.
+	 */
+	getNext() {
+		return this.next;
+	}
+
+	/**
 	 * Sets the else step.
 	 * @param {Step | null} step Step.
 	 * @returns {this}

@@ -1,14 +1,5 @@
 import Err from 'classes/Err';
 import { mergeCompleteResults, expandCompleteResult } from 'utils/codemirrorTabCompletion';
-import CmdPatternParsedCmd from './CmdPatternParsedCmd';
-
-/**
- * @typedef {object} CmdPattern
- * @property {string} id Command ID
- * @property {string} pattern Command pattern. Eg. "push <Color> [button]"
- * @property {string} help Command help text.
- * @property {Record<string, { type: string, desc: string, opts?: any }} fields Command fields.
- */
 
 /**
  * CmdPatternStep is a step that uses command pattern objects.
@@ -18,16 +9,18 @@ class CmdPatternStep {
 	/**
 	 * Creates an instance of CmdPatternStep.
 	 * @param {CmdPatternModules} module CmdPattern modules.
-	 * @param {Array<{id: string, cmd: CmdPattern}> | () => Array<{id: string, cmd: CmdPattern}>} list Sorted pattern list, or function that returns a sorted pattern list.
+	 * @param {() => Array<import('./CmdPatternParsedCmd').default>} getPatterns Function that returns a sorted list of parsed command patterns.
 	 * @param {object} [opt] Optional params.
 	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required: function(this)
+	 * @param {string} [opt.prefix] Prefix already consumed by another step.
 	 */
-	constructor(module, list, opt) {
+	constructor(module, getPatterns, opt) {
 		opt = opt || {};
 		this.module = module;
-		this.factory = typeof list == 'function' ? list : (() => list);
+		this.getPatterns = getPatterns;
 		this.else = opt.else || null;
+		this.prefix = opt.prefix || null;
 		this.parseCache = {};
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
@@ -65,7 +58,7 @@ class CmdPatternStep {
 		let bestMatch = null;
 		for (let cmd of list) {
 			// If the command matches, add its step and exit.
-			let m = cmd.matches(str);
+			let m = cmd.matches(str, this.prefix ? 1 : 0);
 			// If all was matched, select this command by adding its step.
 			if (m.complete) {
 				this._setStepAndBackup(stream, state, cmd);
@@ -171,37 +164,20 @@ class CmdPatternStep {
 
 	_setStepAndBackup(stream, state, cmd) {
 		state.backUp(stream);
-		state.addStep(cmd.getStep());
+		let step = cmd.getStep();
+		state.addStep(this.prefix ? step?.getNext?.() : step);
 	}
 
 	/**
 	 * Gets a list of parsed patterns.
-	 * @returns {Array<ParsedCmd>} Parsed commands.
+	 * @returns {Array<import('./CmdPatternParsedCmd').default>} Parsed commands.
 	 */
 	_getParsedList() {
-		let list = this.factory();
-
-		let parsed = [];
-		let ids = {};
-		// Parse commands or get them from cache
-		for (let { id, cmd } of list) {
-			ids[id] = true;
-			let o = this.parseCache[id];
-			if (!o) {
-				o = new CmdPatternParsedCmd(this.module, id, cmd);
-				this.parseCache[id] = o;
-			}
-			parsed.push(o);
+		let cmdPatterns = this.getPatterns();
+		if (this.prefix) {
+			cmdPatterns = cmdPatterns.filter(p => p.isWordToken(0, this.prefix));
 		}
-
-		// Delete unused items
-		for (let id in this.parseCache) {
-			if (!ids[id]) {
-				delete this.parseCache[id];
-			}
-		}
-
-		return parsed;
+		return cmdPatterns;
 	}
 }
 

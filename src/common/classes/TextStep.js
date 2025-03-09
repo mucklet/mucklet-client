@@ -63,6 +63,14 @@ class TextStep {
 	}
 
 	/**
+	 * Gets the next step.
+	 * @returns {Step | null} Next step.
+	 */
+	getNext() {
+		return this.next;
+	}
+
+	/**
 	 * Parses the stream input stream.
 	 * @param {import('@codemirror/language').StringStream | null} stream String stream.
 	 * @param {import('classes/CmdState').default} state Command state.
