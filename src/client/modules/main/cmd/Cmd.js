@@ -348,10 +348,29 @@ class Cmd {
 		}
 
 		let match = this.cmds.consume(stream);
-		if (stream.pos >= pos) {
-			// Eg. "  hejsa|n ":  pos = 7, stream.pos = 8, match = "hejsan"
-			let offset = stream.pos - match.length;
-			return offsetCompleteResults(this.cmds.complete(match, pos - offset, ctx), offset);
+		if (typeof match == 'string') {
+			if (stream.pos >= pos) {
+				// Eg. "  hejsa|n ":  pos = 7, stream.pos = 8, match = "hejsan"
+				let offset = stream.pos - match.length;
+				return offsetCompleteResults(this.cmds.complete(match, pos - offset, ctx), offset);
+			}
+			let item = this.cmds.getItem(match, ctx);
+			let prefixCmds = item && this.prefixes[item.key]?.list;
+			if (prefixCmds) {
+				stream.eatSpace();
+				// If the cursor position is before any text starts
+				if (stream.pos > pos) {
+					return offsetCompleteResults(prefixCmds.complete("", 0, ctx), pos);
+				}
+				let match = prefixCmds.consume(stream);
+				if (typeof match == 'string') {
+					if (stream.pos >= pos) {
+						// Eg. "  hejsa|n ":  pos = 7, stream.pos = 8, match = "hejsan"
+						let offset = stream.pos - match.length;
+						return offsetCompleteResults(prefixCmds.complete(match, pos - offset, ctx), offset);
+					}
+				}
+			}
 		}
 
 		// Beyond the initial cmd step
