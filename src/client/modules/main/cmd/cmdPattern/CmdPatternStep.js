@@ -35,9 +35,6 @@ class CmdPatternStep {
 	 * @returns {null | string | false} Null if no token, string on token, false if no match
 	 */
 	parse(stream, state) {
-		// Set state to mark that this step has been called.
-		state.setParam('cmdPattern', true);
-
 		// Consume space
 		if (stream.eatSpace()) {
 			state.addStep(this);
@@ -92,10 +89,6 @@ class CmdPatternStep {
 	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
 	 */
 	complete(doc, pos, state) {
-		if (!state.getParam('cmdPattern')) {
-			return null;
-		}
-
 		let list = this._getParsedList();
 		let result = null;
 
