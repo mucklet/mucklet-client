@@ -123,6 +123,11 @@ class CmdPatternStep {
 	 * @returns {boolean} True if overshadowed.
 	 */
 	_isOvershadowed(doc, testCmd, list) {
+		// Check if it is overshadowed by a client command
+		if (this.module.cmd.matchesCommand(doc)) {
+			return true;
+		}
+
 		let maxMatch = 0;
 		let bestMatch = null;
 		for (let cmd of list) {

@@ -84,8 +84,14 @@ class TabCompletionState {
 			// Try get a new list of complete results
 			result = cfg.complete(tr.state);
 			// No results means no completion
-			if (!result || !result.list || !result.list.length) {
+			let len = result?.list?.length || 0;
+			if (!len) {
 				return this;
+			}
+			// If it starts with the current state, move to the second first.
+			let part = tr.state.doc.sliceString(result.from, result.to);
+			if (len > 1 && result.list[0] === part) {
+				current = 1;
 			}
 		}
 
