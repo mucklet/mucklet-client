@@ -85,12 +85,12 @@ class CmdPatternParsedCmd {
 			}
 
 			let str = doc.slice(from, to);
-			pos -= from;
+			let strpos = pos - from;
 			let t = this.tokens[idx];
 
 			switch (t.token) {
 				case tokenWord:
-					let sel = expandSelection(str, /[a-zA-Z0-9]/, /[a-zA-Z0-9]/, pos, pos);
+					let sel = expandSelection(str, /[a-zA-Z0-9]/, /[a-zA-Z0-9]/, strpos, strpos);
 				 	// Check if we have a prefix match
 				 	if (t.value.startsWith(str.slice(sel.from, sel.to).toLowerCase())) {
 						// We have a match. Set the result and return true to
@@ -113,7 +113,7 @@ class CmdPatternParsedCmd {
 					}
 
 					// Try to get complete results.
-					result = fieldType.complete?.(str, offset) || null;
+					result = fieldType.complete?.(str, strpos) || null;
 					if (result) {
 						return true;
 					}
@@ -213,7 +213,7 @@ class CmdPatternParsedCmd {
 					// Match against the optional path.
 					let optResult = this._matches(tokenStr, idx + 1, tokenStart, cb);
 					// If the optional path matches more than space, we select it.
-					if (optResult && len(optResult.remaining) < len(s)) {
+					if (optResult && (optResult.remaining.length < s.length)) {
 						return optResult;
 					}
 					return this._matches(tokenStr, this._findOptEnd(idx + 1) + 1, tokenStart, cb);
@@ -369,7 +369,8 @@ class CmdPatternParsedCmd {
 	}
 
 	_createStep() {
-		let first = null;
+		let first = [];
+		let steps = first; // List of steps we are currently in
 		let step = null;
 
 		for (let t of this.tokens) {
