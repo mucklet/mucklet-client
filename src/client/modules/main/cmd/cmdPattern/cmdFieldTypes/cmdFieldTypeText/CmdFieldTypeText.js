@@ -24,7 +24,7 @@ class CmdFieldTypeText {
 					str = str.trimStart();
 				}
 				let from = len - str.length;
-				let to = from + Math.min(str.length, opts.maxLength || this.module.info.getTag().tagDescMaxLength);
+				let to = from + Math.min(str.length, opts.maxLength || this.module.info.getCore().descriptionMaxLength);
 				return { from, to, partial: false };
 			},
 			stepFactory: (fieldKey, opts) => new TextStep([ 'fields', fieldKey ], {
@@ -32,8 +32,8 @@ class CmdFieldTypeText {
 				spanLines: !!opts?.spanLines,
 				spellcheck: !!opts?.spellCheck,
 				formatText: !!opts?.formatText,
-				trimSpace: !!opts?.trimSpace,
-				maxLength: opts.maxLength || (() => this.module.info.getTag().tagDescMaxLength),
+				trimSpace: true,
+				maxLength: opts.maxLength || (() => this.module.info.getCore().descriptionMaxLength),
 				errTooLong: textTooLong,
 				errRequired: null,
 			}),

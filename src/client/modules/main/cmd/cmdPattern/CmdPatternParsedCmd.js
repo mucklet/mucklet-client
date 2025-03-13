@@ -369,8 +369,7 @@ class CmdPatternParsedCmd {
 	}
 
 	_createStep() {
-		let first = [];
-		let steps = first; // List of steps we are currently in
+		let first = null;
 		let step = null;
 
 		for (let t of this.tokens) {
@@ -390,9 +389,8 @@ class CmdPatternParsedCmd {
 					break;
 
 				case tokenOptStart:
-					break;
-
 				case tokenOptEnd:
+					console.error("optionals not implemented");
 					break;
 
 				case tokenField:
