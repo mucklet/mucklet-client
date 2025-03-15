@@ -111,12 +111,10 @@ class TextStep {
 			state.addStep(this.next);
 		}
 
+		state.setParam(this.id, full);
 		if (this.spanLines && stream.eol()) {
-			state.setParam(this.id, full);
 			state.setState(this.id, true); // True means the first line is set
 			state.addStep(this);
-		} else {
-			state.setParam(this.id, full);
 		}
 
 		return this._token(state);
