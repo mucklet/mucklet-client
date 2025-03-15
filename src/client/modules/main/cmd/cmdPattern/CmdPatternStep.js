@@ -44,6 +44,11 @@ class CmdPatternStep {
 	 * @returns {null | string | false} Null if no token, string on token, false if no match
 	 */
 	parse(stream, state) {
+		// No more input
+		if (!stream) {
+			return false;
+		}
+
 		// See if the initial parsing is complete. If so, handle next token.
 		let o = state.getState("cmdPattern");
 		if (o) {
@@ -197,6 +202,24 @@ class CmdPatternStep {
 		if (match.error) {
 			state.setError(match.error);
 		}
+
+		// Set the command to execute on no-error
+		state.setParam('cmd', async (ctx, params) => {
+			let v = null;
+			if (cmd.cmd.fields) {
+				v = {};
+				for (let fieldKey in cmd.cmd.fields) {
+					let field = cmd.cmd.fields[fieldKey];
+					let fieldType = this.module.self.getFieldType(field.type);
+					v[fieldKey] = await Promise.resolve(fieldType.inputValue ? fieldType.inputValue(fieldKey, field.opts, values[fieldKey]) : values[fieldKey]);
+				}
+			}
+			return ctx.char.call('execRoomCmd', {
+				cmdId: cmd.id,
+				values: v,
+			});
+		});
+
 		return this._handleToken(stream, state, cmd, match.tokens, match.continueWith, values, 0);
 	}
 
