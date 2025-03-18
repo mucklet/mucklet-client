@@ -45,7 +45,8 @@ class CmdPatternParsedCmd {
 		this.module = module;
 		this.id = id;
 		this.cmd = cmd;
-		this.tokens = this._parse(cmd);
+		/** @type {Array<{ token: string, value: string, delims?: string}>} */
+		this.tokens = this._setFieldTokenDelims(this._parse(cmd));
 		// this.step = this._createStep();
 	}
 
@@ -278,7 +279,7 @@ class CmdPatternParsedCmd {
 					// tokens. After matching against the field, we append those
 					// tokens to our existing tokens array.
 					let fieldTokens = tokens ? [] : null;
-					let fieldMatch = fieldType.match(t.value, tokenStr, field.opts, fieldTokens, values ? values[t.value] : null);
+					let fieldMatch = fieldType.match(t.value, tokenStr, field.opts, t.delims || null, fieldTokens, values ? values[t.value] : null);
 					// Null is a non-match
 					if (!fieldMatch) {
 						if (callback(null, idx, tokenStart, tokenStart)) {
@@ -363,15 +364,13 @@ class CmdPatternParsedCmd {
 		let escape = false;
 		let str = "";
 		let tokens = [];
-		const appendState = (newState) => {
-			switch (state) {
-				case tokenNone:
-					break;
-				case tokenWord:
-					tokens.push({ token: state, value: str.toLowerCase() });
-					break;
-				default:
-					tokens.push({ token: state, value: str });
+
+		const setState = (newState) => {
+			if (state != tokenNone) {
+				if (state == tokenWord) {
+					str = str.toLowerCase();
+				}
+				tokens.push({ token: state, value: str });
 			}
 			str = "";
 			state = newState;
@@ -402,19 +401,19 @@ class CmdPatternParsedCmd {
 			switch (charType) {
 				case charTypeLetter:
 					if (state != tokenWord && state != tokenField) {
-						appendState(tokenWord);
+						setState(tokenWord);
 					}
 					str += char;
 					break;
 				case charTypeSymbol:
 					if (state != tokenField) {
-						appendState(tokenSymbol);
+						setState(tokenSymbol);
 					}
 					str += char;
 					break;
 				case charTypeSpace:
 					if (state != tokenField) {
-						appendState(tokenNone);
+						setState(tokenNone);
 					} else {
 						str += char;
 					}
@@ -425,24 +424,67 @@ class CmdPatternParsedCmd {
 							escape = true;
 							break;
 						case '<':
-							appendState(tokenField);
+							setState(tokenField);
 							break;
 						case '>':
-							appendState(tokenNone);
+							setState(tokenNone);
 							break;
 						case '[':
-							appendState(tokenOptStart);
+							setState(tokenOptStart);
 							break;
 						case ']':
-							appendState(tokenOptEnd);
+							setState(tokenOptEnd);
 							break;
 					}
 					break;
 
 			}
 		}
-		appendState();
+		setState();
 
+		return tokens;
+	}
+
+	/**
+	 * Checks the field tokens and which other tokens may be adjecent, to
+	 * determine what type of delimiters are needed.
+	 * @param {Array<{ token: string, value: string}>} tokens Tokens without delims.
+	 * @returns {Array<{ token: string, value: string, delims?: string}>} Tokens with delims for field tokens.
+	 */
+	_setFieldTokenDelims(tokens) {
+		var fields = [];
+
+		const tryAddDelim = (delim) => {
+			// Add delim to all affected fields
+			fields.forEach(f => {
+				if (!f.token.delims?.includes(delim)) {
+					f.token.delims = (f.token.delims || "") + delim;
+				}
+				f.count--;
+			});
+			// Filter away fields with no more adjecent
+			fields = fields.filter(f => f.count);
+		};
+
+		for (let t of tokens) {
+			switch (t.token) {
+				case tokenOptStart:
+					// Increase possible count of adjecent tokens
+					fields.forEach(f => f.count++);
+					break;
+				case tokenWord:
+					tryAddDelim(' '); // Space delim
+					break;
+				case tokenField:
+					tryAddDelim(' '); // Space delim
+					fields.push({ token: t, count: 1 });
+					break;
+
+				case tokenSymbol:
+					tryAddDelim(t.value);
+					break;
+			}
+		}
 		return tokens;
 	}
 

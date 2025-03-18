@@ -1,5 +1,6 @@
 import { keyRegex } from 'utils/regex';
 import Err from 'classes/Err';
+import indexOfChars from 'utils/indexOfChars';
 
 /**
  * CmdFieldTypeKeyword registers the "keyword" field type for custom commands.
@@ -24,15 +25,28 @@ class CmdFieldTypeKeyword {
 		this.module = module;
 		this.module.cmdPattern.addFieldType({
 			id: 'keyword',
-			match: (fieldKey, str, opts, tokens, prevValue) => {
+			match: (fieldKey, str, opts, delims, tokens, prevValue) => {
 				let len = str.length;
 				str = str.trimStart();
 				let from = len - str.length;
 				let m = str.match(keyRegex);
 				let mlen = m ? m[0].length : 0;
+
+				// Check if we find one of the delimiters within the match
+				if (delims && mlen) {
+					// Try to find a delimiter
+					let idx = indexOfChars(str.slice(0, mlen), delims);
+					// If found we set the new match length
+					if (idx >= 0) {
+						mlen = idx;
+					}
+				}
+
+				// No match
 				if (!mlen) {
 					return null;
 				}
+
 				let maxLength = opts.maxLength || this.module.info.getCore().keyMaxLength;
 				let allowedLen = Math.max(0, maxLength);
 				let to = from + mlen;

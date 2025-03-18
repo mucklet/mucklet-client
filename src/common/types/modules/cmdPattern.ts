@@ -17,12 +17,13 @@ export interface FieldType {
 	 * long that token is. For a list of token tags, see: cmdParser.js
 	 * @param str String to match against.
 	 * @param opts Field specific options.
+	 * @param delims String of delimiters towards adjecent tokens.
 	 * @param tokens An array to push token tags into.
 	 * @param prevValue Value data returned from previous call where the also result included { more: true }. prevValue must NOT be modified.
 	 * @returns The from/to position that matches, and if it is a partial match,
 	 * or null if not matched.
 	 */
-	match(str: string, opts: any, tokens?: Array<{token: string, n: number}>, prevValue?: any): FieldMatch | null;
+	match(str: string, opts: any, delims: string | null, tokens?: Array<{token: string, n: number}>, prevValue?: any): FieldMatch | null;
 
 	/**
 	 *
