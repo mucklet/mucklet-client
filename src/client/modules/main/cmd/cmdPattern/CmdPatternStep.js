@@ -1,5 +1,6 @@
 import Err from 'classes/Err';
 import { mergeCompleteResults, expandCompleteResult } from 'utils/codemirrorTabCompletion';
+import isError from 'utils/isError';
 
 /**
  * CmdPatternStep is a step that uses command pattern objects.
@@ -49,16 +50,16 @@ class CmdPatternStep {
 			return false;
 		}
 
-		// See if the initial parsing is complete. If so, handle next token.
+		// See if the initial parsing is complete. If so, handle next tag.
 		let o = state.getState("cmdPattern");
 		if (o) {
-			// If we have no more tokens, the line is consumed and we are on a new line
-			if (!o.tokens) {
+			// If we have no more tags, the line is consumed and we are on a new line
+			if (!o.tags || o.tags.length <= (o.idx + 1)) {
 				// Try to handle this new line with continueWith.
 				return this._handleContinueWith(stream, state, o.cmd, o.continueWith, o.values);
 			}
-			// Handle next token
-			return this._handleToken(stream, state, o.cmd, o.tokens, o.continueWith, o.values, o.idx + 1);
+			// Handle next tag
+			return this._handleTag(stream, state, o.cmd, o.tags, o.continueWith, o.values, o.idx + 1);
 		}
 
 		let list = this._getParsedList();
@@ -147,9 +148,17 @@ class CmdPatternStep {
 	 */
 	formatText(state) {
 		let o = state.getState("cmdPattern");
-		return o
-			? o.cmd.formatText(o.idx)
-			: null;
+		let tokenIdx = o?.tags?.[o.idx].tokenIdx;
+		if (typeof tokenIdx == 'number') {
+			let ret = o.cmd.formatText(tokenIdx);
+			if (ret) {
+				ret = typeof ret == 'object' ? ret : {};
+				ret.id = 'cmdPattern-' + o.cmd.id + '-' + tokenIdx;
+			}
+			return ret;
+		}
+
+		return null;
 	}
 
 
@@ -203,40 +212,54 @@ class CmdPatternStep {
 			state.setError(match.error);
 		}
 
-		// Set the command to execute on no-error
-		state.setParam('cmd', async (ctx, params) => {
-			let v = null;
-			if (cmd.cmd.fields) {
-				v = {};
-				for (let fieldKey in cmd.cmd.fields) {
-					let field = cmd.cmd.fields[fieldKey];
-					let fieldType = this.module.self.getFieldType(field.type);
-					v[fieldKey] = await Promise.resolve(fieldType.inputValue ? fieldType.inputValue(fieldKey, field.opts, values[fieldKey]) : values[fieldKey]);
-				}
-			}
-			return ctx.char.call('execRoomCmd', {
-				cmdId: cmd.id,
-				values: v,
-			});
-		});
+		if (match.partial) {
+			// If no tokens are matched, it is a non-match.
 
-		return this._handleToken(stream, state, cmd, match.tokens, match.continueWith, values, 0);
+			// Set the command to execute on no-error
+			state.setParam('cmd', (ctx, params) => {
+				// this.module.charLog.logComponent(char, 'errorComponent', err);
+				this.module.charLog.logError(ctx.char, isError(match.partial)
+					? match.partial
+					: new Err('cmdPattern.incompleteCommand', "Command is incomplete."));
+			});
+		} else {
+			// Set the command to execute on no-error
+			state.setParam('cmd', async (ctx, params) => {
+				let v = null;
+				if (cmd.cmd.fields) {
+					v = {};
+					for (let fieldKey in cmd.cmd.fields) {
+						let field = cmd.cmd.fields[fieldKey];
+						let fieldType = this.module.self.getFieldType(field.type);
+						v[fieldKey] = await Promise.resolve(fieldType.inputValue ? fieldType.inputValue(fieldKey, field.opts, values[fieldKey]) : values[fieldKey]);
+					}
+				}
+				return ctx.char.call('execRoomCmd', {
+					cmdId: cmd.id,
+					values: v,
+				});
+			});
+		}
+
+		return this._handleTag(stream, state, cmd, match.tags, match.continueWith, values, 0);
 	}
 
-	_handleToken(stream, state, cmd, tokens, continueWith, values, idx) {
+	_handleTag(stream, state, cmd, tags, continueWith, values, idx) {
 		let t = null;
-		if (stream && tokens && tokens.length > idx) {
-			// Consume the number of characters indicated by the token.
-			t = tokens[idx];
+		if (stream && tags && tags.length > idx) {
+			// Consume the number of characters indicated by the tag.
+			t = tags[idx];
 			for (let i = 0; i < t.n; i++) {
 				stream.next();
 			}
 		}
 
-		// Set state, and add this step to handle next token.
-		state.setState("cmdPattern", { cmd, tokens: !stream || !tokens || tokens.length == (idx + 1) ? null : tokens, continueWith, values, idx });
+		// Set state, and add this step to handle next tag.
+		state.setState("cmdPattern", { cmd, tags: (!stream || !tags) ? null : tags, continueWith, values, idx });
 		state.addStep(this);
-		return t ? t.token : false;
+		// Return the tag. A tag in this context is the same as a CodeMirror
+		// token. Tag is used to avoid naming conflict with command tokens.
+		return t ? t.tag : false;
 	}
 
 	_handleContinueWith(stream, state, cmd, continueWith, values) {

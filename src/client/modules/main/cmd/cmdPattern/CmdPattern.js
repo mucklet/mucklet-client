@@ -12,6 +12,7 @@ class CmdPattern {
 		this.app.require([
 			'cmd',
 			'player',
+			'charLog',
 		], this._init.bind(this));
 	}
 

@@ -13,10 +13,10 @@ const tokenField = 'field';
 const tokenOptStart = 'optStart';
 const tokenOptEnd = 'optEnd';
 
-// Token tags. See cmdParser.js for list of available tags.
-const styleTokenWord = 'cmd';
-const styleTokenWordIncomplete = 'error';
-const styleTokenSymbol = 'delim';
+// Style tags (used with CodeMirror tokens). See cmdParser.js for list of available tags.
+const tagWord = 'cmd';
+const tagWordIncomplete = 'error';
+const tagSymbol = 'delim';
 
 const reserved = {
 	'(': true,
@@ -47,7 +47,6 @@ class CmdPatternParsedCmd {
 		this.cmd = cmd;
 		/** @type {Array<{ token: string, value: string, delims?: string}>} */
 		this.tokens = this._setFieldTokenDelims(this._parse(cmd));
-		// this.step = this._createStep();
 	}
 
 	/**
@@ -70,13 +69,13 @@ class CmdPatternParsedCmd {
 	 * 	partial: boolean;
 	 * 	continueWith: number | null;
 	 * 	error?: Err | null;
-	 *  tokens?: Array<{ token: string, from: number, to: number}>
+	 *  tags?: Array<{ tokenIdx: number, tag: string, n: number}>
 	 * } | null}  and a flag to tell if it is a partial match. If continueWith is a number, it is the token idx to continue with in case of new line.
 	 */
 	matches(s, idx = 0, values = null) {
-		let tokens = [];
-		let result = this._matches(s, idx, 0, tokens, values);
-		return { ...result, tokens };
+		let tags = [];
+		let result = this._matches(s, idx, 0, tags, values);
+		return { ...result, tags };
 	}
 
 	/**
@@ -175,24 +174,29 @@ class CmdPatternParsedCmd {
 	 * @param {string} s String to match against.
 	 * @param {number} idx Token index matching against
 	 * @param {number} pos Position in the complete document where the string starts.
-	 * @param {Array<{token: string, n: number}> | null} tokens Ordered array of output tokens.
+	 * @param {Array<{tokenIdx: number, tag: string, n: number}> | null} tags Ordered array of output tags.
 	 * @param {Record<string, any> | null} values Values object where field values are stored under each field key. If null, no values are collected.
 	 * @param {((tokenIdx: number, from: number, to: number) => boolean) | null} [cb] Token callback. If it returns true, the matching stops and "" is returned.
-	 * @returns {{remaining: string, partial: boolean, error: Err | null, continueWith: number | null} | null} Remaining string and a flag to tell if it is a partial match, or null if stopped by the callback.
+	 * @returns {{
+	 * 	remaining: string,
+	 * 	partial: boolean,
+	 * 	error: Err | null,
+	 * 	continueWith: number | null
+	 * } | null} Remaining string and a flag to tell if it is a partial match, or null if stopped by the callback.
 	 */
-	_matches(s, idx = 0, pos = 0, tokens = null, values = null, cb = null) {
-		const eatSpace = (tokenize = false) => {
+	_matches(s, idx = 0, pos = 0, tags = null, values = null, cb = null) {
+		const eatSpace = (addTag = false) => {
 			let ns = s.trimStart();
 			let space = s.length - ns.length;
-			if (tokenize && tokens && space) {
-				tokens.push({ token: null, n: space });
+			if (addTag && tags && space) {
+				tags.push({ tokenIdx: null, tag: null, n: space });
 			}
 			pos += space;
 			s = ns;
 		};
-		const callback = (styleToken, idx, start, end) => {
-			if (styleToken && tokens && start < end) {
-				tokens.push({ token: styleToken, n: end - start });
+		const callback = (tag, idx, start, end) => {
+			if (tag && tags && start < end) {
+				tags.push({ tokenIdx: idx, tag, n: end - start });
 			}
 			return cb?.(idx, start, end);
 		};
@@ -224,13 +228,13 @@ class CmdPatternParsedCmd {
 					let remaining = len - m[0].length;
 					if (remaining > 0) {
 						// Partial match and stop traversing.
-						if (callback(styleTokenWordIncomplete, idx, tokenStart, pos + m[0].length)) {
+						if (callback(tagWordIncomplete, idx, tokenStart, pos + m[0].length)) {
 							return null;
 						}
 						return { remaining: s.slice(m[0].length), partial: true, continueWith, error };
 					}
 					// Slice away the matching word
-					if (callback(styleTokenWord, idx, tokenStart, pos + len)) {
+					if (callback(tagWord, idx, tokenStart, pos + len)) {
 						return null;
 					}
 					s = s.slice(len);
@@ -244,7 +248,7 @@ class CmdPatternParsedCmd {
 					if (!s || s.charAt(0) != t.value) {
 						return { remaining: s, partial: true, continueWith, error };
 					}
-					if (callback(styleTokenSymbol, idx, tokenStart, pos + 1)) {
+					if (callback(tagSymbol, idx, tokenStart, pos + 1)) {
 						return null;
 					}
 					s = s.slice(1);
@@ -275,11 +279,11 @@ class CmdPatternParsedCmd {
 						return { remaining: tokenStr, partial: true, continueWith, error };
 					}
 
-					// If we are collecting tokens, create a new array for field
-					// tokens. After matching against the field, we append those
-					// tokens to our existing tokens array.
-					let fieldTokens = tokens ? [] : null;
-					let fieldMatch = fieldType.match(t.value, tokenStr, field.opts, t.delims || null, fieldTokens, values ? values[t.value] : null);
+					// If we are collecting tags, create a new array for field
+					// tags. After matching against the field, we append those
+					// tags to our existing tags array.
+					let fieldTags = tags ? [] : null;
+					let fieldMatch = fieldType.match(t.value, tokenStr, field.opts, t.delims || null, fieldTags, values ? values[t.value] : null);
 					// Null is a non-match
 					if (!fieldMatch) {
 						if (callback(null, idx, tokenStart, tokenStart)) {
@@ -288,8 +292,8 @@ class CmdPatternParsedCmd {
 						return { remaining: tokenStr, partial: true, continueWith, error };
 					}
 
-					// If possibnle, add field tyle tokens to our tokens array.
-					tokens?.push.apply(tokens, fieldTokens);
+					// If possible, add field tag to our tags array, and include token index.
+					tags?.push.apply(tags, fieldTags.map(tag => ({ tokenIdx: idx, ...tag })));
 
 					// Set any returned value (if we have a values object)
 					if (values) {
@@ -335,10 +339,6 @@ class CmdPatternParsedCmd {
 		}
 		return idx;
 	}
-
-	// getStep() {
-	// 	return this.step;
-	// }
 
 	async getValues(params) {
 		let values = null;

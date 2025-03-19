@@ -25,7 +25,7 @@ class CmdFieldTypeKeyword {
 		this.module = module;
 		this.module.cmdPattern.addFieldType({
 			id: 'keyword',
-			match: (fieldKey, str, opts, delims, tokens, prevValue) => {
+			match: (fieldKey, str, opts, delims, tags, prevValue) => {
 				let len = str.length;
 				str = str.trimStart();
 				let from = len - str.length;
@@ -50,19 +50,19 @@ class CmdFieldTypeKeyword {
 				let maxLength = opts.maxLength || this.module.info.getCore().keyMaxLength;
 				let allowedLen = Math.max(0, maxLength);
 				let to = from + mlen;
-				// Add tokens
-				if (tokens) {
-					// Did we consume space. Add a null token.
+				// Add tags
+				if (tags) {
+					// Did we consume space. Add a null tag.
 					if (from > 0) {
-						tokens.push({ token: null, n: from });
+						tags.push({ tag: null, n: from });
 					}
-					// Add listitem token for matched string
+					// Add listitem tag for matched string
 					if (allowedLen > 0) {
-						tokens.push({ token: 'listitem', n: Math.min(mlen, allowedLen) });
+						tags.push({ tag: 'listitem', n: Math.min(mlen, allowedLen) });
 					}
-					// Add error token for string exceeding allowed length
+					// Add error tag for string exceeding allowed length
 					if (allowedLen < mlen) {
-						tokens.push({ token: 'error', n: mlen - allowedLen });
+						tags.push({ tag: 'error', n: mlen - allowedLen });
 					}
 				}
 				// Create value. If we had a previous value, append to that result.
