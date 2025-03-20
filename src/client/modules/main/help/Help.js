@@ -7,7 +7,7 @@ import HelpComponent from './HelpComponent';
 import HelpCategory from './HelpCategory';
 import HelpTopic from './HelpTopic';
 import HelpTopics from './HelpTopics';
-import HelpRelatedTopics from './HelpRelatedTopics';
+import HelpRelatedTopics, { txtRelatedTopics, txtRelatedCommands } from './HelpRelatedTopics';
 import './help.scss';
 
 const defaultCategories = [
@@ -292,6 +292,13 @@ class Help {
 			eventBus: this.app.eventBus,
 		});
 
+		// External (other modules) help
+		this.sources = new Collection({
+			idAttribute: m => m.id,
+			compare: sortOrderCompare,
+			eventBus: this.app.eventBus,
+		});
+
 		// Add all default categories
 		for (let cat of defaultCategories) {
 			this.addCategory(typeof cat == 'function' ? cat(this) : cat);
@@ -444,14 +451,46 @@ class Help {
 	}
 
 	/**
+	 * Registers a help source that may also provide help info.
+	 * @param {object} source HelpSource object
+	 * @param {string} source.id HelpSource ID.
+	 * @param {(char: CtrlChar, cmd: string) => (null | {title: string|LocaleString, items: Array<{cmd: string, title: string|LocaleString}>})} [source.relatedCategory] Function returning a category of related commands.
+	 * @param {(char: CtrlChar, cmd: string) => (null | Array<{
+	 * 	usage: string|LocaleString|() => (string|LocaleString),
+	 * 	desc?: string|LocaleString|() => (string|LocaleString),
+	 * 	examples: Array.<{ cmd: string, desc: string|LocaleString }> | () => Array.<{ cmd: string, desc: string|LocaleString }>,
+	 * }>)} [source.helpTopics] Function returning an array of help topic precisely matching the command.
+	 * @param {number} source.sortOrder Sort order.
+	 * @returns {this}
+	 */
+	addSource(source) {
+		if (this.sources.get(source.id)) {
+			throw new Error("Help source ID already registered: ", source.id);
+		}
+		this.sources.add(source);
+		return this;
+	}
+
+	/**
+	 * Unregisters a previously registered help source.
+	 * @param {string} sourceId Help source ID.
+	 * @returns {this}
+	 */
+	removeCategory(sourceId) {
+		this.sources.remove(sourceId);
+		return this;
+	}
+
+	/**
 	 * Creates a new help topic component.
-	 * @param {string|LocaleString|() => (string|LocaleString)} usage Usage HTML string or callback function returning a HTML string.
-	 * @param {string|LocaleString|() => (string|LocaleString)} desc Description HTML string or callback function returning a HTML string.
-	 * @param {Array.<{ cmd: string, desc: string|LocaleString }>} [examples] Topic command examples (eg. [{ cmd: "create room My room", desc: "Creates a new room." }]).
+	 * @param {object} topic Topic object.
+	 * @param {string|LocaleString|() => (string|LocaleString)} topic.usage Usage HTML string or callback function returning a HTML string.
+	 * @param {string|LocaleString|() => (string|LocaleString)} [topic.desc] Description HTML string or callback function returning a HTML string.
+	 * @param {Array.<{ cmd: string, desc: string|LocaleString }> | () => Array.<{ cmd: string, desc: string|LocaleString }>} [topic.examples] Topic command examples (eg. [{ cmd: "create room My room", desc: "Creates a new room." }]).
 	 * @returns {HelpTopic} Help topic component.
 	 */
-	newHelpTopic(usage, desc, examples) {
-		return new HelpTopic(this.module, { usage, desc, examples });
+	newHelpTopic(topic) {
+		return new HelpTopic(this.module, topic);
 	}
 
 	_addRemoveTopicToCategories(topic, add) {
@@ -519,7 +558,46 @@ class Help {
 		}
 		topics.sort((a, b) => (a.cmd || a.id).localeCompare(b.cmd || b.id));
 
-		if (!categories.length && !topics.length) {
+		// Check if another help source may have a matching topic.
+		for (let source of this.sources) {
+			let helpTopics = source.helpTopics?.(char, cmd);
+			if (helpTopics?.length) {
+				for (let helpTopic of helpTopics) {
+					this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, helpTopic));
+				}
+				return;
+			}
+		}
+
+		// Related sections
+		let related = [
+			// Categories (a.k.a. Rekated topics)
+			...(categories.length
+				? [{
+					title: txtRelatedTopics,
+					items: categories,
+				}]
+				: []
+			),
+			// Topics (a.k.a. Related commands)
+			...(topics.length
+				? [{
+					title: txtRelatedCommands,
+					items: topics,
+				}]
+				: []
+			),
+		];
+
+		// Add related categories from help sources
+		for (let source of this.sources) {
+			let relatedCategory = source.relatedCategory?.(char, cmd);
+			if (relatedCategory) {
+				related.push(relatedCategory);
+			}
+		}
+
+		if (!related.length) {
 			this.module.charLog.logError(char, {
 				code: 'help.topicNotFound',
 				message: 'There is no help topic for "{topic}".',
@@ -528,7 +606,7 @@ class Help {
 			return;
 		}
 
-		this.module.charLog.logComponent(char, 'helpTopic', new HelpRelatedTopics(categories, topics));
+		this.module.charLog.logComponent(char, 'helpTopic', new HelpRelatedTopics(related));
 	}
 
 	_getTopicTokenList(prefix) {

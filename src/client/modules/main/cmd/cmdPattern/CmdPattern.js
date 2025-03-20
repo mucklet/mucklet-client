@@ -1,3 +1,4 @@
+import l10n from 'modapp-l10n';
 import CmdPatternStep from './CmdPatternStep';
 import CmdPatternParsedCmd from './CmdPatternParsedCmd';
 
@@ -24,8 +25,14 @@ class CmdPattern {
 		this.pruneTimer = null;
 		this.module.cmd.addCmdHandler({
 			id: 'cmdPattern',
-			factory: (elseStep, prefix) => new CmdPatternStep(this.module, () => this._getPatterns(), { else: elseStep, prefix }),
+			factory: (elseStep, prefix) => new CmdPatternStep(this.module, () => this._getAllPatterns(), { else: elseStep, prefix }),
 			complete: (step, doc, pos, state) => step.completeCmd(doc, pos, state),
+			sortOrder: 10,
+		});
+		this.module.help.addSource({
+			id: 'cmdPattern',
+			helpTopics: (char, cmd) => this._getHelpTopics(char, cmd),
+			relatedCategory: (char, cmd) => this._getRelatedRoomCommands(char, cmd),
 			sortOrder: 10,
 		});
 	}
@@ -62,8 +69,15 @@ class CmdPattern {
 		return this.fieldTypes[fieldTypeId];
 	}
 
-	_getPatterns() {
-		let props = this.module.player.getActiveChar()?.inRoom?.cmds?.props;
+	_getAllPatterns() {
+		let ids = {};
+		let cmds = [];
+		// Room commands
+		cmds = cmds.concat(this._getPatterns(this.module.player.getActiveChar()?.inRoom?.cmds?.props, ids));
+		return cmds;
+	}
+
+	_getPatterns(props, uniqueIds = {}) {
 		if (!props) {
 			return [];
 		}
@@ -78,13 +92,15 @@ class CmdPattern {
 		let ids = {};
 		// Parse commands or get them from cache
 		for (let { id, cmd } of cmds) {
-			ids[id] = true;
-			let o = this.parseCache[id];
-			if (!o) {
-				o = new CmdPatternParsedCmd(this.module, id, cmd);
-				this.parseCache[id] = o;
+			if (!ids[id]) {
+				ids[id] = true;
+				let o = this.parseCache[id];
+				if (!o) {
+					o = new CmdPatternParsedCmd(this.module, id, cmd);
+					this.parseCache[id] = o;
+				}
+				parsed.push(o);
 			}
-			parsed.push(o);
 		}
 
 		this._pruneParseCache();
@@ -117,6 +133,78 @@ class CmdPattern {
 		}, 1000 * 60 * 5); // Prune at most every 5 minutes;
 	}
 
+	/**
+	 * Creates a section of related commands for the help.
+	 * @param {CtrlChar} char Controlled character.
+	 * @param {string} helpCmd The command that the user want help with. eg. "help <helpCmd>"
+	 * @returns {{title: LocaleString, items: Array<{cmd: string, title: string}>} | null} List of related room commands.
+	 */
+	_getRelatedRoomCommands(char, helpCmd) {
+		// Split helpCmd into words.
+		let helpWords = helpCmd.toLowerCase().split(" ").filter(w => w);
+		// Check for a do prefix and remove it.
+		let doPrefixed = helpWords[0] == 'do';
+		if (doPrefixed) {
+			helpWords.shift();
+		}
+
+		if (!helpWords.length) {
+			return null;
+		}
+
+		let uniqueTopics = {};
+		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props)
+			.map(c => {
+				let m = c.matchesHelp(helpWords);
+				// If it is a match and that exact topic is not added.
+				if (m && !uniqueTopics[m]) {
+					uniqueTopics[m] = true;
+					return { cmd: c, topic: m };
+				}
+				return null;
+			})
+			.filter(o => o);
+		return roomCmds.length
+			? {
+				title: l10n.l('cmdPattern.roomCommands', "Room commands"),
+				items: roomCmds.map(o => {
+					let addDoPrefix = doPrefixed || this.module.cmd.matchesCommand(o.topic);
+					return {
+						cmd: (addDoPrefix ? 'do ' : '') + o.topic,
+						title: o.cmd.cmd.desc || null,
+					};
+				}),
+			}
+			: null;
+	}
+
+	_getHelpTopics(char, helpCmd) {
+		// Split helpCmd into words.
+		let helpWords = helpCmd.toLowerCase().split(" ").filter(w => w);
+		// Check for a do prefix and remove it.
+		let doPrefixed = helpWords[0] == 'do';
+		if (doPrefixed) {
+			helpWords.shift();
+		}
+
+		if (!helpWords.length) {
+			return null;
+		}
+
+		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props)
+			.map(c => {
+				let m = c.matchesHelp(helpWords, true);
+				// If it is a match and that exact topic is not added.
+				return m
+					? c.helpTopic()
+					: null;
+			})
+			.filter(o => o);
+
+		return roomCmds.length
+			? roomCmds
+			: null;
+	}
 
 	dispose() {
 		this.module.cmd.removeCmdHandler('cmdPattern');

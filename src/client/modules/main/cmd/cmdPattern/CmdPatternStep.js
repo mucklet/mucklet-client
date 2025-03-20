@@ -231,7 +231,7 @@ class CmdPatternStep {
 						this.module.charLog.logComponent(ctx.char, 'errorComponent', err);
 					}
 
-					this.module.charLog.logComponent(ctx.char, 'cmdPatternHelpTopic', cmd.newHelpTopic());
+					this.module.charLog.logComponent(ctx.char, 'cmdPatternHelpTopic', this.module.help.newHelpTopic(cmd.helpTopic()));
 				}
 			});
 
