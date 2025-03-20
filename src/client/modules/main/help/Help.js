@@ -415,7 +415,7 @@ class Help {
 	 * @param {Array.<string>} topic.alias Topic command aliases (eg. [ "msg", "page" ]).
 	 * @param {string|LocaleString|function} topic.usage Usage HTML string or callback function returning a HTML string.
 	 * @param {string|LocaleString|function} topic.desc Description HTML string or callback function returning a HTML string.
-	 * @param {Array.<string|LocaleString>} topic.examples Topic command examples (eg. [ "create room My room" ]).
+	 * @param {Array.<{ cmd: string, desc: string|LocaleString }>} topic.examples Topic command examples (eg. [{ cmd: "create room My room", desc: "Creates a new room." }]).
 	 * @param {number} topic.sortOrder Sort order.
 	 * @returns {this}
 	 */
@@ -441,6 +441,17 @@ class Help {
 			this._addRemoveTopicToCategories(topic, false);
 		}
 		return this;
+	}
+
+	/**
+	 * Creates a new help topic component.
+	 * @param {string|LocaleString|() => (string|LocaleString)} usage Usage HTML string or callback function returning a HTML string.
+	 * @param {string|LocaleString|() => (string|LocaleString)} desc Description HTML string or callback function returning a HTML string.
+	 * @param {Array.<{ cmd: string, desc: string|LocaleString }>} [examples] Topic command examples (eg. [{ cmd: "create room My room", desc: "Creates a new room." }]).
+	 * @returns {HelpTopic} Help topic component.
+	 */
+	newHelpTopic(usage, desc, examples) {
+		return new HelpTopic(this.module, { usage, desc, examples });
 	}
 
 	_addRemoveTopicToCategories(topic, add) {
@@ -497,7 +508,7 @@ class Help {
 		for (let topicId in this.topics.props) {
 			let t = this.topics.props[topicId];
 			if (t.cmd === cmd || (t.alias && t.alias.indexOf(cmd) >= 0)) {
-				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t, cmd));
+				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t));
 				return;
 			}
 

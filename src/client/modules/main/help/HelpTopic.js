@@ -3,10 +3,9 @@ import l10n from 'modapp-l10n';
 import helpAttribDesc from 'utils/helpAttribDesc';
 
 class HelpTopic {
-	constructor(module, topic, cmd) {
+	constructor(module, topic) {
 		this.module = module;
 		this.topic = topic;
-		this.cmd = cmd;
 	}
 
 	render(el) {
@@ -27,11 +26,12 @@ class HelpTopic {
 				});
 			}
 		}
+		let desc = typeof t.desc == 'function' ? t.desc() : t.desc;
 		this.elem = new Elem(n => n.elem('div', { className: 'help-topic' }, [
 			n.elem('div', { className: 'charlog--code' }, [
-				n.component(new Html(typeof t.usage == 'function' ? t.usage() : t.usage, { tagName: 'code', className: 'help-topic--title margin-bottom-m' })),
-				n.component(new Html(typeof t.desc == 'function' ? t.desc() : t.desc, { className: 'help-topic--desc' })),
-				n.component(examples ? new Html(examples, { className: 'margin-top-s' }) : null),
+				n.component(new Html(typeof t.usage == 'function' ? t.usage() : t.usage, { tagName: 'code', className: 'help-topic--title' })),
+				n.component(desc ? new Html(desc, { className: 'help-topic--desc' }) : null),
+				n.component(examples ? new Html(examples, { className: 'help-topic--examples' }) : null),
 			]),
 		]));
 		return this.elem.render(el);

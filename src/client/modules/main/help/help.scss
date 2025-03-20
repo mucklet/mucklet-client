@@ -17,4 +17,15 @@
 	}
 }
 
+.help-topic {
+	&--title {
+		display: block;
+	}
+	&--desc {
+		margin-top: 6px;
+	}
+	&--examples {
+		margin-top: 4px;
+	}
+}
 

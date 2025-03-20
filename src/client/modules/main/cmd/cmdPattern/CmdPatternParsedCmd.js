@@ -3,6 +3,8 @@ import Err from 'classes/Err';
 import expandSelection from 'utils/expandSelection';
 import l10n from 'modapp-l10n';
 import escapeHtml from 'utils/escapeHtml';
+import formatText from 'utils/formatText';
+import firstLetterUppercase from 'utils/firstLetterUppercase';
 
 const charTypeNone = 0;
 const charTypeLetter = 1;
@@ -207,6 +209,87 @@ class CmdPatternParsedCmd {
 		return errIncompleteCommand;
 	}
 
+	/**
+	 * Creates a new Help topic component.
+	 * @returns {HelpTopic} Help topic component.
+	 */
+	newHelpTopic() {
+		let fieldDescs = [];
+		let fieldKeys = {};
+		let s = "";
+		let noSpace = true;
+		let addSpace = (noSpaceAfter) => {
+			s = noSpace ? s : s + " ";
+			noSpace = noSpaceAfter;
+		};
+		for (let t of this.tokens) {
+			switch (t.token) {
+				case tokenWord:
+					addSpace();
+					s += escapeHtml(t.value);
+					break;
+
+				case tokenSymbol:
+					addSpace();
+					s += `<span class="delim">${escapeHtml(t.value)}</span>`;
+					break;
+
+				case tokenOptStart:
+					addSpace(true);
+					s += `<span class="optdelim">${escapeHtml(t.value)}</span>`;
+					break;
+
+				case tokenOptEnd:
+					s += `<span class="optdelim">${escapeHtml(t.value)}</span>`;
+					break;
+
+				case tokenField:
+					addSpace();
+					s += `<span class="field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span>`;
+					// Add field description if available.
+					if (!fieldKeys[t.value]) {
+						// Set it as visited
+						fieldKeys[t.value] = true;
+						// Get field description
+						let field = this.cmd.fields[t.value];
+						let fieldDesc = field.desc;
+						if (fieldDesc) {
+							// Add full stop if ending with character or letter.
+							let lastChar = fieldDesc.slice(-1);
+							if (lastChar.match(/[\p{L}\p{N}]/u)) {
+								fieldDesc += '.';
+							}
+						}
+						let fieldType = this.module.self.getFieldType(field.type);
+						// Get any additional info that the field itself may add.
+						let info = fieldType?.getDescInfo?.(field.opts);
+						if (info) {
+							fieldDesc = fieldDesc ? fieldDesc + ' ' + info : info;
+						}
+						if (fieldDesc) {
+							fieldDescs.push(`<tr><td><span class="field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span></td><td><span class="common--formattext">${formatText(fieldDesc)}</span></td></tr>`);
+						}
+					}
+					break;
+			}
+		}
+
+		// `<p>Create a profile based on your character's current appearance. This stores the <em>gender</em>, <em>species</em>, <em>description</em>, and <em>image</em>.</p>
+		// <p><code class="param">Keyword</code> is the keyword to use for the profile.</p>
+		// <p><code class="param">Name</code> is a descriptive name for the profile.</p>`;
+		let desc = this.cmd.desc ? `<div class="common--formattext">${formatText(this.cmd.desc)}</div>` : null;
+		if (fieldDescs.length) {
+
+			desc = (desc || '') + `<table class="tbl-small tbl-nomargin">` +
+				`<tbody>` +
+					fieldDescs.join('') +
+				`</tbody>` +
+			`</table>`;
+		}
+
+		return this.module.help.newHelpTopic(s, desc);
+	}
+
 	_findOptEnd(idx) {
 		let depth = 0;
 		for (; idx < this.tokens.length; idx++) {
@@ -309,7 +392,7 @@ class CmdPatternParsedCmd {
 					break;
 
 				case tokenSymbol:
-					eatSpace();
+					eatSpace(true);
 					// Check if the symbol matches.
 					if (!s || s.charAt(0) != t.value) {
 						return result(s, true);

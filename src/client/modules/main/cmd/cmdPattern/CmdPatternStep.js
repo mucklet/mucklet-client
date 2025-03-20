@@ -230,6 +230,8 @@ class CmdPatternStep {
 					} else if (err.render) {
 						this.module.charLog.logComponent(ctx.char, 'errorComponent', err);
 					}
+
+					this.module.charLog.logComponent(ctx.char, 'cmdPatternHelpTopic', cmd.newHelpTopic());
 				}
 			});
 

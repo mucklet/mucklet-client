@@ -1,5 +1,10 @@
 import Err from 'classes/Err';
 import indexOfChars from 'utils/indexOfChars';
+import l10n from 'modapp-l10n';
+
+const txtSpanLinesHint = l10n.l('cmdFieldTypeText.spanLinesHint', "May span multiple paragraphs.");
+const txtFormatTextHint = l10n.l('cmdFieldTypeText.FormatTextHint', "May be formatted.");
+const txtSpanLinesAndFormatTextHint = l10n.l('cmdFieldTypeText.spanLinesAndFormatTextHint', "May be formatted and span multiple paragraphs.");
 
 /**
  * CmdFieldTypeText registers the "text" field type for custom commands.
@@ -99,6 +104,15 @@ class CmdFieldTypeText {
 				return opts.formatText
 					? {}
 					: null;
+			},
+			getDescInfo: (opts) => {
+				return opts.spanLines
+					? opts.formatText
+						? l10n.t(txtSpanLinesAndFormatTextHint)
+						: l10n.t(txtSpanLinesHint)
+					: opts.formatText
+						? l10n.t(txtFormatTextHint)
+						: null;
 			},
 		});
 	}

@@ -13,6 +13,7 @@ class CmdPattern {
 			'cmd',
 			'player',
 			'charLog',
+			'help',
 		], this._init.bind(this));
 	}
 
