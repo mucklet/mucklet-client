@@ -1,6 +1,5 @@
 import Err from 'classes/Err';
 import { mergeCompleteResults, expandCompleteResult } from 'utils/codemirrorTabCompletion';
-import isError from 'utils/isError';
 
 /**
  * CmdPatternStep is a step that uses command pattern objects.
@@ -112,7 +111,7 @@ class CmdPatternStep {
 	 * @param {import('classes/CmdState').default} state Command state.
 	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
 	 */
-	complete(doc, pos, state) {
+	completeCmd(doc, pos, state) {
 		let list = this._getParsedList();
 		let result = null;
 
@@ -208,20 +207,33 @@ class CmdPatternStep {
 	}
 
 	_setMatchAndHandle(stream, state, cmd, match, values) {
+		// Handle error
 		if (match.error) {
 			state.setError(match.error);
-		}
 
-		if (match.partial) {
-			// If no tokens are matched, it is a non-match.
+		// Handle partial match
+		} else if (match.partial) {
+			// If last matching token idx is null, and we don't have a previous
+			// match that we continue, it means we have no matching token at
+			// all.
+			if (match.lastIdx === null && !match.continueWith) {
+				return false;
+			}
 
 			// Set the command to execute on no-error
 			state.setParam('cmd', (ctx, params) => {
 				// this.module.charLog.logComponent(char, 'errorComponent', err);
-				this.module.charLog.logError(ctx.char, isError(match.partial)
-					? match.partial
-					: new Err('cmdPattern.incompleteCommand', "Command is incomplete."));
+				let err = cmd.getPartialError(match.lastIdx || match.continueWith, match.remaining);
+				if (typeof err == 'object' && err) {
+					if (err.code) {
+						this.module.charLog.logError(ctx.char, err);
+					} else if (err.render) {
+						this.module.charLog.logComponent(ctx.char, 'errorComponent', err);
+					}
+				}
 			});
+
+		// Handle complete match
 		} else {
 			// Set the command to execute on no-error
 			state.setParam('cmd', async (ctx, params) => {
@@ -244,6 +256,7 @@ class CmdPatternStep {
 		return this._handleTag(stream, state, cmd, match.tags, match.continueWith, values, 0);
 	}
 
+	// Progresses the stream and returns the tags (tokens for CodeMirror).
 	_handleTag(stream, state, cmd, tags, continueWith, values, idx) {
 		let t = null;
 		if (stream && tags && tags.length > idx) {
@@ -263,13 +276,15 @@ class CmdPatternStep {
 	}
 
 	_handleContinueWith(stream, state, cmd, continueWith, values) {
-		// Quick exit if we have no token to continue with on multi-line.
+		// If we have no token to continue with, we tags it as error.
 		if (typeof continueWith != 'number') {
-			return false;
+			stream?.match(/^.*/);
+			return 'error';
 		}
 
 		// Match everything (or nothing if we don't have a stream due to a blank line)
 		let str = stream?.match(/^.*/, false)?.[0] || '';
+
 		// Match again, continuing with the given token idx.
 		let m = cmd.matches(str, continueWith, values);
 

@@ -1,4 +1,8 @@
+import { Html } from 'modapp-base-component';
+import Err from 'classes/Err';
 import expandSelection from 'utils/expandSelection';
+import l10n from 'modapp-l10n';
+import escapeHtml from 'utils/escapeHtml';
 
 const charTypeNone = 0;
 const charTypeLetter = 1;
@@ -17,6 +21,8 @@ const tokenOptEnd = 'optEnd';
 const tagWord = 'cmd';
 const tagWordIncomplete = 'error';
 const tagSymbol = 'delim';
+
+const errIncompleteCommand = new Err('cmdPattern.incompleteCommand', "Command is incomplete.");
 
 const reserved = {
 	'(': true,
@@ -65,11 +71,12 @@ class CmdPatternParsedCmd {
 	 * @param {number} idx Token index to start from. Defaults to 0.
 	 * @param {Record<string, any> | null} values Values object where field values are stored under each field key. If null, no values are collected.
 	 * @returns {{
-	 * 	remaining: string;
-	 * 	partial: boolean;
-	 * 	continueWith: number | null;
-	 * 	error?: Err | null;
-	 *  tags?: Array<{ tokenIdx: number, tag: string, n: number}>
+	 * 	remaining: string,
+	 * 	partial: boolean,
+	 * 	lastIdx: number,
+	 * 	continueWith: number | null,
+	 * 	error?: Err | null,
+	 *  tags?: Array<{ tokenIdx: number, tag: string, n: number}>,
 	 * } | null}  and a flag to tell if it is a partial match. If continueWith is a number, it is the token idx to continue with in case of new line.
 	 */
 	matches(s, idx = 0, values = null) {
@@ -152,6 +159,54 @@ class CmdPatternParsedCmd {
 		return fieldType?.formatText?.(field.opts) || null;
 	}
 
+	/**
+	 * Returns an error for the command being partially matched.
+	 * @param {number} lastIdx The last token index that was successfully matched.
+	 * @param {string} remaining The remaining string that wasn't matched.
+	 * @returns {Err} Error.
+	 */
+	getPartialError(lastIdx, remaining) {
+		if (remaining) {
+			return new Html(
+				l10n.t('cmdPattern.commandMissingWord', `I don't understand "<span class="cmd">{remaining}</span>".`, { remaining: escapeHtml(remaining) }),
+				{ className: 'common--formattext' },
+			);
+		}
+
+		let opts = 0;
+		for (let i = lastIdx + 1; i < this.tokens.length; i++) {
+			let t = this.tokens[i];
+			if (t.token == tokenOptStart) {
+				opts++;
+			} else if (t.token == tokenOptEnd) {
+				opts = Math.max(opts - 1, 0);
+			} else if (!opts) {
+				switch (t.token) {
+					case tokenWord:
+						return new Html(
+							l10n.t('cmdPattern.commandMissingWord', 'Command misses the word <span class="cmd">{word}</span>.', { word: escapeHtml(t.value) }),
+							{ className: 'common--formattext' },
+						);
+
+					case tokenSymbol:
+						return new Html(
+							l10n.t('cmdPattern.commandMissingWord', 'Command misses the "<span class="cmd">{delim}</span>" delimiter.', { delim: escapeHtml(t.value) }),
+							{ className: 'common--formattext' },
+						);
+
+					case tokenField:
+						return new Html(
+							l10n.t('cmdPattern.commandMissingWord', '<i>{fieldKey}</i> is missing.', { fieldKey: escapeHtml(t.value) }),
+							{ className: 'common--formattext' },
+						);
+				}
+				// Token not handled. Lets stop and return the standard error.
+				break;
+			}
+		}
+		return errIncompleteCommand;
+	}
+
 	_findOptEnd(idx) {
 		let depth = 0;
 		for (; idx < this.tokens.length; idx++) {
@@ -180,11 +235,16 @@ class CmdPatternParsedCmd {
 	 * @returns {{
 	 * 	remaining: string,
 	 * 	partial: boolean,
+	 * 	lastIdx: number | null,
 	 * 	error: Err | null,
 	 * 	continueWith: number | null
 	 * } | null} Remaining string and a flag to tell if it is a partial match, or null if stopped by the callback.
 	 */
 	_matches(s, idx = 0, pos = 0, tags = null, values = null, cb = null) {
+		let lastIdx = null;
+		let continueWith = null;
+		let error = null;
+
 		const eatSpace = (addTag = false) => {
 			let ns = s.trimStart();
 			let space = s.length - ns.length;
@@ -196,12 +256,18 @@ class CmdPatternParsedCmd {
 		};
 		const callback = (tag, idx, start, end) => {
 			if (tag && tags && start < end) {
-				tags.push({ tokenIdx: idx, tag, n: end - start });
+				tags.push({ tokenIdx: idx, tag, n: end - pos });
 			}
 			return cb?.(idx, start, end);
 		};
-		let continueWith = null;
-		let error = null;
+		// Creates a result object to return.
+		const result = (remaining, partial) => ({
+			remaining,
+			partial,
+			lastIdx,
+			continueWith,
+			error,
+		});
 
 		for (; idx < this.tokens.length; idx++) {
 			let tokenStart = pos;
@@ -220,7 +286,7 @@ class CmdPatternParsedCmd {
 							return null;
 						}
 						// No match
-						return { remaining: s, partial: true, continueWith, error };
+						return result(s, true);
 					}
 
 					// Check if we have a partial match
@@ -231,7 +297,7 @@ class CmdPatternParsedCmd {
 						if (callback(tagWordIncomplete, idx, tokenStart, pos + m[0].length)) {
 							return null;
 						}
-						return { remaining: s.slice(m[0].length), partial: true, continueWith, error };
+						return result(s.slice(m[0].length), true);
 					}
 					// Slice away the matching word
 					if (callback(tagWord, idx, tokenStart, pos + len)) {
@@ -246,7 +312,7 @@ class CmdPatternParsedCmd {
 					eatSpace();
 					// Check if the symbol matches.
 					if (!s || s.charAt(0) != t.value) {
-						return { remaining: s, partial: true, continueWith, error };
+						return result(s, true);
 					}
 					if (callback(tagSymbol, idx, tokenStart, pos + 1)) {
 						return null;
@@ -262,6 +328,10 @@ class CmdPatternParsedCmd {
 					if (!optResult || (optResult.remaining.length >= s.length)) {
 						optResult = this._matches(tokenStr, this._findOptEnd(idx + 1) + 1, tokenStart, cb);
 					}
+					// Set last matched idx
+					if (typeof optResult.lastIdx != 'number') {
+						optResult.lastIdx = lastIdx;
+					}
 					// Set any already existing error.
 					if (error) {
 						optResult.error = error;
@@ -276,7 +346,7 @@ class CmdPatternParsedCmd {
 					let fieldType = this.module.self.getFieldType(field.type);
 					if (!fieldType) {
 						console.error("missing handler for fieldType: " + field.type);
-						return { remaining: tokenStr, partial: true, continueWith, error };
+						return result(tokenStr, true);
 					}
 
 					// If we are collecting tags, create a new array for field
@@ -289,7 +359,7 @@ class CmdPatternParsedCmd {
 						if (callback(null, idx, tokenStart, tokenStart)) {
 							return null;
 						}
-						return { remaining: tokenStr, partial: true, continueWith, error };
+						return result(tokenStr, true);
 					}
 
 					// If possible, add field tag to our tags array, and include token index.
@@ -313,15 +383,18 @@ class CmdPatternParsedCmd {
 
 					// If only partial match, we end here
 					if (fieldMatch.partial) {
-						return { remaining: s, partial: true, error, continueWith };
+						return result(s, true);
 					}
 					break;
 			}
+
+			// Set lastIdx to the last matching token idx.
+			lastIdx = idx;
 		}
 		// End by eating remaining space
 		eatSpace(true);
 
-		return { remaining: s, partial: !!s, error, continueWith };
+		return result(s, !!s);
 	}
 
 	_findOptEnd(idx) {

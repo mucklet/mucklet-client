@@ -24,7 +24,7 @@ class CmdPattern {
 		this.module.cmd.addCmdHandler({
 			id: 'cmdPattern',
 			factory: (elseStep, prefix) => new CmdPatternStep(this.module, () => this._getPatterns(), { else: elseStep, prefix }),
-			complete: (step, doc, pos, state) => step.complete(doc, pos, state),
+			complete: (step, doc, pos, state) => step.completeCmd(doc, pos, state),
 			sortOrder: 10,
 		});
 	}
