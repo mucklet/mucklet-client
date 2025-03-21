@@ -109,20 +109,29 @@ class CmdPatternStep {
 	/**
 	 * Get results for tab completion.
 	 * Will return null unless state.params has 'cmdPattern' set.
-	 * @param {text} doc Full document text.
+	 * @param {string} doc Full document text.
 	 * @param {number} pos Cursor position
 	 * @param {import('classes/CmdState').default} state Command state.
-	 * @param {boolean} doPrefixed Flag telling if completion should include do-prefixed commands.
 	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
 	 */
-	completeCmd(doc, pos, state, doPrefixed) {
-		let list = this._getParsedList(doPrefixed);
+	completeCmd(doc, pos, state) {
+		// Check if prefixed with "do".
+		let prefixLen = 0;
+		let m = doc.match(/^\s*([\p{L}\p{N}]+)/u);
+		let str = doc;
+		// Only consider it doPrefixed if we tab-complete after the prefix
+		if (m && m[1].toLowerCase() == "do" && pos > m[0].length) {
+			prefixLen = m[0].length;
+			str = str.slice(prefixLen);
+		}
+
+		let list = this._getParsedList(prefixLen > 0);
 		let result = null;
 
 		for (let i = 0; i < list.length; i++) {
 			let cmd = list[i];
 			// Get complete results from the cmd
-			let cmdResult = cmd.complete(doc, pos);
+			let cmdResult = cmd.complete(str, prefixLen, pos);
 			if (cmdResult) {
 				// Filter if any previous command might overshadow this command's complete result.
 				if (i > 0 && cmdResult.list.length) {

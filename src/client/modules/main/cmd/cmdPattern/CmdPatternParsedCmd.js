@@ -90,21 +90,22 @@ class CmdPatternParsedCmd {
 	/**
 	 * Get results for tab completion.
 	 * @param {text} doc Full document text.
-	 * @param {number} pos Cursor position
+	 * @param {number} offset Offset from the start of the document to match from.
+	 * @param {number} cursorPos Cursor position
 	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
 	 */
-	complete(doc, pos) {
+	complete(doc, offset, cursorPos) {
 		let result = null;
-		this._matches(doc, 0, 0, null, null, (idx, from, to) => {
+		this._matches(doc, 0, offset, null, null, (idx, from, to) => {
 			// Assert the cursor is within the token.
-			if (pos < from || pos > to) {
+			if (cursorPos < from || cursorPos > to) {
 				// If we've passed the cursor, we return true to indicate that
 				// no more matching is needed.
-				return pos < from;
+				return cursorPos < from;
 			}
 
-			let str = doc.slice(from, to);
-			let strpos = pos - from;
+			let str = doc.slice(from - offset, to - offset);
+			let strpos = cursorPos - from;
 			let t = this.tokens[idx];
 
 			switch (t.token) {
