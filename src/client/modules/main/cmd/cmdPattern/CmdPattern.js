@@ -6,8 +6,11 @@ import CmdPatternParsedCmd from './CmdPatternParsedCmd';
 const doUsageText = 'do <span class="field">&lt;Command&gt;</span>';
 const doShortDesc = 'Execute a custom command';
 const doHelpText =
-`<p>Execute a custom command that is specific to the room.</p>
-<p>Use <code>list commands</code> to get a list of things you can do.</p>`;
+`<p>Execute a custom command. Using <code>do</code> is only required when the custom command shares the same name as a client command.</p>
+<p>Use <code>list commands</code> to get a list of custom commands.</p>`;
+const examples = [
+	{ cmd: 'do say Hi!', desc: l10n.l('cmdPattern.doSayDesc', "Calls a custom <code>say</code> command specific to the room.") },
+];
 
 /**
  * CmdPattern registers command handler to the Cmd module to handle custom
@@ -72,6 +75,7 @@ class CmdPattern {
 			usage: l10n.l('cmdPattern.doUsage', doUsageText),
 			shortDesc: l10n.l('cmdPattern.doShortDesc', doShortDesc),
 			desc: l10n.l('cmdPattern.doHelpText', doHelpText),
+			examples,
 			sortOrder: 130,
 		});
 	}
