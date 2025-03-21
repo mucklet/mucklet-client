@@ -161,6 +161,16 @@ class Cmd {
 		});
 	}
 
+	/**
+	 * Adds a command.
+	 * @param {object|string} def Item object to add, or item key as a string.
+	 * @param {string} def.key Item key. Eg. 'say'.
+	 * @param {string} [def.value] Item value. For commands, it is usually a callback function.
+	 * @param {Step|Array.<CmdStep>} def.next Next step or steps to follow after the item.
+	 * @param {Array.<string>} [def.alias] A list of alias for the item. Eg. [ 's', '/say' ]
+	 * @param {string} [def.symbol] A single ascii symbol character for the item that may not otherwise match the regex. Eg. ':'
+	 * @returns {this}
+	 */
 	addCmd(def) {
 		this.cmds.addItem(def);
 		return this;

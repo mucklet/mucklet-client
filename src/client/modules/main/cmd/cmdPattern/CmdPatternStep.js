@@ -1,4 +1,3 @@
-import Err from 'classes/Err';
 import { mergeCompleteResults, expandCompleteResult } from 'utils/codemirrorTabCompletion';
 
 /**
@@ -14,6 +13,7 @@ class CmdPatternStep {
 	 * @param {Step} [opt.else] Step after if the not matching any item. Will disabled any errRequired set.
 	 * @param {?function} [opt.errRequired] Callback function that returns an error when it fails to match. Null means it is not required: function(this)
 	 * @param {string} [opt.prefix] Prefix already consumed by another step.
+	 * @param {booleab} [opt.doPrefixed] Flag telling if the pattern are do-prefixed, allow all commands.
 	 */
 	constructor(module, getPatterns, opt) {
 		opt = opt || {};
@@ -21,10 +21,11 @@ class CmdPatternStep {
 		this.getPatterns = getPatterns;
 		this.else = opt.else || null;
 		this.prefix = opt.prefix || null;
+		this.doPrefixed = !!opt.doPrefixed;
 		this.parseCache = {};
 		this.errRequired = opt.hasOwnProperty('errRequired')
 			? opt.errRequired
-			: self => new Err('cmdPatternStep.required', 'There is no matching command.');
+			: null;
 
 	}
 
@@ -44,13 +45,15 @@ class CmdPatternStep {
 	 * @returns {null | string | false} Null if no token, string on token, false if no match
 	 */
 	parse(stream, state) {
+		// Get any state left by previous call to parse.
+		let o = state.getState("cmdPattern");
+
 		// No more input
 		if (!stream) {
-			return false;
+			return !o ? this._setRequired(state) : false;
 		}
 
 		// See if the initial parsing is complete. If so, handle next tag.
-		let o = state.getState("cmdPattern");
 		if (o) {
 			// If we have no more tags, the line is consumed and we are on a new line
 			if (!o.tags || o.tags.length <= (o.idx + 1)) {
@@ -61,7 +64,7 @@ class CmdPatternStep {
 			return this._handleTag(stream, state, o.cmd, o.tags, o.continueWith, o.values, o.idx + 1);
 		}
 
-		let list = this._getParsedList();
+		let list = this._getParsedList(this.doPrefixed);
 
 		let m = stream.match(/^.+/, false);
 		if (!m || !m[0]) {
@@ -109,10 +112,11 @@ class CmdPatternStep {
 	 * @param {text} doc Full document text.
 	 * @param {number} pos Cursor position
 	 * @param {import('classes/CmdState').default} state Command state.
+	 * @param {boolean} doPrefixed Flag telling if completion should include do-prefixed commands.
 	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
 	 */
-	completeCmd(doc, pos, state) {
-		let list = this._getParsedList();
+	completeCmd(doc, pos, state, doPrefixed) {
+		let list = this._getParsedList(doPrefixed);
 		let result = null;
 
 		for (let i = 0; i < list.length; i++) {
@@ -169,12 +173,6 @@ class CmdPatternStep {
 	 * @returns {boolean} True if overshadowed.
 	 */
 	_isOvershadowed(doc, testCmd, list) {
-
-		// Check if it is overshadowed by a client command
-		if (test.requiresDoPrefix()) {
-			return true;
-		}
-
 		let maxMatch = 0;
 		let bestMatch = null;
 		for (let cmd of list) {
@@ -296,12 +294,15 @@ class CmdPatternStep {
 
 	/**
 	 * Gets a list of parsed patterns.
+	 * @param {boolean} doPrefixed Flag telling if we have a do-prefix. If false, commands requiring do-prefix are filtered out.
 	 * @returns {Array<import('./CmdPatternParsedCmd').default>} Parsed commands.
 	 */
-	_getParsedList() {
+	_getParsedList(doPrefixed) {
 		let cmdPatterns = this.getPatterns();
 		if (this.prefix) {
-			cmdPatterns = cmdPatterns.filter(p => p.isWordToken(0, this.prefix));
+			cmdPatterns = cmdPatterns.filter(p => p.isWordToken(0, this.prefix) && (doPrefixed || !p.requiresDoPrefix()));
+		} else if (!doPrefixed) {
+			cmdPatterns = cmdPatterns.filter(p => !p.requiresDoPrefix());
 		}
 		return cmdPatterns;
 	}

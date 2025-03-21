@@ -1,6 +1,13 @@
 import l10n from 'modapp-l10n';
+import ValueStep from 'classes/ValueStep';
 import CmdPatternStep from './CmdPatternStep';
 import CmdPatternParsedCmd from './CmdPatternParsedCmd';
+
+const doUsageText = 'do <span class="field">&lt;Command&gt;</span>';
+const doShortDesc = 'Execute a custom command';
+const doHelpText =
+`<p>Execute a custom command that is specific to the room.</p>
+<p>Use <code>list commands</code> to get a list of things you can do.</p>`;
 
 /**
  * CmdPattern registers command handler to the Cmd module to handle custom
@@ -23,17 +30,49 @@ class CmdPattern {
 		this.fieldTypes = {};
 		this.parseCache = {};
 		this.pruneTimer = null;
+		// Add cmd handler to work as a fallback on not found commands.
 		this.module.cmd.addCmdHandler({
 			id: 'cmdPattern',
 			factory: (elseStep, prefix) => new CmdPatternStep(this.module, () => this._getAllPatterns(), { else: elseStep, prefix }),
 			complete: (step, doc, pos, state) => step.completeCmd(doc, pos, state),
 			sortOrder: 10,
 		});
+		// Add "do" command to work as a prefix.
+		this.module.cmd.addCmd({
+			key: 'do',
+			next: [
+				 new CmdPatternStep(this.module, () => this._getAllPatterns(), {
+					doPrefixed: true,
+					else: new ValueStep('cmdPattern-exec', (ctx, params) => {
+						this.module.help.showTopic(ctx.char, 'do');
+					}),
+				}),
+			],
+			value: (ctx, p) => {
+				let f = p['cmdPattern-exec'];
+				if (f) {
+					f(ctx, p);
+				} else {
+					console.error("CmdPatternStep didn't handle the input. How odd.");
+				}
+			},
+		});
+		// Add a help source to show help for custom commands.
 		this.module.help.addSource({
 			id: 'cmdPattern',
 			helpTopics: (char, cmd) => this._getHelpTopics(char, cmd),
 			relatedCategory: (char, cmd) => this._getRelatedRoomCommands(char, cmd),
 			sortOrder: 10,
+		});
+		// Add help topic for "do" command.
+		this.module.help.addTopic({
+			id: 'do',
+			category: 'basic',
+			cmd: 'do',
+			usage: l10n.l('cmdPattern.doUsage', doUsageText),
+			shortDesc: l10n.l('cmdPattern.doShortDesc', doShortDesc),
+			desc: l10n.l('cmdPattern.doHelpText', doHelpText),
+			sortOrder: 130,
 		});
 	}
 

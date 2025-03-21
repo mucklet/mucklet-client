@@ -519,6 +519,24 @@ class Help {
 		}
 	}
 
+	/**
+	 * Shows the help for a command (topic). The cmd must be the registered cmd
+	 * string.
+	 * @param {CtrlChar} char Character to show the help for.
+	 * @param {string} cmd Cmd string as registered with addTopic.
+	 * @returns {boolean} True if shown, otherwise false.
+	 */
+	showTopic(char, cmd) {
+		for (let topicId in this.topics.props) {
+			let t = this.topics.props[topicId];
+			if (t.cmd === cmd) {
+				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t));
+				return true;
+			}
+		}
+		return false;
+	}
+
 	_showHelp(char, cmd) {
 		if (!char) {
 			throw new Error("No active char");
