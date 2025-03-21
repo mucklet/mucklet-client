@@ -169,8 +169,9 @@ class CmdPatternStep {
 	 * @returns {boolean} True if overshadowed.
 	 */
 	_isOvershadowed(doc, testCmd, list) {
+
 		// Check if it is overshadowed by a client command
-		if (this.module.cmd.matchesCommand(doc)) {
+		if (test.requiresDoPrefix()) {
 			return true;
 		}
 

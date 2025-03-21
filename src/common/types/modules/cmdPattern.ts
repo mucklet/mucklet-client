@@ -43,12 +43,10 @@ export interface FieldType {
 
 
 export interface CmdPattern {
-	/** Command ID */
- 	id: string;
 	/** Command pattern. Eg. "push <Color> [button]" */
 	pattern: string;
-	/** Command help text. */
-	help: string;
+	/** Command help description. */
+	desc: string;
 	/** Command fields. */
 	fields: Record<string, { type: string, desc: string, opts?: any }>;
 }

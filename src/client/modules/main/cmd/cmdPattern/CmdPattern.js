@@ -69,6 +69,18 @@ class CmdPattern {
 		return this.fieldTypes[fieldTypeId];
 	}
 
+	/**
+	 * Gets help topics for a command.
+	 * @param {string} id Command ID.
+	 * @param {import('types/modules/cmdPattern').CmdPattern} cmd Command pattern object.
+	 * @returns {{usage: string, desc?: string, examples?: Array<{ key: e.cmd, desc?: e.desc }>}} Help topic object.
+	 */
+	getHelpTopic(id, cmd) {
+		let cmdPattern = this._getPattern(id, cmd);
+		this._pruneParseCache();
+		return cmdPattern.helpTopic();
+	}
+
 	_getAllPatterns() {
 		let ids = {};
 		let cmds = [];
@@ -94,11 +106,7 @@ class CmdPattern {
 		for (let { id, cmd } of cmds) {
 			if (!ids[id]) {
 				ids[id] = true;
-				let o = this.parseCache[id];
-				if (!o) {
-					o = new CmdPatternParsedCmd(this.module, id, cmd);
-					this.parseCache[id] = o;
-				}
+				let o = this._getPattern(id, cmd);
 				parsed.push(o);
 			}
 		}
@@ -106,6 +114,15 @@ class CmdPattern {
 		this._pruneParseCache();
 
 		return parsed;
+	}
+
+	_getPattern(id, cmd) {
+		let o = this.parseCache[id];
+		if (!o) {
+			o = new CmdPatternParsedCmd(this.module, id, cmd);
+			this.parseCache[id] = o;
+		}
+		return o;
 	}
 
 	_pruneParseCache() {
@@ -168,7 +185,7 @@ class CmdPattern {
 			? {
 				title: l10n.l('cmdPattern.roomCommands', "Room commands"),
 				items: roomCmds.map(o => {
-					let addDoPrefix = doPrefixed || this.module.cmd.matchesCommand(o.topic);
+					let addDoPrefix = doPrefixed || o.cmd.requiresDoPrefix();
 					return {
 						cmd: (addDoPrefix ? 'do ' : '') + o.topic,
 						title: o.cmd.cmd.desc || null,

@@ -269,32 +269,23 @@ class Cmd {
 	}
 
 	/**
-	 * Checks if a document matches any command either registered with `addCmd`
-	 * or `addPrefixCmd`.
+	 * Checks if a command is registered with `addCmd` or `addPrefixCmd` that
+	 * matches the command/prefix + command.
 	 *
-	 * Used by cmdHandlers to check for command conflicts (overshadowing).
-	 * @param {*} doc Document text.
+	 * If we check for a non-prefixed command that matches a prefix (e.g.
+	 * commandExist("create")), the function returns true.
+	 * @param {string} prefixOrCmd Command prefix or command (if it has no prefix).
+	 * @param {string} [cmd] Command after prefix, or omitted if it has no prefix..
 	 * @returns {boolean} True if it matches a registered command.
 	 */
-	matchesCommand(doc) {
-		let stream = new StringStream(doc, 0, 0, 0);
-		stream.eatSpace();
-
-		let match = this.cmds.consume(stream);
-		if (typeof match == 'string') {
-			let item = this.cmds.getItem(match);
-			let prefixCmds = item && this.prefixes[item.key]?.list;
-			// Quick exit if match was not a prefix
-			if (!prefixCmds) {
-				return !!item;
-			}
-			stream.eatSpace();
-			match = prefixCmds.consume(stream);
-			if (typeof match == 'string') {
-				return !!this.cmds.getItem(match);
-			}
+	commandExists(prefixOrCmd, cmd) {
+		let item = this.cmds.getItem(prefixOrCmd);
+		let prefixCmds = item && this.prefixes[item.key]?.list;
+		// Done if match was not a prefix or we have no prefix.
+		if (!prefixCmds || !cmd) {
+			return !!item;
 		}
-		return false;
+		return !!prefixCmds.getItem(cmd);
 	}
 
 	_setCmdHandlers() {

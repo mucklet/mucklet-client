@@ -144,6 +144,20 @@ class CmdPatternParsedCmd {
 	}
 
 	/**
+	 * Checks if the command matches that of registered client commands, thus
+	 * requiring a "do"-prefix to use.
+	 * @returns {boolean} True if the command requires a "do"-prefix.
+	 */
+	requiresDoPrefix() {
+		let t1 = this.tokens[0];
+		if (t1?.token != tokenWord) {
+			return true;
+		}
+		let t2 = this.tokens[1];
+		return this.module.cmd.commandExists(t1.value, t2?.token == tokenWord ? t2.value : undefined);
+	}
+
+	/**
 	 * Returns options for formatting of text.
 	 * @param {number} idx Index of token.
 	 * @returns {{ id: string } | null} Returns an object with a unique ID for
@@ -243,12 +257,12 @@ class CmdPatternParsedCmd {
 
 	/**
 	 * Creates a new Help topic object that can be used with the Help module's newHelpTopic.
-	 * @returns {{usage: string, desc: string}} Help topic component.
+	 * @returns {{usage: string, desc?: string, examples?: Array<{ key: e.cmd, desc?: e.desc }>}} Help topic object.
 	 */
 	helpTopic() {
 		let fieldDescs = [];
 		let fieldKeys = {};
-		let s = "";
+		let s = this.requiresDoPrefix() ? "do " : "";
 		let noSpace = true;
 		let addSpace = (noSpaceAfter) => {
 			s = noSpace ? s : s + " ";
