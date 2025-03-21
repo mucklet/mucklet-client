@@ -493,6 +493,27 @@ class Help {
 		return new HelpTopic(this.module, topic);
 	}
 
+	/**
+	 * Checks if a topic or category exists that has the registered command.
+	 * It is used by help sources to determine if a topic already exists.
+	 * @param {string} cmd Command topic.
+	 * @returns {boolean} True if a topic or category is registered.
+	 */
+	helpExists(cmd) {
+		for (let c of this.categories) {
+			if (c.cmd === cmd) {
+				return true;
+			}
+		}
+		for (let topicId in this.topics.props) {
+			let t = this.topics.props[topicId];
+			if (t.cmd === cmd) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	_addRemoveTopicToCategories(topic, add) {
 		if (!topic.category) return;
 

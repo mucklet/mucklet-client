@@ -228,7 +228,7 @@ class CmdPattern {
 			? {
 				title: l10n.l('cmdPattern.roomCommands', "Room commands"),
 				items: roomCmds.map(o => {
-					let addDoPrefix = doPrefixed || o.cmd.requiresDoPrefix();
+					let addDoPrefix = doPrefixed || o.cmd.requiresDoPrefix(true);
 					return {
 						cmd: (addDoPrefix ? 'do ' : '') + o.topic,
 						title: o.cmd.cmd.desc || null,
@@ -251,7 +251,12 @@ class CmdPattern {
 			return null;
 		}
 
-		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props)
+		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props);
+		if (!doPrefixed) {
+			roomCmds = roomCmds.filter(c => !c.requiresDoPrefix(true));
+		}
+
+		roomCmds = roomCmds
 			.map(c => {
 				let m = c.matchesHelp(helpWords, true);
 				// If it is a match and that exact topic is not added.

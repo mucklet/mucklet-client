@@ -147,15 +147,22 @@ class CmdPatternParsedCmd {
 	/**
 	 * Checks if the command matches that of registered client commands, thus
 	 * requiring a "do"-prefix to use.
+	 * @param {boolean} includeHelp Flag to tell if the help topics should be included for when using the `help` command.
 	 * @returns {boolean} True if the command requires a "do"-prefix.
 	 */
-	requiresDoPrefix() {
+	requiresDoPrefix(includeHelp) {
 		let t1 = this.tokens[0];
 		if (t1?.token != tokenWord) {
 			return true;
 		}
 		let t2 = this.tokens[1];
-		return this.module.cmd.commandExists(t1.value, t2?.token == tokenWord ? t2.value : undefined);
+		if (this.module.cmd.commandExists(t1.value, t2?.token == tokenWord ? t2.value : undefined)) {
+			return true;
+		}
+
+		if (!includeHelp) return false;
+
+		return this.module.help.helpExists(this._getWordTokens().join(' '));
 	}
 
 	/**
@@ -234,11 +241,27 @@ class CmdPatternParsedCmd {
 	 * @returns {string|null} All the command's word tokens concatenated with space on match, otherwise null.
 	 */
 	matchesHelp(helpWords, exactMatch) {
-		let wordTokens = [];
-		let opts = 0;
+		let wordTokens = this._getWordTokens();
 		let idx = 0;
-		// Loop through the tokens and match words against the helpWords.
-		// But only match non-optional words.
+		// Loop through the words and match against the help words.
+		for (let w of wordTokens) {
+			if (helpWords.length > idx && w == helpWords[idx]) {
+				idx++;
+			} else if (exactMatch) {
+				return null;
+			}
+		}
+		// Return the Did we match all words
+		return helpWords.length == idx ? wordTokens.join(' ') : null;
+	}
+
+	/**
+	 * Get all word token values that are not optional.
+	 * @returns {Array<string>} Word tokens.
+	 */
+	_getWordTokens() {
+		let opts = 0;
+		let wordTokens = [];
 		for (let t of this.tokens) {
 			if (t.token == tokenOptStart) {
 				opts++;
@@ -246,16 +269,9 @@ class CmdPatternParsedCmd {
 				opts = Math.max(opts - 1, 0);
 			} else if (!opts && t.token == tokenWord) {
 				wordTokens.push(t.value);
-				if (helpWords.length > idx && t.value == helpWords[idx]) {
-					idx++;
-				} else if (exactMatch) {
-					return null;
-				}
 			}
 		}
-
-		// Return the Did we match all words
-		return helpWords.length == idx ? wordTokens.join(' ') : null;
+		return wordTokens;
 	}
 
 	/**
