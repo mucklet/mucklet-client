@@ -65,6 +65,7 @@ class CmdPattern {
 			id: 'cmdPattern',
 			helpTopics: (char, cmd) => this._getHelpTopics(char, cmd),
 			relatedCategory: (char, cmd) => this._getRelatedRoomCommands(char, cmd),
+			helpTokens: (char, prefix) => this._getHelpTokens(char, prefix),
 			sortOrder: 10,
 		});
 		// Add help topic for "do" command.
@@ -269,6 +270,36 @@ class CmdPattern {
 		return roomCmds.length
 			? roomCmds
 			: null;
+	}
+
+	_getHelpTokens(char, prefix) {
+		// Split helpCmd into words.
+		prefix = prefix.trim();
+		let helpWords = prefix.toLowerCase().split(" ").filter(w => w);
+		let wordLen = helpWords.length;
+		// Check for a do prefix and remove it.
+		let doPrefixed = helpWords[0] == 'do';
+		if (doPrefixed) {
+			helpWords.shift();
+			wordLen--;
+			prefix = helpWords.join(" ");
+		}
+
+		// Get all room commands.
+		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props);
+		if (!doPrefixed) {
+			roomCmds = roomCmds.filter(c => !c.requiresDoPrefix(true));
+		}
+
+		let tokens = [];
+		for (let c of roomCmds) {
+			let wordTokens = c.getWordTokens();
+			// Test if the word tokens matches the prefix, and that we have additional tokens.
+			if (wordTokens.length > wordLen && wordTokens.slice(0, wordLen).join(' ') == prefix) {
+				tokens.push(wordTokens[wordLen]);
+			}
+		}
+		return tokens;
 	}
 
 	dispose() {

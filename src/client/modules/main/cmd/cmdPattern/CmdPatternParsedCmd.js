@@ -162,7 +162,7 @@ class CmdPatternParsedCmd {
 
 		if (!includeHelp) return false;
 
-		return this.module.help.helpExists(this._getWordTokens().join(' '));
+		return this.module.help.helpExists(this.getWordTokens().join(' '));
 	}
 
 	/**
@@ -241,7 +241,7 @@ class CmdPatternParsedCmd {
 	 * @returns {string|null} All the command's word tokens concatenated with space on match, otherwise null.
 	 */
 	matchesHelp(helpWords, exactMatch) {
-		let wordTokens = this._getWordTokens();
+		let wordTokens = this.getWordTokens();
 		let idx = 0;
 		// Loop through the words and match against the help words.
 		for (let w of wordTokens) {
@@ -259,7 +259,7 @@ class CmdPatternParsedCmd {
 	 * Get all word token values that are not optional.
 	 * @returns {Array<string>} Word tokens.
 	 */
-	_getWordTokens() {
+	getWordTokens() {
 		let opts = 0;
 		let wordTokens = [];
 		for (let t of this.tokens) {

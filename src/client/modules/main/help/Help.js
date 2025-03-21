@@ -460,6 +460,7 @@ class Help {
 	 * 	desc?: string|LocaleString|() => (string|LocaleString),
 	 * 	examples: Array.<{ cmd: string, desc: string|LocaleString }> | () => Array.<{ cmd: string, desc: string|LocaleString }>,
 	 * }>)} [source.helpTopics] Function returning an array of help topic precisely matching the command.
+	 * @param {(char: CtrlChar, prefix: string) => (null | Array<string>)} [source.helpTokens] Function returning a list of tokens (words) following a prefix.
 	 * @param {number} source.sortOrder Sort order.
 	 * @returns {this}
 	 */
@@ -501,13 +502,13 @@ class Help {
 	 */
 	helpExists(cmd) {
 		for (let c of this.categories) {
-			if (c.cmd === cmd) {
+			if (c.cmd === cmd || c.alias?.includes(cmd)) {
 				return true;
 			}
 		}
 		for (let topicId in this.topics.props) {
 			let t = this.topics.props[topicId];
-			if (t.cmd === cmd) {
+			if (t.cmd === cmd || t.alias?.includes(cmd)) {
 				return true;
 			}
 		}
@@ -573,7 +574,7 @@ class Help {
 		let categories = [];
 		let topics = [];
 		for (let c of this.categories) {
-			if (c.cmd === cmd || (c.alias && c.alias.indexOf(cmd) >= 0)) {
+			if (c.cmd === cmd || c.alias?.includes(cmd)) {
 				this.module.charLog.logComponent(char, 'helpCategory', new HelpCategory(this.module, this.categories, c));
 				return;
 			}
@@ -585,7 +586,7 @@ class Help {
 
 		for (let topicId in this.topics.props) {
 			let t = this.topics.props[topicId];
-			if (t.cmd === cmd || (t.alias && t.alias.indexOf(cmd) >= 0)) {
+			if (t.cmd === cmd || t.alias?.includes(cmd)) {
 				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t));
 				return;
 			}
@@ -673,6 +674,7 @@ class Help {
 					}
 				}
 			}
+			// Add topics
 			let props = this.topics.props;
 			for (let k in props) {
 				let matchMain = false;
@@ -690,6 +692,16 @@ class Help {
 						if (a.substring(0, prefix.length) === prefix) {
 							map[a.substring(prefix.length).split(" ")[0]] = true;
 						}
+					}
+				}
+			}
+			// Add from help sources
+			let ctrl = this.module.player.getControlledChar(ctx.charId);
+			for (let source of this.sources) {
+				let tokens = source.helpTokens?.(ctrl, prefix);
+				if (tokens) {
+					for (let t of tokens) {
+						map[t] = true;
 					}
 				}
 			}
