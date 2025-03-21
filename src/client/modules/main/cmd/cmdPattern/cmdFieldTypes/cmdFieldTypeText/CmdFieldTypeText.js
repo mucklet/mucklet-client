@@ -1,6 +1,7 @@
 import Err from 'classes/Err';
 import indexOfChars from 'utils/indexOfChars';
 import l10n from 'modapp-l10n';
+import firstLetterUppercase from 'utils/firstLetterUppercase';
 
 const txtSpanLinesHint = l10n.l('cmdFieldTypeText.spanLinesHint', "May span multiple paragraphs.");
 const txtFormatTextHint = l10n.l('cmdFieldTypeText.FormatTextHint', "May be formatted.");
@@ -60,15 +61,27 @@ class CmdFieldTypeText {
 				}
 
 				let maxLength = opts.maxLength || this.module.info.getCore().descriptionMaxLength;
-				let allowedLen = Math.max(0, maxLength - (prevValue ? prevValue.value.length + 1 /** new line */ : 0));
+				let minLength = opts.minLength || 0;
+				let prevLen = (prevValue ? prevValue.value.length + 1 /** new line */ : 0);
+				let allowedLen = Math.max(0, maxLength - prevLen);
+				let requiredLen = Math.max(0, minLength - prevLen);
+
+				// If we require some text, but have nothing, it is not a match.
+				if (prevLen + mlen == 0 && requiredLen > 0) {
+					return null;
+				}
+
 				// Add tags
 				if (tags) {
 					// Did we consume space. Add a null tag.
 					if (from > 0) {
 						tags.push({ tag: null, n: from });
 					}
-					// Did we match any other tag
-					if (mlen) {
+					// Did we not meet the required length
+					if (mlen < requiredLen) {
+						tags.push({ tag: 'error', n: mlen });
+					// Did we match some text
+					} else if (mlen) {
 						// Add text tag for matched string
 						if (allowedLen > 0) {
 							tags.push({ tag: 'text', n: Math.min(mlen, allowedLen) });
@@ -96,8 +109,10 @@ class CmdFieldTypeText {
 					more: opts.spanLines,
 					value,
 					error: mlen > allowedLen
-						? new Err('cmdFieldTypeText.exceedsMaxLength', '{fieldKey} exceeds max length of {maxLength} characters.', { fieldKey, maxLength })
-						: null,
+						? new Err('cmdFieldTypeText.exceedsMaxLength', '{fieldKey} exceeds max length of {maxLength} characters.', { fieldKey: firstLetterUppercase(fieldKey), maxLength })
+						: mlen < requiredLen
+							? new Err('cmdFieldTypeText.exceedsMaxLength', '{fieldKey} is less than {minLength} characters.', { fieldKey: firstLetterUppercase(fieldKey), minLength })
+							: null,
 				};
 			},
 			formatText: (opts) => {

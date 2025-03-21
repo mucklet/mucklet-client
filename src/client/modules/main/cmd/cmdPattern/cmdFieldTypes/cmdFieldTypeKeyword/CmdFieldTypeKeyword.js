@@ -1,6 +1,7 @@
 import { keyRegex } from 'utils/regex';
 import Err from 'classes/Err';
 import indexOfChars from 'utils/indexOfChars';
+import firstLetterUppercase from 'utils/firstLetterUppercase';
 
 /**
  * CmdFieldTypeKeyword registers the "keyword" field type for custom commands.
@@ -42,41 +43,48 @@ class CmdFieldTypeKeyword {
 					}
 				}
 
-				// No match
-				if (!mlen) {
+				let maxLength = opts.maxLength || this.module.info.getCore().keyMaxLength;
+				let minLength = opts.minLength || 0;
+				let to = from + mlen;
+
+				// If we require some text, but have nothing, it is not a match.
+				if (!mlen && minLength > 0) {
 					return null;
 				}
 
-				let maxLength = opts.maxLength || this.module.info.getCore().keyMaxLength;
-				let allowedLen = Math.max(0, maxLength);
-				let to = from + mlen;
 				// Add tags
 				if (tags) {
 					// Did we consume space. Add a null tag.
 					if (from > 0) {
 						tags.push({ tag: null, n: from });
 					}
-					// Add listitem tag for matched string
-					if (allowedLen > 0) {
-						tags.push({ tag: 'listitem', n: Math.min(mlen, allowedLen) });
-					}
-					// Add error tag for string exceeding allowed length
-					if (allowedLen < mlen) {
-						tags.push({ tag: 'error', n: mlen - allowedLen });
+					// Did we not meet the minimum length
+					if (mlen < minLength) {
+						tags.push({ tag: 'error', n: mlen });
+					} else {
+						// Add listitem tag for matched string
+						tags.push({ tag: 'listitem', n: Math.min(mlen, maxLength) });
+
+						// Add error tag for string exceeding max length
+						if (maxLength < mlen) {
+							tags.push({ tag: 'error', n: mlen - maxLength });
+						}
 					}
 				}
 				// Create value. If we had a previous value, append to that result.
 				let value = {
-					value: m[0].slice(0, allowedLen),
+					value: m?.[0].slice(0, maxLength) || '',
 				};
 				return {
 					from,
 					to,
 					partial: false,
 					value,
-					error: mlen > allowedLen
-						? new Err('cmdFieldTypeKeyword.exceedsMaxLength', '{fieldKey} exceeds max length of {maxLength} characters.', { fieldKey, maxLength })
-						: null,
+					error: mlen > maxLength
+						? new Err('cmdFieldTypeKeyword.exceedsMaxLength', '{fieldKey} exceeds max length of {maxLength} characters.', { fieldKey: firstLetterUppercase(fieldKey), maxLength })
+						: mlen < minLength
+							? new Err('cmdFieldTypeText.exceedsMaxLength', '{fieldKey} is less than {minLength} characters.', { fieldKey: firstLetterUppercase(fieldKey), minLength })
+							: null,
 				};
 			},
 		});

@@ -182,13 +182,6 @@ class CmdPatternParsedCmd {
 	 * @returns {Err} Error.
 	 */
 	getPartialError(lastIdx, remaining) {
-		if (remaining) {
-			return new Html(
-				l10n.t('cmdPattern.commandMissingWord', `I don't understand "<span class="cmd">{remaining}</span>".`, { remaining: escapeHtml(remaining) }),
-				{ className: 'common--formattext' },
-			);
-		}
-
 		let opts = 0;
 		for (let i = lastIdx + 1; i < this.tokens.length; i++) {
 			let t = this.tokens[i];
@@ -200,19 +193,19 @@ class CmdPatternParsedCmd {
 				switch (t.token) {
 					case tokenWord:
 						return new Html(
-							l10n.t('cmdPattern.commandMissingWord', 'Command misses the word <span class="cmd">{word}</span>.', { word: escapeHtml(t.value) }),
+							l10n.t('cmdPattern.commandMissingWord', 'The word "<span class="cmd">{word}</span>" is missing. See the command help:', { word: escapeHtml(t.value) }),
 							{ className: 'common--formattext' },
 						);
 
 					case tokenSymbol:
 						return new Html(
-							l10n.t('cmdPattern.commandMissingWord', 'Command misses the "<span class="cmd">{delim}</span>" delimiter.', { delim: escapeHtml(t.value) }),
+							l10n.t('cmdPattern.commandMissingWord', 'The "<span class="cmd">{delim}</span>" delimiter is missing. See the command help:', { delim: escapeHtml(t.value) }),
 							{ className: 'common--formattext' },
 						);
 
 					case tokenField:
 						return new Html(
-							l10n.t('cmdPattern.commandMissingWord', '<i>{fieldKey}</i> is missing.', { fieldKey: escapeHtml(t.value) }),
+							l10n.t('cmdPattern.commandMissingWord', '<i>{fieldKey}</i> is missing. See the command help:', { fieldKey: escapeHtml(firstLetterUppercase(t.value)) }),
 							{ className: 'common--formattext' },
 						);
 				}
@@ -220,6 +213,15 @@ class CmdPatternParsedCmd {
 				break;
 			}
 		}
+
+		remaining = remaining.trim();
+		if (remaining) {
+			return new Html(
+				l10n.t('cmdPattern.commandMissingWord', `I don't understand "<span class="cmd">{remaining}</span>". See the command help:`, { remaining: escapeHtml(remaining) }),
+				{ className: 'common--formattext' },
+			);
+		}
+
 		return errIncompleteCommand;
 	}
 
