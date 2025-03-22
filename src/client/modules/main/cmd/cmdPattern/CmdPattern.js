@@ -2,6 +2,7 @@ import l10n from 'modapp-l10n';
 import ValueStep from 'classes/ValueStep';
 import CmdPatternStep from './CmdPatternStep';
 import CmdPatternParsedCmd from './CmdPatternParsedCmd';
+import './cmdPattern.scss';
 
 const doUsageText = 'do <span class="field">&lt;Command&gt;</span>';
 const doShortDesc = 'Execute a custom command';

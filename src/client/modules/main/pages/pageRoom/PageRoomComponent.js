@@ -7,12 +7,12 @@ import Img from 'components/Img';
 import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
 import NameSection from 'components/NameSection';
-import FormatTxt from 'components/FormatTxt';
+// import FormatTxt from 'components/FormatTxt';
 import ModelCollapser from 'components/ModelCollapser';
 import ImgModal from 'classes/ImgModal';
 import PageRoomChar from './PageRoomChar';
 import PageRoomExits from './PageRoomExits';
-import { notSet } from './pageRoomTxt';
+// import { notSet } from './pageRoomTxt';
 
 /**
  * PageRoomComponent renders a room info page.
@@ -101,6 +101,8 @@ class PageRoomComponent {
 							(m, c) => c.getNode('pop').setText(m.pop || "0"),
 						),
 					}])),
+
+					// Section tools (such as Description from PageRoomDesc)
 					n.component(new Context(
 						() => new CollectionWrapper(allTools, {
 							filter: t => t.type == 'section',
@@ -108,29 +110,19 @@ class PageRoomComponent {
 						tools => tools.dispose(),
 						tools => new CollectionList(
 							tools,
-							t => t.componentFactory(this.ctrl, this.room),
+							t => {
+								let state = this.state[t.id] = (this.state[t.id] || {});
+								let roomState = this.roomState[t.id] = (this.roomState[t.id] || {});
+								return t.componentFactory(this.ctrl, this.room, state, roomState);
+							},
 							{
 								className: 'pageroom--sections',
 								subClassName: t => t.className || null,
 							},
 						),
 					)),
-					n.component(new PanelSection(
-						l10n.l('pageRoom.description', "Description"),
-						new ModelComponent(
-							this.room,
-							new FormatTxt("", { className: 'common--desc-size', state: this.roomState.description }),
-							(m, c) => {
-								c.setFormatText(m.desc ? m.desc : notSet);
-								c[m.desc ? 'removeClass' : 'addClass']('pagechar--notset');
-							},
-						),
-						{
-							className: 'common--sectionpadding',
-							open: this.state.descriptionOpen,
-							onToggle: (c, v) => this.state.descriptionOpen = v,
-						},
-					)),
+
+					// Exits
 					n.component(new PanelSection(
 						new Elem(n => n.elem('div', { className: 'pageroom--exitsheader' }, [
 							n.component(new Txt(l10n.l('pageRoom.exits', "Exits"), { tagName: 'h3' })),

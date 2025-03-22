@@ -296,21 +296,21 @@ class CmdPatternParsedCmd {
 
 				case tokenSymbol:
 					addSpace();
-					s += `<span class="delim">${escapeHtml(t.value)}</span>`;
+					s += `<span class="cmdpattern--delim">${escapeHtml(t.value)}</span>`;
 					break;
 
 				case tokenOptStart:
 					addSpace(true);
-					s += `<span class="optdelim">${escapeHtml(t.value)}</span>`;
+					s += `<span class="cmdpattern--opt">${escapeHtml(t.value)}</span>`;
 					break;
 
 				case tokenOptEnd:
-					s += `<span class="optdelim">${escapeHtml(t.value)}</span>`;
+					s += `<span class="cmdpattern--opt">${escapeHtml(t.value)}</span>`;
 					break;
 
 				case tokenField:
 					addSpace();
-					s += `<span class="field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span>`;
+					s += `<span class="cmdpattern--field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span>`;
 					// Add field description if available.
 					if (!fieldKeys[t.value]) {
 						// Set it as visited
@@ -332,7 +332,7 @@ class CmdPatternParsedCmd {
 							fieldDesc = fieldDesc ? fieldDesc + ' ' + info : info;
 						}
 						if (fieldDesc) {
-							fieldDescs.push(`<tr><td><span class="field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span></td><td><span class="common--formattext">${formatText(fieldDesc)}</span></td></tr>`);
+							fieldDescs.push(`<tr><td><span class="cmdpattern--field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span></td><td><span class="common--formattext">${formatText(fieldDesc)}</span></td></tr>`);
 						}
 					}
 					break;
@@ -351,6 +351,8 @@ class CmdPatternParsedCmd {
 				`</tbody>` +
 			`</table>`;
 		}
+
+		s = `<code class="cmdpattern--usage">${s}</code>`;
 
 		return { usage: s, desc, examples: null };
 	}
