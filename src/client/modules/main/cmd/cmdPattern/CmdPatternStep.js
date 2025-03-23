@@ -217,10 +217,12 @@ class CmdPatternStep {
 	_setMatchAndHandle(stream, state, cmd, match, values) {
 		// Handle error
 		if (match.error) {
-			state.setError(match.error);
+			state.setError((ctx, params) => {
+				this._showErrorAndHelp(ctx.char, cmd, match.error);
+			});
 
-		// Handle partial match
-		} else if (match.partial) {
+		// Handle partial match or error
+		} else if (match.partial || match.error) {
 			// If last matching token idx is null, and we don't have a previous
 			// match that we continue, it means we have no matching token at
 			// all.
@@ -231,16 +233,8 @@ class CmdPatternStep {
 			// Set the command to execute on no-error
 			state.setParam('cmd', (ctx, params) => {
 				// this.module.charLog.logComponent(char, 'errorComponent', err);
-				let err = cmd.getPartialError(match.lastIdx || match.continueWith, match.remaining);
-				if (typeof err == 'object' && err) {
-					if (err.code) {
-						this.module.charLog.logError(ctx.char, err);
-					} else if (err.render) {
-						this.module.charLog.logComponent(ctx.char, 'errorComponent', err);
-					}
-
-					this.module.charLog.logComponent(ctx.char, 'cmdPatternHelpTopic', this.module.help.newHelpTopic(cmd.helpTopic()));
-				}
+				let err = match.error || cmd.getPartialError(match.lastIdx || match.continueWith, match.remaining);
+				this._showErrorAndHelp(ctx.char, cmd, err);
 			});
 
 		// Handle complete match
@@ -264,6 +258,18 @@ class CmdPatternStep {
 		}
 
 		return this._handleTag(stream, state, cmd, match.tags, match.continueWith, values, 0);
+	}
+
+	_showErrorAndHelp(char, cmd, err) {
+		if (typeof err == 'object' && err) {
+			if (err.code) {
+				this.module.charLog.logError(char, err);
+			} else if (err.render) {
+				this.module.charLog.logComponent(char, 'errorComponent', err);
+			}
+
+			this.module.charLog.logComponent(char, 'cmdPatternHelpTopic', this.module.help.newHelpTopic(cmd.helpTopic()));
+		}
 	}
 
 	// Progresses the stream and returns the tags (tokens for CodeMirror).

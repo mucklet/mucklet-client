@@ -148,12 +148,14 @@ class Cmd {
 		var p = state.params;
 		let err = state.error;
 		if (err) {
-			return Promise.reject(typeof err == 'string'
-				? new Err('cmd.parseError', err)
-				: err.code == 'cmd.commandNotFound'
-					? this._resolveNotFound(ctx, err, p.unknown || null)
-					: err,
-			);
+			return typeof err == 'function'
+				? Promise.resolve(err(ctx, p))
+				: Promise.reject(typeof err == 'string'
+					? new Err('cmd.parseError', err)
+					: err.code == 'cmd.commandNotFound'
+						? this._resolveNotFound(ctx, err, p.unknown || null)
+						: err,
+				);
 		}
 		let f = p.cmd;
 		return Promise.resolve(f ? f(ctx, p) : null).then(() => {
