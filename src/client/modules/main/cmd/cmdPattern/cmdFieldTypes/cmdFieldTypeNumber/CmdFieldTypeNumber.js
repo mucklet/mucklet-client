@@ -5,21 +5,25 @@ import l10n from 'modapp-l10n';
 const MaxInteger = 999999999999999; // 15 digits. A value less than javascript's Number.MAX_SAFE_INTEGER
 const MinInteger = -999999999999999; // 15 digits. A value greater than javascript's Number.MIN_SAFE_INTEGER
 
+const txtRangeHint = l10n.l('cmdFieldTypeNumber.rangeHint', "Value is {min} to {max}.");
+const txtMinHint = l10n.l('cmdFieldTypeNumber.minHint', "Value is {min} or greater.");
+const txtMaxHint = l10n.l('cmdFieldTypeNumber.naxHint', "Value is {max} or less.");
+
 const txtFloatHint = {
-	gt: l10n.l('cmdFieldTypeNumber.floatHintGt', "Value must be greater than {min}."),
-	gtlt: l10n.l('cmdFieldTypeNumber.floatHintGtLt', "Value must be between {min} (exclusive) and {max} (exclusive)."),
-	gtlte: l10n.l('cmdFieldTypeNumber.floatHintGtLte', "Value must be between {min} (exclusive) and {max} (inclusive)."),
-	gte: l10n.l('cmdFieldTypeNumber.floatHintGte', "Value must be {min} or greater."),
-	gtelt: l10n.l('cmdFieldTypeNumber.floatHintGteLt', "Value must be between {min} (inclusive) and {max} (exclusive)."),
-	gtelte: l10n.l('cmdFieldTypeNumber.floatHintGteLte', "Value must be between {min} (inclusive) and {max} (inclusive)."),
-	lt: l10n.l('cmdFieldTypeNumber.floatHintLt', "Value must be less than {max}."),
-	lte: l10n.l('cmdFieldTypeNumber.floatHintLte', "Value must be {max} or less."),
+	gt: l10n.l('cmdFieldTypeNumber.floatHintGt', "Value is greater than {min}."),
+	gtlt: txtRangeHint,
+	gtlte: txtRangeHint,
+	gte: txtMinHint,
+	gtelt: txtRangeHint,
+	gtelte: txtRangeHint,
+	lt: l10n.l('cmdFieldTypeNumber.floatHintLt', "Value is less than {max}."),
+	lte: txtMaxHint,
 };
 
 const txtIntegerHint = {
-	min: l10n.l('cmdFieldTypeNumber.integerHintMin', "Value must be {min} or greater."),
-	minmax: l10n.l('cmdFieldTypeNumber.integerHintMinMax', "Value must be between {min} and {max}, inclusive."),
-	max: l10n.l('cmdFieldTypeNumber.integerHintGtMax', "Value must be {max} or less."),
+	min: txtMinHint,
+	minmax: txtRangeHint,
+	max: txtMaxHint,
 };
 
 /**
