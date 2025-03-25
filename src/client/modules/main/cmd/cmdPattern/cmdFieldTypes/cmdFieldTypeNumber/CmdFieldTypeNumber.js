@@ -165,7 +165,7 @@ class CmdFieldTypeNumber {
 	_integerRangeText(opts) {
 		return opts.hasOwnProperty('min')
 			? opts.hasOwnProperty('max')
-				? l10n.t(txtIntegerHint.maxmin, { min: opts.min, max: opts.max })
+				? l10n.t(txtIntegerHint.minmax, { min: opts.min, max: opts.max })
 				: l10n.t(txtIntegerHint.min, { min: opts.min })
 			: opts.hasOwnProperty('max')
 				? l10n.t(txtIntegerHint.max, { max: opts.max })
