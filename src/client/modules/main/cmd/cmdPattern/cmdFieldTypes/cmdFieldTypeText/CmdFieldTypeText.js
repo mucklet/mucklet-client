@@ -4,7 +4,7 @@ import l10n from 'modapp-l10n';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
 
 const txtSpanLinesHint = l10n.l('cmdFieldTypeText.spanLinesHint', "May span multiple paragraphs.");
-const txtFormatTextHint = l10n.l('cmdFieldTypeText.FormatTextHint', "May be formatted.");
+const txtFormatTextHint = l10n.l('cmdFieldTypeText.formatTextHint', "May be formatted.");
 const txtSpanLinesAndFormatTextHint = l10n.l('cmdFieldTypeText.spanLinesAndFormatTextHint', "May be formatted and span multiple paragraphs.");
 
 /**

@@ -1,5 +1,26 @@
 import Err from 'classes/Err';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
+import l10n from 'modapp-l10n';
+
+const MaxInteger = 999999999999999; // 15 digits. A value less than javascript's Number.MAX_SAFE_INTEGER
+const MinInteger = -999999999999999; // 15 digits. A value greater than javascript's Number.MIN_SAFE_INTEGER
+
+const txtFloatHint = {
+	gt: l10n.l('cmdFieldTypeNumber.floatHintGt', "Value must be greater than {min}."),
+	gtlt: l10n.l('cmdFieldTypeNumber.floatHintGtLt', "Value must be between {min} (exclusive) and {max} (exclusive)."),
+	gtlte: l10n.l('cmdFieldTypeNumber.floatHintGtLte', "Value must be between {min} (exclusive) and {max} (inclusive)."),
+	gte: l10n.l('cmdFieldTypeNumber.floatHintGte', "Value must be {min} or greater."),
+	gtelt: l10n.l('cmdFieldTypeNumber.floatHintGteLt', "Value must be between {min} (inclusive) and {max} (exclusive)."),
+	gtelte: l10n.l('cmdFieldTypeNumber.floatHintGteLte', "Value must be between {min} (inclusive) and {max} (inclusive)."),
+	lt: l10n.l('cmdFieldTypeNumber.floatHintLt', "Value must be less than {max}."),
+	lte: l10n.l('cmdFieldTypeNumber.floatHintLte', "Value must be {max} or less."),
+};
+
+const txtIntegerHint = {
+	min: l10n.l('cmdFieldTypeNumber.integerHintMin', "Value must be {min} or greater."),
+	minmax: l10n.l('cmdFieldTypeNumber.integerHintMinMax', "Value must be between {min} and {max}, inclusive."),
+	max: l10n.l('cmdFieldTypeNumber.integerHintGtMax', "Value must be {max} or less."),
+};
 
 /**
  * CmdFieldTypeNumber registers the "integer" and "float" field type for custom
@@ -26,10 +47,12 @@ class CmdFieldTypeNumber {
 		this.module.cmdPattern.addFieldType({
 			id: 'integer',
 			match: this._match.bind(this, false),
+			getDescInfo: (opts) => this._integerRangeText(opts),
 		});
 		this.module.cmdPattern.addFieldType({
 			id: 'float',
 			match: this._match.bind(this, true),
+			getDescInfo: (opts) => this._floatRangeText(opts),
 		});
 	}
 
@@ -53,7 +76,7 @@ class CmdFieldTypeNumber {
 		let nm = m[0].match(/^-?\d+\.?\d*/);
 		// Match doesn't seem to be a valid number
 		if (!nm || nm[0].length != m[0].length) {
-			err = new Err('cmdFieldTypeInteger.notANumber', '{fieldKey} must be a number.', { fieldKey: firstLetterUppercase(fieldKey) });
+			err = new Err('cmdFieldTypeNumber.notANumber', '{fieldKey} must be a number.', { fieldKey: firstLetterUppercase(fieldKey) });
 			if (tags) {
 				// Did we consume space. Add a null tag.
 				if (from > 0) {
@@ -68,19 +91,43 @@ class CmdFieldTypeNumber {
 			if (!allowDecimals) {
 				let decimalIdx = m[0].indexOf('.');
 				if (decimalIdx >= 0) {
-					err = new Err('cmdFieldTypeInteger.noDecimalsAllowed', '{fieldKey} must not contain decimals.', { fieldKey: firstLetterUppercase(fieldKey) });
+					err = new Err('cmdFieldTypeNumber.noDecimalsAllowed', '{fieldKey} must not contain decimals.', { fieldKey: firstLetterUppercase(fieldKey) });
 					numStr = numStr.slice(0, decimalIdx);
 				}
 			}
 
 			let num = allowDecimals ? parseFloat(numStr) : parseInt(numStr);
-			let outOfBounds = false;
-			if (opts?.hasOwnProperty('min') && num < opts.min) {
-				err = err || new Err('cmdFieldTypeInteger.lowerThanMin', '{fieldKey} must be {min} or greater.', { fieldKey: firstLetterUppercase(fieldKey), min: String(opts.min) });
-				outOfBounds = true;
-			} else if (opts?.hasOwnProperty('max') && num > opts.max) {
-				err = err || new Err('cmdFieldTypeInteger.greaterThanMax', '{fieldKey} must not be greater than {max}.', { fieldKey: firstLetterUppercase(fieldKey), max: String(opts.max) });
-				outOfBounds = true;
+			let outOfBounds = true;
+			if (allowDecimals) {
+				// Verify range limits
+				if (opts?.hasOwnProperty('gt') && num <= opts.gt) {
+					err = err || new Err('cmdFieldTypeNumber.fieldMustBeGt', '{fieldKey} must be greater than {min}.', { fieldKey: firstLetterUppercase(fieldKey), min: String(opts.gt) });
+				} else if (opts?.hasOwnProperty('gte') && num < opts.gte) {
+					err = err || new Err('cmdFieldTypeNumber.fieldMustBeGte', '{fieldKey} must be {min} or greater.', { fieldKey: firstLetterUppercase(fieldKey), min: String(opts.gte) });
+				} else if (opts?.hasOwnProperty('lt') && num >= opts.lt) {
+					err = err || new Err('cmdFieldTypeNumber.fieldMustBeLt', '{fieldKey} must be less than {max}.', { fieldKey: firstLetterUppercase(fieldKey), max: String(opts.lt) });
+				} else if (opts?.hasOwnProperty('lte') && num > opts.lte) {
+					err = err || new Err('cmdFieldTypeNumber.fieldMustBeLte', '{fieldKey} must be {max} or less.', { fieldKey: firstLetterUppercase(fieldKey), max: String(opts.lte) });
+				} else {
+					outOfBounds = false;
+				}
+			} else {
+				// Verify range limis
+				let min = opts?.hasOwnProperty('min') ? opts.min : MinInteger;
+				let max = opts?.hasOwnProperty('max') ? opts.max : MaxInteger;
+				if (num < min) {
+					err = err || (num < MinInteger
+						? new Err('cmdFieldTypeNumber.fieldTooSmall', '{fieldKey} is too small.', { fieldKey: firstLetterUppercase(fieldKey) })
+						: new Err('cmdFieldTypeNumber.fieldMustBeGreater', '{fieldKey} must be {min} or greater.', { fieldKey: firstLetterUppercase(fieldKey), min: String(min) })
+					);
+				} else if (num > max) {
+					err = err || (num > MaxInteger
+						? new Err('cmdFieldTypeNumber.fieldTooGreat', '{fieldKey} is too great.', { fieldKey: firstLetterUppercase(fieldKey) })
+						: new Err('cmdFieldTypeNumber.fieldMustBeLess', '{fieldKey} must be {max} or less.', { fieldKey: firstLetterUppercase(fieldKey), max: String(max) })
+					);
+				} else {
+					outOfBounds = false;
+				}
 			}
 
 			// Add tags
@@ -111,8 +158,39 @@ class CmdFieldTypeNumber {
 		};
 	}
 
+	_integerRangeText(opts) {
+		return opts.hasOwnProperty('min')
+			? opts.hasOwnProperty('max')
+				? l10n.t(txtIntegerHint.maxmin, { min: opts.min, max: opts.max })
+				: l10n.t(txtIntegerHint.min, { min: opts.min })
+			: opts.hasOwnProperty('max')
+				? l10n.t(txtIntegerHint.max, { max: opts.max })
+				: null;
+	}
+
+	_floatRangeText(opts) {
+		return opts.hasOwnProperty('gt')
+			? opts.hasOwnProperty('lt')
+				? l10n.t(txtFloatHint.gtlt, { min: opts.gt, max: opts.lt })
+				: opts.hasOwnProperty('lte')
+					? l10n.t(txtFloatHint.gtlte, { min: opts.gt, max: opts.lte })
+					: l10n.t(txtFloatHint.gt, { min: opts.gt })
+			: opts.hasOwnProperty('gte')
+				? opts.hasOwnProperty('lt')
+					? l10n.t(txtFloatHint.gtelt, { min: opts.gte, max: opts.lt })
+					: opts.hasOwnProperty('lte')
+						? l10n.t(txtFloatHint.gtelte, { min: opts.gte, max: opts.lte })
+						: l10n.t(txtFloatHint.gte, { min: opts.gte })
+				: opts.hasOwnProperty('lt')
+					? l10n.t(txtFloatHint.lt, { max: opts.lt })
+					: opts.hasOwnProperty('lte')
+						? l10n.t(txtFloatHint.lte, { max: opts.lte })
+						: null;
+	}
+
 	dispose() {
 		this.module.cmdPattern.removeFieldType('integer');
+		this.module.cmdPattern.removeFieldType('float');
 	}
 }
 
