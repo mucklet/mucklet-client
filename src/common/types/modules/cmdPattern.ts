@@ -28,9 +28,9 @@ export interface FieldType {
 	match(ctx: CmdCtx, str: string, opts: any, delims: string | null, tags?: Array<{tag: string, n: number}>, prevValue?: any): FieldMatch | null;
 
 	/**
-	 *
+	 * Complete input function.
 	 */
-	complete?(str: string, pos: number, opts: any): CompleteResult | null
+	complete(ctx: CmdCtx, str: string, pos: number, opts: any): CompleteResult | null
 
 	/**
 	 * Step factory function.

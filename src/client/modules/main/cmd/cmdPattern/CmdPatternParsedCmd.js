@@ -5,6 +5,7 @@ import l10n from 'modapp-l10n';
 import escapeHtml from 'utils/escapeHtml';
 import formatText from 'utils/formatText';
 import firstLetterUppercase from 'utils/firstLetterUppercase';
+import { offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 
 const charTypeNone = 0;
 const charTypeLetter = 1;
@@ -135,7 +136,7 @@ class CmdPatternParsedCmd {
 					}
 
 					// Try to get complete results.
-					result = fieldType.complete?.(str, strpos, field.opts) || null;
+					result = offsetCompleteResults(fieldType.complete?.(ctx, str, strpos, field.opts) || null, from);
 					if (result) {
 						return true;
 					}
@@ -509,7 +510,8 @@ class CmdPatternParsedCmd {
 					let fieldMatch = fieldType.match(ctx, t.value, tokenStr, field.opts, t.delims || null, fieldTags, values ? values[t.value] : null);
 					// Null is a non-match
 					if (!fieldMatch) {
-						if (callback(null, idx, tokenStart, tokenStart)) {
+						eatSpace(true);
+						if (callback(null, idx, tokenStart, pos)) {
 							return null;
 						}
 						return result(tokenStr, true);
