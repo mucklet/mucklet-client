@@ -1,6 +1,5 @@
-import { StringStream } from '@codemirror/language';
-import { offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import Err from 'classes/Err';
+import { matchFactory, completeFactory } from 'utils/cmdFieldType';
 
 /**
  * CmdFieldTypeChar registers the "char" field type for custom commands.
@@ -8,6 +7,9 @@ import Err from 'classes/Err';
 class CmdFieldTypeChar {
 	constructor(app) {
 		this.app = app;
+
+		// Bind callbacks
+		this._getList = this._getList.bind(this);
 
 		this.app.require([
 			'cmdPattern',
@@ -19,89 +21,22 @@ class CmdFieldTypeChar {
 		/**
 		 * @type {{
 		 * 	cmdPattern: import('modules/main/cmd/cmdPattern/CmdPattern').default,
-		 * 	cmdLists: import('modules/main/cmd/cmdLists/CmdLists').default,
+		* 	cmdLists: import('modules/main/cmd/cmdLists/CmdLists').default,
 		 * }}
 		 */
 		this.module = module;
 		this.module.cmdPattern.addFieldType({
 			id: 'char',
-			match: this._match.bind(this),
-			complete: this._complete.bind(this),
+			match: matchFactory(this._getList, (item, match) => item
+				? { charId: item.value }
+				: { charName: match },
+			),
+			complete: completeFactory(this._getList),
 		});
 	}
 
-	/**
-	 * @type {import('types/modules/cmdPattern').FieldType['match']}
-	 */
-	_match(ctx, fieldKey, str, opts, delims, tags, prevValue) {
-		// Trim space
-		let len = str.length;
-		str = str.trimStart();
-		let from = len - str.length;
-
-		// Get list of characters and match
-		let list = this._getList(ctx?.charId, opts);
-		let stream = new StringStream(str, 0, 0, 0);
-		let match = list.consume(stream, ctx);
-		if (typeof match != 'string') {
-			return null;
-		}
-
-		// Get matched item
-		let item = list.getItem(match, ctx);
-		let err = null;
-
-		if (!item) {
-			err = list.errNotFound
-				? list.errNotFound(this, match)
-				: null;
-		} else {
-			if (item.error) {
-				err = item.error;
-			}
-		}
-
-		// Add tags
-		if (tags) {
-			// Did we consume space. Add a null tag.
-			if (from > 0) {
-				tags.push({ tag: null, n: from });
-			}
-			// Add tag for the rest of the match
-			tags.push({ tag: err ? 'error' : 'listitem', n: match.length });
-		}
-		// Create value unless we have an error. If we have no item, it
-		// means we couldn't do a local lookup, but will let the server
-		// check the name.
-		let value = err
-			? null
-			: item
-				? { charId: item.value }
-				: { charName: match };
-		return {
-			from,
-			to: from + match.length,
-			partial: false,
-			value,
-			error: err,
-		};
-	}
-
-	/**
-	 * @type {import('types/modules/cmdPattern').FieldType['complete']!}
-	 */
-	_complete(ctx, str, pos, opts) {
-		let list = this._getList(ctx?.charId, opts);
-		let trimmed = str.trimStart();
-		let diff = str.length - trimmed.length;
-		if (diff > pos) {
-			trimmed = str.slice(pos);
-			diff = pos;
-		}
-		return offsetCompleteResults(list.complete(trimmed, pos - diff, ctx), diff);
-	}
-
-	_getList(charId, opts) {
+	_getList(ctx, opts) {
+		let charId = ctx?.charId;
 		if (opts?.inRoom) {
 			return this.module.cmdLists.getInRoomChars({ charId, validation: this._getValidation(opts) });
 		}

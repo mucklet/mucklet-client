@@ -128,14 +128,14 @@ class CmdLists {
 		this.bool = new ItemList({
 			items: [
 				{
-					key: "true",
+					key: "yes",
 					value: true,
-					alias: [ "yes" ],
+					alias: [ "true" ],
 				},
 				{
-					key: "false",
+					key: "no",
 					value: false,
-					alias: [ "no" ],
+					alias: [ "false" ],
 				},
 			],
 		});
