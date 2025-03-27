@@ -179,35 +179,37 @@ class CmdLists {
 	/**
 	 * Get a CharList of characters in the room.
 	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.charId] ID of character getting the list. Defaults to active char.
 	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
 	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @param {(key: string, char: CharModel) => Err | null} [opt.validation] Validation callback returning an error if the character is not to be included.
 	 * @returns {CharList} List of characters.
 	 */
 	getInRoomChars(opt) {
 		return new CharList(() => {
-			let c = this.module.player.getActiveChar();
+			let c = opt?.charId
+				? this.module.player.getControlledChar(opt.charId)
+				: this.module.player.getActiveChar();
 			return c?.inRoom.chars;
 		}, {
+			errNotFound: (l, m) => new Err('cmdList.charNotFoundInRoom', 'There is no character in this room named {match}.', { match: m }),
 			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
+			validation: opt?.validation,
 		});
 	}
 
 	/**
 	 * Get a CharList of awake characters in the room.
 	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.charId] ID of character getting the list. Defaults to active char.
 	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
 	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
 	 * @returns {CharList} List of characters.
 	 */
 	getInRoomCharsAwake(opt) {
-		return new CharList(() => {
-			let c = this.module.player.getActiveChar();
-			return c?.inRoom.chars || null;
-		}, {
-			validation: (key, char) => char.state != 'awake'
-				? new Err('cmdLists.charNotAwake', "Character is not awake.")
-				: null,
-			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
+		return this.getInRoomChars({ ...opt, validation: (key, char) => char.state != 'awake'
+			? new Err('cmdLists.charNotAwake', "Character is not awake.")
+			: null,
 		});
 	}
 
@@ -224,12 +226,14 @@ class CmdLists {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
 	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @param {(key: string, char: CharModel) => Err | null} [opt.validation] Validation callback returning an error if the character is not to be included.
 	 * @returns {CharList} List of characters.
 	 */
 	getCharsAwake(opt) {
 		return new CharList(() => this.module.charsAwake.getCollection(), {
 			errNotFound: (l, m) => new Err('cmdList.awakeCharNotFound', 'There is no character awake named {match}.', { match: m }),
 			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
+			validation: opt?.validation,
 		});
 	}
 
@@ -244,13 +248,17 @@ class CmdLists {
 	/**
 	 * Get a CharList of all available characters.
 	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.charId] ID of character getting the list. Defaults to active char.
 	 * @param {bool} [opt.filterMuted] Flag to filter out muted characters.
 	 * @param {string[]} [opt.sortOrder] Sort order to use described as an array of values 'room', 'watch', 'awake'.
+	 * @param {(key: string, char: CharModel) => Err | null} [opt.validation] Validation callback returning an error if the character is not to be included.
 	 * @returns {CharList} List of characters.
 	 */
 	getAllChars(opt) {
 		return new CharList(() => {
-			let c = this.module.player.getActiveChar();
+			let c = opt?.charId
+				? this.module.player.getControlledChar(opt.charId)
+				: this.module.player.getActiveChar();
 			let watches = this.module.charsAwake.getWatches();
 			return mergeCharLists([
 				this.module.player.getChars(),
@@ -260,6 +268,7 @@ class CmdLists {
 			]);
 		}, {
 			getCompletionChars: (ctx, getChars) => this._getCompletedChars(ctx, getChars, opt),
+			validation: opt?.validation,
 		});
 	}
 

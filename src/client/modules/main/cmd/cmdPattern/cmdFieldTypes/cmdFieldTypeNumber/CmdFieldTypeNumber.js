@@ -60,7 +60,7 @@ class CmdFieldTypeNumber {
 		});
 	}
 
-	_match(allowDecimals, fieldKey, str, opts, delims, tags, prevValue) {
+	_match(allowDecimals, charId, fieldKey, str, opts, delims, tags, prevValue) {
 		let len = str.length;
 		str = str.trimStart();
 		let from = len - str.length;

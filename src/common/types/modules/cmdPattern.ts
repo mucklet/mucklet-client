@@ -1,5 +1,6 @@
 import type Step from 'types/interfaces/Step';
 import type { CompleteResult } from 'types/interfaces/Completer';
+import type CmdCtx from 'types/interfaces/CmdCtx';
 import type Err from 'classes/Err';
 
 export interface FieldType {
@@ -15,6 +16,7 @@ export interface FieldType {
 	 * If a tokens array is provided, the method should push any token tags used
 	 * to style the string together with the number n for how many characters
 	 * long that token is. For a list of token tags, see: cmdParser.js
+	 * @param ctx Command ctx.
 	 * @param str String to match against.
 	 * @param opts Field specific options.
 	 * @param delims String of delimiters towards adjecent tokens.
@@ -23,7 +25,7 @@ export interface FieldType {
 	 * @returns The from/to position that matches, and if it is a partial match,
 	 * or null if not matched.
 	 */
-	match(str: string, opts: any, delims: string | null, tags?: Array<{tag: string, n: number}>, prevValue?: any): FieldMatch | null;
+	match(ctx: CmdCtx, str: string, opts: any, delims: string | null, tags?: Array<{tag: string, n: number}>, prevValue?: any): FieldMatch | null;
 
 	/**
 	 *
@@ -40,7 +42,6 @@ export interface FieldType {
 	 */
 	inputValue(fieldKey: string, opts: any, params: any): Promise<any> | any;
 }
-
 
 export interface CmdPattern {
 	/** Command pattern. Eg. "push <Color> [button]" */

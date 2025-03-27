@@ -26,7 +26,7 @@ class CmdFieldTypeKeyword {
 		this.module = module;
 		this.module.cmdPattern.addFieldType({
 			id: 'keyword',
-			match: (fieldKey, str, opts, delims, tags, prevValue) => {
+			match: (charId, fieldKey, str, opts, delims, tags, prevValue) => {
 				let len = str.length;
 				str = str.trimStart();
 				let from = len - str.length;

@@ -69,6 +69,7 @@ class CmdPatternParsedCmd {
 
 	/**
 	 * Matches against a string and returns the length matched.
+	 * @param {import('types/interfaces/CmdCtx').default} ctx Command ctx.
 	 * @param {string} s String to match against.
 	 * @param {number} idx Token index to start from. Defaults to 0.
 	 * @param {Record<string, any> | null} values Values object where field values are stored under each field key. If null, no values are collected.
@@ -81,22 +82,23 @@ class CmdPatternParsedCmd {
 	 *  tags?: Array<{ tokenIdx: number, tag: string, n: number}>,
 	 * } | null}  and a flag to tell if it is a partial match. If continueWith is a number, it is the token idx to continue with in case of new line.
 	 */
-	matches(s, idx = 0, values = null) {
+	matches(ctx, s, idx = 0, values = null) {
 		let tags = [];
-		let result = this._matches(s, idx, 0, tags, values);
+		let result = this._matches(ctx, s, idx, 0, tags, values);
 		return { ...result, tags };
 	}
 
 	/**
 	 * Get results for tab completion.
+	 * @param {import('types/interfaces/CmdCtx').default} ctx Command ctx.
 	 * @param {text} doc Full document text.
 	 * @param {number} offset Offset from the start of the document to match from.
 	 * @param {number} cursorPos Cursor position
 	 * @returns {import('types/interfaces/Completer').CompleteResult' | null} Complete results or null.
 	 */
-	complete(doc, offset, cursorPos) {
+	complete(ctx, doc, offset, cursorPos) {
 		let result = null;
-		this._matches(doc, 0, offset, null, null, (idx, from, to) => {
+		this._matches(ctx, doc, 0, offset, null, null, (idx, from, to) => {
 			// Assert the cursor is within the token.
 			if (cursorPos < from || cursorPos > to) {
 				// If we've passed the cursor, we return true to indicate that
@@ -376,6 +378,7 @@ class CmdPatternParsedCmd {
 	/**
 	 * Matches against a string. Pos is the position in the complete document
 	 * where the string starts.
+	 * @param {import('types/interfaces/CmdCtx').default} ctx Command ctx.
 	 * @param {string} s String to match against.
 	 * @param {number} idx Token index matching against
 	 * @param {number} pos Position in the complete document where the string starts.
@@ -390,7 +393,7 @@ class CmdPatternParsedCmd {
 	 * 	continueWith: number | null
 	 * } | null} Remaining string and a flag to tell if it is a partial match, or null if stopped by the callback.
 	 */
-	_matches(s, idx = 0, pos = 0, tags = null, values = null, cb = null) {
+	_matches(ctx, s, idx = 0, pos = 0, tags = null, values = null, cb = null) {
 		let lastIdx = null;
 		let continueWith = null;
 		let error = null;
@@ -473,10 +476,10 @@ class CmdPatternParsedCmd {
 
 				case tokenOptStart:
 					eatSpace();
-					let optResult = this._matches(tokenStr, idx + 1, tokenStart, cb);
+					let optResult = this._matches(ctx, tokenStr, idx + 1, tokenStart, cb);
 					// If the optional path matches more than space, we select it.
 					if (!optResult || (optResult.remaining.length >= s.length)) {
-						optResult = this._matches(tokenStr, this._findOptEnd(idx + 1) + 1, tokenStart, cb);
+						optResult = this._matches(ctx, tokenStr, this._findOptEnd(idx + 1) + 1, tokenStart, cb);
 					}
 					// Set last matched idx
 					if (typeof optResult.lastIdx != 'number') {
@@ -503,7 +506,7 @@ class CmdPatternParsedCmd {
 					// tags. After matching against the field, we append those
 					// tags to our existing tags array.
 					let fieldTags = tags ? [] : null;
-					let fieldMatch = fieldType.match(t.value, tokenStr, field.opts, t.delims || null, fieldTags, values ? values[t.value] : null);
+					let fieldMatch = fieldType.match(ctx, t.value, tokenStr, field.opts, t.delims || null, fieldTags, values ? values[t.value] : null);
 					// Null is a non-match
 					if (!fieldMatch) {
 						if (callback(null, idx, tokenStart, tokenStart)) {

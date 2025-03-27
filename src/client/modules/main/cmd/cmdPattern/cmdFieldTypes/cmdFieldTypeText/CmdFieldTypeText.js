@@ -30,7 +30,7 @@ class CmdFieldTypeText {
 		this.module = module;
 		this.module.cmdPattern.addFieldType({
 			id: 'text',
-			match: (fieldKey, str, opts, delims, tags, prevValue) => {
+			match: (charId, fieldKey, str, opts, delims, tags, prevValue) => {
 				let len = str.length;
 				let to = len;
 				// Remove leading spacing for first line

@@ -81,7 +81,7 @@ class CmdPatternStep {
 			// Values populated by fields
 			let values = {};
 			// If the command matches, add its step and exit.
-			let m = cmd.matches(str, this.prefix ? 1 : 0, values);
+			let m = cmd.matches(state.getCtx(), str, this.prefix ? 1 : 0, values);
 			// If all was matched (not partial), select this command by adding its step.
 			if (!m.partial) {
 				return this._setMatchAndHandle(stream, state, cmd, m, values);
@@ -131,7 +131,7 @@ class CmdPatternStep {
 		for (let i = 0; i < list.length; i++) {
 			let cmd = list[i];
 			// Get complete results from the cmd
-			let cmdResult = cmd.complete(str, prefixLen, pos);
+			let cmdResult = cmd.complete(state.getCtx(), str, prefixLen, pos);
 			if (cmdResult) {
 				// Filter if any previous command might overshadow this command's complete result.
 				if (i > 0 && cmdResult.list.length) {
@@ -141,7 +141,7 @@ class CmdPatternStep {
 					}
 					cmdResult.list = cmdResult.list.filter(txt => {
 						return !(result?.list.includes(txt)) && // Filter out duplicates.
-							!this._isOvershadowed(doc.slice(0, cmdResult.from) + txt + doc.slice(cmdResult.to), cmd, list);
+							!this._isOvershadowed(doc.slice(0, cmdResult.from) + txt + doc.slice(cmdResult.to), cmd, list, state);
 					});
 				}
 				result = mergeCompleteResults(doc, result, cmdResult);
@@ -179,9 +179,10 @@ class CmdPatternStep {
 	 * @param {string} doc Text to test against.
 	 * @param {CmdPatternParsedCmd} testCmd Parsed command to test.
 	 * @param {Array<CmdPatternParsedCmd>} list List of parsed commands.
+	 * @param {import('classes/CmdState').default} state Command state.
 	 * @returns {boolean} True if overshadowed.
 	 */
-	_isOvershadowed(doc, testCmd, list) {
+	_isOvershadowed(doc, testCmd, list, state) {
 		let maxMatch = 0;
 		let bestMatch = null;
 		for (let cmd of list) {
@@ -189,7 +190,7 @@ class CmdPatternStep {
 				return false;
 			}
 			// If the command matches, add its step and exit.
-			let m = cmd.matches(doc);
+			let m = cmd.matches(state.getCtx(), doc);
 			// If all was matched (not partial), select this command by adding its step.
 			if (!m.partial) {
 				return cmd != testCmd;
@@ -302,7 +303,7 @@ class CmdPatternStep {
 		let str = stream?.match(/^.*/, false)?.[0] || '';
 
 		// Match again, continuing with the given token idx.
-		let m = cmd.matches(str, continueWith, values);
+		let m = cmd.matches(state.getCtx(), str, continueWith, values);
 
 		return this._setMatchAndHandle(stream, state, cmd, m, values);
 	}
