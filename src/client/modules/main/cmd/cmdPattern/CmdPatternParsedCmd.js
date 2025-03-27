@@ -525,7 +525,7 @@ class CmdPatternParsedCmd {
 						values[t.value] = fieldMatch.value;
 					}
 
-					if (callback(null, idx, pos + fieldMatch.from, pos + fieldMatch.to)) {
+					if (callback(null, idx, tokenStart, tokenStart + fieldMatch.to)) {
 						return null;
 					}
 					pos = tokenStart + fieldMatch.to;

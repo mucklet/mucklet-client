@@ -17,14 +17,16 @@ class CmdFieldTypeText {
 		this.app.require([
 			'cmdPattern',
 			'info',
+			'cmdLists',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		/**
 		 * @type {{
-		 * 	cmdPattern: import('modules/main/cmd/cmdPattern/CmdPattern').default
-		 * 	info: import('modules/main/addons/info/Info').default
+		 * 	cmdPattern: import('modules/main/cmd/cmdPattern/CmdPattern').default,
+		 * 	info: import('modules/main/addons/info/Info').default,
+		* 	cmdLists: import('modules/main/cmd/cmdLists/CmdLists').default,
 		 * }}
 		 */
 		this.module = module;
@@ -128,6 +130,13 @@ class CmdFieldTypeText {
 					: opts.formatText
 						? l10n.t(txtFormatTextHint)
 						: null;
+			},
+			complete: (ctx, str, pos, opts) => {
+				let list = this.module.cmdLists.getCharsAwake({
+					filterMuted: true,
+					sortOrder: [ 'watch', 'room' ],
+				});
+				return list.complete(str, pos, ctx, true);
 			},
 		});
 	}

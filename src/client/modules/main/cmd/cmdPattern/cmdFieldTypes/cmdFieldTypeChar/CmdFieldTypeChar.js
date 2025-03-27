@@ -18,8 +18,8 @@ class CmdFieldTypeChar {
 	_init(module) {
 		/**
 		 * @type {{
-		 * 	cmdPattern: import('modules/main/cmd/cmdPattern/CmdPattern').default
-		 * 	info: import('modules/main/addons/info/Info').default
+		 * 	cmdPattern: import('modules/main/cmd/cmdPattern/CmdPattern').default,
+		 * 	cmdLists: import('modules/main/cmd/cmdLists/CmdLists').default,
 		 * }}
 		 */
 		this.module = module;
