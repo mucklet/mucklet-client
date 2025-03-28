@@ -1,5 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
+import cmdCompare from 'utils/cmdCompare';
 
 const usageText = 'list commands';
 const shortDesc = "List commands specific to the room";
@@ -50,6 +51,7 @@ class ListCommands {
 		let topics = Object.keys(room.cmds.props)
 			.map(k => roomCmds[k])
 			.filter(m => m.id)
+			.sort(cmdCompare)
 			.map(m => this.module.cmdPattern.getHelpTopic(m.id, m.cmd));
 
 		if (!topics.length) {

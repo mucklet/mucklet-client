@@ -4,6 +4,7 @@ import { Model, ModelToCollection } from 'modapp-resource';
 import PanelSection from 'components/PanelSection';
 import ModelCollapser from 'components/ModelCollapser';
 import l10n from 'modapp-l10n';
+import cmdCompare from 'utils/cmdCompare';
 import PageRoomCommandsCmd from './PageRoomCommandsCmd';
 import './pageRoomCommands.scss';
 
@@ -35,11 +36,7 @@ class PageRoomDesc {
 						l10n.l('pageRoom.commands', "Commands"),
 						new Context(
 							() => new ModelToCollection(cmds, {
-								compare: (a, b) => {
-									let av = a.value;
-									let bv = b.value;
-									return (av.priority - bv.priority) || av.id.localeCompare(bv.id);
-								},
+								compare: (a, b) => cmdCompare(a.value, b.value),
 								eventBus: this.app.eventBus,
 							}),
 							(col) => col.dispose(),

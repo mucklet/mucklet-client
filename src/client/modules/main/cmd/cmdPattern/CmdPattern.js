@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ValueStep from 'classes/ValueStep';
+import cmdCompare from 'utils/cmdCompare';
 import CmdPatternStep from './CmdPatternStep';
 import CmdPatternParsedCmd from './CmdPatternParsedCmd';
 import './cmdPattern.scss';
@@ -142,7 +143,7 @@ class CmdPattern {
 		let cmds = Object.keys(props)
 			.map(cmdId => props[cmdId])
 			.filter(o => o.cmd)
-			.sort((a, b) => b.priority - a.priority);
+			.sort(cmdCompare);
 
 		/** @type {Array<CmdPatternParsedCmd>} */
 		let parsed = [];
