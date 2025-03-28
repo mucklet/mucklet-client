@@ -136,7 +136,7 @@ class CmdPatternParsedCmd {
 					}
 
 					// Try to get complete results.
-					result = offsetCompleteResults(fieldType.complete?.(ctx, str, strpos, field.opts) || null, from);
+					result = offsetCompleteResults(fieldType.complete?.(ctx, str, strpos, field.opts, t.delims || null) || null, from);
 					if (result) {
 						return true;
 					}
@@ -330,12 +330,9 @@ class CmdPatternParsedCmd {
 						}
 						let fieldType = this.module.self.getFieldType(field.type);
 						// Get any additional info that the field itself may add.
-						let info = fieldType?.getDescInfo?.(field.opts);
-						if (info) {
-							fieldDesc = fieldDesc ? fieldDesc + ' ' + info : info;
-						}
-						if (fieldDesc) {
-							fieldDescs.push(`<tr><td><span class="cmdpattern--field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span></td><td><span class="common--formattext">${formatText(fieldDesc)}</span></td></tr>`);
+						let info = fieldType?.getDescInfo?.(field.opts, t.delims);
+						if (fieldDesc || info) {
+							fieldDescs.push(`<tr><td><span class="cmdpattern--field">&lt;${escapeHtml(firstLetterUppercase(t.value))}&gt;</span></td><td><span class="common--formattext">${fieldDesc ? formatText(fieldDesc) : ''}${info ? (fieldDesc ? ' ' : '') + info : ''}</span></td></tr>`);
 						}
 					}
 					break;

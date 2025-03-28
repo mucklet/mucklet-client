@@ -17,12 +17,14 @@ class ItemList {
 	 * @param {object} [opt.expandRegex] Left and right regexes uses for expanding a selection on complete. Null matches any character. Defaults to { left: null, right: /\w/ }
 	 * @param {RegExp} [opt.regex] Regex used for matching. Must contain a single capturing parentheses. Defaults to /^\s*([\w\d]+)
 	 * @param {function} [opt.compare] Compare function for sorting item. Defaults to (a, b) => a.key.localeCompare(b.key)
+	 * @param {function} [opt.errNotFound] Callback function that returns an error when items is not found. Null means mismatch is not an error: function(this, match)
 	 */
 	constructor(opt) {
 		opt = opt || {};
 		this.regex = opt.regex || /^[\p{L}\p{N}]+/u;
 		this.expandRegex = opt.expandRegex || { left: null, right: /[\p{L}\p{N}]/u };
 		this.compare = opt.compare || keyCompare;
+		this.errNotFoundMsg = opt.errNotFound || null;
 
 		this._keys = {};
 		this._symbols = null;
@@ -36,6 +38,10 @@ class ItemList {
 
 	get length() {
 		return this._items.length;
+	}
+
+	get errNotFound() {
+		return this.errNotFoundMsg;
 	}
 
 	/**

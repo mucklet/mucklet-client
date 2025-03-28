@@ -35,7 +35,7 @@ class CmdFieldTypeChar {
 		});
 	}
 
-	_getList(ctx, opts) {
+	_getList(ctx, fieldKey, opts) {
 		let charId = ctx?.charId;
 		if (opts?.inRoom) {
 			return this.module.cmdLists.getInRoomChars({ charId, validation: this._getValidation(opts) });

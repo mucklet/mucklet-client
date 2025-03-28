@@ -45,6 +45,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.scriptMaxLengthDesc', "Script max length."),
 		sortOrder: 1060,
 	},
+	{
+		key: 'maxListItems',
+		stepFactory: () => new NumberStep('value', { name: "max list items" }),
+		desc: l10n.l('setConfig.maxListItemsDesc', "Command list field max items."),
+		sortOrder: 1070,
+	},
 	// Max/min name lengths
 	{
 		key: 'charNameMinLength',

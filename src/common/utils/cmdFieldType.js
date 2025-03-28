@@ -1,5 +1,6 @@
 import { StringStream } from '@codemirror/language';
 import { offsetCompleteResults } from 'utils/codemirrorTabCompletion';
+import indexOfChars from 'utils/indexOfChars';
 
 /**
  * A helper function that creates a match function that can be passed as the match property to CmdPattern.addFieldTyp.
@@ -15,21 +16,33 @@ export function matchFactory(getList, prepareValue) {
 		str = str.trimStart();
 		let from = len - str.length;
 
+		// Check if we find one of the delimiters
+		if (delims) {
+			// Try to find a delimiter
+			let idx = indexOfChars(str, delims);
+			if (idx >= 0) {
+				str = str.slice(0, idx).trimEnd();
+			}
+		}
+
 		// Get list of characters and match
-		let list = getList(ctx, opts);
+		let list = getList(ctx, fieldKey, opts);
 		let stream = new StringStream(str, 0, 0, 0);
 		let match = list.consume(stream, ctx);
 		if (typeof match != 'string') {
 			return null;
 		}
 
+		// Remove trailing space
+		let trimmed = match.trimEnd();
+
 		// Get matched item
-		let item = list.getItem(match, ctx);
+		let item = list.getItem(trimmed, ctx);
 		let err = null;
 
 		if (!item) {
 			err = list.errNotFound
-				? list.errNotFound(null, match)
+				? list.errNotFound({ name: fieldKey }, trimmed)
 				: null;
 		} else {
 			if (item.error) {
@@ -44,7 +57,12 @@ export function matchFactory(getList, prepareValue) {
 				tags.push({ tag: null, n: from });
 			}
 			// Add tag for the rest of the match
-			tags.push({ tag: err ? 'error' : 'listitem', n: match.length });
+			tags.push({ tag: err ? 'error' : 'listitem', n: trimmed.length });
+			// Add tag for trimmed trailing space
+			let trimmedLen = match.length - trimmed.length;
+			if (trimmedLen > 0) {
+				tags.push({ tag: null, n: trimmedLen });
+			}
 		}
 		// Create value unless we have an error. If we have no item, it
 		// means we couldn't do a local lookup, but will let the server
@@ -69,14 +87,19 @@ export function matchFactory(getList, prepareValue) {
  * @returns {import('types/modules/cmdPattern').FieldType['complete']} A field type complete function.
  */
 export function completeFactory(getList) {
-	return (ctx, str, pos, opts) => {
-		let list = getList(ctx?.charId, opts);
+	return (ctx, str, pos, opts, delims) => {
+		let list = getList(ctx?.charId, '', opts);
 		let trimmed = str.trimStart();
 		let diff = str.length - trimmed.length;
 		if (diff > pos) {
 			trimmed = str.slice(pos);
 			diff = pos;
 		}
-		return offsetCompleteResults(list.complete(trimmed, pos - diff, ctx), diff);
+		let result = list.complete(trimmed, pos - diff, ctx);
+		// Remove tab completions containing delimiters.
+		if (result.list) {
+			result.list = result.list.filter(v => indexOfChars(v, delims) == -1);
+		}
+		return offsetCompleteResults(result, diff);
 	};
 }

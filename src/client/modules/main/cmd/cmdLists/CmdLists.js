@@ -4,6 +4,7 @@ import TokenList from 'classes/TokenList';
 import Err from 'classes/Err';
 import isNormalizedPrefix from 'utils/isNormalizedPrefix';
 import mergeCharLists from 'utils/mergeCharLists';
+import firstLetterUppercase from 'utils/firstLetterUppercase';
 import {
 	keyTokenRegex,
 	keyExpandRegex,
@@ -138,6 +139,7 @@ class CmdLists {
 					alias: [ "false" ],
 				},
 			],
+			errNotFound: (self, m) => new Err('cmdLists.mustBeYesOrNo', "{name} must be either yes or no.", { name: firstLetterUppercase(self.name) }),
 		});
 	}
 

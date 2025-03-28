@@ -5,18 +5,18 @@ import l10n from 'modapp-l10n';
 const MaxInteger = 999999999999999; // 15 digits. A value less than javascript's Number.MAX_SAFE_INTEGER
 const MinInteger = -999999999999999; // 15 digits. A value greater than javascript's Number.MIN_SAFE_INTEGER
 
-const txtRangeHint = l10n.l('cmdFieldTypeNumber.rangeHint', "Value is {min} to {max}.");
-const txtMinHint = l10n.l('cmdFieldTypeNumber.minHint', "Value is {min} or greater.");
-const txtMaxHint = l10n.l('cmdFieldTypeNumber.naxHint', "Value is {max} or less.");
+const txtRangeHint = l10n.l('cmdFieldTypeNumber.rangeHint', `Value is <span class="cmd">{min}</span> to <span class="cmd">{max}</span>.`);
+const txtMinHint = l10n.l('cmdFieldTypeNumber.minHint', `Value is <span class="cmd">{min}</span> or greater.`);
+const txtMaxHint = l10n.l('cmdFieldTypeNumber.naxHint', `Value is <span class="cmd">{max}</span> or less.`);
 
 const txtFloatHint = {
-	gt: l10n.l('cmdFieldTypeNumber.floatHintGt', "Value is greater than {min}."),
+	gt: l10n.l('cmdFieldTypeNumber.floatHintGt', `Value is greater than <span class="cmd">{min}</span>.`),
 	gtlt: txtRangeHint,
 	gtlte: txtRangeHint,
 	gte: txtMinHint,
 	gtelt: txtRangeHint,
 	gtelte: txtRangeHint,
-	lt: l10n.l('cmdFieldTypeNumber.floatHintLt', "Value is less than {max}."),
+	lt: l10n.l('cmdFieldTypeNumber.floatHintLt', `Value is less than <span class="cmd">{max}</span>.`),
 	lte: txtMaxHint,
 };
 
