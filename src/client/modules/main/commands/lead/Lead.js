@@ -5,6 +5,7 @@ const usageText = 'lead <span class="param">Character</span>';
 const shortDesc = 'Have a character follow you wherever you go';
 const helpText =
 `<p>Lead another character wherever you go. The other character must be in the same room.</p>
+<p>Use <code>stop lead</code> to stop having characters follow you.</p>
 <p><code class="param">Character</code> is the name of the character to lead.</p>
 <p>Alias: <code>carry</code></p>`;
 
