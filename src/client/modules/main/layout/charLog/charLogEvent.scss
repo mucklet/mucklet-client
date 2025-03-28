@@ -24,13 +24,12 @@ $charlog-labelpad: 8px;
 
 	&error, &errorComponent {
 		color: $log-error;
-		font-style: italic;
+		font-size: $font-size-small;
 		padding-top: $charlog-textpad;
 	}
 
 	&info {
-		// color: $color4-dark;
-		font-style: italic;
+		font-size: $font-size-small;
 		padding-top: $charlog-textpad;
 	}
 

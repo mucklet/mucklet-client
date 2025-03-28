@@ -84,8 +84,14 @@ class TabCompletionState {
 			// Try get a new list of complete results
 			result = cfg.complete(tr.state);
 			// No results means no completion
-			if (!result || !result.list || !result.list.length) {
+			let len = result?.list?.length || 0;
+			if (!len) {
 				return this;
+			}
+			// If it starts with the current state, move to the second first.
+			let part = tr.state.doc.sliceString(result.from, result.to);
+			if (len > 1 && result.list[0] === part) {
+				current = 1;
 			}
 		}
 
@@ -102,3 +108,81 @@ export default function consoleTabCompletion(cfg) {
 		tabCompletionKeymap(cfg),
 	];
 };
+
+/**
+ * Expands the complete result to encompass the from/to positions. If the result
+ * is larger in any direction, that value will not be changed.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} result Complete result.
+ * @param {string} text Text.
+ * @param {number} from From value to expand to.
+ * @param {number} to To value to expand to
+ * @returns {import('types/interfaces/Completer').CompleteResult | null} An expandedresult set.
+ *
+ */
+export function expandCompleteResult(result, text, from, to) {
+	if (!result) {
+		return result;
+	}
+	from = Math.min(result.from, from);
+	to = Math.max(result.to, to);
+	// Return the result on no change
+	if (from == result.from && to == result.to) {
+		return result;
+	}
+	let list = [];
+	for (let v of result.list) {
+		list.push(text.slice(from, result.from) + v + text.slice(result.to, to));
+	}
+	return { list, from, to };
+}
+
+/**
+ * Merges two complete result sets and removed duplicates. If either a or b is
+ * null or contains an empty list, the other result set is returned.
+ * @param {string} text Text.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} a First result set.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} b Second result set.
+ * @returns {import('types/interfaces/Completer').CompleteResult | null} A merged result set.
+ */
+export function mergeCompleteResults(text, a, b) {
+	if (!a || !a.list?.length) {
+		return b;
+	}
+	if (!b || !b.list?.length) {
+		return a;
+	}
+	let list = [];
+	let from = Math.min(a.from, b.from);
+	let to = Math.max(a.to, b.to);
+	let txts = {};
+	// Run twice, first with a, then with b.
+	for (let i = 0; i < 2; i++) {
+		for (let v of a.list) {
+			// Add prefix/suffix to match the extended from/to size.
+			let txt = text.slice(from, a.from) + v + text.slice(a.to, to);
+			// Add if not already included
+			if (!txts[txt]) {
+				list.push(txt);
+				txts[txt] = true;
+			}
+		}
+		a = b;
+	}
+	return { list, from, to };
+}
+
+/**
+ * Adds the offset to the results to/from values.
+ * @param {import('types/interfaces/Completer').CompleteResult | null} result Complete result.
+ * @param {number} offset Offset position.
+ * @returns {import('types/interfaces/Completer').CompleteResult | null} Offsetted complete result.
+ */
+export function offsetCompleteResults(result, offset) {
+	return result
+		? {
+			list: result.list,
+			from: result.from + offset,
+			to: result.to + offset,
+		}
+		: result;
+}

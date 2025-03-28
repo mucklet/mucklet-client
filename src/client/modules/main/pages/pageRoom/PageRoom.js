@@ -52,7 +52,7 @@ class PageRoom {
 	 * @param {object} tool Tool object
 	 * @param {string} tool.id Tool ID.
 	 * @param {number} tool.sortOrder Sort order.
-	 * @param {function} tool.componentFactory Tool component factory: function(ctrl, room) -> Component
+	 * @param {(ctrl: CtrlChar, room: RoomModel, state: object, roomState: object) => Component} tool.componentFactory Tool component factory.
 	 * @param {number} [tool.filter] Filter function: function(ctrl, room, canEdit, canDelete, layoutId) -> bool
 	 * @param {string} [tool.type] Target type. May be 'room', 'exit', or 'inRoom'. Defaults to 'room';
 	 * @param {number} [tool.className] Class to give to the list item container.

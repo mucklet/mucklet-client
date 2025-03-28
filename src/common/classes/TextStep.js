@@ -1,8 +1,10 @@
+import { offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import ErrorStep from './ErrorStep';
 import Err from './Err';
 
 /**
  * TextStep consumes a string of text.
+ * @implements {import('types/interfaces/Step').default}
  */
 class TextStep {
 
@@ -51,6 +53,29 @@ class TextStep {
 		state.setParam(this.id, (state.getParam(this.id) || "") + "\n");
 	}
 
+	/**
+	 * Sets the next step.
+	 * @param {Step | null} step Step.
+	 * @returns {this}
+	 */
+	setNext(step) {
+		this.next = step || null;
+	}
+
+	/**
+	 * Gets the next step.
+	 * @returns {Step | null} Next step.
+	 */
+	getNext() {
+		return this.next;
+	}
+
+	/**
+	 * Parses the stream input stream.
+	 * @param {import('@codemirror/language').StringStream | null} stream String stream.
+	 * @param {import('classes/CmdState').default} state Command state.
+	 * @returns {null | string | false} Null if no token, string on token, false if no match
+	 */
 	parse(stream, state) {
 		if (!stream) {
 			return this._setRequired(state);
@@ -86,12 +111,10 @@ class TextStep {
 			state.addStep(this.next);
 		}
 
+		state.setParam(this.id, full);
 		if (this.spanLines && stream.eol()) {
-			state.setParam(this.id, full);
 			state.setState(this.id, true); // True means the first line is set
 			state.addStep(this);
-		} else {
-			state.setParam(this.id, full);
 		}
 
 		return this._token(state);
@@ -106,7 +129,7 @@ class TextStep {
 	 * completer.
 	 * @param {string} str The matched text string
 	 * @param {number} pos The cursor position within the string
-	 * @param {CmdState} state State object
+	 * @param {import('classes/CmdState').default} state State object
 	 * @returns {?object} Completion list in the format: { list, from, to }
 	 */
 	complete(str, pos, state) {
@@ -114,10 +137,7 @@ class TextStep {
 
 		let trimmed = this.trimSpace ? str.trimStart() : str;
 		let diff = str.length - trimmed.length;
-		let range = this.completer.complete(trimmed, pos - diff, state.getCtx(), true);
-		return range
-			? { list: range.list, from: range.from + diff, to: range.to + diff }
-			: null;
+		return offsetCompleteResults(this.completer.complete(trimmed, pos - diff, state.getCtx(), true), diff);
 	}
 
 	formatText() {
@@ -125,8 +145,15 @@ class TextStep {
 	}
 
 	_setRequired(state) {
-		if (!state.getState(this.id) && this.errRequired) {
-			state.setError(this.errRequired(this));
+		if (!state.getState(this.id)) {
+			if (this.errRequired) {
+				state.setError(this.errRequired(this));
+			}
+			// Empty text is still considered a match (without token).
+			state.setParam(this.id, "");
+			if (this.next) {
+				state.addStep(this.next);
+			}
 		}
 		return false;
 	}

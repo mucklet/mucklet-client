@@ -55,7 +55,7 @@ const codemirrorFormattingSyntax = ViewPlugin.fromClass(class {
 			if (token.type) {
 				let step = token.state.step;
 				if (step && step.formatText) {
-					let opt = step.formatText();
+					let opt = step.formatText(token.state);
 					if (opt?.id) {
 						let ft = getItemById(formattedTexts, opt.id);
 						if (!ft) {

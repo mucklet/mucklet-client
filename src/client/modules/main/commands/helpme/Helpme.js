@@ -56,7 +56,7 @@ class Helpme {
 	}
 
 	helpme(ctx, p) {
-		return ctx.char.call('helpme', { msg: p.cmdText == '"' ? p.msg.replace(/"$/, '') : p.msg });
+		return ctx.char.call('helpme', { msg: p.msg });
 	}
 }
 
