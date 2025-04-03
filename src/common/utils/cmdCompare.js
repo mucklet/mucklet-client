@@ -5,5 +5,5 @@
  * @returns {number} Sorting value..
  */
 export default function cmdCompare(a, b) {
-	return (a.priority - b.priority) || a.cmd?.pattern.localeCompare(b.cmd?.pattern) || a.id.localeCompare(b.id);
+	return (b.priority - a.priority) || a.cmd?.pattern.localeCompare(b.cmd?.pattern) || a.id.localeCompare(b.id);
 }
