@@ -7,7 +7,7 @@ import HelpComponent from './HelpComponent';
 import HelpCategory from './HelpCategory';
 import HelpTopic from './HelpTopic';
 import HelpTopics from './HelpTopics';
-import HelpRelatedTopics from './HelpRelatedTopics';
+import HelpRelatedTopics, { txtRelatedTopics, txtRelatedCommands } from './HelpRelatedTopics';
 import './help.scss';
 
 const defaultCategories = [
@@ -292,6 +292,13 @@ class Help {
 			eventBus: this.app.eventBus,
 		});
 
+		// External (other modules) help
+		this.sources = new Collection({
+			idAttribute: m => m.id,
+			compare: sortOrderCompare,
+			eventBus: this.app.eventBus,
+		});
+
 		// Add all default categories
 		for (let cat of defaultCategories) {
 			this.addCategory(typeof cat == 'function' ? cat(this) : cat);
@@ -415,7 +422,7 @@ class Help {
 	 * @param {Array.<string>} topic.alias Topic command aliases (eg. [ "msg", "page" ]).
 	 * @param {string|LocaleString|function} topic.usage Usage HTML string or callback function returning a HTML string.
 	 * @param {string|LocaleString|function} topic.desc Description HTML string or callback function returning a HTML string.
-	 * @param {Array.<string|LocaleString>} topic.examples Topic command examples (eg. [ "create room My room" ]).
+	 * @param {Array.<{ cmd: string, desc: string|LocaleString }>} topic.examples Topic command examples (eg. [{ cmd: "create room My room", desc: "Creates a new room." }]).
 	 * @param {number} topic.sortOrder Sort order.
 	 * @returns {this}
 	 */
@@ -441,6 +448,71 @@ class Help {
 			this._addRemoveTopicToCategories(topic, false);
 		}
 		return this;
+	}
+
+	/**
+	 * Registers a help source that may also provide help info.
+	 * @param {object} source HelpSource object
+	 * @param {string} source.id HelpSource ID.
+	 * @param {(char: CtrlChar, cmd: string) => (null | {title: string|LocaleString, items: Array<{cmd: string, title: string|LocaleString}>})} [source.relatedCategory] Function returning a category of related commands.
+	 * @param {(char: CtrlChar, cmd: string) => (null | Array<{
+	 * 	usage: string|LocaleString|() => (string|LocaleString),
+	 * 	desc?: string|LocaleString|() => (string|LocaleString),
+	 * 	examples: Array.<{ cmd: string, desc: string|LocaleString }> | () => Array.<{ cmd: string, desc: string|LocaleString }>,
+	 * }>)} [source.helpTopics] Function returning an array of help topic precisely matching the command.
+	 * @param {(char: CtrlChar, prefix: string) => (null | Array<string>)} [source.helpTokens] Function returning a list of tokens (words) following a prefix.
+	 * @param {number} source.sortOrder Sort order.
+	 * @returns {this}
+	 */
+	addSource(source) {
+		if (this.sources.get(source.id)) {
+			throw new Error("Help source ID already registered: ", source.id);
+		}
+		this.sources.add(source);
+		return this;
+	}
+
+	/**
+	 * Unregisters a previously registered help source.
+	 * @param {string} sourceId Help source ID.
+	 * @returns {this}
+	 */
+	removeCategory(sourceId) {
+		this.sources.remove(sourceId);
+		return this;
+	}
+
+	/**
+	 * Creates a new help topic component.
+	 * @param {object} topic Topic object.
+	 * @param {string|LocaleString|() => (string|LocaleString)} topic.usage Usage HTML string or callback function returning a HTML string.
+	 * @param {string|LocaleString|() => (string|LocaleString)} [topic.desc] Description HTML string or callback function returning a HTML string.
+	 * @param {Array.<{ cmd: string, desc: string|LocaleString }> | () => Array.<{ cmd: string, desc: string|LocaleString }>} [topic.examples] Topic command examples (eg. [{ cmd: "create room My room", desc: "Creates a new room." }]).
+	 * @returns {HelpTopic} Help topic component.
+	 */
+	newHelpTopic(topic) {
+		return new HelpTopic(this.module, topic);
+	}
+
+	/**
+	 * Checks if a topic or category exists that has the registered command.
+	 * It is used by help sources to determine if a topic already exists.
+	 * @param {string} cmd Command topic.
+	 * @returns {boolean} True if a topic or category is registered.
+	 */
+	helpExists(cmd) {
+		for (let c of this.categories) {
+			if (c.cmd === cmd || c.alias?.includes(cmd)) {
+				return true;
+			}
+		}
+		for (let topicId in this.topics.props) {
+			let t = this.topics.props[topicId];
+			if (t.cmd === cmd || t.alias?.includes(cmd)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	_addRemoveTopicToCategories(topic, add) {
@@ -469,6 +541,24 @@ class Help {
 		}
 	}
 
+	/**
+	 * Shows the help for a command (topic). The cmd must be the registered cmd
+	 * string.
+	 * @param {CtrlChar} char Character to show the help for.
+	 * @param {string} cmd Cmd string as registered with addTopic.
+	 * @returns {boolean} True if shown, otherwise false.
+	 */
+	showTopic(char, cmd) {
+		for (let topicId in this.topics.props) {
+			let t = this.topics.props[topicId];
+			if (t.cmd === cmd) {
+				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t));
+				return true;
+			}
+		}
+		return false;
+	}
+
 	_showHelp(char, cmd) {
 		if (!char) {
 			throw new Error("No active char");
@@ -484,7 +574,7 @@ class Help {
 		let categories = [];
 		let topics = [];
 		for (let c of this.categories) {
-			if (c.cmd === cmd || (c.alias && c.alias.indexOf(cmd) >= 0)) {
+			if (c.cmd === cmd || c.alias?.includes(cmd)) {
 				this.module.charLog.logComponent(char, 'helpCategory', new HelpCategory(this.module, this.categories, c));
 				return;
 			}
@@ -496,8 +586,8 @@ class Help {
 
 		for (let topicId in this.topics.props) {
 			let t = this.topics.props[topicId];
-			if (t.cmd === cmd || (t.alias && t.alias.indexOf(cmd) >= 0)) {
-				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t, cmd));
+			if (t.cmd === cmd || t.alias?.includes(cmd)) {
+				this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, t));
 				return;
 			}
 
@@ -508,7 +598,46 @@ class Help {
 		}
 		topics.sort((a, b) => (a.cmd || a.id).localeCompare(b.cmd || b.id));
 
-		if (!categories.length && !topics.length) {
+		// Check if another help source may have a matching topic.
+		for (let source of this.sources) {
+			let helpTopics = source.helpTopics?.(char, cmd);
+			if (helpTopics?.length) {
+				for (let helpTopic of helpTopics) {
+					this.module.charLog.logComponent(char, 'helpTopic', new HelpTopic(this.module, helpTopic));
+				}
+				return;
+			}
+		}
+
+		// Related sections
+		let related = [
+			// Categories (a.k.a. Rekated topics)
+			...(categories.length
+				? [{
+					title: txtRelatedTopics,
+					items: categories,
+				}]
+				: []
+			),
+			// Topics (a.k.a. Related commands)
+			...(topics.length
+				? [{
+					title: txtRelatedCommands,
+					items: topics,
+				}]
+				: []
+			),
+		];
+
+		// Add related categories from help sources
+		for (let source of this.sources) {
+			let relatedCategory = source.relatedCategory?.(char, cmd);
+			if (relatedCategory) {
+				related.push(relatedCategory);
+			}
+		}
+
+		if (!related.length) {
 			this.module.charLog.logError(char, {
 				code: 'help.topicNotFound',
 				message: 'There is no help topic for "{topic}".',
@@ -517,7 +646,7 @@ class Help {
 			return;
 		}
 
-		this.module.charLog.logComponent(char, 'helpTopic', new HelpRelatedTopics(categories, topics));
+		this.module.charLog.logComponent(char, 'helpTopic', new HelpRelatedTopics(related));
 	}
 
 	_getTopicTokenList(prefix) {
@@ -545,6 +674,7 @@ class Help {
 					}
 				}
 			}
+			// Add topics
 			let props = this.topics.props;
 			for (let k in props) {
 				let matchMain = false;
@@ -562,6 +692,16 @@ class Help {
 						if (a.substring(0, prefix.length) === prefix) {
 							map[a.substring(prefix.length).split(" ")[0]] = true;
 						}
+					}
+				}
+			}
+			// Add from help sources
+			let ctrl = this.module.player.getControlledChar(ctx.charId);
+			for (let source of this.sources) {
+				let tokens = source.helpTokens?.(ctrl, prefix);
+				if (tokens) {
+					for (let t of tokens) {
+						map[t] = true;
 					}
 				}
 			}

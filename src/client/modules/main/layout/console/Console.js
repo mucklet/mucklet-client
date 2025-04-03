@@ -2,7 +2,9 @@ import { Model } from 'modapp-resource';
 import ConsoleComponent from './ConsoleComponent';
 import ConsoleState from './ConsoleState';
 import getCtrlId from 'utils/getCtrlId';
+import mobile from 'is-mobile';
 import './console.scss';
+import listenResource from 'utils/listenResource';
 
 /**
  * Console draws player char menu.
@@ -11,16 +13,18 @@ class Console {
 	constructor(app, params) {
 		this.app = app;
 
+		this.paramsMode = false;
 		this.mode = typeof params.mode == 'string'
 			? params.mode.toLowerCase()
 			: null;
-		if (this.mode != 'touch' && this.mode != 'keyboard') {
+		this.paramsMode = [ 'auto', 'touch', 'keyboard' ].includes(this.mode);
+		if (!this.paramsMode) {
 			this.mode = 'auto';
 		}
 
 		// Bind callbacks
 		this._onActiveChange = this._onActiveChange.bind(this);
-		this._onMediaChange = this._onMediaChange.bind(this);
+		this._updateMode = this._updateMode.bind(this);
 
 		this.app.require([
 			'api',
@@ -29,6 +33,7 @@ class Console {
 			'charLog',
 			'avatar',
 			'media',
+			'consoleModeSettings',
 		], this._init.bind(this));
 	}
 
@@ -40,6 +45,15 @@ class Console {
 
 		this._setListeners(true);
 		this._onActiveChange({ char: this.module.player.getActiveChar() });
+
+		this.module.consoleModeSettings.getSettingsPromise().then(settings => {
+			// Set mode to the parameter mode if one was specified
+			if (this.paramsMode) {
+				settings.set({ consoleMode: this.mode });
+			}
+			this.settings = listenResource(settings, true, this._updateMode);
+			this._updateMode();
+		});
 	}
 
 	getModel() {
@@ -86,9 +100,7 @@ class Console {
 	_setListeners(on) {
 		let cb = on ? 'on' : 'off';
 		this.module.player[cb]('activeChange', this._onActiveChange);
-		if (this.mode == 'auto') {
-			this.module.media.getModel()[cb]('change', this._onMediaChange);
-		}
+		this.module.media.getModel()[cb]('change', this._updateMode);
 	}
 
 	_onActiveChange(ev) {
@@ -115,14 +127,17 @@ class Console {
 		return state;
 	}
 
-	_onMediaChange(ev) {
+	_updateMode(ev) {
 		this.model.set({ mode: this._getMode() });
 	}
 
 	_getMode() {
-		return this.mode == 'auto'
-			? this.module.media.getModel().pointerCoarse ? 'touch' : 'keyboard'
-			: this.mode;
+		let mode = this.settings?.consoleMode || this.mode;
+		return mode == 'auto'
+			? mobile()
+				? 'touch'
+				: 'keyboard'
+			: mode;
 	}
 
 	newConsole(layoutId) {
@@ -131,6 +146,7 @@ class Console {
 
 	dispose() {
 		this._setListeners(false);
+		listenResource(this.settings, false, this._updateMode);
 	}
 }
 

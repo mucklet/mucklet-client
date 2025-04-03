@@ -31,6 +31,32 @@ class DelimStep {
 		return this.delim;
 	}
 
+	/**
+	 * Sets the next step.
+	 * @param {Step | null} step Step.
+	 * @returns {this}
+	 */
+	setNext(step) {
+		this.next = step || null;
+	}
+
+	/**
+	 * Gets the next step.
+	 * @returns {Step | null} Next step.
+	 */
+	getNext() {
+		return this.next;
+	}
+
+	/**
+	 * Sets the else step.
+	 * @param {Step | null} step Step.
+	 * @returns {this}
+	 */
+	setElse(step) {
+		this.else = step || null;
+	}
+
 	parse(stream, state) {
 		if (!stream) {
 			return this._setRequired(state);

@@ -1,0 +1,18 @@
+@import '~scss/variables';
+
+.cmdpattern {
+
+	&--usage {
+		font-family: $font-code;
+		color: $color2;
+	}
+
+	&--field {
+		font-family: $font-code;
+		color: $log-listitem;
+	}
+
+	&--opt {
+		color: $color4-dark;
+	}
+}

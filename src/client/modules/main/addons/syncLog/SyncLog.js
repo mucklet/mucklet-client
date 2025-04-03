@@ -1,7 +1,7 @@
 import getCtrlId from 'utils/getCtrlId';
 
 /**
- * SyncLog is attempts to fetch missing char log entries on connect and
+ * SyncLog attempts to fetch missing char log entries on connect and
  * reconnects.
  */
 class SyncLog {
