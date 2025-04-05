@@ -134,7 +134,7 @@ class Console {
 	_getMode() {
 		let mode = this.settings?.consoleMode || this.mode;
 		return mode == 'auto'
-			? mobile()
+			? mobile({ tablet: true })
 				? 'touch'
 				: 'keyboard'
 			: mode;
