@@ -9,6 +9,8 @@ const txtCharLimitReached = l10n.l('createLimits.charLimitReached', "Character l
 const txtCharProfileLimitReachedPrune = (maxCharProfiles) => l10n.l('createLimits.charProfileLimitReachedPrune', "You've reached the limit of {maxCharProfiles} profiles. Maybe it is time to prune some of them?", { maxCharProfiles });
 const txtProfileLimitReached = l10n.l('createLimits.profileLimitReached', "Profile limit reached");
 const txtRoomProfileLimitReachedPrune = (maxRoomProfiles) => l10n.l('createLimits.roomProfileLimitReachedPrune', "You've reached the limit of {maxRoomProfiles} profiles. Maybe it is time to prune some of them?", { maxRoomProfiles });
+const txtScriptLimitReached = l10n.l('createLimits.scriptLimitReached', "Script limit reached");
+const txtRoomScriptLimitReachedPrune = (maxRoomScripts) => l10n.l('createLimits.roomScriptLimitReachedPrune', "You've reached the limit of {maxRoomScripts} scripts. Maybe you can combine some of them?", { maxRoomScripts });
 const txtImageTooLarge = l10n.l('createLimits.imageTooLarge', "Image too large");
 const txtImageTooLargeResize = (size) => l10n.l('createLimits.imageTooLargeResize', "The max size of an image is {maxSize}. Maybe you can make it a bit smaller by resizing it?", { maxSize: formatByteSize(size) });
 const accountOverviewUrl = HUB_PATH + 'account#overview';
@@ -37,7 +39,7 @@ class CreateLimits {
 	}
 
 	/**
-	 * Validates that owned chars is not at its limit, and that a new character
+	 * Validates that owned chars are not at its limit, and that a new character
 	 * can be created. If limit is reached, a confirm dialog will be opened to
 	 * inform the player. Must not be called prior to being logged in.
 	 * @param {function} cb Callback called if limit is not reached.
@@ -71,7 +73,7 @@ class CreateLimits {
 	}
 
 	/**
-	 * Validates that char profiles is not at its limit, and that a new profile
+	 * Validates that char profiles are not at its limit, and that a new profile
 	 * can be created. If limit is reached, a confirm dialog will be opened to
 	 * inform the player.
 	 * @param {Model} ctrl Controlled character model.
@@ -125,7 +127,7 @@ class CreateLimits {
 	}
 
 	/**
-	 * Validates that room profiles is not at its limit, and that a new profile
+	 * Validates that room profiles are not at its limit, and that a new profile
 	 * can be created. If limit is reached, a confirm dialog will be opened to
 	 * inform the player.
 	 * @param {Collection} profiles Room profiles collection.
@@ -150,6 +152,41 @@ class CreateLimits {
 				body: new Elem(n => n.elem('div', [
 					n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedBody', "You can only have {maxRoomProfiles} profiles per room.", { maxRoomProfiles }), { tagName: 'p' })),
 					n.component(new Txt(l10n.l('createLimits.roomProfileLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxRoomProfiles} profiles.", { supporterMaxRoomProfiles }), { tagName: 'p' })),
+				])),
+				cancel: txtNevermind,
+				size: 'wide',
+			}),
+			// On limit not reached
+			cb,
+		);
+	}
+
+	/**
+	 * Validates that room scripts are not at its limit, and that a new script
+	 * can be created. If limit is reached, a confirm dialog will be opened to
+	 * inform the player.
+	 * @param {Collection} scripts Room scripts collection.
+	 * @param {function} cb Callback called if limit is not reached.
+	 */
+	validateRoomScripts(scripts, cb) {
+		this._limitSelector(
+			scripts.length,
+			this.coreInfo.maxRoomScripts,
+			this.coreInfo.adminMaxRoomScripts,
+			this.coreInfo.supporterMaxRoomScripts,
+			// On limit reached
+			(maxRoomScripts) => this.module.confirm.open(null, {
+				title: txtScriptLimitReached,
+				body: txtRoomScriptLimitReachedPrune(maxRoomScripts),
+				cancel: null,
+			}),
+			// On promote supporter
+			(maxRoomScripts, supporterMaxRoomScripts) => this.module.confirm.open(() => this._redirectToAccount(), {
+				title: txtScriptLimitReached,
+				confirm: txtBecomeSupporter,
+				body: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('createLimits.roomScriptLimitReachedBody', "You can only have {maxRoomScripts} scripts per room.", { maxRoomScripts }), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('createLimits.roomScriptLimitReachedSupporterLink', "By becoming a supporter, you can raise the cap to {supporterMaxRoomScripts} scripts and deploy scripts directly from your development environment.", { supporterMaxRoomScripts }), { tagName: 'p' })),
 				])),
 				cancel: txtNevermind,
 				size: 'wide',
