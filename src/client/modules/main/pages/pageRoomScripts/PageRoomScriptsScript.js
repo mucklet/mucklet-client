@@ -1,8 +1,8 @@
 import { Elem } from 'modapp-base-component';
 import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
-import Collapser from 'components/Collapser';
-import PageRoomScriptsScriptContent from './PageRoomScriptsScriptContent';
+import formatDateTime from 'utils/formatDateTime';
+import FAIcon from 'components/FAIcon';
 
 class PageRoomScriptsScript {
 	constructor(module, ctrl, room, script, model, close) {
@@ -16,40 +16,36 @@ class PageRoomScriptsScript {
 
 	render(el) {
 		this.elem = new ModelComponent(
-			this.model,
-			new Elem(n =>
-				n.elem('div', { className: 'pageroomscripts-script' }, [
-					n.elem('btn', 'div', { className: 'badge btn large', events: {
-						click: () => this._toggleActions(),
-					}}, [
-						n.elem('div', { className: 'badge--select' }, [
-							n.component(this.module.avatar.newRoomImg(this.script, { className: 'badge--icon' })),
-							n.elem('div', { className: 'badge--info large' }, [
-								n.elem('div', { className: 'pageroomscripts-script--title badge--title badge--nowrap' }, [
-									n.component(new ModelTxt(this.script, p => p.keyword)),
-								]),
-								n.elem('div', { className: 'badge--strong badge--nowrap' }, [
-									n.component(new ModelTxt(this.script, p => p.deactivated
-										? l10n.l('pageRoomScripts.deactivated', "Deactivated")
-										: l10n.l('pageRoomScripts.activated', "Activated"),
-									)),
-								]),
-								n.elem('div', { className: 'badge--text badge--nowrap' }, [
-									n.component(new ModelTxt(this.script, p => p.key)),
-								]),
+			this.script,
+			new Elem(n => n.elem('div', { className: 'pageroomscripts-script' }, [
+				n.elem('btn', 'div', { className: 'badge btn' }, [
+					n.elem('div', { className: 'badge--select' }, [
+						n.elem('div', { className: 'badge--info' }, [
+							n.component(new ModelTxt(this.script, m => m.key, { tagName: 'div', className: 'badge--title pageroomscripts-script--title' })),
+							n.component(new ModelTxt(
+								this.script,
+								m => m.updated == m.created
+									? l10n.l('pageCharProfile.created', "Created {created}", { created: formatDateTime(new Date(m.created)) })
+									: l10n.l('pageCharProfile.updated', "Updated {updated}", { updated: formatDateTime(new Date(m.updated)) }),
+								{ tagName: 'div', className: 'badge--text' },
+							)),
+						]),
+						n.elem('div', { className: 'badge--tools' }, [
+							n.elem('activate', 'button', { className: 'iconbtn medium tinyicon', events: {
+								click: (c, ev) => {
+									this._toggleActive();
+									ev.stopPropagation();
+								},
+							}}, [
+								n.component(new FAIcon('power-off')),
 							]),
 						]),
-						n.component('actions', new Collapser(null)),
 					]),
 				]),
-			),
-			(m, c, change) => {
-				if (change && !change.hasOwnProperty('scriptId')) return;
-
-				c.getNode('actions').setComponent(m.scriptId === this.script.id
-					? new PageRoomScriptsScriptContent(this.module, this.ctrl, this.room, this.script, (show) => this._toggleActions(show), this.close)
-					: null,
-				);
+			])),
+			(m, c) => {
+				c[m.active ? 'removeNodeClass' : 'addNodeClass']('btn', 'inactive');
+				c[m.active ? 'addNodeClass' : 'removeNodeClass']('activate', 'primary');
 			},
 		);
 		return this.elem.render(el);
@@ -62,12 +58,11 @@ class PageRoomScriptsScript {
 		}
 	}
 
-	_toggleActions(show) {
-		show = typeof show == 'undefined'
-			? !this.model.scriptId || this.model.scriptId != this.script.id
-			: !!show;
-
-		this.model.set({ scriptId: show ? this.script.id : null });
+	_toggleActive() {
+		this.ctrl.call('setRoomScript', {
+			scriptId: this.script.id,
+			active: !this.script.active,
+		}).catch(err => this.module.toaster.openError(err));
 	}
 
 }

@@ -37,7 +37,7 @@ class PageRoomScriptsComponent {
 				{ className: 'pageroomscripts--script' },
 			)),
 			n.component(new CollectionComponent(
-				this.ctrl.scripts,
+				this.scripts,
 				new Collapser(),
 				(col, c, ev) => c.setComponent(col.length
 					? null
