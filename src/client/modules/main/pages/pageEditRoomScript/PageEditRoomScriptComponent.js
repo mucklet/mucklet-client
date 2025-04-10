@@ -1,14 +1,25 @@
 import { Elem, Txt, Input } from 'modapp-base-component';
-import { ModelComponent, CollectionComponent, ModelTxt } from 'modapp-resource-component';
+import { ModelComponent, CollectionComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
 import { ModifyModel } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import PanelSection from 'components/PanelSection';
 import ModelCollapser from 'components/ModelCollapser';
+import LabelToggleBox from 'components/LabelToggleBox';
+import SimpleBar from 'components/SimpleBar';
 import errToL10n from 'utils/errToL10n';
 import copyToClipboard from 'utils/copyToClipboard';
 import formatByteSize from 'utils/formatByteSize';
+import formatDateTime from 'utils/formatDateTime';
+
+const logLvlClass = {
+	log: 'pageeditroomscript--log-default',
+	debug: 'pageeditroomscript--log-ooc',
+	info: 'pageeditroomscript--log-strong',
+	warn: 'pageeditroomscript--log-cmd',
+	error: 'pageeditroomscript--log-error',
+};
 
 
 class PageEditRoomScriptComponent {
@@ -68,7 +79,7 @@ class PageEditRoomScriptComponent {
 								n.elem('div', { className: 'badge--tools' }, [
 									n.elem('button', { className: 'iconbtn medium tinyicon', events: {
 										click: (c, ev) => {
-											copyToClipboard("#" + this.script.address);
+											this._copyAddressToClipboard();
 											ev.stopPropagation();
 										},
 									}}, [
@@ -116,17 +127,6 @@ class PageEditRoomScriptComponent {
 										]),
 									]),
 								])),
-								// new Elem(n => n.elem('div', [
-								// 	n.elem('link', 'a', {
-								// 		className: 'link',
-								// 		attributes: {
-								// 			download: true,
-								// 		},
-								// 	}, [
-								// 		n.component('filename', new Txt()),
-								// 	]),
-								// 	n.component('size', new Txt()),
-								// ])),
 								(m, c) => {
 									c.setNodeAttribute('link', 'href', m.href);
 									c.getNode('filename').setText(m.filename);
@@ -142,6 +142,101 @@ class PageEditRoomScriptComponent {
 						},
 					),
 				}])),
+
+				// Source code
+				n.component(new ModelCollapser(this.script, [{
+					condition: m => m.source,
+					factory: m => new PanelSection(
+						l10n.l('pageEditRoomScript.sourceCode', "Source code"),
+						new ModelComponent(
+							m,
+							new ModelComponent(
+								m.source,
+								new Elem(n => n.elem('btn', 'div', { className: 'badge' }, [
+									n.elem('div', { className: 'badge--select' }, [
+										n.elem('div', { className: 'badge--info-nopad' }, [
+											n.elem('div', { className: 'flex-row' }, [
+												n.component(new Txt(l10n.l('pageEditRoomScript.time', "Time"), { className: 'badge--iconcol badge--subtitle badge--nowrap' })),
+												n.component('time', new Txt('', { className: 'badge--info badge--strong' })),
+											]),
+											n.elem('div', { className: 'flex-row' }, [
+												n.component(new Txt(l10n.l('pageEditRoomScript.size', "Size"), { className: 'badge--iconcol badge--subtitle' })),
+												n.component('size', new Txt('', { className: 'badge--info badge--text' })),
+											]),
+										]),
+										n.elem('div', { className: 'badge--tools' }, [
+											n.elem('link', 'button', {
+												className: 'iconbtn medium tinyicon',
+												events: {
+													click: (c, ev) => {
+														this.modules.dialogEditRoomScript.open(this.ctrl, this.script.id);
+														ev.stopPropagation();
+													},
+												},
+											}, [
+												n.component(new FAIcon('pencil')),
+											]),
+										]),
+									]),
+								])),
+								(m, c) => {
+									c.setNodeAttribute('link', 'href', m.href);
+									c.getNode('size').setText(formatByteSize(m.size));
+								},
+							),
+							(m, c) => {
+								c.getComponent().getNode('time').setText(formatDateTime(new Date(m.updated)));
+								c.setModel(m.source);
+							},
+						),
+						{
+							className: 'common--sectionpadding',
+							noToggle: true,
+						},
+					),
+				}])),
+
+				// Logs
+				n.component(new PanelSection(
+					l10n.l('pageEditRoomScript.logs', "Logs"),
+					new Elem(n => n.elem('div', { className: 'pageeditroomscript--logscont' }, [
+						n.component(new SimpleBar(
+							new CollectionList(
+								this.script.logs,
+								log => new Elem(n => n.elem('div', { className: 'pageeditroomscript--log' }, [
+									n.component(new Txt(
+										formatDateTime(new Date(log.time), { showMilliseconds: true }),
+										{ className: 'pageeditroomscript--logtime' },
+									)),
+									n.component(new Txt(
+										log.msg,
+										{ className: 'pageeditroomscript--logmsg ' + (logLvlClass[log.lvl] || '') },
+									)),
+								])),
+								{
+									className: 'pageeditroomscript--loglist',
+								},
+							),
+							{
+								className: 'pageeditroomscript--logs',
+								autoHide: false,
+							},
+						)),
+					])),
+					{
+						className: 'common--sectionpadding',
+					},
+				)),
+
+				// Active toggle box
+				n.component(new ModelComponent(
+					this.model,
+					new LabelToggleBox(l10n.l('pageEditRoomScript.isActive', "Is active"), false, {
+						className: 'common--formmargin',
+						onChange: v => this.model.set({ active: v }),
+					}),
+					(m, c) => c.setValue(m.active, false),
+				)),
 
 				// Message
 				n.component(this.message),
@@ -232,6 +327,20 @@ class PageEditRoomScriptComponent {
 		this.ctrl.call('deleteRoomScript', { scriptId: this.script.id })
 			.then(() => this._close())
 			.catch(err => this._setMessage(errToL10n(err)));
+	}
+
+	_copyAddressToClipboard() {
+		copyToClipboard("#" + this.script.address).then(() => this.module.toaster.open({
+			title: l10n.l('pageEditRoomScript.copiedToClipboard', "Copied to clipboard"),
+			content: close => new Elem(n => n.elem('div', [
+				n.component(new Txt(l10n.l('pageEditRoomScript.copiedAddress', "Copied post address to clipboard."), { tagName: 'p' })),
+			])),
+			closeOn: 'click',
+			type: 'success',
+			autoclose: true,
+		})).catch(err => this.module.toaster.openError(err, {
+			title: l10n.l('pageEditRoomScript.failedToCopyToClipboard', "Failed to copy to clipboard"),
+		}));
 	}
 }
 

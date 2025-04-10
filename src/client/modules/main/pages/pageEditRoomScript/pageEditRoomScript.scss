@@ -13,4 +13,47 @@
 	&--postaddress {
 		font-family: $font-code;
 	}
+
+	&--logscont {
+		background: $color1;
+		border-radius: 4px;
+		padding: 4px 4px;
+		height: 400px;
+		position: relative;
+	}
+
+	&--logs {
+		height: 100%;
+	}
+
+	&--loglist {
+		padding: 2px 16px 8px 0px;
+	}
+
+	&--log {
+		padding: 2px 6px;
+	}
+
+	&--logtime {
+		display: block;
+		font-size: $font-size-small;
+		color: $color3;
+	}
+
+	&--logmsg {
+		font-size: $font-size-small;
+		white-space: pre-wrap;
+	}
+
+	&--log {
+		&-log { color: $color4; }
+		&-debug { color: $color4-dark; }
+		&-info { color: $color3; }
+		&-warn { color: $log-cmd; }
+		&-error { color: $log-error; }
+	}
+
+	.simplebar-scrollbar::before {
+		background-color: $color1-lightest;
+	}
 }
