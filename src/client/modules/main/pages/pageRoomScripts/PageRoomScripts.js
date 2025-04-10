@@ -18,8 +18,7 @@ class PageRoomScripts {
 			// 'dialogCreateRoomScript',
 			'confirm',
 			'toaster',
-			// 'updateRoomScripts',
-			// 'pageEditRoomScripts',
+			'pageEditRoomScript',
 			'createLimits',
 		], this._init.bind(this));
 	}

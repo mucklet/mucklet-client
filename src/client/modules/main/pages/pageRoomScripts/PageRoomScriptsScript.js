@@ -18,7 +18,15 @@ class PageRoomScriptsScript {
 		this.elem = new ModelComponent(
 			this.script,
 			new Elem(n => n.elem('div', { className: 'pageroomscripts-script' }, [
-				n.elem('btn', 'div', { className: 'badge btn' }, [
+				n.elem('btn', 'div', {
+					className: 'badge btn',
+					events: {
+						click: (c, ev) => {
+							this.module.pageEditRoomScript.open(this.ctrl, this.room, this.script.id);
+							ev.stopPropagation();
+						},
+					},
+				}, [
 					n.elem('div', { className: 'badge--select' }, [
 						n.elem('div', { className: 'badge--info' }, [
 							n.component(new ModelTxt(this.script, m => m.key, { tagName: 'div', className: 'badge--title pageroomscripts-script--title' })),

@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+.pageeditroomscript {
+	padding: 16px;
+	margin: 0;
+
+	&--scriptid {
+		display: block;
+		color: $color3;
+		font-family: $font-code;
+	}
+
+	&--postaddress {
+		font-family: $font-code;
+	}
+}
