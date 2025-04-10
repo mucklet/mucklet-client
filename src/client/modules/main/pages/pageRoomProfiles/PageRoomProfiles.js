@@ -2,13 +2,13 @@ import { Elem } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import getRoomInstanceId from 'utils/getRoomInstanceId';
-import PageRoomProfileComponent from './PageRoomProfileComponent';
-import './pageRoomProfile.scss';
+import PageRoomProfilesComponent from './PageRoomProfilesComponent';
+import './pageRoomProfiles.scss';
 
 /**
- * PageRoomProfile opens an page in the room panel listing the room's profiles.
+ * PageRoomProfiles opens an page in the room panel listing the room's profiles.
  */
-class PageRoomProfile {
+class PageRoomProfiles {
 	constructor(app, params) {
 		this.app = app;
 		this.app.require([
@@ -55,8 +55,8 @@ class PageRoomProfile {
 				ctrl.id,
 				getRoomInstanceId(room),
 				(ctrl, room, state, close) => ({
-					component: new PageRoomProfileComponent(this.module, profiles, ctrl, room, state, close),
-					title: l10n.l('pageRoomProfile.roomProfile', "Room profiles"),
+					component: new PageRoomProfilesComponent(this.module, profiles, ctrl, room, state, close),
+					title: l10n.l('pageRoomProfiles.roomProfile', "Room profiles"),
 				}),
 				{
 					onClose: () => profiles.off(),
@@ -70,4 +70,4 @@ class PageRoomProfile {
 	}
 }
 
-export default PageRoomProfile;
+export default PageRoomProfiles;

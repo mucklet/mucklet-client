@@ -4,7 +4,7 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
 
-class PageRoomProfileProfileContent {
+class PageRoomProfilesProfileContent {
 	constructor(module, ctrl, room, profile, toggle, close) {
 		this.module = module;
 		this.ctrl = ctrl;
@@ -42,7 +42,7 @@ class PageRoomProfileProfileContent {
 					},
 				}}, [
 					n.component(new FAIcon('user')),
-					n.component(new Txt(l10n.l('pageRoomProfile.apply', "Apply"))),
+					n.component(new Txt(l10n.l('pageRoomProfiles.apply', "Apply"))),
 				]),
 				n.component(new ModelComponent(
 					this.ctrl,
@@ -65,12 +65,12 @@ class PageRoomProfileProfileContent {
 		this.module.confirm.open(() => this.module.updateRoomProfile.updateRoomProfile(this.ctrl, { profileId: this.profile.id })
 			.catch(err => this.module.toaster.openError(err)),
 		{
-			title: l10n.l('pageRoomProfile.confirmRoomProfileUpdate', "Confirm room profile update"),
+			title: l10n.l('pageRoomProfiles.confirmRoomProfileUpdate', "Confirm room profile update"),
 			body: new Elem(n => n.elem('div', [
-				n.component(new Txt(l10n.l('pageRoomProfile.roomProfileUpdateBody', "Do you really wish to overwrite the profile with the room's current appearance?"), { tagName: 'p' })),
+				n.component(new Txt(l10n.l('pageRoomProfiles.roomProfileUpdateBody', "Do you really wish to overwrite the profile with the room's current appearance?"), { tagName: 'p' })),
 				n.elem('p', [ n.component(new ModelTxt(this.profile, m => m.name, { className: 'dialog--strong' })) ]),
 			])),
-			confirm: l10n.l('pageRoomProfile.update', "Update"),
+			confirm: l10n.l('pageRoomProfiles.update', "Update"),
 		});
 	}
 
@@ -86,4 +86,4 @@ class PageRoomProfileProfileContent {
 
 }
 
-export default PageRoomProfileProfileContent;
+export default PageRoomProfilesProfileContent;
