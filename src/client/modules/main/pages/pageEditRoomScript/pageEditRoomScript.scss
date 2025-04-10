@@ -27,16 +27,16 @@
 	}
 
 	&--loglist {
-		padding: 2px 16px 8px 0px;
+		padding: 0px 16px 4px 0px;
 	}
 
 	&--log {
-		padding: 2px 6px;
+		padding: 4px 6px;
 	}
 
 	&--logtime {
 		display: block;
-		font-size: $font-size-small;
+		font-size: $font-size-tiny;
 		color: $color3;
 	}
 
