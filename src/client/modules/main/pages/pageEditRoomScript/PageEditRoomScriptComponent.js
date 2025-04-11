@@ -14,10 +14,10 @@ import formatByteSize from 'utils/formatByteSize';
 import formatDateTime from 'utils/formatDateTime';
 
 const logLvlClass = {
-	log: 'pageeditroomscript--log-default',
-	debug: 'pageeditroomscript--log-ooc',
-	info: 'pageeditroomscript--log-strong',
-	warn: 'pageeditroomscript--log-cmd',
+	log: 'pageeditroomscript--log-log',
+	debug: 'pageeditroomscript--log-debug',
+	info: 'pageeditroomscript--log-info',
+	warn: 'pageeditroomscript--log-warn',
 	error: 'pageeditroomscript--log-error',
 };
 

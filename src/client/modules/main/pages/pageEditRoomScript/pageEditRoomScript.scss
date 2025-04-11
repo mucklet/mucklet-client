@@ -27,22 +27,24 @@
 	}
 
 	&--loglist {
-		padding: 0px 16px 4px 0px;
+		padding: 4px 16px 4px 0px;
 	}
 
 	&--log {
-		padding: 4px 6px;
+		padding: 5px 6px;
 	}
 
 	&--logtime {
 		display: block;
 		font-size: $font-size-tiny;
-		color: $color3;
+		color: $color4-lightestest;
+		line-height: 1.2em;
 	}
 
 	&--logmsg {
 		font-size: $font-size-small;
 		white-space: pre-wrap;
+		line-height: 1.25em;
 	}
 
 	&--log {
