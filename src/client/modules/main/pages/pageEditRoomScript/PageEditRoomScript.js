@@ -13,13 +13,9 @@ class PageEditRoomScript {
 		this.app.require([
 			'api',
 			'roomPages',
-			'pageRoom',
 			'confirm',
-			'avatar',
-			'deleteRoomScript',
+			'dialogEditScriptSource',
 			'toaster',
-			'file',
-			'createLimits',
 		], this._init.bind(this));
 	}
 

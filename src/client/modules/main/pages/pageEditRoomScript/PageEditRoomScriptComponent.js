@@ -107,14 +107,14 @@ class PageEditRoomScriptComponent {
 								m.binary,
 								new Elem(n => n.elem('btn', 'div', { className: 'badge' }, [
 									n.elem('div', { className: 'badge--select' }, [
-										n.elem('div', { className: 'badge--info-nopad' }, [
+										n.elem('div', { className: 'badge--info' }, [
 											n.elem('div', { className: 'flex-row' }, [
 												n.component(new Txt(l10n.l('pageEditRoomScript.file', "File"), { className: 'badge--iconcol badge--subtitle badge--nowrap' })),
-												n.component('filename', new Txt('', { className: 'badge--info badge--strong' })),
+												n.component('filename', new Txt('', { className: 'badge--strong' })),
 											]),
 											n.elem('div', { className: 'flex-row' }, [
 												n.component(new Txt(l10n.l('pageEditRoomScript.size', "Size"), { className: 'badge--iconcol badge--subtitle' })),
-												n.component('size', new Txt('', { className: 'badge--info badge--text' })),
+												n.component('size', new Txt('', { className: 'badge--text' })),
 											]),
 										]),
 										n.elem('div', { className: 'badge--tools' }, [
@@ -169,7 +169,7 @@ class PageEditRoomScriptComponent {
 												className: 'iconbtn medium tinyicon',
 												events: {
 													click: (c, ev) => {
-														this.modules.dialogEditRoomScript.open(this.ctrl, this.script.id);
+														this.module.dialogEditScriptSource.open(this.ctrl, this.script.id);
 														ev.stopPropagation();
 													},
 												},
