@@ -15,6 +15,7 @@ import {
 } from './charLogEvents';
 import CharLogEvent from './CharLogEvent';
 import ErrorEvent from './ErrorEvent';
+import LocalErrorEvent from './LocalErrorEvent';
 import InfoEvent from './InfoEvent';
 import WhisperEvent from './WhisperEvent';
 import DescribeEvent from './DescribeEvent';
@@ -37,6 +38,7 @@ import './charLogHighlight.scss';
 
 const componentFactories = {
 	component: (charId, ev) => ev.component,
+	localError: (charId, ev) => new LocalErrorEvent(charId, ev),
 	error: (charId, ev) => new ErrorEvent(charId, ev),
 	info: (charId, ev) => new InfoEvent(charId, ev),
 	say: (charId, ev) => sayEvent(charId, ev, true),
@@ -286,7 +288,7 @@ class CharLog {
 	}
 
 	/**
-	 * Adds an error event to a character log, generating a local event ID.
+	 * Adds a local error event to a character log, generating a local event ID.
 	 * @param {string} char Controlled character.
 	 * @param {object} err Error object with a message property.
 	 * @param {object}[opt] Optional params.
@@ -296,7 +298,7 @@ class CharLog {
 	logError(char, err, opt) {
 		this.getLog(char).then(l => l.add({
 			id: this._getLogId(),
-			type: 'error',
+			type: 'localError',
 			time: this._getTimestamp(l, opt?.time),
 			error: err,
 			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
