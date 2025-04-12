@@ -1,9 +1,10 @@
-import { Txt } from 'modapp-base-component';
+import { Html } from 'modapp-base-component';
+import formatText from 'utils/formatText';
 import l10n from 'modapp-l10n';
 
-class ErrorEvent extends Txt {
+class ErrorEvent extends Html {
 	constructor(charId, ev) {
-		super(l10n.l(ev.error.code, ev.error.message, ev.error.data), { className: 'charlog--error' });
+		super(formatText(typeof ev.msg == 'string' ? ev.msg : l10n.t(ev.msg)), { tagName: 'div', className: 'charlog--error common--formattext' });
 	}
 }
 
