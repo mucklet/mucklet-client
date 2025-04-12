@@ -22,7 +22,7 @@ $charlog-labelpad: 8px;
 		padding-top: $charlog-textpad;
 	}
 
-	&error, &errorComponent {
+	&error, &errorComponent, &localError {
 		color: $log-error;
 		font-size: $font-size-small;
 		padding-top: $charlog-textpad;
