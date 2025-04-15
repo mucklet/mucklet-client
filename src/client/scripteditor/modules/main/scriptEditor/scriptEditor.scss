@@ -4,4 +4,77 @@
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+
+	&--header {
+		flex: 0 0 auto;
+		background-color: $color1-lighter;
+		position: relative;
+	}
+
+	&--headercontent {
+		height: 64px;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&--headertitle {
+		flex: 1 1 0;
+		display: block;
+		margin-left: 48px;
+		position: relative;
+	}
+
+	&--headerbuttons {
+		flex: 0 0 auto;
+		margin-right: 48px;
+	}
+
+	&--save {
+		width: 128px;
+	}
+
+	&--headertools {
+		position: absolute;
+		z-index: 400;
+		top: 26px;
+		right: 40px;
+	}
+
+	&--main {
+		flex: 1 1 0px;
+		position: relative;
+		overflow-y: auto;
+		overflow-y: overlay;
+	}
+}
+
+@media screen and (max-width: 900px) {
+
+	.scripteditor {
+		&--header {
+			position: fixed;
+			width: 100%;
+			z-index: 1;
+		}
+
+		&--main {
+			margin-top: 52px;
+		}
+
+		&--headertools {
+			top: 16px;
+			right: 16px;
+		}
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.scripteditor-common--container {
+		padding: 24px 0;
+	}
 }
