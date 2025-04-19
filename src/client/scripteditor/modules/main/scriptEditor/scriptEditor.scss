@@ -51,6 +51,65 @@
 		overflow-y: auto;
 		overflow-y: overlay;
 	}
+
+	&--simplebar {
+		height: 100%;
+		width: 100%;
+	}
+
+	// Theme
+	.cm-editor {
+		min-height: 100%;
+		background: $color1;
+	}
+	.cm-scroller {
+		overflow: visible;
+	}
+	.cm-gutters {
+		background-color: $color1;
+		border: none;
+	}
+
+	// Style
+	&--keyword {
+		color: $color4;
+	}
+	&--name {
+		color: $color4;
+	}
+	&--variable {
+		color: $color4;
+	}
+	&--constant {
+		color: $color4;
+	}
+	&--separator {
+		color: $color4;
+	}
+	&--type {
+		color: $color4;
+	}
+	&--operator {
+		color: $color4;
+	}
+	&--comment {
+		color: $color4;
+	}
+	&--link {
+		color: $color4;
+	}
+	&--heading {
+		color: $color4;
+	}
+	&--bool {
+		color: $color4;
+	}
+	&--string {
+		color: $color4;
+	}
+	&--invalid {
+		color: $color4;
+	}
 }
 
 @media screen and (max-width: 900px) {
