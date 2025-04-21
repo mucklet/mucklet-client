@@ -1,6 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
-import SimpleBar from 'components/SimpleBar';
 import l10n from 'modapp-l10n';
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorState } from "@codemirror/state";
@@ -34,14 +33,6 @@ class ScriptEditorComponent {
 		this.module = module;
 		this.model = model;
 		this.user = user;
-
-		this.simpleBar = new SimpleBar(
-			null,
-			{
-				className: 'scripteditor--simplebar',
-				autoHide: false,
-			},
-		);
 	}
 
 	render(el) {
@@ -97,9 +88,7 @@ class ScriptEditorComponent {
 				// 	),
 				// )),
 			]),
-			n.elem('div', { className: 'scripteditor--main' }, [
-				n.component(this.simpleBar),
-			]),
+			n.elem('main', 'div', { className: 'scripteditor--main' }),
 		]));
 		let rel = this.elem.render(el);
 		this._createEditor();
@@ -120,7 +109,7 @@ class ScriptEditorComponent {
 	 * @param {object} state State object
 	 */
 	_createEditor(state) {
-		let rel = this.simpleBar.getContentElement();
+		let rel = this.elem?.getNode('main');
 		if (rel) {
 			this.cm = new EditorView({
 				state: this._newEditorState(),

@@ -48,22 +48,37 @@
 	&--main {
 		flex: 1 1 0px;
 		position: relative;
-		overflow-y: auto;
-		overflow-y: overlay;
-	}
-
-	&--simplebar {
-		height: 100%;
-		width: 100%;
+		overflow: hidden;
 	}
 
 	// Theme
 	.cm-editor {
-		min-height: 100%;
+		width: 100%;
+		height: 100%;
 		background: $color1;
 	}
 	.cm-scroller {
-		overflow: visible;
+		overflow: auto;
+		scrollbar-color: $color1-lightest transparent;
+		&::-webkit-scrollbar {
+			width: 12px;
+			height: 12px;
+			background-color: transparent;
+		}
+		&::-webkit-scrollbar-corner {
+			background-color: transparent;
+		}
+		&::-webkit-scrollbar-track {
+			background: $color1;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: $color1-lightest;
+			border: 2px solid $color1;
+			border-radius: 6px;
+		}
+		&::-webkit-scrollbar-thumb:hover {
+			background: lighten($color1, 18%);
+		}
 	}
 	.cm-gutters {
 		background-color: $color1;
@@ -115,15 +130,15 @@
 @media screen and (max-width: 900px) {
 
 	.scripteditor {
-		&--header {
-			position: fixed;
-			width: 100%;
-			z-index: 1;
-		}
+		// &--header {
+		// 	position: fixed;
+		// 	width: 100%;
+		// 	z-index: 1;
+		// }
 
-		&--main {
-			margin-top: 52px;
-		}
+		// &--main {
+		// 	margin-top: 64px;
+		// }
 
 		&--headertools {
 			top: 16px;
