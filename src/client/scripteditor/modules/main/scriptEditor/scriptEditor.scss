@@ -81,49 +81,56 @@
 		}
 	}
 	.cm-gutters {
+		color: $color4-darker;
 		background-color: $color1;
 		border: none;
+	}
+	.cm-activeLineGutter {
+		background-color: $color1-light;
+	}
+	.cm-lineNumbers .cm-gutterElement {
+		padding-right: 12px;
 	}
 
 	// Style
 	&--keyword {
-		color: $color4;
+		color: $color2;
 	}
 	&--name {
-		color: $color4;
+		color: $color3;
 	}
 	&--variable {
-		color: $color4;
+		color: $color3;
 	}
 	&--constant {
-		color: $color4;
+		color: $color3;
 	}
 	&--separator {
-		color: $color4;
+		color: $color3;
 	}
 	&--type {
-		color: $color4;
+		color: $color2;
 	}
 	&--operator {
 		color: $color4;
 	}
 	&--comment {
-		color: $color4;
+		color: $color4-dark;
 	}
 	&--link {
-		color: $color4;
+		color: $color6;
 	}
 	&--heading {
-		color: $color4;
+		color: $color2;
 	}
 	&--bool {
-		color: $color4;
+		color: $color2;
 	}
 	&--string {
-		color: $color4;
+		color: $color6;
 	}
 	&--invalid {
-		color: $color4;
+		color: $log-error;
 	}
 }
 
