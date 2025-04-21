@@ -58,7 +58,7 @@ class DialogEditScriptSource {
 					}))
 			).then(source => {
 
-				window.open('scripteditor/', 'script#' + scriptId);
+				window.open('scripteditor/#editscript/' + encodeURIComponent(scriptId), 'script#' + scriptId);
 				// let model = new ModifyModel({ source }, { eventBus: this.app.eventBus });
 
 				// // Source code text area

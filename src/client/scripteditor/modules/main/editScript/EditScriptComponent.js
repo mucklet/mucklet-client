@@ -10,12 +10,13 @@ import {
 } from "@codemirror/view";
 import {
 	defaultHighlightStyle, syntaxHighlighting, indentOnInput,
-	bracketMatching, foldGutter, foldKeymap,
+	bracketMatching, indentUnit, //, foldGutter, foldKeymap,
 } from "@codemirror/language";
 import {
 	defaultKeymap, history, historyKeymap,
+	indentWithTab,
 } from "@codemirror/commands";
-import { muckletStyle } from "./ScriptEditorTheme";
+import { muckletStyle } from "./EditScriptTheme";
 // import {
 // 	searchKeymap, highlightSelectionMatches,
 // } from "@codemirror/search";
@@ -25,70 +26,42 @@ import { muckletStyle } from "./ScriptEditorTheme";
 // } from "@codemirror/autocomplete";
 
 /**
- * ScriptEditorComponent renders the script editor.
+ * EditScriptEditor renders the script editor.
  */
-class ScriptEditorComponent {
+class EditScriptEditor {
 
-	constructor(module, model, user) {
+	constructor(module, roomScript, source) {
 		this.module = module;
-		this.model = model;
-		this.user = user;
+		this.roomScript = roomScript;
+		this.source = source;
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'scripteditor' }, [
-			n.elem('div', { className: 'scripteditor--header' }, [
-				// n.component(new Context(
-				// 	() => new CollectionWrapper(this.module.self.getTools(), {
-				// 		filter: t => !t.type || t.type == 'header' && (t.filter ? t.filter() : true),
-				// 	}),
-				// 	tools => tools.dispose(),
-				// 	tools => new CollectionList(
-				// 		tools,
-				// 		t => t.componentFactory(),
-				// 		{
-				// 			className: 'scripteditor--headertools',
-				// 			subClassName: t => t.className || null,
-				// 			horizontal: true,
-				// 		},
-				// 	),
-				// )),
-				n.elem('div', { className: 'scripteditor--headercontent' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'editscript' }, [
+			n.elem('div', { className: 'editscript--header' }, [
+				n.elem('div', { className: 'editscript--headercontent' }, [
 					// Title
-					n.component(new Txt("Script editor", { tagName: 'h2', className: 'scripteditor--headertitle' })),
-
+					n.component(new Txt("Script editor", { tagName: 'h2', className: 'editscript--headertitle' })),
+					// Script info
+					n.elem('div', { className: 'editscript--headerinfo' }, [
+						n.component(new ModelTxt(this.roomScript.room, m => m?.name || '', { className: 'editscript--headerinfo-room' })),
+						n.component(new ModelTxt(this.roomScript, m => m.key || '', { className: 'editscript--headerinfo-key' })),
+					]),
 					// Buttons
-					n.elem('div', { className: 'scripteditor--headerbuttons' }, [
+					n.elem('div', { className: 'editscript--headerbuttons' }, [
 						n.elem('button', {
 							events: { click: () => this._onSave() },
-							className: 'btn primary scripteditor--save',
+							className: 'btn primary editscript--save',
 						}, [
-							n.component(new ModelTxt(this.model, m => m.isModified
-								? l10n.l('scriptEditor.saveChanges', "Save changes")
-								: l10n.l('scriptEditor.close', "Close"),
+							n.component(new ModelTxt(this.roomScript, m => m.isModified
+								? l10n.l('editScript.saveChanges', "Save changes")
+								: l10n.l('editScript.close', "Close"),
 							)),
 						]),
 					]),
 				]),
-
-
-				// n.component(new Context(
-				// 	() => new CollectionWrapper(this.module.self.getTools(), {
-				// 		filter: t => !t.type || t.type == 'logo' && (t.filter ? t.filter() : true),
-				// 	}),
-				// 	tools => tools.dispose(),
-				// 	tools => new CollectionList(
-				// 		tools,
-				// 		t => t.componentFactory(),
-				// 		{
-				// 			className: 'scripteditor--logotools flex-1 flex-row sm',
-				// 			subClassName: t => t.className || null,
-				// 			horizontal: true,
-				// 		},
-				// 	),
-				// )),
 			]),
-			n.elem('main', 'div', { className: 'scripteditor--main' }),
+			n.elem('main', 'div', { className: 'editscript--main' }),
 		]));
 		let rel = this.elem.render(el);
 		this._createEditor();
@@ -127,12 +100,10 @@ class ScriptEditorComponent {
 
 	_newEditorState() {
 		return EditorState.create({
-			doc: "Start document",
+			doc: this.source,
 			extensions: [
 				// A line number gutter
 				lineNumbers(),
-				// A gutter with code folding markers
-				foldGutter(),
 				// Replace non-printable characters with placeholders
 				highlightSpecialChars(),
 				// The undo history
@@ -163,6 +134,9 @@ class ScriptEditorComponent {
 				highlightActiveLineGutter(),
 				// // Highlight text that matches the selected text
 				// highlightSelectionMatches(),
+				// // Indentation
+				indentUnit.of("\t"),
+				// Keymap
 				keymap.of([
 					// // Closed-brackets aware backspace
 					// ...closeBracketsKeymap,
@@ -172,12 +146,11 @@ class ScriptEditorComponent {
 					// ...searchKeymap,
 					// Redo/undo keys
 					...historyKeymap,
-					// Code folding bindings
-					...foldKeymap,
 					// // Autocompletion keys
 					// ...completionKeymap,
 					// // Keys related to the linter system
 					// ...lintKeymap,
+					indentWithTab,
 				]),
 				javascript({ typescript: true }),
 				muckletStyle,
@@ -193,4 +166,4 @@ class ScriptEditorComponent {
 	}
 }
 
-export default ScriptEditorComponent;
+export default EditScriptEditor;

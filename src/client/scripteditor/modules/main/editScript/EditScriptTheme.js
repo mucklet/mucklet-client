@@ -119,35 +119,35 @@ export const muckletTheme = EditorView.theme({
 export const muckletHighlightStyle = HighlightStyle.define([
 	{
 		tag: t.keyword,
-		class: 'scripteditor--keyword',
+		class: 'editscript--keyword',
 	},
 	{
-		tag: [ t.name, t.deleted, t.character, t.propertyName, t.macroName ],
-		class: 'scripteditor--name',
+		tag: [ t.name, t.deleted, t.character, t.propertyName, t.macroName, t.className ],
+		class: 'editscript--name',
 	},
 	{
 		tag: [ t.function(t.variableName), t.labelName ],
-		class: 'scripteditor--variable',
+		class: 'editscript--variable',
 	},
 	{
 		tag: [ t.color, t.constant(t.name), t.standard(t.name) ],
-		class: 'scripteditor--constant',
+		class: 'editscript--constant',
 	},
 	{
 		tag: [ t.definition(t.name), t.separator ],
-		class: 'scripteditor--separator',
+		class: 'editscript--separator',
 	},
 	{
-		tag: [ t.typeName, t.className, t.number, t.changed, t.annotation, t.modifier, t.self, t.namespace ],
-		class: 'scripteditor--type',
+		tag: [ t.typeName, t.changed, t.annotation, t.modifier, t.self, t.namespace ],
+		class: 'editscript--type',
 	},
 	{
 		tag: [ t.operator, t.operatorKeyword, t.url, t.escape, t.regexp, t.link, t.special(t.string) ],
-		class: 'scripteditor--operator',
+		class: 'editscript--operator',
 	},
 	{
 		tag: [ t.meta, t.comment ],
-		class: 'scripteditor--comment',
+		class: 'editscript--comment',
 	},
 	{
 		tag: t.strong,
@@ -163,23 +163,23 @@ export const muckletHighlightStyle = HighlightStyle.define([
 	},
 	{
 		tag: t.link,
-		class: 'scripteditor--link',
+		class: 'editscript--link',
 	},
 	{
 		tag: t.heading,
-		class: 'scripteditor--heading',
+		class: 'editscript--heading',
 	},
 	{
 		tag: [ t.atom, t.bool, t.special(t.variableName) ],
-		class: 'scripteditor--bool',
+		class: 'editscript--bool',
 	},
 	{
-		tag: [ t.processingInstruction, t.string, t.inserted ],
-		class: 'scripteditor--string',
+		tag: [ t.processingInstruction, t.string, t.inserted, t.number ],
+		class: 'editscript--string',
 	},
 	{
 		tag: t.invalid,
-		class: 'scripteditor--invalid',
+		class: 'editscript--invalid',
 	},
 ]);
 

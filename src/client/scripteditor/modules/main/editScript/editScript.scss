@@ -1,9 +1,12 @@
 @import '~scss/variables';
 
-.scripteditor {
+.editscript, .editscript-container {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+}
+
+.editscript {
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
@@ -27,6 +30,19 @@
 		display: block;
 		margin-left: 48px;
 		position: relative;
+	}
+
+	&--headerinfo {
+		display: flex;
+		flex-direction: column;
+		font-size: $font-size-small;
+		padding-right: 48px;
+	}
+	&--headerinfo-room {
+		color: $color3;
+	}
+	&--headerinfo-keyword {
+		color: $color4;
 	}
 
 	&--headerbuttons {
@@ -136,26 +152,11 @@
 
 @media screen and (max-width: 900px) {
 
-	.scripteditor {
-		// &--header {
-		// 	position: fixed;
-		// 	width: 100%;
-		// 	z-index: 1;
-		// }
-
-		// &--main {
-		// 	margin-top: 64px;
-		// }
-
-		&--headertools {
-			top: 16px;
-			right: 16px;
-		}
-	}
+	// .editscript {}
 }
 
 @media screen and (max-width: 720px) {
-	.scripteditor-common--container {
+	.editscript-common--container {
 		padding: 24px 0;
 	}
 }
