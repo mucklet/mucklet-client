@@ -50,9 +50,26 @@
 		margin-right: 48px;
 	}
 
-	&--save {
-		width: 128px;
+	&--errorsbtn {
+		position: absolute;
+		z-index: 10;
+		top: 72px;
+		right: 8px;
 	}
+
+	&--errors {
+		flex: 0 0 auto;
+	}
+
+	&--erroricon {
+		color: $color5;
+	}
+
+
+
+	// &--save {
+	// 	width: 200px;
+	// }
 
 	&--headertools {
 		position: absolute;
@@ -63,8 +80,22 @@
 
 	&--main {
 		flex: 1 1 0px;
+		display: flex;
+		flex-direction: row;
 		position: relative;
 		overflow: hidden;
+	}
+
+	&--editor {
+		flex: 1 1 0px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	&--errorpanel {
+		flex: 0 0 auto;
+		width: 318px;
+		background-color: $color1-light;
 	}
 
 	// Theme
@@ -147,6 +178,38 @@
 	}
 	&--invalid {
 		color: $log-error;
+	}
+}
+
+.editscript-errors {
+	height: 8em;
+	background-color: $color1-lighter;
+	padding: 8px 48px 16px 16px;
+	position: relative;
+
+
+	&--cont {
+		background: $color1;
+		border-radius: 4px;
+		position: relative;
+		height: 100%;
+	}
+
+	&--simplebar {
+		height: 100%;
+		padding: 8px 8px;
+	}
+
+	&--text {
+		font-family: $font-code;
+		font-size: $font-size-small;
+		color: $color5;
+		white-space: pre;
+	}
+
+	&--errors {
+		font-family: $font-code;
+		font-size: $font-size-small;
 	}
 }
 

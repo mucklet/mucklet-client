@@ -24,6 +24,8 @@ class EditScript {
 			'auth',
 			'api',
 			'editorLayout',
+			'confirm',
+			'toaster',
 		], this._init.bind(this));
 	}
 
@@ -33,12 +35,14 @@ class EditScript {
 		 * 	router: import('modules/router/Router').default,
 		 * 	auth: import('modules/auth/Auth').default,
 		 * 	api: import('modules/auth/Api').default,
+		* 	confirm: import('modules/confirm/Confirm').default,
+		* 	toaster: import('modules/toaster/Toaster').default,
 		 * 	editorLayout: import('../editorLayout/EditorLayout').default,
 		 * }}
 		 */
 		this.module = Object.assign({ self: this }, module);
 
-		this.model = new Model({ data: { roomScript: null, source: '' }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { roomScript: null, source: '', version: null }, eventBus: this.app.eventBus });
 
 		this.module.router.addRoute({
 			id: 'editscript',
@@ -54,23 +58,12 @@ class EditScript {
 					.then(user => this.module.api.get(`core.roomscript.${params.scriptId}.details`))
 					.then(roomScript => {
 						roomScript.on();
-						return (!roomScript.source || isResError(roomScript.source)
-							? Promise.reject(roomScript.source || new Err('editScript.noSource', "The room script source code is not available."))
-							: this.module.auth.refreshTokens()
-								.then(() => {
-									return fetch(roomScript.source.href, {
-										credentials: 'include',
-									}).then(response => {
-										if (response.status >= 300) {
-											throw response.text();
-										};
-										return response.text()
-											.then(source => this._setState({ roomScript, source }));
-									}).catch(err => {
-										throw new Err('dialogEditScriptSource.errorFetchingScript', "Error fetching script: {err}", { err: String(err) });
-									});
-								})
-						).finally(() => roomScript.off());
+						// Store version in variables to avoid race issues if
+						// version changes while fetching the source.
+						let version = roomScript.version;
+						return this.fetchRoomScriptSource(roomScript)
+							.then(source => this._setState({ roomScript, source, version }))
+							.finally(() => roomScript.off());
 					})
 					.catch(error => this._setState({ error }));
 			},
@@ -87,8 +80,35 @@ class EditScript {
 		return this.model.set({
 			roomScript: relistenResource(this.model.roomScript, props.roomScript),
 			source: props.source || '',
+			version: props.version || null,
 			error: props.error || null,
 		});
+	}
+
+	/**
+	 * Fetches the source for a room script. If the room script contains no
+	 * source (uses a binary file), or if an error occurrs, the promise will be
+	 * rejected.
+	 * @param {RoomScriptDetails} roomScript Room script details model.
+	 */
+	fetchRoomScriptSource(roomScript) {
+		let source = roomScript.source;
+		return (!source || isResError(source)
+			? Promise.reject(source || new Err('editScript.noSource', "The room script source code is not available."))
+			: this.module.auth.refreshTokens()
+				.then(() => {
+					return fetch(source.href, {
+						credentials: 'include',
+					}).then(response => {
+						if (response.status >= 300) {
+							throw response.text();
+						};
+						return response.text();
+					}).catch(err => {
+						throw new Err('dialogEditScriptSource.errorFetchingScript', "Error fetching script: {err}", { err: String(err) });
+					});
+				})
+		);
 	}
 
 	/**

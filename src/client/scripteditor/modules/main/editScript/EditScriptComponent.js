@@ -1,43 +1,85 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import { ModifyModel, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { javascript } from '@codemirror/lang-javascript';
-import { EditorState } from "@codemirror/state";
+import { EditorState } from '@codemirror/state';
 import {
 	EditorView, keymap, highlightSpecialChars, drawSelection,
 	highlightActiveLine, dropCursor, rectangularSelection,
 	crosshairCursor, lineNumbers, highlightActiveLineGutter,
-} from "@codemirror/view";
+} from '@codemirror/view';
 import {
 	defaultHighlightStyle, syntaxHighlighting, indentOnInput,
-	bracketMatching, indentUnit, //, foldGutter, foldKeymap,
-} from "@codemirror/language";
+	bracketMatching, indentUnit,
+} from '@codemirror/language';
 import {
 	defaultKeymap, history, historyKeymap,
 	indentWithTab,
-} from "@codemirror/commands";
-import { muckletStyle } from "./EditScriptTheme";
-// import {
-// 	searchKeymap, highlightSelectionMatches,
-// } from "@codemirror/search";
-// import {
-// 	autocompletion, completionKeymap, closeBrackets,
-// 	closeBracketsKeymap,
-// } from "@codemirror/autocomplete";
+} from '@codemirror/commands';
+import SpinnerModal from 'components/SpinnerModal';
+import ModelFader from 'components/ModelFader';
+import ModelCollapser from 'components/ModelCollapser';
+import FAIcon from 'components/FAIcon';
+import isError from 'utils/isError';
+import { muckletStyle } from './EditScriptTheme';
+import EditScriptErrors from './EditScriptErrors';
 
 /**
  * EditScriptEditor renders the script editor.
  */
 class EditScriptEditor {
 
-	constructor(module, roomScript, source) {
+	constructor(module, roomScript, source, version) {
 		this.module = module;
 		this.roomScript = roomScript;
 		this.source = source;
+		this.version = version;
+
+		this._onEditorUpdate = this._onEditorUpdate.bind(this);
+		this.compiling = false;
+		this.spinner = null;
+
+		this.sourceModel = new Model({
+			data: {
+				source,
+			},
+		});
+
+		this.model = new Model({
+			data: {
+				errorsOpen: false,
+				errors: null,
+			},
+		});
 	}
 
 	render(el) {
+		this.modifyModel = new ModifyModel(this.sourceModel, { props: { source: this.source }});
 		this.elem = new Elem(n => n.elem('div', { className: 'editscript' }, [
+
+			// Toggle button for script errors
+			n.component(new ModelFader(this.model, [{
+				condition: m => m.errors,
+				factory: m => new Elem(n => n.elem('button', {
+					className: 'iconbtn medium editscript--errorsbtn lighten',
+					events: {
+						click: () => this._toggleErrors(),
+					},
+				}, [
+					n.component(new ModelFader(this.model, [
+						{
+							condition: m => m.errorsOpen,
+							factory: m => new FAIcon('times'),
+						},
+						{
+							factory: m => new FAIcon('exclamation-triangle', { className: 'editscript--erroricon' }),
+						},
+					])),
+				])),
+			}])),
+
+			// Header
 			n.elem('div', { className: 'editscript--header' }, [
 				n.elem('div', { className: 'editscript--headercontent' }, [
 					// Title
@@ -49,30 +91,53 @@ class EditScriptEditor {
 					]),
 					// Buttons
 					n.elem('div', { className: 'editscript--headerbuttons' }, [
-						n.elem('button', {
-							events: { click: () => this._onSave() },
-							className: 'btn primary editscript--save',
-						}, [
-							n.component(new ModelTxt(this.roomScript, m => m.isModified
-								? l10n.l('editScript.saveChanges', "Save changes")
-								: l10n.l('editScript.close', "Close"),
-							)),
-						]),
+						n.component(new ModelComponent(
+							this.modifyModel,
+							new Elem(n => n.elem('compile', 'button', {
+								events: {
+									click: () => {
+										if (!this.compiling) {
+											this._onSave(this.modifyModel.source);
+										}
+									},
+								},
+								className: 'btn primary editscript--save',
+							}, [
+								n.component(new Txt(l10n.l('editScript.compileAndUpdate', "Compile & Update"))),
+							])),
+							(m, c) => c.setProperty('disabled', m.isModified ? null : true),
+						)),
 					]),
 				]),
 			]),
-			n.elem('main', 'div', { className: 'editscript--main' }),
+
+			// Errors
+			n.component(new ModelCollapser(this.model, [{
+				condition: m => m.errorsOpen,
+				factory: m => m.errors,
+			}], { className: 'editscript--errors' })),
+
+			// Main
+			n.elem('div', { className: 'editscript--main' }, [
+				n.elem('editor', 'div', { className: 'editscript--editor' }),
+			]),
 		]));
+
 		let rel = this.elem.render(el);
 		this._createEditor();
+		this._setSpinner(this.compiling);
 		return rel;
 	}
 
 	unrender() {
 		if (this.elem) {
+			this._setSpinner(false);
 			this._destroyEditor();
 			this.elem.unrender();
 			this.elem = null;
+			this.source = this.modifyModel.source;
+			this.modifyModel.dispose();
+			this.modifyModel = null;
 		}
 	}
 
@@ -82,7 +147,7 @@ class EditScriptEditor {
 	 * @param {object} state State object
 	 */
 	_createEditor(state) {
-		let rel = this.elem?.getNode('main');
+		let rel = this.elem?.getNode('editor');
 		if (rel) {
 			this.cm = new EditorView({
 				state: this._newEditorState(),
@@ -120,10 +185,6 @@ class EditScriptEditor {
 				syntaxHighlighting(defaultHighlightStyle),
 				// Highlight matching brackets near cursor
 				bracketMatching(),
-				// // Automatically close brackets
-				// closeBrackets(),
-				// // Load the autocompletion system
-				// autocompletion(),
 				// Allow alt-drag to select rectangular regions
 				rectangularSelection(),
 				// Change the cursor to a crosshair when holding alt
@@ -132,37 +193,122 @@ class EditScriptEditor {
 				highlightActiveLine(),
 				// Style the gutter for current line specially
 				highlightActiveLineGutter(),
-				// // Highlight text that matches the selected text
-				// highlightSelectionMatches(),
 				// // Indentation
 				indentUnit.of("\t"),
 				// Keymap
 				keymap.of([
-					// // Closed-brackets aware backspace
-					// ...closeBracketsKeymap,
 					// A large set of basic bindings
 					...defaultKeymap,
-					// // Search-related keys
-					// ...searchKeymap,
 					// Redo/undo keys
 					...historyKeymap,
-					// // Autocompletion keys
-					// ...completionKeymap,
-					// // Keys related to the linter system
-					// ...lintKeymap,
+					// Indentation with tab
 					indentWithTab,
 				]),
 				javascript({ typescript: true }),
 				muckletStyle,
+				EditorView.updateListener.of(this._onEditorUpdate),
 			],
 		});
 	}
 
 
-	_onSave() {
-		window.opener?.focus();
-		window.close();
-		// console.error("not implemented");
+	_onSave(source) {
+		if (this.roomScript.version != this.version) {
+			this.module.confirm.open(() => this._setSource(source), {
+				title: l10n.l('editScript.confirmUpdate', "Confirm update"),
+				body: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('editScript.confirmUpdateBody1', "The script has been updated while you were editing it."), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('editScript.confirmUpdateBody2', "Do you still wish to update?"), { tagName: 'p' })),
+				])),
+				confirm: l10n.l('editScript.update', "Update"),
+			});
+		} else {
+			this._setSource(source);
+		}
+	}
+
+	_onEditorUpdate(update) {
+		let view = update.view;
+		this.modifyModel?.set({ source: view.state.doc.toString() });
+	}
+
+	_setSource(source) {
+		if (this.compiling) {
+			console.error("already compiling");
+			return;
+		}
+		this.compiling = true;
+		this._setSpinner(true);
+		this.roomScript.call('set', { source })
+			.then((result) => {
+				this._setErrors('', false);
+				this.module.toaster.open({
+					title: l10n.l('editScript.scriptUpdated', "Script updated"),
+					content: close => new Elem(n => n.elem('div', [
+						n.component(new Txt(l10n.l('editScript.scriptUpdatedInfo', "The script was updated successfully."), { tagName: 'p' })),
+					])),
+					closeOn: 'click',
+					type: 'success',
+					autoclose: true,
+				});
+				this.sourceModel.set({ source });
+				this.version = result.version;
+			})
+			.catch(err => {
+				if (isError(err, 'core.compileError')) {
+					this._setErrors(err.message, true);
+					this.module.toaster.open({
+						title: l10n.l('editScript.compileError', "Update failed"),
+						content: close => new Elem(n => n.elem('div', [
+							n.component(new Txt(l10n.l('editScript.compileErrorInfo', "Update failed due to compilation errors."), { tagName: 'p' })),
+						])),
+						closeOn: 'click',
+						type: 'warn',
+						autoclose: true,
+					});
+				} else {
+					this.module.confirm.openError(err);
+				}
+			})
+			.finally(() => {
+				this.compiling = false;
+				this._setSpinner(false);
+			});
+	}
+
+	_setSpinner(show) {
+		if (show) {
+			if (!this.spinner) {
+				this.spinner = new SpinnerModal();
+				this.spinner.render(document.body);
+			}
+		} else {
+			if (this.spinner) {
+				this.spinner.unrender();
+				this.spinner = null;
+			}
+		}
+	}
+
+	/**
+	 * Sets the compiler errors.
+	 * @param {string} errText Error text.
+	 * @param {boolean} [open] Flag to tell if the errors should be open. Remains as is if omitted.
+	 */
+	_setErrors(errText, open) {
+		if (errText) {
+			let errors = this.model.errors?.setError(errText) || new EditScriptErrors(errText);
+			this.model.set({ errors, errorsOpen: typeof open == 'boolean' ? open : this.model.errorsOpen });
+		} else {
+			this.model.set({ errors: null, errorsOpen: false });
+		}
+	}
+
+	_toggleErrors(open) {
+		open = this.model.errors
+			? typeof open == 'undefined' ? !this.model.errorsOpen : !!open
+			: false;
+		this.model.set({ errorsOpen: open });
 	}
 }
 
