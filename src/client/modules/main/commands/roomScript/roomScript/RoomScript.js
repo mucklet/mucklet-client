@@ -13,7 +13,7 @@ const shortDesc = "Show room script info";
 const helpText =
 `<p>Show detailed info and source code content of a room script.</p>
 <p>For info on how to create a room script, type: <code>help create roomscript</code></p>
-<p class="common--formattext">For more information and script examples, see the <a href="https://github.com/mucklet/mucklet-script#readme" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
+<p class="common--formattext">For more information and script examples, see the <a href="https://github.com/mucklet/mucklet-script#documentation" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
 <p><code class="param">Keyword</code> is the keyword for the script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
 const examples = [
@@ -72,9 +72,12 @@ class RoomScript {
 
 	roomScript(char, scriptId) {
 		return this.module.api.get(`core.roomscript.${scriptId}.details`).then(script => {
-			let fetchError = true;
-			return (!script.source || isResError(script.source)
-				? Promise.resolve(script.source ? l10n.t(errToL10n(script.source)) : null)
+			let fetchError = !!script.version;
+			return (!script.version || !script.source || isResError(script.source)
+				? Promise.resolve(script.source
+					? l10n.t(errToL10n(script.source))
+					: null,
+				)
 				// First refresh the tokens as the access token may have expired.
 				: this.module.auth.refreshTokens().then(() => fetch(script.source.href, {
 					credentials: 'include',

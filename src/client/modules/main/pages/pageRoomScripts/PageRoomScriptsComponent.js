@@ -63,7 +63,11 @@ class PageRoomScriptsComponent {
 	}
 
 	_onCreate() {
-		this.module.createLimits.validateRoomScripts(this.scripts, () => this.module.dialogCreateRoomScript.open(this.ctrl));
+		this.module.createLimits.validateRoomScripts(this.scripts, () => this.module.dialogCreateRoomScript.open(this.ctrl, {
+			onCreate: (result) => this.module.dialogEditScriptSource.open(result.script.id, {
+				boilerplateOnEmpty: true,
+			}),
+		}));
 	}
 }
 

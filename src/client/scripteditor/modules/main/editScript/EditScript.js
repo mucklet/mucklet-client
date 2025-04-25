@@ -1,14 +1,14 @@
 import { Model } from 'modapp-resource';
-import { isResError } from 'resclient';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
-import Err from 'classes/Err';
+import fetchRoomScriptSource from 'utils/fetchRoomScriptSource';
 import { addBeforeUnload, removeBeforeUnload } from 'utils/reload';
 
 import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
 
 const pathDef = [
+	[ '$scriptId', '$mode' ],
 	[ '$scriptId' ],
 ];
 
@@ -46,7 +46,7 @@ class EditScript {
 		 */
 		this.module = Object.assign({ self: this }, module);
 
-		this.model = new Model({ data: { roomScript: null, source: '', version: null, isModified: false }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { roomScript: null, source: '', version: null, boilerplate: null, isModified: false }, eventBus: this.app.eventBus });
 
 		this.module.router.addRoute({
 			id: 'editscript',
@@ -65,8 +65,14 @@ class EditScript {
 						// Store version in variables to avoid race issues if
 						// version changes while fetching the source.
 						let version = roomScript.version;
-						return this.fetchRoomScriptSource(roomScript)
-							.then(source => this._setState({ roomScript, source, version }))
+						return fetchRoomScriptSource(roomScript, () => this.module.auth.refreshTokens())
+							.then(source => {
+								if (source || params.mode != 'boilerplate') {
+									return this._setState({ roomScript, source, version });
+								}
+								return roomScript.call('getBoilerplate')
+									.then(result => this._setState({ roomScript, source, version, boilerplate: result.source }));
+							})
 							.finally(() => roomScript.off());
 					})
 					.catch(error => this._setState({ error }));
@@ -86,46 +92,23 @@ class EditScript {
 		return this.model.set({
 			roomScript: relistenResource(this.model.roomScript, props.roomScript),
 			source: props.source || '',
-			version: props.version || null,
-			isModified: this.model.roomScript == props.roomScript ? this.model.isModified : false,
+			version: typeof props.version == 'string' ? props.version : null,
+			boilerplate: props.boilerplate || null,
+			isModified: this.model.roomScript == props.roomScript ? this.model.isModified : (!props.source && !!props.boilerplate),
 			error: props.error || null,
 		});
-	}
-
-	/**
-	 * Fetches the source for a room script. If the room script contains no
-	 * source (uses a binary file), or if an error occurrs, the promise will be
-	 * rejected.
-	 * @param {RoomScriptDetails} roomScript Room script details model.
-	 */
-	fetchRoomScriptSource(roomScript) {
-		let source = roomScript.source;
-		return (!source || isResError(source)
-			? Promise.reject(source || new Err('editScript.noSource', "The room script source code is not available."))
-			: this.module.auth.refreshTokens()
-				.then(() => {
-					return fetch(source.href, {
-						credentials: 'include',
-					}).then(response => {
-						if (response.status >= 300) {
-							throw response.text();
-						};
-						return response.text();
-					}).catch(err => {
-						throw new Err('dialogEditScriptSource.errorFetchingScript', "Error fetching script: {err}", { err: String(err) });
-					});
-				})
-		);
 	}
 
 	/**
 	 * Sets the script route.
 	 * @param {object} params Route params.
 	 * @param {string} [params.scriptId] Script ID.
+	 * @param {"boilerplate"} [params.mode] Mode to run the script editor in.
 	 */
 	setRoute(params) {
 		this.module.router.setRoute('editscript', {
 			scriptId: params?.scriptId || null,
+			mode: params?.mode || null,
 		});
 	}
 

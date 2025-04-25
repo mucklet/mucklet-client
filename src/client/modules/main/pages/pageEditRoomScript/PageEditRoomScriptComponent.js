@@ -145,7 +145,7 @@ class PageEditRoomScriptComponent {
 
 				// Source code
 				n.component(new ModelCollapser(this.script, [{
-					condition: m => m.source,
+					condition: m => !m.binary,
 					factory: m => new PanelSection(
 						l10n.l('pageEditRoomScript.sourceCode', "Source code"),
 						new ModelComponent(
@@ -165,11 +165,11 @@ class PageEditRoomScriptComponent {
 											]),
 										]),
 										n.elem('div', { className: 'badge--tools' }, [
-											n.elem('link', 'button', {
+											n.elem('button', {
 												className: 'iconbtn medium tinyicon',
 												events: {
 													click: (c, ev) => {
-														this.module.dialogEditScriptSource.open(this.ctrl, this.script.id);
+														this.module.dialogEditScriptSource.open(this.script.id);
 														ev.stopPropagation();
 													},
 												},
@@ -180,8 +180,8 @@ class PageEditRoomScriptComponent {
 									]),
 								])),
 								(m, c) => {
-									c.setNodeAttribute('link', 'href', m.href);
-									c.getNode('size').setText(formatByteSize(m.size));
+									// Missing source is an empty file.
+									c.getNode('size').setText(formatByteSize(m?.size || 0));
 								},
 							),
 							(m, c) => {

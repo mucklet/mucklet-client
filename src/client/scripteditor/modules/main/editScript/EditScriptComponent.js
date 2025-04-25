@@ -34,7 +34,7 @@ class EditScriptEditor {
 		this.module = module;
 		this.model = model;
 		this.roomScript = model.roomScript;
-		this.source = model.source;
+		this.source = model.source || model.boilerplate || '';
 		this.version = model.version;
 
 		this._onEditorUpdate = this._onEditorUpdate.bind(this);
