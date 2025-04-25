@@ -19,7 +19,7 @@ class EditScriptContainer {
 		this.elem = new ModelFader(this.model, [
 			{
 				condition: (m) => m.roomScript,
-				factory: (m) => new EditScriptComponent(this.module, m.roomScript, m.source, m.version),
+				factory: (m) => new EditScriptComponent(this.module, m),
 				hash: (m) => m.roomScript,
 			},
 			{

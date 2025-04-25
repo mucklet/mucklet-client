@@ -30,23 +30,18 @@ import EditScriptErrors from './EditScriptErrors';
  */
 class EditScriptEditor {
 
-	constructor(module, roomScript, source, version) {
+	constructor(module, model) {
 		this.module = module;
-		this.roomScript = roomScript;
-		this.source = source;
-		this.version = version;
+		this.model = model;
+		this.roomScript = model.roomScript;
+		this.source = model.source;
+		this.version = model.version;
 
 		this._onEditorUpdate = this._onEditorUpdate.bind(this);
 		this.compiling = false;
 		this.spinner = null;
 
-		this.sourceModel = new Model({
-			data: {
-				source,
-			},
-		});
-
-		this.model = new Model({
+		this.stateModel = new Model({
 			data: {
 				errorsOpen: false,
 				errors: null,
@@ -55,11 +50,11 @@ class EditScriptEditor {
 	}
 
 	render(el) {
-		this.modifyModel = new ModifyModel(this.sourceModel, { props: { source: this.source }});
+		this.modifyModel = new ModifyModel(this.model, { props: { source: this.source }});
 		this.elem = new Elem(n => n.elem('div', { className: 'editscript' }, [
 
 			// Toggle button for script errors
-			n.component(new ModelFader(this.model, [{
+			n.component(new ModelFader(this.stateModel, [{
 				condition: m => m.errors,
 				factory: m => new Elem(n => n.elem('button', {
 					className: 'iconbtn medium editscript--errorsbtn lighten',
@@ -67,7 +62,7 @@ class EditScriptEditor {
 						click: () => this._toggleErrors(),
 					},
 				}, [
-					n.component(new ModelFader(this.model, [
+					n.component(new ModelFader(this.stateModel, [
 						{
 							condition: m => m.errorsOpen,
 							factory: m => new FAIcon('times'),
@@ -91,28 +86,42 @@ class EditScriptEditor {
 					]),
 					// Buttons
 					n.elem('div', { className: 'editscript--headerbuttons' }, [
-						n.component(new ModelComponent(
-							this.modifyModel,
-							new Elem(n => n.elem('compile', 'button', {
-								events: {
-									click: () => {
+						n.elem('compile', 'button', {
+							events: {
+								click: () => {
+									if (this.modifyModel.isModified) {
 										if (!this.compiling) {
 											this._onSave(this.modifyModel.source);
 										}
-									},
+									} else {
+										if (window.opener) {
+											window.opener.focus();
+											window.close();
+										} else {
+											window.location.assign('/');
+										}
+									}
 								},
-								className: 'btn primary editscript--save',
-							}, [
-								n.component(new Txt(l10n.l('editScript.compileAndUpdate', "Compile & Update"))),
-							])),
-							(m, c) => c.setProperty('disabled', m.isModified ? null : true),
-						)),
+							},
+							className: 'btn primary editscript--update',
+						}, [
+							n.component(new ModelComponent(
+								this.modifyModel,
+								new Txt(),
+								(m, c) => c.setText(m.isModified
+									? l10n.l('editScript.update', "Update")
+									: window.opener
+										? l10n.l('editScript.close', "Close")
+										: l10n.l('editScript.goBack', "Go back"),
+								),
+							)),
+						]),
 					]),
 				]),
 			]),
 
 			// Errors
-			n.component(new ModelCollapser(this.model, [{
+			n.component(new ModelCollapser(this.stateModel, [{
 				condition: m => m.errorsOpen,
 				factory: m => m.errors,
 			}], { className: 'editscript--errors' })),
@@ -138,6 +147,7 @@ class EditScriptEditor {
 			this.source = this.modifyModel.source;
 			this.modifyModel.dispose();
 			this.modifyModel = null;
+			this._setIsModified();
 		}
 	}
 
@@ -230,6 +240,13 @@ class EditScriptEditor {
 	_onEditorUpdate(update) {
 		let view = update.view;
 		this.modifyModel?.set({ source: view.state.doc.toString() });
+		this._setIsModified();
+	}
+
+	_setIsModified() {
+		if (this.roomScript == this.model.roomScript) {
+			this.model.set({ isModified: this.modifyModel ? this.modifyModel.isModified : source != this.source });
+		}
 	}
 
 	_setSource(source) {
@@ -245,13 +262,21 @@ class EditScriptEditor {
 				this.module.toaster.open({
 					title: l10n.l('editScript.scriptUpdated', "Script updated"),
 					content: close => new Elem(n => n.elem('div', [
-						n.component(new Txt(l10n.l('editScript.scriptUpdatedInfo', "The script was updated successfully."), { tagName: 'p' })),
+						n.component(new Txt(l10n.l('editScript.scriptUpdatedInfo1', "The script was updated successfully."), { tagName: 'p' })),
+						n.component(new Txt(l10n.l('editScript.scriptUpdatedInfo2', "You may safely close this window."), { tagName: 'p' })),
 					])),
 					closeOn: 'click',
 					type: 'success',
 					autoclose: true,
 				});
-				this.sourceModel.set({ source });
+				// Update the module module if we still are on the same roomScript.
+				if (this.model.roomScript == this.roomScript) {
+					this.model.set({
+						source,
+						version: result.version,
+						isModified: (this.modifyModel ? this.modifyModel.source : this.source) != source,
+					});
+				}
 				this.version = result.version;
 			})
 			.catch(err => {
@@ -297,18 +322,18 @@ class EditScriptEditor {
 	 */
 	_setErrors(errText, open) {
 		if (errText) {
-			let errors = this.model.errors?.setError(errText) || new EditScriptErrors(errText);
-			this.model.set({ errors, errorsOpen: typeof open == 'boolean' ? open : this.model.errorsOpen });
+			let errors = this.stateModel.errors?.setError(errText) || new EditScriptErrors(errText);
+			this.stateModel.set({ errors, errorsOpen: typeof open == 'boolean' ? open : this.stateModel.errorsOpen });
 		} else {
-			this.model.set({ errors: null, errorsOpen: false });
+			this.stateModel.set({ errors: null, errorsOpen: false });
 		}
 	}
 
 	_toggleErrors(open) {
-		open = this.model.errors
-			? typeof open == 'undefined' ? !this.model.errorsOpen : !!open
+		open = this.stateModel.errors
+			? typeof open == 'undefined' ? !this.stateModel.errorsOpen : !!open
 			: false;
-		this.model.set({ errorsOpen: open });
+		this.stateModel.set({ errorsOpen: open });
 	}
 }
 

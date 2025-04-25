@@ -27,7 +27,7 @@ export function removeBeforeUnload(f) {
 	cbs = cbs.filter(o => {
 		let found = o.f == f;
 		if (found) {
-			window.addEventListener('beforeunload', o.cb);
+			window.removeEventListener('beforeunload', o.cb);
 		}
 		return !found;
 	});

@@ -3,6 +3,7 @@ import { isResError } from 'resclient';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import Err from 'classes/Err';
+import { addBeforeUnload, removeBeforeUnload } from 'utils/reload';
 
 import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
@@ -18,6 +19,9 @@ class EditScript {
 
 	constructor(app, params) {
 		this.app = app;
+
+		// Bind callbacks
+		this._onBeforeUnload = this._onBeforeUnload.bind(this);
 
 		this.app.require([
 			'router',
@@ -42,7 +46,7 @@ class EditScript {
 		 */
 		this.module = Object.assign({ self: this }, module);
 
-		this.model = new Model({ data: { roomScript: null, source: '', version: null }, eventBus: this.app.eventBus });
+		this.model = new Model({ data: { roomScript: null, source: '', version: null, isModified: false }, eventBus: this.app.eventBus });
 
 		this.module.router.addRoute({
 			id: 'editscript',
@@ -72,6 +76,8 @@ class EditScript {
 			order: 10,
 		});
 
+		addBeforeUnload(this._onBeforeUnload);
+
 		this.module.router.setDefault('editscript');
 	}
 
@@ -81,6 +87,7 @@ class EditScript {
 			roomScript: relistenResource(this.model.roomScript, props.roomScript),
 			source: props.source || '',
 			version: props.version || null,
+			isModified: this.model.roomScript == props.roomScript ? this.model.isModified : false,
 			error: props.error || null,
 		});
 	}
@@ -122,9 +129,25 @@ class EditScript {
 		});
 	}
 
+	_onBeforeUnload(e) {
+		if (this.model.isModified) {
+			e = e || window.event;
+			let msg = l10n.t('editScript.scriptIsModified', "Some script changes are not saved.");
+			if (e) {
+				e.returnValue = msg;
+			}
+			if (e.stopPropagation) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
+			return msg;
+		}
+	}
+
 	dispose() {
 		this._setState(null, null);
 		this.module.router.removeRoute('editscript');
+		removeBeforeUnload(this._onBeforeUnload);
 	}
 }
 

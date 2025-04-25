@@ -15,6 +15,7 @@
 		flex: 0 0 auto;
 		background-color: $color1-lighter;
 		position: relative;
+		width: 100%;
 	}
 
 	&--headercontent {
@@ -33,10 +34,18 @@
 	}
 
 	&--headerinfo {
+		flex: 0 0 auto;
 		display: flex;
 		flex-direction: column;
 		font-size: $font-size-small;
 		padding-right: 48px;
+		overflow: hidden;
+
+		> * {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 	&--headerinfo-room {
 		color: $color3;
@@ -65,11 +74,9 @@
 		color: $color5;
 	}
 
-
-
-	// &--save {
-	// 	width: 200px;
-	// }
+	&--update {
+		width: 128px;
+	}
 
 	&--headertools {
 		position: absolute;
@@ -214,12 +221,23 @@
 }
 
 @media screen and (max-width: 900px) {
-
 	// .editscript {}
 }
 
 @media screen and (max-width: 720px) {
-	.editscript-common--container {
-		padding: 24px 0;
+	.editscript {
+		&--headertitle {
+			display: none;
+		}
+		&--headerinfo {
+			flex: 1 1 0;
+			margin-left: 24px;
+			padding-right: 8px;
+		}
+
+		&--headerbuttons {
+			flex: 0 0 auto;
+			margin-right: 24px;
+		}
 	}
 }
