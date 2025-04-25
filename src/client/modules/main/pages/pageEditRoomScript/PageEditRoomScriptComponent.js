@@ -199,28 +199,44 @@ class PageEditRoomScriptComponent {
 				// Logs
 				n.component(new PanelSection(
 					l10n.l('pageEditRoomScript.logs', "Logs"),
-					new Elem(n => n.elem('div', { className: 'pageeditroomscript--logscont' }, [
-						n.component(new SimpleBar(
-							new CollectionList(
-								this.script.logs,
-								log => new Elem(n => n.elem('div', { className: 'pageeditroomscript--log' }, [
-									n.component(new Txt(
-										formatDateTime(new Date(log.time), { showMilliseconds: true }),
-										{ className: 'pageeditroomscript--logtime' },
+					new Elem(n => n.elem('div', [
+						n.component(new CollectionComponent(
+							this.script.logs,
+							new Collapser(),
+							(col, c) => c.setComponent(col?.length
+								? c.getComponent() || new Elem(n => n.elem('div', { className: 'pageeditroomscript--logscont' }, [
+									n.component(new SimpleBar(
+										new CollectionList(
+											this.script.logs,
+											log => new Elem(n => n.elem('div', { className: 'pageeditroomscript--log' }, [
+												n.component(new Txt(
+													formatDateTime(new Date(log.time), { showMilliseconds: true }),
+													{ className: 'pageeditroomscript--logtime' },
+												)),
+												n.component(new Txt(
+													log.msg,
+													{ className: 'pageeditroomscript--logmsg ' + (logLvlClass[log.lvl] || '') },
+												)),
+											])),
+											{
+												className: 'pageeditroomscript--loglist',
+											},
+										),
+										{
+											className: 'pageeditroomscript--logs',
+											autoHide: false,
+										},
 									)),
-									n.component(new Txt(
-										log.msg,
-										{ className: 'pageeditroomscript--logmsg ' + (logLvlClass[log.lvl] || '') },
-									)),
-								])),
-								{
-									className: 'pageeditroomscript--loglist',
-								},
+								]))
+								: null,
 							),
-							{
-								className: 'pageeditroomscript--logs',
-								autoHide: false,
-							},
+						)),
+						n.component(new CollectionComponent(
+							this.script.logs,
+							new Collapser(),
+							(col, c) => c.setComponent(col?.length
+								? null
+								: c.getComponent() || new Txt(l10n.l('pageEditRoomScript.noLogs', "No scripts logs"), { className: 'common--font-small common--placeholder' })),
 						)),
 					])),
 					{
