@@ -38,6 +38,7 @@ module.exports = function(ctx) {
 		entry: {
 			app: path.resolve(ctx.srcPath, 'app.js'),
 			welcome: path.resolve(ctx.srcPath, 'welcome/app-welcome.js'),
+			scripteditor: path.resolve(ctx.srcPath, 'scripteditor/app-scripteditor.js'),
 		},
 		performance: {
 			hints: ctx.devMode ? false : 'warning',
@@ -99,6 +100,12 @@ module.exports = function(ctx) {
 				template: path.resolve(ctx.srcPath, 'welcome/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
 				chunks: [ 'welcome' ],
+			}),
+			new HtmlWebpackPlugin({
+				filename: 'scripteditor/index.html',
+				template: path.resolve(ctx.srcPath, 'scripteditor/index.html'),
+				title: ctx.siteConfig.APP_TITLE,
+				chunks: [ 'scripteditor' ],
 			}),
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',

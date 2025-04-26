@@ -43,10 +43,19 @@ class SimpleBar extends RootElem {
 		return this._component;
 	}
 
+	/**
+	 * Returns the content element in which the component is rendered, or null
+	 * if render hasn't been called.
+	 * @returns
+	 */
+	getContentElement() {
+		return this._sb?.getContentElement() || null;
+	}
+
 	render(el) {
 		let e = super.render(el);
 		this._sb = new simplebar(e, this._opt);
-		this._component.render(this._sb.getContentElement());
+		this._component?.render(this._sb.getContentElement());
 		if (this._lock) {
 			this._setListener(true);
 			this._lockToBottom();
@@ -56,7 +65,7 @@ class SimpleBar extends RootElem {
 
 	unrender() {
 		if (this._sb) {
-			this._component.unrender();
+			this._component?.unrender();
 			this._sb.unMount();
 			this._sb = null;
 			super.unrender();

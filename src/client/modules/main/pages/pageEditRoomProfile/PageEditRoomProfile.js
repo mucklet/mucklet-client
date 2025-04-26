@@ -40,21 +40,23 @@ class PageEditRoomProfile {
 			this.module.api.get('core.roomprofile.' + profileId + '.details'),
 			this.module.api.get('core.room.' + room.id + '.profiles'),
 		]).then(result => {
-			result[0].on(); // Profile
-			result[1].on(); // Room profiles
+			let [ profile, profiles ] = result;
+			profile.on();
+			profiles.on();
 			return this.module.roomPages.openRoomPage(
 				'editRoomProfile',
 				ctrl.id,
 				getRoomInstanceId(room),
 				(ctrl, room, state, close) => ({
-					component: new PageEditRoomProfileComponent(this.module, ctrl, room, result[0], result[1], state, close),
+					component: new PageEditRoomProfileComponent(this.module, ctrl, room, profile, profiles, state, close),
 					title: l10n.l('pageEditRoomProfile.editRoomProfile', "Edit Room Profile"),
-					onClose: () => {
-						result[0].off();
-						result[1].off();
-						close();
-					},
 				}),
+				{
+					onClose: () => {
+						profile.off();
+						profiles.off();
+					},
+				},
 			);
 		});
 	}

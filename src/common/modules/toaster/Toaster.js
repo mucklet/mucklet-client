@@ -40,7 +40,7 @@ class Toaster {
 	 * @param {string|Component|function} [opt.content] Content as formatted text, a component, or a component factory function.
 	 * @param {function} [opt.onClose] Callback called on close.
 	 * @param {string} [opt.closeOn] Type of closing. May be: 'click', 'button', or 'none'. Defaults to 'none'.
-	 * @param {string} [opt.type] Type of notification. May be 'success', 'info', or 'error'. Defaults to 'info'.
+	 * @param {string} [opt.type] Type of notification. May be 'success', 'info', or 'warn'. Defaults to 'info'.
 	 * @param {bool|number} [opt.autoclose] Flag telling if notification should autoclose after a while. If the value is a number, it will autoclose after that many milliseconds.
 	 * @param {Date} [opt.time] Time to show in mouse over tooltip.
 	 * @returns {function} Function to close the toaster.
