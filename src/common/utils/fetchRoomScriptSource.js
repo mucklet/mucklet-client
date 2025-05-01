@@ -26,6 +26,7 @@ export default function fetchRoomScriptSource(roomScriptDetails, refreshTokens) 
 					};
 					return response.text();
 				}).catch(err => {
+					console.error("Error fetching script: ", err);
 					throw new Err('fetchRoomScriptSource.errorFetchingScript', "Error fetching script: {err}", { err: String(err) });
 				});
 			})
