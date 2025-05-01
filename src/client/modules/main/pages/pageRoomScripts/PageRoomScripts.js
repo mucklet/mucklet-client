@@ -47,6 +47,7 @@ class PageRoomScripts {
 	 */
 	open(ctrl, room) {
 		return this.module.api.get('core.room.' + room.id + '.scripts').then(scripts => {
+			scripts.on();
 			return this.module.roomPages.openRoomPage(
 				'roomScripts',
 				ctrl.id,
