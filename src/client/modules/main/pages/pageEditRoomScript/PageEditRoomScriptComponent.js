@@ -346,7 +346,7 @@ class PageEditRoomScriptComponent {
 	}
 
 	_copyAddressToClipboard() {
-		copyToClipboard("#" + this.script.address).then(() => this.module.toaster.open({
+		copyToClipboard(this.script.address).then(() => this.module.toaster.open({
 			title: l10n.l('pageEditRoomScript.copiedToClipboard', "Copied to clipboard"),
 			content: close => new Elem(n => n.elem('div', [
 				n.component(new Txt(l10n.l('pageEditRoomScript.copiedAddress', "Copied post address to clipboard."), { tagName: 'p' })),
