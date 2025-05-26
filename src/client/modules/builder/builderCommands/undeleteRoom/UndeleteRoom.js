@@ -2,6 +2,7 @@ import { Elem, Txt, Html } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import IDStep from 'classes/IDStep';
 import DelimStep from 'classes/DelimStep';
+import Err from 'classes/Err';
 import objectSetList from 'utils/objectSetList';
 
 const usageText = 'undelete room <span class="param">#RoomID</span> <span class="opt">= <span class="param">Owner</span></span>';

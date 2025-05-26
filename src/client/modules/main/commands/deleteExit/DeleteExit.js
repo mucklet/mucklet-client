@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
+import Err from 'classes/Err';
 import * as translateErr from 'utils/translateErr';
 
 const usageText = 'delete exit <span class="param">Keyword</span>';
