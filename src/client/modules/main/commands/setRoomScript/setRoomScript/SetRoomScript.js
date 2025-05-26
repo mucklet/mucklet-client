@@ -14,7 +14,7 @@ const shortDesc = 'Set a room script attribute';
 const helpText =
 `<p>Set a room script attribute.</p>
 <p>For info on how to see room script info, type: <code>help roomscript</code></p>
-<p class="common--formattext">For more information and script examples, see the <a href="https://github.com/mucklet/mucklet-script#readme" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script">mucklet-script</a> development resources.</p>
+<p class="common--formattext">For more information and script examples, see <a href="https://github.com/mucklet/mucklet-script/blob/master/docs/documentation.md#mucklet-script-documentation" target="_blank" rel="noopener noreferrer" title="https://github.com/mucklet/mucklet-script/blob/master/docs/documentation.md#mucklet-script-documentation">Mucklet Script documentation</a>.</p>
 <p><code class="param">Keyword</code> is the keyword for the room script.</p>
 <p><code class="param">#ScriptID</code> is the ID of the script.</p>`;
 const examples = [

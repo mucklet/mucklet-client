@@ -86,6 +86,16 @@ class EditScriptEditor {
 					]),
 					// Buttons
 					n.elem('div', { className: 'editscript--headerbuttons' }, [
+						n.elem('a', {
+							attributes: {
+								href: 'https://github.com/mucklet/mucklet-script/blob/master/docs/documentation.md#mucklet-script-documentation',
+								target: '_blank',
+								rel: 'noopener noreferrer',
+							},
+							className: 'editscript--helpbtn iconbtn light',
+						}, [
+							n.component(new FAIcon('question-circle')),
+						]),
 						n.elem('compile', 'button', {
 							events: {
 								click: () => {
