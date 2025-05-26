@@ -6,6 +6,8 @@ import mobile from 'is-mobile';
 import './console.scss';
 import listenResource from 'utils/listenResource';
 
+const namespace = 'module.console';
+
 /**
  * Console draws player char menu.
  */
@@ -65,6 +67,24 @@ class Console {
 	}
 
 	/**
+	 * Attach an event handler function for one or more player module events.
+	 * @param {?string} events One or more space-separated events. Null means any event. Available events are 'focus'.
+	 * @param {Event~eventCallback} handler A function to execute when the event is emitted.
+	 */
+	on(events, handler) {
+		this.app.eventBus.on(this, events, handler, namespace);
+	}
+
+	/**
+	 * Remove an event handler.
+	 * @param {?string} events One or more space-separated events. Null means any event.
+	 * @param {Event~eventCallback} [handler] An option handler function. The handler will only be remove if it is the same handler.
+	 */
+	off(events, handler) {
+		this.app.eventBus.off(this, events, handler, namespace);
+	}
+
+	/**
 	 * Sets the current command text for a controlled character.
 	 * @param {string} ctrlId Controlled character ID.
 	 * @param {string} doc Console doc text.
@@ -95,6 +115,13 @@ class Console {
 	 */
 	removeKeymap(key) {
 		this.keymapModel.set({ [key]: undefined });
+	}
+
+	/**
+	 * Sets focus to any console that may be rendered.
+	 */
+	focus() {
+		this.app.eventBus.emit(this, namespace + '.focus');
 	}
 
 	_setListeners(on) {
