@@ -55,8 +55,24 @@
 	}
 
 	&--headerbuttons {
+		display: flex;
 		flex: 0 0 auto;
+		flex-direction: row;
+		gap: 12px;
 		margin-right: 48px;
+		> * {
+			display: block;
+		}
+	}
+
+	&--helpbtn {
+		font-size: 24px;
+		border-radius: 4px;
+		width: 38px;
+		height: 38px;
+		> i {
+			line-height: 38px;
+		}
 	}
 
 	&--errorsbtn {
