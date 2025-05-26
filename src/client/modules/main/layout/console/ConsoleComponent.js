@@ -16,10 +16,11 @@ class ConsoleComponent {
 		this.editor = new ConsoleEditor(this.module, model.state);
 
 		// Bind callbacks
-		this._onClick = this._onClick.bind(this);
+		this.focus = this.focus.bind(this);
 	}
 
 	render(el) {
+		this.module.self.on('focus', this.focus);
 
 		let components = {};
 		this.elem = new ModelComponent(
@@ -34,7 +35,7 @@ class ConsoleComponent {
 								c.setComponent(components.controlled = col.length > 1 || this.layout == 'desktop'
 									? components.controlled || new CollectionList(
 										this.module.player.getControlled(),
-										m => new ConsoleControlledChar(this.module, m, { onClick: this._onClick, layout: this.layout }),
+										m => new ConsoleControlledChar(this.module, m, { onClick: this.focus, layout: this.layout }),
 										{ className: 'console--controlledlist', horizontal: true },
 									)
 									: null,
@@ -150,16 +151,12 @@ class ConsoleComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			this.module.self.off('focus', this.focus);
 		}
 	}
 
-	_onClick() {
-		if (!this.elem) return;
-
-		// let editor = this.elem.getComponent().getNode('editor');
-		// if (editor) {
-		// 	// editor.getComponent().focus();
-		// }
+	focus() {
+		this.editor.focus();
 	}
 }
 
