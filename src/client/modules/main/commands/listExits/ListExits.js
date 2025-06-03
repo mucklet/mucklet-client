@@ -11,12 +11,12 @@ const usageText = 'list exits <span class="opt">all</span>';
 const shortDesc = 'List all room exits';
 const helpText =
 `<p>Get a list of room exits.</p>
-<p>If <code>all</code> is included, the list will include exit IDs. Owners will also list hidden exits, deactivate exits, and external exits leading to this room.</p>
+<p>If <code>all</code> is included, the list will include exit IDs. Owners will also list hidden exits, deactivate exits, and external exits targeting current room.</p>
 <p>Alias: <code>list exit</code></p>`;
 
 const txtRoomExits = l10n.l('listExits.roomExits', "Room exits");
 const txtHiddenExits = l10n.l('listExits.hiddenExits', "Hidden exits");
-const txtExitsLeadingToRoom = l10n.l('listExits.exitsLeadingToRoom', "Exits leading to room");
+const txtExitsTargetingRoom = l10n.l('listExits.exitsLeadingToRoom', "Exits targeting room");
 
 /**
  * ListExits adds command to list all exit destinations.
@@ -85,19 +85,27 @@ class ListExits {
 	}
 
 	async listAllExits(ctrl) {
-
 		let canEdit = this._canEdit(ctrl, ctrl.inRoom);
+		// Store away current room in case we change room while fetching exit info.
+		let roomId = ctrl.inRoom.id;
+		let roomExits = ctrl.inRoom.exits.toArray();
 		let hiddenExits = canEdit
 			? await this.module.api.get(`core.room.${ctrl.inRoom.id}.exits.hidden`)
 			: null;
-		let linkedExits = canEdit && false
-			? await ctrl.call('getLinkedExits')
+		let remoteExits = canEdit
+			? await ctrl.call('getTargetingExits').then(result => {
+				let { exits, rooms } = result;
+				return exits.filter(e => e.roomId != roomId).map(e => {
+					let room = rooms.find(r => r.id == e.roomId);
+					return { ...e, room };
+				});
+			})
 			: null;
 
-		if (!ctrl.inRoom.exits.length) {
+		if (!roomExits.length) {
 			this.module.charLog.logInfo(ctrl, l10n.l('listExits.noVisibleExits', "This room has no visible exits."));
 		} else {
-			this._listExits(ctrl, txtRoomExits, ctrl.inRoom.exits);
+			this._listExits(ctrl, txtRoomExits, roomExits);
 		}
 
 		if (hiddenExits) {
@@ -109,8 +117,8 @@ class ListExits {
 			}
 		}
 
-		if (linkedExits?.length) {
-			this._listExits(ctrl, txtExitsLeadingToRoom, linkedExits, false, true);
+		if (remoteExits?.length) {
+			this._listExits(ctrl, txtExitsTargetingRoom, remoteExits, false, true);
 		}
 	}
 
@@ -134,7 +142,7 @@ class ListExits {
 							{ text: l10n.t('listExits.exitId', "Exit ID"), thClassName: 'charlog--strong' },
 							{ text: l10n.t('listExits.key', "Key"), thClassName: 'charlog--strong' },
 							{ text: l10n.t('listExits.updated', "Name"), thClassName: 'charlog--strong' },
-							...(sourceRoom ? [{ text: l10n.t('listExits.source', "Source"), thClassName: 'charlog--strong' }] : []),
+							...(sourceRoom ? [{ text: l10n.t('listExits.origin', "Origin"), thClassName: 'charlog--strong' }] : []),
 							...(showActive ? [{ text: l10n.t('listExits.active', "Active"), thClassName: 'charlog--strong' }] : []),
 						],
 						rows,
