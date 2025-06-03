@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import ListStep from 'classes/ListStep';
+import IDStep from 'classes/IDStep';
 import Err from 'classes/Err';
 import * as translateErr from 'utils/translateErr';
 
@@ -29,10 +30,13 @@ class DeleteExit {
 
 		this.module.cmd.addPrefixCmd('delete', {
 			key: 'exit',
-			next: new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
-				name: "exit",
-				textId: 'exitKey',
-				errRequired: step => new Err('deleteExit.keyRequired', "What exit do you want to delete?"),
+			next: new IDStep('exitId', {
+				name: "exit key or ID",
+				else: new ListStep('exitId', this.module.cmdLists.getInRoomExits(), {
+					name: "exit",
+					textId: 'exitKey',
+					errRequired: step => new Err('deleteExit.keyRequired', "What exit do you want to delete?"),
+				}),
 			}),
 			value: (ctx, p) => this.deleteExit(ctx.char, p),
 		});
