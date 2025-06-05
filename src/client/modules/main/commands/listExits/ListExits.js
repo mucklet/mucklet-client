@@ -7,12 +7,17 @@ import ItemList from 'classes/ItemList';
 import Err from 'classes/Err';
 import './listExits.scss';
 
-const usageText = 'list exits <span class="opt">all</span>';
+const usageText = 'list exits';
 const shortDesc = 'List all room exits';
 const helpText =
-`<p>Get a list of room exits.</p>
-<p>If <code>all</code> is included, the list will include exit IDs. Owners will also list hidden exits, deactivate exits, and external exits targeting current room.</p>
+`<p>Get a list of available room exits.</p>
 <p>Alias: <code>list exit</code></p>`;
+
+const allUsageText = 'list exits all';
+const allShortDesc = 'List details about all room exits';
+const allHelpText =
+`<p>Get a detailed list of all room exits. Room owners will also list hidden exits, deactivate exits, and external exits targeting current room.</p>
+<p>Alias: <code>list exit all</code></p>`;
 
 const txtRoomExits = l10n.l('listExits.roomExits', "Room exits");
 const txtHiddenExits = l10n.l('listExits.hiddenExits', "Hidden exits");
@@ -63,6 +68,17 @@ class ListExits {
 			desc: l10n.l('listExits.helpText', helpText),
 			sortOrder: 15,
 		});
+
+		this.module.help.addTopic({
+			id: 'listExitsAll',
+			category: 'buildRooms',
+			cmd: 'list exits all',
+			alias: [ 'list exit all' ],
+			usage: l10n.l('listExits.allUsage', allUsageText),
+			shortDesc: l10n.l('listExits.allShortDesc', allShortDesc),
+			desc: l10n.l('listExits.allHelpText', allHelpText),
+			sortOrder: 77,
+		});
 	}
 
 	listExits(ctrl) {
@@ -102,10 +118,11 @@ class ListExits {
 			})
 			: null;
 
-		if (!roomExits.length) {
-			this.module.charLog.logInfo(ctrl, l10n.l('listExits.noVisibleExits', "This room has no visible exits."));
-		} else {
+		let hasOutput = false;
+
+		if (roomExits.length) {
 			this._listExits(ctrl, txtRoomExits, roomExits);
+			hasOutput = true;
 		}
 
 		if (hiddenExits) {
@@ -114,11 +131,20 @@ class ListExits {
 				.sort((a, b) => a.keys[0].localeCompare(b.keys[0]) || a.name.localeCompare(b.name));
 			if (exits.length) {
 				this._listExits(ctrl, txtHiddenExits, exits, true);
+				hasOutput = true;
 			}
 		}
 
 		if (remoteExits?.length) {
 			this._listExits(ctrl, txtExitsTargetingRoom, remoteExits, false, true);
+			hasOutput = true;
+		}
+
+		if (!hasOutput) {
+			this.module.charLog.logInfo(ctrl, canEdit
+				? l10n.l('listExits.noAvailableExits', "This room has no exits at all.")
+				: l10n.l('listExits.noVisibleExits', "This room has no visible exits."),
+			);
 		}
 	}
 
