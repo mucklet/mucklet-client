@@ -1,0 +1,11 @@
+@import '~scss/variables';
+
+.listexits {
+	&-active {
+		color: $color6;
+	}
+
+	&-inactive {
+		color: $color1-lighter;
+	}
+}
