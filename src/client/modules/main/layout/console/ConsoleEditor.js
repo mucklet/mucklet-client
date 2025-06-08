@@ -188,6 +188,7 @@ class ConsoleEditor {
 		this.state?.setDoc(doc, doc.length);
 		if (this.cm) {
 			this.cm.setState(this._newEditorState(this.state));
+			this.cm.dispatch({ selection: { anchor: this.state.anchor, head: this.state.head }});
 		}
 	}
 

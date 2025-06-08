@@ -4,9 +4,9 @@ import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
-import PageRoomProfileProfile from './PageRoomProfileProfile';
+import PageRoomProfilesProfile from './PageRoomProfilesProfile';
 
-class PageRoomProfileComponent {
+class PageRoomProfilesComponent {
 	constructor(module, profiles, ctrl, room, state, close) {
 		this.module = module;
 		this.profiles = profiles;
@@ -26,22 +26,22 @@ class PageRoomProfileComponent {
 		let createProfile = new Elem(n => n.elem('div', { className: 'common--addpadding' }, [
 			n.elem('button', { events: { click: this._onCreate }, className: 'btn icon-left common--addbtn' }, [
 				n.component(new FAIcon('plus')),
-				n.component(new Txt(l10n.l('pageRoomProfile.createProfile', "Create new profile"))),
+				n.component(new Txt(l10n.l('pageRoomProfiles.createProfile', "Create new profile"))),
 			]),
 		]));
-		this.elem = new Elem(n => n.elem('div', { className: 'pageroomprofile' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'pageroomprofiles' }, [
 			n.component(new ModelTxt(this.room, m => m.name, { tagName: 'div', className: 'common--itemtitle common--sectionpadding' })),
 			n.component(new CollectionList(
 				this.profiles,
-				profile => new PageRoomProfileProfile(this.module, this.ctrl, this.room, profile, this.model, this.close),
-				{ className: 'pageroomprofile--profiles' },
+				profile => new PageRoomProfilesProfile(this.module, this.ctrl, this.room, profile, this.model, this.close),
+				{ className: 'pageroomprofiles--profiles' },
 			)),
 			n.component(new CollectionComponent(
 				this.ctrl.profiles,
 				new Collapser(),
 				(col, c, ev) => c.setComponent(col.length
 					? null
-					: new Txt(l10n.l('pageRoomProfile.noProfiles', "There are no stored profiles"), { className: 'common--nolistplaceholder' }),
+					: new Txt(l10n.l('pageRoomProfiles.noProfiles', "There are no stored profiles"), { className: 'common--nolistplaceholder' }),
 				),
 			)),
 			n.component(new ModelComponent(
@@ -67,4 +67,4 @@ class PageRoomProfileComponent {
 	}
 }
 
-export default PageRoomProfileComponent;
+export default PageRoomProfilesComponent;

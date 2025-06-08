@@ -27,7 +27,6 @@ class MobilePanel extends RootElem {
 	constructor(title, component, opt) {
 		opt = Object.assign({ align: "left" }, opt);
 		opt.className = 'mobilepanel mobilepanel--align-' + opt.align + (opt.className ? ' ' + opt.className : '');
-		opt.attributes = Object.assign({ 'aria-hidden': 'true' }, opt.attributes);
 		super('div', { className: 'mobilepanel--container' });
 
 		// Set options

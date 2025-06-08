@@ -16,7 +16,6 @@ class Slider extends RootElem {
 	constructor(component, opt) {
 		opt = Object.assign({}, opt);
 		opt.className = 'comp-slider' + (opt.className ? ' ' + opt.className : '');
-		opt.attributes = Object.assign({ 'aria-hidden': 'true' }, opt.attributes);
 		super('div', opt);
 
 		// Bind callbacks

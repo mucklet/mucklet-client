@@ -1,9 +1,5 @@
 @import '~scss/variables';
 
-@keyframes comp-spinner {
-	to {transform: rotate(360deg);}
-}
-
 .spinner {
 
 	&:before {

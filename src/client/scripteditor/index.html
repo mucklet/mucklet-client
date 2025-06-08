@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link href="/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/fonts/fonts.css" rel="stylesheet">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<script type="text/javascript">
+window.appProps = {<% if (APP_ISTEMPLATE) { %>
+{{- with .Realm }}
+	realmName: "{{ .Name | js }}",
+	apiHostPath: "{{ .APIWSPath | js }}",
+	apiWebresourcePath: "{{ .APIResourcePath | js }}",
+	apiFilePath: "{{ .APIFilePath | js }}",
+{{- end }}
+{{- with .Error }}
+	error: {{ . }},
+{{- end }}<% } else { %>
+	realmName: <%= JSON.stringify(APP_TITLE) %>,
+	apiHostPath: <%= JSON.stringify(API_HOST_PATH) %>,
+	apiWebresourcePath: <%= JSON.stringify(API_WEBRESOURCE_PATH) %>,
+	apiFilePath: <%= JSON.stringify(API_FILE_PATH) %>,<% } %>
+};
+	</script>
+	<title><%= APP_ISTEMPLATE ? "{{ with .Realm }}{{ .Name | html }}{{ end }}" : htmlWebpackPlugin.options.title %> script editor</title>
+</head>
+<body>
+</body>
+</html>

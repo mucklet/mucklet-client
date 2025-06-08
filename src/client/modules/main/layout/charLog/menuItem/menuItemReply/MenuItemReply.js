@@ -16,6 +16,12 @@ class MenuItemReply {
 	}
 
 	_init(module) {
+		/**
+		 * @type {{
+		 * 	charLog: import('modules/main/layout/charLog/CharLog').default,
+		 * 	console: import('modules/main/layout/console/Console').default,
+		 * }}
+		 */
 		this.module = Object.assign({ self: this }, module);
 
 		this.module.charLog.addMenuItem({
@@ -39,10 +45,12 @@ class MenuItemReply {
 
 	_onReply(charId, ev) {
 		this.module.console.setCommand(charId, replyCmds[ev.type](charId, ev), true);
+		this.module.console.focus();
 	}
 
 	_onReplyAll(charId, ev) {
 		this.module.console.setCommand(charId, replyAllCmds[ev.type](charId, ev), true);
+		this.module.console.focus();
 	}
 
 	dispose() {

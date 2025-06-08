@@ -4,6 +4,7 @@ import IDStep from 'classes/IDStep';
 import DelimStep from 'classes/DelimStep';
 import TextStep from 'classes/TextStep';
 import RepeatStep from 'classes/RepeatStep';
+import Err from 'classes/Err';
 import objectSetList from 'utils/objectSetList';
 import { keyTooLong } from 'utils/cmdErr';
 

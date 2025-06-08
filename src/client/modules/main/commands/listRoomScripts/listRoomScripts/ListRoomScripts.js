@@ -1,8 +1,9 @@
-import { Elem, Txt, Html } from 'modapp-base-component';
+import { Elem, Txt } from 'modapp-base-component';
 import l10n from 'modapp-l10n';
 import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 import formatDateTime from 'utils/formatDateTime';
+import charLogTable from 'utils/charLogTable';
 import './listRoomScripts.scss';
 
 const usageText = 'list roomscripts';
@@ -54,31 +55,27 @@ class ListRoomScripts {
 		return this.module.api.get('core.room.' + room.id + '.scripts').then(scripts => {
 			let rows = [];
 			for (let m of scripts) {
-				rows.push('<tr>' +
-					'<td><code>#' + escapeHtml(m.id) + '</code></td>' +
-					'<td>' + escapeHtml(m.key) + '</td>' +
-					'<td>' + escapeHtml(formatDateTime(new Date(m.updated))) + '</td>' +
-					'<td><i class="fa fa-circle listroomscripts-' + (m.active ? 'active' : 'inactive') + '" aria-hidden></i></td>' +
-					'</tr>',
-				);
+				rows.push([
+					{ html: `<code>#${escapeHtml(m.id)}</code>` },
+					{ text: m.key },
+					{ text: formatDateTime(new Date(m.updated)) },
+					{ html: `<i class="fa fa-circle listroomscripts-${m.active ? 'active' : 'inactive'}" aria-hidden></i>` },
+				]);
 			}
 			if (rows.length) {
 				this.module.charLog.logComponent(char, 'listRoomScripts', new Elem(n => n.elem('div', { className: 'listscripts charlog--pad' }, [
 					n.component(new Txt(l10n.l('listRoomScripts.roomScripts', "Room scripts"), { tagName: 'h4', className: 'charlog--pad' })),
 					n.elem('div', { className: 'charlog--code' }, [
-						n.elem('table', { className: 'tbl-small tbl-nomargin' }, [
-							n.component(new Html('<tr><th class="charlog--strong">' +
-								escapeHtml(l10n.t('listRoomScripts.scriptId', "Script ID")) +
-								'</th><th class="charlog--strong">' +
-								escapeHtml(l10n.t('listRoomScripts.key', "Key")) +
-								'</th><th class="charlog--strong">' +
-								escapeHtml(l10n.t('listRoomScripts.updated', "Updated")) +
-								'</th><th class="charlog--strong">' +
-								escapeHtml(l10n.t('listRoomScripts.active', "Active")) +
-								'</th></tr>', { tagName: 'thead' },
-							)),
-							n.component(new Html(rows.join(''), { tagName: 'tbody' })),
-						]),
+						n.html(charLogTable(
+							[
+								{ text: l10n.t('listRoomScripts.scriptId', "Script ID"), thClassName: 'charlog--strong' },
+								{ text: l10n.t('listRoomScripts.key', "Key"), thClassName: 'charlog--strong' },
+								{ text: l10n.t('listRoomScripts.updated', "Updated"), thClassName: 'charlog--strong' },
+								{ text: l10n.t('listRoomScripts.active', "Active"), thClassName: 'charlog--strong' },
+							],
+							rows,
+							{ className: 'tbl-nomargin' },
+						)),
 					]),
 				])));
 			} else {

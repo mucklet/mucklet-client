@@ -15,13 +15,6 @@ $charlog-labelpad: 8px;
 	// color: $color4; // Events (default)
 	// color: $color4-lightest; // Communication
 
-	&describe {
-		font-size: $font-size-small;
-		white-space: pre-wrap;
-		// color: $color4;
-		padding-top: $charlog-textpad;
-	}
-
 	&error, &errorComponent, &localError {
 		color: $log-error;
 		font-size: $font-size-small;
@@ -33,40 +26,23 @@ $charlog-labelpad: 8px;
 		padding-top: $charlog-textpad;
 	}
 
-	&whisper, &message, &mail {
+	&whisper, &message, &mail, &ooc, &address, &dnd, &privateDescribe, &warn {
 		white-space: pre-wrap;
-		// color: $color4-lightest;
 		padding-top: $charlog-labelpad;
 	}
 
-	&dnd {
-		white-space: pre-wrap;
-		// color: $color4;
-		padding-top: $charlog-labelpad;
-	}
-
-	&say, &pose {
+	&say, &pose, &describe {
 		white-space: pre-wrap;
 		padding-top: $charlog-textpad;
 	}
 
-	&ooc, &address {
-		white-space: pre-wrap;
-		// color: $color4-lightest;
-		padding-top: $charlog-labelpad;
-	}
-
-	&msg, &wakeup, &sleep, &leave, &arrive, &travel, &action {
-		// color: $color4;
+	&msg, &wakeup, &sleep, &leave, &arrive, &travel, &action,
+	&summon, &join, &leadRequest, &followRequest, &follow, &stopFollow, &stopLead, &controlRequest {
 		padding-top: $charlog-labelpad;
 		font-style: italic;
 	}
 
 	&warn {
-		white-space: pre-wrap;
-		// color: $log-error;
-		padding-top: $charlog-labelpad;
-
 		.charlog--fieldset {
 			border-color: $log-error;
 		}
@@ -74,19 +50,6 @@ $charlog-labelpad: 8px;
 		.charlog--fieldset-label {
 			color: $log-error;
 		}
-	}
-
-	&summon, &join, &leadRequest, &followRequest, &follow, &stopFollow, &stopLead, &controlRequest {
-		// color: $color4;
-		padding-top: $charlog-labelpad;
-		font-style: italic;
-	}
-
-	&describe {
-		font-size: $font-size-small;
-		white-space: pre-wrap;
-		// color: $color4;
-		padding-top: $charlog-textpad;
 	}
 
 	&travel {

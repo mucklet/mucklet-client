@@ -59,9 +59,14 @@ const txtProductFeatures = {
 			longDesc: l10n.l('txtProduct.botAccessDesc', "Connect your characters using bot tokens, and control them with scripts."),
 		},
 		{
-			title: l10n.l('txtProduct.roomScripts', "Room scripts"),
-			desc: l10n.l('txtProduct.roomScriptsShortDesc', "Create and run room scripts"),
-			longDesc: l10n.l('txtProduct.roomScriptsDesc', "Create interactive rooms using a Typescript-like scripting language."),
+			title: l10n.l('txtProduct.increasedRoomScriptCap', "Increased room script cap"),
+			desc: l10n.l('txtProduct.increasedRoomScriptCapShortDesc', "Create up to 30 scripts per room"),
+			longDesc: l10n.l('txtProduct.increasedRoomScriptCapDesc', "Create up to 30 scripts per room, instead of 3."),
+		},
+		{
+			title: l10n.l('txtProduct.advancedScripting', "Advanced script development"),
+			desc: l10n.l('txtProduct.advancedScriptingShortDesc', "Build and deploy multi-file scripts"),
+			longDesc: l10n.l('txtProduct.advancedScriptingDesc', "Build and deploy multi-file scripts from a local development environment."),
 		},
 		{
 			title: l10n.l('txtProduct.comingFeatures', "... and more"),

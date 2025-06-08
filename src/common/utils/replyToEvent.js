@@ -66,15 +66,15 @@ function addOoc(ev) {
 }
 
 export const replyCmds = {
-	address: (charId, ev) => 'address ' + getTarget(charId, ev) + ' =' + addOoc(ev),
-	whisper: (charId, ev) => 'whisper ' + getTarget(charId, ev) + ' =' + addOoc(ev),
-	message: (charId, ev) => 'message ' + getTarget(charId, ev) + ' =' + addOoc(ev),
+	address: (charId, ev) => 'address ' + getTarget(charId, ev) + ' =' + addOoc(ev) + ' ',
+	whisper: (charId, ev) => 'whisper ' + getTarget(charId, ev) + ' =' + addOoc(ev) + ' ',
+	message: (charId, ev) => 'message ' + getTarget(charId, ev) + ' =' + addOoc(ev) + ' ',
 };
 
 export const replyAllCmds = {
-	address: (charId, ev) => 'address ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
-	whisper: (charId, ev) => 'whisper ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
-	message: (charId, ev) => 'message ' + getTargetList(charId, ev) + ' =' + addOoc(ev),
+	address: (charId, ev) => 'address ' + getTargetList(charId, ev) + ' =' + addOoc(ev) + ' ',
+	whisper: (charId, ev) => 'whisper ' + getTargetList(charId, ev) + ' =' + addOoc(ev) + ' ',
+	message: (charId, ev) => 'message ' + getTargetList(charId, ev) + ' =' + addOoc(ev) + ' ',
 };
 
 /**

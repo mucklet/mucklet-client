@@ -8,9 +8,10 @@ const usageText = 'request exit <span class="param">Name</span> = <span class="p
 const shortDesc = "Request to create an exit to someone else's room";
 const helpText =
 `<p>Request to create a new exit from current room to a room owned by another player's character.</p>
+<p>Use <code>get room id</code> to get a room's ID.</p>
+<p>Use <code>delete exit</code> to delete exits in rooms you own or exits targeting rooms you own.</p>
 <p><code class="param">Name</code> is the exit name and keyword used with the <code>go</code> command.</p>
-<p><code class="param">#RoomID</code> is the destination room.</p>
-<p>A room's ID can be obtained using the <code>get room id</code> command.</p>`;
+<p><code class="param">#RoomID</code> is the destination room.</p>`;
 
 /**
  * RequestExit adds command to request a new room exit with the target room

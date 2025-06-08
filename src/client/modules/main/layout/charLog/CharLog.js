@@ -19,6 +19,7 @@ import LocalErrorEvent from './LocalErrorEvent';
 import InfoEvent from './InfoEvent';
 import WhisperEvent from './WhisperEvent';
 import DescribeEvent from './DescribeEvent';
+import PrivateDescribeEvent from './PrivateDescribeEvent';
 import MessageEvent from './MessageEvent';
 import SummonEvent from './SummonEvent';
 import JoinEvent from './JoinEvent';
@@ -51,6 +52,7 @@ const componentFactories = {
 	whisper: (charId, ev) => new WhisperEvent(charId, ev),
 	message: (charId, ev) => new MessageEvent(charId, ev),
 	describe: (charId, ev) => new DescribeEvent(charId, ev),
+	privateDescribe: (charId, ev) => new PrivateDescribeEvent(charId, ev),
 	summon: (charId, ev, opt) => new SummonEvent(charId, ev, opt),
 	join: (charId, ev, opt) => new JoinEvent(charId, ev, opt),
 	ooc: (charId, ev) => new OocEvent(charId, ev),

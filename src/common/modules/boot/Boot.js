@@ -4,14 +4,17 @@ import ErrorScreenDialog from 'components/ErrorScreenDialog';
 import Err from 'classes/Err';
 
 /**
- * ErrorScreen shows connection and authentication error messages.
+ * Boot tries to call auth and shows an error of failure.
  */
-class ErrorScreen {
+class Boot {
 
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'auth' ], this._init.bind(this));
+		this.app.require([
+			'auth',
+			'screen',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -37,11 +40,11 @@ class ErrorScreen {
 	}
 
 	_showError(err) {
-		this.app.setComponent(new ErrorScreenDialog(err, {
+		this.module.screen.setComponent(new ErrorScreenDialog(err, {
 			infoTxt: l10n.l('errorScreen.errorAuthenticating', "An error occurred when trying to authenticate:"),
 			buttonTxt: l10n.l('errorScreen.backToLogin', "Back to login"),
 		}));
 	}
 }
 
-export default ErrorScreen;
+export default Boot;

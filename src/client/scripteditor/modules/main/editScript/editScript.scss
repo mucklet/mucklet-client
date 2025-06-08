@@ -1,0 +1,259 @@
+@import '~scss/variables';
+
+.editscript, .editscript-container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.editscript {
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+
+	&--header {
+		flex: 0 0 auto;
+		background-color: $color1-lighter;
+		position: relative;
+		width: 100%;
+	}
+
+	&--headercontent {
+		height: 64px;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&--headertitle {
+		flex: 1 1 0;
+		display: block;
+		margin-left: 48px;
+		position: relative;
+	}
+
+	&--headerinfo {
+		flex: 0 0 auto;
+		display: flex;
+		flex-direction: column;
+		font-size: $font-size-small;
+		padding-right: 48px;
+		overflow: hidden;
+
+		> * {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+	&--headerinfo-room {
+		color: $color3;
+	}
+	&--headerinfo-keyword {
+		color: $color4;
+	}
+
+	&--headerbuttons {
+		display: flex;
+		flex: 0 0 auto;
+		flex-direction: row;
+		gap: 12px;
+		margin-right: 48px;
+		> * {
+			display: block;
+		}
+	}
+
+	&--helpbtn {
+		font-size: 24px;
+		border-radius: 4px;
+		width: 38px;
+		height: 38px;
+		> i {
+			line-height: 38px;
+		}
+	}
+
+	&--errorsbtn {
+		position: absolute;
+		z-index: 10;
+		top: 72px;
+		right: 8px;
+	}
+
+	&--errors {
+		flex: 0 0 auto;
+	}
+
+	&--erroricon {
+		color: $color5;
+	}
+
+	&--update {
+		width: 128px;
+	}
+
+	&--headertools {
+		position: absolute;
+		z-index: 400;
+		top: 26px;
+		right: 40px;
+	}
+
+	&--main {
+		flex: 1 1 0px;
+		display: flex;
+		flex-direction: row;
+		position: relative;
+		overflow: hidden;
+	}
+
+	&--editor {
+		flex: 1 1 0px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	&--errorpanel {
+		flex: 0 0 auto;
+		width: 318px;
+		background-color: $color1-light;
+	}
+
+	// Theme
+	.cm-editor {
+		width: 100%;
+		height: 100%;
+		background: $color1;
+	}
+	.cm-scroller {
+		overflow: auto;
+		scrollbar-color: $color1-lightest transparent;
+		&::-webkit-scrollbar {
+			width: 12px;
+			height: 12px;
+			background-color: transparent;
+		}
+		&::-webkit-scrollbar-corner {
+			background-color: transparent;
+		}
+		&::-webkit-scrollbar-track {
+			background: $color1;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: $color1-lightest;
+			border: 2px solid $color1;
+			border-radius: 6px;
+		}
+		&::-webkit-scrollbar-thumb:hover {
+			background: lighten($color1, 18%);
+		}
+	}
+	.cm-gutters {
+		color: $color4-darker;
+		background-color: $color1;
+		border: none;
+	}
+	.cm-activeLineGutter {
+		background-color: $color1-light;
+	}
+	.cm-lineNumbers .cm-gutterElement {
+		padding-right: 12px;
+	}
+
+	// Style
+	&--keyword {
+		color: $color2;
+	}
+	&--name {
+		color: $color3;
+	}
+	&--variable {
+		color: $color3;
+	}
+	&--constant {
+		color: $color3;
+	}
+	&--separator {
+		color: $color3;
+	}
+	&--type {
+		color: $color2;
+	}
+	&--operator {
+		color: $color4;
+	}
+	&--comment {
+		color: $color4-dark;
+	}
+	&--link {
+		color: $color6;
+	}
+	&--heading {
+		color: $color2;
+	}
+	&--bool {
+		color: $color2;
+	}
+	&--string {
+		color: $color6;
+	}
+	&--invalid {
+		color: $log-error;
+	}
+}
+
+.editscript-errors {
+	height: 8em;
+	background-color: $color1-lighter;
+	padding: 8px 48px 16px 16px;
+	position: relative;
+
+
+	&--cont {
+		background: $color1;
+		border-radius: 4px;
+		position: relative;
+		height: 100%;
+	}
+
+	&--simplebar {
+		height: 100%;
+		padding: 8px 8px;
+	}
+
+	&--text {
+		font-family: $font-code;
+		font-size: $font-size-small;
+		color: $color5;
+		white-space: pre;
+	}
+
+	&--errors {
+		font-family: $font-code;
+		font-size: $font-size-small;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	// .editscript {}
+}
+
+@media screen and (max-width: 720px) {
+	.editscript {
+		&--headertitle {
+			display: none;
+		}
+		&--headerinfo {
+			flex: 1 1 0;
+			margin-left: 24px;
+			padding-right: 8px;
+		}
+
+		&--headerbuttons {
+			flex: 0 0 auto;
+			margin-right: 24px;
+		}
+	}
+}

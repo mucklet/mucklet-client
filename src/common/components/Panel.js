@@ -29,7 +29,6 @@ class Panel extends RootElem {
 	constructor(title, component, opt) {
 		opt = Object.assign({ align: "left" }, opt);
 		opt.className = 'panel panel--align-' + opt.align + (opt.className ? ' ' + opt.className : '');
-		opt.attributes = Object.assign({ 'aria-hidden': 'true' }, opt.attributes);
 		super(null);
 
 		// Set options
