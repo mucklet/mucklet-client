@@ -37,7 +37,7 @@ class ConsoleEditor {
 						// editor's doc and the state's doc would match. This is rather
 						// an affect of changing history.
 						if (m.doc.trim() != this.cm.state.doc.toString().trim()) {
-							this.cm.setState(this._newEditorState(m));
+							this._newState();
 						}
 					}
 				},
@@ -76,7 +76,7 @@ class ConsoleEditor {
 		if (rel && state) {
 			let editorState = this._newEditorState(state);
 			if (this.cm) {
-				this.cm.setState(editorState);
+				this._newState(editorState);
 			} else {
 				this.cm = new EditorView({
 					state: editorState,
@@ -186,8 +186,12 @@ class ConsoleEditor {
 	// Sets a new editor state with the provided doc string value, and updates the state
 	_setConsole(doc) {
 		this.state?.setDoc(doc, doc.length);
+		this._newState();
+	}
+
+	_newState(editorState) {
 		if (this.cm) {
-			this.cm.setState(this._newEditorState(this.state));
+			this.cm.setState(editorState || this._newEditorState(this.state));
 			this.cm.dispatch({ selection: { anchor: this.state.anchor, head: this.state.head }});
 		}
 	}
