@@ -1,6 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Context, Elem, Txt } from 'modapp-base-component';
 import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-resource-component';
-import { Model } from 'modapp-resource';
+import { Model, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import PanelSection from 'components/PanelSection';
@@ -21,22 +21,35 @@ class PageCharSelectComponent {
 		this.model = new Model({ data: this.state, eventBus: this.module.self.app.eventBus });
 		let puppetsComponent = new PanelSection(
 			l10n.l('pageCharSelect.puppets', "Puppets"),
-			new CollectionList(
-				this.module.player.getPuppets(),
-				m => new PageCharSelectPuppet(this.module, m, this.model, this.close),
-				{ className: 'pagecharselect--puppets' },
+			new Context(
+				() => new CollectionWrapper(this.module.player.getPuppets(), {
+					compare: (a, b) => a.registered - b.registered,
+					eventBus: this.module.self.app.eventBus,
+				}),
+				(puppets) => puppets.dispose(),
+				(puppets) => new CollectionList(
+					puppets,
+					m => new PageCharSelectPuppet(this.module, m, this.model, this.close),
+					{ className: 'pagecharselect--puppets' },
+				),
 			),
 			{
 				className: 'common--sectionpadding',
 			},
 		);
 
-		let chars = this.module.player.getChars();
 		this.elem = new Elem(n => n.elem('div', { className: 'pagecharselect' }, [
-			n.component(new CollectionList(
-				chars,
-				char => new PageCharSelectChar(this.module, char, chars, this.model, this.close),
-				{ className: 'pagecharselect--chars' },
+			n.component(new Context(
+				() => new CollectionWrapper(this.module.player.getChars(), {
+					compare: (a, b) => a.created - b.created,
+					eventBus: this.module.self.app.eventBus,
+				}),
+				(chars) => chars.dispose(),
+				(chars) => new CollectionList(
+					chars,
+					char => new PageCharSelectChar(this.module, char, chars, this.model, this.close),
+					{ className: 'pagecharselect--chars' },
+				),
 			)),
 			n.elem('div', { className: 'pagecharselect--add' }, [
 				n.component(new ModelComponent(
