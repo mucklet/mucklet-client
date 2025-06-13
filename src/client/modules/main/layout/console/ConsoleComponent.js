@@ -1,5 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Context, Elem, Txt } from 'modapp-base-component';
 import { CollectionList, ModelComponent, CollectionComponent } from 'modapp-resource-component';
+import { CollectionWrapper } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import SimpleBar from 'components/SimpleBar';
 import Collapser from 'components/Collapser';
@@ -22,7 +23,6 @@ class ConsoleComponent {
 	render(el) {
 		this.module.self.on('focus', this.focus);
 
-		let components = {};
 		this.elem = new ModelComponent(
 			this.module.self.getModel(),
 			new Elem(n => n.elem('div', { className: 'console console--layout' + this.layout }, [
@@ -32,11 +32,18 @@ class ConsoleComponent {
 							this.module.player.getControlled(),
 							new Collapser(),
 							(col, c) => {
-								c.setComponent(components.controlled = col.length > 1 || this.layout == 'desktop'
-									? components.controlled || new CollectionList(
-										this.module.player.getControlled(),
-										m => new ConsoleControlledChar(this.module, m, { onClick: this.focus, layout: this.layout }),
-										{ className: 'console--controlledlist', horizontal: true },
+								c.setComponent(col.length > 1 || this.layout == 'desktop'
+									? c.getComponent() || new Context(
+										() => new CollectionWrapper(this.module.player.getControlled(), {
+											compare: (a, b) => a.ctrlSince - b.ctrlSince,
+											eventBus: this.module.self.app.eventBus,
+										}),
+										(ctrls) => ctrls.dispose(),
+										(ctrls) => new CollectionList(
+											ctrls,
+											m => new ConsoleControlledChar(this.module, m, { onClick: this.focus, layout: this.layout }),
+											{ className: 'console--controlledlist', horizontal: true },
+										),
 									)
 									: null,
 								);
