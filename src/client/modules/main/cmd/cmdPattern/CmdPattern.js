@@ -79,7 +79,7 @@ class CmdPattern {
 			shortDesc: l10n.l('cmdPattern.doShortDesc', doShortDesc),
 			desc: l10n.l('cmdPattern.doHelpText', doHelpText),
 			examples,
-			sortOrder: 130,
+			sortOrder: 140,
 		});
 	}
 

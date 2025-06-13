@@ -40,7 +40,7 @@ class ListCommands {
 			usage: l10n.l('listCommands.usage', usageText),
 			shortDesc: l10n.l('listCommands.shortDesc', shortDesc),
 			desc: l10n.l('listCommands.helpText', helpText),
-			sortOrder: 140,
+			sortOrder: 150,
 		});
 	}
 
