@@ -19,7 +19,7 @@ class Suspend {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'helpModerate', 'info', 'player' ], this._init.bind(this));
+		this.app.require([ 'cmd', 'cmdLists', 'charLog', 'help', 'info', 'player' ], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -38,13 +38,14 @@ class Suspend {
 			value: (ctx, p) => this.lookup(ctx.char, { name: p.name }),
 		});
 
-		this.module.helpModerate.addTopic({
+		this.module.help.addTopic({
 			id: 'lookup',
+			category: 'basic',
 			cmd: 'lookup',
 			usage: l10n.l('lookup.usage', usageText),
 			shortDesc: l10n.l('lookup.shortDesc', shortDesc),
 			desc: l10n.l('lookup.helpText', helpText),
-			sortOrder: 210,
+			sortOrder: 130,
 		});
 	}
 
