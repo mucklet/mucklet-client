@@ -38,6 +38,23 @@ const helpText =
 	</div>
 </section>
 <section class="charlog--pad">
+	<h4 class="charlog--pad">Headers</h4>
+	<p><em>Description</em>, and <em>About</em> texts may be formatted with headers.</p>
+	<p class="common--formattext"><code class="charlog--code-inline"># Header 1</code> at the start of a line will create a large header.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">## Header 2</code> at the start of a line  will create a medium header.</p>
+	<p class="common--formattext"><code class="charlog--code-inline">### Header 3</code> at the start of a line  will create a small header.</p>
+</section>
+<section class="charlog--pad">
+	<h4 class="charlog--pad">Header example</h4>
+	<div class="charlog--pad">
+		<div class="charlog--code">
+			<code>set desc = John is a handsome guy.</code><br>
+			<code>## Clothes</code><br>
+			<code>He wears jeans with a short sleeved shirt.</code><br>
+		</div>
+	</div>
+</section>
+<section class="charlog--pad">
 	<h4 class="charlog--pad">Sections</h4>
 	<p><em>Description</em>, and <em>About</em> texts may be formatted with collapsible subsection.</p>
 	<p class="common--formattext"><code class="charlog--code-inline">[[Section title]]</code> alone on a line will create a new section with the content below.</p>
