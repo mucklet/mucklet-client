@@ -630,14 +630,16 @@ function transformBlockSpan(tokens, startIdx, endIdx, opt, keepContent) {
 	return null;
 }
 
-function countConsecutiveBr(tokens, idx, max) {
+function countConsecutiveBr(tokens, idx, max, dir) {
 	let count = 0;
-	for (let i = idx; i < tokens.length; i++) {
-		if (tokens[i].type != typeBr) {
-			break;
-		}
-		count++;
-		if (max && count >= max) {
+	for (let i = idx; i >= 0 && i < tokens.length; i += dir) {
+		let token = tokens[i];
+		if (token.type == typeBr) {
+			count = Math.abs(i + dir - idx);
+			if (count >= max) {
+				break;
+			}
+		} else if (token.type != typeText || token.content.trim()) {
 			break;
 		}
 	}
@@ -669,8 +671,8 @@ function transformHeader(tokens, startIdx, endIdx, opt, keepContent) {
 	}
 
 	token.content = token.content.slice(match[0].length);
-	let consumeBefore = tokens[startIdx - 1]?.type == 'br' ? 1 : 0;
-	let consumeAfter = countConsecutiveBr(tokens, endIdx, 2);
+	let consumeBefore = countConsecutiveBr(tokens, startIdx - 1, 2, -1);
+	let consumeAfter = countConsecutiveBr(tokens, endIdx, 2, 1);
 	let [ startToken, endToken ] = match[1].length == 1
 		? [ token_h1_start, token_h1_end ]
 		: match[1].length == 2

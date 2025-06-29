@@ -3,6 +3,7 @@ import l10n from 'modapp-l10n';
 import FormatTxt from 'components/FormatTxt';
 import Err from 'classes/Err';
 import './areaRules.scss';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'area rules';
 const shortDesc = 'Show area rules of current location';
@@ -53,8 +54,9 @@ class RulesArea {
 		}
 
 		this.module.charLog.logComponent(char, 'areaRules', new Elem(n => n.elem('div', { className: 'arearules' }, [
-			n.component(new Txt(l10n.t('areaRules.areaRules', "{name} rules", { name }), { tagName: 'h3', className: 'margin-bottom-l' })),
-			n.component(new FormatTxt(rules, { className: 'area--rules formattxt-charlog', noInteraction: true })),
+			n.component(new Txt(l10n.t('areaRules.areaRules', "Area rules"), { tagName: 'h3', className: 'margin-bottom-m' })),
+			n.component(new Txt(name, { tagName: 'div', className: 'arearules--areaname margin-bottom-l' })),
+			n.component(new FormatTxt(rules, { className: 'area--rules formattxt-charlog', noInteraction: true, mode: modeDescription })),
 		])));
 	}
 }
