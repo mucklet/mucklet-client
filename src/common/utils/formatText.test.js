@@ -41,6 +41,17 @@ Cell 3.1 | Cell 3.2
 	// Tables without headers
 	[ "--- | ---\nFoo | Bar", "<table><tbody><tr><th>Foo</th><td>Bar</td></tr></tbody></table>" ],
 
+	// Code block
+	[ "```\nFoo\n```", `<div class="codeblock">Foo</div>` ],
+	[ "```\n```", `<div class="codeblock"></div>` ],
+	[ "Foo\n```\nBar\n```", `Foo<div class="codeblock">Bar</div>` ],
+	[ "Foo\n\n```\nBar\n```", `Foo<div class="codeblock">Bar</div>` ],
+	[ "Foo\n\n\n```\nBar\n```", `Foo<br/><div class="codeblock">Bar</div>` ],
+	[ "```\nFoo\n```\nBar", `<div class="codeblock">Foo</div>Bar` ],
+	[ "```\nFoo\n```\n\nBar", `<div class="codeblock">Foo</div>Bar` ],
+	[ "```\nFoo\n```\n\n\nBar", `<div class="codeblock">Foo</div><br/>Bar` ],
+	[ "Foo\n\n\n```\nBar\nBaz\n```", `Foo<br/><div class="codeblock">Bar<br/>Baz</div>` ],
+
 	// Mix
 	[
 		`# _These\n| _Header 1_\n| ---`,

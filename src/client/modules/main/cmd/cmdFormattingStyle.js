@@ -34,6 +34,8 @@ const tokenTypes = {
 	'tbody_start': { end: 'tbody_end', startMark: codeFormatterMark, endMark: codeFormatterMark },
 	'th_start': { end: 'th_end', mark: tableHeaderMark, startMark: codeFormatterMark, endMark: codeFormatterMark },
 	'td_start': { end: 'td_end', startMark: codeFormatterMark, endMark: codeFormatterMark },
+	// Code block tokens
+	'codeblock_start': { end: 'codeblock_end', mark: cmdMark, startMark: formatterMark, endMark: formatterMark },
 
 	// Single token
 	'anchor_start': { end: 'anchor_end', mark: linkMark, startMark: formatterMark, endMark: formatterMark },

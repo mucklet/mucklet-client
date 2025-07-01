@@ -1,8 +1,17 @@
+@import '~scss/variables';
 @import '~scss/mixins';
 
 .helpformat {
 	p {
 		margin: 0;
 		@include log-pad();
+	}
+	&--experiment {
+		color: $color5;
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+		top: -0.5em;
 	}
 }

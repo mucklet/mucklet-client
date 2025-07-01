@@ -55,7 +55,7 @@
 			font-family: $font-text;
 			font-weight: normal;
 			color: $color2;
-			margin: 1em 0 0.25em 0;
+			margin: 1em 0 0.5em 0;
 		}
 
 		h2 {
@@ -64,7 +64,7 @@
 			font-family: $font-text;
 			font-weight: normal;
 			color: $color2;
-			margin: 1em 0 0.25em 0;
+			margin: 1em 0 0.5em 0;
 		}
 
 		h3 {
@@ -73,7 +73,7 @@
 			font-family: $font-text;
 			font-weight: normal;
 			color: $color2;
-			margin: 1em 0 0.25em 0;
+			margin: 1em 0 0.5em 0;
 		}
 
 		span.ooc {
@@ -127,6 +127,16 @@
 		}
 		span.nobr {
 			white-space: nowrap;
+		}
+		div.codeblock {
+			font-family: $font-code;
+			font-style: normal;
+			font-size: $font-size-small;
+			color: $color2;
+			padding: 6px 10px;
+			background: $color1-dark;
+			border-radius: 8px;
+			margin: 0.5em 0 0.25em 0;
 		}
 	}
 

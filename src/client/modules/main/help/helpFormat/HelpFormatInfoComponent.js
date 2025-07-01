@@ -7,12 +7,12 @@ const helpText =
 </section>
 
 <section class="charlog--pad">
-	<h4 class="charlog--pad">No breaking</h4>
+	<h4 class="charlog--pad">No breaking <span class="helpformat--experiment">experimental</span></h4>
 	<p class="common--formattext"><code class="charlog--code-inline">&lt;nobr&gt;no break&lt;/nobr&gt;</code> will prevent text from breaking and wrapping at spaces.</p>
 </section>
 
 <section class="charlog--pad">
-	<h4 class="charlog--pad">Headers</h4>
+	<h4 class="charlog--pad">Headers <span class="helpformat--experiment">experimental</span></h4>
 	<p>Headers help to improve readability and make a text easier to navigate.</p>
 	<p class="common--formattext"><code class="charlog--code-inline"># Header 1</code> at the start of a line will create a large header.</p>
 	<p class="common--formattext"><code class="charlog--code-inline">## Header 2</code> at the start of a line will create a medium header.</p>
@@ -49,7 +49,7 @@ const helpText =
 	</div>
 </section>
 <section class="charlog--pad">
-	<h4 class="charlog--pad">Tables</h4>
+	<h4 class="charlog--pad">Tables <span class="helpformat--experiment">experimental</span></h4>
 	<p>A table structures text into columns and rows.</p>
 	<p class="common--formattext">To add a table, use the vertical line <code class="charlog--code-inline">|</code> to separate each column, and use three or more dashes <code class="charlog--code-inline">---</code> to create each column's header. A vertical line may also be added at the beginning and end of each row.</p>
 	<div class="charlog--pad">

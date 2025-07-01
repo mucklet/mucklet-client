@@ -15,6 +15,7 @@ function keySort(a, b) {
 
 const typeText = 'text';
 const typeBr = 'br';
+const typeStatic = 'static';
 
 /**
  * Token a token produced by the parser.
@@ -183,6 +184,8 @@ const token_h3_start = new Token('h3_start', '<h3>', 0);
 const token_h3_end = new Token('h3_end', '</h3>', 0);
 const token_nobr_start = new Token('nobr_start', '<span class="nobr">');
 const token_nobr_end = new Token('nobr_end', '</span>');
+const token_codeblock_start = new Token('codeblock_start', '<div class="codeblock">', 0);
+const token_codeblock_end = new Token('codeblock_end', '</div>', 0);
 // Table
 const token_table_start = new Token('table_start', '<table>', 0);
 const token_table_end = new Token('table_end', '</table>', 0);
@@ -208,7 +211,7 @@ const rules = [
 	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, opt => opt.cmd && opt.cmd.start || token_cmd_start, opt => opt.cmd && opt.cmd.end || token_cmd_end, {
 		validToken: token => token.type == typeText || token.type == typeBr,
 		processInner: (t, keepContent) => t.type == typeText
-			? new Token('static', keepContent ? t.content : escapeHtml(t.content))
+			? new Token(typeStatic, keepContent ? t.content : escapeHtml(t.content))
 			: t,
 	}),
 	// Formatted links
@@ -238,6 +241,8 @@ const rules = [
 ];
 
 const blockRules = {
+	// Code blocks
+	codeblock: transformCodeBlock,
 	// Headers
 	header: transformHeader,
 	// Tables
@@ -830,7 +835,6 @@ function transformTable(tokens, startIdx, endIdx, opt, keepContent) {
 	startIdx = startIdx - consumeBefore;
 	endIdx = startIdx + table.length - 1;
 
-	// The new startIdx and endIdx includes the added <hX> and </hX> tags.
 	return { startIdx, endIdx };
 }
 
@@ -934,4 +938,89 @@ function tableRowToTokens(tokens, columns, row, firstCellStartToken, firstCellEn
 		})),
 		token_tr_end.withContent(lastRow ? '' : '\n', keepContent),
 	];
+}
+
+/**
+ * Transform a code block.
+ * @param {Array.<Token>} tokens Array of tokens.
+ * @param {number} startIdx Index of start token for the span.
+ * @param {number} endIdx Index of end token for the span.
+ * @param {object} opt Parser options.
+ * @param {boolean} keepContent If true, the content of each Token in the array
+ * should contain the string characters they represent, so that tokens.join(t =>
+ * t.content) would produce the initial string.
+ * @returns {{ startIdx: number, endIdx: number } | null} New startIdx and
+ * endIdx for the span. If no transformation occurred, null is returned.
+ */
+function transformCodeBlock(tokens, startIdx, endIdx, opt, keepContent) {
+	let idx = startIdx;
+	let codeBlockEndIdx;
+	let nextRow = () => {
+		codeBlockEndIdx = lineEndTokenIdx(tokens, idx);
+		idx = codeBlockEndIdx + 1;
+	};
+
+	let startLine = matchCodeBlockLine(tokens, idx);
+	if (!startLine) {
+		return false;
+	}
+	nextRow();
+
+	 // The token idx where code starts, excluding the "```\n"
+	let codeStartIdx = idx;
+	// The token idx where code ends, excluding the "\n```"
+	let codeEndIdx = null;
+
+	let endLine = null;
+	while (!endLine && idx < tokens.length) {
+		codeEndIdx = codeBlockEndIdx;
+		endLine = matchCodeBlockLine(tokens, idx);
+		nextRow();
+	}
+	// Set code end idx. Make sure not to overlap with the codeStartIdx
+	codeEndIdx = Math.max(codeStartIdx, endLine ? codeEndIdx : tokens.length);
+
+	let consumeBefore = countConsecutiveBr(tokens, startLine.idx - 1, 2, -1);
+	let consumeAfter = countConsecutiveBr(tokens, codeBlockEndIdx, 2, 1);
+
+	let codeBlock = [
+		token_codeblock_start.withContent(
+			tokens.slice(startIdx - consumeBefore, codeStartIdx).map(t => t.content).join(''),
+			keepContent,
+		),
+
+		...(tokens.slice(codeStartIdx, codeEndIdx).map(t => {
+			return t.type == typeText
+				? new Token(typeStatic, keepContent ? t.content : escapeHtml(t.content))
+				: t;
+		})),
+
+		token_codeblock_end.withContent(
+			tokens.slice(codeEndIdx, codeBlockEndIdx + consumeAfter).map(t => t.content).join(''),
+			keepContent,
+		),
+	];
+
+	// Splice the table
+	tokens.splice(startIdx - consumeBefore, consumeBefore + codeBlockEndIdx - startIdx + consumeAfter, ...codeBlock);
+
+	// Calculate new startIdx and endIdx
+	startIdx = startIdx - consumeBefore;
+	endIdx = startIdx + codeBlock.length - 1;
+
+	return { startIdx, endIdx };
+}
+
+function matchCodeBlockLine(tokens, idx) {
+	let token = tokens[idx];
+	if (token.type != typeText) {
+		return null;
+	}
+
+	let match = token.content.match(/^```/);
+	if (!match) {
+		return null;
+	}
+
+	return { idx };
 }
