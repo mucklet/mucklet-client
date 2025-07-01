@@ -5,7 +5,7 @@ import escapeHtml from 'utils/escapeHtml';
 const url = escapeHtml(window.location.href.split('?')[0].replace(/\/+$/, '') + '/siteicon.svg');
 const helpText =
 `<section class="charlog--pad">
-	<p>Texts such as descriptions and communication may be formatted to better express meaning.</p>
+	<p>Texts such as communication may be formatted to better express meaning.</p>
 </section>
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Formatting</h4>
@@ -37,47 +37,20 @@ const helpText =
 		</div>
 	</div>
 </section>
+
 <section class="charlog--pad">
-	<h4 class="charlog--pad">Headers</h4>
-	<p><em>Description</em>, and <em>About</em> texts may be formatted with headers.</p>
-	<p class="common--formattext"><code class="charlog--code-inline"># Header 1</code> at the start of a line will create a large header.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">## Header 2</code> at the start of a line  will create a medium header.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">### Header 3</code> at the start of a line  will create a small header.</p>
-</section>
-<section class="charlog--pad">
-	<h4 class="charlog--pad">Header example</h4>
+	<h4 class="charlog--pad">Info field formatting</h4>
+	<p>For additional formatting available for info fields, such as descriptions, about sections, and rules, type:</p>
 	<div class="charlog--pad">
 		<div class="charlog--code">
-			<code>set desc = John is a handsome guy.</code><br>
-			<code>## Clothes</code><br>
-			<code>He wears jeans with a short sleeved shirt.</code><br>
-		</div>
-	</div>
-</section>
-<section class="charlog--pad">
-	<h4 class="charlog--pad">Sections</h4>
-	<p><em>Description</em>, and <em>About</em> texts may be formatted with collapsible subsection.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">[[Section title]]</code> alone on a line will create a new section with the content below.</p>
-	<p class="common--formattext"><code class="charlog--code-inline">[[Limited section]] { ... }</code> will create a limited section containing the rows enclosed within the {curly brackets}.</p>
-</section>
-<section class="charlog--pad">
-	<h4 class="charlog--pad">Section example</h4>
-	<div class="charlog--pad">
-		<div class="charlog--code">
-			<code>set room desc = The room is empty except for a chest on the floor.</code><br>
-			<code>[[Chest]]</code><br>
-			<code>It is a worn down wooden chest.</code><br>
-			<code>[[Walls]] {</code><br>
-			<code>There are scratch marks on the walls.</code><br>
-			<code>}</code><br>
-			<code>The room has a single door and no windows.</code>
+			<code>help format info</code><br>
 		</div>
 	</div>
 </section>`;
 
 class HelpFormatComponent extends Html{
 	constructor(module) {
-		super(l10n.l('helpFormat.helpDesc', helpText), { className: 'helpformat' });
+		super(l10n.l('helpFormat.helpFormatDesc', helpText), { className: 'helpformat' });
 	}
 }
 

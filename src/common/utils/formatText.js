@@ -181,6 +181,8 @@ const token_h2_start = new Token('h2_start', '<h2>', 0);
 const token_h2_end = new Token('h2_end', '</h2>', 0);
 const token_h3_start = new Token('h3_start', '<h3>', 0);
 const token_h3_end = new Token('h3_end', '</h3>', 0);
+const token_nobr_start = new Token('nobr_start', '<span class="nobr">');
+const token_nobr_end = new Token('nobr_end', '</span>');
 // Table
 const token_table_start = new Token('table_start', '<table>', 0);
 const token_table_end = new Token('table_end', '</table>', 0);
@@ -213,6 +215,8 @@ const rules = [
 	formattedLinks,
 	// Inline links
 	inlineLinks,
+	// No breaking
+	textStyle(/<nobr>/m, /<\/nobr>/m, opt => opt.nobr && opt.nobr.start || token_nobr_start, opt => opt.nobr && opt.nobr.end || token_nobr_end),
 	// Em
 	textStyle(/\b_/m, /_\b/m, opt => opt.em && opt.em.start || token_em_start, opt => opt.em && opt.em.end || token_em_end),
 	// Strong

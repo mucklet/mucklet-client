@@ -108,7 +108,6 @@
 		span.err {
 			color: $color5;
 		}
-
 		table {
 			margin: 8px 0 12px 0;
 			th {
@@ -123,9 +122,11 @@
 				padding-right: 0px;
 			}
 		}
-
 		thead {
 			border-bottom: 1px solid $color1-lightest;
+		}
+		span.nobr {
+			white-space: nowrap;
 		}
 	}
 

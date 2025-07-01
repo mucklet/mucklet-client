@@ -25,6 +25,7 @@ const tokenTypes = {
 	'sup_start': { end: 'sup_end', outerMark: supMark, startMark: formatterMark, endMark: formatterMark },
 	'sub_start': { end: 'sub_end', outerMark: subMark, startMark: formatterMark, endMark: formatterMark },
 	'strikethrough_start': { end: 'strikethrough_end', mark: strikethroughMark, startMark: formatterMark, endMark: formatterMark },
+	'nobr_start': { end: 'nobr_end', startMark: formatterMark, endMark: formatterMark },
 	// Header tokens
 	'h1_start': { end: 'h1_end', mark: headerMark, startMark: formatterMark },
 	'h2_start': { end: 'h2_end', mark: headerMark, startMark: formatterMark },
