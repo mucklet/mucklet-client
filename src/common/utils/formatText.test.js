@@ -6,10 +6,15 @@ const testCases = [
 	[ "# Header 1\nFoo", "<h1>Header 1</h1>Foo" ],
 	[ "# Header 1\n\nFoo", "<h1>Header 1</h1>Foo" ],
 	[ "# Header 1\n\n\nFoo", "<h1>Header 1</h1><br/>Foo" ],
+	[ `Foo\n# Header 1`, "Foo<h1>Header 1</h1>" ],
+	[ `Foo\n\n# Header 1`, "Foo<h1>Header 1</h1>" ],
+	[ `Foo\n\n\n# Header 1`, "Foo<br/><h1>Header 1</h1>" ],
+	[ `## ((OOC Header))`, `<h2><span class="ooc">((OOC Header))</span></h2>` ],
 	// Table with headers
 	[ "Header 1 | Header 2\n--- | ---\nCell 1.1 | _Cell 1.2_", "<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1.1</td><td><em>Cell 1.2</em></td></tr></tbody></table>" ],
 	[ "| Header 1 | Header 2\n| --- | ---\n| Cell 1.1 | _Cell 1.2_", "<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1.1</td><td><em>Cell 1.2</em></td></tr></tbody></table>" ],
 	[ " | Header 1 | Header 2\n --- | ---\nCell 1.1", "<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1.1</td><td></td></tr></tbody></table>" ],
+	[ "Header 1 | Header 2\n --- | ---\nCell 1.1 | Cell 1.2 | Cell 1.3", "<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Cell 1.1</td><td>Cell 1.2</td></tr></tbody></table>" ],
 	[
 		`# Foo
 
@@ -35,6 +40,12 @@ Cell 3.1 | Cell 3.2
 	],
 	// Tables without headers
 	[ "--- | ---\nFoo | Bar", "<table><tbody><tr><th>Foo</th><td>Bar</td></tr></tbody></table>" ],
+
+	// Mix
+	[
+		`# _These\n| _Header 1_\n| ---`,
+		"<h1>_These</h1><table><thead><tr><th><em>Header 1</em></th></tr></thead><tbody></tbody></table>",
+	],
 ];
 
 describe('formatTextTokens', () => {

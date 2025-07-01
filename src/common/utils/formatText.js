@@ -175,25 +175,25 @@ const token_strikethrough_end = new Token('strikethrough_end', '</s>');
 const token_br = new Token(typeBr, '<br/>');
 const token_highlight_start = new Token('highlight_start', '<span class="highlight">');
 const token_highlight_end = new Token('highlight_end', '</span>');
-const token_h1_start = new Token('h1_start', '<h1>');
-const token_h1_end = new Token('h1_end', '</h1>');
-const token_h2_start = new Token('h2_start', '<h2>');
-const token_h2_end = new Token('h2_end', '</h2>');
-const token_h3_start = new Token('h3_start', '<h3>');
-const token_h3_end = new Token('h3_end', '</h3>');
+const token_h1_start = new Token('h1_start', '<h1>', 0);
+const token_h1_end = new Token('h1_end', '</h1>', 0);
+const token_h2_start = new Token('h2_start', '<h2>', 0);
+const token_h2_end = new Token('h2_end', '</h2>', 0);
+const token_h3_start = new Token('h3_start', '<h3>', 0);
+const token_h3_end = new Token('h3_end', '</h3>', 0);
 // Table
-const token_table_start = new Token('table_start', '<table>');
-const token_table_end = new Token('table_end', '</table>');
-const token_thead_start = new Token('thead_start', '<thead>');
-const token_thead_end = new Token('thead_end', '</thead>');
-const token_tbody_start = new Token('tbody_start', '<tbody>');
-const token_tbody_end = new Token('tbody_end', '</tbody>');
-const token_tr_start = new Token('tr_start', '<tr>');
-const token_tr_end = new Token('tr_end', '</tr>');
-const token_th_start = new Token('th_start', '<th>');
-const token_th_end = new Token('th_end', '</th>');
-const token_td_start = new Token('td_start', '<td>');
-const token_td_end = new Token('td_end', '</td>');
+const token_table_start = new Token('table_start', '<table>', 0);
+const token_table_end = new Token('table_end', '</table>', 0);
+const token_thead_start = new Token('thead_start', '<thead>', 0);
+const token_thead_end = new Token('thead_end', '</thead>', 0);
+const token_tbody_start = new Token('tbody_start', '<tbody>', 0);
+const token_tbody_end = new Token('tbody_end', '</tbody>', 0);
+const token_tr_start = new Token('tr_start', '<tr>', 0);
+const token_tr_end = new Token('tr_end', '</tr>', 0);
+const token_th_start = new Token('th_start', '<th>', 0);
+const token_th_end = new Token('th_end', '</th>', 0);
+const token_td_start = new Token('td_start', '<td>', 0);
+const token_td_end = new Token('td_end', '</td>', 0);
 
 export const oocNoParenthesis = { start: token_ooc_start_noparenthesis, end: token_ooc_end_noparenthesis };
 
@@ -276,18 +276,13 @@ function findInTokens(tokens, re, opts) {
 
 	for (let i = idx, l = tokens.length; i < l; i++) {
 		let token = tokens[i];
-		if (validToken && !validToken(token)) {
+		if ((validToken && !validToken(token)) || (level != null && token.level < level)) {
 			return null;
 		}
 		if (token.type == typeText) {
-			if (level != null && token.level < level) {
-				return null;
-			}
-			if (level == null || token.level == level) {
-				let match = matchTextToken(token, re, pos);
-				if (match) {
-					return { match, offset: pos, idx: i, token };
-				}
+			let match = matchTextToken(token, re, pos);
+			if (match) {
+				return { match, offset: pos, idx: i, token };
 			}
 		}
 		pos = 0;
@@ -722,7 +717,7 @@ function transformHeader(tokens, startIdx, endIdx, opt, keepContent) {
 		keepContent,
 	));
 	tokens.splice(startIdx - consumeBefore, consumeBefore, startToken.withContent(
-		tokens.slice(startIdx - consumeBefore, consumeBefore).map(t => t.content).join('') + match[0],
+		tokens.slice(startIdx - consumeBefore, startIdx).map(t => t.content).join('') + match[0],
 		keepContent,
 	));
 
