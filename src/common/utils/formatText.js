@@ -1,3 +1,10 @@
+/**
+ * Functions that parses and formats text in a similar way as markdown.
+ *
+ * [TODO] While starting simple at first, the functionality has grown large and
+ * too complex. This should be rewritten with a proper tokenizer/lexer. /Acci
+ */
+
 import escapeHtml from './escapeHtml.js';
 
 const defaultOpt = {};
@@ -29,6 +36,16 @@ class Token {
 		this.type = type,
 		this.content = content;
 		this.level = level;
+	}
+
+	withContent(content, keepContent) {
+		return keepContent
+			? new Token(this.type, content, this.level)
+			: this;
+	}
+
+	clone() {
+		return new Token(this.type, this.content, this.level);
 	}
 }
 
@@ -164,6 +181,19 @@ const token_h2_start = new Token('h2_start', '<h2>');
 const token_h2_end = new Token('h2_end', '</h2>');
 const token_h3_start = new Token('h3_start', '<h3>');
 const token_h3_end = new Token('h3_end', '</h3>');
+// Table
+const token_table_start = new Token('table_start', '<table>');
+const token_table_end = new Token('table_end', '</table>');
+const token_thead_start = new Token('thead_start', '<thead>');
+const token_thead_end = new Token('thead_end', '</thead>');
+const token_tbody_start = new Token('tbody_start', '<tbody>');
+const token_tbody_end = new Token('tbody_end', '</tbody>');
+const token_tr_start = new Token('tr_start', '<tr>');
+const token_tr_end = new Token('tr_end', '</tr>');
+const token_th_start = new Token('th_start', '<th>');
+const token_th_end = new Token('th_end', '</th>');
+const token_td_start = new Token('td_start', '<td>');
+const token_td_end = new Token('td_end', '</td>');
 
 export const oocNoParenthesis = { start: token_ooc_start_noparenthesis, end: token_ooc_end_noparenthesis };
 
@@ -204,8 +234,10 @@ const rules = [
 ];
 
 const blockRules = {
+	// Headers
 	header: transformHeader,
-	// table: function(tokens, idx, opt, keepContent) { },
+	// Tables
+	table: transformTable,
 };
 
 /**
@@ -368,7 +400,7 @@ function triggers(tokens, opt, keepContent) {
 					let txtIdx = str.indexOf(trigger.key);
 					if (txtIdx >= 0 && isBoundary(str, txtIdx) && isBoundary(str, txtIdx + triggerLength)) {
 						spliceTextToken(tokens, idx, txtIdx + triggerLength, txtIdx + triggerLength, token_highlight_end, keepContent);
-						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign({ trigger }, token_highlight_start), keepContent);
+						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign(token_highlight_start.clone(), { trigger }), keepContent);
 						let t = tokens[idx + 2];
 						t.type = 'highlight_static';
 						if (!keepContent) {
@@ -417,11 +449,14 @@ function increaseLevel(tokens, startIdx, endIdx, keepContent, processInner) {
  */
 function spliceTextToken(tokens, idx, start, end, token, keepContent) {
 	let t = tokens[idx];
+	if (!token.withContent) {
+		console.log(token);
+	}
 	tokens.splice(
 		idx,
 		1,
 		new Token(typeText, t.content.slice(0, start), t.level),
-		keepContent ? new Token(token.type, t.content.slice(start, end), token.level) : token,
+		token.withContent(t.content.slice(start, end), keepContent),
 		new Token(typeText, t.content.slice(end), t.level),
 	);
 }
@@ -632,15 +667,17 @@ function transformBlockSpan(tokens, startIdx, endIdx, opt, keepContent) {
 
 function countConsecutiveBr(tokens, idx, max, dir) {
 	let count = 0;
-	for (let i = idx; i >= 0 && i < tokens.length; i += dir) {
-		let token = tokens[i];
-		if (token.type == typeBr) {
-			count = Math.abs(i + dir - idx);
-			if (count >= max) {
+	if (max > 0) {
+		for (let i = idx; i >= 0 && i < tokens.length; i += dir) {
+			let token = tokens[i];
+			if (token.type == typeBr) {
+				count = Math.abs(i + dir - idx);
+				if (count >= max) {
+					break;
+				}
+			} else if (token.type != typeText || token.content.trim()) {
 				break;
 			}
-		} else if (token.type != typeText || token.content.trim()) {
-			break;
 		}
 	}
 	return count;
@@ -673,13 +710,21 @@ function transformHeader(tokens, startIdx, endIdx, opt, keepContent) {
 	token.content = token.content.slice(match[0].length);
 	let consumeBefore = countConsecutiveBr(tokens, startIdx - 1, 2, -1);
 	let consumeAfter = countConsecutiveBr(tokens, endIdx, 2, 1);
+
+	let afterContent = tokens.slice(endIdx, endIdx + consumeAfter).map(t => t.content).join('');
 	let [ startToken, endToken ] = match[1].length == 1
 		? [ token_h1_start, token_h1_end ]
 		: match[1].length == 2
 			? [ token_h2_start, token_h2_end ]
 			: [ token_h3_start, token_h3_end ];
-	tokens.splice(endIdx, consumeAfter, endToken);
-	tokens.splice(startIdx - consumeBefore, consumeBefore, keepContent ? new Token(startToken.type, match[0].length) : startToken);
+	tokens.splice(endIdx, consumeAfter, endToken.withContent(
+		afterContent,
+		keepContent,
+	));
+	tokens.splice(startIdx - consumeBefore, consumeBefore, startToken.withContent(
+		tokens.slice(startIdx - consumeBefore, consumeBefore).map(t => t.content).join('') + match[0],
+		keepContent,
+	));
 
 	// Calculate new startIdx and endIdx
 	startIdx = startIdx - consumeBefore;
@@ -689,4 +734,205 @@ function transformHeader(tokens, startIdx, endIdx, opt, keepContent) {
 
 	// The new startIdx and endIdx includes the added <hX> and </hX> tags.
 	return { startIdx, endIdx };
+}
+
+/**
+ * Transform the table block level rule inside a token span defined by startIdx
+ * and endIdx.
+ * @param {Array.<Token>} tokens Array of tokens.
+ * @param {number} startIdx Index of start token for the span.
+ * @param {number} endIdx Index of end token for the span.
+ * @param {object} opt Parser options.
+ * @param {boolean} keepContent If true, the content of each Token in the array
+ * should contain the string characters they represent, so that tokens.join(t =>
+ * t.content) would produce the initial string.
+ * @returns {{ startIdx: number, endIdx: number } | null} New startIdx and
+ * endIdx for the span. If no transformation occurred, null is returned.
+ */
+function transformTable(tokens, startIdx, endIdx, opt, keepContent) {
+	let headers = null;
+	let rows = [];
+	let idx = startIdx;
+	let tableEndIdx;
+	let nextRow = () => {
+		tableEndIdx = lineEndTokenIdx(tokens, idx);
+		idx = tableEndIdx + 1;
+	};
+
+	let columns = matchTableLine(tokens, idx);
+	nextRow();
+
+	// Check if next line is a columns line
+	if (!columns && idx < tokens.length) {
+		columns = matchTableLine(tokens, idx);
+		if (columns) {
+			headers = matchTableRow(tokens, startIdx, columns);
+			nextRow();
+		}
+	}
+
+	if (!columns) {
+		return null;
+	}
+
+	while (idx < tokens.length) {
+		let row = matchTableRow(tokens, idx, columns);
+		if (!row) {
+			break;
+		}
+		rows.push(row);
+		nextRow();
+	}
+
+	let consumeBefore = countConsecutiveBr(tokens, startIdx - 1, 2, -1);
+	let consumeAfter = countConsecutiveBr(tokens, tableEndIdx, 2, 1);
+
+
+	let table = [
+		// <table>
+		token_table_start.withContent(
+			tokens.slice(startIdx - consumeBefore, startIdx).map(t => t.content).join(''),
+			keepContent,
+		),
+		// <thead>
+		...(headers
+			? [
+				token_thead_start.withContent('', keepContent),
+				...tableRowToTokens(tokens, columns, headers, token_th_start, token_th_end, token_th_start, token_th_end, false, keepContent),
+				token_thead_end.withContent('', keepContent),
+			]
+			: []
+		),
+		// <tbody>
+		token_tbody_start.withContent(tokens[columns.idx].content + (rows.length ? "\n" : ''), keepContent),
+		...([].concat(...rows.map((row, i) => tableRowToTokens(
+			tokens,
+			columns,
+			row,
+			headers ? token_td_start : token_th_start,
+			headers ? token_td_end : token_th_end,
+			token_td_start,
+			token_td_end,
+			i == (rows.length - 1),
+			keepContent,
+		)))),
+		token_tbody_end.withContent('', keepContent),
+		// </table>
+		token_table_end.withContent(
+			tokens.slice(tableEndIdx, tableEndIdx + consumeAfter).map(t => t.content).join(''),
+			keepContent,
+		),
+	];
+
+	// Splice the table
+	tokens.splice(startIdx - consumeBefore, consumeBefore + tableEndIdx - startIdx + consumeAfter, ...table);
+
+	// Calculate new startIdx and endIdx
+	startIdx = startIdx - consumeBefore;
+	endIdx = startIdx + table.length - 1;
+
+	// The new startIdx and endIdx includes the added <hX> and </hX> tags.
+	return { startIdx, endIdx };
+}
+
+function matchTableLine(tokens, idx) {
+	let token = tokens[idx];
+	if (token.type != typeText) {
+		return null;
+	}
+
+	let parts = token.content.split('|');
+	let len = parts.length;
+
+	let columns = [];
+	for (let i = 0; i < len; i++) {
+		let s = parts[i].trim();
+		if (!s) {
+			// Empty line. Not a match
+			if (len == 1) {
+				return null;
+			}
+			// Empty before first | or last |.
+			if (i == 0 || i == len - 1) {
+				continue;
+			}
+		}
+		let match = s.match(/^([:-])-+([:-])$/);
+		if (!match) {
+			return null;
+		}
+		columns.push({
+			align: match[2] == ':'
+				? match[1] == ':'
+					? 'center'
+					: 'right'
+				: 'left',
+		});
+	}
+
+	return { idx, columns };
+}
+
+function matchTableRow(tokens, idx, columns) {
+	let token = tokens[idx];
+	if (token.type != typeText) {
+		return null;
+	}
+
+	const columnCount = columns.columns.length;
+	let content = token.content;
+	let offset = 0;
+	let start = 0;
+	let cells = [];
+
+	while (cells.length < columnCount) {
+		let pipeFound = true;
+		let end = content.indexOf('|', start);
+		let nextStart = end + 1;
+		if (end < 0) {
+			end = content.length;
+			nextStart = end;
+			pipeFound = false;
+		}
+		let p = content.slice(start, end);
+		let s = p.trimStart();
+		let prefixLen = p.length - s.length;
+		s = s.trimEnd();
+
+		// If empty lineSkip empty line before the first pipe
+		if (s || start > 0) {
+			cells.push({
+				content: s,
+				prefix: content.slice(offset, start + prefixLen),
+				suffix: cells.length == columnCount - 1 // Last column
+					? content.slice(start + prefixLen + s.length)
+					: content.slice(start + prefixLen + s.length, nextStart),
+			});
+			offset = nextStart;
+		} else if (!pipeFound) {
+			// Empty line without pipe means is not a row at all
+			return null;
+		}
+		start = nextStart;
+	}
+
+	return { idx, cells };
+}
+
+function tableRowToTokens(tokens, columns, row, firstCellStartToken, firstCellEndToken, startToken, endToken, lastRow, keepContent) {
+	let level = (tokens[row.idx].level || 0) + 1;
+	return [
+		token_tr_start.withContent('', keepContent),
+		...[].concat(...columns.columns.map((col, i) => {
+			let c = row.cells[i];
+			let stoken = i == 0 ? firstCellStartToken : startToken;
+			let etoken = i == 0 ? firstCellEndToken : endToken;
+			return [
+				stoken.withContent(c.prefix, keepContent),
+				new Token(typeText, c?.content || '', level),
+				etoken.withContent(c.suffix, keepContent),
+			];
+		})),
+		token_tr_end.withContent(lastRow ? '' : '\n', keepContent),
+	];
 }

@@ -108,6 +108,25 @@
 		span.err {
 			color: $color5;
 		}
+
+		table {
+			margin: 8px 0 12px 0;
+			th {
+				color: $color3;
+			}
+			th, td {
+				// padding: 1px 8px 1px 0;
+				padding: 3px 12px 3px 0;
+				text-align: left;
+			}
+			th:last-child, td:last-child {
+				padding-right: 0px;
+			}
+		}
+
+		thead {
+			border-bottom: 1px solid $color1-lightest;
+		}
 	}
 
 
