@@ -36,6 +36,7 @@ class RoomPages {
 		this._onCtrlChange = this._onCtrlChange.bind(this);
 		this._onPlayerChange = this._onPlayerChange.bind(this);
 		this._onCharChange = this._onCharChange.bind(this);
+		this._onRoomChange = this._onRoomChange.bind(this);
 		this._onAreaChange = this._onAreaChange.bind(this);
 		this._update = this._update.bind(this);
 
@@ -284,6 +285,12 @@ class RoomPages {
 		this._updateModel(this.model.char);
 	}
 
+	_onRoomChange(change, room) {
+		if (change?.hasOwnProperty('area') && room == this.model.inRoom) {
+			this._updateModel(this.model.char);
+		}
+	}
+
 	_onAreaChange() {
 		this._updateModel(this.model.char);
 	}
@@ -300,6 +307,7 @@ class RoomPages {
 		if (!c) {
 			if (!char) {
 				relistenResource(this.model.char, null, this._onCharChange);
+				relistenResource(this.model.inRoom, null, this._onRoomChange);
 				this._listenAreas(this.model.areas, null);
 				this.model.set(emptyModelValues);
 			}
@@ -310,6 +318,9 @@ class RoomPages {
 		if (changedChar) {
 			relistenResource(this.model.char, char, this._onCharChange);
 		}
+
+		// Listen to room changes in case area changes
+		relistenResource(this.model.inRoom, char.inRoom, this._onRoomChange);
 
 		// Get area list. If we switch character, we still change the areas list
 		// even if both characters are in the same area.
