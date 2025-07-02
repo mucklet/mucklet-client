@@ -4,6 +4,11 @@
 .arearules {
 	@include log-pad(huge);
 
+	&--areaname {
+		color: $color3;
+		font-size: $font-size;
+	}
+
 	&--desc {
 		p {
 			@include log-pad();

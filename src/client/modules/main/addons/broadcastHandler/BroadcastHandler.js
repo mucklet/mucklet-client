@@ -1,7 +1,7 @@
 import { Html } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
-import formatText from 'utils/formatText';
+import formatText, { modeDescription } from 'utils/formatText';
 
 /**
  * BroadcastHandler handles broadcasted messages and shows them in a toaster notification.
@@ -39,7 +39,7 @@ class BroadcastHandler {
 		this.module.toaster.open({
 			id: ev.id,
 			title: ev.title || l10n.l('broadcastHandler.broadcast', "Broadcast"),
-			content: new Html(formatText(ev.msg), { className: 'common--formattext' }),
+			content: new Html(formatText(ev.msg, { mode: modeDescription }), { className: 'common--formattext' }),
 			closeOn: 'button',
 			time: ev.time ? new Date(ev.time) : new Date(),
 		});

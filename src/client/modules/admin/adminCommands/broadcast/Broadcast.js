@@ -2,6 +2,7 @@ import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import DelimStep from 'classes/DelimStep';
 import Err from 'classes/Err';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'broadcast <span class="opt"><span class="param">Title</span></span> = <span class="param">Message</span>';
 const shortDesc = 'Broadcast a message to everyone';
@@ -36,7 +37,7 @@ class Broadcast {
 						new TextStep('msg', {
 							spanLines: true,
 							errRequired: step => new Err('broadcast.messageRequired', "What do you want to broadcast?"),
-							formatText: true,
+							formatText: { mode: modeDescription },
 						}),
 					],
 				}),

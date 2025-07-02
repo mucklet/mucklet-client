@@ -53,7 +53,8 @@ class RulesArea {
 		}
 
 		this.module.charLog.logComponent(char, 'areaRules', new Elem(n => n.elem('div', { className: 'arearules' }, [
-			n.component(new Txt(l10n.t('areaRules.areaRules', "{name} rules", { name }), { tagName: 'h3', className: 'margin-bottom-l' })),
+			n.component(new Txt(l10n.t('areaRules.areaRules', "Area rules"), { tagName: 'h3', className: 'margin-bottom-m' })),
+			n.component(new Txt(name, { tagName: 'div', className: 'arearules--areaname margin-bottom-l' })),
 			n.component(new FormatTxt(rules, { className: 'area--rules formattxt-charlog', noInteraction: true })),
 		])));
 	}

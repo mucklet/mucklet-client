@@ -5,6 +5,7 @@ import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { descriptionTooLong, propertyTooLong, itemNameTooLong, keyTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'set profile <span class="param">Keyword</span> : <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set a character profile attribute';
@@ -42,7 +43,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setProfile.descDesc', "Description of the character's appearance. It may be formatted and span multiple paragraphs."),
 		sortOrder: 30,

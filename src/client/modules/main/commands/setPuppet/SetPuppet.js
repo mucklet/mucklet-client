@@ -5,6 +5,7 @@ import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { descriptionTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'set puppet <span class="param">Attribute</span> <span class="opt">=</span> <span class="param">Value</span>';
 const shortDesc = 'Set a puppet attribute';
@@ -19,7 +20,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setPuppet.howToPlayDesc', "Information on how to play the puppet. It may be formatted and span multiple paragraphs."),
 		sortOrder: 10,

@@ -1,6 +1,7 @@
 import l10n from 'modapp-l10n';
 import TextStep from 'classes/TextStep';
 import { descriptionTooLong, propertyTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const defaultAttr = [
 	{
@@ -22,7 +23,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setChar.descDesc', "Description of the character's appearance. It may be formatted and span multiple paragraphs."),
 		sortOrder: 30,
@@ -34,7 +35,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setChar.aboutDesc', "Information about the character and its player's preferences. It may be formatted and span multiple paragraphs."),
 		sortOrder: 40,

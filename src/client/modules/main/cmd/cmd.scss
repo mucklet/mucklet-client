@@ -19,7 +19,17 @@
 	} // macroName
 
 	// Formatted text
+	&--format-header &--text {
+		color: $color2;
+	}
+	&--format-tableheader &--text {
+		color: $color3;
+	}
 	&--format-formatter &--text, &--format-formatter &--ooc {
+		color: $color4-dark;
+	}
+	&--format-codeformatter &--text, &--format-codeformatter &--ooc {
+		font-family: $font-code;
 		color: $color4-dark;
 	}
 	&--format-em {
