@@ -2,7 +2,12 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
-import { standardKeymap, insertNewline } from '@codemirror/commands';
+import {
+	defaultKeymap,
+	history,
+	historyKeymap,
+	insertNewline,
+} from '@codemirror/commands';
 import l10n from 'modapp-l10n';
 import tabCompletion, { tabComplete } from 'utils/codemirrorTabCompletion';
 import spellcheck from 'utils/codemirrorSpellcheck';
@@ -162,16 +167,24 @@ class ConsoleEditor {
 			{ key: 'Cmd-ArrowDown', run: this._cycleNext },
 			{ key: 'Ctrl-N', run: this._cycleNext },
 			{ key: 'Cmd-N', run: this._cycleNext },
-			...standardKeymap,
+			// A large set of basic bindings
+			...defaultKeymap,
+			// Redo/undo keys
+			...historyKeymap,
 		]);
 		let editorState = EditorState.create({
 			doc: state.doc,
 			selection: { anchor: state.anchor || 0, head: state.head || 0 },
 			extensions: [
+				// The undo history
+				history(),
+				// Tab completion
 				tabCompletion({
 					complete: editorState => this.module.cmd.getCMTabComplete(editorState),
 				}),
+				// Spell check
 				spellcheck,
+				// Command highlight formatting
 				this.module.cmd.getCMFormattingStyle(),
 				keymap.of(keymapArray),
 				state.getCMLanguage(),
