@@ -45,7 +45,7 @@ const defaultAttr = [
 			spanLines: true,
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setChar.aboutDesc', "Information about the area, such as setting, purpose, and rules. It may be formatted and span multiple paragraphs."),
 		sortOrder: 30,

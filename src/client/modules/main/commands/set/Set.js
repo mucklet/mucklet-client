@@ -4,6 +4,7 @@ import TextStep from 'classes/TextStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { descriptionTooLong, propertyTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'set <span class="param">Attribute</span> <span class="opt">=</span> <span class="param">Value</span>';
 const shortDesc = 'Set an attribute of your character';
@@ -30,7 +31,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('set.descDesc', "Description of the character's appearance. It may be formatted and span multiple paragraphs."),
 		sortOrder: 30,
@@ -42,7 +43,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('set.aboutDesc', "Information about the character and its player's preferences. It may be formatted and span multiple paragraphs."),
 		sortOrder: 40,

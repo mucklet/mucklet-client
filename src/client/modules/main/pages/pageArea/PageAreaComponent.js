@@ -11,7 +11,6 @@ import AreaChildrenModel from 'classes/AreaChildrenModel';
 import listenResource, { relistenResource } from 'utils/listenResource';
 import PageAreaLocation from './PageAreaLocation';
 import PageAreaImage from './PageAreaImage';
-import { modeDescription } from 'utils/formatText';
 
 /**
  * PageAreaComponent renders an area page.
@@ -62,7 +61,7 @@ class PageAreaComponent {
 			l10n.l('pageArea.rules', "Rules"),
 			new ModelComponent(
 				this.area,
-				new FormatTxt("", { className: 'common--desc-size', state: this.areaState.rules, mode: modeDescription }),
+				new FormatTxt("", { className: 'common--desc-size', state: this.areaState.rules }),
 				(m, c) => c.setFormatText(m.rules),
 			),
 			{
