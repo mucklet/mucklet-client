@@ -52,10 +52,29 @@ Cell 3.1 | Cell 3.2
 	[ "```\nFoo\n```\n\n\nBar", `<div class="codeblock">Foo</div><br/>Bar` ],
 	[ "Foo\n\n\n```\nBar\nBaz\n```", `Foo<br/><div class="codeblock">Bar<br/>Baz</div>` ],
 
+	// Escape
+	[ "<esc>_Foo_</esc>", "_Foo_" ],
+	[ "<esc>`Foo`</esc>", "`Foo`" ],
+	[ "<esc>\n_Foo_\n</esc>", "<br/>_Foo_<br/>" ],
+	[ "_<esc>**Foo**</esc>_", "<em>**Foo**</em>" ],
+	[ "((<esc>((</esc>Foo<esc>))</esc>))", `<span class="ooc">((((Foo))))</span>` ],
+	// Escaping inside blocks are not supported yet
+	// [ "<esc>\n```\nFoo\n```\n</esc>", "<br/>```<br/>Foo<br/>```<br/>" ],
+
 	// Mix
 	[
 		`# _These\n| _Header 1_\n| ---`,
 		"<h1>_These</h1><table><thead><tr><th><em>Header 1</em></th></tr></thead><tbody></tbody></table>",
+	],
+	[
+		`--- | ---
+Foo | <esc>_Baz_</esc>`,
+		"<table><tbody><tr><th>Foo</th><td>_Baz_</td></tr></tbody></table>",
+	],
+	[
+		`--- | ---
+Foo | ((Bar<esc>))</esc>))`,
+		`<table><tbody><tr><th>Foo</th><td><span class="ooc">((Bar))))</span></td></tr></tbody></table>`,
 	],
 ];
 

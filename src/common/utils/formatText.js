@@ -184,6 +184,8 @@ const token_h3_start = new Token('h3_start', '<h3>', 0);
 const token_h3_end = new Token('h3_end', '</h3>', 0);
 const token_nobr_start = new Token('nobr_start', '<span class="nobr">');
 const token_nobr_end = new Token('nobr_end', '</span>');
+const token_esc_start = new Token('esc_start', '');
+const token_esc_end = new Token('esc_end', '');
 const token_codeblock_start = new Token('codeblock_start', '<div class="codeblock">', 0);
 const token_codeblock_end = new Token('codeblock_end', '</div>', 0);
 // Table
@@ -207,6 +209,13 @@ const rules = [
 	textReplace(/\n/m, (m, opt) => token_br),
 	// Blocks (see blockRules)
 	transformBlocks,
+	// Escape
+	textStyle(/<esc>/m, /<\/esc>/m, opt => opt.esc && opt.esc.start || token_esc_start, opt => opt.esc && opt.esc.end || token_esc_end, {
+		validToken: token => token.type == typeText || token.type == typeBr,
+		processInner: (t, keepContent) => t.type == typeText
+			? new Token(typeStatic, keepContent ? t.content : escapeHtml(t.content))
+			: t,
+	}),
 	// Cmd
 	textStyle(/(?=^|[^\w])`/m, /`(?=$|[^\w])/m, opt => opt.cmd && opt.cmd.start || token_cmd_start, opt => opt.cmd && opt.cmd.end || token_cmd_end, {
 		validToken: token => token.type == typeText || token.type == typeBr,
@@ -285,7 +294,7 @@ function findInTokens(tokens, re, opts) {
 
 	for (let i = idx, l = tokens.length; i < l; i++) {
 		let token = tokens[i];
-		if ((validToken && !validToken(token)) || (level != null && token.level < level)) {
+		if ((validToken && !validToken(token)) || (level != null && token.level != null && token.level < level)) {
 			return null;
 		}
 		if (token.type == typeText) {

@@ -12,6 +12,11 @@ const helpText =
 </section>
 
 <section class="charlog--pad">
+	<h4 class="charlog--pad">Escape <span class="helpformat--experiment">experimental</span></h4>
+	<p class="common--formattext"><code class="charlog--code-inline">&lt;esc&gt;_not italic_&lt;/esc&gt;</code> will prevent text to be formatted.</p>
+</section>
+
+<section class="charlog--pad">
 	<h4 class="charlog--pad">Headers <span class="helpformat--experiment">experimental</span></h4>
 	<p>Headers help to improve readability and make a text easier to navigate.</p>
 	<p class="common--formattext"><code class="charlog--code-inline"># Header 1</code> at the start of a line will create a large header.</p>
