@@ -9,11 +9,21 @@ class HelpRules {
 
 	constructor(app, params) {
 		this.app = app;
-		this.app.require([ 'help' ], this._init.bind(this));
+		this.app.require([
+			'help',
+			'info',
+			'cmd',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+
+		// Add simple "rules" command.
+		this.module.cmd.addCmd({
+			key: 'rules',
+			value: (ctx, p) => this.module.help.showCategory(ctx.char, 'rules'),
+		});
 
 		this.module.help.addCategory({
 			id: 'rules',
