@@ -559,6 +559,23 @@ class Help {
 		return false;
 	}
 
+	/**
+	 * Shows the help for a topic (category). The topic must be the registered cmd
+	 * string.
+	 * @param {CtrlChar} char Character to show the help for.
+	 * @param {string} cmd Cmd string as registered with addCategory.
+	 * @returns {boolean} True if shown, otherwise false.
+	 */
+	showCategory(char, cmd) {
+		for (let c of this.categories) {
+			if (c.cmd === cmd) {
+				this.module.charLog.logComponent(char, 'helpCategory', new HelpCategory(this.module, this.categories, c));
+				return true;
+			}
+		}
+		return false;
+	}
+
 	_showHelp(char, cmd) {
 		if (!char) {
 			throw new Error("No active char");
