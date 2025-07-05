@@ -22,6 +22,7 @@ class ConsoleEditor {
 
 		// Bind callbacks
 		this._onEnter = this._onEnter.bind(this);
+		this._onCtrlEnter = this._onCtrlEnter.bind(this);
 		this._onEditorUpdate = this._onEditorUpdate.bind(this);
 		this._cyclePrev = this._cycleHistory.bind(this, true);
 		this._cycleNext = this._cycleHistory.bind(this, false);
@@ -158,7 +159,7 @@ class ConsoleEditor {
 
 		keymapArray.push(...[
 			{ key: 'Enter', run: this._onEnter },
-			{ key: 'Ctrl-Enter', run: insertNewline },
+			{ key: 'Ctrl-Enter', run: this._onCtrlEnter },
 			{ key: 'Ctrl-ArrowUp', run: this._cyclePrev },
 			{ key: 'Cmd-ArrowUp', run: this._cyclePrev },
 			{ key: 'Ctrl-P', run: this._cyclePrev },
@@ -213,6 +214,12 @@ class ConsoleEditor {
 		return this.module.self.getModel().mode == 'touch'
 			? insertNewline(ctx)
 			: this._onSend(ctx);
+	}
+
+	_onCtrlEnter(ctx) {
+		return this.module.self.getModel().mode == 'touch'
+			? this._onSend(ctx)
+			: insertNewline(ctx);
 	}
 
 	_onSend(ctx) {
