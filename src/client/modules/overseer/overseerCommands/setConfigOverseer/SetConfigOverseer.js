@@ -192,6 +192,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.maxScheduledPostsDesc', "Max number of scheduled posts per script."),
 		sortOrder: 1350,
 	},
+	{
+		key: 'maxRoomCmds',
+		stepFactory: () => new NumberStep('value', { name: "max commands per room" }),
+		desc: l10n.l('setConfig.maxRoomCommandsDesc', "Max number of custom commands per room."),
+		sortOrder: 1360,
+	},
 	// Max upload limits
 	{
 		key: 'maxImageSize',
