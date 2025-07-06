@@ -1,16 +1,16 @@
 import toComponent from 'utils/toComponent.js';
-import formatText, { oocNoParenthesis } from 'utils/formatText';
+import formatText, { modeDescription, oocNoParenthesis } from 'utils/formatText';
 import PanelSection from './PanelSection';
 import Fader from './Fader';
 import './formatTxt.scss';
 
-function addPart(el, str, className) {
+function addPart(el, str, className, mode) {
 	if (!(str = str.trim())) return;
 	let div = document.createElement('div');
 	if (className) {
 		div.className = className;
 	}
-	div.innerHTML = formatText(str.trim(), { ooc: oocNoParenthesis });
+	div.innerHTML = formatText(str.trim(), { ooc: oocNoParenthesis, mode });
 	el.appendChild(div);
 }
 
@@ -24,6 +24,7 @@ class FormatTxt extends Fader {
 	 * @param {string} str Text to format
 	 * @param {object} [opt] Optional parameters as defined by RootElem.
 	 * @param {boolean} [opt.noInteraction] Flag to disable clickable interactions like toggling sections.
+	 * @param {"default" | "description"} [opt.mode] Rendering mode. Defaults to "description".
 	 */
 	constructor(str, opt) {
 		opt = opt || {};
@@ -32,6 +33,7 @@ class FormatTxt extends Fader {
 
 		this.state = opt.state || {};
 		this.noInteraction = !!opt.noInteraction;
+		this.mode = opt.hasOwnProperty('mode') ? opt.mode : modeDescription;
 		this.setStr = null;
 		this.setFormatText(str);
 	}
@@ -55,7 +57,7 @@ class FormatTxt extends Fader {
 		let sidx = 0;
 		while (match) {
 			if (match.index > offset) {
-				addPart(div, str.slice(offset, match.index), 'common--sectionpadding');
+				addPart(div, str.slice(offset, match.index), 'common--sectionpadding', this.mode);
 			}
 
 			next = sectionRegex.exec(str);
@@ -71,7 +73,7 @@ class FormatTxt extends Fader {
 
 			let section = toComponent(document.createElement('div'));
 			section.className = 'formattxt--sectioncontent';
-			addPart(section, content);
+			addPart(section, content, null, this.mode);
 			new PanelSection(match[1], section, {
 				open: this.noInteraction ? true : this.state['section_' + sidx] || false,
 				className: 'formattxt--section',
@@ -83,7 +85,7 @@ class FormatTxt extends Fader {
 		}
 
 		if (offset < str.length) {
-			addPart(div, str.slice(offset), 'common--sectionpadding');
+			addPart(div, str.slice(offset), 'common--sectionpadding', this.mode);
 		}
 
 		this.setStr = str;

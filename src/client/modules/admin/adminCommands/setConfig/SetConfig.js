@@ -5,30 +5,38 @@ import TextStep from 'classes/TextStep';
 import ValueStep from 'classes/ValueStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
+import { descriptionTooLong, itemNameTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'set config <span class="param">Attribute</span> <span class="opt"><span class="param">Subattribute</span></span> <span class="opt">=</span> <span class="param">Value</span>';
-const shortDesc = 'Set a world configuration attribute';
+const shortDesc = 'Set a realm configuration attribute';
 const helpText =
-`<p>Set a world configuration attribute.</p>`;
+`<p>Set a realm configuration attribute.</p>`;
 
 const defaultAttr = [
 	// General attributes
 	{
 		key: 'title',
-		name: "world title",
-		desc: l10n.l('setConfig.titleDesc', "World title."),
+		name: "realm title",
+		desc: l10n.l('setConfig.titleDesc', "Realm title."),
+		maxLength: () => module.info.getCore().itemNameMaxLength,
+		errTooLong: itemNameTooLong,
 		sortOrder: 10,
 	},
 	{
 		key: 'genre',
-		name: "world genre",
-		desc: l10n.l('setConfig.genreDesc', "World genre."),
+		name: "realm genre",
+		desc: l10n.l('setConfig.genreDesc', "Realm genre."),
+		maxLength: () => module.info.getCore().itemNameMaxLength,
+		errTooLong: itemNameTooLong,
 		sortOrder: 12,
 	},
 	{
 		key: 'subgenre',
-		name: "world subgenre",
-		desc: l10n.l('setConfig.subgenreDesc', "World subgenre."),
+		name: "realm subgenre",
+		desc: l10n.l('setConfig.subgenreDesc', "Realm subgenre."),
+		maxLength: () => module.info.getCore().itemNameMaxLength,
+		errTooLong: itemNameTooLong,
 		sortOrder: 12,
 	},
 	{
@@ -36,6 +44,8 @@ const defaultAttr = [
 		stepFactory: (module) => new TextStep('value', {
 			name: "greeting html",
 			spanLines: true,
+			maxLength: () => module.info.getCore().descriptionMaxLength * 4,
+			errTooLong: descriptionTooLong,
 		}),
 		desc: l10n.l('setConfig.greetingDesc', "Front page greeting message (HTML)."),
 		sortOrder: 20,
@@ -43,11 +53,26 @@ const defaultAttr = [
 	{
 		key: 'about',
 		stepFactory: (module) => new TextStep('value', {
-			name: "about the world",
+			name: "about the realm",
 			spanLines: true,
+			maxLength: () => module.info.getCore().descriptionMaxLength,
+			errTooLong: descriptionTooLong,
+			formatText: { mode: modeDescription },
 		}),
-		desc: l10n.l('setConfig.aboutDesc', "Info about the world displayed under <code>help about</code>. May be formatted and span multiple lines."),
-		sortOrder: 25,
+		desc: l10n.l('setConfig.aboutDesc', "Info about the realm displayed under <code>help about</code>. May be formatted and span multiple lines."),
+		sortOrder: 24,
+	},
+	{
+		key: 'rules',
+		stepFactory: (module) => new TextStep('value', {
+			name: "realm rules",
+			spanLines: true,
+			maxLength: () => module.info.getCore().descriptionMaxLength,
+			errTooLong: descriptionTooLong,
+			formatText: { mode: modeDescription },
+		}),
+		desc: l10n.l('setConfig.aboutDesc', "Realm rules displayed under <code>help rules</code>. May be formatted and span multiple lines."),
+		sortOrder: 27,
 	},
 	{
 		key: 'arrivalRoom',
@@ -192,13 +217,19 @@ const defaultAttr = [
 ];
 
 /**
- * SetConfig sets world configuration.
+ * SetConfig sets realm configuration.
  */
 class SetConfig {
 	constructor(app) {
 		this.app = app;
 
-		this.app.require([ 'cmd', 'charLog', 'player', 'helpAdmin' ], this._init.bind(this));
+		this.app.require([
+			'cmd',
+			'charLog',
+			'player',
+			'helpAdmin',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -250,7 +281,7 @@ class SetConfig {
 	setConfig(params) {
 		let mod = this.module.player;
 		return mod.getPlayer().call('setConfig', params).then(() => {
-			this.module.charLog.logInfo(mod.getActiveChar(), l10n.l('setConfig.updatedConfig', "Updated world config."));
+			this.module.charLog.logInfo(mod.getActiveChar(), l10n.l('setConfig.updatedConfig', "Updated realm config."));
 		});
 	}
 

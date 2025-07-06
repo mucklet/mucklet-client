@@ -7,14 +7,12 @@
 		> .panelsection--head {
 			padding-bottom: 4px;
 			h3 {
-				color: $color4-light;
-				font-family: $font-text;
-				font-size: $font-size;
-				font-weight: 700;
+				line-height: 1.5;
+				margin: 0;
 			}
 			.panelsection--caret {
-				bottom: 6px;
-				color: $color4-light;
+				bottom: 9px;
+				// color: $color4-light;
 			}
 		}
 	}
@@ -26,7 +24,7 @@
 }
 
 .formattxt.formattxt-charlog {
-	font-size: 14px;
+	font-size: $font-size-small;
 	.common--sectionpadding {
 		padding: 6px 0 6px 0;
 	}
@@ -36,11 +34,6 @@
 
 		> .panelsection--head {
 			padding-bottom: 0;
-			h3 {
-				font-size: 14px;
-				color: $color2;
-				font-weight: normal;
-			}
 			.panelsection--caret {
 				color: $color2;
 			}

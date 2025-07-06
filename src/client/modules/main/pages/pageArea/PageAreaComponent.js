@@ -140,7 +140,7 @@ class PageAreaComponent {
 				])),
 				(m, c) => {
 					c.getNode('pop').setText((m.pop || "0") + (m.prv ? (' (+' + m.prv + ')') : ''));
-					c.addAttribute(
+					c.setAttribute(
 						'title',
 						l10n.t('pageArea.inPublic', "{count} in public", { count: m.pop || '0' }) +
 						(m.prv
