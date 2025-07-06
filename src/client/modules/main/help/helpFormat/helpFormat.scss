@@ -14,4 +14,8 @@
 		vertical-align: baseline;
 		top: -0.5em;
 	}
+	&--disclaimer {
+		font-size: $font-size-small;
+		color: $color5;
+	}
 }
