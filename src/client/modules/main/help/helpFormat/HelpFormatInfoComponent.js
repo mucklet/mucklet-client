@@ -53,6 +53,7 @@ const helpText =
 		</div>
 	</div>
 </section>
+
 <section class="charlog--pad">
 	<h4 class="charlog--pad">Tables <span class="helpformat--experiment">experimental</span></h4>
 	<p>A table structures text into columns and rows.</p>
@@ -95,6 +96,22 @@ const helpText =
 			</tbody></table>
 		</div>
 	</div>
+</section>
+
+<section class="charlog--pad">
+	<h4 class="charlog--pad">Fenced code block <span class="helpformat--experiment">experimental</span></h4>
+	<p>A fenced code block creates a block to display scripts, commands, or other types of code.</p>
+	<p class="common--formattext">To add a fenced code block, use three backticks (<code class="charlog--code-inline">\`\`\`</code>) on an otherwise empty line before and after the code.</p>
+	<div class="charlog--pad">
+		<div class="charlog--code">
+			<code>\`\`\`</code><br>
+			<code>export function onActivate(): void {</code><br>
+			<code>&nbsp;&nbsp;&nbsp;&nbsp;Room.describe("Hello, world!");</code><br>
+			<code>}</code><br>
+			<code>\`\`\`</code><br>
+		</div>
+	</div>
+	<p><span class="helpformat--disclaimer">Indentation is not yet supported.</span></p>
 </section>
 
 <section class="charlog--pad">
