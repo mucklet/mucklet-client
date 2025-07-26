@@ -25,7 +25,7 @@ const helpText =
 		<div class="charlog--code">
 			<table class="tbl-small tbl-nomargin"><tbody>
 				<tr><td><code>say I will **never** give up!</code></td><td class="common--formattext"><span class="charlog--char">John</span> says, "I will <strong>never</strong> give up!"</td></tr>
-				<tr><td><code>desc The room is _freezing_ cold.</code></td><td>⌈The room is <em>freezing</em> cold.⌋</td></tr>
+				<tr><td><code>desc The room is _freezing_ cold.</code></td><td>The room is <em>freezing</em> cold.</td></tr>
 				<tr><td><code>pose hears a high pitched ++beep beep++.</code></td><td class="common--formattext"><span class="charlog--char">Jane</span> hears a high pitched <sup>beep beep</sup>.</span></td></tr>
 				<tr><td><code>pose 's stomach rumbles. --Growl--</code></td><td class="common--formattext"><span class="charlog--char">John</span>'s stomach rumbles. <sub>Growl</sub></span></td></tr>
 				<tr><td><code>pose writes a note: "I ~~like~~ love you."</td><td class="common--formattext"><span class="charlog--char">Jane</span> writes a note: "I <s>like</s> love you."</td></tr>
