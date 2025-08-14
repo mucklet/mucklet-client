@@ -4,6 +4,7 @@ import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
 import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
+import PageHeader from 'components/PageHeader';
 import formatDateTime from 'utils/formatDateTime';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtUnit from 'utils/txtUnit';
@@ -30,12 +31,13 @@ class RoutePaymentsPayment {
 	render(el) {
 		let components = {};
 		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-payment' }, [
-			n.component(new ModelTxt(
+			n.component(new ModelComponent(
 				this.payment,
-				m => m.cost
+				new PageHeader(),
+				(m, c) => c.setTitle(m.cost
 					? l10n.l('routePayments.payment', "Payment")
 					: l10n.l('routePayments.paymentSetup', "Payment setup"),
-				{ tagName: 'h2' },
+				),
 			)),
 			n.elem('div', { className: 'common--hr' }),
 			n.elem('p', { className: 'routepayments--product' }, [

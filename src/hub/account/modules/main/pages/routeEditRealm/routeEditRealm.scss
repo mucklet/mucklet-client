@@ -1,0 +1,19 @@
+@import '~scss/variables';
+
+// .routeeditrealm {}
+
+
+.routeeditrealm-realm {
+
+	&--key {
+    	font-size: $font-size-large;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--footertools {
+		> * {
+			display: inline-block;
+		}
+	}
+}

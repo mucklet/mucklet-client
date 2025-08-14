@@ -42,18 +42,7 @@ class RoutePayments {
 			icon: 'credit-card',
 			name: l10n.l('routePayments.payments', "Payments"),
 			component: new RoutePaymentsComponent(this.module, this.model),
-			setState: params => this.module.auth.getUserPromise()
-				.then(user => Promise.resolve(params.paymentId
-					? (params.page == 'result'
-						? this.module.api.call('payment.payment.' + params.paymentId, 'update')
-						: this.module.api.get('payment.payment.' + params.paymentId)
-					).then(payment => this._setState({ payment, page: params.page }))
-					: Promise.resolve(params.userId
-						? this.module.api.get('identity.user.' + params.userId)
-						: user,
-					).then(user => this._setState({ user, pageNr: Number(params.pageNr) || 0 })),
-				))
-				.catch(error => this._setState({ error })),
+			setState: params => this._setState(params),
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => {
 				let o = this.module.router.parseDefUrl(parts, pathDef);
@@ -66,7 +55,22 @@ class RoutePayments {
 		});
 	}
 
-	_setState(state) {
+	_setState(params) {
+		return this.module.auth.getUserPromise()
+			.then(user => Promise.resolve(params?.paymentId
+				? (params.page == 'result'
+					? this.module.api.call('payment.payment.' + params.paymentId, 'update')
+					: this.module.api.get('payment.payment.' + params.paymentId)
+				).then(payment => this._setModel({ payment, page: params.page }))
+				: Promise.resolve(params?.userId
+					? this.module.api.get('identity.user.' + params.userId)
+					: user,
+				).then(user => this._setModel({ user, pageNr: Number(params?.pageNr) || 0 })),
+			))
+			.catch(error => this._setModel({ error }));
+	}
+
+	_setModel(state) {
 		state = state || {};
 		return this.model.set({
 			payment: relistenResource(this.model.payment, state.payment),
@@ -95,7 +99,7 @@ class RoutePayments {
 	}
 
 	dispose() {
-		this._setState();
+		this._setModel();
 		this.module.router.removeRoute('payments');
 
 	}

@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+.realmstates {
+	&--online {
+		color: $color3;
+	}
+	&--booting, &--restarting {
+		color: $color2;
+	}
+	&--offline {
+		color: mix($color5, $color2, 80%);
+	}
+	&--stopped {
+		color: $log-bot;
+	}
+}
