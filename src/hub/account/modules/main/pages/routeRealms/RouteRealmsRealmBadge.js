@@ -3,7 +3,7 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
 import formatDateTime from 'utils/formatDateTime';
-import realmStates, { getRealmState } from 'utils/realmStates';
+import apiStates, { getApiState } from 'utils/apiStates';
 import RouteRealmsRealmBadgeContent from './RouteRealmsRealmBadgeContent';
 
 
@@ -52,10 +52,10 @@ class RouteRealmsRealmBadge {
 							n.component('txt', new Txt('', { className: 'badge--text' })),
 						])),
 						(m, c) => {
-							let state = getRealmState(m);
+							let state = getApiState(m);
 							c.getNode('txt').setText(state.text);
 							let icon = c.getNode('icon');
-							for (let s of realmStates) {
+							for (let s of apiStates) {
 								icon[state == s ? 'addClass' : 'removeClass'](s.className);
 							}
 						},

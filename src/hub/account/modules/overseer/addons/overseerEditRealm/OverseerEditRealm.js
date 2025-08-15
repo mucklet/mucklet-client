@@ -79,7 +79,7 @@ class OverseerEditRealm {
 	}
 
 	_updateDefaultRealm(realm) {
-		this.module.api.call(`control.overseer.realms`, 'updateDefaultRealm')
+		this.module.api.call(`control.overseer.realm.${realm.id}`, 'updateDefaultRealm')
 			.catch(err => this.module.confirm.openError(err));
 	}
 
