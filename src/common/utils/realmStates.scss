@@ -2,15 +2,15 @@
 
 .realmstates {
 	&--online {
-		color: $color3;
+		color: $color6;
 	}
-	&--booting, &--restarting {
+	&--booting, &--restarting, &--resyncing, &--stopping, &--shuttingdown {
 		color: $color2;
 	}
-	&--offline {
-		color: mix($color5, $color2, 80%);
+	&--offline, &--undefined {
+		color: $color5;
 	}
 	&--stopped {
-		color: $log-bot;
+		color: $color4;
 	}
 }

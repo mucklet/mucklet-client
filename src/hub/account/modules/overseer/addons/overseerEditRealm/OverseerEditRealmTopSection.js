@@ -54,7 +54,8 @@ class RouteEditRealmRealms {
 							n.component('txt', new Txt('')),
 						])),
 						(m, c) => {
-							c.setProperty('disabled', m.state == 'booting' || m.state == 'restarting' ? 'disabled' : null);
+							let state = getRealmState(m);
+							c.setProperty('disabled', state.transitional ? 'disabled' : null);
 							c.getNode('txt').setText([ 'offline', 'booting', 'stopped' ].includes(m.state)
 								? l10n.l('overseerEditRealm.realmUp', "Realm Up")
 								: l10n.l('overseerEditRealm.realmResync', "Realm Resync"),
