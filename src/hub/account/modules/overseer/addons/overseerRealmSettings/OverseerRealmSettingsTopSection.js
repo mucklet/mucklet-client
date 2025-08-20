@@ -7,9 +7,9 @@ import apiStates, { getApiState } from 'utils/apiStates';
 import ModelCollapser from 'components/ModelCollapser';
 
 /**
- * OverseerEditRealmTopSection draws the overseer edit form top section for a realm.
+ * OverseerRealmSettingsTopSection draws the overseer edit form top section for a realm.
  */
-class RouteEditRealmRealms {
+class RouteRealmSettingsRealms {
 	constructor(module, realm) {
 		this.module = module;
 		this.realm = realm;
@@ -17,7 +17,7 @@ class RouteEditRealmRealms {
 
 	render(el) {
 		this.messageComponent = new Collapser();
-		this.elem = new Elem(n => n.elem('div', { className: 'overseereditrealm-topsection' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'overseerrealmsettings-topsection' }, [
 
 			// Realm state
 			n.elem('div', { className: 'common--sectionpadding' }, [
@@ -53,7 +53,7 @@ class RouteEditRealmRealms {
 									click: () => this._callRealm('up'),
 								},
 							}, [
-								n.component(new Txt(l10n.l('overseerEditRealm.realmUp', "Realm Up"))),
+								n.component(new Txt(l10n.l('overseerRealmSettings.realmUp', "Realm Up"))),
 							])),
 							(m, c) => {
 								let state = getApiState(m);
@@ -72,7 +72,7 @@ class RouteEditRealmRealms {
 									click: () => this._callRealm('stop'),
 								},
 							}, [
-								n.component(new Txt(l10n.l('overseerEditRealm.realmStop', "Realm Stop"))),
+								n.component(new Txt(l10n.l('overseerRealmSettings.realmStop', "Realm Stop"))),
 							])),
 							(m, c) => {
 								let state = getApiState(m);
@@ -91,7 +91,7 @@ class RouteEditRealmRealms {
 									click: () => this._callRealm('down'),
 								},
 							}, [
-								n.component(new Txt(l10n.l('overseerEditRealm.realmDown', "Realm Down"))),
+								n.component(new Txt(l10n.l('overseerRealmSettings.realmDown', "Realm Down"))),
 							])),
 							(m, c) => {
 								let state = getApiState(m);
@@ -116,7 +116,7 @@ class RouteEditRealmRealms {
 									click: () => this._callRealm('set', { apiState: 'online' }),
 								},
 							}, [
-								n.component(new Txt(l10n.l('overseerEditRealm.setOnline', "Set Online"))),
+								n.component(new Txt(l10n.l('overseerRealmSettings.setOnline', "Set Online"))),
 							])),
 							(m, c) => c.setProperty('disabled', m.apiState == 'online' ? 'disabled' : null),
 						)),
@@ -132,7 +132,7 @@ class RouteEditRealmRealms {
 									click: () => this._callRealm('set', { apiState: 'offline' }),
 								},
 							}, [
-								n.component(new Txt(l10n.l('overseerEditRealm.setOffline', "Set Offline"))),
+								n.component(new Txt(l10n.l('overseerRealmSettings.setOffline', "Set Offline"))),
 							])),
 							(m, c) => c.setProperty('disabled', m.apiState == 'offline' ? 'disabled' : null),
 						)),
@@ -160,4 +160,4 @@ class RouteEditRealmRealms {
 	}
 }
 
-export default RouteEditRealmRealms;
+export default RouteRealmSettingsRealms;

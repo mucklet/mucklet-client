@@ -23,7 +23,7 @@ class RouteRealms {
 			'api',
 			'router',
 			'auth',
-			'routeEditRealm',
+			'routeRealmSettings',
 		], this._init.bind(this));
 	}
 

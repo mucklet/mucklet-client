@@ -9,9 +9,9 @@ import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
 
 /**
- * RouteEditRealmRealms draws the edit form for a realm.
+ * RouteRealmSettingsRealms draws the edit form for a realm.
  */
-class RouteEditRealmRealms {
+class RouteRealmSettingsRealms {
 	constructor(module, realm) {
 		this.module = module;
 		this.realm = realm;
@@ -24,9 +24,9 @@ class RouteEditRealmRealms {
 				eventBus: this.module.self.app.eventBus,
 			}),
 			realm => realm.dispose(),
-			realm => new Elem(n => n.elem('div', { className: 'routeeditrealm-realm' }, [
+			realm => new Elem(n => n.elem('div', { className: 'routerealmsettings-realm' }, [
 				n.elem('div', { className: 'flex-row flex-end' }, [
-					n.component(new PageHeader(l10n.l('routeEditRealm.realm', "Edit realm"), "", { className: 'flex-1' })),
+					n.component(new PageHeader(l10n.l('routeRealmSettings.realm', "Edit realm"), "", { className: 'flex-1' })),
 					n.elem('div', { className: 'flex-col' }, [
 						n.elem('button', {
 							className: 'btn fa small',
@@ -38,7 +38,7 @@ class RouteEditRealmRealms {
 							},
 						}, [
 							n.component(new FAIcon('angle-left')),
-							n.component(new Txt(l10n.l('routeEditRealm.backToRealms', "Back to Realms"))),
+							n.component(new Txt(l10n.l('routeRealmSettings.backToRealms', "Back to Realms"))),
 						]),
 					]),
 				]),
@@ -46,7 +46,7 @@ class RouteEditRealmRealms {
 
 				// // Key
 				// n.elem('div', { className: 'common--sectionpadding' }, [
-				// 	n.component(new ModelTxt(realm, m => m.key, { className: 'routeeditrealm-realm--key' })),
+				// 	n.component(new ModelTxt(realm, m => m.key, { className: 'routerealmsettings-realm--key' })),
 				// ]),
 
 				// Section tools
@@ -66,31 +66,31 @@ class RouteEditRealmRealms {
 
 				// Name
 				n.component(new PanelSection(
-					l10n.l('routeEditRealm.realmName', "Realm name"),
+					l10n.l('routeRealmSettings.realmName', "Realm name"),
 					new ModelComponent(
 						realm,
 						new Input("", {
 							events: { input: c => realm.set({ name: c.getValue() }) },
-							attributes: { name: 'routeeditrealm-name', spellcheck: 'false' },
+							attributes: { name: 'routerealmsettings-name', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.name),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('routeEditRealm.nameInfo', "Realm name is the primary name for the realm."),
+						popupTip: l10n.l('routeRealmSettings.nameInfo', "Realm name is the primary name for the realm."),
 					},
 				)),
 
 				// Description
 				n.component(new PanelSection(
-					l10n.l('routeEditRealm.description', "Description"),
+					l10n.l('routeRealmSettings.description', "Description"),
 					new ModelComponent(
 						realm,
 						new Textarea(realm.desc, {
 							className: 'common--paneltextarea-small common--desc-size',
 							events: { input: c => realm.set({ desc: c.getValue() }) },
-							attributes: { name: 'routeeditrealm-desc', spellcheck: 'true' },
+							attributes: { name: 'routerealmsettings-desc', spellcheck: 'true' },
 						}),
 						(m, c) => c.setValue(m.desc),
 					),
@@ -129,7 +129,7 @@ class RouteEditRealmRealms {
 									click: () => this._save(realm),
 								},
 							}, [
-								n.component(new Txt(l10n.l('routeEditRealm.saveChanges', "Save changes"))),
+								n.component(new Txt(l10n.l('routeRealmSettings.saveChanges', "Save changes"))),
 							])),
 							(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
 						)),
@@ -147,7 +147,7 @@ class RouteEditRealmRealms {
 								t => t.componentFactory(realm),
 								{
 									horizontal: true,
-									className: 'routeeditrealm-realm--footertools',
+									className: 'routerealmsettings-realm--footertools',
 									subClassName: t => t.className || null,
 								},
 							),
@@ -202,4 +202,4 @@ class RouteEditRealmRealms {
 	}
 }
 
-export default RouteEditRealmRealms;
+export default RouteRealmSettingsRealms;

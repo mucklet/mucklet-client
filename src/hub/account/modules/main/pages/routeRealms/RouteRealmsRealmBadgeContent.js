@@ -13,7 +13,7 @@ class RouteRealmsRealmBadgeContent {
 			n.elem('button', { className: 'badge--faicon iconbtn medium solid', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();
-					this.module.routeEditRealm.setRoute({ realmId: this.realm.id });
+					this.module.routeRealmSettings.setRoute({ realmId: this.realm.id });
 				},
 			}}, [
 				n.component(new FAIcon('cog')),

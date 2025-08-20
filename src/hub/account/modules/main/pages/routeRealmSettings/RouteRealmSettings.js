@@ -3,8 +3,8 @@ import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import { hasIdRoles } from 'utils/idRoles';
 
-import RouteEditRealmComponent from './RouteEditRealmComponent';
-import './routeEditRealm.scss';
+import RouteRealmSettingsComponent from './RouteRealmSettingsComponent';
+import './routeRealmSettings.scss';
 
 const pathDef = [
 	[ 'realm', '$realmId' ],
@@ -13,9 +13,9 @@ const pathDef = [
 
 
 /**
- * RouteEditRealm adds the realms route.
+ * RouteRealmSettings adds the realms route.
  */
-class RouteEditRealm {
+class RouteRealmSettings {
 
 	constructor(app, params) {
 		this.app = app;
@@ -43,12 +43,12 @@ class RouteEditRealm {
 		});
 
 		this.module.router.addRoute({
-			id: 'editRealm',
+			id: 'realmsettings',
 			hidden: true,
 			parentId: 'realms',
 			icon: 'university',
-			name: l10n.l('routeEditRealm.editRealm', "Edit realm"),
-			component: new RouteEditRealmComponent(this.module, this.model),
+			name: l10n.l('routeRealmSettings.realmSettings', "Realm Settings"),
+			component: new RouteRealmSettingsComponent(this.module, this.model),
 			setState: params => this._setState(params),
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => this.module.router.parseDefUrl(parts, pathDef),
@@ -63,7 +63,7 @@ class RouteEditRealm {
 	 * }} params - Route parameters.
 	 */
 	setRoute(params) {
-		this.module.router.setRoute('editRealm', params);
+		this.module.router.setRoute('realmsettings', params);
 	}
 
 	/**
@@ -128,8 +128,8 @@ class RouteEditRealm {
 	}
 
 	dispose() {
-		this.module.router.removeRoute('editRealm');
+		this.module.router.removeRoute('realmsettings');
 	}
 }
 
-export default RouteEditRealm;
+export default RouteRealmSettings;

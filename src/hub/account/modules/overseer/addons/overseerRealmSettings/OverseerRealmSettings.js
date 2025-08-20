@@ -2,20 +2,20 @@ import { Elem } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
-import OverseerEditRealmTopSection from './OverseerEditRealmTopSection';
-import OverseerEditRealmBottomSection from './OverseerEditRealmBottomSection';
+import OverseerRealmSettingsTopSection from './OverseerRealmSettingsTopSection';
+import OverseerRealmSettingsBottomSection from './OverseerRealmSettingsBottomSection';
 
 /**
- * OverseerEditRealm adds a section to the RouteEditRealm to show and set
+ * OverseerRealmSettings adds a section to the RouteRealmSettings to show and set
  * overseer fields.
  */
-class OverseerEditRealm {
+class OverseerRealmSettings {
 	constructor(app, params) {
 		this.app = app;
 
 		this.app.require([
 			'api',
-			'routeEditRealm',
+			'routeRealmSettings',
 			'confirm',
 		], this._init.bind(this));
 	}
@@ -24,23 +24,23 @@ class OverseerEditRealm {
 		this.module = Object.assign({ self: this }, module);
 
 		// Realm state actions
-		this.module.routeEditRealm.addTool({
+		this.module.routeRealmSettings.addTool({
 			id: 'overseerActions',
 			type: 'topSection',
-			componentFactory: (realm) => new OverseerEditRealmTopSection(this.module, realm),
+			componentFactory: (realm) => new OverseerRealmSettingsTopSection(this.module, realm),
 			sortOrder: 10,
 		});
 
 		// Edit overseer fields
-		this.module.routeEditRealm.addTool({
+		this.module.routeRealmSettings.addTool({
 			id: 'overseerFields',
 			type: 'section',
-			componentFactory: (realm) => new OverseerEditRealmBottomSection(this.module, realm),
+			componentFactory: (realm) => new OverseerRealmSettingsBottomSection(this.module, realm),
 			sortOrder: 10,
 		});
 
 		// Update default realm
-		this.module.routeEditRealm.addTool({
+		this.module.routeRealmSettings.addTool({
 			id: 'overseerUpdateDefaultRealm',
 			type: 'footer',
 			componentFactory: (realm) => new ModelFader(realm, [{
@@ -57,14 +57,14 @@ class OverseerEditRealm {
 		});
 
 		// Delete realm
-		this.module.routeEditRealm.addTool({
+		this.module.routeRealmSettings.addTool({
 			id: 'overseerDelete',
 			type: 'footer',
 			componentFactory: (realm) => new Elem(n => n.elem('button', { events: {
 				click: () => this.module.confirm.open(() => this._delete(realm), {
-					title: l10n.l('overseerEditRealm.confirmDelete', "Confirm deletion"),
-					body: l10n.l('overseerEditRealm.deleteRealmBody', "Do you really wish to delete this realm?"),
-					confirm: l10n.l('overseerEditRealm.delete', "Delete"),
+					title: l10n.l('overseerRealmSettings.confirmDelete', "Confirm deletion"),
+					body: l10n.l('overseerRealmSettings.deleteRealmBody', "Do you really wish to delete this realm?"),
+					confirm: l10n.l('overseerRealmSettings.delete', "Delete"),
 				}),
 			}, className: 'iconbtn medium solid' }, [
 				n.component(new FAIcon('trash')),
@@ -84,11 +84,11 @@ class OverseerEditRealm {
 	}
 
 	dispose() {
-		this.module.routeEditRealm.removeTool('overseerActions');
-		this.module.routeEditRealm.removeTool('overseerFields');
-		this.module.routeEditRealm.removeTool('overseerUpdateDefaultRealm');
-		this.module.routeEditRealm.removeTool('overseerDelete');
+		this.module.routeRealmSettings.removeTool('overseerActions');
+		this.module.routeRealmSettings.removeTool('overseerFields');
+		this.module.routeRealmSettings.removeTool('overseerUpdateDefaultRealm');
+		this.module.routeRealmSettings.removeTool('overseerDelete');
 	}
 }
 
-export default OverseerEditRealm;
+export default OverseerRealmSettings;

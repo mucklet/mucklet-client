@@ -1,10 +1,10 @@
 import ModelFader from 'components/ModelFader';
-import RouteEditRealmRealm from './RouteEditRealmRealm';
+import RouteRealmSettingsRealm from './RouteRealmSettingsRealm';
 
 /**
- * RouteEditRealmComponent draws a the realms route page.
+ * RouteRealmSettingsComponent draws a the realms route page.
  */
-class RouteEditRealmComponent {
+class RouteRealmSettingsComponent {
 	constructor(module, model) {
 		this.module = module;
 		this.model = model;
@@ -14,7 +14,7 @@ class RouteEditRealmComponent {
 		this.elem = new ModelFader(this.model, [
 			{
 				condition: m => m.realm,
-				factory: m => new RouteEditRealmRealm(this.module, m.realm),
+				factory: m => new RouteRealmSettingsRealm(this.module, m.realm),
 				hash: m => m.realm,
 			},
 		]);
@@ -29,4 +29,4 @@ class RouteEditRealmComponent {
 	}
 }
 
-export default RouteEditRealmComponent;
+export default RouteRealmSettingsComponent;
