@@ -1,5 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelComponent } from 'modapp-resource-component';
+import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
@@ -21,22 +21,34 @@ class RouteRealmSettingsRealms {
 
 			// Realm state
 			n.elem('div', { className: 'common--sectionpadding' }, [
-				n.component(new ModelComponent(
-					this.realm,
-					new Elem(n => n.elem('div', [
-						n.component('icon', new FAIcon('circle')),
-						n.html('&nbsp;&nbsp;'),
-						n.component('txt', new Txt('')),
-					])),
-					(m, c) => {
-						let state = getApiState(m);
-						c.getNode('txt').setText(state.text);
-						let icon = c.getNode('icon');
-						for (let s of apiStates) {
-							icon[state == s ? 'addClass' : 'removeClass'](s.className);
-						}
-					},
-				)),
+				n.elem('div', { className: 'flex-row' }, [
+					// Realm state
+					n.component(new ModelComponent(
+						this.realm,
+						new Elem(n => n.elem('div', { className: 'flex-1' }, [
+							n.component('icon', new FAIcon('circle')),
+							n.html('&nbsp;&nbsp;'),
+							n.component('txt', new Txt('')),
+						])),
+						(m, c) => {
+							let state = getApiState(m);
+							c.getNode('txt').setText(state.text);
+							let icon = c.getNode('icon');
+							for (let s of apiStates) {
+								icon[state == s ? 'addClass' : 'removeClass'](s.className);
+							}
+						},
+					)),
+
+					// Realm API version
+					n.component(new ModelTxt(
+						this.realm,
+						m => m.apiVersionName
+							? l10n.l('overseerRealmSettings.version', "Version {version}", { version: m.apiVersionName })
+							: '',
+						{ className: 'overseerrealmsettings-topsection--version flex-auto' },
+					)),
+				]),
 			]),
 
 			// Node realm action buttons

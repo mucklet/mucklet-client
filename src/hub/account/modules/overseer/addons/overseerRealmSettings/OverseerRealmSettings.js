@@ -4,6 +4,7 @@ import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
 import OverseerRealmSettingsTopSection from './OverseerRealmSettingsTopSection';
 import OverseerRealmSettingsBottomSection from './OverseerRealmSettingsBottomSection';
+import './overseerRealmSettings.scss';
 
 /**
  * OverseerRealmSettings adds a section to the RouteRealmSettings to show and set
