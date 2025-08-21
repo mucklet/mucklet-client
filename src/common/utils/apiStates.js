@@ -31,8 +31,9 @@ export default apiStates;
  * Returns an object with localization and colorization for visualizing a
  * realm's API state. If the state is unknown, the offline state object is returned.
  * @param {{ apiState?: "offline" | "online" | "stopped" | "undefined" | "booting" | "restarting" | "resyncing" | "stopping" | "shuttingDown" }} realm Realm object with state.
+ * @param {string} [prop] Property name. Defaults to "apiState".
  * @returns {{ text: LocaleString, className: string, transitional: bool }} State object.
  */
-export function getApiState(realm) {
-	return states[realm?.apiState] || states.offline;
+export function getApiState(realm, prop = "apiState") {
+	return states[realm?.[prop]] || states.offline;
 }

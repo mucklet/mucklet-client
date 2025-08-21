@@ -8,7 +8,6 @@ import './routeRealmSettings.scss';
 
 const pathDef = [
 	[ 'realm', '$realmId' ],
-	[ 'user', '$userId' ],
 ];
 
 

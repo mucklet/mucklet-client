@@ -1,9 +1,9 @@
 @import '~scss/variables';
 
-// .routerealmsettings {}
+// .routenodesettings {}
 
 
-.routerealmsettings-realm {
+.routenodesettings-node {
 
 	&--key {
 		font-size: $font-size-large;
@@ -11,9 +11,4 @@
 		color: $color3;
 	}
 
-	&--footertools {
-		> * {
-			display: inline-block;
-		}
-	}
 }

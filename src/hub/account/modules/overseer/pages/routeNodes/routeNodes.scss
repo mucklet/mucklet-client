@@ -1,0 +1,29 @@
+@import '~scss/variables';
+
+// .routenodes {}
+
+
+.routenodes-nodebadge {
+
+	&--title {
+		line-height: 26px;
+		font-size: $font-size;
+		color: $color3;
+	}
+
+	&--date {
+		color: $color4;
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--state {
+		> * {
+			line-height: 20px;
+			font-size: $font-size-small;
+		}
+	}
+	&--stateicon {
+		font-size: $font-size-tiny;
+	}
+}

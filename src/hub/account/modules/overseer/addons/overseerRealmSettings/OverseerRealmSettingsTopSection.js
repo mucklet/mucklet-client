@@ -48,11 +48,12 @@ class RouteRealmSettingsRealms {
 						n.component(new ModelComponent(
 							this.realm,
 							new Elem(n => n.elem('button', {
-								className: 'btn primary small common--btnwidth',
+								className: 'btn primary small icon-left common--btnwidth',
 								events: {
 									click: () => this._callRealm('up'),
 								},
 							}, [
+								n.component(new FAIcon('play')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.realmUp', "Realm Up"))),
 							])),
 							(m, c) => {
@@ -67,11 +68,12 @@ class RouteRealmSettingsRealms {
 						n.component(new ModelComponent(
 							this.realm,
 							new Elem(n => n.elem('button', {
-								className: 'btn secondary small common--btnwidth',
+								className: 'btn secondary small icon-left common--btnwidth',
 								events: {
 									click: () => this._callRealm('stop'),
 								},
 							}, [
+								n.component(new FAIcon('pause')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.realmStop', "Realm Stop"))),
 							])),
 							(m, c) => {
@@ -86,11 +88,12 @@ class RouteRealmSettingsRealms {
 						n.component(new ModelComponent(
 							this.realm,
 							new Elem(n => n.elem('button', {
-								className: 'btn warning small common--btnwidth',
+								className: 'btn warning small icon-left common--btnwidth',
 								events: {
 									click: () => this._callRealm('down'),
 								},
 							}, [
+								n.component(new FAIcon('stop')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.realmDown', "Realm Down"))),
 							])),
 							(m, c) => {
@@ -116,6 +119,7 @@ class RouteRealmSettingsRealms {
 									click: () => this._callRealm('set', { apiState: 'online' }),
 								},
 							}, [
+								n.component(new FAIcon('play')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.setOnline', "Set Online"))),
 							])),
 							(m, c) => c.setProperty('disabled', m.apiState == 'online' ? 'disabled' : null),
@@ -132,6 +136,7 @@ class RouteRealmSettingsRealms {
 									click: () => this._callRealm('set', { apiState: 'offline' }),
 								},
 							}, [
+								n.component(new FAIcon('stop')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.setOffline', "Set Offline"))),
 							])),
 							(m, c) => c.setProperty('disabled', m.apiState == 'offline' ? 'disabled' : null),

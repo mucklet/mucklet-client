@@ -29,7 +29,7 @@ class RouteRealmsRealmBadgeContent {
 						},
 					}),
 					(m, c) => {
-						c.setText(m.clientUrl.replace(/\/$/, ''));
+						c.setText(m.clientUrl.replace(/\/$/, '').replace(/^.*:\/\//, ''));
 						c.setAttribute('href', m.clientUrl);
 					},
 				)),

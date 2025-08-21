@@ -9,9 +9,9 @@ import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
 
 /**
- * RouteRealmSettingsRealms draws the edit form for a realm.
+ * RouteRealmSettingsRealm draws the settings form for a realm.
  */
-class RouteRealmSettingsRealms {
+class RouteRealmSettingsRealm {
 	constructor(module, realm) {
 		this.module = module;
 		this.realm = realm;
@@ -26,7 +26,7 @@ class RouteRealmSettingsRealms {
 			realm => realm.dispose(),
 			realm => new Elem(n => n.elem('div', { className: 'routerealmsettings-realm' }, [
 				n.elem('div', { className: 'flex-row flex-end' }, [
-					n.component(new PageHeader(l10n.l('routeRealmSettings.realm', "Edit realm"), "", { className: 'flex-1' })),
+					n.component(new PageHeader(l10n.l('routeRealmSettings.realmSettings', "Realm settings"), "", { className: 'flex-1' })),
 					n.elem('div', { className: 'flex-col' }, [
 						n.elem('button', {
 							className: 'btn fa small',
@@ -191,15 +191,6 @@ class RouteRealmSettingsRealms {
 			: null,
 		);
 	}
-
-	_close() {
-		this.close();
-		if (this.model) {
-			this.model.dispose();
-			this.model = null;
-		}
-		this.state.changes = {};
-	}
 }
 
-export default RouteRealmSettingsRealms;
+export default RouteRealmSettingsRealm;
