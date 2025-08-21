@@ -5,6 +5,7 @@ import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
+import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
 import apiStates, { getApiState } from 'utils/apiStates';
 import errString from 'utils/errString';
@@ -191,10 +192,37 @@ class RouteNodeSettingsNode {
 							(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
 						)),
 					]),
-					n.elem('div', { className: 'flex-auto' }, [
 
+					// Footer tools
+					n.elem('div', { className: 'flex-auto flex-row margin4 routenodesettings-node-footertools' }, [
+						n.component(new ModelFader(node, [{
+							condition: m => m.isDefault,
+							factory: m => new Elem(n => n.elem('div', { className: 'pad-right-l' }, [
+								n.elem('button', { events: {
+									click: () => this._callNode('updateDefaultNode')
+										.then(() => this.module.toaster.open({
+											title: l10n.l('routeNodeSettings.nodeRefreshed', "Node refreshed"),
+											content: new Txt(l10n.l('routeNodeSettings.nodeRefreshedBody', "Node settings has been refreshed from config.")),
+											closeOn: 'click',
+											type: 'success',
+											autoclose: true,
+										})),
+								}, className: 'iconbtn medium solid' }, [
+									n.component(new FAIcon('refresh')),
+								]),
+							])),
+						}])),
+
+						n.elem('button', { events: {
+							click: () => this.module.confirm.open(() => this._callNode('delete'), {
+								title: l10n.l('routeNodeSettings.confirmDelete', "Confirm deletion"),
+								body: l10n.l('routeNodeSettings.deleteRealmBody', "Do you really wish to delete this node?"),
+								confirm: l10n.l('routeNodeSettings.delete', "Delete"),
+							}),
+						}, className: 'iconbtn medium solid' }, [
+							n.component(new FAIcon('trash')),
+						]),
 					]),
-
 				]),
 
 			])),
@@ -233,7 +261,7 @@ class RouteNodeSettingsNode {
 	}
 
 	_callNode(method, params) {
-		this.module.api.call(`control.overseer.node.${this.node.key}`, method, params)
+		return this.module.api.call(`control.overseer.node.${this.node.key}`, method, params)
 			.catch(err => this.module.confirm.openError(err));
 	}
 }

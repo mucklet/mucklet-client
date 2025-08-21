@@ -1,4 +1,4 @@
-import { Elem } from 'modapp-base-component';
+import { Elem, Txt } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
@@ -17,6 +17,7 @@ class OverseerRealmSettings {
 			'api',
 			'routeRealmSettings',
 			'confirm',
+			'toaster',
 		], this._init.bind(this));
 	}
 
@@ -47,7 +48,14 @@ class OverseerRealmSettings {
 				condition: m => m.isDefault,
 				factory: m => new Elem(n => n.elem('div', { className: 'pad-right-l' }, [
 					n.elem('button', { events: {
-						click: () => this._updateDefaultRealm(realm),
+						click: () => this._updateDefaultRealm(realm)
+							.then(() => this.module.toaster.open({
+								title: l10n.l('overseerRealmSettings.realmRefreshed', "Realm refreshed"),
+								content: new Txt(l10n.l('overseerRealmSettings.realmRefreshedBody', "Realm settings has been refreshed from config.")),
+								closeOn: 'click',
+								type: 'success',
+								autoclose: true,
+							})),
 					}, className: 'iconbtn medium solid' }, [
 						n.component(new FAIcon('refresh')),
 					]),
@@ -74,12 +82,12 @@ class OverseerRealmSettings {
 	}
 
 	_delete(realm) {
-		this.module.api.call(`control.overseer.realm.${realm.id}`, 'delete')
+		return this.module.api.call(`control.overseer.realm.${realm.id}`, 'delete')
 			.catch(err => this.module.confirm.openError(err));
 	}
 
 	_updateDefaultRealm(realm) {
-		this.module.api.call(`control.overseer.realm.${realm.id}`, 'updateDefaultRealm')
+		return this.module.api.call(`control.overseer.realm.${realm.id}`, 'updateDefaultRealm')
 			.catch(err => this.module.confirm.openError(err));
 	}
 

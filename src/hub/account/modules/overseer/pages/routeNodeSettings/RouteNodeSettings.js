@@ -22,6 +22,8 @@ class RouteNodeSettings {
 			'router',
 			'auth',
 			'access',
+			'confirm',
+			'toaster',
 		], this._init.bind(this));
 	}
 
