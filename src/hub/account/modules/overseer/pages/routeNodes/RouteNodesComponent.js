@@ -1,4 +1,5 @@
 import ModelFader from 'components/ModelFader';
+import l10n from 'modapp-l10n';
 import RouteNodesNodes from './RouteNodesNodes';
 
 /**
@@ -18,7 +19,7 @@ class RouteNodesComponent {
 				hash: m => m.nodes,
 			},
 			{
-				factory: m => new RouteNodesError(this.module, m.error),
+				factory: m => this.module.routeError.newError(l10n.l('routeNodes.errorLoadingNodes', "Error loading nodes"), m.error),
 				hash: m => m.error,
 			},
 		]);

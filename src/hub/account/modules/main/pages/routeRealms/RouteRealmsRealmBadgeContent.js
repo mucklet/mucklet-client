@@ -1,6 +1,7 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
+import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
 
 class RouteRealmsRealmBadgeContent {
@@ -34,7 +35,31 @@ class RouteRealmsRealmBadgeContent {
 					n.component(new ModelTxt(this.realm, m => m.apiVersionName, { className: 'badge--text badge--info-morepad' })),
 				]),
 			]),
-			n.elem('div', { className: 'badge--select badge--select' }, [
+			n.elem('div', { className: 'badge--select badge--select badge--select-margin' }, [
+				n.component(new ModelComponent(
+					this.realm,
+					new ModelComponent(
+						null,
+						new ModelFader(null, [{
+							condition: next => !!next,
+							factory: next => new Elem(n => n.elem('button', {
+								className: 'btn primary medium icon-left common--btnwidth',
+								events: {
+									click: (c, ev) => {
+										ev.stopPropagation();
+										this._callRealm('up');
+									},
+								},
+							}, [
+								n.component(new FAIcon('arrow-circle-up')),
+								n.component(new ModelTxt(next, m => ml10n.l('overseerRealmSettings.upgradeVersion', "Upgrade v{version}", { version: m.name }))),
+							])),
+						}]),
+						(m, c) => c.setModel(m?.next),
+					),
+					(m, c) => c.setModel(m?.release),
+				)),
+				// Settings
 				n.elem('button', { className: 'iconbtn medium', events: {
 					click: (c, ev) => {
 						ev.stopPropagation();

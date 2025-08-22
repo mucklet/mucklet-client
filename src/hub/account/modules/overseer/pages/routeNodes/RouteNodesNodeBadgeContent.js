@@ -19,7 +19,10 @@ class RouteNodesNodeBadgeContent {
 					new Elem(n => n.elem('button', {
 						className: 'btn primary medium icon-left full-width',
 						events: {
-							click: () => this._callNode('up'),
+							click: (c, ev) => {
+								ev.stopPropagation();
+								this._callNode('up');
+							},
 						},
 					}, [
 						n.component(new FAIcon('play')),
@@ -39,7 +42,10 @@ class RouteNodesNodeBadgeContent {
 					new Elem(n => n.elem('button', {
 						className: 'btn secondary medium icon-left full-width',
 						events: {
-							click: () => this._callNode('stop'),
+							click: (c, ev) => {
+								ev.stopPropagation();
+								this._callNode('stop');
+							},
 						},
 					}, [
 						n.component(new FAIcon('pause')),
@@ -59,7 +65,10 @@ class RouteNodesNodeBadgeContent {
 					new Elem(n => n.elem('button', {
 						className: 'btn warning medium icon-left full-width',
 						events: {
-							click: () => this._callNode('down'),
+							click: (c, ev) => {
+								ev.stopPropagation();
+								this._callNode('down');
+							},
 						},
 					}, [
 						n.component(new FAIcon('stop')),
@@ -88,6 +97,11 @@ class RouteNodesNodeBadgeContent {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_callNode(method, params) {
+		return this.module.api.call(`control.overseer.node.${this.node.key}`, method, params)
+			.catch(err => this.module.confirm.openError(err));
 	}
 }
 

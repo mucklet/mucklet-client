@@ -20,6 +20,7 @@ class RouteNodeSettings {
 		this.app.require([
 			'api',
 			'router',
+			'routeError',
 			'auth',
 			'access',
 			'confirm',

@@ -21,6 +21,7 @@ class RouteNodes {
 		this.app.require([
 			'api',
 			'router',
+			'routeError',
 			'auth',
 			'routeNodeSettings',
 		], this._init.bind(this));

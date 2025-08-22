@@ -216,7 +216,7 @@ class RouteNodeSettingsNode {
 						n.elem('button', { events: {
 							click: () => this.module.confirm.open(() => this._callNode('delete'), {
 								title: l10n.l('routeNodeSettings.confirmDelete', "Confirm deletion"),
-								body: l10n.l('routeNodeSettings.deleteRealmBody', "Do you really wish to delete this node?"),
+								body: l10n.l('routeNodeSettings.deleteNodeBody', "Do you really wish to delete this node?"),
 								confirm: l10n.l('routeNodeSettings.delete', "Delete"),
 							}),
 						}, className: 'iconbtn medium solid' }, [

@@ -1,4 +1,5 @@
 import ModelFader from 'components/ModelFader';
+import l10n from 'modapp-l10n';
 import RouteRealmsRealms from './RouteRealmsRealms';
 
 /**
@@ -18,7 +19,7 @@ class RouteRealmsComponent {
 				hash: m => m.realms,
 			},
 			{
-				factory: m => new RouteRealmsError(this.module, m.error),
+				factory: m => this.module.routeError.newError(l10n.l('routeRealms.errorLoadingRealms', "Error loading realms"), m.error),
 				hash: m => m.error,
 			},
 		]);

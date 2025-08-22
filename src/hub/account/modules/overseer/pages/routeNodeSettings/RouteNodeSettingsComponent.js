@@ -1,4 +1,5 @@
 import ModelFader from 'components/ModelFader';
+import l10n from 'modapp-l10n';
 import RouteNodeSettingsNode from './RouteNodeSettingsNode';
 
 /**
@@ -16,6 +17,10 @@ class RouteNodeSettingsComponent {
 				condition: m => m.node,
 				factory: m => new RouteNodeSettingsNode(this.module, m, m.node),
 				hash: m => m.node,
+			},
+			{
+				factory: m => this.module.routeError.newError(l10n.l('routeNodeSettings.errorLoadingNodeSettings', "Error loading node settings"), m.error),
+				hash: m => m.error,
 			},
 		]);
 		return this.elem.render(el);

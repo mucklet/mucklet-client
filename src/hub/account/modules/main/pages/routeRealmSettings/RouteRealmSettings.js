@@ -22,6 +22,7 @@ class RouteRealmSettings {
 		this.app.require([
 			'api',
 			'router',
+			'routeError',
 			'auth',
 			'access',
 		], this._init.bind(this));

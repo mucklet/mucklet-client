@@ -44,11 +44,6 @@ class RouteRealmSettingsRealm {
 				]),
 				n.elem('div', { className: 'common--hr' }),
 
-				// // Key
-				// n.elem('div', { className: 'common--sectionpadding' }, [
-				// 	n.component(new ModelTxt(realm, m => m.key, { className: 'routerealmsettings-realm--key' })),
-				// ]),
-
 				// Section tools
 				n.component(new Context(
 					() => new CollectionWrapper(this.module.self.getTools(), {
