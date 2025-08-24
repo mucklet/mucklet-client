@@ -5,6 +5,7 @@ import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
+import AutoComplete from 'components/AutoComplete';
 import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
 
@@ -91,6 +92,51 @@ class RouteReleasesRelease {
 					},
 				)),
 
+				// Next version
+				n.component(new PanelSection(
+					l10n.l('routeReleases.updatesTo', "Upgrades to"),
+					new ModelComponent(
+						release,
+						new AutoComplete({
+							className: 'routereleases-release--next',
+							innerClassName: 'autocomplete-dark',
+							attributes: {
+								placeholder: l10n.t('routeReleases.searchRelease', "Search release (Name)"),
+								name: 'routereleases-release--next',
+							},
+							events: {
+								input: (c, ev) => {
+									if (!ev.target.value) {
+										release.set({ next: null });
+									}
+								},
+							},
+							fetch: (text, update) => {
+								this.module.api.call(`control.overseer.releases.${this.release.type}`, 'search', { text, limit: 20 })
+									.then(releases => {
+										update(releases.hits.map(o => Object.assign(o, {
+											label: o.name,
+										})));
+									});
+							},
+							minLength: 1,
+							onSelect: (c, item) => {
+								c.setProperty('value', item.label);
+								release.set({ next: item.id == (this.release.next?.id)
+									? this.release.next
+									: item,
+								});
+							},
+						}),
+						(m, c) => c.setProperty('value', m.next?.name || ''),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeReleases.upgradesToInfo', "The newer release which this release will upgrade to. Once set, realms using this release version may upgrade to the next one."),
+					},
+				)),
+
 				// Template
 				n.component(new PanelSection(
 					l10n.l('routeReleases.template', "Template"),
@@ -106,7 +152,7 @@ class RouteReleasesRelease {
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('routeReleases.templateInfo', "Composition templtea for the release."),
+						popupTip: l10n.l('routeReleases.templateInfo', "Composition template for the release."),
 					},
 				)),
 
@@ -177,6 +223,12 @@ class RouteReleasesRelease {
 		let params = model.getModifications();
 		if (!params) {
 			return;
+		}
+
+		// Prepare next
+		if (params.hasOwnProperty('next')) {
+			params.nextId = params.next?.id || null;
+			delete params.next;
 		}
 
 		this._setMessage();
