@@ -47,17 +47,17 @@ class RouteRealmsRealmBadgeContent {
 								events: {
 									click: (c, ev) => {
 										ev.stopPropagation();
-										this._callRealm('up');
+										this._upgrade();
 									},
 								},
 							}, [
 								n.component(new FAIcon('arrow-circle-up')),
-								n.component(new ModelTxt(next, m => ml10n.l('overseerRealmSettings.upgradeVersion', "Upgrade v{version}", { version: m.name }))),
+								n.component(new ModelTxt(next, m => l10n.l('overseerRealmSettings.upgradeVersion', "Upgrade v{version}", { version: m.name }))),
 							])),
 						}]),
 						(m, c) => c.setModel(m?.next),
 					),
-					(m, c) => c.setModel(m?.release),
+					(m, c) => c.setModel(m?.apiRelease),
 				)),
 				// Settings
 				n.elem('button', { className: 'iconbtn medium', events: {
@@ -78,6 +78,21 @@ class RouteRealmsRealmBadgeContent {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_upgrade() {
+		this.module.api.call(`control.realm.${this.realm.id}.details`, 'upgrade')
+			.then(() => this.module.toaster.open({
+				title: l10n.l('routeRealms.upgradingRealm', "Upgrading realm"),
+				content: new Elem(n => n.elem('div', [
+					n.component(new Txt(l10n.l('routeRealms.upgradingRealmBody1', "Realm is being upgraded."), { tagName: 'p' })),
+					n.component(new Txt(l10n.l('routeRealms.upgradingRealmBody2', "Everything is most likely going smoothly."), { tagName: 'p' })),
+				])),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}))
+			.catch(err => this.module.confirm.openError(err));
 	}
 }
 

@@ -25,6 +25,8 @@ class RouteRealms {
 			'routeError',
 			'auth',
 			'routeRealmSettings',
+			'confirm',
+			'toaster',
 		], this._init.bind(this));
 	}
 
