@@ -2,6 +2,8 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import { getContainerState } from 'utils/containerStates';
+import ModelCollapser from 'components/ModelCollapser';
+import errToL10n from 'utils/errToL10n';
 
 
 class OverseerRealmSettingsContainerBadgeContent {
@@ -20,6 +22,13 @@ class OverseerRealmSettingsContainerBadgeContent {
 				n.component(new Txt(l10n.l('overseerRealmSettings.img', "Img"), { className: 'badge--iconcol badge--subtitle' })),
 				n.component(new ModelTxt(this.container, m => m.image, { className: 'badge--text' })),
 			]),
+			n.component(new ModelCollapser(this.container, [{
+				condition: m => m.error,
+				factory: m => new Elem(n => n.elem('div', { className: 'badge--select' }, [
+					n.component(new Txt(l10n.l('overseerRealmSettings.err', "Error"), { className: 'badge--iconcol badge--subtitle' })),
+					n.component(new ModelTxt(this.container, m => errToL10n(m.error), { className: 'overseercontainersettings-containerbadgecontent--error badge--error' })),
+				])),
+			}])),
 		]));
 		this.elem.render(el);
 	}

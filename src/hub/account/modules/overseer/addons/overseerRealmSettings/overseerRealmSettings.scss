@@ -28,3 +28,9 @@
 	}
 
 }
+
+.overseercontainersettings-containerbadgecontent {
+	&--error.badge--error {
+		white-space: pre;
+	}
+}

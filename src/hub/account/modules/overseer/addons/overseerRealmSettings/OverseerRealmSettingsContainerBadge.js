@@ -14,8 +14,8 @@ class OverseerRealmSettingsContainerBadge {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('badge dark btn', 'div', {
-			className: 'overseerrealmsettings-containerbadge badge dark small',
+		this.elem = new Elem(n => n.elem('div', {
+			className: 'overseerrealmsettings-containerbadge badge dark btn',
 			events: {
 				click: (c, ev) => {
 					this.selectedModel.set({ selected: this.selectedModel.selected == this.container.id
