@@ -27,3 +27,9 @@
 		font-size: $font-size-tiny;
 	}
 }
+
+.routenodes-nodes {
+	&--listitem {
+		padding: 3px 0;
+	}
+}

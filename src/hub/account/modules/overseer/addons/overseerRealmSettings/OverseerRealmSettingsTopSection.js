@@ -5,6 +5,7 @@ import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import apiStates, { getApiState } from 'utils/apiStates';
 import ModelCollapser from 'components/ModelCollapser';
+import OverseerRealmSettingsContainers from './OverseerRealmSettingsContainers';
 
 /**
  * OverseerRealmSettingsTopSection draws the overseer edit form top section for a realm.
@@ -155,6 +156,12 @@ class RouteRealmSettingsRealms {
 						)),
 					]),
 				])),
+			}])),
+
+			// API containers
+			n.component(new ModelCollapser(this.realm, [{
+				condition: m => m.apiContainers,
+				factory: m => new OverseerRealmSettingsContainers(this.module, m, m.apiContainers),
 			}])),
 
 			n.elem('div', { className: 'common--hr' }),

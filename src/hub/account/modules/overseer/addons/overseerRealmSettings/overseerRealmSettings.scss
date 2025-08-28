@@ -9,3 +9,22 @@
 	}
 
 }
+
+
+.overseerrealmsettings-containers {
+	&--listitem {
+		padding-top: 6px;
+	}
+}
+
+.overseerrealmsettings-containerbadge {
+
+	&--timestamp {
+		padding-right: 6px;
+	}
+
+	&--stateicon {
+		font-size: $font-size-tiny;
+	}
+
+}
