@@ -19,6 +19,7 @@ class OverseerRealmSettings {
 			'routeRealmSettings',
 			'confirm',
 			'toaster',
+			'nodeContainers',
 		], this._init.bind(this));
 	}
 

@@ -1,42 +1,19 @@
 @import '~scss/variables';
 
-
 .overseerrealmsettings-topsection {
-
 	&--version {
 		font-size: $font-size-small;
 		color: $color4;
 	}
 
+	&--containers {
+		padding-top: 4px;
+	}
 }
 
 .overseerrealmsettings-bottomsection {
 	&--apitype {
 		flex: 1;
 		max-width: 100px;
-	}
-}
-
-.overseerrealmsettings-containers {
-	&--listitem {
-		padding-top: 6px;
-	}
-}
-
-.overseerrealmsettings-containerbadge {
-
-	&--timestamp {
-		padding-right: 6px;
-	}
-
-	&--stateicon {
-		font-size: $font-size-tiny;
-	}
-
-}
-
-.overseerrealmsettings-containerbadgecontent {
-	&--error.badge--error {
-		white-space: pre;
 	}
 }

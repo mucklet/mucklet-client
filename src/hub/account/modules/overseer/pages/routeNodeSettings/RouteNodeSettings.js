@@ -26,6 +26,7 @@ class RouteNodeSettings {
 			'confirm',
 			'toaster',
 			'routeRealmSettings',
+			'nodeContainers',
 		], this._init.bind(this));
 	}
 

@@ -1,6 +1,6 @@
 import { Elem, Txt, Context, Input } from 'modapp-base-component';
 import { Model, ModifyModel, ModelToCollection } from 'modapp-resource';
-import { ModelComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
+import { ModelComponent, ModelTxt, CollectionList, CollectionComponent } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
@@ -137,23 +137,44 @@ class RouteNodeSettingsNode {
 					]),
 				]),
 
+				// Node containers
+				n.component(this.module.nodeContainers.newNodeContainers(this.node.containers, {
+					className: 'routenodesettings-node--containers common--sectionpadding',
+				})),
+
 				// Active node realms
-				n.component(new Context(
-					() => new ModelToCollection(this.node.activeRealms, {
-						compare: (a, b) => a.value.key.localeCompare(b.value.key) || a.key.localeCompare(b.key),
-						eventBus: this.module.self.eventBus,
-					}),
-					realms => realms.dispose(),
-					realms => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
-						n.component(new CollectionList(
-							realms,
-							m => new RouteNodeSettingsRealmBadge(this.module, m, this.realmModel),
-							{
-								className: 'routenodesettings-node--realms',
-								subClassName: () => 'routenodesettings-node--realm',
-							},
-						)),
-					])),
+				n.component(new PanelSection(
+					l10n.l('routeNodeSettings.realms', "Realms"),
+					new Context(
+						() => new ModelToCollection(this.node.activeRealms, {
+							compare: (a, b) => a.value.key.localeCompare(b.value.key) || a.key.localeCompare(b.key),
+							eventBus: this.module.self.eventBus,
+						}),
+						realms => realms.dispose(),
+						realms => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
+							n.component(new CollectionList(
+								realms,
+								m => new RouteNodeSettingsRealmBadge(this.module, m, this.realmModel),
+								{
+									className: 'routenodesettings-node--realms',
+									subClassName: () => 'routenodesettings-node--realm',
+								},
+							)),
+							n.component(new CollectionComponent(
+								realms,
+								new Collapser(),
+								(col, c) => c.setComponent(col.length
+									? null
+									: c.getComponent() || new Txt(l10n.l('routeNodeSettings.noRealmsHosted', "No realms are currently hosted"), { className: 'common--placeholder' }),
+								),
+							)),
+						])),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeNodeSettings.domainInfo', "Domain name of the node, such as \"localhost\" or \"server01.mucklet.com\"."),
+					},
 				)),
 
 				n.elem('div', { className: 'common--hr' }),
