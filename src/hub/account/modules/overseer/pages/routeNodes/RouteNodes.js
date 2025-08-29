@@ -24,6 +24,7 @@ class RouteNodes {
 			'routeError',
 			'auth',
 			'routeNodeSettings',
+			'confirm',
 		], this._init.bind(this));
 	}
 
