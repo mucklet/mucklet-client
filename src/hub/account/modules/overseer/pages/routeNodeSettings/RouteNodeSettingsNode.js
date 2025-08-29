@@ -1,6 +1,6 @@
 import { Elem, Txt, Context, Input } from 'modapp-base-component';
-import { ModifyModel } from 'modapp-resource';
-import { ModelComponent, ModelTxt } from 'modapp-resource-component';
+import { Model, ModifyModel, ModelToCollection } from 'modapp-resource';
+import { ModelComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
@@ -9,6 +9,7 @@ import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
 import apiStates, { getApiState } from 'utils/apiStates';
 import errString from 'utils/errString';
+import RouteNodeSettingsRealmBadge from './RouteNodeSettingsRealmBadge';
 
 /**
  * RouteNodeSettingsNode draws the settings form for a node.
@@ -18,6 +19,7 @@ class RouteNodeSettingsNode {
 		this.module = module;
 		this.model = model;
 		this.node = node;
+		this.realmModel = new Model({ data: { realmId: null }});
 	}
 
 	render(el) {
@@ -134,6 +136,25 @@ class RouteNodeSettingsNode {
 						)),
 					]),
 				]),
+
+				// Active node realms
+				n.component(new Context(
+					() => new ModelToCollection(this.node.activeRealms, {
+						compare: (a, b) => a.value.key.localeCompare(b.value.key) || a.key.localeCompare(b.key),
+						eventBus: this.module.self.eventBus,
+					}),
+					realms => realms.dispose(),
+					realms => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
+						n.component(new CollectionList(
+							realms,
+							m => new RouteNodeSettingsRealmBadge(this.module, m, this.realmModel),
+							{
+								className: 'routenodesettings-node--realms',
+								subClassName: () => 'routenodesettings-node--realm',
+							},
+						)),
+					])),
+				)),
 
 				n.elem('div', { className: 'common--hr' }),
 

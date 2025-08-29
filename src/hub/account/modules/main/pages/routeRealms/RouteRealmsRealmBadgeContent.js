@@ -35,7 +35,7 @@ class RouteRealmsRealmBadgeContent {
 					n.component(new ModelTxt(this.realm, m => m.apiVersionName, { className: 'badge--text badge--info-morepad' })),
 				]),
 			]),
-			n.elem('div', { className: 'badge--select badge--select badge--select-margin' }, [
+			n.elem('div', { className: 'badge--select badge--select-margin' }, [
 				n.component(new ModelComponent(
 					this.realm,
 					new ModelComponent(

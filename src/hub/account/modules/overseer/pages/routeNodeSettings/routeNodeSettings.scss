@@ -11,4 +11,29 @@
 		color: $color3;
 	}
 
+	&--realms {
+		padding-top: 4px;
+	}
+
+	&--realm {
+		padding-top: 6px;
+	}
+}
+
+.routenodesettings-realmbadge {
+
+	&--key {
+		padding-right: 6px;
+	}
+
+	&--stateicon {
+		font-size: $font-size-tiny;
+	}
+
+}
+
+.routenodesettings-realmbadgecontent {
+	&--error.badge--error {
+		white-space: pre;
+	}
 }

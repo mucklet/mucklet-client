@@ -13,20 +13,20 @@ class OverseerRealmSettingsContainerBadgeContent {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'overseercontainersettings-containerbadgecontent badge--margin badge--info' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'overseerrealmsettings-containerbadgecontent badge--margin badge--info' }, [
 			n.elem('div', { className: 'badge--select' }, [
 				n.component(new Txt(l10n.l('overseerRealmSettings.state', "State"), { className: 'badge--iconcol badge--subtitle' })),
-				n.component(new ModelTxt(this.container, m => getContainerState(m).text, { className: 'badge--text' })),
+				n.component(new ModelTxt(this.container, m => getContainerState(m).text, { className: 'badge--text badge--info-morepad' })),
 			]),
 			n.elem('div', { className: 'badge--select' }, [
 				n.component(new Txt(l10n.l('overseerRealmSettings.img', "Img"), { className: 'badge--iconcol badge--subtitle' })),
-				n.component(new ModelTxt(this.container, m => m.image, { className: 'badge--text' })),
+				n.component(new ModelTxt(this.container, m => m.image, { className: 'badge--text badge--info-morepad' })),
 			]),
 			n.component(new ModelCollapser(this.container, [{
 				condition: m => m.error,
 				factory: m => new Elem(n => n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('overseerRealmSettings.err', "Error"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.container, m => errToL10n(m.error), { className: 'overseercontainersettings-containerbadgecontent--error badge--error' })),
+					n.component(new ModelTxt(this.container, m => errToL10n(m.error), { className: 'overseerrealmsettings-containerbadgecontent--error badge--error badge--info-morepad' })),
 				])),
 			}])),
 		]));
