@@ -10,6 +10,12 @@
 
 }
 
+.overseerrealmsettings-bottomsection {
+	&--apitype {
+		flex: 1;
+		max-width: 100px;
+	}
+}
 
 .overseerrealmsettings-containers {
 	&--listitem {

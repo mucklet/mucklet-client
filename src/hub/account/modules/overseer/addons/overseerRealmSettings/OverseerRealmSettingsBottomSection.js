@@ -1,9 +1,11 @@
-import { Elem, Input } from 'modapp-base-component';
-import { ModelComponent } from 'modapp-resource-component';
+import { Elem, Input, Txt } from 'modapp-base-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
 import Collapser from 'components/Collapser';
 import LabelToggleBox from 'components/LabelToggleBox';
+import ModelCollapser from 'components/ModelCollapser';
 import l10n from 'modapp-l10n';
+import apiTypes from 'utils/apiTypes';
 
 /**
  * OverseerRealmSettingsBottomSection draws the overseer edit form bottom section
@@ -22,7 +24,7 @@ class OverseerRealmSettingsBottomSection {
 			n.elem('div', { className: 'common--hr' }),
 
 			// Realm Client
-			n.elem('div', { className: 'flex-row m pad16 ' }, [
+			n.elem('div', { className: 'flex-row m pad16' }, [
 				// Client Host
 				n.component(new PanelSection(
 					l10n.l('overseerRealmSettings.clientHost', "Client host"),
@@ -30,7 +32,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ clientHost: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-clienthost', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-clienthost', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.clientHost),
 					),
@@ -48,7 +50,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ clientPath: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-clientpath', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-clientpath', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.clientPath),
 					),
@@ -81,7 +83,7 @@ class OverseerRealmSettingsBottomSection {
 					this.realm,
 					new Input("", {
 						events: { input: c => this.realm.set({ apiNode: c.getValue() }) },
-						attributes: { name: 'routerealmsettings-apinode', spellcheck: 'false' },
+						attributes: { name: 'overseerrealmsettings-apinode', spellcheck: 'false' },
 					}),
 					(m, c) => c.setValue(m.apiNode),
 				),
@@ -91,6 +93,83 @@ class OverseerRealmSettingsBottomSection {
 					popupTip: l10n.l('overseerRealmSettings.apiNodeInfo', "Server node that the realm is running on."),
 				},
 			)),
+
+			// API type
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.apiType', "API type"),
+				new CollectionList(
+					apiTypes,
+					v => new ModelComponent(
+						this.realm,
+						new Elem(n => n.elem('button', {
+							events: {
+								click: () => {
+									this.realm.set({ apiType: v.key });
+								},
+							},
+							className: 'btn tiny flex-1',
+						}, [
+							n.component(new Txt(v.text)),
+						])),
+						(m, c) => {
+							c[v.key == m.apiType ? 'addClass' : 'removeClass']('primary');
+							c[v.key != m.apiType ? 'addClass' : 'removeClass']('darken');
+						},
+					),
+					{
+						className: 'flex-row gap8',
+						subClassName: () => 'overseerrealmsettings-bottomsection--apitype flex-row',
+						horizontal: true,
+					},
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('apiTypeSettings.apiTypeInfo', "Type of API installation. A manual realm is updated and handled manually, while a node realm is controlled by the system."),
+				},
+			)),
+
+			// Realm API version settings
+			n.component(new ModelCollapser(this.realm, [{
+				condition: m => m.apiType == 'manual',
+				factory: m => new Elem(n => n.elem('div', { className: 'flex-row m pad16 ' }, [
+					// API version name
+					n.component(new PanelSection(
+						l10n.l('overseerRealmSettings.apiVersionName', "API version name"),
+						new ModelComponent(
+							this.realm,
+							new Input("", {
+								events: { input: c => this.realm.set({ apiVersionName: c.getValue() }) },
+								attributes: { name: 'overseerrealmsettings-apiversionname', spellcheck: 'false' },
+							}),
+							(m, c) => c.setValue(m.apiVersionName),
+						),
+						{
+							className: 'flex-1 common--sectionpadding',
+							noToggle: true,
+							popupTip: l10n.l('overseerRealmSettings.versionNameInfo', "Human readable version name of the release, such as \"1.23.4\" or \"1.24.0-rc1\"."),
+						},
+					)),
+
+					// API version
+					n.component(new PanelSection(
+						l10n.l('overseerRealmSettings.apiVersion', "API version"),
+						new ModelComponent(
+							this.realm,
+							new Input("", {
+								events: { input: c => this.realm.set({ apiVersion: c.getValue() }) },
+								attributes: { name: 'overseerrealmsettings-apiversion', spellcheck: 'false' },
+							}),
+							(m, c) => c.setValue(m.apiVersion),
+						),
+						{
+							className: 'flex-1 common--sectionpadding',
+							noToggle: true,
+							popupTip: l10n.l('overseerRealmSettings.versionInfo', "Release version in the format \"MAJOR.MINOR.PATCH\"."),
+						},
+					)),
+				])),
+			}])),
 
 
 			// Realm API
@@ -102,7 +181,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ apiHost: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-apihost', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-apihost', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.apiHost),
 					),
@@ -120,7 +199,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ apiPath: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-apipath', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-apipath', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.apiPath),
 					),
@@ -138,7 +217,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ apiResourcePath: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-apiresourcepath', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-apiresourcepath', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.apiResourcePath),
 					),
@@ -159,7 +238,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ apiFileHost: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-apifilehost', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-apifilehost', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.apiFileHost),
 					),
@@ -177,7 +256,7 @@ class OverseerRealmSettingsBottomSection {
 						this.realm,
 						new Input("", {
 							events: { input: c => this.realm.set({ apiFilePath: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-apifilepath', spellcheck: 'false' },
+							attributes: { name: 'overseerrealmsettings-apifilepath', spellcheck: 'false' },
 						}),
 						(m, c) => c.setValue(m.apiFilePath),
 					),
