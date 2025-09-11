@@ -69,8 +69,8 @@ class ConsoleState extends Model {
 	 */
 	setDoc(doc, anchor, head) {
 		this._doc = doc;
-		this._anchor = anchor || 0;
-		this._head = (typeof head == 'number' ? head : anchor) || 0;
+		this._anchor = Math.min(anchor || 0, doc.length);
+		this._head = Math.min((typeof head == 'number' ? head : anchor) || 0, doc.length);
 		this._saveDoc();
 		this._updateModel(true);
 	}
@@ -143,8 +143,8 @@ class ConsoleState extends Model {
 			if (raw) {
 				let dta = JSON.parse(raw);
 				this._doc = dta.doc || '';
-				this._anchor = dta.anchor || this._doc.length;
-				this._head = dta.head || this._doc.length;
+				this._anchor = Math.min(dta.anchor || this._doc.length, this._doc.length);
+				this._head = Math.min(dta.head || this._doc.length, this._doc.length);
 				this._historyIdx = dta.historyIdx || 0;
 			}
 		} catch (ex) {

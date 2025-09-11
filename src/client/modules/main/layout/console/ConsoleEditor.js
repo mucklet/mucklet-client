@@ -262,7 +262,7 @@ class ConsoleEditor {
 	}
 
 	_getValue() {
-		return (this.cm ? this.cm.state.doc.toString() : this.state?.doc || '').trim();
+		return this.cm ? this.cm.state.doc.toString() : this.state?.doc || '';
 	}
 
 	_getSelection() {

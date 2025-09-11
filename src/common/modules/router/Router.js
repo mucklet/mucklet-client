@@ -264,8 +264,13 @@ class Router {
 			throw "Route params must be an object";
 		}
 
-		// If the route is currently set, don't do anything
+		// If the route is currently set, we only replace the this.current
+		// object with the same content. In case setRoute was called from within
+		// a route.setState, a change to this.current will cause the previous
+		// attempt of setRoute, which triggered setState, to be aborted. See
+		// _performSetRoute where the check for change is made.
 		if (this._isCurrent(routeId, params) && !force) {
+			this.current = { ...this.current };
 			return Promise.resolve(this.current);
 		}
 
@@ -307,11 +312,19 @@ class Router {
 
 		this.setStatePromise = null;
 
+		// Store current route and params. If this changes while setting state,
+		// that means this.setRoute has been called from setState, and overrides
+		// this attempt.
+		let current = this.current;
 		return Promise.resolve(route.setState ? route.setState(params, route) : null).then(
-			() => this._setRoute({
-				route,
-				params,
-			}, pushHistoryState),
+			() => {
+				if (this.current == current) {
+					return this._setRoute({
+						route,
+						params,
+					}, pushHistoryState);
+				}
+			},
 		);
 	}
 
