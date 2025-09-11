@@ -1,6 +1,7 @@
 @import '~scss/variables';
 
 .autocomplete {
+	color: $color4-darker;
 	background: white;
 	z-index: 1000;
 	font-size: $font-size;
@@ -11,30 +12,56 @@
 	border: 1px solid rgba(50, 50, 50, 0.6);
 	border-radius: 4px;
 	padding-bottom: 4px;
+
+	 * {
+		font: inherit;
+	}
+
+	 > div {
+		padding: 0 14px;
+	}
+
+	> div > em {
+		font-weight: bold;
+		color: $black;
+	}
+
+	.group {
+		background: #eee;
+	}
+
+	> div:hover:not(.group) {
+		background: lighten($color6, 20%);
+	}
+
+	> div.selected {
+		background: lighten($color6, 30%);
+		cursor: pointer;
+	}
 }
 
-.autocomplete * {
-	font: inherit;
-}
+.autocomplete.autocomplete-dark {
+	color: $color4;
+	background: $black;
+	border: 1px solid $color2;
 
-.autocomplete > div {
-	padding: 0 14px;
-}
+	> div > em {
+		font-weight: bold;
+		color: $white;
+	}
 
-.autocomplete > div > em {
-	font-weight: bold;
-	color: $black;
-}
+	.group {
+		background: $color1-dark;
+	}
 
-.autocomplete .group {
-	background: #eee;
-}
+	> div:hover:not(.group) {
+		background: $color1;
+	}
 
-.autocomplete > div:hover:not(.group) {
-	background: lighten($color6, 20%);
+	> div.selected {
+		background: $color1-light;
+		&:hover {
+			background: $color1-lighter;
+		}
+	}
 }
-.autocomplete > div.selected {
-	background: lighten($color6, 30%);
-	cursor: pointer;
-}
-

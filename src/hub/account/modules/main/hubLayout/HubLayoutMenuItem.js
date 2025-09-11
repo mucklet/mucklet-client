@@ -27,7 +27,7 @@ class HubLayuoutMenuItem {
 					n.component(this.markerComponent),
 				]),
 			),
-			(m, c) => c[m.route?.id == this.route.id
+			(m, c) => c[m.route?.id == this.route.id || m.route?.parentId === this.route.id
 				? 'addClass'
 				: 'removeClass'
 			]('active'),

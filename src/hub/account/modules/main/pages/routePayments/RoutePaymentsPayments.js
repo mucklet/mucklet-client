@@ -4,6 +4,7 @@ import { Model, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
 import FAIcon from 'components/FAIcon';
+import PageHeader from 'components/PageHeader';
 import RoutePaymentsPaymentBadge from './RoutePaymentsPaymentBadge';
 
 const defaultLimit = 10;
@@ -30,7 +31,7 @@ class RoutePaymentsPayments {
 				new CollectionComponent(
 					null,
 					new Elem(n => n.elem('div', { className: 'routepayments-payments' }, [
-						n.component(new Txt(l10n.l('routePayments.payments', "Payments"), { tagName: 'h2' })),
+						n.component(new PageHeader(l10n.l('routePayments.payments', "Payments"))),
 						n.elem('div', { className: 'common--hr' }),
 						n.elem('div', { className: 'routepayments--head flex-row flex-center margin4' }, [
 							n.component(new ModelComponent(

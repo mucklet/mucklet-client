@@ -1,0 +1,39 @@
+@import '~scss/variables';
+
+// .routenodesettings {}
+
+
+.routenodesettings-node {
+
+	&--key {
+		font-size: $font-size-large;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--realms, &--containers {
+		padding-top: 4px;
+	}
+
+	&--realm {
+		padding-top: 6px;
+	}
+}
+
+.routenodesettings-realmbadge {
+
+	&--key {
+		padding-right: 6px;
+	}
+
+	&--stateicon {
+		font-size: $font-size-tiny;
+	}
+
+}
+
+.routenodesettings-realmbadgecontent {
+	&--error.badge--error {
+		white-space: pre;
+	}
+}

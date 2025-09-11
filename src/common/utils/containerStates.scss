@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+.containerstates {
+	&--created, &--exited, &--dead {
+		color: $color5;
+	}
+	&--running {
+		color: $color6;
+	}
+	&--paused {
+		color: $color4;
+	}
+	&--restarting, &--removing {
+		color: $color2;
+	}
+}

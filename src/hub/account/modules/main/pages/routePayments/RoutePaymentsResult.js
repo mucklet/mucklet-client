@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
+import PageHeader from 'components/PageHeader';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtUnit from 'utils/txtUnit';
 import * as txtProduct from 'utils/txtProduct';
@@ -20,7 +21,11 @@ class RoutePaymentsResult {
 	render(el) {
 		let components = {};
 		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-result' }, [
-			n.component(new ModelTxt(this.payment, m => txtPaymentStatus.toLocaleString(m), { tagName: 'h2' })),
+			n.component(new ModelComponent(
+				this.payment,
+				new PageHeader(),
+				(m, c) => c.setTitle(txtPaymentStatus.toLocaleString(m)),
+		 	)),
 			n.elem('div', { className: 'common--hr' }),
 			n.elem('p', { className: 'routepayments--product' }, [
 				n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),

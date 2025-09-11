@@ -1,0 +1,23 @@
+@import '~scss/variables';
+
+.nodecontainers {
+	&--listitem {
+		padding-top: 6px;
+	}
+}
+
+.nodecontainers-badge {
+	&--timestamp {
+		padding-right: 6px;
+	}
+
+	&--stateicon {
+		font-size: $font-size-tiny;
+	}
+}
+
+.nodecontainers-badgecontent {
+	&--error.badge--error {
+		white-space: pre;
+	}
+}

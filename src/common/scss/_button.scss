@@ -91,7 +91,7 @@
 	@include btn-style($color6, $color6-hover, $color6-active, $color1-light, $color1-lighter);
 }
 
-.btn.secondary {
+.btn.secondary, .iconbtn.secondary {
 	@include btn-style($color4, darken($color4-light, 8%), darken($color4, 16%), $color1-light, $color1-lighter);
 }
 
