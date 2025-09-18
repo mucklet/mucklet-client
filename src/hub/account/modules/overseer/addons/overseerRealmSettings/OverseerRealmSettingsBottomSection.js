@@ -312,6 +312,44 @@ class OverseerRealmSettingsBottomSection {
 				(m, c) => c.setValue(m.apiSecure, false),
 			)),
 
+			n.elem('div', { className: 'common--hr' }),
+
+			// Borg repo
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.borgRepo', "Borg repository"),
+				new ModelComponent(
+					this.realm,
+					new Input("", {
+						events: { input: c => this.realm.set({ borgRepo: c.getValue() }) },
+						attributes: { name: 'overseerrealmsettings-borgrepo', spellcheck: 'false' },
+					}),
+					(m, c) => c.setValue(m.borgRepo),
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.borgRepoInfo', "Borg backup repository URL."),
+				},
+			)),
+
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.borgPassphrase', "Borg passphrase"),
+				new ModelComponent(
+					this.realm,
+					new Input("", {
+						events: { input: c => this.realm.set({ borgPassphrase: c.getValue() }) },
+						attributes: { name: 'overseerrealmsettings-borgpassphrase', spellcheck: 'false' },
+					}),
+					(m, c) => c.setValue(m.borgPassphrase),
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.borgPassphraseInfo', "Borg backup repository passphrase. If left empty, a random passphrase will be generated."),
+				},
+			)),
+
+
 		]));
 
 		return this.elem.render(el);
