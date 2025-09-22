@@ -20,6 +20,7 @@ class ListCommands {
 			'charLog',
 			'help',
 			'cmdPattern',
+			'player',
 		], this._init.bind(this));
 	}
 
@@ -50,7 +51,7 @@ class ListCommands {
 
 		let topics = Object.keys(room.cmds.props)
 			.map(k => roomCmds[k])
-			.filter(m => m.id)
+			.filter(m => m.id && (!m.restricted || this.module.player.canEdit(room.owner?.id)))
 			.sort(cmdCompare)
 			.map(m => this.module.cmdPattern.getHelpTopic(m.id, m.cmd));
 

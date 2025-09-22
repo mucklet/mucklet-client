@@ -18,6 +18,7 @@ class PageRoomDesc {
 		this.app.require([
 			'pageRoom',
 			'cmdPattern',
+			'player',
 		], this._init.bind(this));
 	}
 
@@ -37,6 +38,7 @@ class PageRoomDesc {
 						new Context(
 							() => new ModelToCollection(cmds, {
 								compare: (a, b) => cmdCompare(a.value, b.value),
+								filter: (k, v) => v.id && !v.unlisted && (!v.restricted || this.module.player.canEdit(room.owner?.v)),
 								eventBus: this.app.eventBus,
 							}),
 							(col) => col.dispose(),
