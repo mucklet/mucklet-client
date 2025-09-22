@@ -213,6 +213,21 @@ class Player {
 		return roles && roles.indexOf('overseer') >= 0;
 	}
 
+	/**
+	 * Checks if the player owns the character that is the owner of the editable
+	 * object, or if the player is an admin or builder.
+	 * @param {{id: string} | string} owner Char model or ID of the object owner.
+	 * @returns {boolean} True if the player owns the character.
+	 */
+	canEdit(owner) {
+		return this.isBuilder() || this.ownsChar(owner);
+	}
+
+	/**
+	 * Checks if the player owns the character.
+	 * @param {{id: string} | string} charId Char model or ID of the object owner.
+	 * @returns {boolean} True if the player owns the character.
+	 */
 	ownsChar(charId) {
 		return !!this.getOwnedChar(charId);
 	}
