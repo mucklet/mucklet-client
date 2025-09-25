@@ -25,8 +25,9 @@ class StopLead {
 		this.module = module;
 		let opts = {
 			next: [
-				this.module.cmdSteps.newInRoomAwakeCharStep({
+				this.module.cmdSteps.newAwakeCharStep({
 					errRequired: null,
+					sortOrder: [ 'room', 'watch' ],
 				}),
 			],
 			value: (ctx, p) => this.stopLead(ctx.char, p.charId ? { charId: p.charId } : null),
