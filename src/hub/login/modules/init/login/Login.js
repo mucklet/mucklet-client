@@ -2,6 +2,7 @@ import sha256, { hmacsha256, publicPepper } from 'utils/sha256';
 import reload, { redirect } from 'utils/reload';
 import { uri } from 'modapp-utils';
 import responseParseError from 'utils/responseParseError';
+import './LoginRecover'; // Imported prior to LoginComponent to resolve a conflicting scss order
 import LoginComponent from './LoginComponent';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';

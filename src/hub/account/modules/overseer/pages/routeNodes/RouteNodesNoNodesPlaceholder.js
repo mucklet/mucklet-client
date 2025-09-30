@@ -7,8 +7,7 @@ import l10n from 'modapp-l10n';
 class RouteNodesNoNodesPlaceholder extends RootElem {
 	constructor() {
 		super(n => n.elem('div', { className: 'routenodes-nonodesplaceholder' }, [
-			n.component(new Txt(l10n.l('routeNodes.disclaimer1', "Want to create a node of your own? This is where you will be able to manage them."), { tagName: 'p', className: 'common--placeholder' })),
-			n.component(new Txt(l10n.l('routeNodes.disclaimer2', "... but we are still working on it."), { tagName: 'p', className: 'common--placeholder' })),
+			n.component(new Txt(l10n.l('routeNodes.disclaimer1', "There are currently no nodes registered."), { tagName: 'p', className: 'common--placeholder' })),
 		]));
 	}
 }
