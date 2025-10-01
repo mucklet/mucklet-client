@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+.apistates {
+	&--online {
+		color: $color6;
+	}
+	&--booting, &--restarting, &--resyncing, &--stopping, &--shuttingdown {
+		color: $color2;
+	}
+	&--offline, &--undefined {
+		color: $color5;
+	}
+	&--stopped {
+		color: $color4;
+	}
+}

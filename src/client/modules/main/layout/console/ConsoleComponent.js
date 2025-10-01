@@ -8,6 +8,7 @@ import Fader from 'components/Fader';
 import counterString from 'utils/counterString';
 import ConsoleControlledChar from './ConsoleControlledChar';
 import ConsoleEditor from './ConsoleEditor';
+import compareCtrlChars from 'utils/compareCtrlChars';
 
 class ConsoleComponent {
 	constructor(module, model, layoutId) {
@@ -35,7 +36,7 @@ class ConsoleComponent {
 								c.setComponent(col.length > 1 || this.layout == 'desktop'
 									? c.getComponent() || new Context(
 										() => new CollectionWrapper(this.module.player.getControlled(), {
-											compare: (a, b) => a.ctrlSince - b.ctrlSince,
+											compare: compareCtrlChars,
 											eventBus: this.module.self.app.eventBus,
 										}),
 										(ctrls) => ctrls.dispose(),

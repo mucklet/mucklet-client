@@ -61,6 +61,7 @@ class Confirm {
 										this.close();
 									}).catch(err => {
 										this.close();
+										console.error(err);
 										this.openError(err);
 									});
 								} else {

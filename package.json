@@ -1,6 +1,6 @@
 {
   "name": "mucklet-client",
-  "version": "1.67.0",
+  "version": "1.68.0",
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
@@ -15,6 +15,7 @@
     "client:docker": "cross-env NODE_ENV=development DISABLE_SERVICEWORKER=1 APP_NAME=client CFG_NAME=docker webpack-dev-server",
     "client:serviceworker": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=development_serviceworker webpack-dev-server",
     "hub": "cross-env NODE_ENV=development APP_NAME=hub webpack-dev-server",
+    "hub:node": "cross-env NODE_ENV=development APP_NAME=hub CFG_NAME=node webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack",
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",
     "build:client": "cross-env NODE_ENV=production APP_NAME=client webpack",

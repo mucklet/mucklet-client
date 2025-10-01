@@ -51,23 +51,7 @@ class RouteOverview {
 				}),
 			}),
 			// staticRouteParams: { userId: null },
-			setState: params => this.module.auth.getUserPromise().then(user => {
-				let ctx = {};
-				let promises = [];
-				for (let tool of this.tools) {
-					if (tool.createCtx) {
-						let o = {};
-						ctx[tool.id] = o;
-						promises.push(tool.createCtx(o, user));
-					}
-				}
-				return Promise.all(promises)
-					.then(() => this._setState(user, ctx))
-					.catch(err => {
-						this._disposeCtx(user, ctx);
-						throw err;
-					});
-			}),
+			setState: params => this._setState(params),
 			// getUrl: params => null,
 			// parseUrl: parts => null,
 			order: 10,
@@ -92,7 +76,7 @@ class RouteOverview {
 	 * @param {function} tool.componentFactory Tool component factory: function(user, paymentUser, state) -> Component
 	 * @param {string} [tool.type] Target type. May be 'preference' 'topSection', or 'section'. Defaults to 'preference';
 	 * @param {number} [tool.className] Class to give to the list item container.
-	 * @param {Model} [tool.alertModel] Model with an "alert" property. If the alert property resolves to true, an marker will show on settings icon
+	 * @param {Model} [tool.alertModel] Model with an "alert" property. If the alert property resolves to true, a marker will show on settings icon
 	 * @param {function} [tool.createCtx] Function called prior to rendering the route: function(ctx, user) -> Promise
 	 * @param {function} [tool.disposeCtx] Function called after unrendering the route: function(ctx, user)
 	 * @returns {this}
@@ -118,13 +102,33 @@ class RouteOverview {
 		return this;
 	}
 
+	_setState(params) {
+		return this.module.auth.getUserPromise().then(user => {
+			let ctx = {};
+			let promises = [];
+			for (let tool of this.tools) {
+				if (tool.createCtx) {
+					let o = {};
+					ctx[tool.id] = o;
+					promises.push(tool.createCtx(o, user));
+				}
+			}
+			return Promise.all(promises)
+				.then(() => this._setModel(user, ctx))
+				.catch(err => {
+					this._disposeCtx(user, ctx);
+					throw err;
+				});
+		});
+	}
+
 	/**
 	 * Sets the route state, and ensure it will remain subscribed.
 	 * @param {?ResModel} user User model.
 	 * @param {object} ctx Context object for tools.
 	 * @returns {Promise} Promise to user being set.
 	 */
-	_setState(user, ctx) {
+	_setModel(user, ctx) {
 		user = relistenResource(this.model.user, user);
 		if (this.model.ctx && this.model.ctx != ctx) {
 			this._disposeCtx(this.model.ctx, this.model.user);
@@ -161,7 +165,7 @@ class RouteOverview {
 	}
 
 	dispose() {
-		this._setState(null, null);
+		this._setModel(null, null);
 		this.module.router.removeRoute('overview');
 	}
 }

@@ -128,21 +128,27 @@ class CmdPattern {
 	}
 
 	_getAllPatterns() {
-		let ids = {};
 		let cmds = [];
 		// Room commands
-		cmds = cmds.concat(this._getPatterns(this.module.player.getActiveChar()?.inRoom?.cmds?.props, ids));
+		cmds = cmds.concat(this._getCharPatterns(this.module.player.getActiveChar()));
 		return cmds;
 	}
 
-	_getPatterns(props, uniqueIds = {}) {
+	/**
+	 * Gets all the
+	 * @param {Model} char Controlled character.
+	 * @returns {Array<CmdPatternParsedCmd>} Parsed command patterns available to the character-
+	 */
+	_getCharPatterns(char) {
+		let room = char?.inRoom;
+		let props = room?.cmds?.props;
 		if (!props) {
 			return [];
 		}
 
 		let cmds = Object.keys(props)
 			.map(cmdId => props[cmdId])
-			.filter(o => o.cmd)
+			.filter(o => o.cmd && (!o.restricted || this.module.player.canEdit(room.owner?.id)))
 			.sort(cmdCompare);
 
 		/** @type {Array<CmdPatternParsedCmd>} */
@@ -216,7 +222,7 @@ class CmdPattern {
 		}
 
 		let uniqueTopics = {};
-		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props)
+		let roomCmds = this._getCharPatterns(char)
 			.map(c => {
 				let m = c.matchesHelp(helpWords);
 				// If it is a match and that exact topic is not added.
@@ -254,7 +260,7 @@ class CmdPattern {
 			return null;
 		}
 
-		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props);
+		let roomCmds = this._getCharPatterns(char);
 		if (!doPrefixed) {
 			roomCmds = roomCmds.filter(c => !c.requiresDoPrefix(true));
 		}
@@ -288,7 +294,7 @@ class CmdPattern {
 		}
 
 		// Get all room commands.
-		let roomCmds = this._getPatterns(char?.inRoom?.cmds?.props);
+		let roomCmds = this._getCharPatterns(char);
 		if (!doPrefixed) {
 			roomCmds = roomCmds.filter(c => !c.requiresDoPrefix(true));
 		}

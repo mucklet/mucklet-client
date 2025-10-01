@@ -18,7 +18,7 @@ class AutoComplete extends RootElem {
 			value = "";
 		}
 		opt = Object.assign({ attributes: null, properties: null }, opt);
-		opt.attributes = Object.assign({ type: 'text' }, opt.attributes, { value });
+		opt.attributes = Object.assign({ type: 'text', autocomplete: 'off' }, opt.attributes, { value });
 		opt.properties = Object.assign({}, opt.properties, { value });
 		super('input', opt);
 		let onSelect = opt.onSelect;

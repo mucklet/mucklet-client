@@ -10,6 +10,7 @@ const authenticateUrl = AUTH_AUTHENTICATE_URL;
 const crossOrigin = API_CROSS_ORIGIN;
 const wsLoginRid = AUTH_LOGIN_RID;
 const wsAuthRid = AUTH_AUTHENTICATE_RID;
+const hubUrl = HUB_PATH;
 
 function redirectWithUri(url, pushHistory) {
 	redirect(url + '?redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
@@ -81,10 +82,12 @@ class Auth {
 		}).catch(err => {
 			throw new Err('auth.failedToFetch', "Failed to send authentication check.");
 		}).then(resp => {
-			// Legacy behavior and other >= 400 errors
+			// >= 400 errors
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
-					if (resp.status < 500) {
+					// 401 simply means not logged in, and should result in a
+					// null user. Any other error is an actual error.
+					if (resp.status == 401) {
 						if (!noRedirect) {
 							redirectWithUri(oauth2Url);
 						}
@@ -100,8 +103,12 @@ class Auth {
 					},
 				));
 			}
-			// New behavior allows a 200 response but with an {"error": {...}}
-			// json object, to indicate failed authentication.
+			// [TODO] Remove this piece of code. The comment says "new
+			// behavior", but the matching commit on the backend does not have
+			// any changes in behavior, but will send 401 with an error message.
+			// A 200 status should not contain an error.
+			// > New behavior allows a 200 response but with an {"error": {...}}
+			// > json object, to indicate failed authentication.
 			return resp.text().then(text => {
 				try {
 					let result = JSON.parse(text);
@@ -195,6 +202,12 @@ class Auth {
 				redirectWithUri(oauth2Url, true);
 			});
 		}
+	}
+
+	redirectToHub() {
+		this._afterFade(() => {
+			redirect(hubUrl, true);
+		});
 	}
 
 	_getCurrentUser(reconnect) {
