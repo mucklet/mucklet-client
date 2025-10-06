@@ -6,11 +6,12 @@
 
 .routereleases-release {
 	&--template {
-		display: block;
-		height: 480px;
-		resize: vertical;
-		font-size: $font-size-small;
-		font-family: $font-code;
-		white-space: pre;
+		padding: 2px 0px;
+	}
+}
+
+.routereleases-templatebadge {
+	&--size {
+		padding-right: 6px;
 	}
 }

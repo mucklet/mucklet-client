@@ -1,13 +1,15 @@
-import { Elem, Txt, Context, Input, Textarea } from 'modapp-base-component';
-import { ModifyModel } from 'modapp-resource';
-import { ModelComponent } from 'modapp-resource-component';
+import { Elem, Txt, Context, Input } from 'modapp-base-component';
+import { ModifyModel, ModelToCollection } from 'modapp-resource';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
+import NestedModel from 'classes/NestedModel';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
 import AutoComplete from 'components/AutoComplete';
 import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
+import RouteReleasesTemplateBadge from './RouteReleasesTemplateBadge';
 
 /**
  * RouteReleasesRelease draws the settings form for a release.
@@ -137,22 +139,38 @@ class RouteReleasesRelease {
 					},
 				)),
 
-				// Template
+				// Templates
 				n.component(new PanelSection(
-					l10n.l('routeReleases.template', "Template"),
-					new ModelComponent(
-						release,
-						new Textarea(release.template, {
-							className: 'routereleases-release--template common--paneltextarea',
-							events: { input: c => release.set({ template: c.getValue() }) },
-							attributes: { name: 'routereleases-template', spellcheck: 'false' },
+					l10n.l('routeReleases.templates', "Templates"),
+					new Context(
+						() => new ModelToCollection(new NestedModel(
+							release,
+							(m) => Object.keys(m.templates || {}).reduce((o, key) => {
+								return Object.assign(o, { [key]: key });
+							}, {}) || {},
+							{
+								maxDepth: 1, // Listen to release only
+							},
+						), {
+							compare: (a, b) => a.key.localeCompare(b.key),
+							eventBus: this.module.self.eventBus,
 						}),
-						(m, c) => c.setValue(m.template),
+						templates => {
+							templates.getModel().dispose();
+							templates.dispose();
+						},
+						templates => new CollectionList(
+							templates,
+							key => new RouteReleasesTemplateBadge(this.module, release, key),
+							{
+								subClassName: () => 'routereleases-release--template',
+							},
+						),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('routeReleases.templateInfo', "Composition template for the release."),
+						popupTip: l10n.l('routeReleases.templateInfo', "Composition templates for the release."),
 					},
 				)),
 

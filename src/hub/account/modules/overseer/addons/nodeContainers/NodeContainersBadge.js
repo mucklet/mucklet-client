@@ -15,7 +15,7 @@ class NodeContainersBadge {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', {
-			className: 'nodecontainers-containerbadge badge dark btn',
+			className: 'nodecontainers-badge badge dark btn',
 			events: {
 				click: (c, ev) => {
 					this.selectedModel.set({ containerId: this.selectedModel.containerId == this.container.id
@@ -27,10 +27,10 @@ class NodeContainersBadge {
 			},
 		}, [
 			n.elem('div', { className: 'badge--info flex-row flex-start flex-center' }, [
-				n.elem('div', { className: 'nodecontainers-containerbadge--state badge--nowrap flex-1' }, [
+				n.elem('div', { className: 'nodecontainers-badge--state badge--nowrap flex-1' }, [
 					n.component(new ModelComponent(
 						this.container,
-						new FAIcon('circle', { className: 'nodecontainers-containerbadge--stateicon' }),
+						new FAIcon('circle', { className: 'nodecontainers-badge--stateicon' }),
 						(m, c) => {
 							let state = getContainerState(m, 'state');
 							for (let s of containerStates) {
@@ -41,7 +41,7 @@ class NodeContainersBadge {
 					n.html('&nbsp;&nbsp;'),
 					n.component(new ModelTxt(this.container, m => m.name, { className: 'badge--title' })),
 				]),
-				n.elem('div', { className: 'nodecontainers-containerbadge--timestamp badge--text badge--nowrap flex-auto' }, [
+				n.elem('div', { className: 'nodecontainers-badge--timestamp badge--text badge--nowrap flex-auto' }, [
 					n.component(new ModelTxt(this.container, m => formatDateTime(new Date(m.stateSince), { showYear: true }))),
 				]),
 			]),

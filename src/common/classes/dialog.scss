@@ -34,6 +34,24 @@
 	}
 
 	background: $color1-lightest;
+
+	&.fullscreen {
+		width: 100%;
+		max-width: initial;
+		max-height: initial;
+		height: 100%;
+	}
+
+	&.fixed {
+		.dialog--content-wrap {
+			flex: 1 1 0px;
+			display: flex;
+			flex-direction: column;
+		}
+		.dialog--content {
+			flex: 1 1 0px;
+		}
+	}
 }
 
 .dialog--head {
