@@ -82,6 +82,7 @@ class RouteRealmSettings {
 	 * @param {(realm: ModifyModel) => Component} tool.componentFactory Tool component factory.
 	 * @param {string} [tool.type] Target type. May be 'section'. Defaults to 'section';
 	 * @param {string} [tool.className] Class to give to the list item container.
+	 * @param {(params: Record<string,any>) => Record<string,any>} [tool.onSave] Callback called on save, to prepare the params before calling 'set'.
 	 * @returns {this}
 	 */
 	addTool(tool) {

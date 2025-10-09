@@ -172,6 +172,11 @@ class RouteRealmSettingsRealm {
 			return;
 		}
 
+		// Prepare params from tools
+		for (let tool of this.module.self.getTools()) {
+			params = tool.onSave?.(params) || params;
+		}
+
 		this._setMessage();
 		return this.realm.call('set', params).then(() => {
 			model.reset();

@@ -25,6 +25,25 @@ class OverseerRealmSettingsBottomSection {
 			n.elem('div', { className: 'common--hr' }),
 
 			// Realm Client
+
+			// Client version
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.clientVersion', "Client version"),
+				new ModelComponent(
+					this.realm,
+					new Input("", {
+						events: { input: c => this.realm.set({ clientVersion: c.getValue() }) },
+						attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+					}),
+					(m, c) => c.setValue(m.clientVersion),
+				),
+				{
+					className: 'flex-1 common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Version of the client."),
+				},
+			)),
+
 			n.elem('div', { className: 'flex-row m pad16' }, [
 				// Client Host
 				n.component(new PanelSection(
@@ -76,6 +95,52 @@ class OverseerRealmSettingsBottomSection {
 			)),
 
 			n.elem('div', { className: 'common--hr' }),
+
+			// API Release
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.apiRelease', "API release"),
+				new ModelComponent(
+					this.realm,
+					new AutoComplete({
+						innerClassName: 'autocomplete-dark',
+						attributes: {
+							placeholder: l10n.t('overseerRealmSettings.searchRelease', "Search release (Name)"),
+							name: 'routereleases-release--apirelease',
+						},
+						events: {
+							input: (c, ev) => {
+								if (!ev.target.value) {
+									this.realm.set({ apiRelease: null });
+								}
+							},
+						},
+						fetch: (text, update) => {
+							this.module.api.call(`control.overseer.releases.realm`, 'search', { text, limit: 20 })
+								.then(releases => {
+									update(releases.hits.map(o => Object.assign(o, {
+										label: o.name,
+									})));
+								});
+						},
+						minLength: 1,
+						onSelect: (c, item) => {
+							c.setProperty('value', item.label);
+							// Get the original model.
+							let realm = this.realm.getModel();
+							this.realm.set({ apiRelease: item.id == (realm.apiRelease?.id)
+								? realm.apiRelease
+								: item,
+							});
+						},
+					}),
+					(m, c) => c.setProperty('value', m.apiRelease?.name || ''),
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.apiReleaseInfo', "The release of the API that the realm containers run on. Changing it will require the containers to be updated."),
+				},
+			)),
 
 			// API Node
 			n.component(new PanelSection(
