@@ -10,6 +10,7 @@ import AutoComplete from 'components/AutoComplete';
 import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
 import RouteReleasesTemplateBadge from './RouteReleasesTemplateBadge';
+import FileButton from 'components/FileButton';
 
 /**
  * RouteReleasesRelease draws the settings form for a release.
@@ -180,18 +181,35 @@ class RouteReleasesRelease {
 				// Footer
 				n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
 					n.elem('div', { className: 'flex-1' }, [
-						n.component(new ModelComponent(
-							release,
-							new Elem(n => n.elem('button', {
-								className: 'btn primary common--btnwidth',
-								events: {
-									click: () => this._save(release),
-								},
-							}, [
-								n.component(new Txt(l10n.l('routeReleases.saveChanges', "Save changes"))),
-							])),
-							(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
-						)),
+
+						n.elem('div', { className: 'flex-row margin16' }, [
+
+							// Save changes
+							n.component(new ModelComponent(
+								release,
+								new Elem(n => n.elem('button', {
+									className: 'btn primary common--btnwidth',
+									events: {
+										click: () => this._save(release),
+									},
+								}, [
+									n.component(new Txt(l10n.l('routeReleases.saveChanges', "Save changes"))),
+								])),
+								(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
+							)),
+
+							// Upload templates
+							n.component(new FileButton(
+								new Elem(n => n.elem('div', [
+									n.component(new FAIcon('file-archive-o ')),
+									n.component(new Txt(l10n.l('routeReleases.uploadTemplates', "Upload templates"))),
+								])),
+								(file, dataUrl) => this._setTemplatesUrl(dataUrl),
+								{ className: 'btn common--btnwidth icon-left' },
+							)),
+
+						]),
+
 					]),
 
 					// Footer tools
@@ -253,6 +271,13 @@ class RouteReleasesRelease {
 		return this.release.call('set', params).then(() => {
 			model.reset();
 		}).catch(err => {
+			this._setMessage(errString(err));
+		});
+	}
+
+	_setTemplatesUrl(templatesUrl) {
+		this._setMessage();
+		return this.release.call('set', { templatesUrl }).catch(err => {
 			this._setMessage(errString(err));
 		});
 	}
