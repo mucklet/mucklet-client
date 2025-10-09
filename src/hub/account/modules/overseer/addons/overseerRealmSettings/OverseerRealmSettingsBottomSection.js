@@ -4,6 +4,7 @@ import PanelSection from 'components/PanelSection';
 import Collapser from 'components/Collapser';
 import LabelToggleBox from 'components/LabelToggleBox';
 import ModelCollapser from 'components/ModelCollapser';
+import AutoComplete from 'components/AutoComplete';
 import l10n from 'modapp-l10n';
 import apiTypes from 'utils/apiTypes';
 
@@ -81,11 +82,32 @@ class OverseerRealmSettingsBottomSection {
 				l10n.l('overseerRealmSettings.apiNode', "API node"),
 				new ModelComponent(
 					this.realm,
-					new Input("", {
-						events: { input: c => this.realm.set({ apiNode: c.getValue() }) },
-						attributes: { name: 'overseerrealmsettings-apinode', spellcheck: 'false' },
+					new AutoComplete({
+						innerClassName: 'autocomplete-dark',
+						attributes: {
+							placeholder: l10n.t('routeReleases.searchRelease', "Search node (Keyname)"),
+							name: 'overseerrealmsettings-apinode',
+						},
+						events: {
+							input: (c, ev) => {
+								this.realm.set({ apiNode: ev.target.value });
+							},
+						},
+						fetch: (text, update) => {
+							this.module.api.call(`control.overseer.nodes`, 'search', { text, limit: 20 })
+								.then(nodes => {
+									update(nodes.hits.map(o => Object.assign(o, {
+										label: o.key,
+									})));
+								});
+						},
+						minLength: 1,
+						onSelect: (c, item) => {
+							c.setProperty('value', item.label);
+							this.realm.set({ apiNode: item.key });
+						},
 					}),
-					(m, c) => c.setValue(m.apiNode),
+					(m, c) => c.setProperty('value', m.apiNode),
 				),
 				{
 					className: 'common--sectionpadding',
