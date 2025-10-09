@@ -48,7 +48,7 @@ class RouteRealms {
 			setState: params => this._setState(params),
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => this.module.router.parseDefUrl(parts, pathDef),
-			order: 20,
+			order: 30,
 		});
 	}
 
