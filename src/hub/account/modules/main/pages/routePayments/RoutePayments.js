@@ -51,7 +51,7 @@ class RoutePayments {
 				}
 				return o;
 			},
-			order: 30,
+			order: 20,
 		});
 	}
 

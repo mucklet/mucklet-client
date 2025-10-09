@@ -1,0 +1,29 @@
+@import '~scss/variables';
+
+.dialogeditreleasetemplate {
+	&--container {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--release, &--key {
+		font-size: $font-size;
+		display: block;
+	}
+	&--release {
+		color: $color3;
+	}
+
+	&--template {
+		font-family: $font-code;
+		font-size: $font-size-small;
+	}
+
+	&--btn {
+		width: 128px;
+	}
+}
+
+

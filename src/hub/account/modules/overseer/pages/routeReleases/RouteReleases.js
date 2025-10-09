@@ -29,6 +29,7 @@ class RouteReleases {
 			'dialogCreateRelease',
 			'confirm',
 			'toaster',
+			'dialogEditReleaseTemplate',
 		], this._init.bind(this));
 	}
 
