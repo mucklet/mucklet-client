@@ -16,6 +16,7 @@ class CharCycle {
 		this.app.require([
 			'player',
 			'helpConsole',
+			'info',
 		], this._init.bind(this));
 	}
 
@@ -43,9 +44,10 @@ class CharCycle {
 			this._cycleActive();
 			e.preventDefault();
 		} else if (e.ctrlKey) {
+			let max = this.module.info.getCore().maxControlled || 5;
 			let k = parseInt(e.key);
-			if (!isNaN(k)) {
-				this._setActive((k + 9) % 10);
+			if (k >= 1 && k <= max) {
+				this._setActive(k - 1);
 				e.preventDefault();
 			}
 		}
