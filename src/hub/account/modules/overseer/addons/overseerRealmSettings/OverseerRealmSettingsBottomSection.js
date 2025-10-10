@@ -1,10 +1,12 @@
-import { Elem, Input, Txt } from 'modapp-base-component';
+import { Context, Elem, Input, Txt } from 'modapp-base-component';
 import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { ModifyModel, ModelWrapper } from 'modapp-resource';
 import PanelSection from 'components/PanelSection';
 import Collapser from 'components/Collapser';
 import LabelToggleBox from 'components/LabelToggleBox';
 import ModelCollapser from 'components/ModelCollapser';
 import AutoComplete from 'components/AutoComplete';
+import EnvEditor from 'components/EnvEditor';
 import l10n from 'modapp-l10n';
 import apiTypes from 'utils/apiTypes';
 
@@ -433,6 +435,40 @@ class OverseerRealmSettingsBottomSection {
 					className: 'common--sectionpadding',
 					noToggle: true,
 					popupTip: l10n.l('overseerRealmSettings.borgPassphraseInfo', "Borg backup repository passphrase. If left empty, a random passphrase will be generated."),
+				},
+			)),
+
+			n.elem('div', { className: 'common--hr' }),
+
+			// Environment variables
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.environmentVariables', "Environment variables"),
+				new Context(
+					() => new ModifyModel(new ModelWrapper(this.realm.getModel().env), {
+						isModifiedProperty: null,
+						modifiedOnNew: true,
+					}),
+					(env) => env.dispose(),
+					(env) => new ModelComponent(
+						this.realm.getModel(),
+						new ModelComponent(
+							env,
+							new EnvEditor(env),
+							(m, c) => {
+								// If the env ModifyModel has modifications, we
+								// set those values as our realm.env props.
+								// Otherwise we set the original props.
+								let mods = env.getModifications();
+								this.realm.set({ env: mods ? { ...env.props } : this.realm.getModel().env });
+							},
+						),
+						(m, c) => env.getModel().setModel(m.env),
+					),
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.environmentVariablesInfo', "Values that may be used by the release templates to generate the composition."),
 				},
 			)),
 

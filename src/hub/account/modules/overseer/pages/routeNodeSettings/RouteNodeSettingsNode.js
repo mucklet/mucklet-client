@@ -262,6 +262,8 @@ class RouteNodeSettingsNode {
 					},
 				)),
 
+				n.elem('div', { className: 'common--hr' }),
+
 				// Environment variables
 				n.component(new PanelSection(
 					l10n.l('routeNodeSettings.environmentVariables', "Environment variables"),
