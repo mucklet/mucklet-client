@@ -1,5 +1,5 @@
 import { Elem, Txt, Context, Input } from 'modapp-base-component';
-import { Model, ModifyModel, ModelToCollection } from 'modapp-resource';
+import { Model, ModifyModel, ModelToCollection, ModelWrapper } from 'modapp-resource';
 import { ModelComponent, ModelTxt, CollectionList, CollectionComponent } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
@@ -7,6 +7,7 @@ import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
 import ModelFader from 'components/ModelFader';
 import AutoComplete from 'components/AutoComplete';
+import EnvEditor from 'components/EnvEditor';
 import l10n from 'modapp-l10n';
 import apiStates, { getApiState } from 'utils/apiStates';
 import errString from 'utils/errString';
@@ -29,8 +30,8 @@ class RouteNodeSettingsNode {
 			() => new ModifyModel(this.node, {
 				eventBus: this.module.self.app.eventBus,
 			}),
-			node => node.dispose(),
-			node => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
+			(node) => node.dispose(),
+			(node) => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
 				n.elem('div', { className: 'flex-row flex-end' }, [
 					n.component(new PageHeader(l10n.l('routeNodeSettings.nodeSettings', "Node settings"), "", { className: 'flex-1' })),
 					n.elem('div', { className: 'flex-col' }, [
@@ -258,6 +259,38 @@ class RouteNodeSettingsNode {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('routeNodeSettings.ipInfo', "IP address of the node."),
+					},
+				)),
+
+				// Environment variables
+				n.component(new PanelSection(
+					l10n.l('routeNodeSettings.environmentVariables', "Environment variables"),
+					new Context(
+						() => new ModifyModel(new ModelWrapper(this.node.env), {
+							isModifiedProperty: null,
+							modifiedOnNew: true,
+						}),
+						(env) => env.dispose(),
+						(env) => new ModelComponent(
+							this.node,
+							new ModelComponent(
+								env,
+								new EnvEditor(env),
+								(m, c) => {
+									// If the env ModifyModel has modifications, we
+									// set those values as our node.env props.
+									// Otherwise we set the original props.
+									let mods = env.getModifications();
+									node.set({ env: mods ? { ...env.props } : this.node.env });
+								},
+							),
+							(m, c) => env.getModel().setModel(m.env),
+						),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeNodeSettings.environmentVariablesInfo', "Values that may be used by the release templates to generate the composition."),
 					},
 				)),
 
