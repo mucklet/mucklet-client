@@ -39,6 +39,14 @@ class OverseerRealmSettings {
 			id: 'overseerFields',
 			type: 'section',
 			componentFactory: (realm) => new OverseerRealmSettingsBottomSection(this.module, realm),
+			onSave: (params) => {
+				// Prepare params for apiRelease.
+				if (params.hasOwnProperty('apiRelease')) {
+					params.apiReleaseId = params.apiRelease?.id || null;
+					delete params.apiRelease;
+				}
+				return params;
+			},
 			sortOrder: 10,
 		});
 

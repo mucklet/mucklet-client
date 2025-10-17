@@ -5,10 +5,11 @@ import formatDateTime from 'utils/formatDateTime';
 
 
 class RouteReleasesReleaseBadge {
-	constructor(module, model, release) {
+	constructor(module, model, release, type) {
 		this.module = module;
 		this.model = model;
 		this.release = release;
+		this.type = type;
 	}
 
 	render(el) {
@@ -16,14 +17,14 @@ class RouteReleasesReleaseBadge {
 			className: 'routereleases-releasebadge badge dark btn',
 			events: {
 				click: (c, ev) => {
-					this.module.self.setRoute({ releaseId: this.release.id });
+					this.module.self.setRoute(this.type.key, { releaseId: this.release.id });
 					ev.stopPropagation();
 				},
 			},
 		}, [
 			n.elem('div', { className: 'badge--select' }, [
 				n.elem('div', { className: 'badge--faicon' }, [
-					n.component(new FAIcon('th-large')),
+					n.component(new FAIcon(this.type.icon)),
 				]),
 				n.elem('div', { className: 'badge--info-morepad' }, [
 					n.elem('div', { className: 'routereleases-releasebadge--title badge--title badge--nowrap' }, [

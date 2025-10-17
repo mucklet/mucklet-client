@@ -1,10 +1,12 @@
-import { Elem, Input, Txt } from 'modapp-base-component';
+import { Context, Elem, Input, Txt } from 'modapp-base-component';
 import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { ModifyModel, ModelWrapper } from 'modapp-resource';
 import PanelSection from 'components/PanelSection';
 import Collapser from 'components/Collapser';
 import LabelToggleBox from 'components/LabelToggleBox';
 import ModelCollapser from 'components/ModelCollapser';
 import AutoComplete from 'components/AutoComplete';
+import EnvEditor from 'components/EnvEditor';
 import l10n from 'modapp-l10n';
 import apiTypes from 'utils/apiTypes';
 
@@ -25,6 +27,25 @@ class OverseerRealmSettingsBottomSection {
 			n.elem('div', { className: 'common--hr' }),
 
 			// Realm Client
+
+			// Client version
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.clientVersion', "Client version"),
+				new ModelComponent(
+					this.realm,
+					new Input("", {
+						events: { input: c => this.realm.set({ clientVersion: c.getValue() }) },
+						attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+					}),
+					(m, c) => c.setValue(m.clientVersion),
+				),
+				{
+					className: 'flex-1 common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Version of the client."),
+				},
+			)),
+
 			n.elem('div', { className: 'flex-row m pad16' }, [
 				// Client Host
 				n.component(new PanelSection(
@@ -76,6 +97,52 @@ class OverseerRealmSettingsBottomSection {
 			)),
 
 			n.elem('div', { className: 'common--hr' }),
+
+			// API Release
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.apiRelease', "API release"),
+				new ModelComponent(
+					this.realm,
+					new AutoComplete({
+						innerClassName: 'autocomplete-dark',
+						attributes: {
+							placeholder: l10n.t('overseerRealmSettings.searchRelease', "Search release (Name)"),
+							name: 'routereleases-release--apirelease',
+						},
+						events: {
+							input: (c, ev) => {
+								if (!ev.target.value) {
+									this.realm.set({ apiRelease: null });
+								}
+							},
+						},
+						fetch: (text, update) => {
+							this.module.api.call(`control.overseer.releases.realm`, 'search', { text, limit: 20 })
+								.then(releases => {
+									update(releases.hits.map(o => Object.assign(o, {
+										label: o.name,
+									})));
+								});
+						},
+						minLength: 1,
+						onSelect: (c, item) => {
+							c.setProperty('value', item.label);
+							// Get the original model.
+							let realm = this.realm.getModel();
+							this.realm.set({ apiRelease: item.id == (realm.apiRelease?.id)
+								? realm.apiRelease
+								: item,
+							});
+						},
+					}),
+					(m, c) => c.setProperty('value', m.apiRelease?.name || ''),
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.apiReleaseInfo', "The release of the API that the realm containers run on. Changing it will require the containers to be updated."),
+				},
+			)),
 
 			// API Node
 			n.component(new PanelSection(
@@ -368,6 +435,40 @@ class OverseerRealmSettingsBottomSection {
 					className: 'common--sectionpadding',
 					noToggle: true,
 					popupTip: l10n.l('overseerRealmSettings.borgPassphraseInfo', "Borg backup repository passphrase. If left empty, a random passphrase will be generated."),
+				},
+			)),
+
+			n.elem('div', { className: 'common--hr' }),
+
+			// Environment variables
+			n.component(new PanelSection(
+				l10n.l('overseerRealmSettings.environmentVariables', "Environment variables"),
+				new Context(
+					() => new ModifyModel(new ModelWrapper(this.realm.getModel().env), {
+						isModifiedProperty: null,
+						modifiedOnNew: true,
+					}),
+					(env) => env.dispose(),
+					(env) => new ModelComponent(
+						this.realm.getModel(),
+						new ModelComponent(
+							env,
+							new EnvEditor(env),
+							(m, c) => {
+								// If the env ModifyModel has modifications, we
+								// set those values as our realm.env props.
+								// Otherwise we set the original props.
+								let mods = env.getModifications();
+								this.realm.set({ env: mods ? { ...env.props } : this.realm.getModel().env });
+							},
+						),
+						(m, c) => env.getModel().setModel(m.env),
+					),
+				),
+				{
+					className: 'common--sectionpadding',
+					noToggle: true,
+					popupTip: l10n.l('overseerRealmSettings.environmentVariablesInfo', "Values that may be used by the release templates to generate the composition."),
 				},
 			)),
 

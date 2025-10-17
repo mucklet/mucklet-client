@@ -1,11 +1,13 @@
 import { Elem, Txt, Context, Input } from 'modapp-base-component';
-import { Model, ModifyModel, ModelToCollection } from 'modapp-resource';
+import { Model, ModifyModel, ModelToCollection, ModelWrapper } from 'modapp-resource';
 import { ModelComponent, ModelTxt, CollectionList, CollectionComponent } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
 import ModelFader from 'components/ModelFader';
+import AutoComplete from 'components/AutoComplete';
+import EnvEditor from 'components/EnvEditor';
 import l10n from 'modapp-l10n';
 import apiStates, { getApiState } from 'utils/apiStates';
 import errString from 'utils/errString';
@@ -28,8 +30,8 @@ class RouteNodeSettingsNode {
 			() => new ModifyModel(this.node, {
 				eventBus: this.module.self.app.eventBus,
 			}),
-			node => node.dispose(),
-			node => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
+			(node) => node.dispose(),
+			(node) => new Elem(n => n.elem('div', { className: 'routenodesettings-node' }, [
 				n.elem('div', { className: 'flex-row flex-end' }, [
 					n.component(new PageHeader(l10n.l('routeNodeSettings.nodeSettings', "Node settings"), "", { className: 'flex-1' })),
 					n.elem('div', { className: 'flex-col' }, [
@@ -179,6 +181,51 @@ class RouteNodeSettingsNode {
 
 				n.elem('div', { className: 'common--hr' }),
 
+				// Node Release
+				n.component(new PanelSection(
+					l10n.l('routeNodeSettings.nodeRelease', "Node release"),
+					new ModelComponent(
+						node,
+						new AutoComplete({
+							innerClassName: 'autocomplete-dark',
+							attributes: {
+								placeholder: l10n.t('routeNodeSettings.searchRelease', "Search release (Name)"),
+								name: 'routenodesettings-node--release',
+							},
+							events: {
+								input: (c, ev) => {
+									if (!ev.target.value) {
+										node.set({ release: null });
+									}
+								},
+							},
+							fetch: (text, update) => {
+								this.module.api.call(`control.overseer.releases.node`, 'search', { text, limit: 20 })
+									.then(releases => {
+										update(releases.hits.map(o => Object.assign(o, {
+											label: o.name,
+										})));
+									});
+							},
+							minLength: 1,
+							onSelect: (c, item) => {
+								c.setProperty('value', item.label);
+								// Get the original model.
+								node.set({ release: item.id == (this.node.release?.id)
+									? this.node.release
+									: item,
+								});
+							},
+						}),
+						(m, c) => c.setProperty('value', m.release?.name || ''),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeNodeSettings.releaseInfo', "The release of the common containers running on the node. Changing it will require the containers to be updated."),
+					},
+				)),
+
 				// Domain
 				n.component(new PanelSection(
 					l10n.l('routeNodeSettings.domain', "Domain"),
@@ -212,6 +259,40 @@ class RouteNodeSettingsNode {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('routeNodeSettings.ipInfo', "IP address of the node."),
+					},
+				)),
+
+				n.elem('div', { className: 'common--hr' }),
+
+				// Environment variables
+				n.component(new PanelSection(
+					l10n.l('routeNodeSettings.environmentVariables', "Environment variables"),
+					new Context(
+						() => new ModifyModel(new ModelWrapper(this.node.env), {
+							isModifiedProperty: null,
+							modifiedOnNew: true,
+						}),
+						(env) => env.dispose(),
+						(env) => new ModelComponent(
+							this.node,
+							new ModelComponent(
+								env,
+								new EnvEditor(env),
+								(m, c) => {
+									// If the env ModifyModel has modifications, we
+									// set those values as our node.env props.
+									// Otherwise we set the original props.
+									let mods = env.getModifications();
+									node.set({ env: mods ? { ...env.props } : this.node.env });
+								},
+							),
+							(m, c) => env.getModel().setModel(m.env),
+						),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeNodeSettings.environmentVariablesInfo', "Values that may be used by the release templates to generate the composition."),
 					},
 				)),
 
@@ -285,6 +366,12 @@ class RouteNodeSettingsNode {
 		let params = model.getModifications();
 		if (!params) {
 			return;
+		}
+
+		// Prepare params for release.
+		if (params.hasOwnProperty('release')) {
+			params.releaseId = params.release?.id || null;
+			delete params.release;
 		}
 
 		this._setMessage();

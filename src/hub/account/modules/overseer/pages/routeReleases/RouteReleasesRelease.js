@@ -47,7 +47,7 @@ class RouteReleasesRelease {
 							events: {
 								click: (c, ev) => {
 									ev.stopPropagation();
-									this.module.self.setRoute();
+									this.module.self.setRoute(this.release.type);
 								},
 							},
 						}, [
@@ -218,7 +218,7 @@ class RouteReleasesRelease {
 						n.elem('button', { events: {
 							click: () => this.module.confirm.open(() => this._callRelease('delete')
 								.then(() => {
-									this.module.self.setRoute();
+									this.module.self.setRoute(this.release.type);
 									this.module.toaster.open({
 										title: l10n.l('routeReleases.releaseDeleted', "Release deleted"),
 										content: new Elem(n => n.elem('div', [
