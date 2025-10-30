@@ -1,9 +1,9 @@
 import { Model } from 'modapp-resource';
-import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import Err from 'classes/Err';
 
 import RouteReleasesComponent from './RouteReleasesComponent';
+import types from './routeReleasesTypes';
 import './routeReleases.scss';
 
 const pathDef = [
@@ -29,6 +29,7 @@ class RouteReleases {
 			'dialogCreateRelease',
 			'confirm',
 			'toaster',
+			'dialogEditReleaseTemplate',
 		], this._init.bind(this));
 	}
 
@@ -36,39 +37,47 @@ class RouteReleases {
 		this.module = Object.assign({ self: this }, module);
 
 		this.model = new Model({ data: {
-			type: 'realm',
+			type: Object.keys(types)[0],
 			releases: null,
 			release: null,
 			user: null,
 			error: null,
 		}, eventBus: this.app.eventBus });
 
-		this.module.router.addRoute({
-			id: 'releases',
-			icon: 'th-large',
-			name: l10n.l('routeReleases.realmReleases', "Realm releases"),
-			component: new RouteReleasesComponent(this.module, this.model),
-			setState: params => this._setState('realm', params),
-			getUrl: params => this.module.router.createDefUrl(params, pathDef),
-			parseUrl: parts => {
-				let o = this.module.router.parseDefUrl(parts, pathDef);
-				if (typeof o?.pageNr == 'string') {
-					o.pageNr = Number(o.pageNr) || 0;
-				}
-				return o;
-			},
-			order: 1020,
-		});
+		for (let key in types) {
+			let t = types[key];
+			this.module.router.addRoute({
+				id: t.id,
+				icon: t.icon,
+				name: t.name,
+				component: new RouteReleasesComponent(this.module, this.model, key),
+				setState: params => this._setState(t.key, params),
+				getUrl: params => this.module.router.createDefUrl(params, pathDef),
+				parseUrl: parts => {
+					let o = this.module.router.parseDefUrl(parts, pathDef);
+					if (typeof o?.pageNr == 'string') {
+						o.pageNr = Number(o.pageNr) || 0;
+					}
+					return o;
+				},
+				order: t.order,
+			});
+		}
 	}
 
 	/**
 	 * Sets the route to the router.
+	 * @param {"realm"|"node"} type Type of release
 	 * @param {{
 	 * 	releaseId?: string;
 	 * }} params - Route parameters.
 	 */
-	setRoute(params) {
-		this.module.router.setRoute('releases', params);
+	setRoute(type, params) {
+		let t = types[type];
+		if (!t) {
+			throw "Invalid release type: " + type;
+		}
+		this.module.router.setRoute(t.id, params);
 	}
 
 	async _setState(type, params) {
@@ -103,7 +112,10 @@ class RouteReleases {
 	}
 
 	dispose() {
-		this.module.router.removeRoute('releases');
+		for (let key in types) {
+			let t = types[key];
+			this.module.router.removeRoute(t.id);
+		}
 	}
 }
 

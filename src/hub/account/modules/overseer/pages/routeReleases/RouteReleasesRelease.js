@@ -1,13 +1,16 @@
-import { Elem, Txt, Context, Input, Textarea } from 'modapp-base-component';
-import { ModifyModel } from 'modapp-resource';
-import { ModelComponent } from 'modapp-resource-component';
+import { Elem, Txt, Context, Input } from 'modapp-base-component';
+import { ModifyModel, ModelToCollection } from 'modapp-resource';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
+import NestedModel from 'classes/NestedModel';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
 import AutoComplete from 'components/AutoComplete';
 import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
+import RouteReleasesTemplateBadge from './RouteReleasesTemplateBadge';
+import FileButton from 'components/FileButton';
 
 /**
  * RouteReleasesRelease draws the settings form for a release.
@@ -44,7 +47,7 @@ class RouteReleasesRelease {
 							events: {
 								click: (c, ev) => {
 									ev.stopPropagation();
-									this.module.self.setRoute();
+									this.module.self.setRoute(this.release.type);
 								},
 							},
 						}, [
@@ -137,22 +140,38 @@ class RouteReleasesRelease {
 					},
 				)),
 
-				// Template
+				// Templates
 				n.component(new PanelSection(
-					l10n.l('routeReleases.template', "Template"),
-					new ModelComponent(
-						release,
-						new Textarea(release.template, {
-							className: 'routereleases-release--template common--paneltextarea',
-							events: { input: c => release.set({ template: c.getValue() }) },
-							attributes: { name: 'routereleases-template', spellcheck: 'false' },
+					l10n.l('routeReleases.templates', "Templates"),
+					new Context(
+						() => new ModelToCollection(new NestedModel(
+							release,
+							(m) => Object.keys(m.templates || {}).reduce((o, key) => {
+								return Object.assign(o, { [key]: key });
+							}, {}) || {},
+							{
+								maxDepth: 1, // Listen to release only
+							},
+						), {
+							compare: (a, b) => a.key.localeCompare(b.key),
+							eventBus: this.module.self.eventBus,
 						}),
-						(m, c) => c.setValue(m.template),
+						templates => {
+							templates.getModel().dispose();
+							templates.dispose();
+						},
+						templates => new CollectionList(
+							templates,
+							key => new RouteReleasesTemplateBadge(this.module, release, key),
+							{
+								subClassName: () => 'routereleases-release--template',
+							},
+						),
 					),
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('routeReleases.templateInfo', "Composition template for the release."),
+						popupTip: l10n.l('routeReleases.templateInfo', "Composition templates for the release."),
 					},
 				)),
 
@@ -162,18 +181,35 @@ class RouteReleasesRelease {
 				// Footer
 				n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
 					n.elem('div', { className: 'flex-1' }, [
-						n.component(new ModelComponent(
-							release,
-							new Elem(n => n.elem('button', {
-								className: 'btn primary common--btnwidth',
-								events: {
-									click: () => this._save(release),
-								},
-							}, [
-								n.component(new Txt(l10n.l('routeReleases.saveChanges', "Save changes"))),
-							])),
-							(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
-						)),
+
+						n.elem('div', { className: 'flex-row margin16' }, [
+
+							// Save changes
+							n.component(new ModelComponent(
+								release,
+								new Elem(n => n.elem('button', {
+									className: 'btn primary common--btnwidth',
+									events: {
+										click: () => this._save(release),
+									},
+								}, [
+									n.component(new Txt(l10n.l('routeReleases.saveChanges', "Save changes"))),
+								])),
+								(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
+							)),
+
+							// Upload templates
+							n.component(new FileButton(
+								new Elem(n => n.elem('div', [
+									n.component(new FAIcon('file-archive-o ')),
+									n.component(new Txt(l10n.l('routeReleases.uploadTemplates', "Upload templates"))),
+								])),
+								(file, dataUrl) => this._setTemplatesUrl(dataUrl),
+								{ className: 'btn common--btnwidth icon-left' },
+							)),
+
+						]),
+
 					]),
 
 					// Footer tools
@@ -182,7 +218,7 @@ class RouteReleasesRelease {
 						n.elem('button', { events: {
 							click: () => this.module.confirm.open(() => this._callRelease('delete')
 								.then(() => {
-									this.module.self.setRoute();
+									this.module.self.setRoute(this.release.type);
 									this.module.toaster.open({
 										title: l10n.l('routeReleases.releaseDeleted', "Release deleted"),
 										content: new Elem(n => n.elem('div', [
@@ -235,6 +271,13 @@ class RouteReleasesRelease {
 		return this.release.call('set', params).then(() => {
 			model.reset();
 		}).catch(err => {
+			this._setMessage(errString(err));
+		});
+	}
+
+	_setTemplatesUrl(templatesUrl) {
+		this._setMessage();
+		return this.release.call('set', { templatesUrl }).catch(err => {
 			this._setMessage(errString(err));
 		});
 	}

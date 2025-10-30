@@ -6,6 +6,7 @@ import PageHeader from 'components/PageHeader';
 import FAIcon from 'components/FAIcon';
 import RouteReleasesReleaseBadge from './RouteReleasesReleaseBadge';
 import RouteReleasesNoReleasesPlaceholder from './RouteReleasesNoReleasesPlaceholder';
+import types from './routeReleasesTypes';
 
 /**
  * RouteReleasesReleases draws a list of release badge components.
@@ -14,7 +15,7 @@ class RouteReleasesReleases {
 	constructor(module, model, releases, user) {
 		this.module = module;
 		this.model = model;
-		this.type = model.type;
+		this.type = types[model.type];
 		this.releases = releases;
 		this.user = user;
 	}
@@ -22,15 +23,15 @@ class RouteReleasesReleases {
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'routereleases-releases' }, [
 			n.elem('div', { className: 'flex-row flex-end' }, [
-				n.component(new PageHeader(l10n.l('routeReleases.releases', "Releases"), "", { className: 'flex-1' })),
+				n.component(new PageHeader(this.type.name, "", { className: 'flex-1' })),
 				n.elem('div', { className: 'flex-col' }, [
 					n.elem('button', {
 						className: 'btn fa small',
 						events: {
 							click: (c, ev) => {
 								ev.stopPropagation();
-								this.module.dialogCreateRelease.open(this.type, {
-									onCreate: release => this.module.self.setRoute({ releaseId: release.id }),
+								this.module.dialogCreateRelease.open(this.type.key, {
+									onCreate: release => this.module.self.setRoute(this.type.key, { releaseId: release.id }),
 								});
 							},
 						},
@@ -43,7 +44,7 @@ class RouteReleasesReleases {
 			n.elem('div', { className: 'common--hr' }),
 			n.component(new CollectionList(
 				this.releases,
-				m => new RouteReleasesReleaseBadge(this.module, this.model, m),
+				m => new RouteReleasesReleaseBadge(this.module, this.model, m, this.type),
 				{
 					className: 'routepayments-payments--list',
 					subClassName: () => 'routepayments-payments--listitem',
