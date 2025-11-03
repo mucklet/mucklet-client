@@ -50,7 +50,7 @@
 	&--headerinfo-room {
 		color: $color3;
 	}
-	&--headerinfo-keyword {
+	&--headerinfo-key {
 		color: $color4;
 	}
 
@@ -63,9 +63,10 @@
 		> * {
 			display: block;
 		}
+		align-items: center;
 	}
 
-	&--helpbtn {
+	&--helpbtn.iconbtn {
 		font-size: 24px;
 		border-radius: 4px;
 		width: 38px;
@@ -75,7 +76,7 @@
 		}
 	}
 
-	&--errorsbtn {
+	&--errorsbtn.iconbtn {
 		position: absolute;
 		z-index: 10;
 		top: 72px;
@@ -90,15 +91,9 @@
 		color: $color5;
 	}
 
-	&--update {
+	&--update.btn {
 		width: 128px;
-	}
-
-	&--headertools {
-		position: absolute;
-		z-index: 400;
-		top: 26px;
-		right: 40px;
+		height: 40px;
 	}
 
 	&--main {
@@ -113,12 +108,6 @@
 		flex: 1 1 0px;
 		position: relative;
 		overflow: hidden;
-	}
-
-	&--errorpanel {
-		flex: 0 0 auto;
-		width: 318px;
-		background-color: $color1-light;
 	}
 
 	// Theme
