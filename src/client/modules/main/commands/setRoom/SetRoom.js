@@ -57,7 +57,7 @@ const defaultAttr = [
 	{
 		key: 'dark',
 		value: 'isdark',
-		lias: [ 'isdark' ],
+		alias: [ 'isdark' ],
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is dark flag" }),
 		desc: l10n.l('setRoom.isDarkDesc', "Flag telling if the room is dark, preventing characters to see who else are in the room. Value is <code>yes</code> or <code>no</code>."),
 		sortOrder: 30,
