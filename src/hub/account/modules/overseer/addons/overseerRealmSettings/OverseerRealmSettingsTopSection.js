@@ -70,7 +70,7 @@ class RouteRealmSettingsRealms {
 							])),
 							(m, c) => {
 								let state = getApiState(m);
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								c.setProperty('disabled', state.transitional || m.apiTaskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -90,7 +90,7 @@ class RouteRealmSettingsRealms {
 							])),
 							(m, c) => {
 								let state = getApiState(m);
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								c.setProperty('disabled', state.transitional || m.apiTaskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -110,7 +110,7 @@ class RouteRealmSettingsRealms {
 							])),
 							(m, c) => {
 								let state = getApiState(m);
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								c.setProperty('disabled', state.transitional || m.apiTaskRun ? 'disabled' : null);
 							},
 						)),
 					]),

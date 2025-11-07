@@ -1,0 +1,17 @@
+@import '~scss/variables';
+
+.pagelist {
+	&--list {
+		overflow: hidden;
+	}
+
+	&--head {
+		padding-bottom: 4px;
+		font-size: $font-size;
+	}
+
+	&--noitems {
+		font-style: italic;
+		color: $color1-placeholder;
+	}
+}

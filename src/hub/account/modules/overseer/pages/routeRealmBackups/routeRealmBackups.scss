@@ -1,0 +1,23 @@
+@import '~scss/variables';
+
+// .routerealmbackups {}
+
+
+.routerealmbackups-realm {
+
+	&--name {
+		font-size: $font-size;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--pagelistitem {
+		padding: 3px 0;
+	}
+
+	&--footertools {
+		> * {
+			display: inline-block;
+		}
+	}
+}

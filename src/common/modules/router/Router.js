@@ -64,6 +64,7 @@ class Router {
 		this.initialRoute = null;
 		this.initialRouteData = null;
 		this.initialQuery = typeof (window) !== 'undefined' && window.location ? window.location.search : '';
+		this.settingRoute = null;
 
 		this.app.require([], this._init.bind(this));
 
@@ -163,7 +164,7 @@ class Router {
 				routeData = route.parseUrl(this.initialRouteData);
 			}
 
-			this.setRoute(route.id, routeData || {}, false);
+			this.setRoute(route.id, routeData || {});
 		}
 		if (isDefault) {
 			this.setDefault(route.id);
@@ -249,7 +250,6 @@ class Router {
 	 * @returns {Promise.<module/Router~setRoute>} Promise to the set route.
 	 */
 	setRoute(routeId, params = {}, pushHistoryState = true, force = false) {
-		params = params || {};
 		// this.initialRoute = null;
 		// this.initialRouteData = null;
 
@@ -261,7 +261,7 @@ class Router {
 				params = null;
 			}
 		} else if (params === null || typeof params !== 'object') {
-			throw "Route params must be an object";
+			params = {};
 		}
 
 		// If the route is currently set, we only replace the this.current
@@ -285,7 +285,7 @@ class Router {
 			return Promise.reject(new Error("Route Id '" + routeId + "' not found"));
 		}
 
-		if (this.current && this.current.route && this.current.route.onBeforeUnload && !force && !params.ignoreOnBeforeUnload) {
+		if (this.current?.route?.onBeforeUnload && !force && !params.ignoreOnBeforeUnload) {
 			this.setStatePromise = this.current.route.onBeforeUnload(this).then(result => {
 				if (result) {
 					return this._performSetRoute(route, params, pushHistoryState);
@@ -312,20 +312,25 @@ class Router {
 
 		this.setStatePromise = null;
 
-		// Store current route and params. If this changes while setting state,
-		// that means this.setRoute has been called from setState, and overrides
-		// this attempt.
-		let current = this.current;
-		return Promise.resolve(route.setState ? route.setState(params, route) : null).then(
-			() => {
-				if (this.current == current) {
-					return this._setRoute({
-						route,
-						params,
-					}, pushHistoryState);
+		// Store settingRoute with route and params. If this changes while
+		// setting state, that means this.setRoute has been called from
+		// setState, and overrides this attempt.
+		let settingRoute = {
+			route,
+			params,
+		};
+		this.settingRoute = settingRoute;
+		return Promise.resolve(route.setState ? route.setState(params, route) : null)
+			.then(() => {
+				if (this.settingRoute == settingRoute) {
+					return this._setRoute(settingRoute, pushHistoryState);
 				}
-			},
-		);
+			})
+			.finally(() => {
+				if (this.settingRoute == settingRoute) {
+					this.settingRoute = null;
+				}
+			});
 	}
 
 	/**
@@ -492,7 +497,7 @@ class Router {
 	 * @param {string} routeId Id of the route to use as default
 	 * @param {object} params Parameters
 	 */
-	setDefault(routeId, params) {
+	setDefault(routeId, params = null) {
 		if (!this.getRoute(routeId)) {
 			throw "No route with id " + route.id + " exists";
 		}
@@ -553,6 +558,8 @@ class Router {
 		// Make shallow compare of params objects
 		return obj.equal(params, this.current.params);
 	}
+
+	dispose() {}
 }
 
 export default Router;
