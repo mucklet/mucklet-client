@@ -30,6 +30,7 @@ class RouteRealmBackups {
 			'access',
 			'routeRealms',
 			'confirm',
+			'toaster',
 		], this._init.bind(this));
 	}
 

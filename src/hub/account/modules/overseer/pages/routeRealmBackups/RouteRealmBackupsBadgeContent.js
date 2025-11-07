@@ -98,9 +98,27 @@ class RouteRealmBackupsBadgeContent {
 	}
 
 	_restore() {
+		this.module.api.call(`control.overseer.realm.${this.realmBackup.realmId}`, 'backupRestore', { backupId: this.realmBackup.id })
+			.then((taskRun) => this.module.toaster.open({
+				title: l10n.l('routeRealmBackups.restoringFromBackup', "Restoring from backup"),
+				content: new Txt(l10n.l('routeRealmBackups.restoringFromBackupBody', "Realm is being restored from backup.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}))
+			.catch(err => this.module.toaster.openError(err));
 	}
 
 	_delete() {
+		this.module.api.call(`control.overseer.realm.${this.realmBackup.realmId}`, 'backupRemove', { backupId: this.realmBackup.id })
+			.then((taskRun) => this.module.toaster.open({
+				title: l10n.l('routeRealmBackups.backupDeleted', "Backup getting deleted"),
+				content: new Txt(l10n.l('routeRealmBackups.backupDeletedBody', "Backup is getting deleted.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}))
+			.catch(err => this.module.toaster.openError(err));
 	}
 }
 

@@ -5,6 +5,10 @@
 
 .routerealmbackups-realm {
 
+	&--subheader {
+		padding-bottom: 8px;
+	}
+
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;

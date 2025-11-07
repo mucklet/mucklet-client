@@ -42,8 +42,33 @@ class RouteRealmBackupsRealm {
 			]),
 			n.elem('div', { className: 'common--hr' }),
 
-			// Realm name
-			n.component(new ModelTxt(this.realm, m => m.name, { className: 'routerealmbackups-realm--name' })),
+			// Sub header
+			n.elem('div', { className: 'flex-row' }, [
+
+				// Realm name
+				n.elem('div', { className: 'flex-1' }, [
+					n.component(new ModelTxt(this.realm, m => m.name, { className: 'routerealmbackups-realm--name' })),
+				]),
+
+				n.elem('div', { className: 'routerealmbackups-realm--subheader flex-auto' }, [
+					n.elem('button', {
+						className: 'btn fa tiny',
+						events: {
+							click: (c, ev) => {
+								ev.stopPropagation();
+								this.module.confirm.open(() => this._backup(), {
+									title: l10n.l('routeRealmBackups.confirmCreate', "Confirm backup"),
+									body: l10n.l('routeRealmBackups.createBackupBody', "Do you really wish to trigger a manual backup outside of backup schedule?"),
+									confirm: l10n.l('routeRealmBackups.createBackup', "Create backup"),
+								});
+							},
+						},
+					}, [
+						n.component(new FAIcon('plus')),
+						n.component(new Txt(l10n.l('routeRealmBackups.backToRealms', "Create backup"))),
+					]),
+				]),
+			]),
 
 			// Backups
 			n.component(new ModelComponent(
@@ -109,6 +134,19 @@ class RouteRealmBackupsRealm {
 			? new Txt(msg, { className: 'dialog--error' })
 			: null,
 		);
+	}
+
+	_backup() {
+		this.module.api.call(`control.overseer.realm.${this.realm.id}`, 'backupCreate')
+			.then((taskRun) => this.module.toaster.open({
+				title: l10n.l('routeRealmBackups.creatingBackup', "Backuping realm"),
+				content: new Txt(l10n.l('routeRealmBackups.creatingBackupBody', "Realm is being backed up.")),
+				closeOn: 'click',
+				type: 'success',
+				autoclose: true,
+			}))
+			.catch(err => this.module.toaster.openError(err));
+
 	}
 }
 
