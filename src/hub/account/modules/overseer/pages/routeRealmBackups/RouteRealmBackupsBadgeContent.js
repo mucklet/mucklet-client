@@ -4,6 +4,8 @@ import l10n from 'modapp-l10n';
 import formatDuration from 'utils/formatDuration';
 import FAIcon from 'components/FAIcon';
 import formatDateTime from 'utils/formatDateTime';
+import errToL10n from 'utils/errToL10n';
+import taskRunDone from 'utils/taskRunDone';
 
 class RouteRealmBackupsBadgeContent {
 	constructor(module, realmBackup) {
@@ -99,25 +101,74 @@ class RouteRealmBackupsBadgeContent {
 
 	_restore() {
 		this.module.api.call(`control.overseer.realm.${this.realmBackup.realmId}`, 'backupRestore', { backupId: this.realmBackup.id })
-			.then((taskRun) => this.module.toaster.open({
-				title: l10n.l('routeRealmBackups.restoringFromBackup', "Restoring from backup"),
-				content: new Txt(l10n.l('routeRealmBackups.restoringFromBackupBody', "Realm is being restored from backup.")),
-				closeOn: 'click',
-				type: 'success',
-				autoclose: true,
-			}))
+			.then((taskRun) => {
+				this.module.toaster.open({
+					title: l10n.l('routeRealmBackups.restoringFromBackup', "Restoring from backup"),
+					content: new Txt(l10n.l('routeRealmBackups.restoringFromBackupBody', "Realm is being restored from backup.")),
+					closeOn: 'click',
+					type: 'success',
+					autoclose: true,
+				});
+
+				taskRunDone(taskRun, (m) => {
+					if (taskRun.error) {
+						this.module.toaster.open({
+							title: l10n.l('routeRealmBackups.backupRestoreFailed', "Backup restore failed"),
+							content: new Elem(n => n.elem('div', [
+								n.component(new Txt(l10n.l('routeRealmBackups.backupRestoreFailedBody', "An error occurred trying to restore from backup:"), { tagName: 'p' })),
+								n.component(new Txt(errToL10n(taskRun.error), { tagName: 'p', className: 'common--font-small common--pre-wrap' })),
+							])),
+							closeOn: 'click',
+							type: 'warn',
+						});
+					} else {
+						this.module.toaster.open({
+							title: l10n.l('routeRealmBackups.backupRestored', "Backup restored"),
+							content: new Txt(l10n.l('routeRealmBackups.backupRestoredBody', "Realm was successfully restored from backup.")),
+							closeOn: 'click',
+							type: 'success',
+							autoclose: true,
+						});
+					}
+				});
+			})
 			.catch(err => this.module.toaster.openError(err));
 	}
 
 	_delete() {
 		this.module.api.call(`control.overseer.realm.${this.realmBackup.realmId}`, 'backupRemove', { backupId: this.realmBackup.id })
-			.then((taskRun) => this.module.toaster.open({
-				title: l10n.l('routeRealmBackups.backupDeleted', "Backup getting deleted"),
-				content: new Txt(l10n.l('routeRealmBackups.backupDeletedBody', "Backup is getting deleted.")),
-				closeOn: 'click',
-				type: 'success',
-				autoclose: true,
-			}))
+			.then((taskRun) => {
+				this.module.toaster.open({
+					title: l10n.l('routeRealmBackups.backupGettingDeleted', "Backup getting deleted"),
+					content: new Txt(l10n.l('routeRealmBackups.backupGettingDeletedBody', "Backup is getting deleted.")),
+					closeOn: 'click',
+					type: 'success',
+					autoclose: true,
+				});
+
+				taskRunDone(taskRun, (m) => {
+					if (taskRun.error) {
+						this.module.toaster.open({
+							title: l10n.l('routeRealmBackups.deletionFailed', "Deletion failed"),
+							content: new Elem(n => n.elem('div', [
+								n.component(new Txt(l10n.l('routeRealmBackups.deletionFailedBody', "An error occurred trying to delete backup:"), { tagName: 'p' })),
+								n.component(new Txt(errToL10n(taskRun.error), { tagName: 'p', className: 'common--font-small common--pre-wrap' })),
+							])),
+							closeOn: 'click',
+							type: 'warn',
+						});
+					} else {
+						this.module.toaster.open({
+							title: l10n.l('routeRealmBackups.backupDeleted', "Backup deleted"),
+							content: new Txt(l10n.l('routeRealmBackups.backupDeletedBody', "Backup was successfully deleted.")),
+							closeOn: 'click',
+							type: 'success',
+							autoclose: true,
+						});
+					}
+				});
+
+			})
 			.catch(err => this.module.toaster.openError(err));
 	}
 }

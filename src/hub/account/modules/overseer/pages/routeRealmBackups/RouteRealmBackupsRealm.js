@@ -6,6 +6,8 @@ import Collapser from 'components/Collapser';
 import l10n from 'modapp-l10n';
 import errString from 'utils/errString';
 import PageList from 'components/PageList';
+import taskRunDone from 'utils/taskRunDone';
+import errToL10n from 'utils/errToL10n';
 import RouteRealmBackupsBadge from './RouteRealmBackupsBadge';
 
 const backupsPerPage = 20;
@@ -138,13 +140,37 @@ class RouteRealmBackupsRealm {
 
 	_backup() {
 		this.module.api.call(`control.overseer.realm.${this.realm.id}`, 'backupCreate')
-			.then((taskRun) => this.module.toaster.open({
-				title: l10n.l('routeRealmBackups.creatingBackup', "Backuping realm"),
-				content: new Txt(l10n.l('routeRealmBackups.creatingBackupBody', "Realm is being backed up.")),
-				closeOn: 'click',
-				type: 'success',
-				autoclose: true,
-			}))
+			.then((taskRun) => {
+				this.module.toaster.open({
+					title: l10n.l('routeRealmBackups.creatingBackup', "Backing up realm"),
+					content: new Txt(l10n.l('routeRealmBackups.creatingBackupBody', "Realm is being backed up.")),
+					closeOn: 'click',
+					type: 'success',
+					autoclose: true,
+				});
+
+				taskRunDone(taskRun, (m) => {
+					if (taskRun.error) {
+						this.module.toaster.open({
+							title: l10n.l('routeRealmBackups.backupFailed', "Backup failed"),
+							content: new Elem(n => n.elem('div', [
+								n.component(new Txt(l10n.l('routeRealmBackups.backupFailedBody', "An error occurred trying to backup the realm:"), { tagName: 'p' })),
+								n.component(new Txt(errToL10n(taskRun.error), { tagName: 'p', className: 'common--font-small common--pre-wrap' })),
+							])),
+							closeOn: 'click',
+							type: 'warn',
+						});
+					} else {
+						this.module.toaster.open({
+							title: l10n.l('routeRealmBackups.backupCreated', "Backup created"),
+							content: new Txt(l10n.l('routeRealmBackups.backupCreatedBody', "Realm backup was successfully created.")),
+							closeOn: 'click',
+							type: 'success',
+							autoclose: true,
+						});
+					}
+				});
+			})
 			.catch(err => this.module.toaster.openError(err));
 
 	}
