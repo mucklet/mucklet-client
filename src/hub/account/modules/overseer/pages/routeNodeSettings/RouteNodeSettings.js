@@ -1,6 +1,9 @@
+import { Elem, Txt } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
+import errToL10n from 'utils/errToL10n';
+import taskRunDone from 'utils/taskRunDone';
 
 import RouteNodeSettingsComponent from './RouteNodeSettingsComponent';
 import './routeNodeSettings.scss';
@@ -8,6 +11,39 @@ import './routeNodeSettings.scss';
 const pathDef = [
 	[ 'node', '$nodeKey' ],
 ];
+
+const callNodeMethods = {
+	up: {
+		error: {
+			title: l10n.l('routeNodeSettings.nodeUpFailed', "Node Up Failed"),
+			body: l10n.l('routeNodeSettings.nodeUpFailedBody', "An error occurrent on Node Up:"),
+		},
+		success: {
+			title: l10n.l('routeNodeSettings.nodeUp', "Node Up"),
+			body: l10n.l('routeNodeSettings.nodeUpFailedBody', "Node Up completed successfully."),
+		},
+	},
+	down: {
+		error: {
+			title: l10n.l('routeNodeSettings.nodeDownFailed', "Node Down Failed"),
+			body: l10n.l('routeNodeSettings.nodeDownFailedBody', "An error occurrent on Node Down:"),
+		},
+		success: {
+			title: l10n.l('routeNodeSettings.nodeDown', "Node Down"),
+			body: l10n.l('routeNodeSettings.nodeDownFailedBody', "Node Down completed successfully."),
+		},
+	},
+	stop: {
+		error: {
+			title: l10n.l('routeNodeSettings.nodeStopFailed', "Node Stop Failed"),
+			body: l10n.l('routeNodeSettings.nodeStopFailedBody', "An error occurrent on Node Stop:"),
+		},
+		success: {
+			title: l10n.l('routeNodeSettings.nodeStop', "Node Stop"),
+			body: l10n.l('routeNodeSettings.nodeStopFailedBody', "Node Stop completed successfully."),
+		},
+	},
+};
 
 /**
  * RouteNodeSettings adds the nodes route.
@@ -62,6 +98,30 @@ class RouteNodeSettings {
 		this.module.router.setRoute('nodesettings', params);
 	}
 
+	/**
+	 * Runs Node Up and shows toasters on completion.
+	 * @param {string} nodeKey Node key.
+	 */
+	nodeUp(nodeKey) {
+		this._callNode(nodeKey, 'up');
+	}
+
+	/**
+	 * Runs Node Stop and shows toasters on completion.
+	 * @param {string} nodeKey Node key.
+	 */
+	nodeStop(nodeKey) {
+		this._callNode(nodeKey, 'stop');
+	}
+
+	/**
+	 * Runs Node Down and shows toasters on completion.
+	 * @param {string} nodeKey Node key.
+	 */
+	nodeDown(nodeKey) {
+		this._callNode(nodeKey, 'down');
+	}
+
 	async _setState(params) {
 		return this.module.auth.getUserPromise()
 			.then(user => params?.nodeKey
@@ -81,6 +141,40 @@ class RouteNodeSettings {
 			node: relistenResource(this.model.node, props.node),
 			error: props.error || null,
 		});
+	}
+
+	_callNode(nodeKey, method, params) {
+		return this.module.api.call(`control.overseer.node.${nodeKey}`, method, params)
+			.then((taskRun) => {
+				let o = callNodeMethods[method];
+				// Only give toaster feedback for up, down, and stop calls.
+				if (!o) {
+					return;
+				}
+
+				taskRunDone(taskRun, (m) => {
+					if (taskRun.error) {
+						this.module.toaster.open({
+							title: o.error.title,
+							content: new Elem(n => n.elem('div', [
+								n.component(new Txt(o.error.body, { tagName: 'p' })),
+								n.component(new Txt(errToL10n(taskRun.error), { tagName: 'p', className: 'common--font-small common--pre-wrap' })),
+							])),
+							closeOn: 'click',
+							type: 'warn',
+						});
+					} else {
+						this.module.toaster.open({
+							title: o.success.title,
+							content: new Txt(o.success.body),
+							closeOn: 'click',
+							type: 'success',
+							autoclose: true,
+						});
+					}
+				});
+			})
+			.catch(err => this.module.toaster.openError(err));
 	}
 
 	dispose() {

@@ -85,7 +85,7 @@ class RouteNodeSettingsNode {
 							new Elem(n => n.elem('button', {
 								className: 'btn primary small icon-left common--btnwidth',
 								events: {
-									click: () => this._callNode('up'),
+									click: () => this.module.self.nodeUp(this.node.key),
 								},
 							}, [
 								n.component(new FAIcon('play')),
@@ -105,7 +105,7 @@ class RouteNodeSettingsNode {
 							new Elem(n => n.elem('button', {
 								className: 'btn secondary small icon-left common--btnwidth',
 								events: {
-									click: () => this._callNode('stop'),
+									click: () => this.module.self.nodeStop(this.node.key),
 								},
 							}, [
 								n.component(new FAIcon('pause')),
@@ -125,7 +125,7 @@ class RouteNodeSettingsNode {
 							new Elem(n => n.elem('button', {
 								className: 'btn warning small icon-left common--btnwidth',
 								events: {
-									click: () => this._callNode('down'),
+									click: () => this.module.self.nodeDown(this.node.key),
 								},
 							}, [
 								n.component(new FAIcon('stop')),
