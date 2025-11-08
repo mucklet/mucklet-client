@@ -1,9 +1,9 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Elem } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
+import CompositionState from 'components/CompositionState';
 import formatDateTime from 'utils/formatDateTime';
-import apiStates, { getApiState } from 'utils/apiStates';
 import RouteRealmsRealmBadgeContent from './RouteRealmsRealmBadgeContent';
 
 
@@ -44,22 +44,14 @@ class RouteRealmsRealmBadge {
 							n.component(new ModelTxt(this.realm, m => formatDateTime(new Date(m.created), { showYear: true }))),
 						]),
 					]),
-					n.component(new ModelComponent(
-						this.realm,
-						new Elem(n => n.elem('div', { className: 'routerealms-realmbadge--state badge--nowrap flex-1' }, [
-							n.component('icon', new FAIcon('circle', { className: 'routerealms-realmbadge--stateicon' })),
-							n.html('&nbsp;&nbsp;'),
-							n.component('txt', new Txt('', { className: 'badge--text' })),
-						])),
-						(m, c) => {
-							let state = getApiState(m);
-							c.getNode('txt').setText(state.text);
-							let icon = c.getNode('icon');
-							for (let s of apiStates) {
-								icon[state == s ? 'addClass' : 'removeClass'](s.className);
-							}
-						},
-					)),
+
+					// Realm state
+					n.elem('div', { className: 'routerealms-realmbadge--state badge--nowrap flex-1' }, [
+						n.component(new CompositionState(this.realm, {
+							type: 'realm',
+							size: 'small',
+						})),
+					]),
 				]),
 			]),
 			n.component(new ModelCollapser(this.model, [{

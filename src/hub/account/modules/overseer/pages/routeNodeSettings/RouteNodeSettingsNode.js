@@ -8,8 +8,9 @@ import Collapser from 'components/Collapser';
 import ModelFader from 'components/ModelFader';
 import AutoComplete from 'components/AutoComplete';
 import EnvEditor from 'components/EnvEditor';
+import CompositionState from 'components/CompositionState';
 import l10n from 'modapp-l10n';
-import apiStates, { getApiState } from 'utils/apiStates';
+import { getApiState } from 'utils/apiStates';
 import errString from 'utils/errString';
 import RouteNodeSettingsRealmBadge from './RouteNodeSettingsRealmBadge';
 
@@ -58,22 +59,10 @@ class RouteNodeSettingsNode {
 
 				// Node state
 				n.elem('div', { className: 'common--sectionpadding' }, [
-					n.component(new ModelComponent(
-						this.node,
-						new Elem(n => n.elem('div', [
-							n.component('icon', new FAIcon('circle')),
-							n.html('&nbsp;&nbsp;'),
-							n.component('txt', new Txt('')),
-						])),
-						(m, c) => {
-							let state = getApiState(m, 'state');
-							c.getNode('txt').setText(state.text);
-							let icon = c.getNode('icon');
-							for (let s of apiStates) {
-								icon[state == s ? 'addClass' : 'removeClass'](s.className);
-							}
-						},
-					)),
+					n.component(new CompositionState(this.node, {
+						type: 'node',
+						size: 'medium',
+					})),
 				]),
 
 				// Node node action buttons
@@ -93,7 +82,7 @@ class RouteNodeSettingsNode {
 							])),
 							(m, c) => {
 								let state = getApiState(m, 'state');
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -113,7 +102,7 @@ class RouteNodeSettingsNode {
 							])),
 							(m, c) => {
 								let state = getApiState(m, 'state');
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -133,7 +122,7 @@ class RouteNodeSettingsNode {
 							])),
 							(m, c) => {
 								let state = getApiState(m, 'state');
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),

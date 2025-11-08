@@ -25,8 +25,8 @@ class RouteNodeSettingsRealmBadge {
 				},
 			},
 		}, [
-			n.elem('div', { className: 'badge--info flex-row flex-start flex-center' }, [
-				n.elem('div', { className: 'routenodesettings-realmbadge--state badge--nowrap flex-1' }, [
+			n.elem('div', { className: 'badge--info badge--select badge--select-gap badge--select-center' }, [
+				n.elem('div', { className: 'badge--symbol' }, [
 					n.component(new ModelComponent(
 						this.realm,
 						new FAIcon('circle', { className: 'routenodesettings-realmbadge--stateicon' }),
@@ -37,10 +37,11 @@ class RouteNodeSettingsRealmBadge {
 							}
 						},
 					)),
-					n.html('&nbsp;&nbsp;'),
-					n.component(new ModelTxt(this.realm, m => m.name, { className: 'badge--title' })),
 				]),
-				n.elem('div', { className: 'routenodesettings-realmbadge--key badge--text badge--nowrap flex-auto' }, [
+				n.elem('div', { className: 'badge--info badge--title badge--nowrap flex-1' }, [
+					n.component(new ModelTxt(this.realm, m => m.name)),
+				]),
+				n.elem('div', { className: 'badge--padright badge--text badge--nowrap flex-auto' }, [
 					n.component(new ModelTxt(this.realm, m => m.key)),
 				]),
 			]),
