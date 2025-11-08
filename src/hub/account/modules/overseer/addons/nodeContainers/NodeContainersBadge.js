@@ -26,11 +26,11 @@ class NodeContainersBadge {
 				},
 			},
 		}, [
-			n.elem('div', { className: 'badge--info flex-row flex-start flex-center' }, [
-				n.elem('div', { className: 'nodecontainers-badge--state badge--nowrap flex-1' }, [
+			n.elem('div', { className: 'badge--info badge--select badge--select-gap badge--select-center' }, [
+				n.elem('div', { className: 'badge--symbol' }, [
 					n.component(new ModelComponent(
 						this.container,
-						new FAIcon('circle', { className: 'nodecontainers-badge--stateicon' }),
+						new FAIcon('circle'),
 						(m, c) => {
 							let state = getContainerState(m, 'state');
 							for (let s of containerStates) {
@@ -38,10 +38,11 @@ class NodeContainersBadge {
 							}
 						},
 					)),
-					n.html('&nbsp;&nbsp;'),
-					n.component(new ModelTxt(this.container, m => m.name, { className: 'badge--title' })),
 				]),
-				n.elem('div', { className: 'nodecontainers-badge--timestamp badge--text badge--nowrap flex-auto' }, [
+				n.elem('div', { className: 'badge--info badge--title badge--nowrap flex-1' }, [
+					n.component(new ModelTxt(this.container, m => m.name)),
+				]),
+				n.elem('div', { className: 'badge--padright badge--text badge--nowrap flex-auto' }, [
 					n.component(new ModelTxt(this.container, m => formatDateTime(new Date(m.stateSince), { showYear: true }))),
 				]),
 			]),

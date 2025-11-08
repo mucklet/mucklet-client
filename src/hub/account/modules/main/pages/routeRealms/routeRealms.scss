@@ -18,13 +18,7 @@
 	}
 
 	&--state {
-		> * {
-			line-height: 20px;
-			font-size: $font-size-small;
-		}
-	}
-	&--stateicon {
-		font-size: $font-size-tiny;
+		line-height: 20px;
 	}
 }
 
@@ -33,5 +27,11 @@
 	&--desc {
 		padding: 2px 0;
 		font-size: $font-size;
+	}
+
+	&--tools {
+		display: flex;
+		flex-direction: row;
+		column-gap: 4px;
 	}
 }

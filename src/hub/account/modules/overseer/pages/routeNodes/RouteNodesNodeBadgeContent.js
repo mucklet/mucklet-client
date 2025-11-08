@@ -21,7 +21,7 @@ class RouteNodesNodeBadgeContent {
 						events: {
 							click: (c, ev) => {
 								ev.stopPropagation();
-								this._callNode('up');
+								this.module.routeNodeSettings.nodeUp(this.node.key);
 							},
 						},
 					}, [
@@ -44,7 +44,7 @@ class RouteNodesNodeBadgeContent {
 						events: {
 							click: (c, ev) => {
 								ev.stopPropagation();
-								this._callNode('stop');
+								this.module.routeNodeSettings.nodeStop(this.node.key);
 							},
 						},
 					}, [
@@ -67,7 +67,7 @@ class RouteNodesNodeBadgeContent {
 						events: {
 							click: (c, ev) => {
 								ev.stopPropagation();
-								this._callNode('down');
+								this.module.routeNodeSettings.nodeDown(this.node.key);
 							},
 						},
 					}, [
@@ -97,11 +97,6 @@ class RouteNodesNodeBadgeContent {
 			this.elem.unrender();
 			this.elem = null;
 		}
-	}
-
-	_callNode(method, params) {
-		return this.module.api.call(`control.overseer.node.${this.node.key}`, method, params)
-			.catch(err => this.module.confirm.openError(err));
 	}
 }
 

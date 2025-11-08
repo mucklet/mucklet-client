@@ -1,0 +1,44 @@
+@import '~scss/variables';
+
+.compositionstate {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	color: $color4;
+	position: relative;
+
+	.fa {
+		width: 14px;
+	}
+
+	> div {
+		width: 14px;
+	}
+
+	.spinner {
+		position: absolute;
+		left: 7px;
+		top: 50%;
+		&:before {
+			width: 14px;
+			height: 14px;
+			margin-top: -7px;
+			margin-left: -7px;
+		}
+	}
+
+	&.compositionstate--small {
+		font-size: $font-size-small;
+		.spinner {
+			position: absolute;
+			left: 6px;
+			top: 50%;
+			&:before {
+				width: 12px;
+				height: 12px;
+				margin-top: -6px;
+				margin-left: -6px;
+			}
+		}
+	}
+}
