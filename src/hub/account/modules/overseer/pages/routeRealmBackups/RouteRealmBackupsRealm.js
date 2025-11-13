@@ -4,7 +4,6 @@ import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
 import Collapser from 'components/Collapser';
 import l10n from 'modapp-l10n';
-import errString from 'utils/errString';
 import PageList from 'components/PageList';
 import taskRunDone from 'utils/taskRunDone';
 import errToL10n from 'utils/errToL10n';
@@ -110,32 +109,6 @@ class RouteRealmBackupsRealm {
 			this.elem = null;
 			this.messageComponent = null;
 		}
-	}
-
-	_save(model) {
-		let params = model.getModifications();
-		if (!params) {
-			return;
-		}
-
-		// Prepare params from tools
-		for (let tool of this.module.self.getTools()) {
-			params = tool.onSave?.(params) || params;
-		}
-
-		this._setMessage();
-		return this.realm.call('set', params).then(() => {
-			model.reset();
-		}).catch(err => {
-			this._setMessage(errString(err));
-		});
-	}
-
-	_setMessage(msg) {
-		this.messageComponent?.setComponent(msg
-			? new Txt(msg, { className: 'dialog--error' })
-			: null,
-		);
 	}
 
 	_backup() {

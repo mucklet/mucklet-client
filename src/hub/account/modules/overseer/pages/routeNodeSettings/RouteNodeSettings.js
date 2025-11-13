@@ -1,6 +1,7 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import FAIcon from 'components/FAIcon';
 import { relistenResource } from 'utils/listenResource';
 import errToL10n from 'utils/errToL10n';
 import taskRunDone from 'utils/taskRunDone';
@@ -63,6 +64,7 @@ class RouteNodeSettings {
 			'toaster',
 			'routeRealmSettings',
 			'nodeContainers',
+			'routeNodes',
 		], this._init.bind(this));
 	}
 
@@ -85,6 +87,18 @@ class RouteNodeSettings {
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => this.module.router.parseDefUrl(parts, pathDef),
 			order: 20,
+		});
+
+		this.module.routeNodes.addTool({
+			id: 'nodeSettings',
+			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium solid', events: {
+				click: (c, ev) => {
+					ev.stopPropagation();
+					this.setRoute({ nodeKey: node.key });
+				},
+			}}, [
+				n.component(new FAIcon('cog')),
+			])),
 		});
 	}
 
