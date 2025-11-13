@@ -1,5 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
-import { ModelComponent } from 'modapp-resource-component';
+import { Context, Elem, Txt } from 'modapp-base-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { CollectionWrapper } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import { getApiState } from 'utils/apiStates';
@@ -80,14 +81,28 @@ class RouteNodesNodeBadgeContent {
 					},
 				)),
 			]),
-			n.elem('button', { className: 'iconbtn medium solid', events: {
-				click: (c, ev) => {
-					ev.stopPropagation();
-					this.module.routeNodeSettings.setRoute({ nodeKey: this.node.key });
-				},
-			}}, [
-				n.component(new FAIcon('cog')),
-			]),
+
+			// Button tools
+			n.component(new Context(
+				() => new CollectionWrapper(this.module.self.getTools(), {
+					filter: t => (!t.type || t.type == 'button') && (!t.condition || t.condition(this.node)),
+				}),
+				tools => tools.dispose(),
+				tools => new ModelComponent(
+					this.node,
+					new CollectionList(
+						tools,
+						t => t.componentFactory(this.node),
+						{
+							className: 'routenodes-nodebadgecontent--tools',
+							subClassName: t => t.className || null,
+							horizontal: true,
+						},
+					),
+					(m, c, change) => change && tools.refresh(), // Refresh because the filter conditions might have changed.
+				),
+			)),
+
 		]));
 		this.elem.render(el);
 	}

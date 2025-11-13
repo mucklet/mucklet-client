@@ -24,6 +24,7 @@ class RouteTaskRuns {
 			'confirm',
 			'toaster',
 			'routeRealms',
+			'routeNodes',
 		], this._init.bind(this));
 	}
 

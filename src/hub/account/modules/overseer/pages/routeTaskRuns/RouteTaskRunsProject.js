@@ -57,7 +57,7 @@ class RouteTaskRunsProject {
 					fetchCollection: (offset, limit) => {
 						// Update URL with new page nr.
 						this.module.self.setRoute(this.type.key, {
-							projectKey: this.project.id,
+							projectKey: this.type.getProjectKey(this.project),
 							pageNr: Math.floor(offset / taskRunsPerPage),
 						});
 						return this.type.fetchTaskRuns(this.module, this.project, offset, limit);

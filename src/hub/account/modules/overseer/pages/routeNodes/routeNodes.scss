@@ -32,3 +32,11 @@
 		padding: 3px 0;
 	}
 }
+
+.routenodes-nodebadgecontent {
+	&--tools {
+		display: flex;
+		flex-direction: row;
+		column-gap: 6px;
+	}
+}
