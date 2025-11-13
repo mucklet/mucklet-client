@@ -1,0 +1,76 @@
+@import '~scss/variables';
+
+// .routetaskruns {}
+
+.routetaskruns-taskrunbadge {
+	&--icon.badge--faicon {
+		color: $color1-dark;
+		background: $color4-darker;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		> .spinner:before {
+			border-top-color: $color1-dark;
+		}
+	}
+	&--state- {
+		// &queued {
+		// 	&.badge--faicon {}
+		// }
+		&running {
+			&.badge--faicon {
+				background: $color6;
+			}
+		}
+		&success {
+			&.badge--faicon {
+				background: $green;
+			}
+		}
+		&warning {
+			&.badge--faicon {
+				background: $color2;
+			}
+		}
+		&error {
+			&.badge--faicon {
+				background: $color5;
+			}
+		}
+	}
+}
+
+.routetaskruns-project {
+	&--subheader {
+		padding-bottom: 8px;
+	}
+
+	&--name {
+		font-size: $font-size;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--pagelistitem {
+		padding: 3px 0;
+	}
+
+	&--footertools {
+		> * {
+			display: inline-block;
+		}
+	}
+}
+
+.routetaskruns-taskrun {
+	&--name {
+		font-size: $font-size;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--info {
+		padding-top: 12px;
+	}
+}
