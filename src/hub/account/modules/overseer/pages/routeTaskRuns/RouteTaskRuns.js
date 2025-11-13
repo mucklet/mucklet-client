@@ -136,6 +136,7 @@ class RouteTaskRuns {
 		return model.set({
 			project: relistenResource(model.project, props.project),
 			taskRun: relistenResource(model.taskRun, props.taskRun),
+			taskRunSteps: relistenResource(model.taskRunSteps, props.taskRunSteps),
 			pageNr: props.pageNr || 0,
 			step: typeof props.step == 'number' ? props.step : null,
 			error: props.error || null,

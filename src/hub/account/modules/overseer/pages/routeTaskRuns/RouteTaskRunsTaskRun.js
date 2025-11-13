@@ -3,12 +3,19 @@ import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
-import Collapser from 'components/Collapser';
 import DefinitionList from 'components/DefinitionList';
+import VerticalStepProgress from 'components/VerticalStepProgress';
 import l10n from 'modapp-l10n';
 import formatDateTime from 'utils/formatDateTime';
 import taskRunStates, { getTaskRunState } from 'utils/taskRunStates';
 import formatDuration from 'utils/formatDuration';
+import ModelCollapser from 'components/ModelCollapser';
+import SimpleBar from 'components/SimpleBar';
+import errToL10n from 'utils/errToL10n';
+
+const txtError = l10n.l('routeTaskRuns.error', "Error");
+const txtWarnings = l10n.l('routeTaskRuns.warnings', "Warnings");
+const txtLog = l10n.l('routeTaskRuns.log', "Log");
 
 /**
  * RouteTaskRunsTaskRun draws details for a taskRun.
@@ -21,13 +28,9 @@ class RouteTaskRunsTaskRun {
 		this.project = project;
 		this.taskRun = taskRun;
 		this.taskRunSteps = taskRunSteps;
-		console.log("PROJECT: ", this.project);
-		console.log("TASKRUN: ", this.taskRun);
-		console.log("STEPS: ", this.taskRunSteps);
 	}
 
 	render(el) {
-		this.messageComponent = new Collapser();
 		this.elem = new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun' }, [
 			n.elem('div', { className: 'flex-row flex-end' }, [
 				n.component(new PageHeader(this.type.txtTaskRun, "", { className: 'flex-1' })),
@@ -70,7 +73,7 @@ class RouteTaskRunsTaskRun {
 							new FAIcon(),
 							(m, c) => {
 								let st = getTaskRunState(m.state);
-								c.setIcon(st.icon);
+								c.setIcon(st.oicon);
 								for (let s of taskRunStates) {
 									c[st == s ? 'addClass' : 'removeClass'](s.className);
 								}
@@ -107,6 +110,95 @@ class RouteTaskRunsTaskRun {
 					(m, c) => items.refresh(),
 				),
 			)),
+
+			// Steps
+			n.component(new ModelComponent(
+				this.taskRun,
+				new VerticalStepProgress(null,
+					(step) => {
+						let s = this.taskRunSteps.props[step.idx];
+						if (!s || step.idx > this.taskRun.currentStep) {
+							return false;
+						}
+						return s.error
+							? 'error'
+							: s.warnings?.length
+								? 'warning'
+								: true;
+					},
+					(step) => {
+						let s = this.taskRunSteps.props[step.idx];
+						return new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--step' }, [
+							n.component(new Txt(step.name, { className: 'routetaskruns-taskrun--stepname' })),
+							n.component(s
+								? new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--stepdetails' }, [
+									// Duration
+									n.component(new ModelTxt(s, m => formatDuration(m.duration, "0ms"), { className: 'routetaskruns-taskrun--stepduration' })),
+
+									// Error
+									n.component(new ModelCollapser(s, [{
+										condition: m => m.error,
+										factory: m => new Elem(n => n.elem('div', [
+											n.component(new Txt(txtError, { className: 'routetaskruns-taskrun--stepsubtitle' })),
+											n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+												n.component(new SimpleBar(
+													new ModelTxt(m, m => errToL10n(m.error), { className: 'routetaskruns-taskrun--steplogtxt' }),
+													{
+														className: 'routetaskruns-taskrun--stepsimplebar',
+														autoHide: false,
+													},
+												)),
+											]),
+										])),
+									}])),
+
+									// Warnings
+									n.component(new ModelCollapser(s, [{
+										condition: m => m.warnings,
+										factory: m => new Elem(n => n.elem('div', [
+											n.component(new Txt(txtWarnings, { className: 'routetaskruns-taskrun--stepsubtitle' })),
+											n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+												n.component(new SimpleBar(
+													new ModelTxt(m, m => m.warnings?.join("\n"), { className: 'routetaskruns-taskrun--steplogtxt' }),
+													{
+														className: 'routetaskruns-taskrun--stepsimplebar',
+														autoHide: false,
+													},
+												)),
+											]),
+										])),
+									}])),
+
+									// Log
+									n.component(new ModelCollapser(s, [{
+										condition: m => !!m.log,
+										factory: m => new Elem(n => n.elem('div', [
+											n.component(new Txt(txtLog, { className: 'routetaskruns-taskrun--stepsubtitle' })),
+											n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+												n.component(new SimpleBar(
+													new ModelTxt(m, m => m.log, { className: 'routetaskruns-taskrun--steplogtxt' }),
+													{
+														className: 'routetaskruns-taskrun--stepsimplebar',
+														autoHide: false,
+													},
+												)),
+											]),
+										])),
+									}])),
+								]))
+								: null,
+							),
+						]));
+					},
+					{ className: 'routetaskruns-taskrun--steps' },
+				),
+				(m, c, change) => {
+					if (!change || change.hasOwnPropert('stepNames')) {
+						c.setCollection(m.stepNames.map((name, idx) => ({ name, idx })));
+					}
+					c.update();
+				},
+			)),
 		]));
 
 		return this.elem.render(el);
@@ -116,7 +208,6 @@ class RouteTaskRunsTaskRun {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
-			this.messageComponent = null;
 		}
 	}
 }

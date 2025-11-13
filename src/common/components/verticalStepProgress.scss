@@ -1,0 +1,68 @@
+@import '~scss/variables';
+
+.verticalstepprogress {
+
+	padding-left: 36px;
+	list-style: none;
+
+	&--step {
+		position: relative;
+		counter-increment: list;
+
+		&::before {
+			display: inline-block;
+			content: '';
+			position: absolute;
+			left: -29px;
+			top: 6px;
+			height: 100%;
+			width: 10px;
+		}
+
+		&::after {
+			content: '';
+			display: inline-block;
+			position: absolute;
+			top: 2px;
+			left: -36px;
+			width: 12px;
+			height: 12px;
+			border: 2px solid $color1-lightest;
+			border-radius: 50%;
+			background-color: $color1;
+		}
+
+		&.completed::after {
+			content: '';
+			text-align: center;
+			border: 2px solid $color6;
+			background-color: $color6;
+		}
+		&.warning::after {
+			content: '';
+			text-align: center;
+			border: 2px solid $color2;
+			background-color: $color2;
+		}
+		&.error::after {
+			content: '';
+			text-align: center;
+			border: 2px solid $color5;
+			background-color: $color5;
+		}
+	}
+
+	> *:not(:last-child) {
+		.verticalstepprogress--step {
+			&::before {
+				border-left: 2px solid $color1-lightest;
+			}
+
+			&.nextcompleted {
+				&::before {
+					border-left: 2px solid $color6;
+				}
+			}
+		}
+	}
+}

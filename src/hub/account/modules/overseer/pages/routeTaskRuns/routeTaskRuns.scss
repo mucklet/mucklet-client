@@ -73,4 +73,41 @@
 	&--info {
 		padding-top: 12px;
 	}
+
+	&--steps {
+		padding-top: 20px;
+	}
+
+	&--step {
+		padding-bottom: 12px;
+	}
+
+	&--stepname {
+		color: $color3;
+		font-size: $font-size-small;
+	}
+	&--stepduration {
+		font-size: $font-size-tiny;
+	}
+	&--stepsubtitle {
+		display: block;
+		color: $color2;
+		font-size: $font-size-small;
+		padding: 6px 0 2px 0;
+	}
+	&--steplog {
+		display: block;
+		font-style: normal;
+		font-size: $font-size-tiny;
+		font-family: $font-code;
+		background: $color1-dark;
+		border-radius: 8px;
+	}
+	&--steplogtxt {
+		white-space: pre;
+	}
+	&--stepsimplebar {
+		padding: 4px 8px;
+		max-height: 210px;
+	}
 }

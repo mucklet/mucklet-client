@@ -16,13 +16,16 @@ const types = {
 		getProjectKey: (project) => project.id,
 		init: (module) => module.routeRealms.addTool({
 			id: 'taskRuns',
+			type: 'button',
+			sortOrder: 10,
+			condition: (realm) => realm.apiType == 'node',
 			componentFactory: (realm) => new Elem(n => n.elem('button', { className: 'iconbtn medium', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();
 					module.self.setRoute('realm', { projectKey: realm.id });
 				},
 			}}, [
-				n.component(new FAIcon('list')),
+				n.component(new FAIcon('cogs')),
 			])),
 		}),
 		dispose: (module) => module.routeRealms.removeTool('taskRuns'),
