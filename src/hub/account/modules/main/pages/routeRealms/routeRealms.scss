@@ -20,6 +20,11 @@
 	&--state {
 		line-height: 20px;
 	}
+
+	&--updaterequired {
+		color: $color5;
+		font-size: $font-size-small;
+	}
 }
 
 .routerealms-realmbadgecontent {

@@ -1,6 +1,8 @@
-import { Elem } from 'modapp-base-component';
+import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
+import Fader from 'components/Fader';
 import ModelCollapser from 'components/ModelCollapser';
 import CompositionState from 'components/CompositionState';
 import formatDateTime from 'utils/formatDateTime';
@@ -15,6 +17,8 @@ class RouteRealmsRealmBadge {
 	}
 
 	render(el) {
+		let updateFader = new Fader();
+
 		this.elem = new Elem(n => n.elem('badge', 'div', {
 			className: 'routerealms-realmbadge badge dark large btn',
 			events: {
@@ -46,11 +50,28 @@ class RouteRealmsRealmBadge {
 					]),
 
 					// Realm state
-					n.elem('div', { className: 'routerealms-realmbadge--state badge--nowrap flex-1' }, [
-						n.component(new CompositionState(this.realm, {
-							type: 'realm',
-							size: 'small',
-						})),
+					n.elem('div', { className: 'routerealms-realmbadge--state flex-row' }, [
+						n.elem('div', { className: 'badge--nowrap flex-1' }, [
+							n.component(new CompositionState(this.realm, {
+								type: 'realm',
+								size: 'small',
+							})),
+						]),
+						// Update required
+						n.elem('div', { className: 'routerealms-realmbadge--updaterequired badge--nowrap flex-auto' }, [
+							n.component(new ModelComponent(
+								this.realm,
+								new ModelComponent(
+									null,
+									updateFader,
+									(m, c, change) => change && this._setUpdateFader(updateFader),
+								),
+								(m, c, change) => {
+									c.setModel(m.apiComposition);
+									this._setUpdateFader(updateFader);
+								},
+							)),
+						]),
 					]),
 				]),
 			]),
@@ -67,6 +88,18 @@ class RouteRealmsRealmBadge {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_setUpdateFader(fader) {
+		let show = this.realm.apiState != 'offline' &&
+			this.realm.apiType == 'node' &&
+			this.realm.apiComposition &&
+			this.realm.apiComposition.hash != this.realm.apiHash;
+
+		fader.setComponent(show
+			? fader.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"))
+			: null,
+		);
 	}
 }
 

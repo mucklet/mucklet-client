@@ -9,6 +9,15 @@
 	&--containers {
 		padding-top: 4px;
 	}
+
+	&--updaterequired {
+		color: $color5;
+		font-size: $font-size-small;
+		position: relative;
+		top: -6px;
+		padding-bottom: 6px;
+		display: block;
+	}
 }
 
 .overseerrealmsettings-bottomsection {

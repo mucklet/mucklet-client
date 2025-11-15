@@ -52,7 +52,8 @@ class RouteRealmSettingsRealms {
 	}
 
 	render(el) {
-		this.messageComponent = new Collapser();
+		let updateCollapser = new Collapser();
+
 		this.elem = new Elem(n => n.elem('div', { className: 'overseerrealmsettings-topsection' }, [
 
 			// Realm state
@@ -77,6 +78,20 @@ class RouteRealmSettingsRealms {
 					)),
 				]),
 			]),
+
+			// Update required
+			n.component(new ModelComponent(
+				this.realm,
+				new ModelComponent(
+					null,
+					updateCollapser,
+					(m, c, change) => change && this._setUpdateCollapser(updateCollapser),
+				),
+				(m, c, change) => {
+					c.setModel(m.apiComposition);
+					this._setUpdateCollapser(updateCollapser);
+				},
+			)),
 
 			// Node realm action buttons
 			n.component(new ModelCollapser(this.realm, [{
@@ -238,6 +253,18 @@ class RouteRealmSettingsRealms {
 				});
 			})
 			.catch(err => this.module.toaster.openError(err));
+	}
+
+	_setUpdateCollapser(collapser) {
+		let show = this.realm.apiState != 'offline' &&
+			this.realm.apiType == 'node' &&
+			this.realm.apiComposition &&
+			this.realm.apiComposition.hash != this.realm.apiHash;
+
+		collapser.setComponent(show
+			? collapser.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"), { className: 'overseerrealmsettings-topsection--updaterequired' })
+			: null,
+		);
 	}
 }
 
