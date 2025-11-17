@@ -2,7 +2,7 @@ import { Elem } from 'modapp-base-component';
 import { ModelTxt } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
-import CompositionState from 'components/CompositionState';
+import ProjectState from 'components/ProjectState';
 import formatDateTime from 'utils/formatDateTime';
 import RouteNodesNodeBadgeContent from './RouteNodesNodeBadgeContent';
 
@@ -43,8 +43,7 @@ class RouteNodesNodeBadge {
 
 					// Node state
 					n.elem('div', { className: 'routenodes-nodebadge--state badge--nowrap flex-1' }, [
-						n.component(new CompositionState(this.node, {
-							type: 'node',
+						n.component(new ProjectState(this.node, {
 							size: 'small',
 						})),
 					]),

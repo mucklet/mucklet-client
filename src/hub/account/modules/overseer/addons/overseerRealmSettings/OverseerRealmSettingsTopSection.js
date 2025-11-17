@@ -3,9 +3,9 @@ import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
-import { getApiState } from 'utils/apiStates';
+import { getProjectState } from 'utils/projectStates';
 import ModelCollapser from 'components/ModelCollapser';
-import CompositionState from 'components/CompositionState';
+import ProjectState from 'components/ProjectState';
 import errToL10n from 'utils/errToL10n';
 import taskRunDone from 'utils/taskRunDone';
 
@@ -62,8 +62,7 @@ class RouteRealmSettingsRealms {
 
 					// Realm state
 					n.elem('div', { className: 'flex-1' }, [
-						n.component(new CompositionState(this.realm, {
-							type: 'realm',
+						n.component(new ProjectState(this.realm, {
 							size: 'medium',
 						})),
 					]),
@@ -71,8 +70,8 @@ class RouteRealmSettingsRealms {
 					// Realm API version
 					n.component(new ModelTxt(
 						this.realm,
-						m => m.apiVersionName
-							? l10n.l('overseerRealmSettings.version', "Version {version}", { version: m.apiVersionName })
+						m => m.versionName
+							? l10n.l('overseerRealmSettings.version', "Version {version}", { version: m.versionName })
 							: '',
 						{ className: 'overseerrealmsettings-topsection--version flex-auto' },
 					)),
@@ -88,14 +87,14 @@ class RouteRealmSettingsRealms {
 					(m, c, change) => change && this._setUpdateCollapser(updateCollapser),
 				),
 				(m, c, change) => {
-					c.setModel(m.apiComposition);
+					c.setModel(m.composition);
 					this._setUpdateCollapser(updateCollapser);
 				},
 			)),
 
 			// Node realm action buttons
 			n.component(new ModelCollapser(this.realm, [{
-				condition: m => m.apiType == 'node',
+				condition: m => m.type == 'node',
 				factory: m => new Elem(n => n.elem('div', { className: 'flex-row m pad16' }, [
 					// Realm up
 					n.elem('div', { className: 'flex-auto' }, [
@@ -111,8 +110,8 @@ class RouteRealmSettingsRealms {
 								n.component(new Txt(l10n.l('overseerRealmSettings.realmUp', "Realm Up"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m);
-								c.setProperty('disabled', state.transitional || m.apiTaskRun ? 'disabled' : null);
+								let state = getProjectState(m);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -131,8 +130,8 @@ class RouteRealmSettingsRealms {
 								n.component(new Txt(l10n.l('overseerRealmSettings.realmStop', "Realm Stop"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m);
-								c.setProperty('disabled', state.transitional || m.apiTaskRun ? 'disabled' : null);
+								let state = getProjectState(m);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -151,8 +150,8 @@ class RouteRealmSettingsRealms {
 								n.component(new Txt(l10n.l('overseerRealmSettings.realmDown', "Realm Down"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m);
-								c.setProperty('disabled', state.transitional || m.apiTaskRun ? 'disabled' : null);
+								let state = getProjectState(m);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -161,7 +160,7 @@ class RouteRealmSettingsRealms {
 
 			// Manual realm action buttons
 			n.component(new ModelCollapser(this.realm, [{
-				condition: m => m.apiType == 'manual',
+				condition: m => m.type == 'manual',
 				factory: m => new Elem(n => n.elem('div', { className: 'flex-row m pad16' }, [
 					// Set Online
 					n.elem('div', { className: 'flex-auto' }, [
@@ -170,13 +169,13 @@ class RouteRealmSettingsRealms {
 							new Elem(n => n.elem('button', {
 								className: 'btn primary small common--btnwidth',
 								events: {
-									click: () => this._callRealm('set', { apiState: 'online' }),
+									click: () => this._callRealm('set', { state: 'online' }),
 								},
 							}, [
 								n.component(new FAIcon('play')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.setOnline', "Set Online"))),
 							])),
-							(m, c) => c.setProperty('disabled', m.apiState == 'online' ? 'disabled' : null),
+							(m, c) => c.setProperty('disabled', m.state == 'online' ? 'disabled' : null),
 						)),
 					]),
 
@@ -187,22 +186,22 @@ class RouteRealmSettingsRealms {
 							new Elem(n => n.elem('button', {
 								className: 'btn warning small common--btnwidth',
 								events: {
-									click: () => this._callRealm('set', { apiState: 'offline' }),
+									click: () => this._callRealm('set', { state: 'offline' }),
 								},
 							}, [
 								n.component(new FAIcon('stop')),
 								n.component(new Txt(l10n.l('overseerRealmSettings.setOffline', "Set Offline"))),
 							])),
-							(m, c) => c.setProperty('disabled', m.apiState == 'offline' ? 'disabled' : null),
+							(m, c) => c.setProperty('disabled', m.state == 'offline' ? 'disabled' : null),
 						)),
 					]),
 				])),
 			}])),
 
-			// API containers
+			// Containers
 			n.component(new ModelCollapser(this.realm, [{
-				condition: m => m.apiContainers,
-				factory: m => this.module.nodeContainers.newNodeContainers(m.apiContainers, {
+				condition: m => m.containers,
+				factory: m => this.module.nodeContainers.newNodeContainers(m.containers, {
 					className: 'overseerrealmsettings-topsection--containers',
 				}),
 			}])),
@@ -256,10 +255,10 @@ class RouteRealmSettingsRealms {
 	}
 
 	_setUpdateCollapser(collapser) {
-		let show = this.realm.apiState != 'offline' &&
-			this.realm.apiType == 'node' &&
-			this.realm.apiComposition &&
-			this.realm.apiComposition.hash != this.realm.apiHash;
+		let show = this.realm.state != 'offline' &&
+			this.realm.type == 'node' &&
+			this.realm.composition &&
+			this.realm.composition.configHash != this.realm.configHash;
 
 		collapser.setComponent(show
 			? collapser.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"), { className: 'overseerrealmsettings-topsection--updaterequired' })

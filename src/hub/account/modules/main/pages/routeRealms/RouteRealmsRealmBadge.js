@@ -4,7 +4,7 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import Fader from 'components/Fader';
 import ModelCollapser from 'components/ModelCollapser';
-import CompositionState from 'components/CompositionState';
+import ProjectState from 'components/ProjectState';
 import formatDateTime from 'utils/formatDateTime';
 import RouteRealmsRealmBadgeContent from './RouteRealmsRealmBadgeContent';
 
@@ -52,8 +52,7 @@ class RouteRealmsRealmBadge {
 					// Realm state
 					n.elem('div', { className: 'routerealms-realmbadge--state flex-row' }, [
 						n.elem('div', { className: 'badge--nowrap flex-1' }, [
-							n.component(new CompositionState(this.realm, {
-								type: 'realm',
+							n.component(new ProjectState(this.realm, {
 								size: 'small',
 							})),
 						]),
@@ -67,7 +66,7 @@ class RouteRealmsRealmBadge {
 									(m, c, change) => change && this._setUpdateFader(updateFader),
 								),
 								(m, c, change) => {
-									c.setModel(m.apiComposition);
+									c.setModel(m.composition);
 									this._setUpdateFader(updateFader);
 								},
 							)),
@@ -91,10 +90,10 @@ class RouteRealmsRealmBadge {
 	}
 
 	_setUpdateFader(fader) {
-		let show = this.realm.apiState != 'offline' &&
-			this.realm.apiType == 'node' &&
-			this.realm.apiComposition &&
-			this.realm.apiComposition.hash != this.realm.apiHash;
+		let show = this.realm.state != 'offline' &&
+			this.realm.type == 'node' &&
+			this.realm.composition &&
+			this.realm.composition.configHash != this.realm.configHash;
 
 		fader.setComponent(show
 			? fader.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"))

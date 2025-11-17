@@ -8,9 +8,9 @@ import Collapser from 'components/Collapser';
 import ModelFader from 'components/ModelFader';
 import AutoComplete from 'components/AutoComplete';
 import EnvEditor from 'components/EnvEditor';
-import CompositionState from 'components/CompositionState';
+import ProjectState from 'components/ProjectState';
 import l10n from 'modapp-l10n';
-import { getApiState } from 'utils/apiStates';
+import { getProjectState } from 'utils/projectStates';
 import errString from 'utils/errString';
 import RouteNodeSettingsRealmBadge from './RouteNodeSettingsRealmBadge';
 
@@ -59,8 +59,7 @@ class RouteNodeSettingsNode {
 
 				// Node state
 				n.elem('div', { className: 'common--sectionpadding' }, [
-					n.component(new CompositionState(this.node, {
-						type: 'node',
+					n.component(new ProjectState(this.node, {
 						size: 'medium',
 					})),
 				]),
@@ -81,7 +80,7 @@ class RouteNodeSettingsNode {
 								n.component(new Txt(l10n.l('routeNodeSettings.nodeUp', "Node Up"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m, 'state');
+								let state = getProjectState(m);
 								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
@@ -101,7 +100,7 @@ class RouteNodeSettingsNode {
 								n.component(new Txt(l10n.l('routeNodeSettings.nodeStop', "Node Stop"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m, 'state');
+								let state = getProjectState(m);
 								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
@@ -121,7 +120,7 @@ class RouteNodeSettingsNode {
 								n.component(new Txt(l10n.l('routeNodeSettings.nodeDown', "Node Down"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m, 'state');
+								let state = getProjectState(m);
 								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
