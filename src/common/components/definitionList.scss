@@ -9,6 +9,8 @@
 
 	> div {
 		min-width: 64px;
+		white-space: nowrap;
+    	overflow: hidden;
 
 		> dt {
 			font-size: $font-size-small;
