@@ -111,6 +111,22 @@ class RouteTaskRunsTaskRun {
 				),
 			)),
 
+			// Error
+			n.component(new ModelCollapser(this.taskRun, [{
+				condition: m => m.error,
+				factory: m => new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--error' }, [
+					n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+						n.component(new SimpleBar(
+							new ModelTxt(m, m => errToL10n(m.error), { className: 'routetaskruns-taskrun--steplogtxt' }),
+							{
+								className: 'routetaskruns-taskrun--stepsimplebar',
+								autoHide: false,
+							},
+						)),
+					]),
+				])),
+			}])),
+
 			// Steps
 			n.component(new ModelComponent(
 				this.taskRunSteps,
