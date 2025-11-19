@@ -1,6 +1,6 @@
 @import '~scss/variables';
 
-.compositionstate {
+.projectstate {
 	display: flex;
 	flex-direction: row;
 	align-items: baseline;
@@ -27,7 +27,7 @@
 		}
 	}
 
-	&.compositionstate--small {
+	&.projectstate--small {
 		font-size: $font-size-small;
 		.spinner {
 			position: absolute;

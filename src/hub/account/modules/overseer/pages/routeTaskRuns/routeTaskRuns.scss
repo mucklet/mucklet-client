@@ -74,6 +74,11 @@
 		padding-top: 12px;
 	}
 
+	&--error {
+		padding-top: 6px;
+		color: $color5;
+	}
+
 	&--steps {
 		padding-top: 20px;
 	}

@@ -79,7 +79,7 @@ class RouteRealmBackups {
 			id: 'realmBackups',
 			sortOrder: 20,
 			type: 'button',
-			condition: (realm) => realm.apiType == 'node',
+			condition: (realm) => realm.type == 'node',
 			componentFactory: (realm) => new Elem(n => n.elem('button', { className: 'iconbtn medium', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();

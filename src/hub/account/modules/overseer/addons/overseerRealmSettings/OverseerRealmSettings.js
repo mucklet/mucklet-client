@@ -40,10 +40,10 @@ class OverseerRealmSettings {
 			type: 'section',
 			componentFactory: (realm) => new OverseerRealmSettingsBottomSection(this.module, realm),
 			onSave: (params) => {
-				// Prepare params for apiRelease.
-				if (params.hasOwnProperty('apiRelease')) {
-					params.apiReleaseId = params.apiRelease?.id || null;
-					delete params.apiRelease;
+				// Prepare params for release.
+				if (params.hasOwnProperty('release')) {
+					params.releaseId = params.release?.id || null;
+					delete params.release;
 				}
 				return params;
 			},

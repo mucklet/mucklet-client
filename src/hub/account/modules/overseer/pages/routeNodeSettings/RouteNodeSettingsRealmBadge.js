@@ -2,7 +2,7 @@ import { Elem } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
-import apiStates, { getApiState } from 'utils/apiStates';
+import projectStates, { getProjectState } from 'utils/projectStates';
 import RouteNodeSettingsRealmBadgeContent from './RouteNodeSettingsRealmBadgeContent';
 
 class RouteNodeSettingsRealmBadge {
@@ -31,8 +31,8 @@ class RouteNodeSettingsRealmBadge {
 						this.realm,
 						new FAIcon('circle', { className: 'routenodesettings-realmbadge--stateicon' }),
 						(m, c) => {
-							let state = getApiState(m, 'apiState');
-							for (let s of apiStates) {
+							let state = getProjectState(m);
+							for (let s of projectStates) {
 								c[state == s ? 'addClass' : 'removeClass'](s.className);
 							}
 						},

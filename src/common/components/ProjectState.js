@@ -1,39 +1,30 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
-import apiStates, { getApiState } from 'utils/apiStates';
+import projectStates, { getProjectState } from 'utils/projectStates';
 import FAIcon from './FAIcon';
 import Fader from './Fader';
-import './compositionState.scss';
+import './projectState.scss';
 
 const sizeClass = {
-	small: ' compositionstate--small',
-};
-
-const taskRunProps = {
-	node: 'taskRun',
-};
-
-const stateprops = {
-	node: 'state',
+	small: ' projectstate--small',
 };
 
 /**
- * CompositionState is component that displays the composition state of a
- * project, such as a node or a realm.
+ * ProjectState is component that displays the state of a project, such as a
+ * node or a realm.
  */
-class CompositionState {
+class ProjectState {
 
 	/**
-	 * Creates an instance of CompositionState
-	 * @param {NodeModel|RealmModel} model Composition state model.
+	 * Creates an instance of ProjectState
+	 * @param {NodeModel|RealmModel} model Project state model.
 	 * @param {object} [opt] Optional parameters.
-	 * @param {"realm"|"node"} [opt.type] Type of model. Defaults to "realm".
 	 * @param {"medium"|"small"} [opt.size] Size of the state component. Defaults to "medium".
 	 */
 	constructor(model, opt) {
-		this.opt = { ...opt, className: 'compositionstate' + (opt?.className ? ' ' + opt.className : '') + (sizeClass[opt?.size] || '') };
-		this._taskRunProp = taskRunProps[opt?.type] || 'apiTaskRun';
-		this._stateProp = stateprops[opt?.type] || 'apiState';
+		this.opt = { ...opt, className: 'projectstate' + (opt?.className ? ' ' + opt.className : '') + (sizeClass[opt?.size] || '') };
+		this._taskRunProp = 'taskRun';
+		this._stateProp = 'state';
 
 		this._icon = new FAIcon('circle');
 		this._spinner = new Elem(n => n.elem('div', { className: 'spinner' }));
@@ -43,8 +34,8 @@ class CompositionState {
 
 
 	/**
-	 * Gets the current set composition state model.
-	 * @returns {NodeModel|RealmModel} Composition state model.
+	 * Gets the current set project state model.
+	 * @returns {NodeModel|RealmModel} Project state model.
 	 */
 	getModel() {
 		return this._model;
@@ -52,7 +43,7 @@ class CompositionState {
 
 	/**
 	 * Sets the compositon state model.
-	 * @param {NodeModel|RealmModel} model Composition state model.
+	 * @param {NodeModel|RealmModel} model Project state model.
 	 * @returns {this}
 	 */
 	setModel(model) {
@@ -109,9 +100,9 @@ class CompositionState {
 			txt = taskRun.stepNames[taskRun.currentStep];
 			fader.setComponent(this._spinner);
 		} else {
-			let state = getApiState(this._model, this._stateProp);
+			let state = getProjectState(this._model, this._stateProp);
 			txt = state.text;
-			for (let s of apiStates) {
+			for (let s of projectStates) {
 				this._icon[state == s ? 'addClass' : 'removeClass'](s.className);
 			}
 			fader.setComponent(this._icon);
@@ -120,4 +111,4 @@ class CompositionState {
 	}
 }
 
-export default CompositionState;
+export default ProjectState;

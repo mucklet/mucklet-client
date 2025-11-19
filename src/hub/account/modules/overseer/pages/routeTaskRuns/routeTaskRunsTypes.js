@@ -18,7 +18,7 @@ const types = {
 			id: 'taskRuns',
 			type: 'button',
 			sortOrder: 10,
-			condition: (realm) => realm.apiType == 'node',
+			condition: (realm) => realm.type == 'node',
 			componentFactory: (realm) => new Elem(n => n.elem('button', { className: 'iconbtn medium', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();
@@ -56,7 +56,7 @@ const types = {
 		init: (module) => module.routeNodes.addTool({
 			id: 'taskRuns',
 			type: 'button',
-			sortOrder: 10,
+			sortOrder: 100,
 			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium solid', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();

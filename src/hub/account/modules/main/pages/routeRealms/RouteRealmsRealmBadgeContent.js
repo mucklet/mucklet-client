@@ -33,7 +33,7 @@ class RouteRealmsRealmBadgeContent {
 				]),
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('routeRealms.version', "Version"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.realm, m => m.apiVersionName, { className: 'badge--text badge--info-morepad' })),
+					n.component(new ModelTxt(this.realm, m => m.versionName, { className: 'badge--text badge--info-morepad' })),
 				]),
 			]),
 			n.elem('div', { className: 'badge--select badge--select-margin' }, [
@@ -58,7 +58,7 @@ class RouteRealmsRealmBadgeContent {
 						}]),
 						(m, c) => c.setModel(m?.next),
 					),
-					(m, c) => c.setModel(m?.apiRelease),
+					(m, c) => c.setModel(m?.release),
 				)),
 				// Button tools
 				n.component(new Context(

@@ -111,93 +111,116 @@ class RouteTaskRunsTaskRun {
 				),
 			)),
 
+			// Error
+			n.component(new ModelCollapser(this.taskRun, [{
+				condition: m => m.error,
+				factory: m => new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--error' }, [
+					n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+						n.component(new SimpleBar(
+							new ModelTxt(m, m => errToL10n(m.error), { className: 'routetaskruns-taskrun--steplogtxt' }),
+							{
+								className: 'routetaskruns-taskrun--stepsimplebar',
+								autoHide: false,
+							},
+						)),
+					]),
+				])),
+			}])),
+
 			// Steps
 			n.component(new ModelComponent(
-				this.taskRun,
-				new VerticalStepProgress(null,
-					(step) => {
-						let s = this.taskRunSteps.props[step.idx];
-						if (!s || step.idx > this.taskRun.currentStep) {
-							return false;
-						}
-						return s.error
-							? 'error'
-							: s.warnings?.length
-								? 'warning'
-								: true;
-					},
-					(step) => {
-						let s = this.taskRunSteps.props[step.idx];
-						return new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--step' }, [
+				this.taskRunSteps,
+				new ModelComponent(
+					this.taskRun,
+					new VerticalStepProgress(null,
+						(step) => {
+							let s = this.taskRunSteps.props[step.idx];
+							if (!s) {
+								return step.idx < this.taskRun.currentStep;
+							}
+							if (step.idx > this.taskRun.currentStep) {
+								return false;
+							}
+							return s.error
+								? 'error'
+								: s.warnings?.length
+									? 'warning'
+									: true;
+						},
+						(step) => new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--step' }, [
 							n.component(new Txt(step.name, { className: 'routetaskruns-taskrun--stepname' })),
-							n.component(s
-								? new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--stepdetails' }, [
-									// Duration
-									n.component(new ModelTxt(s, m => formatDuration(m.duration, "0ms"), { className: 'routetaskruns-taskrun--stepduration' })),
+							n.component(new ModelCollapser(this.taskRunSteps, [{
+								condition: (steps) => steps.props[step.idx],
+								factory: (steps) => {
+									let s = steps.props[step.idx];
+									return new Elem(n => n.elem('div', { className: 'routetaskruns-taskrun--stepdetails' }, [
+										// Duration
+										n.component(new ModelTxt(s, m => formatDuration(m.duration, "0ms"), { className: 'routetaskruns-taskrun--stepduration' })),
 
-									// Error
-									n.component(new ModelCollapser(s, [{
-										condition: m => m.error,
-										factory: m => new Elem(n => n.elem('div', [
-											n.component(new Txt(txtError, { className: 'routetaskruns-taskrun--stepsubtitle' })),
-											n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
-												n.component(new SimpleBar(
-													new ModelTxt(m, m => errToL10n(m.error), { className: 'routetaskruns-taskrun--steplogtxt' }),
-													{
-														className: 'routetaskruns-taskrun--stepsimplebar',
-														autoHide: false,
-													},
-												)),
-											]),
-										])),
-									}])),
+										// Error
+										n.component(new ModelCollapser(s, [{
+											condition: m => m.error,
+											factory: m => new Elem(n => n.elem('div', [
+												n.component(new Txt(txtError, { className: 'routetaskruns-taskrun--stepsubtitle' })),
+												n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+													n.component(new SimpleBar(
+														new ModelTxt(m, m => errToL10n(m.error), { className: 'routetaskruns-taskrun--steplogtxt' }),
+														{
+															className: 'routetaskruns-taskrun--stepsimplebar',
+															autoHide: false,
+														},
+													)),
+												]),
+											])),
+										}])),
 
-									// Warnings
-									n.component(new ModelCollapser(s, [{
-										condition: m => m.warnings,
-										factory: m => new Elem(n => n.elem('div', [
-											n.component(new Txt(txtWarnings, { className: 'routetaskruns-taskrun--stepsubtitle' })),
-											n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
-												n.component(new SimpleBar(
-													new ModelTxt(m, m => m.warnings?.join("\n"), { className: 'routetaskruns-taskrun--steplogtxt' }),
-													{
-														className: 'routetaskruns-taskrun--stepsimplebar',
-														autoHide: false,
-													},
-												)),
-											]),
-										])),
-									}])),
+										// Warnings
+										n.component(new ModelCollapser(s, [{
+											condition: m => m.warnings,
+											factory: m => new Elem(n => n.elem('div', [
+												n.component(new Txt(txtWarnings, { className: 'routetaskruns-taskrun--stepsubtitle' })),
+												n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+													n.component(new SimpleBar(
+														new ModelTxt(m, m => m.warnings?.join("\n"), { className: 'routetaskruns-taskrun--steplogtxt' }),
+														{
+															className: 'routetaskruns-taskrun--stepsimplebar',
+															autoHide: false,
+														},
+													)),
+												]),
+											])),
+										}])),
 
-									// Log
-									n.component(new ModelCollapser(s, [{
-										condition: m => !!m.log,
-										factory: m => new Elem(n => n.elem('div', [
-											n.component(new Txt(txtLog, { className: 'routetaskruns-taskrun--stepsubtitle' })),
-											n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
-												n.component(new SimpleBar(
-													new ModelTxt(m, m => m.log, { className: 'routetaskruns-taskrun--steplogtxt' }),
-													{
-														className: 'routetaskruns-taskrun--stepsimplebar',
-														autoHide: false,
-													},
-												)),
-											]),
-										])),
-									}])),
-								]))
-								: null,
-							),
-						]));
+										// Log
+										n.component(new ModelCollapser(s, [{
+											condition: m => !!m.log,
+											factory: m => new Elem(n => n.elem('div', [
+												n.component(new Txt(txtLog, { className: 'routetaskruns-taskrun--stepsubtitle' })),
+												n.elem('div', { className: 'routetaskruns-taskrun--steplog' }, [
+													n.component(new SimpleBar(
+														new ModelTxt(m, m => m.log, { className: 'routetaskruns-taskrun--steplogtxt' }),
+														{
+															className: 'routetaskruns-taskrun--stepsimplebar',
+															autoHide: false,
+														},
+													)),
+												]),
+											])),
+										}])),
+									]));
+								},
+							}])),
+						])),
+						{ className: 'routetaskruns-taskrun--steps' },
+					),
+					(m, c, change) => {
+						if (!change || change.hasOwnProperty('stepNames')) {
+							c.setCollection(m.stepNames.map((name, idx) => ({ name, idx })));
+						}
+						c.update();
 					},
-					{ className: 'routetaskruns-taskrun--steps' },
 				),
-				(m, c, change) => {
-					if (!change || change.hasOwnPropert('stepNames')) {
-						c.setCollection(m.stepNames.map((name, idx) => ({ name, idx })));
-					}
-					c.update();
-				},
+				(m, c, change) => change && c.getComponent().update(),
 			)),
 		]));
 

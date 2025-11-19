@@ -2,7 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
-import { getApiState } from 'utils/apiStates';
+import { getProjectState } from 'utils/projectStates';
 
 
 class RouteNodeSettingsRealmBadgeContent {
@@ -16,7 +16,7 @@ class RouteNodeSettingsRealmBadgeContent {
 			n.elem('div', { className: 'flex-1' }, [
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('routeNodeSettings.state', "State"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.realm, m => getApiState(m).text, { className: 'badge--text badge--info-morepad' })),
+					n.component(new ModelTxt(this.realm, m => getProjectState(m).text, { className: 'badge--text badge--info-morepad' })),
 				]),
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('routeNodeSettings.img', "Client"), { className: 'badge--iconcol badge--subtitle' })),

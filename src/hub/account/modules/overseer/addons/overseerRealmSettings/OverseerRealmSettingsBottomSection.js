@@ -8,7 +8,7 @@ import ModelCollapser from 'components/ModelCollapser';
 import AutoComplete from 'components/AutoComplete';
 import EnvEditor from 'components/EnvEditor';
 import l10n from 'modapp-l10n';
-import apiTypes from 'utils/apiTypes';
+import controlTypes from 'utils/controlTypes';
 
 /**
  * OverseerRealmSettingsBottomSection draws the overseer edit form bottom section
@@ -98,21 +98,21 @@ class OverseerRealmSettingsBottomSection {
 
 			n.elem('div', { className: 'common--hr' }),
 
-			// API Release
+			// Release
 			n.component(new PanelSection(
-				l10n.l('overseerRealmSettings.apiRelease', "API release"),
+				l10n.l('overseerRealmSettings.release', "Release"),
 				new ModelComponent(
 					this.realm,
 					new AutoComplete({
 						innerClassName: 'autocomplete-dark',
 						attributes: {
 							placeholder: l10n.t('overseerRealmSettings.searchRelease', "Search release (Name)"),
-							name: 'routereleases-release--apirelease',
+							name: 'routereleases-release--release',
 						},
 						events: {
 							input: (c, ev) => {
 								if (!ev.target.value) {
-									this.realm.set({ apiRelease: null });
+									this.realm.set({ release: null });
 								}
 							},
 						},
@@ -129,35 +129,35 @@ class OverseerRealmSettingsBottomSection {
 							c.setProperty('value', item.label);
 							// Get the original model.
 							let realm = this.realm.getModel();
-							this.realm.set({ apiRelease: item.id == (realm.apiRelease?.id)
-								? realm.apiRelease
+							this.realm.set({ release: item.id == (realm.release?.id)
+								? realm.release
 								: item,
 							});
 						},
 					}),
-					(m, c) => c.setProperty('value', m.apiRelease?.name || ''),
+					(m, c) => c.setProperty('value', m.release?.name || ''),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('overseerRealmSettings.apiReleaseInfo', "The release of the API that the realm containers run on. Changing it will require the containers to be updated."),
+					popupTip: l10n.l('overseerRealmSettings.releaseInfo', "The release that the realm containers run on. Changing it will require the containers to be updated."),
 				},
 			)),
 
-			// API Node
+			// Node
 			n.component(new PanelSection(
-				l10n.l('overseerRealmSettings.apiNode', "API node"),
+				l10n.l('overseerRealmSettings.node', "Node"),
 				new ModelComponent(
 					this.realm,
 					new AutoComplete({
 						innerClassName: 'autocomplete-dark',
 						attributes: {
 							placeholder: l10n.t('routeReleases.searchRelease', "Search node (Keyname)"),
-							name: 'overseerrealmsettings-apinode',
+							name: 'overseerrealmsettings-node',
 						},
 						events: {
 							input: (c, ev) => {
-								this.realm.set({ apiNode: ev.target.value });
+								this.realm.set({ node: ev.target.value });
 							},
 						},
 						fetch: (text, update) => {
@@ -171,29 +171,29 @@ class OverseerRealmSettingsBottomSection {
 						minLength: 1,
 						onSelect: (c, item) => {
 							c.setProperty('value', item.label);
-							this.realm.set({ apiNode: item.key });
+							this.realm.set({ node: item.key });
 						},
 					}),
-					(m, c) => c.setProperty('value', m.apiNode),
+					(m, c) => c.setProperty('value', m.node),
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('overseerRealmSettings.apiNodeInfo', "Server node that the realm is running on."),
+					popupTip: l10n.l('overseerRealmSettings.nodeInfo', "Server node that the realm is running on."),
 				},
 			)),
 
-			// API type
+			// Type
 			n.component(new PanelSection(
-				l10n.l('overseerRealmSettings.apiType', "API type"),
+				l10n.l('overseerRealmSettings.type', "Type"),
 				new CollectionList(
-					apiTypes,
+					controlTypes,
 					v => new ModelComponent(
 						this.realm,
 						new Elem(n => n.elem('button', {
 							events: {
 								click: () => {
-									this.realm.set({ apiType: v.key });
+									this.realm.set({ type: v.key });
 								},
 							},
 							className: 'btn tiny flex-1',
@@ -201,37 +201,37 @@ class OverseerRealmSettingsBottomSection {
 							n.component(new Txt(v.text)),
 						])),
 						(m, c) => {
-							c[v.key == m.apiType ? 'addClass' : 'removeClass']('primary');
-							c[v.key != m.apiType ? 'addClass' : 'removeClass']('darken');
+							c[v.key == m.type ? 'addClass' : 'removeClass']('primary');
+							c[v.key != m.type ? 'addClass' : 'removeClass']('darken');
 						},
 					),
 					{
 						className: 'flex-row gap8',
-						subClassName: () => 'overseerrealmsettings-bottomsection--apitype flex-row',
+						subClassName: () => 'overseerrealmsettings-bottomsection--type flex-row',
 						horizontal: true,
 					},
 				),
 				{
 					className: 'common--sectionpadding',
 					noToggle: true,
-					popupTip: l10n.l('apiTypeSettings.apiTypeInfo', "Type of API installation. A manual realm is updated and handled manually, while a node realm is controlled by the system."),
+					popupTip: l10n.l('overseerRealmSettings.typeInfo', "Type of installation. A manual realm is updated and handled manually, while a node realm is controlled by the system."),
 				},
 			)),
 
-			// Realm API version settings
+			// Realm version settings
 			n.component(new ModelCollapser(this.realm, [{
-				condition: m => m.apiType == 'manual',
+				condition: m => m.type == 'manual',
 				factory: m => new Elem(n => n.elem('div', { className: 'flex-row m pad16 ' }, [
-					// API version name
+					// Version name
 					n.component(new PanelSection(
-						l10n.l('overseerRealmSettings.apiVersionName', "API version name"),
+						l10n.l('overseerRealmSettings.apiVersionName', "API Version name"),
 						new ModelComponent(
 							this.realm,
 							new Input("", {
-								events: { input: c => this.realm.set({ apiVersionName: c.getValue() }) },
-								attributes: { name: 'overseerrealmsettings-apiversionname', spellcheck: 'false' },
+								events: { input: c => this.realm.set({ versionName: c.getValue() }) },
+								attributes: { name: 'overseerrealmsettings-versionname', spellcheck: 'false' },
 							}),
-							(m, c) => c.setValue(m.apiVersionName),
+							(m, c) => c.setValue(m.versionName),
 						),
 						{
 							className: 'flex-1 common--sectionpadding',
@@ -240,16 +240,16 @@ class OverseerRealmSettingsBottomSection {
 						},
 					)),
 
-					// API version
+					// Version
 					n.component(new PanelSection(
 						l10n.l('overseerRealmSettings.apiVersion', "API version"),
 						new ModelComponent(
 							this.realm,
 							new Input("", {
-								events: { input: c => this.realm.set({ apiVersion: c.getValue() }) },
-								attributes: { name: 'overseerrealmsettings-apiversion', spellcheck: 'false' },
+								events: { input: c => this.realm.set({ version: c.getValue() }) },
+								attributes: { name: 'overseerrealmsettings-version', spellcheck: 'false' },
 							}),
-							(m, c) => c.setValue(m.apiVersion),
+							(m, c) => c.setValue(m.version),
 						),
 						{
 							className: 'flex-1 common--sectionpadding',

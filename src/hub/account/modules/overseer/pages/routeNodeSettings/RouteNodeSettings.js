@@ -1,10 +1,12 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
+import { ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import { relistenResource } from 'utils/listenResource';
 import errToL10n from 'utils/errToL10n';
 import taskRunDone from 'utils/taskRunDone';
+import { getProjectState } from 'utils/projectStates';
 
 import RouteNodeSettingsComponent from './RouteNodeSettingsComponent';
 import './routeNodeSettings.scss';
@@ -89,8 +91,88 @@ class RouteNodeSettings {
 			order: 20,
 		});
 
+
 		this.module.routeNodes.addTool({
-			id: 'nodeSettings',
+			id: 'nodeSettings-control',
+			type: 'button',
+			sortOrder: 10,
+			className: 'flex-1',
+			componentFactory: (node) => new Elem(n => n.elem('div', { className: 'badge--select badge--select-margin' }, [
+				// Node up
+				n.elem('div', { className: 'flex-1' }, [
+					n.component(new ModelComponent(
+						node,
+						new Elem(n => n.elem('button', {
+							className: 'btn primary medium icon-left full-width',
+							events: {
+								click: (c, ev) => {
+									ev.stopPropagation();
+									this.nodeUp(node.key);
+								},
+							},
+						}, [
+							n.component(new FAIcon('play')),
+							n.component(new Txt(l10n.l('routeNodeSettings.nodeUp', "Node Up"))),
+						])),
+						(m, c) => {
+							let state = getProjectState(m);
+							c.setProperty('disabled', state.transitional ? 'disabled' : null);
+						},
+					)),
+				]),
+
+				// Node stop
+				n.elem('div', { className: 'flex-1' }, [
+					n.component(new ModelComponent(
+						node,
+						new Elem(n => n.elem('button', {
+							className: 'btn secondary medium icon-left full-width',
+							events: {
+								click: (c, ev) => {
+									ev.stopPropagation();
+									this.module.self.nodeStop(node.key);
+								},
+							},
+						}, [
+							n.component(new FAIcon('pause')),
+							n.component(new Txt(l10n.l('routeNodeSettings.nodeStop', "Node Stop"))),
+						])),
+						(m, c) => {
+							let state = getProjectState(m);
+							c.setProperty('disabled', state.transitional ? 'disabled' : null);
+						},
+					)),
+				]),
+
+				// Node down
+				n.elem('div', { className: 'flex-1' }, [
+					n.component(new ModelComponent(
+						node,
+						new Elem(n => n.elem('button', {
+							className: 'btn warning medium icon-left full-width',
+							events: {
+								click: (c, ev) => {
+									ev.stopPropagation();
+									this.module.self.nodeDown(node.key);
+								},
+							},
+						}, [
+							n.component(new FAIcon('stop')),
+							n.component(new Txt(l10n.l('routeNodeSettings.nodeDown', "Node Down"))),
+						])),
+						(m, c) => {
+							let state = getProjectState(m);
+							c.setProperty('disabled', state.transitional ? 'disabled' : null);
+						},
+					)),
+				]),
+			])),
+		});
+
+		this.module.routeNodes.addTool({
+			id: 'nodeSettings-link',
+			type: 'button',
+			sortOrder: 200,
 			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium solid', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();
@@ -192,7 +274,8 @@ class RouteNodeSettings {
 	}
 
 	dispose() {
-		this.module.router.removeRoute('nodesettings');
+		this.module.router.removeRoute('nodesettings-link');
+		this.module.router.removeRoute('nodesettings-control');
 	}
 }
 
