@@ -79,7 +79,7 @@ class RouteNodeSettings {
 		}, eventBus: this.app.eventBus });
 
 		this.module.router.addRoute({
-			id: 'nodesettings-control',
+			id: 'nodesettings',
 			hidden: true,
 			parentId: 'nodes',
 			icon: 'university',
@@ -93,7 +93,7 @@ class RouteNodeSettings {
 
 
 		this.module.routeNodes.addTool({
-			id: 'nodeSettings',
+			id: 'nodeSettings-control',
 			type: 'button',
 			sortOrder: 10,
 			className: 'flex-1',
