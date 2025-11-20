@@ -438,6 +438,17 @@ class OverseerRealmSettingsBottomSection {
 				},
 			)),
 
+			// Backup enabled
+			n.component(new ModelComponent(
+				this.realm,
+				new LabelToggleBox(l10n.l('overseerRealmSettings.backupEnabled', "Backup enabled"), false, {
+					className: 'common--formmargin flex-1',
+					onChange: (v, c) => this.realm.set({ backupEnabled: v }),
+					popupTip: l10n.l('overseerRealmSettings.backupEnabledInfo', "Activate node controlled backup of the realm. Ignored on manual realms."),
+				}),
+				(m, c) => c.setValue(m.backupEnabled, false),
+			)),
+
 			n.elem('div', { className: 'common--hr' }),
 
 			// Environment variables
