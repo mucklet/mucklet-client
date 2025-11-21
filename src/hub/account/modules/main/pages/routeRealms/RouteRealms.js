@@ -6,8 +6,9 @@ import RouteRealmsComponent from './RouteRealmsComponent';
 import './routeRealms.scss';
 
 const pathDef = [
-	[ 'realm', '$realmId' ],
+	[ 'user', '$userId', 'realm', '$realmId' ],
 	[ 'user', '$userId' ],
+	[ 'realm', '$realmId' ],
 ];
 
 
@@ -26,6 +27,7 @@ class RouteRealms {
 			'auth',
 			'confirm',
 			'toaster',
+			'mode',
 		], this._init.bind(this));
 	}
 
@@ -106,13 +108,24 @@ class RouteRealms {
 		return this;
 	}
 
+	async reloadState() {
+		return this._setState({
+			realmId: this.model.realm?.id,
+			userId: this.model.user?.id,
+		});
+	}
+
 	async _setState(params) {
 		return this.module.auth.getUserPromise()
 			.then(user => params?.userId
 				? this.module.api.get('identity.user.' + params.userId)
 				: user,
 			)
-			.then(user => this.module.api.get(`control.user.${user.id}.realms`)
+			.then(user => (
+				this.module.mode.getModel().mode == 'overseer'
+					? this.module.api.get(`control.overseer.realms`)
+					: this.module.api.get(`control.user.${user.id}.realms`)
+			)
 				.then(realms => {
 					let realm = (params?.realmId && realms.toArray().find(r => r.id == params.realmId)) || null;
 					this._setModel({ realms, realm, user: params.userId ? user : null });

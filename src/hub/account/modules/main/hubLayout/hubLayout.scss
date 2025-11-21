@@ -135,6 +135,17 @@ $hublayout-sidepanel-width: 240px;
 		bottom: 6px;
 		right: 5px;
 	}
+
+	&--modes {
+		padding-top:10px;
+		position:relative;
+		top: 10px;
+		justify-content: center;
+	}
+
+	&--mode {
+		min-width: 64px;
+	}
 }
 
 .hublayout-menuitem, .hublayout--logout {
