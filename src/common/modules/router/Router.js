@@ -370,12 +370,20 @@ class Router {
 		for (let def of pathDef) {
 			let parts = [];
 			for (let d of def) {
-				if (d.slice(0, 1) == '$') {
-					let v = params[d.slice(1)];
+				let c = d.slice(0, 1);
+				let f = d.slice(1);
+				if (c == '$') {
+					let v = params[f];
 					if (v === null || typeof v == 'undefined') {
 						continue next;
 					}
 					parts.push(v);
+				} else if (c == '!') {
+					let v = params[f];
+					if (!v) {
+						continue next;
+					}
+					parts.push(f);
 				} else {
 					parts.push(d);
 				}
@@ -390,11 +398,14 @@ class Router {
 	 * loop through the outer pathDef array and return first match. It is
 	 * considered a match if each item in the inner array matches that of the
 	 * path, or if the definition item starts with '$', in which case the part
-	 * will be stored as a parameter.
+	 * will be stored as a parameter. If the definition starts with '!' it will
+	 * match if the rest matches with the part, in which case it will set the
+	 * part as boolean true.
 	 *
 	 * Example:
 	 * [
-	 *    [ 'user', '$userId' ], // Matches path "user/42" where 42 will be stored with the key 'userId'
+	 *    [ 'user', '$userId', '!allgroups' ], // Matches path "user/42/allgroups" where 42 will be
+	 *    stored with the key 'userId', and the key 'allgroups' will be true.
 	 * ]
 	 * @param {Array.<string>} parts Array of path part strings.
 	 * @param {Array.<Array.<string>>} pathDef Path definition array.
@@ -411,8 +422,13 @@ class Router {
 			for (let i = 0; i < def.length; i++) {
 				let p = parts[i + 1];
 				let d = def[i];
-				if (d.slice(0, 1) == '$') {
-					o[d.slice(1)] = p;
+				let c = d.slice(0, 1);
+				let f = d.slice(1);
+				if (c == '$') {
+					o[f] = p;
+				} else if (c == '!') {
+					if (f != p) continue next;
+					o[f] = true;
 				} else if (d != p) {
 					continue next;
 				}

@@ -22,6 +22,7 @@ class HubLayout {
 			'router',
 			'screen',
 			'playerTools',
+			'mode',
 		], this._init.bind(this));
 	}
 

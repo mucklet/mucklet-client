@@ -1,8 +1,9 @@
 import { RootElem, Elem, Txt, Context } from 'modapp-base-component';
-import { CollectionList, ModelComponent } from 'modapp-resource-component';
+import { CollectionList, ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
+import Collapser from 'components/Collapser';
 import Hamburger from 'components/Hamburger';
 import KebabMenu from 'components/KebabMenu';
 import HubLayoutFooter from './HubLayoutFooter';
@@ -54,6 +55,40 @@ class HubLayoutComponent {
 									n.elem('div', { className: 'hublayout--profilename' }, [
 										n.component(new Txt(l10n.l('hubLayout.account', "Mucklet account"), { tagName: 'h2' })),
 									]),
+
+									// Active mode switch
+									n.component(new CollectionComponent(
+										this.module.mode.getModes(),
+										new Collapser(),
+										(col, c) => c.setComponent(col.length > 1
+											? c.getComponent() || new CollectionList(
+												this.module.mode.getModes(),
+												(mode) => new ModelComponent(
+													this.module.mode.getModel(),
+													new Elem(n => n.elem('button', {
+														className: 'hublayout--mode btn tiny',
+														events: {
+															click: (c, ev) => {
+																ev.stopPropagation();
+																this.module.mode.setMode(mode.key);
+															},
+														},
+													}, [
+														n.component(new Txt(mode.name)),
+													])),
+													(m, c) => {
+														c[m.mode == mode.key ? 'addClass' : 'removeClass']('primary');
+														c[m.mode != mode.key ? 'addClass' : 'removeClass']('darken');
+													},
+												),
+												{
+													className: 'hublayout--modes flex-row sm gap8',
+													horizontal: true,
+												},
+											)
+											: null,
+										),
+									)),
 								]),
 							]),
 							n.elem('div', { className: 'hublayout--panelmain' }, [
