@@ -1,5 +1,6 @@
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PageCharSettingsComponent from './PageCharSettingsComponent';
 import './pageCharSettings.scss';
 
@@ -25,7 +26,7 @@ class PageCharSettings {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 	}

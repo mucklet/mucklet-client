@@ -1,8 +1,9 @@
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import TokenList from 'classes/TokenList';
 import ListStep from 'classes/ListStep';
 import RepeatStep from 'classes/RepeatStep';
 import l10n from 'modapp-l10n';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import HelpComponent from './HelpComponent';
 import HelpCategory from './HelpCategory';
 import HelpTopic from './HelpTopic';
@@ -284,7 +285,7 @@ class Help {
 
 		this.categories = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 
@@ -295,7 +296,7 @@ class Help {
 		// External (other modules) help
 		this.sources = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 
@@ -377,7 +378,7 @@ class Help {
 		}
 		let topics = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		category = {

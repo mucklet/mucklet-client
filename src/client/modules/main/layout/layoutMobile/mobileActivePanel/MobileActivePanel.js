@@ -1,6 +1,7 @@
 import { Elem } from 'modapp-base-component';
-import { Collection, Model, sortOrderCompare } from 'modapp-resource';
+import { Collection, Model } from 'modapp-resource';
 import Fader from 'components/Fader';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import MobileActivePanelPlaceholder from './MobileActivePanelPlaceholder';
 import './mobileActivePanel.scss';
 
@@ -41,7 +42,7 @@ class MobileActivePanel {
 
 		this.overlays = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.renderedOverlays = {};

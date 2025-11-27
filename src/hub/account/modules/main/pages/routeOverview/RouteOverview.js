@@ -1,6 +1,7 @@
-import { Collection, Model, sortOrderCompare } from 'modapp-resource';
+import { Collection, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 
 import RouteOverviewComponent from './RouteOverviewComponent';
 import './routeOverview.scss';
@@ -31,7 +32,7 @@ class RouteOverview {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

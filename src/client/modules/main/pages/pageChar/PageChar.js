@@ -1,5 +1,6 @@
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PageCharComponent from './PageCharComponent';
 import PageCharSleep from './PageCharSleep';
 import './pageChar.scss';
@@ -18,7 +19,7 @@ class PageChar {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.module.charPages.setDefaultPageFactory((ctrl, char, state) => ({

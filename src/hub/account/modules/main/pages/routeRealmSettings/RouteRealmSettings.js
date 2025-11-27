@@ -1,9 +1,10 @@
 import { Elem } from 'modapp-base-component';
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import { relistenResource } from 'utils/listenResource';
 import { hasIdRoles } from 'utils/idRoles';
+import compareSortOrderId from 'utils/compareSortOrderId';
 
 import RouteRealmSettingsComponent from './RouteRealmSettingsComponent';
 import './routeRealmSettings.scss';
@@ -41,7 +42,7 @@ class RouteRealmSettings {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

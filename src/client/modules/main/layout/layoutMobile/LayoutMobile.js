@@ -1,5 +1,6 @@
 import Fader from 'components/Fader';
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import LayoutMobileComponent from './LayoutMobileComponent';
 import './layoutMobile.scss';
 
@@ -24,7 +25,7 @@ class LayoutMobile {
 
 		this.overlays = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

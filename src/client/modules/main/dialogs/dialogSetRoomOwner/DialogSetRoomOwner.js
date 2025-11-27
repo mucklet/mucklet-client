@@ -41,7 +41,7 @@ class DialogSetRoomOwner {
 					l10n.l('dialogSetRoomOwner.newOwner', "New owner"),
 					new AutoComplete({
 						className: 'dialog--input dialog--incomplete',
-						attributes: { placeholder: l10n.t('dialogSetRoomOwner.selectAChar', "Search for an new owner"), spellcheck: 'false' },
+						attributes: { placeholder: l10n.t('dialogSetRoomOwner.selectAChar', "Search for a new owner"), spellcheck: 'false' },
 						fetch: (text, update, c) => {
 							model.set({ owner: null });
 							c.addClass('dialog--incomplete');
