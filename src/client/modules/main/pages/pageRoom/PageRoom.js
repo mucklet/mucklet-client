@@ -1,4 +1,5 @@
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import PageRoomExits from './PageRoomExits';
@@ -28,7 +29,7 @@ class PageRoom {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.module.roomPages.setDefaultRoomPageFactory({

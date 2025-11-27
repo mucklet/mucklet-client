@@ -1,5 +1,5 @@
 import { Html } from 'modapp-base-component';
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
 import { StreamLanguage, StringStream } from '@codemirror/language';
 import l10n from 'modapp-l10n';
 import ItemList from 'classes/ItemList';
@@ -8,6 +8,7 @@ import ErrorStep from 'classes/ErrorStep';
 import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 import { getToken } from 'utils/codemirror';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import { mergeCompleteResults, offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import cmdParser from './cmdParser';
 import cmdHighlightStyle from './cmdHighlightStyle';
@@ -44,12 +45,12 @@ class Cmd {
 		this.module = module;
 		this.notFoundHandlers = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.cmdHandlers = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.cmdHandlerSteps = {};

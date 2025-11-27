@@ -1,4 +1,5 @@
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import EditorLayoutComponent from './EditorLayoutComponent';
 import './editorLayout.scss';
 
@@ -27,7 +28,7 @@ class EditorLayout {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.authModel = this.module.auth.getModel();

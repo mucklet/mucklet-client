@@ -1,8 +1,9 @@
 import { Elem } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
-import { Collection, Model, sortOrderCompare } from 'modapp-resource';
+import { Collection, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PagePlayerSettingsComponent from './PagePlayerSettingsComponent';
 import './pagePlayerSettings.scss';
 
@@ -34,7 +35,7 @@ class PagePlayerSettings {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

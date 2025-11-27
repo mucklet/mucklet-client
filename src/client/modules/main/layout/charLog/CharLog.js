@@ -1,10 +1,11 @@
 import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import {
 	msgEvent,
 	sayEvent,
@@ -119,17 +120,17 @@ class CharLog {
 		this.unseenTargeted = new Model({ eventBus: this.app.eventBus });
 		this.menuItems = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.overlays = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.modifiers = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 
@@ -403,7 +404,7 @@ class CharLog {
 	 * Registers a char log overlay component.
 	 * @param {object} overlay Overlay object
 	 * @param {string} overlay.id Overlay ID.
-	 * @param {number} overlay.sortOrder Sort order.
+	 * @param {number} [overlay.sortOrder] Sort order. Will default to localeCompare sorting by id.
 	 * @param {function} overlay.componentFactory Overlay component factory: function(ctrl) -> Component
 	 * @returns {this}
 	 */
