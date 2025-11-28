@@ -1,9 +1,11 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
+import Fader from 'components/Fader';
 import ModelCollapser from 'components/ModelCollapser';
+import ProjectState from 'components/ProjectState';
 import formatDateTime from 'utils/formatDateTime';
-import apiStates, { getApiState } from 'utils/apiStates';
 import RouteRealmsRealmBadgeContent from './RouteRealmsRealmBadgeContent';
 
 
@@ -15,6 +17,8 @@ class RouteRealmsRealmBadge {
 	}
 
 	render(el) {
+		let updateFader = new Fader();
+
 		this.elem = new Elem(n => n.elem('badge', 'div', {
 			className: 'routerealms-realmbadge badge dark large btn',
 			events: {
@@ -44,22 +48,30 @@ class RouteRealmsRealmBadge {
 							n.component(new ModelTxt(this.realm, m => formatDateTime(new Date(m.created), { showYear: true }))),
 						]),
 					]),
-					n.component(new ModelComponent(
-						this.realm,
-						new Elem(n => n.elem('div', { className: 'routerealms-realmbadge--state badge--nowrap flex-1' }, [
-							n.component('icon', new FAIcon('circle', { className: 'routerealms-realmbadge--stateicon' })),
-							n.html('&nbsp;&nbsp;'),
-							n.component('txt', new Txt('', { className: 'badge--text' })),
-						])),
-						(m, c) => {
-							let state = getApiState(m);
-							c.getNode('txt').setText(state.text);
-							let icon = c.getNode('icon');
-							for (let s of apiStates) {
-								icon[state == s ? 'addClass' : 'removeClass'](s.className);
-							}
-						},
-					)),
+
+					// Realm state
+					n.elem('div', { className: 'routerealms-realmbadge--state flex-row' }, [
+						n.elem('div', { className: 'badge--nowrap flex-1' }, [
+							n.component(new ProjectState(this.realm, {
+								size: 'small',
+							})),
+						]),
+						// Update required
+						n.elem('div', { className: 'routerealms-realmbadge--updaterequired badge--nowrap flex-auto' }, [
+							n.component(new ModelComponent(
+								this.realm,
+								new ModelComponent(
+									null,
+									updateFader,
+									(m, c, change) => change && this._setUpdateFader(updateFader),
+								),
+								(m, c, change) => {
+									c.setModel(m.composition);
+									this._setUpdateFader(updateFader);
+								},
+							)),
+						]),
+					]),
 				]),
 			]),
 			n.component(new ModelCollapser(this.model, [{
@@ -75,6 +87,18 @@ class RouteRealmsRealmBadge {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_setUpdateFader(fader) {
+		let show = this.realm.state != 'offline' &&
+			this.realm.type == 'node' &&
+			this.realm.composition &&
+			this.realm.composition.configHash != this.realm.configHash;
+
+		fader.setComponent(show
+			? fader.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"))
+			: null,
+		);
 	}
 }
 

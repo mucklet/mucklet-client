@@ -18,13 +18,12 @@
 	}
 
 	&--state {
-		> * {
-			line-height: 20px;
-			font-size: $font-size-small;
-		}
+		line-height: 20px;
 	}
-	&--stateicon {
-		font-size: $font-size-tiny;
+
+	&--updaterequired {
+		color: $color5;
+		font-size: $font-size-small;
 	}
 }
 
@@ -33,5 +32,11 @@
 	&--desc {
 		padding: 2px 0;
 		font-size: $font-size;
+	}
+
+	&--tools {
+		display: flex;
+		flex-direction: row;
+		column-gap: 4px;
 	}
 }

@@ -1,5 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
-import { ModelComponent, ModelTxt } from 'modapp-resource-component';
+import { Elem, Txt, Context } from 'modapp-base-component';
+import { ModelComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
+import { CollectionWrapper } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
@@ -32,7 +33,7 @@ class RouteRealmsRealmBadgeContent {
 				]),
 				n.elem('div', { className: 'badge--select' }, [
 					n.component(new Txt(l10n.l('routeRealms.version', "Version"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.realm, m => m.apiVersionName, { className: 'badge--text badge--info-morepad' })),
+					n.component(new ModelTxt(this.realm, m => m.versionName, { className: 'badge--text badge--info-morepad' })),
 				]),
 			]),
 			n.elem('div', { className: 'badge--select badge--select-margin' }, [
@@ -57,17 +58,29 @@ class RouteRealmsRealmBadgeContent {
 						}]),
 						(m, c) => c.setModel(m?.next),
 					),
-					(m, c) => c.setModel(m?.apiRelease),
+					(m, c) => c.setModel(m?.release),
 				)),
-				// Settings
-				n.elem('button', { className: 'iconbtn medium', events: {
-					click: (c, ev) => {
-						ev.stopPropagation();
-						this.module.routeRealmSettings.setRoute({ realmId: this.realm.id });
-					},
-				}}, [
-					n.component(new FAIcon('cog')),
-				]),
+				// Button tools
+				n.component(new Context(
+					() => new CollectionWrapper(this.module.self.getTools(), {
+						filter: t => (!t.type || t.type == 'button') && (!t.condition || t.condition(this.realm)),
+					}),
+					tools => tools.dispose(),
+					tools => new ModelComponent(
+						this.realm,
+						new CollectionList(
+							tools,
+							t => t.componentFactory(this.realm),
+							{
+								className: 'routerealms-realmbadgecontent--tools',
+								subClassName: t => t.className || null,
+								horizontal: true,
+							},
+						),
+						(m, c, change) => change && tools.refresh(), // Refresh because the filter conditions might have changed.
+					),
+				)),
+
 			]),
 		]));
 		this.elem.render(el);

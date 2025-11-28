@@ -4,18 +4,19 @@ import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Dialog from 'classes/Dialog';
 import Collapser from 'components/Collapser';
-import AutoComplete from 'components/AutoComplete';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
-import labelCompare from 'utils/labelCompare';
-import patternMatch, { patternMatchRender } from 'utils/patternMatch';
 import './dialogDeleteChar.scss';
 
 class DialogDeleteChar {
 	constructor(app, params) {
 		this.app = app;
 
-		this.app.require([ 'api', 'player' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'player',
+			'searchChar',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -72,29 +73,14 @@ class DialogDeleteChar {
 							]),
 							n.component('heir', new PanelSection(
 								l10n.l('dialogDeleteChar.characterHeir', "Character heir"),
-								new AutoComplete({
-									className: 'dialog--input dialog--incomplete',
-									attributes: { placeholder: l10n.t('dialogDeleteChar.selectAChar', "Search for an heir"), spellcheck: 'false' },
-									fetch: (text, update, c) => {
-										model.set({ heir: null });
-										c.addClass('dialog--incomplete');
-										let list = ownedChars.toArray()
-											.filter(m => m.id != char.id && patternMatch((m.name + " " + m.surname).trim(), text))
-											.map(m => ({ value: m.id, label: (m.name + " " + m.surname).trim() }))
-											.sort(labelCompare);
-										update(list);
-									},
-									events: { blur: c => {
-										if (!model.heir) {
-											c.setProperty('value', "");
-										}
-									} },
-									render: patternMatchRender,
-									minLength: 1,
-									onSelect: (c, item) => {
-										c.removeClass('dialog--incomplete');
-										model.set({ heir: item.value });
-										c.setProperty('value', item.label);
+								this.module.searchChar.newSearchChar({
+									ownedChars: true,
+									excludeChars: [ char.id ],
+									placeholder: l10n.l('dialogDeleteChar.selectAChar', "Search for an heir"),
+									onSelect: (char) => model.set({ heir: char.id }),
+									events: {
+										input: (c, ev) => model.set({ heir: null }),
+										blur: c => !model.heir && c.setProperty('value', ""),
 									},
 								}),
 								{

@@ -1,9 +1,9 @@
-import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import { Elem } from 'modapp-base-component';
+import { ModelTxt } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
+import ProjectState from 'components/ProjectState';
 import formatDateTime from 'utils/formatDateTime';
-import apiStates, { getApiState } from 'utils/apiStates';
 import RouteNodesNodeBadgeContent from './RouteNodesNodeBadgeContent';
 
 
@@ -40,22 +40,13 @@ class RouteNodesNodeBadge {
 							n.component(new ModelTxt(this.node, m => formatDateTime(new Date(m.created), { showYear: true }))),
 						]),
 					]),
-					n.component(new ModelComponent(
-						this.node,
-						new Elem(n => n.elem('div', { className: 'routenodes-nodebadge--state badge--nowrap flex-1' }, [
-							n.component('icon', new FAIcon('circle', { className: 'routenodes-nodebadge--stateicon' })),
-							n.html('&nbsp;&nbsp;'),
-							n.component('txt', new Txt('', { className: 'badge--text' })),
-						])),
-						(m, c) => {
-							let state = getApiState(m, 'state');
-							c.getNode('txt').setText(state.text);
-							let icon = c.getNode('icon');
-							for (let s of apiStates) {
-								icon[state == s ? 'addClass' : 'removeClass'](s.className);
-							}
-						},
-					)),
+
+					// Node state
+					n.elem('div', { className: 'routenodes-nodebadge--state badge--nowrap flex-1' }, [
+						n.component(new ProjectState(this.node, {
+							size: 'small',
+						})),
+					]),
 				]),
 			]),
 			n.component(new ModelCollapser(this.model, [{

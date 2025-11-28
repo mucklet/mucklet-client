@@ -16,19 +16,20 @@ import {
 	bodyEnd,
 	htmlEnd,
 
-	sayStyle,
+	defaultStyle,
+	tagStyle,
+	labelStyle,
 	controlStyle,
 	controlBorderStyle,
 	describeStyle,
 	infoStyle,
-	whisperStyle,
 	actionStyle,
 	travelRoomStyle,
 	summonStyle,
-	warnStyle,
 	warnFieldsetStyle,
 	warnFieldsetLabelStyle,
-	dndStyle,
+	helpmeFieldsetStyle,
+	helpmeFieldsetLabelStyle,
 } from './htmlTemplate';
 
 class ExportLog {
@@ -47,7 +48,9 @@ class ExportLog {
 		this.eventTypes = {};
 
 		const eventTypes = {
-			info: { style: infoStyle },
+			action: { style: actionStyle },
+			address: { style: defaultStyle },
+			arrive: { style: actionStyle },
 			control: {
 				converter: (charId, ev) => this._charLogConverter(charId, ev, { noButton: true }),
 				style: {
@@ -55,32 +58,9 @@ class ExportLog {
 					'.ev-control--border': controlBorderStyle,
 				},
 			},
-			say: { style: sayStyle },
-			pose: { style: sayStyle },
-			wakeup: { style: actionStyle },
-			sleep: { style: actionStyle },
-			leave: { style: actionStyle },
-			arrive: { style: actionStyle },
-			travel: { style: {
-				'.ev-travel': actionStyle,
-				'.ev-travel--room': travelRoomStyle,
-			}},
-			whisper: { style: whisperStyle },
-			message: { style: whisperStyle },
 			describe: { style: describeStyle },
-			summon: {
-				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
-				style: summonStyle,
-			},
-			join: {
-				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
-				style: summonStyle,
-			},
+			dnd: { style: labelStyle },
 			follow: {
-				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
-				style: summonStyle,
-			},
-			leadRequest: {
 				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
 				style: summonStyle,
 			},
@@ -88,18 +68,46 @@ class ExportLog {
 				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
 				style: summonStyle,
 			},
-			stopLead: { style: summonStyle },
+			helpme: { style: {
+				'.ev-helpme': labelStyle,
+				'.ev-helpme .charlog--fieldset': helpmeFieldsetStyle,
+				'.ev-helpme .charlog--fieldset-label': helpmeFieldsetLabelStyle,
+			}},
+			info: { style: infoStyle },
+			join: {
+				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
+				style: summonStyle,
+			},
+			leadRequest: {
+				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
+				style: summonStyle,
+			},
+			leave: { style: actionStyle },
+			mail: { style: labelStyle },
+			message: { style: labelStyle },
+			ooc: { style: defaultStyle },
+			pose: { style: defaultStyle },
+			privateDescribe: { style: labelStyle },
+			roll: { style: tagStyle },
+			say: { style: defaultStyle },
+			sleep: { style: actionStyle },
 			stopFollow: { style: summonStyle },
-			ooc: { style: sayStyle },
+			stopLead: { style: summonStyle },
+			summon: {
+				converter: (charId, ev) => this._charLogConverter(charId, ev, { noCode: true }),
+				style: summonStyle,
+			},
+			travel: { style: {
+				'.ev-travel': actionStyle,
+				'.ev-travel--room': travelRoomStyle,
+			}},
+			wakeup: { style: actionStyle },
 			warn: { style: {
-				'.ev-warn': warnStyle,
+				'.ev-warn': labelStyle,
 				'.ev-warn .charlog--fieldset': warnFieldsetStyle,
 				'.ev-warn .charlog--fieldset-label': warnFieldsetLabelStyle,
 			}},
-			action: { style: actionStyle },
-			mail: { style: whisperStyle },
-			address: { style: sayStyle },
-			dnd: { style: dndStyle },
+			whisper: { style: labelStyle },
 		};
 
 		for (let k in eventTypes) {

@@ -18,19 +18,18 @@
 	&--realm {
 		padding-top: 6px;
 	}
+
+	&--updaterequired {
+		color: $color5;
+		font-size: $font-size-small;
+		position: relative;
+		top: -6px;
+		padding-bottom: 6px;
+		display: block;
+	}
 }
 
-.routenodesettings-realmbadge {
-
-	&--key {
-		padding-right: 6px;
-	}
-
-	&--stateicon {
-		font-size: $font-size-tiny;
-	}
-
-}
+// .routenodesettings-realmbadge {}
 
 .routenodesettings-realmbadgecontent {
 	&--error.badge--error {

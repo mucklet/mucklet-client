@@ -8,8 +8,9 @@ import Collapser from 'components/Collapser';
 import ModelFader from 'components/ModelFader';
 import AutoComplete from 'components/AutoComplete';
 import EnvEditor from 'components/EnvEditor';
+import ProjectState from 'components/ProjectState';
 import l10n from 'modapp-l10n';
-import apiStates, { getApiState } from 'utils/apiStates';
+import { getProjectState } from 'utils/projectStates';
 import errString from 'utils/errString';
 import RouteNodeSettingsRealmBadge from './RouteNodeSettingsRealmBadge';
 
@@ -26,6 +27,8 @@ class RouteNodeSettingsNode {
 
 	render(el) {
 		this.messageComponent = new Collapser();
+		let updateCollapser = new Collapser();
+
 		this.elem = new Context(
 			() => new ModifyModel(this.node, {
 				eventBus: this.module.self.app.eventBus,
@@ -58,23 +61,24 @@ class RouteNodeSettingsNode {
 
 				// Node state
 				n.elem('div', { className: 'common--sectionpadding' }, [
-					n.component(new ModelComponent(
-						this.node,
-						new Elem(n => n.elem('div', [
-							n.component('icon', new FAIcon('circle')),
-							n.html('&nbsp;&nbsp;'),
-							n.component('txt', new Txt('')),
-						])),
-						(m, c) => {
-							let state = getApiState(m, 'state');
-							c.getNode('txt').setText(state.text);
-							let icon = c.getNode('icon');
-							for (let s of apiStates) {
-								icon[state == s ? 'addClass' : 'removeClass'](s.className);
-							}
-						},
-					)),
+					n.component(new ProjectState(this.node, {
+						size: 'medium',
+					})),
 				]),
+
+				// Update required
+				n.component(new ModelComponent(
+					this.node,
+					new ModelComponent(
+						null,
+						updateCollapser,
+						(m, c, change) => change && this._setUpdateCollapser(updateCollapser),
+					),
+					(m, c, change) => {
+						c.setModel(m.composition);
+						this._setUpdateCollapser(updateCollapser);
+					},
+				)),
 
 				// Node node action buttons
 				 n.elem('div', { className: 'flex-row m pad16' }, [
@@ -85,15 +89,15 @@ class RouteNodeSettingsNode {
 							new Elem(n => n.elem('button', {
 								className: 'btn primary small icon-left common--btnwidth',
 								events: {
-									click: () => this._callNode('up'),
+									click: () => this.module.self.nodeUp(this.node.key),
 								},
 							}, [
 								n.component(new FAIcon('play')),
 								n.component(new Txt(l10n.l('routeNodeSettings.nodeUp', "Node Up"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m, 'state');
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								let state = getProjectState(m);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -105,15 +109,15 @@ class RouteNodeSettingsNode {
 							new Elem(n => n.elem('button', {
 								className: 'btn secondary small icon-left common--btnwidth',
 								events: {
-									click: () => this._callNode('stop'),
+									click: () => this.module.self.nodeStop(this.node.key),
 								},
 							}, [
 								n.component(new FAIcon('pause')),
 								n.component(new Txt(l10n.l('routeNodeSettings.nodeStop', "Node Stop"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m, 'state');
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								let state = getProjectState(m);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -125,15 +129,15 @@ class RouteNodeSettingsNode {
 							new Elem(n => n.elem('button', {
 								className: 'btn warning small icon-left common--btnwidth',
 								events: {
-									click: () => this._callNode('down'),
+									click: () => this.module.self.nodeDown(this.node.key),
 								},
 							}, [
 								n.component(new FAIcon('stop')),
 								n.component(new Txt(l10n.l('routeNodeSettings.nodeDown', "Node Down"))),
 							])),
 							(m, c) => {
-								let state = getApiState(m, 'state');
-								c.setProperty('disabled', state.transitional ? 'disabled' : null);
+								let state = getProjectState(m);
+								c.setProperty('disabled', state.transitional || m.taskRun ? 'disabled' : null);
 							},
 						)),
 					]),
@@ -392,6 +396,17 @@ class RouteNodeSettingsNode {
 	_callNode(method, params) {
 		return this.module.api.call(`control.overseer.node.${this.node.key}`, method, params)
 			.catch(err => this.module.confirm.openError(err));
+	}
+
+	_setUpdateCollapser(collapser) {
+		let show = this.node.state != 'offline' &&
+			this.node.composition &&
+			this.node.composition.configHash != this.node.configHash;
+
+		collapser.setComponent(show
+			? collapser.getComponent() || new Txt(l10n.l('routeNodeSettings.updateRequired', "Update required"), { className: 'routenodesettings-node--updaterequired' })
+			: null,
+		);
 	}
 }
 

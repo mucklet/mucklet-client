@@ -1,0 +1,37 @@
+@import '~scss/variables';
+
+.taskrunstates {
+	&-- {
+		// &none, &queued {
+		// 	color: $color4-darker !important;
+		// }
+		&running:not(.bg) {
+			color: $color6 !important;
+		}
+		&success:not(.bg) {
+			color: $green !important;
+		}
+		&warning:not(.bg) {
+			color: $color2 !important;
+		}
+		&error:not(.bg) {
+			color: $color5 !important;
+		}
+
+		// &none, &queued {
+		// 	background: $color4-darker !important;
+		// }
+		&running.bg {
+			background: $color6 !important;
+		}
+		&success.bg {
+			background: $green !important;
+		}
+		&warning.bg {
+			background: $color2 !important;
+		}
+		&error.bg {
+			background: $color5 !important;
+		}
+	}
+}

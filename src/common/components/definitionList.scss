@@ -1,0 +1,31 @@
+@import '~scss/variables';
+
+.definitionlist {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	column-gap: 20px;
+	row-gap: 12px;
+
+	> div {
+		min-width: 64px;
+		white-space: nowrap;
+    	overflow: hidden;
+
+		> dt {
+			font-size: $font-size-small;
+			color: $color2;
+		}
+		> dd {
+			font-size: $font-size-tiny;
+			color: $color4-light;
+
+			> .fa {display:inline-block;
+				min-width: 16px;
+    			text-align: center;
+				margin-right: 6px;
+			}
+		}
+	}
+
+}

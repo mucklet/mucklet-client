@@ -1,8 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
-import { ModelComponent } from 'modapp-resource-component';
-import FAIcon from 'components/FAIcon';
-import l10n from 'modapp-l10n';
-import { getApiState } from 'utils/apiStates';
+import { Context, Elem } from 'modapp-base-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { CollectionWrapper } from 'modapp-resource';
 
 class RouteNodesNodeBadgeContent {
 	constructor(module, node) {
@@ -11,83 +9,28 @@ class RouteNodesNodeBadgeContent {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'routenodes-nodebadgecontent badge--margin badge--select badge--select-margin' }, [
-			// Node up
-			n.elem('div', { className: 'flex-1' }, [
-				n.component(new ModelComponent(
+		this.elem = new Elem(n => n.elem('div', { className: 'routenodes-nodebadgecontent badge--margin badge--select' }, [
+			// Button tools
+			n.component(new Context(
+				() => new CollectionWrapper(this.module.self.getTools(), {
+					filter: t => (!t.type || t.type == 'button') && (!t.condition || t.condition(this.node)),
+				}),
+				tools => tools.dispose(),
+				tools => new ModelComponent(
 					this.node,
-					new Elem(n => n.elem('button', {
-						className: 'btn primary medium icon-left full-width',
-						events: {
-							click: (c, ev) => {
-								ev.stopPropagation();
-								this._callNode('up');
-							},
+					new CollectionList(
+						tools,
+						t => t.componentFactory(this.node),
+						{
+							className: 'routenodes-nodebadgecontent--tools flex-1',
+							subClassName: t => t.className || null,
+							horizontal: true,
 						},
-					}, [
-						n.component(new FAIcon('play')),
-						n.component(new Txt(l10n.l('routeNodeSettings.nodeUp', "Node Up"))),
-					])),
-					(m, c) => {
-						let state = getApiState(m, 'state');
-						c.setProperty('disabled', state.transitional ? 'disabled' : null);
-					},
-				)),
-			]),
+					),
+					(m, c, change) => change && tools.refresh(), // Refresh because the filter conditions might have changed.
+				),
+			)),
 
-			// Node stop
-			n.elem('div', { className: 'flex-1' }, [
-				n.component(new ModelComponent(
-					this.node,
-					new Elem(n => n.elem('button', {
-						className: 'btn secondary medium icon-left full-width',
-						events: {
-							click: (c, ev) => {
-								ev.stopPropagation();
-								this._callNode('stop');
-							},
-						},
-					}, [
-						n.component(new FAIcon('pause')),
-						n.component(new Txt(l10n.l('routeNodeSettings.nodeStop', "Node Stop"))),
-					])),
-					(m, c) => {
-						let state = getApiState(m, 'state');
-						c.setProperty('disabled', state.transitional ? 'disabled' : null);
-					},
-				)),
-			]),
-
-			// Node down
-			n.elem('div', { className: 'flex-1' }, [
-				n.component(new ModelComponent(
-					this.node,
-					new Elem(n => n.elem('button', {
-						className: 'btn warning medium icon-left full-width',
-						events: {
-							click: (c, ev) => {
-								ev.stopPropagation();
-								this._callNode('down');
-							},
-						},
-					}, [
-						n.component(new FAIcon('stop')),
-						n.component(new Txt(l10n.l('routeNodeSettings.nodeDown', "Node Down"))),
-					])),
-					(m, c) => {
-						let state = getApiState(m, 'state');
-						c.setProperty('disabled', state.transitional ? 'disabled' : null);
-					},
-				)),
-			]),
-			n.elem('button', { className: 'iconbtn medium solid', events: {
-				click: (c, ev) => {
-					ev.stopPropagation();
-					this.module.routeNodeSettings.setRoute({ nodeKey: this.node.key });
-				},
-			}}, [
-				n.component(new FAIcon('cog')),
-			]),
 		]));
 		this.elem.render(el);
 	}
@@ -97,11 +40,6 @@ class RouteNodesNodeBadgeContent {
 			this.elem.unrender();
 			this.elem = null;
 		}
-	}
-
-	_callNode(method, params) {
-		return this.module.api.call(`control.overseer.node.${this.node.key}`, method, params)
-			.catch(err => this.module.confirm.openError(err));
 	}
 }
 

@@ -14,19 +14,19 @@ class NodeContainersBadgeContent {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'nodecontainers-containerbadgecontent badge--margin badge--info' }, [
-			n.elem('div', { className: 'badge--select' }, [
+			n.elem('div', { className: 'badge--select badge--select-gap' }, [
 				n.component(new Txt(l10n.l('nodeContainers.state', "State"), { className: 'badge--iconcol badge--subtitle' })),
-				n.component(new ModelTxt(this.container, m => getContainerState(m).text, { className: 'badge--text badge--info-morepad' })),
+				n.component(new ModelTxt(this.container, m => getContainerState(m).text, { className: 'badge--text' })),
 			]),
-			n.elem('div', { className: 'badge--select' }, [
+			n.elem('div', { className: 'badge--select badge--select-gap' }, [
 				n.component(new Txt(l10n.l('nodeContainers.img', "Img"), { className: 'badge--iconcol badge--subtitle' })),
-				n.component(new ModelTxt(this.container, m => m.image, { className: 'badge--text badge--info-morepad' })),
+				n.component(new ModelTxt(this.container, m => m.image, { className: 'badge--text' })),
 			]),
 			n.component(new ModelCollapser(this.container, [{
 				condition: m => m.error,
-				factory: m => new Elem(n => n.elem('div', { className: 'badge--select' }, [
+				factory: m => new Elem(n => n.elem('div', { className: 'badge--select badge--select-gap' }, [
 					n.component(new Txt(l10n.l('nodeContainers.err', "Error"), { className: 'badge--iconcol badge--subtitle' })),
-					n.component(new ModelTxt(this.container, m => errToL10n(m.error), { className: 'nodecontainers-containerbadgecontent--error badge--error badge--info-morepad' })),
+					n.component(new ModelTxt(this.container, m => errToL10n(m.error), { className: 'nodecontainers-containerbadgecontent--error badge--error' })),
 				])),
 			}])),
 		]));

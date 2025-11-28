@@ -1,7 +1,8 @@
 import { Elem } from 'modapp-base-component';
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PageEditCharComponent from './PageEditCharComponent';
 import './pageEditChar.scss';
 
@@ -31,7 +32,7 @@ class PageEditChar {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

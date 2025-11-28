@@ -1,6 +1,7 @@
-import { Model } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 
 import RouteNodesComponent from './RouteNodesComponent';
 import './routeNodes.scss';
@@ -23,7 +24,6 @@ class RouteNodes {
 			'router',
 			'routeError',
 			'auth',
-			'routeNodeSettings',
 			'confirm',
 		], this._init.bind(this));
 	}
@@ -37,6 +37,12 @@ class RouteNodes {
 			user: null,
 			error: null,
 		}, eventBus: this.app.eventBus });
+
+		this.tools = new Collection({
+			idAttribute: m => m.id,
+			compare: compareSortOrderId,
+			eventBus: this.app.eventBus,
+		});
 
 		this.module.router.addRoute({
 			id: 'nodes',
@@ -58,6 +64,44 @@ class RouteNodes {
 	 */
 	setRoute(params) {
 		this.module.router.setRoute('nodes', params);
+	}
+
+	/**
+	 * Gets a collection of tools.
+	 * @returns {Collection} Collection of tools.
+	 */
+	getTools() {
+		return this.tools;
+	}
+
+	/**
+	 * Registers an node component tool.
+	 * @param {object} tool Tool object
+	 * @param {string} tool.id Tool ID.
+	 * @param {number} tool.sortOrder Sort order.
+	 * @param {(node: NodeModel) => Component} tool.componentFactory Tool component factory.
+	 * @param {string} [tool.type] Target type. May be 'button'. Defaults to 'button'.
+	 * @param {string} [tool.className] Class to give to the list item container.
+	 * @returns {this}
+	 */
+	addTool(tool) {
+		if (this.tools.get(tool.id)) {
+			throw new Error("Tool ID already registered: ", tool.id);
+		}
+		this.tools.add(tool);
+		return this;
+	}
+
+	/**
+	 * Unregisters a previously registered tool.
+	 * @param {string} toolId Tool ID.
+	 * @returns {this}
+	 */
+	removeTool(toolId) {
+		let tool = this.tools.get(toolId);
+		this._listenTool(tool, false);
+		this.tools.remove(toolId);
+		return this;
 	}
 
 	async _setState(params) {

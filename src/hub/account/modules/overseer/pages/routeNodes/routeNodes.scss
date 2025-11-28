@@ -18,13 +18,7 @@
 	}
 
 	&--state {
-		> * {
-			line-height: 20px;
-			font-size: $font-size-small;
-		}
-	}
-	&--stateicon {
-		font-size: $font-size-tiny;
+		line-height: 20px;
 	}
 }
 
@@ -36,5 +30,13 @@
 
 	&--listitem {
 		padding: 3px 0;
+	}
+}
+
+.routenodes-nodebadgecontent {
+	&--tools {
+		display: flex;
+		flex-direction: row;
+		column-gap: 6px;
 	}
 }

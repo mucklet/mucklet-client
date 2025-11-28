@@ -1,5 +1,6 @@
 import { Elem } from 'modapp-base-component';
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import Fader from 'components/Fader';
 import './layout.scss';
 
@@ -31,7 +32,7 @@ class Layout {
 
 		this.layouts = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

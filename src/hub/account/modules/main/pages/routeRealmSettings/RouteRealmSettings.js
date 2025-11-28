@@ -1,7 +1,10 @@
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Elem } from 'modapp-base-component';
+import { Model, Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import FAIcon from 'components/FAIcon';
 import { relistenResource } from 'utils/listenResource';
 import { hasIdRoles } from 'utils/idRoles';
+import compareSortOrderId from 'utils/compareSortOrderId';
 
 import RouteRealmSettingsComponent from './RouteRealmSettingsComponent';
 import './routeRealmSettings.scss';
@@ -25,6 +28,7 @@ class RouteRealmSettings {
 			'routeError',
 			'auth',
 			'access',
+			'routeRealms',
 		], this._init.bind(this));
 	}
 
@@ -38,7 +42,7 @@ class RouteRealmSettings {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 
@@ -53,6 +57,18 @@ class RouteRealmSettings {
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => this.module.router.parseDefUrl(parts, pathDef),
 			order: 20,
+		});
+
+		this.module.routeRealms.addTool({
+			id: 'realmSettings',
+			componentFactory: (realm) => new Elem(n => n.elem('button', { className: 'iconbtn medium', events: {
+				click: (c, ev) => {
+					ev.stopPropagation();
+					this.setRoute({ realmId: realm.id });
+				},
+			}}, [
+				n.component(new FAIcon('cog')),
+			])),
 		});
 	}
 
@@ -130,6 +146,7 @@ class RouteRealmSettings {
 
 	dispose() {
 		this.module.router.removeRoute('realmsettings');
+		this.module.routeRealmSettings.removeTool('realmSettings');
 	}
 }
 

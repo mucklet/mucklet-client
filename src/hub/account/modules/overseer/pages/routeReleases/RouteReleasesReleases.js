@@ -46,8 +46,8 @@ class RouteReleasesReleases {
 				this.releases,
 				m => new RouteReleasesReleaseBadge(this.module, this.model, m, this.type),
 				{
-					className: 'routepayments-payments--list',
-					subClassName: () => 'routepayments-payments--listitem',
+					className: 'routereleases-release--list',
+					subClassName: () => 'routereleases-release--listitem',
 				},
 			)),
 			n.component(new CollectionComponent(

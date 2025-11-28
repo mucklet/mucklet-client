@@ -2,7 +2,7 @@ import { Elem } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
-import apiStates, { getApiState } from 'utils/apiStates';
+import projectStates, { getProjectState } from 'utils/projectStates';
 import RouteNodeSettingsRealmBadgeContent from './RouteNodeSettingsRealmBadgeContent';
 
 class RouteNodeSettingsRealmBadge {
@@ -25,22 +25,23 @@ class RouteNodeSettingsRealmBadge {
 				},
 			},
 		}, [
-			n.elem('div', { className: 'badge--info flex-row flex-start flex-center' }, [
-				n.elem('div', { className: 'routenodesettings-realmbadge--state badge--nowrap flex-1' }, [
+			n.elem('div', { className: 'badge--info badge--select badge--select-gap badge--select-center' }, [
+				n.elem('div', { className: 'badge--symbol' }, [
 					n.component(new ModelComponent(
 						this.realm,
 						new FAIcon('circle', { className: 'routenodesettings-realmbadge--stateicon' }),
 						(m, c) => {
-							let state = getApiState(m, 'apiState');
-							for (let s of apiStates) {
+							let state = getProjectState(m);
+							for (let s of projectStates) {
 								c[state == s ? 'addClass' : 'removeClass'](s.className);
 							}
 						},
 					)),
-					n.html('&nbsp;&nbsp;'),
-					n.component(new ModelTxt(this.realm, m => m.name, { className: 'badge--title' })),
 				]),
-				n.elem('div', { className: 'routenodesettings-realmbadge--key badge--text badge--nowrap flex-auto' }, [
+				n.elem('div', { className: 'badge--info badge--title badge--nowrap flex-1' }, [
+					n.component(new ModelTxt(this.realm, m => m.name)),
+				]),
+				n.elem('div', { className: 'badge--padright badge--text badge--nowrap flex-auto' }, [
 					n.component(new ModelTxt(this.realm, m => m.key)),
 				]),
 			]),
