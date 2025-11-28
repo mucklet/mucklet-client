@@ -4,11 +4,7 @@ import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Dialog from 'classes/Dialog';
 import Collapser from 'components/Collapser';
-import AutoComplete from 'components/AutoComplete';
 import PanelSection from 'components/PanelSection';
-import patternMatch, { patternMatchRender } from 'utils/patternMatch';
-import mergeCharLists from 'utils/mergeCharLists';
-import labelCompare from 'utils/labelCompare';
 import './dialogSetAreaOwner.scss';
 
 class DialogSetAreaOwner {
@@ -22,6 +18,7 @@ class DialogSetAreaOwner {
 			'confirm',
 			'setAreaOwner',
 			'requestAreaOwner',
+			'searchChar',
 		], this._init.bind(this));
 	}
 
@@ -46,35 +43,12 @@ class DialogSetAreaOwner {
 				]),
 				n.component('owner', new PanelSection(
 					l10n.l('dialogSetAreaOwner.newOwner', "New owner"),
-					new AutoComplete({
-						className: 'dialog--input dialog--incomplete',
-						attributes: { placeholder: l10n.t('dialogSetAreaOwner.selectAChar', "Search for a new owner"), spellcheck: 'false' },
-						fetch: (text, update, c) => {
-							model.set({ owner: null });
-							c.addClass('dialog--incomplete');
-							let ac = this.module.player.getActiveChar();
-							let list = mergeCharLists([
-								this.module.player.getChars(),
-								ac && ac.inRoom.chars,
-								this.module.charsAwake.getCollection(),
-							])
-								.filter(m => patternMatch((m.name + " " + m.surname).trim(), text))
-								.map(m => ({ value: m.id, label: (m.name + " " + m.surname).trim() }))
-								.sort(labelCompare)
-								.slice(0, 10);
-							update(list);
-						},
-						events: { blur: c => {
-							if (!model.owner) {
-								c.setProperty('value', "");
-							}
-						} },
-						render: patternMatchRender,
-						minLength: 1,
-						onSelect: (c, item) => {
-							c.removeClass('dialog--incomplete');
-							model.set({ owner: item.value });
-							c.setProperty('value', item.label);
+					this.module.searchChar.newSearchChar({
+						placeholder: l10n.l('dialogSetAreaOwner.searchNewOwner', "Search for a new owner"),
+						onSelect: (char) => model.set({ owner: char.id }),
+						events: {
+							input: (c, ev) => model.set({ owner: null }),
+							blur: c => !model.owner && c.setProperty('value', ""),
 						},
 					}),
 					{

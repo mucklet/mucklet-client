@@ -7,8 +7,7 @@ import Collapser from 'components/Collapser';
 import AutoComplete from 'components/AutoComplete';
 import LabelToggleBox from 'components/LabelToggleBox';
 import PanelSection from 'components/PanelSection';
-import labelCompare from 'utils/labelCompare';
-import patternMatch, { patternMatchRender } from 'utils/patternMatch';
+import patternMatch, { patternMatchRender, patternMatchCompare } from 'utils/patternMatch';
 import prepareKeys from 'utils/prepareKeys';
 import './dialogCreateExit.scss';
 
@@ -108,7 +107,7 @@ class DialogCreateExit {
 										let list = (ctrl.ownedRooms ? ctrl.ownedRooms.toArray() : [])
 											.filter(m => patternMatch(m.name, text))
 											.map(m => ({ value: m.id, label: m.name }))
-											.sort(labelCompare);
+											.sort(patternMatchCompare(text, m => m.label));
 										update(list);
 									},
 									events: {
