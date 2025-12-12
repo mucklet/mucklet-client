@@ -7,6 +7,7 @@ module.exports = {
 
 	API_HOST_PATH: 'ws://localhost:8080/',
 	API_WEBRESOURCE_PATH: 'http://localhost:8080/api/',
+	API_FILE_PATH: 'http://localhost:6452/',
 	API_IDENTITY_PATH: '/identity/',
 	API_CROSS_ORIGIN: true,
 
