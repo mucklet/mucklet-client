@@ -29,6 +29,10 @@ class RouteRealmSettings {
 			'auth',
 			'access',
 			'routeRealms',
+			'toaster',
+			'dialogCropImage',
+			'file',
+			'confirm',
 		], this._init.bind(this));
 	}
 

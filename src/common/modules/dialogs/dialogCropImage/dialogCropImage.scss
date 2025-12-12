@@ -11,4 +11,10 @@
 	.cr-vp-square {
 		border-radius: 8%;
 	}
+
+	.dialogcropimage--mode-pixelated .cr-image {
+		image-rendering: pixelated;
+  		image-rendering: -moz-crisp-edges;
+  		image-rendering: crisp-edges;
+	}
 }
