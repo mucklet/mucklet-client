@@ -1,10 +1,11 @@
 import CharLogComponent from './CharLogComponent';
 import { Transition } from 'modapp-base-component';
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import {
 	msgEvent,
 	sayEvent,
@@ -15,9 +16,11 @@ import {
 } from './charLogEvents';
 import CharLogEvent from './CharLogEvent';
 import ErrorEvent from './ErrorEvent';
+import LocalErrorEvent from './LocalErrorEvent';
 import InfoEvent from './InfoEvent';
 import WhisperEvent from './WhisperEvent';
 import DescribeEvent from './DescribeEvent';
+import PrivateDescribeEvent from './PrivateDescribeEvent';
 import MessageEvent from './MessageEvent';
 import SummonEvent from './SummonEvent';
 import JoinEvent from './JoinEvent';
@@ -37,6 +40,7 @@ import './charLogHighlight.scss';
 
 const componentFactories = {
 	component: (charId, ev) => ev.component,
+	localError: (charId, ev) => new LocalErrorEvent(charId, ev),
 	error: (charId, ev) => new ErrorEvent(charId, ev),
 	info: (charId, ev) => new InfoEvent(charId, ev),
 	say: (charId, ev) => sayEvent(charId, ev, true),
@@ -49,6 +53,7 @@ const componentFactories = {
 	whisper: (charId, ev) => new WhisperEvent(charId, ev),
 	message: (charId, ev) => new MessageEvent(charId, ev),
 	describe: (charId, ev) => new DescribeEvent(charId, ev),
+	privateDescribe: (charId, ev) => new PrivateDescribeEvent(charId, ev),
 	summon: (charId, ev, opt) => new SummonEvent(charId, ev, opt),
 	join: (charId, ev, opt) => new JoinEvent(charId, ev, opt),
 	ooc: (charId, ev) => new OocEvent(charId, ev),
@@ -115,17 +120,17 @@ class CharLog {
 		this.unseenTargeted = new Model({ eventBus: this.app.eventBus });
 		this.menuItems = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.overlays = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 		this.modifiers = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 
@@ -286,7 +291,7 @@ class CharLog {
 	}
 
 	/**
-	 * Adds an error event to a character log, generating a local event ID.
+	 * Adds a local error event to a character log, generating a local event ID.
 	 * @param {string} char Controlled character.
 	 * @param {object} err Error object with a message property.
 	 * @param {object}[opt] Optional params.
@@ -296,7 +301,7 @@ class CharLog {
 	logError(char, err, opt) {
 		this.getLog(char).then(l => l.add({
 			id: this._getLogId(),
-			type: 'error',
+			type: 'localError',
 			time: this._getTimestamp(l, opt?.time),
 			error: err,
 			noMenu: opt && opt.hasOwnProperty('noMenu') ? opt.noMenu : true,
@@ -399,7 +404,7 @@ class CharLog {
 	 * Registers a char log overlay component.
 	 * @param {object} overlay Overlay object
 	 * @param {string} overlay.id Overlay ID.
-	 * @param {number} overlay.sortOrder Sort order.
+	 * @param {number} [overlay.sortOrder] Sort order. Will default to localeCompare sorting by id.
 	 * @param {function} overlay.componentFactory Overlay component factory: function(ctrl) -> Component
 	 * @returns {this}
 	 */

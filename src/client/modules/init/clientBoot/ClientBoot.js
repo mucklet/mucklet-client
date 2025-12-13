@@ -1,13 +1,27 @@
-// import { Elem, Txt } from 'modapp-base-component';
 import { uri } from 'modapp-utils';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import ErrorScreenDialog from 'components/ErrorScreenDialog';
 import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
 import Err from 'classes/Err';
+import errToL10n from 'utils/errToL10n';
 
 const txtErrorAuthenticating = l10n.l('clientBoot.errorAuthenticating', "An error occurred when trying to authenticate:");
 const txtTryAgain = l10n.l('clientBoot.tryAgain', "Try again");
+const redirectCodes = {
+	'auth.userBanned': {
+		title: l10n.l('clientBoot.playerBanned', "Player banned"),
+		body: l10n.l('clientBoot.playerBannedBody', "The moderators of this realm have decided to issue a ban. You may no longer access this world."),
+	},
+	'auth.accountBanned': {
+		title: l10n.l('clientBoot.accountBanned', "Account banned"),
+		body: l10n.l('clientBoot.accountBannedBoy', "Your account has been banned. Contact support@mucklet.com if you have any questions."),
+	},
+	'auth.recentlyBanned': {
+		title: l10n.l('clientBoot.recentBan', "Recent ban"),
+		body: l10n.l('clientBoot.recentBanBody', "A recent player ban has put this computer address in temporary quarantine. If you are not the banned player, please try again later."),
+	},
+};
 
 /**
  * ClientBoot boots the app by trying to authenticate, and then showing the
@@ -79,6 +93,11 @@ class ClientBoot {
 			return this._showOffline();
 		}
 
+		let o = redirectCodes[err?.code];
+		if (o) {
+			return this._showRedirect(o.title, o.body || errToL10n(err));
+		}
+
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
 			infoTxt,
 			buttonTxt: txtTryAgain,
@@ -101,6 +120,15 @@ class ClientBoot {
 			confirm: txtTryAgain,
 			body: l10n.l('clientBoot.errorOffline1', "You seem to have no Internet connection, and we kind of need one."),
 			onConfirm: cb,
+		}));
+	}
+
+	_showRedirect(title, body) {
+		this.module.screen.setComponent(new ConfirmScreenDialog({
+			title: title,
+			confirm: l10n.l('clientBoot.goToMucklet', "Go to Mucklet"),
+			body: body,
+			onConfirm: () => this.module.auth.redirectToHub(),
 		}));
 	}
 }

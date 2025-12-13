@@ -1,0 +1,20 @@
+.dialogcropimage {
+	width: 432px;
+	max-width: inherit;
+}
+
+.dialogcropimage {
+	&--footer {
+		margin-top: 20px;
+	}
+
+	.cr-vp-square {
+		border-radius: 8%;
+	}
+
+	.dialogcropimage--mode-pixelated .cr-image {
+		image-rendering: pixelated;
+  		image-rendering: -moz-crisp-edges;
+  		image-rendering: crisp-edges;
+	}
+}

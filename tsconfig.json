@@ -18,7 +18,9 @@
     "paths": {
       "utils/*": ["./common/utils/*"],
       "components/*": ["./common/components/*"],
-      "classes/*": ["./common/classes/*"]
+      "classes/*": ["./common/classes/*"],
+      "types/*": ["./common/types/*"],
+      "modules/*": ["./common/modules/*", "./client/modules/*", "./hub/modules/*"]
     }
   },
 }

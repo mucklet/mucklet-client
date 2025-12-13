@@ -37,6 +37,10 @@ developers. So, when working with this client, make sure to read the overviews:
 * [Understanding components](./docs/understanding-components.md)
 * [Understanding the folder structure](./docs/understanding-folders.md)
 
+## Attribution
+
+Mucklet.com uses the IP2Location LITE database for [IP geolocation](https://lite.ip2location.com).
+
 # Contributing
 
 To learn how to contribute to the project, read the [How to contribute](./docs/CONTRIBUTE.md) guide.

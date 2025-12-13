@@ -69,3 +69,13 @@ $white-transparent: #{'rgba(255,255,255,6%)'};
 		@include btn-style(none, $white-transparent, $white-transparent, $color4-light, $color4-lighter);
 	}
 }
+
+@media screen and (max-width: 720px) {
+
+	.toaster {
+		left: 10px;
+		right: 10px;
+		width: initial;
+	}
+}
+

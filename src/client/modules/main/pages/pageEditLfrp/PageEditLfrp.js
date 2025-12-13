@@ -1,6 +1,7 @@
 import { Elem } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import PageEditLfrpComponent from './PageEditLfrpComponent';
@@ -24,7 +25,7 @@ class PageEditLfrp {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

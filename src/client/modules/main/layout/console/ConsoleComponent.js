@@ -1,5 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
+import { Context, Elem, Txt } from 'modapp-base-component';
 import { CollectionList, ModelComponent, CollectionComponent } from 'modapp-resource-component';
+import { CollectionWrapper } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import SimpleBar from 'components/SimpleBar';
 import Collapser from 'components/Collapser';
@@ -7,6 +8,7 @@ import Fader from 'components/Fader';
 import counterString from 'utils/counterString';
 import ConsoleControlledChar from './ConsoleControlledChar';
 import ConsoleEditor from './ConsoleEditor';
+import compareCtrlChars from 'utils/compareCtrlChars';
 
 class ConsoleComponent {
 	constructor(module, model, layoutId) {
@@ -16,12 +18,12 @@ class ConsoleComponent {
 		this.editor = new ConsoleEditor(this.module, model.state);
 
 		// Bind callbacks
-		this._onClick = this._onClick.bind(this);
+		this.focus = this.focus.bind(this);
 	}
 
 	render(el) {
+		this.module.self.on('focus', this.focus);
 
-		let components = {};
 		this.elem = new ModelComponent(
 			this.module.self.getModel(),
 			new Elem(n => n.elem('div', { className: 'console console--layout' + this.layout }, [
@@ -31,11 +33,18 @@ class ConsoleComponent {
 							this.module.player.getControlled(),
 							new Collapser(),
 							(col, c) => {
-								c.setComponent(components.controlled = col.length > 1 || this.layout == 'desktop'
-									? components.controlled || new CollectionList(
-										this.module.player.getControlled(),
-										m => new ConsoleControlledChar(this.module, m, { onClick: this._onClick, layout: this.layout }),
-										{ className: 'console--controlledlist', horizontal: true },
+								c.setComponent(col.length > 1 || this.layout == 'desktop'
+									? c.getComponent() || new Context(
+										() => new CollectionWrapper(this.module.player.getControlled(), {
+											compare: compareCtrlChars,
+											eventBus: this.module.self.app.eventBus,
+										}),
+										(ctrls) => ctrls.dispose(),
+										(ctrls) => new CollectionList(
+											ctrls,
+											m => new ConsoleControlledChar(this.module, m, { onClick: this.focus, layout: this.layout }),
+											{ className: 'console--controlledlist', horizontal: true },
+										),
 									)
 									: null,
 								);
@@ -150,16 +159,12 @@ class ConsoleComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			this.module.self.off('focus', this.focus);
 		}
 	}
 
-	_onClick() {
-		if (!this.elem) return;
-
-		// let editor = this.elem.getComponent().getNode('editor');
-		// if (editor) {
-		// 	// editor.getComponent().focus();
-		// }
+	focus() {
+		this.editor.focus();
 	}
 }
 

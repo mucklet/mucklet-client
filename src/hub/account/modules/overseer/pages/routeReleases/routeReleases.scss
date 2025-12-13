@@ -1,0 +1,20 @@
+@import '~scss/variables';
+
+// .routereleases {}
+
+// .routereleases-releasebadge {}
+
+.routereleases-release {
+	&--template {
+		padding: 2px 0px;
+	}
+	&--listitem {
+		padding: 3px 0;
+	}
+}
+
+.routereleases-templatebadge {
+	&--size {
+		padding-right: 6px;
+	}
+}

@@ -3,6 +3,7 @@ import { getToken } from "utils/codemirror";
 import { formatTextTokens } from 'utils/formatText';
 
 const formatterMark = Decoration.mark({ class: 'cmd--format-formatter' });
+const codeFormatterMark = Decoration.mark({ class: 'cmd--format-codeformatter' });
 const emMark = Decoration.mark({ class: 'cmd--format-em' });
 const strongMark = Decoration.mark({ class: 'cmd--format-strong' });
 const oocMark = Decoration.mark({ class: 'cmd--format-ooc' });
@@ -12,6 +13,8 @@ const subMark = Decoration.mark({ class: 'cmd--format-sub' });
 const strikethroughMark = Decoration.mark({ class: 'cmd--format-strikethrough' });
 const linkMark = Decoration.mark({ class: 'cmd--format-link' });
 const linkUrlMark = Decoration.mark({ class: 'cmd--format-linkurl' });
+const headerMark = Decoration.mark({ class: 'cmd--format-header' });
+const tableHeaderMark = Decoration.mark({ class: 'cmd--format-tableheader' });
 
 const tokenTypes = {
 	// Span tokens
@@ -22,6 +25,19 @@ const tokenTypes = {
 	'sup_start': { end: 'sup_end', outerMark: supMark, startMark: formatterMark, endMark: formatterMark },
 	'sub_start': { end: 'sub_end', outerMark: subMark, startMark: formatterMark, endMark: formatterMark },
 	'strikethrough_start': { end: 'strikethrough_end', mark: strikethroughMark, startMark: formatterMark, endMark: formatterMark },
+	'nobr_start': { end: 'nobr_end', startMark: formatterMark, endMark: formatterMark },
+	'esc_start': { end: 'esc_end', startMark: formatterMark, endMark: formatterMark },
+	// Header tokens
+	'h1_start': { end: 'h1_end', mark: headerMark, startMark: formatterMark },
+	'h2_start': { end: 'h2_end', mark: headerMark, startMark: formatterMark },
+	'h3_start': { end: 'h2_end', mark: headerMark, startMark: formatterMark },
+	// Table tokens
+	'tbody_start': { end: 'tbody_end', startMark: codeFormatterMark, endMark: codeFormatterMark },
+	'th_start': { end: 'th_end', mark: tableHeaderMark, startMark: codeFormatterMark, endMark: codeFormatterMark },
+	'td_start': { end: 'td_end', startMark: codeFormatterMark, endMark: codeFormatterMark },
+	// Code block tokens
+	'codeblock_start': { end: 'codeblock_end', mark: cmdMark, startMark: formatterMark, endMark: formatterMark },
+
 	// Single token
 	'anchor_start': { end: 'anchor_end', mark: linkMark, startMark: formatterMark, endMark: formatterMark },
 	'link_start': { end: 'link_end', mark: linkUrlMark, startMark: formatterMark, endMark: formatterMark },
@@ -55,7 +71,7 @@ const codemirrorFormattingSyntax = ViewPlugin.fromClass(class {
 			if (token.type) {
 				let step = token.state.step;
 				if (step && step.formatText) {
-					let opt = step.formatText();
+					let opt = step.formatText(token.state);
 					if (opt?.id) {
 						let ft = getItemById(formattedTexts, opt.id);
 						if (!ft) {

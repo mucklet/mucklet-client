@@ -64,6 +64,7 @@ class Router {
 		this.initialRoute = null;
 		this.initialRouteData = null;
 		this.initialQuery = typeof (window) !== 'undefined' && window.location ? window.location.search : '';
+		this.settingRoute = null;
 
 		this.app.require([], this._init.bind(this));
 
@@ -163,7 +164,7 @@ class Router {
 				routeData = route.parseUrl(this.initialRouteData);
 			}
 
-			this.setRoute(route.id, routeData || {}, false);
+			this.setRoute(route.id, routeData || {});
 		}
 		if (isDefault) {
 			this.setDefault(route.id);
@@ -249,7 +250,6 @@ class Router {
 	 * @returns {Promise.<module/Router~setRoute>} Promise to the set route.
 	 */
 	setRoute(routeId, params = {}, pushHistoryState = true, force = false) {
-		params = params || {};
 		// this.initialRoute = null;
 		// this.initialRouteData = null;
 
@@ -261,11 +261,16 @@ class Router {
 				params = null;
 			}
 		} else if (params === null || typeof params !== 'object') {
-			throw "Route params must be an object";
+			params = {};
 		}
 
-		// If the route is currently set, don't do anything
+		// If the route is currently set, we only replace the this.current
+		// object with the same content. In case setRoute was called from within
+		// a route.setState, a change to this.current will cause the previous
+		// attempt of setRoute, which triggered setState, to be aborted. See
+		// _performSetRoute where the check for change is made.
 		if (this._isCurrent(routeId, params) && !force) {
+			this.current = { ...this.current };
 			return Promise.resolve(this.current);
 		}
 
@@ -280,7 +285,7 @@ class Router {
 			return Promise.reject(new Error("Route Id '" + routeId + "' not found"));
 		}
 
-		if (this.current && this.current.route && this.current.route.onBeforeUnload && !force && !params.ignoreOnBeforeUnload) {
+		if (this.current?.route?.onBeforeUnload && !force && !params.ignoreOnBeforeUnload) {
 			this.setStatePromise = this.current.route.onBeforeUnload(this).then(result => {
 				if (result) {
 					return this._performSetRoute(route, params, pushHistoryState);
@@ -307,12 +312,25 @@ class Router {
 
 		this.setStatePromise = null;
 
-		return Promise.resolve(route.setState ? route.setState(params, route) : null).then(
-			() => this._setRoute({
-				route,
-				params,
-			}, pushHistoryState),
-		);
+		// Store settingRoute with route and params. If this changes while
+		// setting state, that means this.setRoute has been called from
+		// setState, and overrides this attempt.
+		let settingRoute = {
+			route,
+			params,
+		};
+		this.settingRoute = settingRoute;
+		return Promise.resolve(route.setState ? route.setState(params, route) : null)
+			.then(() => {
+				if (this.settingRoute == settingRoute) {
+					return this._setRoute(settingRoute, pushHistoryState);
+				}
+			})
+			.finally(() => {
+				if (this.settingRoute == settingRoute) {
+					this.settingRoute = null;
+				}
+			});
 	}
 
 	/**
@@ -352,12 +370,20 @@ class Router {
 		for (let def of pathDef) {
 			let parts = [];
 			for (let d of def) {
-				if (d.slice(0, 1) == '$') {
-					let v = params[d.slice(1)];
+				let c = d.slice(0, 1);
+				let f = d.slice(1);
+				if (c == '$') {
+					let v = params[f];
 					if (v === null || typeof v == 'undefined') {
 						continue next;
 					}
 					parts.push(v);
+				} else if (c == '!') {
+					let v = params[f];
+					if (!v) {
+						continue next;
+					}
+					parts.push(f);
 				} else {
 					parts.push(d);
 				}
@@ -372,11 +398,14 @@ class Router {
 	 * loop through the outer pathDef array and return first match. It is
 	 * considered a match if each item in the inner array matches that of the
 	 * path, or if the definition item starts with '$', in which case the part
-	 * will be stored as a parameter.
+	 * will be stored as a parameter. If the definition starts with '!' it will
+	 * match if the rest matches with the part, in which case it will set the
+	 * part as boolean true.
 	 *
 	 * Example:
 	 * [
-	 *    [ 'user', '$userId' ], // Matches path "user/42" where 42 will be stored with the key 'userId'
+	 *    [ 'user', '$userId', '!allgroups' ], // Matches path "user/42/allgroups" where 42 will be
+	 *    stored with the key 'userId', and the key 'allgroups' will be true.
 	 * ]
 	 * @param {Array.<string>} parts Array of path part strings.
 	 * @param {Array.<Array.<string>>} pathDef Path definition array.
@@ -393,8 +422,13 @@ class Router {
 			for (let i = 0; i < def.length; i++) {
 				let p = parts[i + 1];
 				let d = def[i];
-				if (d.slice(0, 1) == '$') {
-					o[d.slice(1)] = p;
+				let c = d.slice(0, 1);
+				let f = d.slice(1);
+				if (c == '$') {
+					o[f] = p;
+				} else if (c == '!') {
+					if (f != p) continue next;
+					o[f] = true;
 				} else if (d != p) {
 					continue next;
 				}
@@ -479,7 +513,7 @@ class Router {
 	 * @param {string} routeId Id of the route to use as default
 	 * @param {object} params Parameters
 	 */
-	setDefault(routeId, params) {
+	setDefault(routeId, params = null) {
 		if (!this.getRoute(routeId)) {
 			throw "No route with id " + route.id + " exists";
 		}
@@ -540,6 +574,8 @@ class Router {
 		// Make shallow compare of params objects
 		return obj.equal(params, this.current.params);
 	}
+
+	dispose() {}
 }
 
 export default Router;

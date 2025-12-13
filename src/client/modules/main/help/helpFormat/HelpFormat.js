@@ -1,5 +1,6 @@
 import l10n from 'modapp-l10n';
 import HelpFormatComponent from './HelpFormatComponent';
+import HelpFormatInfoComponent from './HelpFormatInfoComponent';
 import './helpFormat.scss';
 
 /**
@@ -18,9 +19,17 @@ class HelpFormat {
 		this.module.help.addCategory({
 			id: 'format',
 			title: l10n.l('help.formatTitle', "Text formatting"),
-			shortDesc: l10n.l('help.formatSortDesc', "How to format communication and description texts"),
+			shortDesc: l10n.l('help.formatShortDesc', "How to format communication and description texts"),
 			desc: () => new HelpFormatComponent(this.module),
 			sortOrder: 35,
+		});
+
+		this.module.help.addCategory({
+			id: 'format info',
+			title: l10n.l('help.infoFormatTitle', "Info field formatting"),
+			shortDesc: l10n.l('help.infoFormatShortDesc', "How to format info fields like descriptions, about sections, and rules"),
+			desc: () => new HelpFormatInfoComponent(this.module),
+			sortOrder: 36,
 		});
 	}
 

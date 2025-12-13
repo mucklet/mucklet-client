@@ -2,7 +2,12 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
-import { standardKeymap, insertNewline } from '@codemirror/commands';
+import {
+	defaultKeymap,
+	history,
+	historyKeymap,
+	insertNewline,
+} from '@codemirror/commands';
 import l10n from 'modapp-l10n';
 import tabCompletion, { tabComplete } from 'utils/codemirrorTabCompletion';
 import spellcheck from 'utils/codemirrorSpellcheck';
@@ -17,6 +22,7 @@ class ConsoleEditor {
 
 		// Bind callbacks
 		this._onEnter = this._onEnter.bind(this);
+		this._onCtrlEnter = this._onCtrlEnter.bind(this);
 		this._onEditorUpdate = this._onEditorUpdate.bind(this);
 		this._cyclePrev = this._cycleHistory.bind(this, true);
 		this._cycleNext = this._cycleHistory.bind(this, false);
@@ -37,7 +43,7 @@ class ConsoleEditor {
 						// editor's doc and the state's doc would match. This is rather
 						// an affect of changing history.
 						if (m.doc.trim() != this.cm.state.doc.toString().trim()) {
-							this.cm.setState(this._newEditorState(m));
+							this._newState();
 						}
 					}
 				},
@@ -76,7 +82,7 @@ class ConsoleEditor {
 		if (rel && state) {
 			let editorState = this._newEditorState(state);
 			if (this.cm) {
-				this.cm.setState(editorState);
+				this._newState(editorState);
 			} else {
 				this.cm = new EditorView({
 					state: editorState,
@@ -153,7 +159,7 @@ class ConsoleEditor {
 
 		keymapArray.push(...[
 			{ key: 'Enter', run: this._onEnter },
-			{ key: 'Ctrl-Enter', run: insertNewline },
+			{ key: 'Ctrl-Enter', run: this._onCtrlEnter },
 			{ key: 'Ctrl-ArrowUp', run: this._cyclePrev },
 			{ key: 'Cmd-ArrowUp', run: this._cyclePrev },
 			{ key: 'Ctrl-P', run: this._cyclePrev },
@@ -162,16 +168,24 @@ class ConsoleEditor {
 			{ key: 'Cmd-ArrowDown', run: this._cycleNext },
 			{ key: 'Ctrl-N', run: this._cycleNext },
 			{ key: 'Cmd-N', run: this._cycleNext },
-			...standardKeymap,
+			// A large set of basic bindings
+			...defaultKeymap,
+			// Redo/undo keys
+			...historyKeymap,
 		]);
 		let editorState = EditorState.create({
 			doc: state.doc,
 			selection: { anchor: state.anchor || 0, head: state.head || 0 },
 			extensions: [
+				// The undo history
+				history(),
+				// Tab completion
 				tabCompletion({
 					complete: editorState => this.module.cmd.getCMTabComplete(editorState),
 				}),
+				// Spell check
 				spellcheck,
+				// Command highlight formatting
 				this.module.cmd.getCMFormattingStyle(),
 				keymap.of(keymapArray),
 				state.getCMLanguage(),
@@ -186,8 +200,13 @@ class ConsoleEditor {
 	// Sets a new editor state with the provided doc string value, and updates the state
 	_setConsole(doc) {
 		this.state?.setDoc(doc, doc.length);
+		this._newState();
+	}
+
+	_newState(editorState) {
 		if (this.cm) {
-			this.cm.setState(this._newEditorState(this.state));
+			this.cm.setState(editorState || this._newEditorState(this.state));
+			this.cm.dispatch({ selection: { anchor: this.state.anchor, head: this.state.head }});
 		}
 	}
 
@@ -195,6 +214,12 @@ class ConsoleEditor {
 		return this.module.self.getModel().mode == 'touch'
 			? insertNewline(ctx)
 			: this._onSend(ctx);
+	}
+
+	_onCtrlEnter(ctx) {
+		return this.module.self.getModel().mode == 'touch'
+			? this._onSend(ctx)
+			: insertNewline(ctx);
 	}
 
 	_onSend(ctx) {
@@ -237,7 +262,7 @@ class ConsoleEditor {
 	}
 
 	_getValue() {
-		return (this.cm ? this.cm.state.doc.toString() : this.state?.doc || '').trim();
+		return this.cm ? this.cm.state.doc.toString() : this.state?.doc || '';
 	}
 
 	_getSelection() {

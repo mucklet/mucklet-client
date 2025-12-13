@@ -1,0 +1,118 @@
+@import '~scss/variables';
+
+// .routetaskruns {}
+
+.routetaskruns-taskrunbadge {
+	&--icon.badge--faicon {
+		color: $color1-dark;
+		background: $color4-darker;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		> .spinner:before {
+			border-top-color: $color1-dark;
+		}
+	}
+	&--state- {
+		// &queued {
+		// 	&.badge--faicon {}
+		// }
+		&running {
+			&.badge--faicon {
+				background: $color6;
+			}
+		}
+		&success {
+			&.badge--faicon {
+				background: $green;
+			}
+		}
+		&warning {
+			&.badge--faicon {
+				background: $color2;
+			}
+		}
+		&error {
+			&.badge--faicon {
+				background: $color5;
+			}
+		}
+	}
+}
+
+.routetaskruns-project {
+	&--subheader {
+		padding-bottom: 8px;
+	}
+
+	&--name {
+		font-size: $font-size;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--pagelistitem {
+		padding: 3px 0;
+	}
+
+	&--footertools {
+		> * {
+			display: inline-block;
+		}
+	}
+}
+
+.routetaskruns-taskrun {
+	&--name {
+		font-size: $font-size;
+		line-height: 24px;
+		color: $color3;
+	}
+
+	&--info {
+		padding-top: 12px;
+	}
+
+	&--error {
+		padding-top: 6px;
+		color: $color5;
+	}
+
+	&--steps {
+		padding-top: 20px;
+	}
+
+	&--step {
+		padding-bottom: 12px;
+	}
+
+	&--stepname {
+		color: $color3;
+		font-size: $font-size-small;
+	}
+	&--stepduration {
+		font-size: $font-size-tiny;
+	}
+	&--stepsubtitle {
+		display: block;
+		color: $color2;
+		font-size: $font-size-small;
+		padding: 6px 0 2px 0;
+	}
+	&--steplog {
+		display: block;
+		font-style: normal;
+		font-size: $font-size-tiny;
+		font-family: $font-code;
+		background: $color1-dark;
+		border-radius: 8px;
+	}
+	&--steplogtxt {
+		white-space: pre;
+	}
+	&--stepsimplebar {
+		padding: 4px 8px;
+		max-height: 210px;
+	}
+}

@@ -1,5 +1,42 @@
 @import '~scss/variables';
 
-.pagerealms {
+// .routerealms {}
 
+
+.routerealms-realmbadge {
+
+	&--title {
+		line-height: 26px;
+		font-size: $font-size;
+		color: $color3;
+	}
+
+	&--date {
+		color: $color4;
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--state {
+		line-height: 20px;
+	}
+
+	&--updaterequired {
+		color: $color5;
+		font-size: $font-size-small;
+	}
+}
+
+.routerealms-realmbadgecontent {
+	padding-top: 4px;
+	&--desc {
+		padding: 2px 0;
+		font-size: $font-size;
+	}
+
+	&--tools {
+		display: flex;
+		flex-direction: row;
+		column-gap: 4px;
+	}
 }

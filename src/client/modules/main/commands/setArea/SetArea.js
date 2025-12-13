@@ -6,6 +6,7 @@ import IDStep from 'classes/IDStep';
 import ItemList from 'classes/ItemList';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import { descriptionTooLong, shortDescriptionTooLong, itemNameTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'set area <span class="param">#AreaID<span class="comment">/</span>Area</span> : <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set an area attribute';
@@ -44,7 +45,7 @@ const defaultAttr = [
 			spanLines: true,
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setChar.aboutDesc', "Information about the area, such as setting, purpose, and rules. It may be formatted and span multiple paragraphs."),
 		sortOrder: 30,
@@ -56,7 +57,7 @@ const defaultAttr = [
 			spanLines: true,
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setChar.rulesDesc', "Area specific rules that adds to the realm rules. It may be formatted and span multiple paragraphs."),
 		sortOrder: 40,

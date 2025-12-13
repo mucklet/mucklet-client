@@ -1,168 +1,201 @@
-
-function objHasProp(o, p) {
-	return typeof o == 'object' && o !== null && o.hasOwnProperty(p);
-}
-
-function isModel(m) {
-	return typeof m == 'object' && m !== null && typeof m.on === 'function' && typeof m.off === 'function';
-}
+import eventBus from 'modapp-eventbus';
 
 /**
- * NestedModel exposes a model nested inside other models.
+ * NestedModel wraps a nested model or collection to produce a new model based on the nested content.
  */
 class NestedModel {
 
-	constructor(rootModel, path) {
-		this._root = rootModel;
-		this._path = path.split('.');
-		this._value = undefined;
-		this._isModel = false;
-		this._pathcbs = null;
-		this._cbs = [];
-		this._count = 0;
+	/**
+	 * Creates a NestedModel instance.
+	 * @param {Model|Collection|null} resource Nested model or collection resource.
+	 * @param {(resource: Model|Collection|null, self: NestedModel) => object} mapper Callback function that returns an object of properties for the NestedModel. Self will be null on intial call to mapper.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {number} [opt.maxDepth] Max depth to traverse the nested resource to listen to updates. 1 means only top resource will be listened to.
+	 * @param {string} [opt.namespace] Event bus namespace. Defaults to 'resourceMapper'.
+	 * @param {module:modapp~EventBus} [opt.eventBus] Event bus.
+	 */
+	constructor(resource, mapper, opt) {
+		this._namespace = opt?.namespace || 'resourceMapper';
+		this._eventBus = opt?.eventBus || eventBus;
+		this._maxDepth = opt?.maxDepth || null;
+		this._mapper = mapper;
+		this._props = {};
+		this._listens = new Map();
+
+		// Bind callbacks
+		this._onEvent = this._onEvent.bind(this);
+
+		this.setResource(resource, true);
 	}
 
 	/**
-	 * Model or value at the end of the path, or undefined if the path does not exist.
+	 * Model properties.
+	 * @returns {object} Anonymous object with all model properties.
 	 */
-	get model() {
-		// If we have listeners, we already have the value stored.
-		if (this._count) return this._value;
-
-		let m = this._root;
-		for (let i = 0; i < this._path.length; i++) {
-			let p = this._path[i];
-			if (!objHasProp(m, p)) {
-				return undefined;
-			}
-			m = m[p];
-		}
-		return m;
+	get props() {
+		return this._props;
 	}
 
-	on(event, cb) {
-		this._listenPath();
-		this._cbs.push({ event, cb });
-		if (this._isModel) {
-			this._value.on(event, cb);
-		}
+	/**
+	 * Attach an event handler function for one or more session events.
+	 * @param {?string} events One or more space-separated events. Null means any event.
+	 * @param {Event~eventCallback} handler A function to execute when the event is emitted.
+	 */
+	on(events, handler) {
+		this._eventBus.on(this, events, handler, this._namespace);
+	}
+
+	/**
+	 * Remove an event handler.
+	 * @param {?string} events One or more space-separated events. Null means any event.
+	 * @param {Event~eventCallback} [handler] An option handler function. The handler will only be remove if it is the same handler.
+	 */
+	off(events, handler) {
+		this._eventBus.off(this, events, handler, this._namespace);
+	}
+
+	/**
+	 * Gets the wrapped model.
+	 * @returns {Model} Model
+	 */
+	getModel() {
+		return this._resource;
+	}
+
+	/**
+	 * Updates the nested model.
+	 */
+	refresh() {
+		this._listenAndSet();
+	}
+
+	/**
+	 * Sets the model.
+	 * @param {?Model} resource Model.
+	 * @param {boolean} noEvents Flag telling if no change events should be triggered during set.
+	 * @returns {this}
+	 */
+	setResource(resource, noEvents) {
+		resource = resource || null;
+		if (resource === this._resource) return this;
+
+		this._resource = resource;
+		this._listenAndSet(noEvents);
 		return this;
 	}
 
-	off(event, cb) {
-		if (!this._removeCb(event, cb)) {
-			throw new Error("Callback not registered with on");
-		}
-		if (this._isModel) {
-			this._value.off(event, cb);
-		}
-		this._unlistenPath();
+	_listenAndSet(noEvents) {
+		this._listen();
+		let o = this._mapper(this._resource, this);
+		this._update(o, noEvents);
 	}
 
-	_removeCb(event, cb) {
-		for (let i = this._cbs.length - 1; i >= 0; i--) {
-			let c = this._cbs[i];
-			if (c.event === event && c.cb === cb) {
-				this._cbs.splice(i, 1);
-				return true;
+	_listen() {
+		let map = new Map();
+		if (this._maxDepth === null || this._maxDepth > 0) {
+			this._traverse(this._resource, this._listens, map, 1);
+		}
+		this._listens.forEach((v, k) => {
+			if (!map.get(k)) {
+				k.off(null, this._onEvent);
 			}
-		}
-		return false;
+		});
+		this._listens = map;
 	}
 
-	_listenPath() {
-		this._count++;
-		if (this._count > 1) {
-			return;
+	_traverse(resource, oldMap, map, depth) {
+		// Check if already listened to, or is not a resource function.
+		if (!resource || map.get(resource) || typeof resource?.on != 'function' || typeof resource?.off != 'function') return;
+
+		map.set(resource, true);
+
+		if (!oldMap.get(resource)) {
+			resource.on(null, this._onEvent);
 		}
 
-		this._pathcbs = new Array(this._path.length);
-		this._setValue(this._traverseListen(this._root, 0));
-	}
+		depth++;
+		if (this._maxDepth !== null && depth > this._maxDepth) return;
 
-	_unlistenPath() {
-		this._count--;
-		if (this._count) {
-			return;
-		}
-
-		for (let cb of this._pathcbs) {
-			if (cb) {
-				cb[0].off('change', cb[1]);
+		if (typeof resource[Symbol.iterator] === 'function') {
+			for (let sub of resource) {
+				this._traverse(sub, oldMap, map, depth);
 			}
-		}
-
-		this._setValue(undefined);
-	}
-
-	_traverseListen(m, i) {
-		if (i === this._path.length) {
-			return m;
-		}
-
-		if (isModel(m)) {
-			let cb = this._onChange.bind(this, i);
-			m.on('change', cb);
-			this._pathcbs[i] = [ m, cb ];
 		} else {
-			this._pathcbs[i] = null;
-		}
-
-		return this._traverseNextProp(m, i);
-	}
-
-	_traverseNextProp(m, i) {
-		let p = this._path[i];
-		if (!objHasProp(m, p)) {
-			return undefined;
-		}
-		return this._traverseListen(m[p], i + 1);
-	}
-
-	_clearProps() {
-		for (let k in this) {
-			if (this.hasOwnProperty(k) && k.substr(0, 1) !== '_') {
-				delete this[k];
+			let props = resource.props;
+			if (props && typeof props == 'object') {
+				for (let k in props) {
+					this._traverse(props[k], oldMap, map, depth);
+				}
 			}
 		}
 	}
 
-	_setValue(v) {
-		if (v === this._value) return;
+	_onEvent() {
+		this._listenAndSet();
+	}
 
-		// Remove listeners for old value
-		if (this._isModel) {
-			for (let c of this._cbs) {
-				this._value.off(c.event, c.cb);
+	/**
+	 * Updates the properties.
+	 * @param {object} props Properties to update.
+	 * @param {boolean} noEvents Flag if no events should be emitted on the eventBus.
+	 */
+	 _update(props, noEvents) {
+		props = Object.assign({}, props);
+
+		let changed = null;
+		let v, promote;
+		let p = this._props;
+
+		// Add deleted properties
+		for (var k in p) {
+			if (!props.hasOwnProperty(k)) {
+				props[k] = undefined;
 			}
 		}
-		// Set value
-		this._value = v;
-		this._isModel = isModel(v);
-		// Add listeners for new value
-		if (this._isModel) {
-			for (let c of this._cbs) {
-				v.on(c.event, c.cb);
+
+		for (let key in props) {
+			v = props[key];
+			promote = (this.hasOwnProperty(key) || !this[key]) && key[0] !== '_';
+			if (p[key] !== v) {
+				changed = changed || {};
+				changed[key] = p[key];
+				if (v === undefined) {
+					delete p[key];
+					if (promote) delete this[key];
+				} else {
+					p[key] = v;
+					if (promote) this[key] = v;
+				}
 			}
+		}
+
+		if (changed && !noEvents) {
+			this._eventBus.emit(this, this._namespace + '.change', changed);
 		}
 	}
 
-	_onChange(idx, changed) {
-		if (!this._count) return;
-
-		// Make sure our path property has changed
-		if (!changed.hasOwnProperty(this._path[idx])) return;
-
-		// Unlisten all path items
-		for (var i = this._path.length - 1; i > idx; i--) {
-			let c = this._pathcbs[i];
-			this._pathcbs[i] = null;
-			if (c) {
-				c[0].off('change', c[1]);
+	toJSON() {
+		let props = {};
+		let p = this._props;
+		for (let k in p) {
+			let v = p[k];
+			if (v && typeof v == 'object' && typeof v.toJSON == 'function') {
+				v = v.toJSON();
 			}
+			props[k] = v;
 		}
-		this._setValue(this._traverseNextProp(this._pathcbs[idx][0], idx));
+		return props;
 	}
+
+
+	/**
+	 * Disposes by stopping to listen to and clearing the underlaying resource.
+	 */
+	dispose() {
+		this._resource = null;
+		this._listen();
+	}
+
 }
 
 export default NestedModel;

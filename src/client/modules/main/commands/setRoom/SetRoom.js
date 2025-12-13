@@ -8,6 +8,7 @@ import Err from 'classes/Err';
 import helpAttribDesc from 'utils/helpAttribDesc';
 import parseDuration, { durationRegex } from 'utils/parseDuration';
 import { descriptionTooLong, itemNameTooLong } from 'utils/cmdErr';
+import { modeDescription } from 'utils/formatText';
 
 const usageText = 'set room <span class="param">Attribute</span> = <span class="param">Value</span>';
 const shortDesc = 'Set a room attribute';
@@ -32,7 +33,7 @@ const defaultAttr = [
 			maxLength: () => module.info.getCore().descriptionMaxLength,
 			errTooLong: descriptionTooLong,
 			spanLines: true,
-			formatText: true,
+			formatText: { mode: modeDescription },
 		}),
 		desc: l10n.l('setRoom.descDesc', "Description of the room. It may be formatted and span multiple paragraphs."),
 		sortOrder: 20,
@@ -56,7 +57,7 @@ const defaultAttr = [
 	{
 		key: 'dark',
 		value: 'isdark',
-		lias: [ 'isdark' ],
+		alias: [ 'isdark' ],
 		stepFactory: module => new ListStep('value', module.cmdLists.getBool(), { name: "is dark flag" }),
 		desc: l10n.l('setRoom.isDarkDesc', "Flag telling if the room is dark, preventing characters to see who else are in the room. Value is <code>yes</code> or <code>no</code>."),
 		sortOrder: 30,

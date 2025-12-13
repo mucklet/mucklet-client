@@ -1,0 +1,61 @@
+@import '~scss/variables';
+
+.pageeditroomscript {
+	padding: 16px;
+	margin: 0;
+
+	&--scriptid {
+		display: block;
+		color: $color3;
+		font-family: $font-code;
+	}
+
+	&--postaddress {
+		font-family: $font-code;
+	}
+
+	&--logscont {
+		background: $color1;
+		border-radius: 4px;
+		padding: 4px 4px;
+		height: 320px;
+		position: relative;
+	}
+
+	&--logs {
+		height: 100%;
+	}
+
+	&--loglist {
+		padding: 4px 16px 4px 0px;
+	}
+
+	&--log {
+		padding: 5px 6px;
+	}
+
+	&--logtime {
+		display: block;
+		font-size: $font-size-tiny;
+		color: $color4-lightestest;
+		line-height: 1.2em;
+	}
+
+	&--logmsg {
+		font-size: $font-size-small;
+		white-space: pre-wrap;
+		line-height: 1.25em;
+	}
+
+	&--log {
+		&-log { color: $color4; }
+		&-debug { color: $color4-dark; }
+		&-info { color: $color3; }
+		&-warn { color: $log-cmd; }
+		&-error { color: $log-error; }
+	}
+
+	.simplebar-scrollbar::before {
+		background-color: $color1-lightest;
+	}
+}

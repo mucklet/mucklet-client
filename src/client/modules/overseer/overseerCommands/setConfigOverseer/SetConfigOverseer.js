@@ -45,6 +45,12 @@ const defaultAttr = [
 		desc: l10n.l('setConfig.scriptMaxLengthDesc', "Script max length."),
 		sortOrder: 1060,
 	},
+	{
+		key: 'maxListItems',
+		stepFactory: () => new NumberStep('value', { name: "max list items" }),
+		desc: l10n.l('setConfig.maxListItemsDesc', "Command list field max items."),
+		sortOrder: 1070,
+	},
 	// Max/min name lengths
 	{
 		key: 'charNameMinLength',
@@ -90,52 +96,70 @@ const defaultAttr = [
 		sortOrder: 1220,
 	},
 	{
+		key: 'maxRoomScripts',
+		stepFactory: () => new NumberStep('value', { name: "max room scripts" }),
+		desc: l10n.l('setConfig.maxRoomScriptsDesc', "Max number of room scripts per room."),
+		sortOrder: 1230,
+	},
+	{
 		key: 'adminMaxOwnedChars',
 		stepFactory: () => new NumberStep('value', { name: "max owned characters for admins" }),
 		desc: l10n.l('setConfig.adminMaxOwnedCharsDesc', "Max number of owned characters for admins."),
-		sortOrder: 1230,
+		sortOrder: 1240,
 	},
 	{
 		key: 'adminMaxCharProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max character profiles for admins" }),
 		desc: l10n.l('setConfig.adminMaxCharProfilesDesc', "Max number of character profiles for admins."),
-		sortOrder: 1240,
+		sortOrder: 1250,
 	},
 	{
 		key: 'adminMaxRoomProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max room profiles for admins" }),
 		desc: l10n.l('setConfig.adminMaxRoomProfilesDesc', "Max number of room profiles for admins."),
-		sortOrder: 1250,
+		sortOrder: 1260,
+	},
+	{
+		key: 'adminMaxRoomScripts',
+		stepFactory: () => new NumberStep('value', { name: "max room scripts for builders and admins" }),
+		desc: l10n.l('setConfig.adminMaxRoomScriptsDesc', "Max number of room scripts per room for admins."),
+		sortOrder: 1265,
 	},
 	{
 		key: 'builderMaxOwnedRooms',
 		stepFactory: () => new NumberStep('value', { name: "max owned rooms for builders and admins" }),
 		desc: l10n.l('setConfig.builderMaxOwnedRoomsDesc', "Max number of owned rooms for builders and admins."),
-		sortOrder: 1260,
+		sortOrder: 1270,
 	},
 	{
 		key: 'builderMaxOwnedAreas',
 		stepFactory: () => new NumberStep('value', { name: "max owned areas for builders and admins" }),
 		desc: l10n.l('setConfig.builderMaxOwnedAreasDesc', "Max number of owned areas for builders and admins."),
-		sortOrder: 1262,
+		sortOrder: 1272,
 	},
 	{
 		key: 'supporterMaxOwnedChars',
 		stepFactory: () => new NumberStep('value', { name: "max owned characters for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxOwnedCharsDesc', "Max number of owned characters for supporters."),
-		sortOrder: 1270,
+		sortOrder: 1280,
 	},
 	{
 		key: 'supporterMaxCharProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max character profiles for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxCharProfilesDesc', "Max number of character profiles for supporters."),
-		sortOrder: 1280,
+		sortOrder: 1290,
 	},
 	{
 		key: 'supporterMaxRoomProfiles',
 		stepFactory: () => new NumberStep('value', { name: "max room profiles for supporters" }),
 		desc: l10n.l('setConfig.supporterMaxRoomProfilesDesc', "Max number of room profiles for supporters."),
-		sortOrder: 1290,
+		sortOrder: 1295,
+	},
+	{
+		key: 'supporterMaxRoomScripts',
+		stepFactory: () => new NumberStep('value', { name: "max room scripts for supporters" }),
+		desc: l10n.l('setConfig.supporterMaxRoomScriptsDesc', "Max number of room scripts per room for supporters."),
+		sortOrder: 1297,
 	},
 	// Max item values (non-role dependent)
 	{
@@ -163,16 +187,16 @@ const defaultAttr = [
 		sortOrder: 1330,
 	},
 	{
-		key: 'maxRoomScripts',
-		stepFactory: () => new NumberStep('value', { name: "max room scripts" }),
-		desc: l10n.l('setConfig.maxRoomScriptsDesc', "Max number of room scripts per room."),
-		sortOrder: 1340,
-	},
-	{
 		key: 'maxScheduledPosts',
 		stepFactory: () => new NumberStep('value', { name: "max scheduled script posts" }),
 		desc: l10n.l('setConfig.maxScheduledPostsDesc', "Max number of scheduled posts per script."),
 		sortOrder: 1350,
+	},
+	{
+		key: 'maxRoomCmds',
+		stepFactory: () => new NumberStep('value', { name: "max commands per room" }),
+		desc: l10n.l('setConfig.maxRoomCommandsDesc', "Max number of custom commands per room."),
+		sortOrder: 1360,
 	},
 	// Max upload limits
 	{

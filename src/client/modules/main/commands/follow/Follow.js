@@ -5,6 +5,7 @@ const usageText = 'follow <span class="param">Character</span>';
 const shortDesc = 'Follow a character wherever they go';
 const helpText =
 `<p>Follow another character wherever they go. The other character must be in the same room.</p>
+<p>Use <code>stop follow</code> to stop following the other character.</p>
 <p><code class="param">Character</code> is the name of the character to follow.</p>
 <p>Alias: <code>hopon</code></p>`;
 

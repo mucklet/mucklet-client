@@ -2,7 +2,11 @@ import { Model } from 'modapp-resource';
 import ConsoleComponent from './ConsoleComponent';
 import ConsoleState from './ConsoleState';
 import getCtrlId from 'utils/getCtrlId';
+import mobile from 'is-mobile';
 import './console.scss';
+import listenResource from 'utils/listenResource';
+
+const namespace = 'module.console';
 
 /**
  * Console draws player char menu.
@@ -11,16 +15,18 @@ class Console {
 	constructor(app, params) {
 		this.app = app;
 
+		this.paramsMode = false;
 		this.mode = typeof params.mode == 'string'
 			? params.mode.toLowerCase()
 			: null;
-		if (this.mode != 'touch' && this.mode != 'keyboard') {
+		this.paramsMode = [ 'auto', 'touch', 'keyboard' ].includes(this.mode);
+		if (!this.paramsMode) {
 			this.mode = 'auto';
 		}
 
 		// Bind callbacks
 		this._onActiveChange = this._onActiveChange.bind(this);
-		this._onMediaChange = this._onMediaChange.bind(this);
+		this._updateMode = this._updateMode.bind(this);
 
 		this.app.require([
 			'api',
@@ -29,6 +35,7 @@ class Console {
 			'charLog',
 			'avatar',
 			'media',
+			'consoleModeSettings',
 		], this._init.bind(this));
 	}
 
@@ -40,6 +47,15 @@ class Console {
 
 		this._setListeners(true);
 		this._onActiveChange({ char: this.module.player.getActiveChar() });
+
+		this.module.consoleModeSettings.getSettingsPromise().then(settings => {
+			// Set mode to the parameter mode if one was specified
+			if (this.paramsMode) {
+				settings.set({ consoleMode: this.mode });
+			}
+			this.settings = listenResource(settings, true, this._updateMode);
+			this._updateMode();
+		});
 	}
 
 	getModel() {
@@ -48,6 +64,24 @@ class Console {
 
 	getKeymapModel() {
 		return this.keymapModel;
+	}
+
+	/**
+	 * Attach an event handler function for one or more player module events.
+	 * @param {?string} events One or more space-separated events. Null means any event. Available events are 'focus'.
+	 * @param {Event~eventCallback} handler A function to execute when the event is emitted.
+	 */
+	on(events, handler) {
+		this.app.eventBus.on(this, events, handler, namespace);
+	}
+
+	/**
+	 * Remove an event handler.
+	 * @param {?string} events One or more space-separated events. Null means any event.
+	 * @param {Event~eventCallback} [handler] An option handler function. The handler will only be remove if it is the same handler.
+	 */
+	off(events, handler) {
+		this.app.eventBus.off(this, events, handler, namespace);
 	}
 
 	/**
@@ -83,12 +117,17 @@ class Console {
 		this.keymapModel.set({ [key]: undefined });
 	}
 
+	/**
+	 * Sets focus to any console that may be rendered.
+	 */
+	focus() {
+		this.app.eventBus.emit(this, namespace + '.focus');
+	}
+
 	_setListeners(on) {
 		let cb = on ? 'on' : 'off';
 		this.module.player[cb]('activeChange', this._onActiveChange);
-		if (this.mode == 'auto') {
-			this.module.media.getModel()[cb]('change', this._onMediaChange);
-		}
+		this.module.media.getModel()[cb]('change', this._updateMode);
 	}
 
 	_onActiveChange(ev) {
@@ -115,14 +154,17 @@ class Console {
 		return state;
 	}
 
-	_onMediaChange(ev) {
+	_updateMode(ev) {
 		this.model.set({ mode: this._getMode() });
 	}
 
 	_getMode() {
-		return this.mode == 'auto'
-			? this.module.media.getModel().pointerCoarse ? 'touch' : 'keyboard'
-			: this.mode;
+		let mode = this.settings?.consoleMode || this.mode;
+		return mode == 'auto'
+			? mobile({ tablet: true })
+				? 'touch'
+				: 'keyboard'
+			: mode;
 	}
 
 	newConsole(layoutId) {
@@ -131,6 +173,7 @@ class Console {
 
 	dispose() {
 		this._setListeners(false);
+		listenResource(this.settings, false, this._updateMode);
 	}
 }
 

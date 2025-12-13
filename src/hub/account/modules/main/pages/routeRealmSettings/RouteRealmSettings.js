@@ -1,0 +1,157 @@
+import { Elem } from 'modapp-base-component';
+import { Model, Collection } from 'modapp-resource';
+import l10n from 'modapp-l10n';
+import FAIcon from 'components/FAIcon';
+import { relistenResource } from 'utils/listenResource';
+import { hasIdRoles } from 'utils/idRoles';
+import compareSortOrderId from 'utils/compareSortOrderId';
+
+import RouteRealmSettingsComponent from './RouteRealmSettingsComponent';
+import './routeRealmSettings.scss';
+
+const pathDef = [
+	[ 'realm', '$realmId' ],
+];
+
+
+/**
+ * RouteRealmSettings adds the realms route.
+ */
+class RouteRealmSettings {
+
+	constructor(app, params) {
+		this.app = app;
+
+		this.app.require([
+			'api',
+			'router',
+			'routeError',
+			'auth',
+			'access',
+			'routeRealms',
+			'toaster',
+			'dialogCropImage',
+			'file',
+			'confirm',
+		], this._init.bind(this));
+	}
+
+	_init(module) {
+		this.module = Object.assign({ self: this }, module);
+
+		this.model = new Model({ data: {
+			realm: null,
+			error: null,
+		}, eventBus: this.app.eventBus });
+
+		this.tools = new Collection({
+			idAttribute: m => m.id,
+			compare: compareSortOrderId,
+			eventBus: this.app.eventBus,
+		});
+
+		this.module.router.addRoute({
+			id: 'realmsettings',
+			hidden: true,
+			parentId: 'realms',
+			icon: 'university',
+			name: l10n.l('routeRealmSettings.realmSettings', "Realm Settings"),
+			component: new RouteRealmSettingsComponent(this.module, this.model),
+			setState: params => this._setState(params),
+			getUrl: params => this.module.router.createDefUrl(params, pathDef),
+			parseUrl: parts => this.module.router.parseDefUrl(parts, pathDef),
+			order: 20,
+		});
+
+		this.module.routeRealms.addTool({
+			id: 'realmSettings',
+			componentFactory: (realm) => new Elem(n => n.elem('button', { className: 'iconbtn medium', events: {
+				click: (c, ev) => {
+					ev.stopPropagation();
+					this.setRoute({ realmId: realm.id });
+				},
+			}}, [
+				n.component(new FAIcon('cog')),
+			])),
+		});
+	}
+
+	/**
+	 * Sets the route to the router.
+	 * @param {{
+	 * 	realmId?: string;
+	 * }} params - Route parameters.
+	 */
+	setRoute(params) {
+		this.module.router.setRoute('realmsettings', params);
+	}
+
+	/**
+	 * Gets a collection of tools.
+	 * @returns {Collection} Collection of tools.
+	 */
+	getTools() {
+		return this.tools;
+	}
+
+	/**
+	 * Registers an edit realm component tool.
+	 * @param {object} tool Tool object
+	 * @param {string} tool.id Tool ID.
+	 * @param {number} tool.sortOrder Sort order.
+	 * @param {(realm: ModifyModel) => Component} tool.componentFactory Tool component factory.
+	 * @param {string} [tool.type] Target type. May be 'section'. Defaults to 'section';
+	 * @param {string} [tool.className] Class to give to the list item container.
+	 * @param {(params: Record<string,any>) => Record<string,any>} [tool.onSave] Callback called on save, to prepare the params before calling 'set'.
+	 * @returns {this}
+	 */
+	addTool(tool) {
+		if (this.tools.get(tool.id)) {
+			throw new Error("Tool ID already registered: ", tool.id);
+		}
+		this.tools.add(tool);
+		return this;
+	}
+
+	/**
+	 * Unregisters a previously registered tool.
+	 * @param {string} toolId Tool ID.
+	 * @returns {this}
+	 */
+	removeTool(toolId) {
+		let tool = this.tools.get(toolId);
+		this._listenTool(tool, false);
+		this.tools.remove(toolId);
+		return this;
+	}
+
+	async _setState(params) {
+		return this.module.auth.getUserPromise()
+			.then(user => params?.realmId
+				? hasIdRoles(user, 'overseer')
+					? this.module.api.get(`control.overseer.realm.${params.realmId}`)
+					: this.module.api.get(`control.realm.${params.realmId}.details`)
+				: Promise.resolve(null),
+			)
+			.then(realm => this._setModel({ realm }))
+			.catch(error => {
+				console.error(error);
+				return this._setModel({ error });
+			});
+	}
+
+	_setModel(props) {
+		props = props || {};
+		return this.model.set({
+			realm: relistenResource(this.model.realm, props.realm),
+			error: props.error || null,
+		});
+	}
+
+	dispose() {
+		this.module.router.removeRoute('realmsettings');
+		this.module.routeRealmSettings.removeTool('realmSettings');
+	}
+}
+
+export default RouteRealmSettings;

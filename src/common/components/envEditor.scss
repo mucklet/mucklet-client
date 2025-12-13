@@ -1,0 +1,30 @@
+@import '~scss/variables';
+
+
+.enveditor {
+	&--env {
+		padding-top: 6px;
+	}
+
+	&--value {
+		font-size: $font-size-small;
+		padding: 4px 6px;
+	}
+
+	&--create {
+		padding-top: 12px;
+
+		> .btn {
+			background: none;
+			width: 100%;
+			border: dashed 2px $color4;
+			padding: 4px 12px;
+			height: inherit;
+
+			&:hover, &:focus {
+				color: $color4-lighter;
+				background: $color1-light;
+			}
+		}
+	}
+}

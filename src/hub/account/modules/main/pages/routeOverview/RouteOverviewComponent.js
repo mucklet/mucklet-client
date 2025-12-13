@@ -1,7 +1,8 @@
-import { Context, Elem, Txt } from 'modapp-base-component';
+import { Context, Elem } from 'modapp-base-component';
 import { CollectionList, CollectionComponent } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import Collapser from 'components/Collapser';
+import PageHeader from 'components/PageHeader';
 import l10n from 'modapp-l10n';
 
 /**
@@ -19,7 +20,7 @@ class RouteOverviewComponent {
 		let ctx = this.model.ctx;
 		let components = {};
 		this.elem = new Elem(n => n.elem('div', { className: 'routeoverview' }, [
-			n.component(new Txt(l10n.l('routeOverview.accountOverview', "Account overview"), { tagName: 'h2' })),
+			n.component(new PageHeader(l10n.l('routeOverview.accountOverview', "Account overview"))),
 			n.elem('div', { className: 'common--hr' }),
 			n.elem('div', { className: 'flex-row m pad16' }, [
 				n.component(new Context(

@@ -1,6 +1,7 @@
 import { Transition } from 'modapp-base-component';
-import { Model, Collection, sortOrderCompare } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import Panel from 'components/Panel';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PlayerPanelFooter from './PlayerPanelFooter';
 import './playerPanel.scss';
 
@@ -31,7 +32,7 @@ class PlayerPanel {
 
 		this.footerTools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 

@@ -6,8 +6,7 @@ import PanelSection from 'components/PanelSection';
 import CharTagsList from 'components/CharTagsList';
 import AutoComplete from 'components/AutoComplete';
 import FAIcon from 'components/FAIcon';
-import patternMatch, { patternMatchRender } from 'utils/patternMatch';
-import labelCompare from 'utils/labelCompare';
+import patternMatch, { patternMatchRender, patternMatchCompare } from 'utils/patternMatch';
 
 
 class EditCharTagsComponent {
@@ -51,7 +50,7 @@ class EditCharTagsComponent {
 								update(tags.toArray()
 									.filter(m => patternMatch(m.key, text) && this._tagIsValid(m.key))
 									.map(m => ({ value: m.id, label: m.key }))
-									.sort(labelCompare)
+									.sort(patternMatchCompare(text, m => m.label))
 									.slice(0, 10),
 								);
 							},

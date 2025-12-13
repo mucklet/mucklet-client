@@ -1,13 +1,10 @@
-import { Elem, Txt, Textarea, Input } from 'modapp-base-component';
+import { Elem, Txt, Textarea } from 'modapp-base-component';
 import { Model } from 'modapp-resource';
 import { ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Dialog from 'classes/Dialog';
 import Collapser from 'components/Collapser';
-import AutoComplete from 'components/AutoComplete';
 import PanelSection from 'components/PanelSection';
-import labelCompare from 'utils/labelCompare';
-import patternMatch, { patternMatchRender } from 'utils/patternMatch';
 import './dialogSendMail.scss';
 
 class DialogSendMail {
@@ -18,6 +15,7 @@ class DialogSendMail {
 			'api',
 			'player',
 			'cmdLists',
+			'searchChar',
 		], this._init.bind(this));
 	}
 
@@ -39,37 +37,19 @@ class DialogSendMail {
 			text: "",
 		}, eventBus: this.app.eventBus });
 
-		let ownedChars = this.module.player.getChars();
-
 		this.dialog = new Dialog({
 			title: l10n.l('dialogSendMail.sendMail', "Send mail"),
 			className: 'dialogsendmail',
 			content: new Elem(n => n.elem('div', [
 				n.component('from', new PanelSection(
 					l10n.l('dialogSendMail.from', "From"),
-					new AutoComplete(main ? main.name + " " + main.surname : "", {
-						className: 'dialog--input',
-						attributes: { placeholder: l10n.t('dialogSendMail.enterFromCharacter', "Enter from character"), spellcheck: 'false' },
-						fetch: (text, update, c) => {
-							model.set({ from: null });
-							c.addClass('dialog--incomplete');
-							let list = ownedChars.toArray()
-								.filter(m => patternMatch((m.name + " " + m.surname).trim(), text))
-								.map(m => ({ value: m.id, label: (m.name + " " + m.surname).trim() }))
-								.sort(labelCompare);
-							update(list);
-						},
-						events: { blur: c => {
-							if (!model.from) {
-								c.setProperty('value', "");
-							}
-						} },
-						render: patternMatchRender,
-						minLength: 1,
-						onSelect: (c, item) => {
-							c.removeClass('dialog--incomplete');
-							model.set({ from: item.value });
-							c.setProperty('value', item.label);
+					this.module.searchChar.newSearchChar({
+						ownedChars: true,
+						placeholder: l10n.l('dialogSendMail.enterFromCharacter', "Enter from character"),
+						onSelect: (char) => model.set({ from: char.id }),
+						events: {
+							input: (c, ev) => model.set({ from: null }),
+							blur: c => !model.from && c.setProperty('value', ""),
 						},
 					}),
 					{
@@ -80,10 +60,13 @@ class DialogSendMail {
 				)),
 				n.component('to', new PanelSection(
 					l10n.l('dialogSendMail.to', "To"),
-					new Input("", {
-						events: { input: c => model.set({ to: c.getValue() }) },
-						attributes: { placeholder: l10n.t('dialogSendMail.enterToCharacter', "Enter to character"), spellcheck: 'false' },
-						className: 'dialog--input',
+					this.module.searchChar.newSearchChar({
+						placeholder: l10n.l('dialogSendMail.enterToCharacter', "Enter to character"),
+						onSelect: (char) => model.set({ to: char.id }),
+						events: {
+							input: (c, ev) => model.set({ to: null }),
+							blur: c => !model.to && c.setProperty('value', ""),
+						},
 					}),
 					{
 						className: 'common--sectionpadding',
@@ -170,18 +153,13 @@ class DialogSendMail {
 			}
 		}
 
-		let toChar = this.module.cmdLists.getAllChars().getItem(model.to);
-
-		this.sendPromise = (toChar && toChar.value
-			? Promise.resolve({ id: toChar.value })
-			: player.call('getChar', { charName: model.to })
-		).then(c => this.module.api.call('mail.player.' + player.id + '.inbox', 'send', {
-			toCharId: c.id,
+		this.sendPromise = this.module.api.call('mail.player.' + player.id + '.inbox', 'send', {
+			toCharId: model.to,
 			fromCharId: model.from,
 			text,
 			pose,
 			ooc,
-		})).then(() => {
+		}).then(() => {
 			this.close();
 		}).catch(err => {
 			if (!this.dialog) return;

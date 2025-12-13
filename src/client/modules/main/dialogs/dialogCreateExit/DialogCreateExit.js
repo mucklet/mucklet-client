@@ -7,8 +7,7 @@ import Collapser from 'components/Collapser';
 import AutoComplete from 'components/AutoComplete';
 import LabelToggleBox from 'components/LabelToggleBox';
 import PanelSection from 'components/PanelSection';
-import labelCompare from 'utils/labelCompare';
-import patternMatch, { patternMatchRender } from 'utils/patternMatch';
+import patternMatch, { patternMatchRender, patternMatchCompare } from 'utils/patternMatch';
 import prepareKeys from 'utils/prepareKeys';
 import './dialogCreateExit.scss';
 
@@ -95,40 +94,37 @@ class DialogCreateExit {
 						n.component(new ModelComponent(
 							model,
 							new Collapser(),
-							(m, c, change) => {
-								if (change && !change.hasOwnProperty('newRoom')) return;
-								c.setComponent(m.newRoom ? null : new AutoComplete({
-									className: 'dialog--input dialog--incomplete',
-									attributes: { placeholder: "Search owned room or enter a room #ID", name: 'dialogcreateexit-targetroom', spellcheck: 'false' },
-									fetch: (text, update, c) => {
-										model.set({ targetRoom: null });
-										if (!isId(text)) {
-											c.addClass('dialog--incomplete');
+							(m, c, change) => c.setComponent(m.newRoom ? null : c.getComponent() || new AutoComplete({
+								className: 'dialog--input dialog--incomplete',
+								attributes: { placeholder: "Search owned room or enter a room #ID", name: 'dialogcreateexit-targetroom', spellcheck: 'false' },
+								fetch: (text, update, c) => {
+									model.set({ targetRoom: null });
+									if (!isId(text)) {
+										c.addClass('dialog--incomplete');
+									}
+									let list = (ctrl.ownedRooms ? ctrl.ownedRooms.toArray() : [])
+										.filter(m => patternMatch(m.name, text))
+										.map(m => ({ value: m.id, label: m.name }))
+										.sort(patternMatchCompare(text, m => m.label));
+									update(list);
+								},
+								events: {
+									input: c => {
+										let v = c.getProperty('value');
+										model.set({ targetRoomValue: v });
+										if (isId(v)) {
+											c.removeClass('dialog--incomplete');
 										}
-										let list = (ctrl.ownedRooms ? ctrl.ownedRooms.toArray() : [])
-											.filter(m => patternMatch(m.name, text))
-											.map(m => ({ value: m.id, label: m.name }))
-											.sort(labelCompare);
-										update(list);
 									},
-									events: {
-										input: c => {
-											let v = c.getProperty('value');
-											model.set({ targetRoomValue: v });
-											if (isId(v)) {
-												c.removeClass('dialog--incomplete');
-											}
-										},
-									},
-									render: patternMatchRender,
-									minLength: 1,
-									onSelect: (c, item) => {
-										c.removeClass('dialog--incomplete');
-										model.set({ targetRoom: item.value });
-										c.setProperty('value', item.label);
-									},
-								}));
-							},
+								},
+								render: patternMatchRender,
+								minLength: 1,
+								onSelect: (c, item) => {
+									c.removeClass('dialog--incomplete');
+									model.set({ targetRoom: item.value });
+									c.setProperty('value', item.label);
+								},
+							})),
 						)),
 					])),
 					{
@@ -166,10 +162,18 @@ class DialogCreateExit {
 			return;
 		}
 
+		let targetRoom = model.newRoom
+			? undefined
+			: model.targetRoom || model.targetRoomValue.replace(/^#/, '');
+		if (!model.newRoom && !targetRoom) {
+			this._setMessage(l10n.l('dialogCreateExit.missingDestinationRoom', "Missing destination room."));
+			return;
+		}
+
 		let params = {
 			name: model.name,
 			keys: prepareKeys(model.keys),
-			targetRoom: model.targetRoom || model.targetRoomValue.replace(/^#/, '') || null,
+			targetRoom,
 			hidden: opt.hidden || undefined,
 		};
 

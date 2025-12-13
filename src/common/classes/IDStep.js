@@ -35,6 +35,12 @@ class IDStep {
 		));
 	}
 
+	/**
+	 * Parses the stream input stream.
+	 * @param {import('@codemirror/language').StringStream | null} stream String stream.
+	 * @param {import('classes/CmdState').default} state Command state.
+	 * @returns {null | string | false} Null if no token, string on token, false if no match
+	 */
 	parse(stream, state) {
 		if (!stream) {
 			return this._setRequired(state);

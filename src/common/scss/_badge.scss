@@ -32,6 +32,14 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		flex-direction: row;
 	}
 
+	&--select-gap {
+		column-gap: 6px;
+	}
+
+	&--select-center {
+		align-items: center;
+	}
+
 	&--select-margin {
 		> * + * {
 			margin-left: 4px;
@@ -45,10 +53,10 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	}
 
 	&--symbol {
-		padding-left: 6px;
 		font-size: $font-size-tiny;
 		color: $color4;
 		flex: 0 0 auto;
+		align-self: center;
 	}
 
 	&--faicon {
@@ -101,6 +109,10 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		> button {
 			display: block;
 		}
+	}
+
+	&--padright {
+		padding-right: 6px;
 	}
 
 	&--counter {
@@ -233,6 +245,11 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 			height: 32px;
 		}
 
+		&--faicon.tiny {
+			height: 12px;
+			font-size: $font-size-tiny;
+		}
+
 		&--margin {
 			padding-top: 6px;
 		}
@@ -245,6 +262,10 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 			> * + * {
 				margin-left: 6px;
 			}
+		}
+
+		&--select-gap {
+			column-gap: 8px;
 		}
 	}
 }

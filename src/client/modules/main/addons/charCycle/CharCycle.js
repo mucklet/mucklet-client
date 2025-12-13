@@ -1,4 +1,5 @@
 import l10n from 'modapp-l10n';
+import compareCtrlChars from 'utils/compareCtrlChars';
 
 /**
  * CharCycle adds keyboard shortcut to cycle through controlled characters,
@@ -12,7 +13,11 @@ class CharCycle {
 		// Bind callbacks
 		this._onKeydown = this._onKeydown.bind(this);
 
-		this.app.require([ 'player', 'helpConsole' ], this._init.bind(this));
+		this.app.require([
+			'player',
+			'helpConsole',
+			'info',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
@@ -36,19 +41,20 @@ class CharCycle {
 
 	_onKeydown(e) {
 		if (e.shiftKey && e.key === 'Tab') {
-			if (this._cycleActive()) {
-				e.preventDefault();
-			}
+			this._cycleActive();
+			e.preventDefault();
 		} else if (e.ctrlKey) {
+			let max = this.module.info.getCore().maxControlled || 5;
 			let k = parseInt(e.key);
-			if (!isNaN(k) && this._setActive((k + 9) % 10)) {
+			if (k >= 1 && k <= max) {
+				this._setActive(k - 1);
 				e.preventDefault();
 			}
 		}
 	}
 
 	_cycleActive() {
-		let ctrls = this.module.player.getControlled();
+		let ctrls = this._getSortedControlled();
 		if (!ctrls || ctrls.length <= 1) return;
 
 		let idx = ctrls.indexOf(this.module.player.getActiveChar());
@@ -56,16 +62,24 @@ class CharCycle {
 
 		idx = (idx + 1) % ctrls.length;
 
-		this.module.player.setActiveChar(ctrls.atIndex(idx).id);
+		this.module.player.setActiveChar(ctrls[idx].id);
 		return true;
 	}
 
 	_setActive(idx) {
-		let ctrls = this.module.player.getControlled();
-		if (!ctrls || ctrls.length <= idx) return;
+		let ctrls = this._getSortedControlled();
+		if (!ctrls || ctrls.length <= idx) return false;
 
-		this.module.player.setActiveChar(ctrls.atIndex(idx).id);
+		this.module.player.setActiveChar(ctrls[idx].id);
 		return true;
+	}
+
+	/**
+	 * Returns the list of controlled characters, sorted by ctrlSince.
+	 * @returns {Array<Model>} Sorted array of controlled characters.
+	 */
+	_getSortedControlled() {
+		return this.module.player.getControlled().toArray().sort(compareCtrlChars);
 	}
 
 	dispose() {

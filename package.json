@@ -1,6 +1,6 @@
 {
   "name": "mucklet-client",
-  "version": "1.64.0",
+  "version": "1.69.0",
   "description": "A web client for Mucklet.",
   "repository": {
     "type": "git",
@@ -15,6 +15,7 @@
     "client:docker": "cross-env NODE_ENV=development DISABLE_SERVICEWORKER=1 APP_NAME=client CFG_NAME=docker webpack-dev-server",
     "client:serviceworker": "cross-env NODE_ENV=development APP_NAME=client CFG_NAME=development_serviceworker webpack-dev-server",
     "hub": "cross-env NODE_ENV=development APP_NAME=hub webpack-dev-server",
+    "hub:node": "cross-env NODE_ENV=development APP_NAME=hub CFG_NAME=node webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack",
     "build:hub": "cross-env NODE_ENV=production APP_NAME=hub webpack",
     "build:client": "cross-env NODE_ENV=production APP_NAME=client webpack",
@@ -52,15 +53,17 @@
     "workbox-webpack-plugin": "^7.1.0"
   },
   "dependencies": {
-    "@codemirror/commands": "^6.3.0",
-    "@codemirror/language": "^6.9.2",
-    "@codemirror/state": "^6.3.1",
-    "@codemirror/view": "^6.21.4",
-    "@lezer/highlight": "^1.1.6",
+    "@codemirror/commands": "^6.8.1",
+    "@codemirror/lang-javascript": "^6.2.3",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.5",
+    "@lezer/highlight": "^1.2.1",
     "@stripe/stripe-js": "^1.52.0",
     "autocompleter": "^6.1.3",
     "core-js": "^3.26.0",
     "croppie": "^2.6.5",
+    "is-mobile": "^5.0.0",
     "modapp": "^2.7.0",
     "modapp-base-component": "^1.8.1",
     "modapp-l10n": "^1.8.2",
@@ -68,7 +71,7 @@
     "modapp-resource-component": "^1.8.3",
     "modapp-utils": "^1.8.0",
     "nouislider": "^15.6.1",
-    "resclient": "^2.5.0",
+    "resclient": "^2.5.1",
     "simplebar": "^5.3.9"
   }
 }

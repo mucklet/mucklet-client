@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import Fader from 'components/Fader';
 import Collapser from 'components/Collapser';
+import PageHeader from 'components/PageHeader';
 import * as txtCurrency from 'utils/txtCurrency';
 import * as txtRecurrence from 'utils/txtRecurrence';
 import * as txtUnit from 'utils/txtUnit';
@@ -20,7 +21,11 @@ class RoutePaymentsStripe {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'routepayments-stripe' }, [
-			n.component(new ModelTxt(this.payment, m => txtPaymentStatus.header(m), { tagName: 'h2' })),
+			n.component(new ModelComponent(
+				this.payment,
+				new PageHeader(),
+				(m, c) => c.setTitle(txtPaymentStatus.header(m)),
+			)),
 			n.elem('div', { className: 'common--hr' }),
 			n.elem('p', { className: 'routepayments--product' }, [
 				n.component(new ModelTxt(this.offer, m => txtProduct.toLocaleString(m.product))),

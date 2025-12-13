@@ -2,20 +2,24 @@ import Router from 'modules/router/Router';
 import PlayerTools from 'modules/playerTools/PlayerTools';
 import Confirm from 'modules/confirm/Confirm';
 import Toaster from 'modules/toaster/Toaster';
+import File from 'modules/file/File';
 import AccountEmail from 'modules/accountEmail/AccountEmail';
 import VerifyEmail from 'modules/verifyEmail/VerifyEmail';
 import DialogChangeEmail from 'modules/dialogs/dialogChangeEmail/DialogChangeEmail';
 import DialogChangePassword from 'modules/dialogs/dialogChangePassword/DialogChangePassword';
+import DialogCropImage from 'modules/dialogs/dialogCropImage/DialogCropImage';
 
 const modules = {
 	router: Router,
 	playerTools: PlayerTools,
 	confirm: Confirm,
 	toaster: Toaster,
+	file: File,
 	accountEmail: AccountEmail,
 	verifyEmail: VerifyEmail,
 	dialogChangeEmail: DialogChangeEmail,
 	dialogChangePassword: DialogChangePassword,
+	dialogCropImage: DialogCropImage,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);

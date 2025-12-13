@@ -7,19 +7,19 @@ import Err from './Err';
 class UnknownStep {
 	constructor() {}
 
-	parse(stream, s) {
+	parse(stream, state) {
 		if (!stream) return false;
 
 		if (stream.eatSpace()) {
 			return null;
 		}
 		let m = stream.match(/^(.*[^\s])\s*/);
-		s.setParam('unknown', m[1]);
-		if (s.error) {
+		state.setParam('unknown', m[1]);
+		if (state.error) {
 			return 'unknown';
 		}
 
-		s.setError(new Err('unknownStep.unableToParse', 'I don\'t understand "{match}".', { match: m[1] }));
+		state.setError(new Err('unknownStep.unableToParse', 'I don\'t understand "{match}".', { match: m[1] }));
 		return 'error';
 	}
 }

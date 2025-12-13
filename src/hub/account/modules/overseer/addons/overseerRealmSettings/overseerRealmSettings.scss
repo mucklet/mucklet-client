@@ -1,0 +1,28 @@
+@import '~scss/variables';
+
+.overseerrealmsettings-topsection {
+	&--version {
+		font-size: $font-size-small;
+		color: $color4;
+	}
+
+	&--containers {
+		padding-top: 4px;
+	}
+
+	&--updaterequired {
+		color: $color5;
+		font-size: $font-size-small;
+		position: relative;
+		top: -6px;
+		padding-bottom: 6px;
+		display: block;
+	}
+}
+
+.overseerrealmsettings-bottomsection {
+	&--type {
+		flex: 1;
+		max-width: 100px;
+	}
+}

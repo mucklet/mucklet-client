@@ -1,5 +1,6 @@
-import { Elem, Txt } from 'modapp-base-component';
+import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
+import RouteRealmsRealms from './RouteRealmsRealms';
 
 /**
  * RouteRealmsComponent draws a the realms route page.
@@ -11,12 +12,17 @@ class RouteRealmsComponent {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'routerealms' }, [
-			n.component(new Txt(l10n.l('routeRealms.realms', "Realms"), { tagName: 'h2' })),
-			n.elem('div', { className: 'common--hr' }),
-			n.component(new Txt(l10n.l('routeRealms.disclaimer1', "Want to create a realm of your own? This is where you will be able to manage them."), { tagName: 'p', className: 'common--placeholder' })),
-			n.component(new Txt(l10n.l('routeRealms.disclaimer2', "... but we are still working on it."), { tagName: 'p', className: 'common--placeholder' })),
-		]));
+		this.elem = new ModelFader(this.model, [
+			{
+				condition: m => m.realms,
+				factory: m => new RouteRealmsRealms(this.module, m, m.realms, m.user),
+				hash: m => m.realms,
+			},
+			{
+				factory: m => this.module.routeError.newError(l10n.l('routeRealms.errorLoadingRealms', "Error loading realms"), m.error),
+				hash: m => m.error,
+			},
+		]);
 		return this.elem.render(el);
 	}
 

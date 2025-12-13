@@ -1,0 +1,42 @@
+@import '~scss/variables';
+
+// .routenodes {}
+
+
+.routenodes-nodebadge {
+
+	&--title {
+		line-height: 26px;
+		font-size: $font-size;
+		color: $color3;
+	}
+
+	&--date {
+		color: $color4;
+		line-height: 20px;
+		font-size: $font-size-small;
+	}
+
+	&--state {
+		line-height: 20px;
+	}
+}
+
+.routenodes-nodes {
+
+	&-list {
+		padding-top: 4px;
+	}
+
+	&--listitem {
+		padding: 3px 0;
+	}
+}
+
+.routenodes-nodebadgecontent {
+	&--tools {
+		display: flex;
+		flex-direction: row;
+		column-gap: 6px;
+	}
+}

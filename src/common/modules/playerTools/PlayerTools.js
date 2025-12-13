@@ -1,4 +1,5 @@
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
+import compareSortOrderId from 'utils/compareSortOrderId';
 
 
 /**
@@ -16,13 +17,13 @@ class PlayerTools {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 
 		this.footerTools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 	}

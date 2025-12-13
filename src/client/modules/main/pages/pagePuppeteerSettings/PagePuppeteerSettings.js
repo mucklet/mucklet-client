@@ -1,5 +1,6 @@
-import { Collection, sortOrderCompare } from 'modapp-resource';
+import { Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
+import compareSortOrderId from 'utils/compareSortOrderId';
 import PagePuppeteerSettingsComponent from './PagePuppeteerSettingsComponent';
 import './pagePuppeteerSettings.scss';
 
@@ -27,7 +28,7 @@ class PagePuppeteerSettings {
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
-			compare: sortOrderCompare,
+			compare: compareSortOrderId,
 			eventBus: this.app.eventBus,
 		});
 	}
