@@ -1,19 +1,22 @@
-import ImgModal from 'classes/ImgModal';
+import { AppExt } from 'modapp';
+import initModules from './modules/init-modules';
+import moduleConfig from 'moduleConfig';
 import 'scss/index.scss';
 import './style.scss';
 
+// Create app and load core modules
+let app = new AppExt(moduleConfig, { props: window.appProps });
+app.loadBundle(initModules).then(result => {
+	console.log("Init modules: ", result);
+	app.render(document.body);
 
-// Turn all start-screenshot links into modals.
-document.addEventListener('DOMContentLoaded', () => {
-	function onClickImg(url, ev) {
-		ev.preventDefault();
-		new ImgModal(url).open();
-	}
+	// Load main modules
+	import(/* webpackChunkName: "start-main" */ './modules/main-modules').then(({ default: mainModules }) => {
+		app.loadBundle(mainModules).then(result => {
+			console.log("Main modules: ", result);
+		});
+	});
+});
 
-	let links = document.getElementsByClassName('start-screenshot');
-	for (let l of links) {
-		let href = l.getAttribute('href');
-		l.setAttribute('href', 'javascript:;');
-		l.addEventListener('click', (ev) => onClickImg(href, ev));
-	}
-}, false);
+// Make app global
+window.app = app;

@@ -1,0 +1,234 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.realmlist {
+	&--list {
+		display: flex;
+		flex-direction: row;
+		gap: var(--gap);
+		margin-top: 71px;
+		justify-content: center;
+	}
+
+	&--realm {
+		max-width: 496px;
+		flex: 1 1 0px;
+		// height: 100%;
+	}
+}
+
+.realmlist-realm {
+
+	position: relative;
+	background-color: $color1-light;
+	box-shadow: 0px 3px 6px #00000029;
+	border-radius: 16px;
+	height: 100%;
+
+	&--cont {
+		padding: 12px;
+		min-height: 100%;
+		// flex: 1 1 0px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--img {
+		border-radius: 10px;
+		width: 100%;
+		display: block;
+	}
+
+	&--tags {
+		padding-top: 12px;
+	}
+
+	&--header {
+		display: flex;
+		flex-direction: row;
+		column-gap: 16px;
+		padding-top: 12px;
+	}
+
+	&--icon {
+		width: 48px;
+		height: 48px;
+		border-radius: 10px;
+	}
+
+	&--title-cont {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--title {
+		display: flex;
+		align-items: center;
+		flex: 1 1 0px;
+		font-family: $font-text;
+		color: $color3;
+		font-size: 24px;
+		line-height: 24px;
+	}
+
+	&--counters-top {
+		display: none;
+	}
+
+	&--desc {
+		padding-top: 10px;
+		font-size: $font-size;
+	}
+
+	&--footer {
+		align-items: flex-end;
+		justify-content: space-between;
+		flex: 1 1 0px;
+		padding-top: 12px;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		gap: 12px;
+	}
+
+	&--counters {
+		display: flex;
+		flex-direction: row;
+		column-gap: 24px;
+		font-size: $font-size-small;
+	}
+
+	&--counter {
+		line-height: $font-size-small;
+	}
+
+	&--signin {
+		flex: 0 0 auto;
+		font-weight: bold;
+		height: 46px;
+		padding: 4px 24px;
+		border-radius: 8px;
+		> .fa {
+			margin-left: 12px;
+			margin-right: -2px;
+		}
+	}
+
+	&--more {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+
+	.realmlist-realm {
+		&--footer  {
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+
+		&--signin {
+			width: 100%;
+		}
+	}
+}
+
+
+@media screen and (max-width: 720px) {
+
+	.realmlist {
+		&--list {
+			flex-direction: column;
+			align-items: stretch;
+			margin-top: 71px;
+		}
+
+		&--realm {
+			max-width: initial;
+		}
+	}
+
+	.realmlist-realm {
+		&--img {
+			display: none;
+		}
+
+		&--header {
+			padding-top: 0px;
+		}
+
+		&--title {
+			font-size: 22px;
+			line-height: 22px;
+		}
+
+		&--icon {
+			width: 64px;
+			height: 64px;
+		}
+
+		&--counters-top {
+			flex: 0 0 auto;
+			font-size: $font-size-tiny;
+			display: flex;
+			flex-direction: row;
+			column-gap: 18px;
+		}
+
+		&--desc {
+			padding-top: 8px;
+		}
+
+		&--counters {
+			display: none;
+		}
+
+		&--footer  {
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+
+		&--signin {
+			width: 100%;
+		}
+
+		&--more {
+			pointer-events: none;
+			display: block;
+			position: absolute;
+			opacity: 0;
+			width: 100%;
+			bottom: 0;
+			height: 93px;
+			background: transparent linear-gradient(180deg, #00000000 0%, $color1-light 63px) 0% 0% no-repeat padding-box;
+			transition: opacity 0.2s linear;
+		}
+
+		.realmlist-realm--caret {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			bottom: 12px;
+			width: 100%;
+			font-size: 24px;
+			transition: transform 0.2s linear;
+			transform-origin: 50% 60%;
+		}
+
+		&:not(.active) {
+			height: 204px;
+			overflow: hidden;
+
+			.realmlist-realm--more {
+				opacity: 1;
+			}
+
+			.realmlist-realm--caret {
+				transform: rotate(180deg);
+			}
+		}
+
+	}
+}

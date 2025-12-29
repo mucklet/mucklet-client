@@ -10,14 +10,21 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
+	<script type="text/javascript">
+		window.appProps = {
+			apiHostPath: <%= JSON.stringify(API_HOST_PATH) %>,
+			apiWebresourcePath: <%= JSON.stringify(API_WEBRESOURCE_PATH) %>,
+			apiFilePath: <%= JSON.stringify(API_FILE_PATH) %>,
+		};
+	</script>
 	<title>Mucklet</title>
 </head>
 <body>
 	<script type="text/javascript">
 		const onScroll = () => {
 			document.body.style.setProperty(
-			"--scroll",
-			window.pageYOffset,
+				"--scroll",
+				window.pageYOffset,
 			);
 		};
 		window.addEventListener(
@@ -66,9 +73,11 @@
 					</div>
 				</div>
 
-				<div class="start--realms">
+				<div id="start-realms"></div>
+
+				<!-- <div class="start--realms">
 					<div class="start--realm">
-						<div class="start--realm-cont">
+						<div class="start--realm-cont" >
 							<img src="/img/realm1.png" class="start--realm-img" />
 							<div class="start--realm-header">
 								<img src="/img/realm1_icon.png" class="start--realm-icon" />
@@ -80,12 +89,12 @@
 									</div>
 								</div>
 							</div>
-							<div class="start--realm-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
 							<div class="start--realm-tags taglist">
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>fantasy</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>world building</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>sfw</span></div></div>
 							</div>
+							<div class="start--realm-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
 							<div class="start--realm-footer">
 								<div class="start--realm-counters">
 									<div class="start--realm-counter"><span class="dot highlight"></span>198 Awake</div>
@@ -113,13 +122,13 @@
 									</div>
 								</div>
 							</div>
-							<div class="start--realm-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
 							<div class="start--realm-tags taglist">
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>furry</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>world building</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>social</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag warn hasdesc"><span>nsfw</span></div></div>
 							</div>
+							<div class="start--realm-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
 							<div class="start--realm-footer">
 								<div class="start--realm-counters">
 									<div class="start--realm-counter"><span class="dot highlight"></span>345 Awake</div>
@@ -147,12 +156,12 @@
 									</div>
 								</div>
 							</div>
-							<div class="start--realm-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
 							<div class="start--realm-tags taglist">
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>cyber punk</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>goth</span></div></div>
 								<div class="taglist--item"><div class="taglist--tag like hasdesc"><span>factions</span></div></div>
 							</div>
+							<div class="start--realm-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
 							<div class="start--realm-footer">
 								<div class="start--realm-counters">
 									<div class="start--realm-counter"><span class="dot highlight"></span>89 Awake</div>
@@ -167,7 +176,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="start--about">
 					<section class="start--aboutsection">
