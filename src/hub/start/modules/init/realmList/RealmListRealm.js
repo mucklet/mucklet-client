@@ -1,5 +1,6 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import Collapser from 'components/Collapser';
 import Img from 'components/Img';
 import renderingModes from 'utils/renderingModes';
 import l10n from 'modapp-l10n';
@@ -125,11 +126,11 @@ class RealmListComponent {
 					]),
 
 					// Description
-					n.elem('div', { className: 'realmlist-realm--desc' }, [
+					n.elem('div', { className: 'realmlist-realm--desktop realmlist-realm--desc' }, [
 						n.component(new ModelTxt(this.realm, m => m?.desc)),
 					]),
 
-					n.elem('div', { className: 'realmlist-realm--footer' }, [
+					n.elem('div', { className: 'realmlist-realm--desktop realmlist-realm--footer' }, [
 
 						// Counters on desktops
 						n.elem('div', { className: 'realmlist-realm--counters' }, [
@@ -149,16 +150,37 @@ class RealmListComponent {
 							n.elem('i', { className: 'fa fa-sign-in' }),
 						]),
 					]),
+
+					// Mobile description
+					n.component('mobile', new Collapser(null, { className: 'realmlist-realm--mobile' })),
 				]),
 
-				// Caret on mobile devices
-				n.elem('div', { className: 'realmlist-realm--more' }, [
-					n.elem('div', { className: 'realmlist-realm--caret' }, [
-						n.elem('i', { className: 'fa fa-angle-up' }),
-					]),
-				]),
+				// // Caret on mobile devices
+				// n.elem('div', { className: 'realmlist-realm--caret' }, [
+				// 	n.elem('i', { className: 'fa fa-angle-down' }),
+				// ]),
 			])),
-			(m, c) => c[this.model.realmId == this.realm?.id ? 'addClass' : 'removeClass']('active'),
+			(m, c) => {
+				let isActive = this.model.realmId == this.realm?.id;
+				c[isActive ? 'addClass' : 'removeClass']('active');
+				let collapser = c.getNode('mobile');
+				collapser.setComponent(isActive
+					? collapser.getComponent() || new Elem(n => n.elem('div', [
+						n.elem('div', { className: 'realmlist-realm--desc' }, [
+							n.component(new ModelTxt(this.realm, m => m?.desc)),
+						]),
+
+						n.elem('div', { className: 'realmlist-realm--footer' }, [
+							// Enter button
+							n.elem('button', { className: 'realmlist-realm--signin btn primary' }, [
+								n.component(new Txt('Enter')),
+								n.elem('i', { className: 'fa fa-sign-in' }),
+							]),
+						]),
+					]))
+					: null,
+				);
+			},
 		);
 		return this.elem.render(el);
 	}

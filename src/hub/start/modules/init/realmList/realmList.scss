@@ -28,7 +28,6 @@
 	&--cont {
 		padding: 12px;
 		min-height: 100%;
-		// flex: 1 1 0px;
 		display: flex;
 		flex-direction: column;
 	}
@@ -114,7 +113,7 @@
 		}
 	}
 
-	&--more {
+	&--mobile {
 		display: none;
 	}
 }
@@ -150,8 +149,12 @@
 	}
 
 	.realmlist-realm {
-		&--img {
+		&--img, &--desktop {
 			display: none;
+		}
+
+		&--mobile {
+			display: block;
 		}
 
 		&--header {
@@ -194,41 +197,22 @@
 			width: 100%;
 		}
 
-		&--more {
-			pointer-events: none;
-			display: block;
-			position: absolute;
-			opacity: 0;
-			width: 100%;
-			bottom: 0;
-			height: 93px;
-			background: transparent linear-gradient(180deg, #00000000 0%, $color1-light 63px) 0% 0% no-repeat padding-box;
-			transition: opacity 0.2s linear;
-		}
+		// .realmlist-realm--caret {
+		// 	position: absolute;
+		// 	display: flex;
+		// 	justify-content: center;
+		// 	opacity: 0;
+		// 	bottom: 0px;
+		// 	width: 100%;
+		// 	font-size: 24px;
+		// 	transition: opacity 0.2s linear;
+		// }
 
-		.realmlist-realm--caret {
-			position: absolute;
-			display: flex;
-			justify-content: center;
-			bottom: 12px;
-			width: 100%;
-			font-size: 24px;
-			transition: transform 0.2s linear;
-			transform-origin: 50% 60%;
-		}
-
-		&:not(.active) {
-			height: 204px;
-			overflow: hidden;
-
-			.realmlist-realm--more {
-				opacity: 1;
-			}
-
-			.realmlist-realm--caret {
-				transform: rotate(180deg);
-			}
-		}
+		// &:not(.active) {
+		// 	.realmlist-realm--caret {
+		// 		opacity: 1;
+		// 	}
+		// }
 
 	}
 }
