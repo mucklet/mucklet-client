@@ -402,6 +402,56 @@ body {
 		}
 	}
 
+	&--aboutchars {
+		display: flex;
+		flex-direction: row;
+		column-gap: var(--gap);
+
+		&-col1 {
+			display: flex;
+			flex-direction: column;
+			row-gap: var(--gap);
+			justify-content: center;
+			flex: 2 2 0px;
+		}
+		&-col2 {
+			flex: 3 3 0px;
+			display: flex;
+			flex-direction: column;
+			row-gap: var(--gap);
+		}
+
+
+		&-steampunk {
+			padding-right: calc(var(--gap) * 2);
+		}
+	}
+
+	&--aboutstories {
+		display: flex;
+		flex-direction: row;
+		column-gap: var(--gap);
+
+		&-col1 {
+			display: flex;
+			flex-direction: column;
+			row-gap: var(--gap);
+			justify-content: center;
+			flex: 2 2 0px;
+		}
+		&-col2 {
+			flex: 3 3 0px;
+			display: flex;
+			flex-direction: column;
+			row-gap: var(--gap);
+		}
+
+
+		&-tavern {
+			padding-right: var(--gap);
+		}
+	}
+
 	&--aboutimg {
 		width: 100%;
 		border-radius: 20px;
