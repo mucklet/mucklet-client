@@ -95,11 +95,11 @@ class RealmListComponent {
 							// Counters on mobile devices
 							n.elem('div', { className: 'realmlist-realm--counters-top' }, [
 								n.elem('div', { className: 'realmlist-realm--counter' }, [
-									n.elem('span', { className: 'dot highlight' }),
+									n.elem('span', { className: 'realmlist-realm--dot highlight' }),
 									n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countAwake', "{awake} Awake", { awake: formatNumber(m?.name.length + 2122331 || 0) }))),
 								]),
 								n.elem('div', { className: 'realmlist-realm--counter' }, [
-									n.elem('span', { className: 'dot' }),
+									n.elem('span', { className: 'realmlist-realm--dot' }),
 									n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countCharacters', "{awake} Characters", { awake: formatNumber(m?.desc.length || 0) }))),
 								]),
 							]),
@@ -135,11 +135,11 @@ class RealmListComponent {
 						// Counters on desktops
 						n.elem('div', { className: 'realmlist-realm--counters' }, [
 							n.elem('div', { className: 'realmlist-realm--counter' }, [
-								n.elem('span', { className: 'dot highlight' }),
+								n.elem('span', { className: 'realmlist-realm--dot highlight' }),
 								n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countAwake', "{awake} Awake", { awake: formatNumber(m?.name.length || 0) }))),
 							]),
 							n.elem('div', { className: 'realmlist-realm--counter' }, [
-								n.elem('span', { className: 'dot' }),
+								n.elem('span', { className: 'realmlist-realm--dot' }),
 								n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countCharacters', "{awake} Characters", { awake: formatNumber(m?.desc.length || 0) }))),
 							]),
 						]),

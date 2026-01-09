@@ -125,12 +125,9 @@ body {
 		column-gap: 24px;
 	}
 
-
-
 	&--headerbtn.btn, &--headerbtn.iconbtn {
 		@include btn-style($color1, $color1-light, $color1-lighter, $color4-light, $color4-lightest);
 	}
-
 
 	&--helpbtn {
 		border-radius: 50%;
@@ -142,8 +139,8 @@ body {
 		font-size: 20px;
 	}
 	&--joinbtn, &--loginbtn {
-		// color: $color1;
-		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%);
+		// color: $color1 !important;
+		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%) !important;
 		padding: 4px 18px;
 		width: 120px;
 		height: 40px;
@@ -167,6 +164,7 @@ body {
 		padding-top: 146px;
 		font-size: 38px;
 	}
+
 	&--heading {
 		color: $color2;
 		text-align: center;
@@ -174,9 +172,6 @@ body {
 		line-height: initial;
 		letter-spacing: -2.16px;
 		margin-top: -8px;
-	}
-
-	&--main {
 	}
 
 	&--maincontainer {
@@ -232,125 +227,15 @@ body {
 		border-radius: 8px;
 	}
 
-	&--realms {
-		display: flex;
-		flex-direction: row;
-		gap: var(--gap);
-		margin-top: 71px;
-		// min-width:
-		// flex-wrap: wrap;
-	}
-
-	&--realm {
-		position: relative;
-		background-color: $color1-light;
-		box-shadow: 0px 3px 6px #00000029;
-		border-radius: 16px;
-
-		&-cont {
-			flex: 1 1 0px;
-			padding: 12px;
-			display: flex;
-			flex-direction: column;
-			min-height: 100%;
-		}
-
-		&-img {
-			border-radius: 10px;
-			width: 100%;
-			display: block;
-		}
-
-		&-tags {
-			padding-top: 12px;
-		}
-
-		&-header {
-			display: flex;
-			flex-direction: row;
-			column-gap: 16px;
-			padding-top: 12px;
-		}
-
-		&-icon {
-			width: 48px;
-			height: 48px;
-			border-radius: 10px;
-		}
-
-		&-title-cont {
-			display: flex;
-			flex-direction: column;
-		}
-
-		&-title {
-			display: flex;
-			align-items: center;
-			flex: 1 1 0px;
-			font-family: $font-text;
-			color: $color3;
-			font-size: 24px;
-			line-height: 24px;
-		}
-
-		&-counters-top {
-			display: none;
-		}
-
-		&-desc {
-			padding-top: 10px;
-			font-size: $font-size;
-		}
-
-		&-footer {
-			align-items: flex-end;
-			justify-content: space-between;
-			flex: 1 1 0px;
-			padding-top: 12px;
-			display: flex;
-			flex-direction: row;
-			align-items: flex-end;
-			gap: 12px;
-		}
-
-		&-counters {
-			display: flex;
-			flex-direction: row;
-			column-gap: 24px;
-			font-size: $font-size-small;
-		}
-
-		&-counter {
-			line-height: $font-size-small;
-		}
-
-		&-signin {
-			flex: 0 0 auto;
-			font-weight: bold;
-			height: 46px;
-			padding: 4px 24px;
-			border-radius: 8px;
-			> .fa {
-				margin-left: 12px;
-				margin-right: -2px;
-			}
-		}
-
-		&-more {
-			display: none;
-		}
-	}
-
 	&--about {
-		margin-top: 200px;
+		padding-top: 150px;
 	}
 
 	&--aboutsection {
-		margin-top: 108px;
+		margin-top: 158px;
 		margin-left: calc(0px - var(--gap));
 		display: flex;
 		flex-direction: row;
-		// column-gap: 32px;
 
 		> div > * {
 			padding-left: var(--gap);
@@ -365,16 +250,21 @@ body {
 		align-self: center;
 		flex: 1;
 		align-items: center;
-		// padding-top: 96px;
 		h2 {
 			text-align: center;
 			font-size: 48px;
-			margin-bottom: 48px;
+			margin-top: -12px;
+			margin-bottom: 36px;
+    		line-height: 100%;
 		}
 		p {
 			text-align: center;
 			font-size: 20px;
 		}
+	}
+
+	&--em {
+		color: #fffcf2;
 	}
 
 	&--aboutworld {
@@ -457,171 +347,16 @@ body {
 		border-radius: 20px;
 		-webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
       	mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%,rgba(0,0,0,0) 100%);
-	}
 
-}
-
-@media screen and (max-width: 600px) {
-	.start {
-		&--foot {
-			padding-top: 16px;
-		}
-		&--btn {
-			max-width: 100%;
+		&.mobile {
+			display: none;
 		}
 	}
 }
-
-
-.taglist {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	row-gap: 8px;
-	column-gap: 8px;
-}
-
-.taglist--item {
-	flex: 0 0 auto;
-}
-
-.taglist--tag {
-	position: relative;
-	line-height: 16px;
-	font-size: $font-size-small;
-	text-align: left;
-	white-space: nowrap;
-	padding: 4px 16px 4px 13px;
-	color: $color4;
-	border: 1px solid $color4;
-	border-radius: 4px;
-	border-left: 13px solid;
-
-	&::before {
-		font-family: FontAwesome;
-		font-style: normal;
-		position: absolute;
-		color: $color1;
-		left: -11px;
-		font-size: 10px;
-	}
-
-	&.like::before {
-		content: "\f00c";
-	}
-
-	&.dislike {
-		color: $color5;
-		border-color: $color5;
-		&::before {
-			content: "\f05e";
-		}
-	}
-
-	&.warn {
-		color: $color5;
-		border-color: $color5;
-		&::before {
-			content: "\f071";
-			left: -12px;
-		}
-	}
-
-	&.title {
-		color: $color6;
-		border-color: $color6;
-		&::before {
-			content: "\f132";
-			left: -10px;
-		}
-	}
-
-	&.hasdesc {
-		cursor: help;
-	}
-
-	&.custom {
-		font-style: italic;
-	}
-
-	&.editable {
-		cursor: pointer;
-		transition: border-color 0.2s, color 0.2s, background-color 0.2s;
-
-		&:hover {
-			color: $color4-lighter;
-			border-color: $color4-lighter;
-			&.dislike {
-				color: $color5-light;
-				border-color: $color5-light;
-			}
-			&.title {
-				color: $color6-hover;
-				border-color: $color6-hover;
-			}
-		}
-	}
-}
-
-.dot {
-	background: $color4;
-	display: inline-block;
-	width: 10px;
-	height: 10px;
-	border-radius: 5px;
-	top: -1px;
-	position: relative;
-	vertical-align: middle;
-	margin-right: 10px;
-	&.highlight {
-		background: $color6;
-	}
-}
-
-
 
 @media screen and (max-width: 1200px) {
 	.start {
 		--gap: 4vw;
-
-		&--topcontainer {
-			position: relative;
-			height: 100%;
-			width: 90%;
-			max-width: 1617px;
-			margin: 0 auto;
-		}
-
-		&--topbar {
-			display: flex;
-			flex-direction: row;
-			padding-top: 40px;
-			width: 100%;
-		}
-		&--logo {
-			flex: 0 0 auto;
-			&-img {
-				height: 70px;
-				display: inline;
-				vertical-align: middle;
-			}
-			&-text {
-				color: $color3;
-				font-family: $font-header;
-				font-size: 56px;
-				margin-left: 20px;
-				vertical-align: middle;
-				text-transform: lowercase;
-			}
-		}
-		&--topbartools {
-			display: flex;
-			flex-direction: row;
-			flex: 1 1 0px;
-			justify-content: flex-end;
-			align-items: center;
-			column-gap: 24px;
-		}
 
 		&--realm {
 			&-footer  {
@@ -637,6 +372,39 @@ body {
 	}
 }
 
+@media screen and (max-width: 1024px) {
+	.start {
+		&--abouttext {
+			flex: 2;
+		}
+
+		&--aboutworld {
+			&-col1 {
+				display: none;
+			}
+		}
+
+		&--aboutchars {
+			&-col1 {
+				display: none;
+			}
+		}
+
+		&--aboutstories {
+			&-col1 {
+				display: none;
+			}
+		}
+
+		&--about {
+			padding-top: 125px;
+		}
+
+		&--aboutsection {
+			margin-top: 128px;
+		}
+	}
+}
 
 @media screen and (max-width: 720px) {
 	.start {
@@ -681,10 +449,7 @@ body {
 		}
 
 		&--topbar {
-			display: flex;
-			flex-direction: row;
-			padding-top: 40px;
-			width: 100%;
+			padding-top: 28px;
 		}
 		&--logo {
 			&-img {
@@ -757,79 +522,26 @@ body {
 			border-radius: 8px;
 		}
 
-		&--realms {
-			flex-direction: column;
-			margin-top: 71px;
+		&--aboutimgs {
+			display: none;
 		}
 
-		&--realm {
-			&-img {
-				display: none;
-			}
+		&--aboutimg.mobile {
+			margin-top: -8px;
+			margin-bottom: 28px;
+			display: block;
+  			border-bottom-left-radius: 0px;
+			border-bottom-right-radius: 0px;
+		}
 
-			&-header {
-				padding-top: 0px;
-			}
+		&--about {
+			padding-top: 100px;
+		}
 
-			&-title {
-				font-size: 22px;
-				line-height: 22px;
-			}
-
-			&-icon {
-				width: 64px;
-				height: 64px;
-			}
-
-			&-counters-top {
-				flex: 0 0 auto;
-				font-size: $font-size-tiny;
-				display: flex;
-				flex-direction: row;
-				column-gap: 18px;
-			}
-
-			&-desc {
-				padding-top: 8px;
-			}
-
-			&-counters {
-				display: none;
-			}
-
-			&-footer  {
-				flex-direction: column;
-				align-items: flex-start;
-				justify-content: flex-end;
-			}
-
-			&-signin {
-				width: 100%;
-			}
-
-			&:not(.active) {
-				height: 204px;
-				overflow: hidden;
-
-				.start--realm-more {
-					display: block;
-					position: absolute;
-					width: 100%;
-					bottom: 0;
-					height: 93px;
-					background: transparent linear-gradient(180deg, #00000000 0%, $color1-light 63px) 0% 0% no-repeat padding-box;
-				}
-
-				.start--realm-caret {
-					position: absolute;
-					display: flex;
-					justify-content: center;
-					bottom: 12px;
-					width: 100%;
-					font-size: 24px;
-				}
-			}
-
+		&--aboutsection {
+			margin-top: 104px;
 		}
 	}
+
+
 }
