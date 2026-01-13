@@ -1,6 +1,5 @@
 import Api from 'modules/api/Api';
 
-
 const modules = {
 	api: Api,
 };

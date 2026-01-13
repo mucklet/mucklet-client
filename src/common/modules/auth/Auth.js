@@ -13,7 +13,7 @@ const wsAuthRid = AUTH_AUTHENTICATE_RID;
 const hubUrl = HUB_PATH;
 
 function redirectWithUri(url, pushHistory) {
-	redirect(url + '?redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
+	redirect(url + (url.indexOf('?') >= 0 ? '&' : '?') + 'redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
 }
 
 /**
@@ -44,7 +44,6 @@ class Auth {
 
 		this.app.require([
 			'api',
-			'screen',
 		], this._init.bind(this));
 	}
 
@@ -183,10 +182,13 @@ class Auth {
 
 	/**
 	 * Calls the logout endpoint and then reloads.
+	 * @param {boolean} redirectToPage Flag to redirect back to current page after logout.
 	 */
-	logout() {
+	logout(redirectToPage) {
 		this._afterFade(() => {
-			redirect(oauth2LogoutUrl, true);
+			redirectToPage
+				? redirectWithUri(oauth2LogoutUrl, false)
+				: redirect(oauth2LogoutUrl, true);
 		});
 	}
 
@@ -203,6 +205,22 @@ class Auth {
 			});
 		}
 	}
+
+	/**
+	 * Redirects to the oauth2 register page.
+	 * @param {boolean} noFade Flag to prevent fading out.
+	 */
+	redirectToRegister(noFade) {
+		let url = oauth2Url + '?login.register';
+		if (noFade) {
+			redirectWithUri(url, true);
+		} else {
+			this._afterFade(() => {
+				redirectWithUri(url, true);
+			});
+		}
+	}
+
 
 	redirectToHub() {
 		this._afterFade(() => {
@@ -290,10 +308,15 @@ class Auth {
 	}
 
 	_afterFade(cb) {
-		this.module.screen.setComponent({
-			render: () => cb(),
-			unrender: () => {},
-		});
+		let screen = this.app.getModule('screen');
+		if (screen) {
+			screen.setComponent({
+				render: () => cb(),
+				unrender: () => {},
+			});
+		} else {
+			cb();
+		}
 	}
 
 	dispose() {

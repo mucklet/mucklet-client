@@ -4,6 +4,7 @@ import { uri } from 'modapp-utils';
 import responseParseError from 'utils/responseParseError';
 import './LoginRecover'; // Imported prior to LoginComponent to resolve a conflicting scss order
 import LoginComponent from './LoginComponent';
+import LoginRegister from './LoginRegister';
 import LoginAgreeTerms from './LoginAgreeTerms';
 import './login.scss';
 
@@ -32,6 +33,7 @@ class Login {
 
 		this.query = uri.getQuery();
 		this.params.clientId = this.params.clientId || this.query.client_id || null;
+		this.params.register = params?.hasOwnProperty('register');
 
 		this.app.require([
 			'api',
@@ -211,7 +213,11 @@ class Login {
 	}
 
 	_showLogin() {
-		this.module.screen.setComponent(new LoginComponent(this.module, this.state, this.params));
+		let cb = (() => this._redirect());
+		this.module.screen.setComponent(this.params.register
+			? new LoginRegister(this.module, this.state, { close: cb })
+			: new LoginComponent(this.module, this.state, { close: cb, ...this.params }),
+		);
 	}
 
 	_showAgreeTerms() {

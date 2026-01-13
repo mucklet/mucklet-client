@@ -1,0 +1,84 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.signin {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	column-gap: 24px;
+
+	&--headerbtn.btn, &--headerbtn.iconbtn {
+		@include btn-style($color1, $color1-light, $color1-lighter, $color4-light, $color4-lightest);
+	}
+
+	&--helpbtn {
+		border-radius: 50%;
+		height: 40px;
+		width: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 20px;
+	}
+	&--joinbtn, &--loginbtn {
+		// color: $color1 !important;
+		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%) !important;
+		padding: 4px 18px;
+		min-width: 120px;
+		height: 40px;
+		font-size: 16px;
+		font-weight: 500;
+		border-radius: 10px;
+		// > .fa {
+		// 	margin-left: 12px;
+		// 	margin-right: -2px;
+		// }
+	}
+}
+
+.signin-menu {
+	min-width: 200px;
+	padding: 0 0;
+	position: fixed;
+	z-index: 1001;
+	border-radius: 6px;
+	-webkit-box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.5);
+	box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.5);
+	overflow: hidden;
+
+	background: $color1-lightest;
+
+	&--route {
+		padding: 8px 16px 8px 12px;
+		cursor: pointer;
+		-webkit-transition: color 0.2s, background-color 0.2s;
+		-ms-transition: color 0.2s, background-color 0.2s;
+		transition: color 0.2s, background-color 0.2s;
+
+		&:hover {
+			// background: lighten($nercia-blue, 8%);
+			color: $white;
+		}
+	}
+	&--selected, &--logouticon {
+		display: inline-block;
+		width: 30px;
+	}
+
+	&--logout {
+		display: block;
+		// background: $nercia-blue;
+		padding: 8px 16px 8px 12px;
+		// color: $white;
+		cursor: pointer;
+		-webkit-transition: color 0.2s, background-color 0.2s;
+		-ms-transition: color 0.2s, background-color 0.2s;
+		transition: color 0.2s, background-color 0.2s;
+
+
+		&:hover {
+			// background: lighten($nercia-blue, 8%);
+		}
+	}
+}

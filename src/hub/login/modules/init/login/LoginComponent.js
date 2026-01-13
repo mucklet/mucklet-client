@@ -21,6 +21,7 @@ class LoginComponent {
 		}, state.login);
 		this.clientId = opt.clientId;
 		this.autoLogin = !!opt.hasOwnProperty('auto');
+		this.close = opt.close;
 	}
 
 	render(el) {
@@ -108,7 +109,7 @@ class LoginComponent {
 				click: () => this.module.self.googleOAuth2(),
 			}, className: 'btn large google icon-left login--btn' }, [
 				n.component(new FAIcon('google')),
-				n.component(new Txt(l10n.l('login.signin', "Signin with Google"))),
+				n.component(new Txt(l10n.l('login.signIn', "Sign in with Google"))),
 			]),
 			n.elem('div', { className: 'login--divider' }, [
 				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
@@ -147,7 +148,15 @@ class LoginComponent {
 					},
 				})),
 			]),
-		])));
+		])), {
+			title: l10n.l('login.signIn', "Sign in"),
+			close: this.close
+				? () => {
+					this._clearState();
+					this.close();
+				}
+				: null,
+		});
 		this.elem.render(el);
 
 		if (this.autoLogin) {
@@ -200,8 +209,9 @@ class LoginComponent {
 	}
 
 	_onRegister() {
-		let close = () => this.module.screen.removeSubcomponent('register');
-		this.module.screen.addSubcomponent('register', new LoginRegister(this.module, this.state, close));
+		this.module.screen.addSubcomponent('register', new LoginRegister(this.module, this.state, {
+			close: () => this.module.screen.removeSubcomponent('register'),
+		}));
 	}
 
 	_onRecover() {

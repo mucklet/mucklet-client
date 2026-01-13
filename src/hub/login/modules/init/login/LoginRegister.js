@@ -7,15 +7,16 @@ import PopupTip from 'components/PopupTip';
 import PasswordInput from 'components/PasswordInput';
 import LabelToggleBox from 'components/LabelToggleBox';
 import ScreenDialog from 'components/ScreenDialog';
+import FAIcon from 'components/FAIcon';
 
 /**
  * LoginRegister draws the register window
  */
 class LoginRegister {
-	constructor(module, state, close) {
+	constructor(module, state, opt) {
 		this.module = module;
 		this.state = state;
-		this.close = close;
+		this.close = opt?.close;
 		state.register = state.register || this._defaultState();
 	}
 
@@ -160,12 +161,23 @@ class LoginRegister {
 					(m, c) => c.setProperty('disabled', m.name.trim() && m.pass.trim().length >= 4 && m.agree ? null : 'disabled'),
 				)),
 			]),
+			n.elem('div', { className: 'login--divider' }, [
+				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
+			]),
+			n.elem('button', { events: {
+				click: () => this.module.self.googleOAuth2(),
+			}, className: 'btn large google icon-left login--btn' }, [
+				n.component(new FAIcon('google')),
+				n.component(new Txt(l10n.l('login.signIn', "Sign in with Google"))),
+			]),
 		])), {
 			title: l10n.l('login.register', "Register"),
-			close: () => {
-				this._clearState();
-				this.close();
-			},
+			close: this.close
+				? () => {
+					this._clearState();
+					this.close();
+				}
+				: null,
 		});
 		this.elem.render(el);
 	}
