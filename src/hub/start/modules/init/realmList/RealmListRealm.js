@@ -18,14 +18,6 @@ function formatNumber(n) {
  */
 class RealmListComponent {
 	constructor(module, model, realm) {
-
-		window.test = {
-			Elem: Elem,
-			Txt: Txt,
-		};
-
-		console.log(realm);
-
 		this.module = module;
 		this.model = model;
 		this.realm = realm;
