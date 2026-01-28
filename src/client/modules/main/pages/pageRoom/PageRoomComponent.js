@@ -27,6 +27,10 @@ class PageRoomComponent {
 		this.roomState = this.state['room_' + room.id] || {};
 		this.state['room_' + room.id] = this.roomState;
 		this.roomState.description = this.roomState.description || {};
+		// Default sleepers section to closed
+		if (this.state.sleepersOpen === undefined) {
+			this.state.sleepersOpen = false;
+		}
 	}
 
 	render(el) {
