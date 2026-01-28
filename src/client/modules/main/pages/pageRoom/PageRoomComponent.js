@@ -151,6 +151,8 @@ class PageRoomComponent {
 							onToggle: (c, v) => this.state.exitsOpen = v,
 						},
 					)),
+
+					//Awake people
 					n.component(new PanelSection(
 						new Elem(n => n.elem('div', { className: 'pageroom--inroomheader' }, [
 							n.component(new Txt(l10n.l('pageRoom.inRoom', "In room"), { tagName: 'h3' })),
@@ -175,16 +177,75 @@ class PageRoomComponent {
 							new Fader(),
 							(m, c, changed) => {
 								if (changed && !changed.hasOwnProperty('chars')) return;
-								c.setComponent(m.chars
-									? new CollectionList(m.chars, m => new PageRoomChar(this.module, this.ctrl, m))
-									: new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }),
-								);
+								if (!m.chars) {
+									c.setComponent(new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }));
+									return;
+								}
+								// Filter to show only awake and active characters (exclude asleep and away/idle level 3)
+								c.setComponent(new Context(
+									() => new CollectionWrapper(m.chars, {
+										filter: ch => ch.state !== 'asleep' && ch.idle !== 3,
+									}),
+									awakeChars => awakeChars.dispose(),
+									awakeChars => awakeChars.length
+										? new CollectionList(awakeChars, m => new PageRoomChar(this.module, this.ctrl, m))
+										: new Txt(l10n.l('pageRoom.noAwake', "No one awake in room."), { className: 'common--nolistplaceholder' }),
+								));
 							},
 						),
+					
 						{
 							className: 'pageroom--chars common--sectionpadding',
 							open: this.state.inRoomOpen,
 							onToggle: (c, v) => this.state.inRoomOpen = v,
+						},
+					)),
+					//Asleep people
+					n.component(new PanelSection(
+						new Elem(n => n.elem('div', { className: 'pageroom--inroomheader' }, [
+							n.component(new Txt(l10n.l('pageRoom.sleepers', "Sleepers"), { tagName: 'h3' })),
+							n.component(new Context(
+								() => new CollectionWrapper(allTools, {
+									filter: t => t.type == 'inRoom',
+								}),
+								tools => tools.dispose(),
+								tools => new CollectionList(
+									tools,
+									t => t.componentFactory(this.ctrl, this.room),
+									{
+										className: 'pageroom--inroomtools',
+										subClassName: t => t.className || null,
+										horizontal: true,
+									},
+								),
+							)),
+						])),
+						new ModelComponent(
+							this.room,
+							new Fader(),
+							(m, c, changed) => {
+								if (changed && !changed.hasOwnProperty('chars')) return;
+								if (!m.chars) {
+									c.setComponent(null); // Don't show sleepers section when room is dark
+									return;
+								}
+								// Filter to show asleep characters and highly idle characters (away/idle level 3)
+								c.setComponent(new Context(
+									() => new CollectionWrapper(m.chars, {
+										filter: ch => ch.state === 'asleep' || ch.idle === 3,
+									}),
+									asleepChars => asleepChars.dispose(),
+									asleepChars => asleepChars.length
+										? new CollectionList(asleepChars, m => new PageRoomChar(this.module, this.ctrl, m))
+										: new Txt(l10n.l('pageRoom.noSleepers', "No sleepers in room."), { className: 'common--nolistplaceholder' }),
+								));
+							},
+						),
+					
+						{
+							className: 'pageroom--chars common--sectionpadding',
+							open: this.state.sleepersOpen,
+							onToggle: (c, v) => this.state.sleepersOpen = v,
 						},
 					)),
 				])),
