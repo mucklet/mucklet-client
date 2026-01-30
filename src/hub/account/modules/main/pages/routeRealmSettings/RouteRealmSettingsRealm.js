@@ -16,9 +16,10 @@ import renderingModes from 'utils/renderingModes';
  * RouteRealmSettingsRealm draws the settings form for a realm.
  */
 class RouteRealmSettingsRealm {
-	constructor(module, realm) {
+	constructor(module, realm, state) {
 		this.module = module;
 		this.realm = realm;
+		this.state = state;
 	}
 
 	render(el) {
@@ -56,7 +57,7 @@ class RouteRealmSettingsRealm {
 					tools => tools.dispose(),
 					tools => new CollectionList(
 						tools,
-						t => t.componentFactory(realm),
+						t => t.componentFactory(realm, this.state),
 						{
 							subClassName: t => t.className || null,
 						},
@@ -240,7 +241,7 @@ class RouteRealmSettingsRealm {
 					tools => tools.dispose(),
 					tools => new CollectionList(
 						tools,
-						t => t.componentFactory(realm),
+						t => t.componentFactory(realm, this.state),
 						{
 							subClassName: t => t.className || null,
 						},
@@ -276,7 +277,7 @@ class RouteRealmSettingsRealm {
 							tools => tools.dispose(),
 							tools => new CollectionList(
 								tools,
-								t => t.componentFactory(realm),
+								t => t.componentFactory(realm, this.state),
 								{
 									horizontal: true,
 									className: 'routerealmsettings-realm--footertools',

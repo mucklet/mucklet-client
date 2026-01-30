@@ -6,16 +6,21 @@ import RouteRealmSettingsRealm from './RouteRealmSettingsRealm';
  * RouteRealmSettingsComponent draws a the realms route page.
  */
 class RouteRealmSettingsComponent {
-	constructor(module, model) {
+	constructor(module, model, realmStates) {
 		this.module = module;
 		this.model = model;
+		this.realmStates = realmStates;
 	}
 
 	render(el) {
 		this.elem = new ModelFader(this.model, [
 			{
 				condition: m => m.realm,
-				factory: m => new RouteRealmSettingsRealm(this.module, m.realm),
+				factory: m => {
+					let state = this.realmStates[m.id] || {};
+					this.realmStates[m.id] = state;
+					return new RouteRealmSettingsRealm(this.module, m.realm, state);
+				},
 				hash: m => m.realm,
 			},
 			{

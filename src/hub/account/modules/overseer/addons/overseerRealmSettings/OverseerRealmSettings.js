@@ -47,7 +47,7 @@ class OverseerRealmSettings {
 				}
 				return params;
 			},
-			sortOrder: 10,
+			sortOrder: 100,
 		});
 
 		// Update default realm
