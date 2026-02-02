@@ -1,5 +1,5 @@
 import { Elem, Txt, Context } from 'modapp-base-component';
-import { CollectionList } from 'modapp-resource-component';
+import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
@@ -64,7 +64,7 @@ class EditRealmTagsComponent {
 									if (e.key == 'Enter' && !c.isSelecting()) {
 										e.preventDefault();
 										e.stopPropagation();
-										this._addTag();
+										this._tryAdd();
 									}
 								},
 							},
@@ -74,6 +74,7 @@ class EditRealmTagsComponent {
 							onSelect: (c, item) => {
 								this._setTag(item.label);
 								c.setProperty('value', item.label);
+								this._tryAdd();
 							},
 						})),
 						n.elem('add', 'button', {
@@ -99,6 +100,36 @@ class EditRealmTagsComponent {
 				className: 'editrealmtags common--sectionpadding',
 				noToggle: true,
 				popupTip: l10n.l('editRealmTags.tagsInfo', "Tags are searchable keywords describing a realm, the genres and themes."),
+				infoComponent: new Context(
+					() => {
+						let txt = new Txt('', {
+							tagName: 'div',
+							className: 'editrealmtags--count',
+							duration: 0,
+						});
+						let update = () => {
+							let max = this.module.hubInfo.getControl().maxRealmTags;
+							let count = this.realm.tags.length;
+							txt.setText(l10n.l('editRealmTags.countOfMax', "{count}/{max}", {
+								count,
+								max: max || '?',
+							}));
+							txt[max && count >= max ? 'addClass' : 'removeClass']('maxed');
+							this._setCanAdd();
+						};
+						return { txt, update };
+					},
+					null,
+					ctx => new ModelComponent(
+						this.module.hubInfo.getControl(),
+						new CollectionComponent(
+							this.realm.tags,
+							ctx.txt,
+							(col, c) => ctx.update(),
+						),
+						(m, c) => ctx.update(),
+					),
+				),
 			},
 		);
 		this._setTag(this.state.tag);
@@ -139,11 +170,41 @@ class EditRealmTagsComponent {
 			this._loadTags().then(tags => {
 				if (this.elem) {
 					let valid = !!this._getValidTag(tags, tag);
-					this.elem.getComponent().setNodeProperty('add', 'disabled', valid ? null : 'disabled');
 					this.elem.getComponent().getNode('tag')[valid ? 'removeClass' : 'addClass']('input--incomplete');
+					this._setCanAdd();
 				}
 			});
 		}
+	}
+
+	_tryAdd() {
+		// Add it if possible
+		this._canAdd().then(canAdd => {
+			if (canAdd) {
+				this._addTag();
+			}
+		});
+	}
+
+	async _canAdd() {
+		if (!(this.state.tag || '').trim()) {
+			return false;
+		}
+		let max = this.module.hubInfo.getControl().maxRealmTags;
+		if (max && this.realm.tags.length >= max) {
+			return false;
+		}
+
+		let tags = await this._loadTags();
+		return !!this._getValidTag(tags, this.state.tag);
+	}
+
+	_setCanAdd(canAdd) {
+		this._canAdd().then(canAdd => {
+			if (this.elem) {
+				this.elem.getComponent().setNodeProperty('add', 'disabled', canAdd ? null : 'disabled');
+			}
+		});
 	}
 
 	/**

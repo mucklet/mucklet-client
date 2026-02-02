@@ -26,6 +26,7 @@ class PanelSection extends RootElem {
 	 * @param {string} [opt.popupTipPosition] Optional popup tip position. Defaults to 'left'.
 	 * @param {string|LocaleString} [opt.popupTipClassName] Class name to add to the popup tip. Defaults to 'popuptip--width-m'.
 	 * @param {boolean} [opt.required] Optional flag if a 'required-asterisk should be appended to the title.
+	 * @param {Component} [opt.infoComponent] Optional info component to show right aligned, but left of tool tip.
 	 */
 	constructor(title, component, opt) {
 		super(null);
@@ -36,16 +37,22 @@ class PanelSection extends RootElem {
 			n.elem('div', { className: 'panelsection--head', events: opt.noToggle ? null : { click: () => this.toggle() }}, [
 				n.component('title', new Fader(null, { className: 'panelsection--title' })),
 				n.component('required', new Html("", { className: 'panelsection--required' })),
-				n.component(opt.popupTip
-					? new PopupTip(opt.popupTip, {
-						className: 'panelsection--popuptip ' + (opt.popupTipClassName || 'popuptip--width-m'),
-						position: opt.popupTipPosition || 'left',
-					})
-					: null,
+				...(opt.infoComponent
+					? [ n.component(opt.infoComponent) ]
+					: []
 				),
-				n.component(opt.noToggle
-					? null
-					: new FAIcon('caret-right', { className: 'panelsection--caret' }),
+				...(opt.popupTip
+					? [
+						n.component(new PopupTip(opt.popupTip, {
+							className: 'panelsection--popuptip ' + (opt.popupTipClassName || 'popuptip--width-m'),
+							position: opt.popupTipPosition || 'left',
+						})),
+					]
+					: []
+				),
+				...(opt.noToggle
+					? []
+					: [ n.component(new FAIcon('caret-right', { className: 'panelsection--caret' })) ]
 				),
 			]),
 			n.component('content', new Collapser(null, { className: 'panelsection--content', duration: opt.duration })),

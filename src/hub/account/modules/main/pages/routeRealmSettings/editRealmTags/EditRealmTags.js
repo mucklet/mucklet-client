@@ -14,6 +14,7 @@ class EditRealmTags {
 			'toaster',
 			'api',
 			'confirm',
+			'hubInfo',
 		], this._init.bind(this));
 	}
 

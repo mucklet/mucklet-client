@@ -24,10 +24,21 @@
 	}
 
 	&--tools {
+		flex: 1 1 0px;
 		margin-left: 12px;
 
 		> * {
 			display: inline-block;
+		}
+	}
+
+	&--count {
+		flex: 0 0 auto;
+		padding-right: 16px;
+		align-self: flex-end;
+		font-size: $font-size-small;
+		&.maxed {
+			color: $color5;
 		}
 	}
 }
