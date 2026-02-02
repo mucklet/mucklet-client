@@ -1,9 +1,10 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt, ModelComponent } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent, CollectionComponent } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import Img from 'components/Img';
 import renderingModes from 'utils/renderingModes';
 import l10n from 'modapp-l10n';
+import RealmTagsList from 'components/RealmTagsList';
 
 function formatNumber(n) {
 	let s = String(n);
@@ -11,6 +12,17 @@ function formatNumber(n) {
 		s = s.slice(0, i) + ' ' + s.slice(i);
 	}
 	return s;
+}
+
+function hasValidTag(tags) {
+	if (tags) {
+		for (let tag of tags) {
+			if (tag?.key) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 /**
@@ -99,23 +111,15 @@ class RealmListComponent {
 					]),
 
 					// Tags
-					n.elem('div', { className: 'realmlist-realm--tags taglist' }, [
-						n.elem('div', { className: 'taglist--item' }, [
-							n.elem('div', { className: 'taglist--tag like hasdesc' }, [
-								n.component(new Txt('fantasy')),
-							]),
-						]),
-						n.elem('div', { className: 'taglist--item' }, [
-							n.elem('div', { className: 'taglist--tag like hasdesc' }, [
-								n.component(new Txt('world building')),
-							]),
-						]),
-						n.elem('div', { className: 'taglist--item' }, [
-							n.elem('div', { className: 'taglist--tag like hasdesc' }, [
-								n.component(new Txt('sfw')),
-							]),
-						]),
-					]),
+					// Only show tags if there is at least one valid tag.
+					n.component(new CollectionComponent(
+						this.realm?.tags,
+						new Collapser(),
+						(col, c) => c.setComponent(hasValidTag(col)
+							? new RealmTagsList(col, { className: 'realmlist-realm--tags', static: true })
+							: null,
+						),
+					)),
 
 					// Description
 					n.elem('div', { className: 'realmlist-realm--desktop realmlist-realm--desc' }, [

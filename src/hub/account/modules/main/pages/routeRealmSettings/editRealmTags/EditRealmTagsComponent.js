@@ -3,7 +3,7 @@ import { CollectionList } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
-// import RealmTagsList from 'components/RealmTagsList';
+import RealmTagsList from 'components/RealmTagsList';
 import AutoComplete from 'components/AutoComplete';
 import FAIcon from 'components/FAIcon';
 import patternMatch, { patternMatchRender, patternMatchCompare } from 'utils/patternMatch';
@@ -15,9 +15,12 @@ class EditRealmTagsComponent {
 		this.realm = realm;
 		this.state = state.editRealmTags || { tag: '' };
 		state.editRealmTags = this.state;
+		this.tags = null;
 	}
 
 	render(el) {
+		this._loadTags();
+
 		this.elem = new PanelSection(
 			new Elem(n => n.elem('div', { className: 'editrealmtags--title' }, [
 				n.component(new Txt(l10n.l('editRealmTags.tags', "Tags"), { tagName: 'h3' })),
@@ -46,13 +49,14 @@ class EditRealmTagsComponent {
 								spellcheck: 'false',
 							},
 							fetch: (text, update, c) => {
-								let tags = this.module.tags.getTagsCollection();
-								update(tags.toArray()
-									.filter(m => patternMatch(m.key, text) && this._tagIsValid(m.key))
-									.map(m => ({ value: m.id, label: m.key }))
-									.sort(patternMatchCompare(text, m => m.label))
-									.slice(0, 10),
-								);
+								this._loadTags().then(tags => {
+									update(tags.toArray()
+										.filter(m => patternMatch(m.key, text) && this._getValidTag(tags, m.key))
+										.map(m => ({ value: m.id, label: m.key }))
+										.sort(patternMatchCompare(text, m => m.label))
+										.slice(0, 10),
+									);
+								});
 							},
 							events: {
 								input: c => this._setTag(c.getProperty('value')),
@@ -70,7 +74,6 @@ class EditRealmTagsComponent {
 							onSelect: (c, item) => {
 								this._setTag(item.label);
 								c.setProperty('value', item.label);
-								this._addTag();
 							},
 						})),
 						n.elem('add', 'button', {
@@ -87,24 +90,10 @@ class EditRealmTagsComponent {
 						]),
 					]),
 				]),
-				// n.component(new RealmTagsList(this.ctrl.tags, {
-				// 	eventBus: this.module.self.app.eventBus,
-				// 	onEdit: (tag, pref, tags) => this._editTag(tag, pref),
-				// 	onDelete: (tag, pref, tags) => {
-				// 		if (tag.custom) {
-				// 			this.module.confirm.open(() => this._deleteTag(tag), {
-				// 				title: l10n.l('editRealmTags.confirmDelete', "Confirm deletion"),
-				// 				body: new Elem(n => n.elem('div', [
-				// 					n.component(new Txt(l10n.l('editRealmTags.deleteCustomTagBody', "Do you wish to delete the custom tag?"), { tagName: 'p' })),
-				// 					n.elem('p', [ n.component(new ModelTxt(tag, m => m.key, { className: 'dialog--strong' })) ]),
-				// 				])),
-				// 				confirm: l10n.l('editRealmTags.delete', "Delete"),
-				// 			});
-				// 		} else {
-				// 			this._deleteTag(tag);
-				// 		}
-				// 	},
-				// })),
+				n.component(new RealmTagsList(this.realm.tags, {
+					eventBus: this.module.self.app.eventBus,
+					onDelete: (tag, pref, tags) => this._deleteTag(tag),
+				})),
 			])),
 			{
 				className: 'editrealmtags common--sectionpadding',
@@ -121,29 +110,69 @@ class EditRealmTagsComponent {
 			this.elem.unrender();
 			this.elem = null;
 		}
+		this._disposeTags();
+	}
+
+	_loadTags() {
+		if (this.tags) {
+			return Promise.resolve(this.tags);
+		}
+		return this.module.api.get('control.tags').then(tags => {
+			if (this.elem && !this.tags) {
+				this.tags = tags;
+				this.tags.on();
+			}
+			return this.tags;
+		});
+	}
+
+	_disposeTags() {
+		if (this.tags) {
+			this.tags.off();
+			this.tags = null;
+		}
 	}
 
 	_setTag(tag) {
 		this.state.tag = tag;
 		if (this.elem) {
-			this.elem.getComponent().setNodeProperty('add', 'disabled', this._tagIsValid(tag.trim().toLowerCase()) ? null : 'disabled');
+			this._loadTags().then(tags => {
+				if (this.elem) {
+					let valid = !!this._getValidTag(tags, tag);
+					this.elem.getComponent().setNodeProperty('add', 'disabled', valid ? null : 'disabled');
+					this.elem.getComponent().getNode('tag')[valid ? 'removeClass' : 'addClass']('input--incomplete');
+				}
+			});
 		}
 	}
 
-	_tagIsValid(v) {
-		if (!v) return false;
-
-		let tags = this.realm.tags.props;
-		for (let k in tags) {
-			if (tags[k].key == v) {
-				return false;
+	/**
+	 * Checks if a key exists and is not already added to the realm.
+	 * @param {ResCollection<TagModel>} tags Available tags
+	 * @param {string} key Tag key to check
+	 * @returns {TagModel | null} Valid tag, or null if not valid.
+	 */
+	_getValidTag(tags, key) {
+		// Prepare key
+		key = key.trim().toLowerCase().replace(/\s\s+/g, ' ');
+		if (key) {
+			let realmTags = this.realm.tags.props;
+			for (let id in realmTags) {
+				if (realmTags[id].key == key) {
+					return null;
+				}
+			}
+			for (let tag of tags) {
+				if (tag.key == key) {
+					return tag;
+				}
 			}
 		}
-		return true;
+		return null;
 	}
 
 	_deleteTag(tag) {
-		return this.module.api.call(`control.realm.${this.realm.id}.tags`, 'setTags', { tags: { [ tag.id ]: null }})
+		return this.module.api.call(`control.realm.${this.realm.id}.tags`, 'setTags', { tags: { [ tag.id ]: false }})
 			.catch(err => this.module.toaster.openError(err));
 	}
 
@@ -154,13 +183,21 @@ class EditRealmTagsComponent {
 	_addTag() {
 		if (!this.elem) return;
 
+		let elem = this.elem;
 		let n = this.elem.getComponent().getNode('tag');
 		let v = n.getProperty('value');
-		if (this._tagIsValid(v)) {
-			this.module.dialogTag.open(this.realm, v);
-			n.setProperty('value', '');
-			this._setTag('');
-		}
+
+		this._loadTags().then(tags => {
+			let tag = this._getValidTag(tags, v);
+			if (tag) {
+				return this.module.api.call(`control.realm.${this.realm.id}.tags`, 'setTags', { tags: { [ tag.id ]: true }}).then(() => {
+					if (this.elem == elem) {
+						n.setProperty('value', '');
+						this._setTag('');
+					}
+				}).catch(err => this.module.toaster.openError(err));
+			}
+		});
 	}
 }
 
