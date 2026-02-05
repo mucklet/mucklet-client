@@ -32,13 +32,20 @@
 		}
 	}
 
-	&--count {
+	&--counter {
 		flex: 0 0 auto;
 		padding-right: 16px;
-		align-self: flex-end;
-		font-size: $font-size-small;
-		&.maxed {
-			color: $color5;
-		}
+	}
+}
+
+.editrealmtags-counter {
+	transition: color 0.2s;
+
+	font-size: $font-size-small;
+	&.maxed {
+		color: $color3;
+	}
+	&.exceeded {
+		color: $color5;
 	}
 }

@@ -1,6 +1,7 @@
 import { Collection } from 'modapp-resource';
 import compareSortOrderId from 'utils/compareSortOrderId';
 import EditRealmTagsComponent from './EditRealmTagsComponent';
+import EditRealmTagsCounter from './EditRealmTagsCounter';
 import './editRealmTags.scss';
 
 /**
@@ -69,6 +70,18 @@ class EditRealmTags {
 	removeTool(toolId) {
 		this.tools.remove(toolId);
 		return this;
+	}
+
+	/**
+	 * Creates a new realm tags counter component.
+	 * @param {Model} tags Realm tags model.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {() => void} [opt.onUpdate] Callback function called when the counter updates.
+	 * @param {(tags: Model) => number} [opt.count] Custom count callback.
+	 * @returns {EditRealmTagsCounter} Counter component.
+	 */
+	newCounter(tags, opt) {
+		return new EditRealmTagsCounter(this.module, tags, opt);
 	}
 
 	dispose() {

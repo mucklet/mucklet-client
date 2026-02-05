@@ -1,21 +1,15 @@
 import { Elem, Context } from 'modapp-base-component';
 import { CollectionList, ModelTxt, ModelComponent } from 'modapp-resource-component';
-import { CollectionWrapper } from 'modapp-resource';
+import { ModelToCollection } from 'modapp-resource';
 import { isResError } from 'resclient';
 import FAIcon from './FAIcon';
 import * as tooltip from 'utils/tooltip';
+import tagTypes from 'utils/tagTypes';
 import './realmTagsList.scss';
 
 function staticClone(tags) {
 	return (tags?.toArray?.() || tags).slice();
 }
-
-
-const tagTypes = [
-	{ id: 'genre', className: 'realmtagslist--type-genre' },
-	{ id: 'theme', className: 'realmtagslist--type-theme' },
-	{ id: 'warn', className: 'realmtagslist--type-warn' },
-];
 
 const typeOrder = {
 	genre: 0,
@@ -61,14 +55,16 @@ class RealmTagsList {
 	render(el) {
 		let onDelete = this.opt.onDelete;
 		this.elem = new Context(
-			() => new CollectionWrapper(this.tags, {
-				filter: (m) => !isResError(m),
-				eventBus: this.opt.eventBus,
+			() => new ModelToCollection(this.tags, {
+				filter: (k, v) => !isResError(v),
 				compare: (a, b) => {
-					return typeOrder[a.type] - typeOrder[b.type] ||
-						a.key.localeCompare(b.key) ||
-						a.id.localeCompare(b.id);
+					let at = a.value;
+					let bt = b.value;
+					return typeOrder[at.type] - typeOrder[bt.type] ||
+						at.key.localeCompare(bt.key) ||
+						at.id.localeCompare(bt.id);
 				},
+				eventBus: this.opt.eventBus,
 			}),
 			col => col.dispose(),
 			col => new Elem(n => n.elem('div', { className: this.opt.className }, [
@@ -106,7 +102,7 @@ class RealmTagsList {
 						])),
 						(m, c) => {
 							for (let t of tagTypes) {
-								c[m.type == t.id ? 'addClass' : 'removeClass'](t.className);
+								c[m.type == t.key ? 'addClass' : 'removeClass']('realmtagslist--type-' + t.key);
 							}
 						},
 					),

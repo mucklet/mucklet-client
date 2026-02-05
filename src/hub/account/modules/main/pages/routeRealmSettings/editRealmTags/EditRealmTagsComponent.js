@@ -1,5 +1,5 @@
 import { Elem, Txt, Context } from 'modapp-base-component';
-import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-resource-component';
+import { CollectionList } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
@@ -7,6 +7,7 @@ import RealmTagsList from 'components/RealmTagsList';
 import AutoComplete from 'components/AutoComplete';
 import FAIcon from 'components/FAIcon';
 import patternMatch, { patternMatchRender, patternMatchCompare } from 'utils/patternMatch';
+import EditRealmTagsCounter from './EditRealmTagsCounter';
 
 
 class EditRealmTagsComponent {
@@ -100,36 +101,10 @@ class EditRealmTagsComponent {
 				className: 'editrealmtags common--sectionpadding',
 				noToggle: true,
 				popupTip: l10n.l('editRealmTags.tagsInfo', "Tags are searchable keywords describing a realm, the genres and themes."),
-				infoComponent: new Context(
-					() => {
-						let txt = new Txt('', {
-							tagName: 'div',
-							className: 'editrealmtags--count',
-							duration: 0,
-						});
-						let update = () => {
-							let max = this.module.hubInfo.getControl().maxRealmTags;
-							let count = this.realm.tags.length;
-							txt.setText(l10n.l('editRealmTags.countOfMax', "{count}/{max}", {
-								count,
-								max: max || '?',
-							}));
-							txt[max && count >= max ? 'addClass' : 'removeClass']('maxed');
-							this._setCanAdd();
-						};
-						return { txt, update };
-					},
-					null,
-					ctx => new ModelComponent(
-						this.module.hubInfo.getControl(),
-						new CollectionComponent(
-							this.realm.tags,
-							ctx.txt,
-							(col, c) => ctx.update(),
-						),
-						(m, c) => ctx.update(),
-					),
-				),
+				infoComponent: new EditRealmTagsCounter(this.module, this.realm.tags, {
+					className: 'editrealmtags--counter',
+					onUpdate: () => this._setCanAdd(),
+				}),
 			},
 		);
 		this._setTag(this.state.tag);
@@ -191,7 +166,7 @@ class EditRealmTagsComponent {
 			return false;
 		}
 		let max = this.module.hubInfo.getControl().maxRealmTags;
-		if (max && this.realm.tags.length >= max) {
+		if (max && Object.keys(this.realm.tags.props).length >= max) {
 			return false;
 		}
 
