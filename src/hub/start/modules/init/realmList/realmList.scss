@@ -17,6 +17,39 @@
 	}
 }
 
+.realmlist-norealm {
+	margin-top: 71px;
+	justify-content: center;
+	display: flex;
+	flex-direction: row;
+
+	&--cont {
+		position:relative;
+		max-width: 480px;
+	}
+
+	&--img {
+		width: 100%;
+		aspect-ratio: 235 / 170;
+	}
+	&--info {
+		padding-top: 32px;
+		text-align: center;
+		font-size: $font-size-large;
+	}
+	&--tip {
+		font-size: $font-size;
+		color: $color4-dark;
+
+		> code {
+			display: inline-block;
+			padding: 3px 5px;
+			background: $color1-dark;
+			border-radius: 8px;
+		}
+	}
+}
+
 .realmlist-realm {
 
 	position: relative;
@@ -35,6 +68,7 @@
 	&--img {
 		border-radius: 10px;
 		width: 100%;
+		aspect-ratio: 16 / 9;
 		display: block;
 	}
 

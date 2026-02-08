@@ -1,5 +1,5 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelTxt, ModelComponent, CollectionComponent } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import Img from 'components/Img';
 import renderingModes from 'utils/renderingModes';
@@ -15,9 +15,10 @@ function formatNumber(n) {
 }
 
 function hasValidTag(tags) {
-	if (tags) {
-		for (let tag of tags) {
-			if (tag?.key) {
+	let props = tags?.props || tags;
+	if (props) {
+		for (let k in props) {
+			if (props[k].key) {
 				return true;
 			}
 		}
@@ -112,11 +113,11 @@ class RealmListComponent {
 
 					// Tags
 					// Only show tags if there is at least one valid tag.
-					n.component(new CollectionComponent(
+					n.component(new ModelComponent(
 						this.realm?.tags,
 						new Collapser(),
-						(col, c) => c.setComponent(hasValidTag(col)
-							? new RealmTagsList(col, { className: 'realmlist-realm--tags', static: true })
+						(m, c) => c.setComponent(hasValidTag(m)
+							? new RealmTagsList(m, { className: 'realmlist-realm--tags', static: true })
 							: null,
 						),
 					)),

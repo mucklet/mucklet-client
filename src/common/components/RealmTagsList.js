@@ -8,7 +8,7 @@ import tagTypes from 'utils/tagTypes';
 import './realmTagsList.scss';
 
 function staticClone(tags) {
-	return (tags?.toArray?.() || tags).slice();
+	return { ...(tags?.props || tags) };
 }
 
 const typeOrder = {
@@ -34,7 +34,7 @@ class RealmTagsList {
 
 	/**
 	 * Creates an instance of RealmTagsList
-	 * @param {Collection<TagModel>} tags Collection of realm tags.
+	 * @param {Model<Record<string,TagModel>>} tags Model of of realm tags.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {boolean} [opt.static] Boolean telling if the tags should be static, not changing on updates. Defaults to false.
 	 * @param {boolean} [opt.onDelete] Callback called on delete icon click. Defaults to hiding the delete icon. function(tag, tags)

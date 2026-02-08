@@ -36,6 +36,14 @@ class RealmList {
 		this._fetchRealms();
 	}
 
+	/**
+	 * Sets an array or collection of realms to display:
+	 * @param {Collection<RealmModel> | Array<RealmModel>} realms Realms.
+	 */
+	setRealms(realms) {
+		this.model.set({ realms });
+	}
+
 	async _fetchRealms() {
 		const url = this.module.api.getWebResourceUri('control.realms?limit=3');
 		try {
@@ -53,7 +61,7 @@ class RealmList {
 	}
 
 	dispose() {
-		this.component?.unrender(container);
+		this.component?.unrender();
 		this.component = null;
 		this.model = null;
 	}
