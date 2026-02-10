@@ -10,9 +10,9 @@ function randomWords(n, minCount, maxCount, minLength, maxLength) {
 }
 
 /**
- * RealmListComponent draws the list of realms.
+ * RealmListPlaceholder draws a realm placeholder.
  */
-class RealmListComponent {
+class RealmListPlaceholder {
 	constructor(module, model, realm) {
 		this.module = module;
 		this.model = model;
@@ -84,4 +84,4 @@ class RealmListComponent {
 	}
 }
 
-export default RealmListComponent;
+export default RealmListPlaceholder;

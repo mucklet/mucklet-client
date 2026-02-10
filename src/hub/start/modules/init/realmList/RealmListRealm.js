@@ -54,13 +54,7 @@ class RealmListComponent {
 					// Image
 					n.component(new ModelComponent(
 						this.realm,
-						new Img('', { className: 'realmlist-realm--img', events: {
-							click: c => {
-								if (!c.hasClass('placeholder')) {
-									new ImgModal(this.realm.image.href).open();
-								}
-							},
-						}}),
+						new Img('', { className: 'realmlist-realm--img' }),
 						(m, c, changed) => {
 							c.setSrc(m?.image ? m.image.href + '?thumb=mw' : '/img/realm-placeholder.svg');
 							c[m?.image ? 'removeClass' : 'addClass']('placeholder');

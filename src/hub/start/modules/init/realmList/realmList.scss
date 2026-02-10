@@ -175,6 +175,18 @@
 	}
 }
 
+.realmlist-placeholderlist {
+	display: flex;
+	flex-direction: row;
+	gap: var(--gap);
+	margin-top: 72px;
+	justify-content: center;
+
+	&--realm {
+		max-width: 496px;
+		flex: 1 1 0px;
+	}
+}
 
 .realmlist-placeholder {
 
@@ -343,7 +355,6 @@
 		&--list {
 			flex-direction: column;
 			align-items: stretch;
-			margin-top: 71px;
 		}
 
 		&--realm {
@@ -417,6 +428,15 @@
 		// 	}
 		// }
 
+	}
+
+	.realmlist-placeholderlist {
+		flex-direction: column;
+		align-items: stretch;
+
+		&--realm {
+			max-width: initial;
+		}
 	}
 
 	.realmlist-placeholder {

@@ -1,4 +1,5 @@
 import ModelFader from 'components/ModelFader';
+import RealmListPlaceholderList from './RealmListPlaceholderList';
 import RealmListNoRealm from './RealmListNoRealm';
 import RealmListList from './RealmListList';
 
@@ -13,6 +14,10 @@ class RealmListComponent {
 
 	render(el) {
 		this.elem = new ModelFader(this.model, [
+			{
+				condition: m => !m.realms,
+				factory: m => new RealmListPlaceholderList(),
+			},
 			{
 				condition: m => m.realms?.length === 0,
 				factory: m => new RealmListNoRealm(),

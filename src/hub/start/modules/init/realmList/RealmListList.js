@@ -18,9 +18,7 @@ class RealmListComponent {
 		this.elem = new ModelComponent(
 			this.model,
 			new PageList({
-				fetchCollection: (offset, limit) => {
-					return this.realms ? this.realms.slice(offset, offset + limit) : [ null, null, null ];
-				},
+				fetchCollection: (offset, limit) => this.realms.slice(offset, offset + limit),
 				componentFactory: (realm) => realm
 					? new RealmListRealm(this.module, this.model, realm)
 					: new RealmListPlaceholder(),
