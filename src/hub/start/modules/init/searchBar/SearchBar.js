@@ -22,7 +22,6 @@ class SearchBar {
 
 		this.model = new Model({ data: {
 			input: '',
-			realms: null,
 		}});
 
 		let container = document.getElementById('start-searchbar');
@@ -51,7 +50,6 @@ class SearchBar {
 	dispose() {
 		this.component?.unrender();
 		this.component = null;
-		this.model?.realms?.off();
 		this.model = null;
 	}
 }

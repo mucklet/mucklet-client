@@ -52,7 +52,7 @@ class SearchBarComponent {
 	_search() {
 		this.filter.setFilter(this.model.input);
 
-		this.module.self.getRealmsPromise().then(realms => {
+		this.module.realmList.getRealmsPromise().then(realms => {
 			this.module.realmList.setRealms(realms.toArray().filter(realm => this.filter.match(realm)));
 		});
 	}

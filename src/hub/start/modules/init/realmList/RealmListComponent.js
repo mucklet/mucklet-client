@@ -1,7 +1,6 @@
-import { CollectionList } from 'modapp-resource-component';
 import ModelFader from 'components/ModelFader';
-import RealmListRealm from './RealmListRealm';
 import RealmListNoRealm from './RealmListNoRealm';
+import RealmListList from './RealmListList';
 
 /**
  * RealmListComponent draws the list of realms.
@@ -20,15 +19,7 @@ class RealmListComponent {
 				hash: m => [ m.realms ],
 			},
 			{
-				factory: m => new CollectionList(
-					m.realms || [ null, null, null ],
-					realm => new RealmListRealm(this.module, this.model, realm),
-					{
-						horizontal: true,
-						className: 'realmlist--list',
-						subClassName: () => 'realmlist--realm',
-					},
-				),
+				factory: m => new RealmListList(this.module, this.model, m.realms),
 				hash: m => [ m.realms ],
 			},
 		]);

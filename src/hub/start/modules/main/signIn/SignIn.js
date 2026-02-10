@@ -35,12 +35,12 @@ class SignIn {
 		this.component = new SignInComponent(this.module, this.model);
 		this.component.render(container);
 
-		this._authenticate();
+		this._fetchUser();
 	}
 
-	async _authenticate() {
+	async _fetchUser() {
 		try {
-			let user = await this.module.auth.authenticate(true);
+			let user = await this.module.auth.getUserPromise();
 			this.model.set({ user, error: user ? null : errNotLoggedIn });
 		} catch (error) {
 			this.model.set({ error });

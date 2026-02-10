@@ -1,10 +1,4 @@
-import Auth from 'modules/auth/Auth';
-import Boot from 'modules/boot/Boot';
-
-const modules = {
-	auth: Auth,
-	boot: Boot,
-};
+const modules = {};
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);
 

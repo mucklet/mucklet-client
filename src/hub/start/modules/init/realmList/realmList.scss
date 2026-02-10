@@ -1,12 +1,22 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-.realmlist {
+// .realmlist {}
+
+.realmlist-list {
+	padding-top: 16px;
+
+	&--head {
+		margin: 0 auto;
+		width: 100%;
+		max-width: 624px;
+	}
+
 	&--list {
 		display: flex;
 		flex-direction: row;
 		gap: var(--gap);
-		margin-top: 71px;
+		margin-top: 24px;
 		justify-content: center;
 	}
 
@@ -18,22 +28,20 @@
 }
 
 .realmlist-norealm {
-	margin-top: 71px;
-	justify-content: center;
-	display: flex;
-	flex-direction: row;
-
-	&--cont {
-		position:relative;
-		max-width: 480px;
-	}
+	margin-top: 76px;
 
 	&--img {
+		display: block;
 		width: 100%;
+		margin: 0 auto;
+		max-width: 496px;
 		aspect-ratio: 235 / 170;
 	}
 	&--info {
+		width: 100%;
+		max-width: 624px;
 		padding-top: 32px;
+		margin: 0 auto;
 		text-align: center;
 		font-size: $font-size-large;
 	}
@@ -167,6 +175,152 @@
 	}
 }
 
+
+.realmlist-placeholder {
+
+	position: relative;
+	background-color: $color1-light;
+	box-shadow: 0px 3px 6px #00000029;
+	border-radius: 16px;
+	height: 100%;
+
+	&--cont {
+		padding: 12px;
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--img {
+		background-color: $color1;
+		border-radius: 10px;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		display: block;
+	}
+
+	&--tags {
+		padding-top: 12px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		row-gap: 8px;
+		column-gap: 8px;
+
+		> span.word {
+			display: inline-block;
+			height: 26px;
+			background: $color1-lighter;
+			border-radius: 4px;
+		}
+	}
+
+	&--header {
+		display: flex;
+		flex-direction: row;
+		column-gap: 16px;
+		padding-top: 12px;
+	}
+
+	&--icon {
+		width: 48px;
+		height: 48px;
+		border-radius: 10px;
+		background-color: $color1;
+	}
+
+	&--title-cont {
+		display: flex;
+		flex: 1 1 0px;
+		overflow: hidden;
+		flex-direction: column;
+	}
+
+	&--title {
+		flex: 1 1 0px;
+
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		flex-wrap: wrap;
+		row-gap: 6px;
+		column-gap: 1em;
+		> span.word {
+			display: inline-block;
+			height: 22px;
+			background: $color4-darker;
+			border-radius: 4px;
+		}
+	}
+
+	&--counters-top {
+		display: none;
+	}
+
+	&--desc {
+		padding-top: 18px;
+		font-size: $font-size;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		flex-wrap: wrap;
+		row-gap: 14px;
+		column-gap: 1em;
+		> span.word {
+			display: block;
+			height: 18px;
+			background: $color1-lighter;
+			border-radius: 4px;
+		}
+	}
+
+	&--footer {
+		align-items: flex-end;
+		justify-content: space-between;
+		flex: 1 1 0px;
+		padding-top: 12px;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		gap: 12px;
+	}
+
+	&--counters {
+		display: flex;
+		flex-direction: row;
+		column-gap: 24px;
+		font-size: $font-size-small;
+	}
+
+	&--counter {
+		line-height: $font-size-small;
+	}
+
+	&--count {
+		display: inline-block;
+		width: 6em;
+		height: 10px;
+		background: $color1-lighter;
+		border-radius: 2px;
+	}
+
+	&--mobile {
+		display: none;
+	}
+
+	&--dot {
+		background: $color1-lighter;
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border-radius: 5px;
+		top: -1px;
+		position: relative;
+		vertical-align: middle;
+		margin-right: 10px;
+	}
+}
+
 @media screen and (max-width: 1200px) {
 
 	.realmlist-realm {
@@ -183,9 +337,9 @@
 }
 
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 960px) {
 
-	.realmlist {
+	.realmlist-list {
 		&--list {
 			flex-direction: column;
 			align-items: stretch;
@@ -262,6 +416,49 @@
 		// 		opacity: 1;
 		// 	}
 		// }
+
+	}
+
+	.realmlist-placeholder {
+		&--img, &--desktop {
+			display: none;
+		}
+
+		&--mobile {
+			display: block;
+		}
+
+		&--header {
+			padding-top: 0px;
+		}
+
+		&--title {
+			font-size: 22px;
+			line-height: 22px;
+		}
+
+		&--icon {
+			width: 64px;
+			height: 64px;
+		}
+
+		&--counters-top {
+			flex: 0 0 auto;
+			font-size: $font-size-tiny;
+			display: flex;
+			flex-direction: row;
+			column-gap: 18px;
+		}
+
+		&--counters {
+			display: none;
+		}
+
+		&--footer  {
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
 
 	}
 }
