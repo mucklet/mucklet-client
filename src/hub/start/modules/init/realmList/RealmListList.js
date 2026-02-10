@@ -18,7 +18,10 @@ class RealmListComponent {
 		this.elem = new ModelComponent(
 			this.model,
 			new PageList({
-				fetchCollection: (offset, limit) => this.realms.slice(offset, offset + limit),
+				fetchCollection: (offset, limit) => {
+					this.model.set({ pageNr: Math.floor(offset / 3) });
+					return this.realms.slice(offset, offset + limit);
+				},
 				componentFactory: (realm) => realm
 					? new RealmListRealm(this.module, this.model, realm)
 					: new RealmListPlaceholder(),

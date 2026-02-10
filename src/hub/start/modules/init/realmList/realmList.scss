@@ -155,10 +155,6 @@
 		}
 	}
 
-	&--mobile {
-		display: none;
-	}
-
 	&--dot {
 		background: $color4;
 		display: inline-block;
@@ -367,8 +363,17 @@
 			display: none;
 		}
 
+		&--cont {
+			min-height: initial;
+			cursor: pointer;
+		}
+
 		&--mobile {
 			display: block;
+		}
+
+		&--content {
+			padding: 0 12px 12px 12px;
 		}
 
 		&--header {

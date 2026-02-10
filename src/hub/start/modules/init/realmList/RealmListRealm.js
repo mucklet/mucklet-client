@@ -41,15 +41,17 @@ class RealmListComponent {
 			this.model,
 			new Elem(n => n.elem('div', {
 				className: 'realmlist-realm',
-				events: {
-					click: (c, ev) => {
-						// Toggle realmId
-						this.model.set({ realmId: (this.model.realmId != this.realm?.id && this.realm?.id) || null });
-						ev.stopPropagation();
-					},
-				},
 			}, [
-				n.elem('div', { className: 'realmlist-realm--cont' }, [
+				n.elem('div', {
+					className: 'realmlist-realm--cont',
+					events: {
+						click: (c, ev) => {
+							// Toggle realmId
+							this.model.set({ realmId: (this.model.realmId != this.realm?.id && this.realm?.id) || null });
+							ev.stopPropagation();
+						},
+					},
+				}, [
 
 					// Image
 					n.component(new ModelComponent(
@@ -141,10 +143,10 @@ class RealmListComponent {
 							n.elem('i', { className: 'fa fa-sign-in' }),
 						]),
 					]),
-
-					// Mobile description
-					n.component('mobile', new Collapser(null, { className: 'realmlist-realm--mobile' })),
 				]),
+
+				// Mobile description
+				n.component('mobile', new Collapser(null, { className: 'realmlist-realm--mobile' })),
 
 				// // Caret on mobile devices
 				// n.elem('div', { className: 'realmlist-realm--caret' }, [
@@ -156,7 +158,7 @@ class RealmListComponent {
 				c[isActive ? 'addClass' : 'removeClass']('active');
 				let collapser = c.getNode('mobile');
 				collapser.setComponent(isActive
-					? collapser.getComponent() || new Elem(n => n.elem('div', [
+					? collapser.getComponent() || new Elem(n => n.elem('div', { className: 'realmlist-realm--content' }, [
 						n.elem('div', { className: 'realmlist-realm--desc' }, [
 							n.component(new ModelTxt(this.realm, m => m?.desc)),
 						]),

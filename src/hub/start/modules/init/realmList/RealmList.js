@@ -22,6 +22,7 @@ class RealmList {
 		this.model = new Model({ data: {
 			realmId: null,
 			realms: null,
+			pageNr: 0,
 			error: null,
 		}});
 
@@ -44,7 +45,7 @@ class RealmList {
 	 * @param {Collection<RealmModel> | Array<RealmModel>} realms Realms.
 	 */
 	setRealms(realms) {
-		this.model.set({ realms });
+		this.model?.set({ realms, pageNr: 0, realmId: null });
 	}
 
 	getRealmsPromise() {
@@ -75,7 +76,7 @@ class RealmList {
 				this.allRealms = realms;
 				realms.on();
 			}
-			this.model?.set({ realms: realms.toArray() });
+			this.setRealms(realms.toArray());
 			return realms;
 
 		} catch (error) {
