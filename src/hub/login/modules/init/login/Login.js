@@ -213,7 +213,7 @@ class Login {
 	}
 
 	_showLogin() {
-		let cb = (() => this._redirect());
+		let cb = (() => window.history.back());
 		this.module.screen.setComponent(this.params.register
 			? new LoginRegister(this.module, this.state, { close: cb })
 			: new LoginComponent(this.module, this.state, { close: cb, ...this.params }),

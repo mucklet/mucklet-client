@@ -5,6 +5,9 @@ import Img from 'components/Img';
 import renderingModes from 'utils/renderingModes';
 import l10n from 'modapp-l10n';
 import RealmTagsList from 'components/RealmTagsList';
+import { redirect } from 'utils/reload';
+
+const realmLoginPath = REALM_LOGIN_PATH;
 
 function formatNumber(n) {
 	let s = String(n);
@@ -138,7 +141,15 @@ class RealmListComponent {
 						]),
 
 						// Enter button
-						n.elem('button', { className: 'realmlist-realm--signin btn primary' }, [
+						n.elem('button', {
+							className: 'realmlist-realm--signin btn primary',
+							events: {
+								click: (c, ev) => {
+									this._onEnter();
+									ev.stopPropagation();
+								},
+							},
+						}, [
 							n.component(new Txt('Enter')),
 							n.elem('i', { className: 'fa fa-sign-in' }),
 						]),
@@ -165,7 +176,15 @@ class RealmListComponent {
 
 						n.elem('div', { className: 'realmlist-realm--footer' }, [
 							// Enter button
-							n.elem('button', { className: 'realmlist-realm--signin btn primary' }, [
+							n.elem('button', {
+								className: 'realmlist-realm--signin btn primary',
+								events: {
+									click: (c, ev) => {
+										this._onEnter();
+										ev.stopPropagation();
+									},
+								},
+							}, [
 								n.component(new Txt('Enter')),
 								n.elem('i', { className: 'fa fa-sign-in' }),
 							]),
@@ -181,6 +200,11 @@ class RealmListComponent {
 	unrender() {
 		this.elem?.unrender();
 		this.elem = null;
+	}
+
+	_onEnter() {
+		let url = this.realm.clientUrl.replace(/\/$/g, '') + '/' + realmLoginPath.replace(/^\//g, '');
+		redirect(url, false, true);
 	}
 }
 

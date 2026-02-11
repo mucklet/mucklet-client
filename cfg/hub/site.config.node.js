@@ -17,5 +17,7 @@ module.exports = {
 	AUTH_LOGIN_RID: 'identity',
 	AUTH_AUTHENTICATE_RID: 'identity',
 
+	REALM_LOGIN_PATH: 'auth/oauth2/login',
+
 	HUB_PATH: 'http://localhost:6460/',
 };
