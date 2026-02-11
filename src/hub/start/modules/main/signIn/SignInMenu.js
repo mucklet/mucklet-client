@@ -1,8 +1,6 @@
-import { Elem, Txt, Context } from 'modapp-base-component';
-import { CollectionList, ModelComponent } from 'modapp-resource-component';
-import { CollectionWrapper } from 'modapp-resource';
+import { Elem, Txt } from 'modapp-base-component';
+import { CollectionList } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
-import Fader from 'components/Fader';
 import FAIcon from 'components/FAIcon';
 
 
@@ -26,43 +24,26 @@ class SignInMenu {
 				style: 'top: ' + (this.opt.top || '0') + 'px; right: ' + (this.opt.right || '0') + 'px;',
 			},
 		}, [
-			n.component(new Context(
-				() => new CollectionWrapper(this.module.router.getRoutes(), {
-					eventBus: this.module.self.app.eventBus,
-					filter: r => !r.hidden
-						&& !r.parentId,
-				}),
-				routes => routes.dispose(),
-				routes => new CollectionList(
-					routes,
-					route => new ModelComponent(
-						this.module.router.getModel(),
-						new Elem(n => n.elem('div', {
-							className: 'signin-menu--route',
-							events: {
-								click: (c, e) => {
-									this._select(route);
-									e.stopPropagation();
-								},
-							},
-						}, [
-							n.component('selected', new Fader(null, { className: 'signin-menu--selected' })),
-							n.component(new Txt(typeof route.name == 'function' ? route.name() : route.name)),
-						])),
-						(m, c, change) => {
-							let active = m.route && (m.route.id == route.id || m.route.parentId === route.id);
-							let selected = c.getNode('selected');
-							selected.setComponent(active
-								? selected.getComponent() || new FAIcon('check')
-								: null,
-							);
-							c[active ? 'addClass' : 'removeClass']('active');
-						},
-					),
-					{
-						className: 'signin-menu--routes',
+			n.component(new CollectionList(
+				this.module.self.getMenuItems(),
+				item => new Elem(n => n.elem('a', {
+					className: 'signin-menu--item' + (item.className ? ' ' + item.className : ''),
+					attributes: {
+						href: item.href,
 					},
-				),
+					events: item.onClick && {
+						click: (c, e) => {
+							e.stopPropagation();
+							item.onClick?.();
+						},
+					},
+				}, [
+					n.component(new FAIcon(item.icon, { className: 'signin-menu--icon' })),
+					n.component(new Txt(item.name)),
+				])),
+				{
+					className: 'signin-menu--items',
+				},
 			)),
 			n.elem('a', {
 				className: 'signin-menu--logout',
@@ -74,7 +55,7 @@ class SignInMenu {
 				},
 			}, [
 				n.component(new FAIcon('sign-out', { className: 'signin-menu--logouticon' })),
-				n.component(new Txt(l10n.l('layoutMin.logout', "Logga ut"))),
+				n.component(new Txt(l10n.l('signIn.logOut', "Log out"))),
 			]),
 		]));
 		return this.elem.render(el);

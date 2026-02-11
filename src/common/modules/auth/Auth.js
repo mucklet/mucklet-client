@@ -52,11 +52,25 @@ class Auth {
 		this.loginPromise = null;
 		this.loginResolve = null;
 		this.userPromise = null;
+		this.authPromise = null;
 		this.model = new Model({ data: { loggedIn: false, user: null, authError: null }});
 		this.model.on('change', this._onModelChange);
 		this.state = {};
 
 		this.module.api.setOnConnect(this._onConnect);
+	}
+
+	/**
+	 * Tries to authenticate without redirect on failure, if authenticate hasn't
+	 * been called yet. It returns a promise of the logged in user, or null if
+	 * not logged in.
+	 * @returns {Promise<UserModel|null>} Promise of the logged in user or null if no user is logged in.
+	 */
+	getAuthenticatePromise() {
+		if (!this.authPromise) {
+			this.authenticate(true);
+		}
+		return this.authPromise;
 	}
 
 	/**
@@ -74,7 +88,7 @@ class Auth {
 			return this._getCurrentUser(true);
 		}
 
-		return fetch(authenticateUrl, {
+		this.authPromise = fetch(authenticateUrl, {
 			method: 'POST',
 			mode: 'cors',
 			credentials: crossOrigin ? 'include' : 'same-origin',
@@ -123,6 +137,8 @@ class Auth {
 				return this._getCurrentUser(true);
 			});
 		});
+
+		return this.authPromise;
 	}
 
 	/**

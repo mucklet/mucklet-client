@@ -65,7 +65,7 @@ class RealmList {
 
 			// Try authenticate.
 			try {
-				await this.module.auth.authenticate(false);
+				await this.module.auth.authenticate(true);
 			} catch (error) {
 				console.error("[RealmList] Error authenticating: ", error);
 			}

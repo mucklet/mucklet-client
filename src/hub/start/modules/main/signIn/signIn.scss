@@ -39,46 +39,53 @@
 
 .signin-menu {
 	min-width: 200px;
-	padding: 0 0;
+	padding: 12px;
 	position: fixed;
 	z-index: 1001;
 	border-radius: 6px;
 	-webkit-box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.5);
 	box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.5);
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	row-gap: 8px;
 
-	background: $color1-lightest;
+	background: $color1;
+	animation-name: signin-menu-appear;
+	animation-duration: 0.3s;
+	transform-origin: 100% 0%;
 
-	&--route {
-		padding: 8px 16px 8px 12px;
-		cursor: pointer;
-		-webkit-transition: color 0.2s, background-color 0.2s;
-		-ms-transition: color 0.2s, background-color 0.2s;
-		transition: color 0.2s, background-color 0.2s;
-
-		&:hover {
-			// background: lighten($nercia-blue, 8%);
-			color: $white;
-		}
-	}
-	&--selected, &--logouticon {
+	&--icon, &--logouticon {
 		display: inline-block;
 		width: 30px;
 	}
 
-	&--logout {
+	&--logout, &--item {
 		display: block;
-		// background: $nercia-blue;
 		padding: 8px 16px 8px 12px;
-		// color: $white;
+		background: $color1;
+		color: $color4-lightest;
 		cursor: pointer;
 		-webkit-transition: color 0.2s, background-color 0.2s;
 		-ms-transition: color 0.2s, background-color 0.2s;
 		transition: color 0.2s, background-color 0.2s;
+		border-radius: 4px;
 
 
 		&:hover {
-			// background: lighten($nercia-blue, 8%);
+			background: $color1-lighter;
+			color: $color4-lightestest;
+		}
+	}
+
+	@keyframes signin-menu-appear {
+		from {
+			opacity: 0;
+			transform: scale(0.9);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
 		}
 	}
 }
