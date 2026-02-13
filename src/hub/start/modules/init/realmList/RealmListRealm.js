@@ -10,6 +10,9 @@ import { redirect } from 'utils/reload';
 const realmLoginPath = REALM_LOGIN_PATH;
 
 function formatNumber(n) {
+	if (typeof n != 'number') {
+		return "?";
+	}
 	let s = String(n);
 	for (let i = s.length - 3; i > 0; i -= 3) {
 		s = s.slice(0, i) + ' ' + s.slice(i);
@@ -27,6 +30,19 @@ function hasValidTag(tags) {
 		}
 	}
 	return false;
+}
+
+function addCounters(n, realm) {
+	return [
+		n.elem('div', { className: 'realmlist-realm--counter' }, [
+			n.elem('span', { className: 'realmlist-realm--dot highlight' }),
+			n.component(new ModelTxt(realm.population, m => l10n.l('realmList.countAwake', "{count} Awake", { count: formatNumber(m?.awakeChars) }))),
+		]),
+		n.elem('div', { className: 'realmlist-realm--counter' }, [
+			n.elem('span', { className: 'realmlist-realm--dot' }),
+			n.component(new ModelTxt(realm.population, m => l10n.l('realmList.countCharacters', "{count} Characters", { count: formatNumber(m?.totalChars) }))),
+		]),
+	];
 }
 
 /**
@@ -97,16 +113,7 @@ class RealmListComponent {
 							]),
 
 							// Counters on mobile devices
-							n.elem('div', { className: 'realmlist-realm--counters-top' }, [
-								n.elem('div', { className: 'realmlist-realm--counter' }, [
-									n.elem('span', { className: 'realmlist-realm--dot highlight' }),
-									n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countAwake', "{awake} Awake", { awake: formatNumber(m?.name.length + 2122331 || 0) }))),
-								]),
-								n.elem('div', { className: 'realmlist-realm--counter' }, [
-									n.elem('span', { className: 'realmlist-realm--dot' }),
-									n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countCharacters', "{awake} Characters", { awake: formatNumber(m?.desc.length || 0) }))),
-								]),
-							]),
+							n.elem('div', { className: 'realmlist-realm--counters-top' }, addCounters(n, this.realm)),
 						]),
 					]),
 
@@ -129,16 +136,7 @@ class RealmListComponent {
 					n.elem('div', { className: 'realmlist-realm--desktop realmlist-realm--footer' }, [
 
 						// Counters on desktops
-						n.elem('div', { className: 'realmlist-realm--counters' }, [
-							n.elem('div', { className: 'realmlist-realm--counter' }, [
-								n.elem('span', { className: 'realmlist-realm--dot highlight' }),
-								n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countAwake', "{awake} Awake", { awake: formatNumber(m?.name.length || 0) }))),
-							]),
-							n.elem('div', { className: 'realmlist-realm--counter' }, [
-								n.elem('span', { className: 'realmlist-realm--dot' }),
-								n.component(new ModelTxt(this.realm, m => l10n.l('realmList.countCharacters', "{awake} Characters", { awake: formatNumber(m?.desc.length || 0) }))),
-							]),
-						]),
+						n.elem('div', { className: 'realmlist-realm--counters' }, addCounters(n, this.realm)),
 
 						// Enter button
 						n.elem('button', {

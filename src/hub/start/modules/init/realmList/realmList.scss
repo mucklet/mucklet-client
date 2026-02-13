@@ -73,6 +73,10 @@
 		flex-direction: column;
 	}
 
+	&--mobile {
+		display: none;
+	}
+
 	&--img {
 		border-radius: 10px;
 		width: 100%;
@@ -312,10 +316,6 @@
 		border-radius: 2px;
 	}
 
-	&--mobile {
-		display: none;
-	}
-
 	&--dot {
 		background: $color1-lighter;
 		display: inline-block;
@@ -447,10 +447,6 @@
 	.realmlist-placeholder {
 		&--img, &--desktop {
 			display: none;
-		}
-
-		&--mobile {
-			display: block;
 		}
 
 		&--header {
