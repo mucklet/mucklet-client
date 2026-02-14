@@ -100,6 +100,44 @@ class RouteRealmSettingsRealm {
 					},
 				)),
 
+				// Hidden (Search visibility)
+				n.component(new PanelSection(
+					l10n.l('routeRealmSettings.searchVisibility', "Search visibility"),
+					new CollectionList(
+						[
+							{ hidden: true, text: l10n.l('routeRealmSettings.hidden', "Hidden") },
+							{ hidden: false, text: l10n.l('routeRealmSettings.visible', "Visible") },
+						],
+						v => new ModelComponent(
+							realm,
+							new Elem(n => n.elem('button', {
+								events: {
+									click: () => {
+										realm.set({ hidden: v.hidden });
+									},
+								},
+								className: 'btn tiny flex-1',
+							}, [
+								n.component(new Txt(v.text)),
+							])),
+							(m, c) => {
+								c[v.hidden == m.hidden ? 'addClass' : 'removeClass']('primary');
+								c[v.hidden != m.hidden ? 'addClass' : 'removeClass']('darken');
+							},
+						),
+						{
+							className: 'flex-row gap8',
+							subClassName: () => 'routerealmsettings-realm--hidden flex-row',
+							horizontal: true,
+						},
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeRealmSettings.searchVisibilityInfo', "Hidden realms will not showing up among the results when players searches for realms."),
+					},
+				)),
+
 				// Image
 				n.component(new PanelSection(
 					l10n.l('routeRealmSettings.image', "Image"),

@@ -44,4 +44,9 @@
 	&--cropimage.dialogcropimage {
 		width: 516px;
 	}
+
+	&--hidden {
+		flex: 1;
+		max-width: 100px;
+	}
 }
