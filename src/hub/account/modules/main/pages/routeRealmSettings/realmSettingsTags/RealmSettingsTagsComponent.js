@@ -7,15 +7,15 @@ import RealmTagsList from 'components/RealmTagsList';
 import AutoComplete from 'components/AutoComplete';
 import FAIcon from 'components/FAIcon';
 import patternMatch, { patternMatchRender, patternMatchCompare } from 'utils/patternMatch';
-import EditRealmTagsCounter from './EditRealmTagsCounter';
+import RealmSettingsTagsCounter from './RealmSettingsTagsCounter';
 
 
-class EditRealmTagsComponent {
+class RealmSettingsTagsComponent {
 	constructor(module, realm, state) {
 		this.module = module;
 		this.realm = realm;
-		this.state = state.editRealmTags || { tag: '' };
-		state.editRealmTags = this.state;
+		this.state = state.realmSettingsTags || { tag: '' };
+		state.realmSettingsTags = this.state;
 		this.tags = null;
 	}
 
@@ -23,8 +23,8 @@ class EditRealmTagsComponent {
 		this._loadTags();
 
 		this.elem = new PanelSection(
-			new Elem(n => n.elem('div', { className: 'editrealmtags--title' }, [
-				n.component(new Txt(l10n.l('editRealmTags.tags', "Tags"), { tagName: 'h3' })),
+			new Elem(n => n.elem('div', { className: 'realmsettingstags--title' }, [
+				n.component(new Txt(l10n.l('realmSettingsTags.tags', "Tags"), { tagName: 'h3' })),
 				n.component(new Context(
 					() => new CollectionWrapper(this.module.self.getTools(), {
 						filter: t => (!t.type || t.type == 'title') && (t.filter ? t.filter(this.realm) : true),
@@ -34,7 +34,7 @@ class EditRealmTagsComponent {
 						tools,
 						t => t.componentFactory(this.realm, this.state),
 						{
-							className: 'editrealmtags--tools',
+							className: 'realmsettingstags--tools',
 							subClassName: t => t.className || null,
 							horizontal: true,
 						},
@@ -43,10 +43,10 @@ class EditRealmTagsComponent {
 			])),
 			new Elem(n => n.elem('div', [
 				n.elem('div', { className: 'common--sectionpadding' }, [
-					n.elem('div', { className: 'editrealmtags--tag' }, [
+					n.elem('div', { className: 'realmsettingstags--tag' }, [
 						n.component('tag', new AutoComplete(this.state.tag, {
 							attributes: {
-								placeholder: l10n.t('editRealmTags.typeTagKey', "Enter tag keyword to add"),
+								placeholder: l10n.t('realmSettingsTags.typeTagKey', "Enter tag keyword to add"),
 								spellcheck: 'false',
 							},
 							fetch: (text, update, c) => {
@@ -79,7 +79,7 @@ class EditRealmTagsComponent {
 							},
 						})),
 						n.elem('add', 'button', {
-							className: 'editrealmtags--add iconbtn medium tinyicon',
+							className: 'realmsettingstags--add iconbtn medium tinyicon',
 							attributes: { type: 'button' },
 							events: {
 								click: (c, e) => {
@@ -98,11 +98,11 @@ class EditRealmTagsComponent {
 				})),
 			])),
 			{
-				className: 'editrealmtags common--sectionpadding',
+				className: 'realmsettingstags common--sectionpadding',
 				noToggle: true,
-				popupTip: l10n.l('editRealmTags.tagsInfo', "Tags are searchable keywords describing a realm, the genres and themes."),
-				infoComponent: new EditRealmTagsCounter(this.module, this.realm.tags, {
-					className: 'editrealmtags--counter',
+				popupTip: l10n.l('realmSettingsTags.tagsInfo', "Tags are searchable keywords describing a realm, the genres and themes."),
+				infoComponent: new RealmSettingsTagsCounter(this.module, this.realm.tags, {
+					className: 'realmsettingstags--counter',
 					onUpdate: () => this._setCanAdd(),
 				}),
 			},
@@ -237,4 +237,4 @@ class EditRealmTagsComponent {
 	}
 }
 
-export default EditRealmTagsComponent;
+export default RealmSettingsTagsComponent;

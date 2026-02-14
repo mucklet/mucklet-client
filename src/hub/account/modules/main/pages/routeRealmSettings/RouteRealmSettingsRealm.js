@@ -1,6 +1,6 @@
 import { Elem, Txt, Context, Input, Textarea } from 'modapp-base-component';
 import { ModifyModel, CollectionWrapper } from 'modapp-resource';
-import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { ModelComponent, CollectionList, ModelTxt } from 'modapp-resource-component';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
@@ -11,6 +11,7 @@ import Img from 'components/Img';
 import FileButton from 'components/FileButton';
 import ImgModal from 'classes/ImgModal';
 import renderingModes from 'utils/renderingModes';
+import ProjectState from 'components/ProjectState';
 
 /**
  * RouteRealmSettingsRealm draws the settings form for a realm.
@@ -49,94 +50,31 @@ class RouteRealmSettingsRealm {
 				]),
 				n.elem('div', { className: 'common--hr' }),
 
-				// Section tools
-				n.component(new Context(
-					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => t.type == 'topSection',
-					}),
-					tools => tools.dispose(),
-					tools => new CollectionList(
-						tools,
-						t => t.componentFactory(realm, this.state),
-						{
-							subClassName: t => t.className || null,
-						},
-					),
-				)),
+				// Top section
+				// Realm state
+				n.elem('div', { className: 'common--sectionpadding' }, [
+					n.elem('div', { className: 'flex-row' }, [
 
-				// Name
-				n.component(new PanelSection(
-					l10n.l('routeRealmSettings.realmName', "Realm name"),
-					new ModelComponent(
-						realm,
-						new Input("", {
-							events: { input: c => realm.set({ name: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-name', spellcheck: 'false' },
-						}),
-						(m, c) => c.setValue(m.name),
-					),
-					{
-						className: 'common--sectionpadding',
-						noToggle: true,
-						popupTip: l10n.l('routeRealmSettings.nameInfo', "Realm name is the primary name for the realm."),
-					},
-				)),
+						// Realm state
+						n.elem('div', { className: 'flex-1' }, [
+							n.component(new ProjectState(this.realm, {
+								size: 'medium',
+							})),
+						]),
 
-				// Description
-				n.component(new PanelSection(
-					l10n.l('routeRealmSettings.description', "Description"),
-					new ModelComponent(
-						realm,
-						new Textarea(realm.desc, {
-							className: 'common--paneltextarea-small common--desc-size',
-							events: { input: c => realm.set({ desc: c.getValue() }) },
-							attributes: { name: 'routerealmsettings-desc', spellcheck: 'true' },
-						}),
-						(m, c) => c.setValue(m.desc),
-					),
-					{
-						className: 'common--sectionpadding',
-						noToggle: true,
-					},
-				)),
-
-				// Hidden (Search visibility)
-				n.component(new PanelSection(
-					l10n.l('routeRealmSettings.searchVisibility', "Search visibility"),
-					new CollectionList(
-						[
-							{ hidden: true, text: l10n.l('routeRealmSettings.hidden', "Hidden") },
-							{ hidden: false, text: l10n.l('routeRealmSettings.visible', "Visible") },
-						],
-						v => new ModelComponent(
-							realm,
-							new Elem(n => n.elem('button', {
-								events: {
-									click: () => {
-										realm.set({ hidden: v.hidden });
-									},
-								},
-								className: 'btn tiny flex-1',
-							}, [
-								n.component(new Txt(v.text)),
-							])),
-							(m, c) => {
-								c[v.hidden == m.hidden ? 'addClass' : 'removeClass']('primary');
-								c[v.hidden != m.hidden ? 'addClass' : 'removeClass']('darken');
-							},
-						),
-						{
-							className: 'flex-row gap8',
-							subClassName: () => 'routerealmsettings-realm--hidden flex-row',
-							horizontal: true,
-						},
-					),
-					{
-						className: 'common--sectionpadding',
-						noToggle: true,
-						popupTip: l10n.l('routeRealmSettings.searchVisibilityInfo', "Hidden realms will not showing up among the results when players searches for realms."),
-					},
-				)),
+						// Realm API version
+						n.component(new ModelTxt(
+							this.realm,
+							m => m.versionName
+								? l10n.l('routeRealmSettings.version', "Version {version}", { version: m.versionName })
+								: '',
+							{ className: 'routerealmsettings-realm--version flex-auto' },
+						)),
+					]),
+				]),
+				// Top section tools
+				n.component(this._newTools(realm, t => t.type == 'topSection')),
+				n.elem('div', { className: 'common--hr routerealmsettings-realm--section-hr' }),
 
 				// Image
 				n.component(new PanelSection(
@@ -271,20 +209,82 @@ class RouteRealmSettingsRealm {
 					},
 				)),
 
-				// Section tools
-				n.component(new Context(
-					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => !t.type || t.type == 'section',
-					}),
-					tools => tools.dispose(),
-					tools => new CollectionList(
-						tools,
-						t => t.componentFactory(realm, this.state),
+				// Name
+				n.component(new PanelSection(
+					l10n.l('routeRealmSettings.realmName', "Realm name"),
+					new ModelComponent(
+						realm,
+						new Input("", {
+							events: { input: c => realm.set({ name: c.getValue() }) },
+							attributes: { name: 'routerealmsettings-name', spellcheck: 'false' },
+						}),
+						(m, c) => c.setValue(m.name),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeRealmSettings.nameInfo', "Realm name is the primary name for the realm."),
+					},
+				)),
+
+				// Description
+				n.component(new PanelSection(
+					l10n.l('routeRealmSettings.description', "Description"),
+					new ModelComponent(
+						realm,
+						new Textarea(realm.desc, {
+							className: 'common--paneltextarea-small common--desc-size',
+							events: { input: c => realm.set({ desc: c.getValue() }) },
+							attributes: { name: 'routerealmsettings-desc', spellcheck: 'true' },
+						}),
+						(m, c) => c.setValue(m.desc),
+					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+					},
+				)),
+
+				// Hidden (Search visibility)
+				n.component(new PanelSection(
+					l10n.l('routeRealmSettings.searchVisibility', "Search visibility"),
+					new CollectionList(
+						[
+							{ hidden: true, text: l10n.l('routeRealmSettings.hidden', "Hidden") },
+							{ hidden: false, text: l10n.l('routeRealmSettings.visible', "Visible") },
+						],
+						v => new ModelComponent(
+							realm,
+							new Elem(n => n.elem('button', {
+								events: {
+									click: () => {
+										realm.set({ hidden: v.hidden });
+									},
+								},
+								className: 'btn tiny flex-1',
+							}, [
+								n.component(new Txt(v.text)),
+							])),
+							(m, c) => {
+								c[v.hidden == m.hidden ? 'addClass' : 'removeClass']('primary');
+								c[v.hidden != m.hidden ? 'addClass' : 'removeClass']('darken');
+							},
+						),
 						{
-							subClassName: t => t.className || null,
+							className: 'flex-row gap8',
+							subClassName: () => 'routerealmsettings-realm--hidden flex-row',
+							horizontal: true,
 						},
 					),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('routeRealmSettings.searchVisibilityInfo', "Hidden realms will not showing up among the results when players searches for realms."),
+					},
 				)),
+
+				// Section tools
+				n.component(this._newTools(realm, t => (!t.type || t.type == 'section'))),
 
 				// Message
 				n.component(this.messageComponent),
@@ -308,21 +308,7 @@ class RouteRealmSettingsRealm {
 					n.elem('div', { className: 'flex-auto' }, [
 
 						// Footer tools
-						n.component(new Context(
-							() => new CollectionWrapper(this.module.self.getTools(), {
-								filter: t => t.type == 'footer',
-							}),
-							tools => tools.dispose(),
-							tools => new CollectionList(
-								tools,
-								t => t.componentFactory(realm, this.state),
-								{
-									horizontal: true,
-									className: 'routerealmsettings-realm--footertools',
-									subClassName: t => t.className || null,
-								},
-							),
-						)),
+						n.component(this._newTools(realm, t => t.type == 'footer', { className: 'routerealmsettings-realm--footertools' })),
 
 					]),
 
@@ -349,8 +335,11 @@ class RouteRealmSettingsRealm {
 		}
 
 		// Prepare params from tools
+		let mode = this.module.mode.getModel().mode;
 		for (let tool of this.module.self.getTools()) {
-			params = tool.onSave?.(params) || params;
+			if (!tool.mode || tool.mode == mode) {
+				params = tool.onSave?.(params) || params;
+			}
 		}
 
 		this._setMessage();
@@ -426,6 +415,28 @@ class RouteRealmSettingsRealm {
 				autoclose: true,
 			}))
 			.catch(err => this.module.confirm.openError(err));
+	}
+
+	_newTools(realm, filter, opt) {
+		let modeModel = this.module.mode.getModel();
+		return new Context(
+			() => new CollectionWrapper(this.module.self.getTools(), {
+				filter: t => filter(t) && (!t.mode || t.mode == modeModel.mode),
+			}),
+			tools => tools.dispose(),
+			tools => new ModelComponent(
+				modeModel,
+				new CollectionList(
+					tools,
+					t => t.componentFactory(realm, this.state),
+					{
+						subClassName: t => t.className || null,
+						...opt,
+					},
+				),
+				(m, c) => tools.refresh(),
+			),
+		);
 	}
 }
 

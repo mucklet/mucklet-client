@@ -2,7 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import ModelFader from 'components/ModelFader';
 import l10n from 'modapp-l10n';
-import OverseerRealmSettingsTopSection from './OverseerRealmSettingsTopSection';
+import OverseerRealmSettingsActions from './OverseerRealmSettingsActions';
 import OverseerRealmSettingsBottomSection from './OverseerRealmSettingsBottomSection';
 import './overseerRealmSettings.scss';
 
@@ -20,6 +20,7 @@ class OverseerRealmSettings {
 			'confirm',
 			'toaster',
 			'nodeContainers',
+			'realmUpgrade',
 		], this._init.bind(this));
 	}
 
@@ -30,8 +31,9 @@ class OverseerRealmSettings {
 		this.module.routeRealmSettings.addTool({
 			id: 'overseerActions',
 			type: 'topSection',
-			componentFactory: (realm) => new OverseerRealmSettingsTopSection(this.module, realm),
-			sortOrder: 10,
+			componentFactory: (realm) => new OverseerRealmSettingsActions(this.module, realm),
+			mode: 'overseer',
+			sortOrder: 11,
 		});
 
 		// Edit overseer fields
@@ -47,7 +49,8 @@ class OverseerRealmSettings {
 				}
 				return params;
 			},
-			sortOrder: 100,
+			mode: 'overseer',
+			sortOrder: 101,
 		});
 
 		// Update default realm
@@ -71,7 +74,8 @@ class OverseerRealmSettings {
 					]),
 				])),
 			}]),
-			sortOrder: 10,
+			mode: 'overseer',
+			sortOrder: 11,
 		});
 
 		// Delete realm
@@ -87,7 +91,8 @@ class OverseerRealmSettings {
 			}, className: 'iconbtn medium solid' }, [
 				n.component(new FAIcon('trash')),
 			])),
-			sortOrder: 100,
+			mode: 'overseer',
+			sortOrder: 101,
 		});
 	}
 

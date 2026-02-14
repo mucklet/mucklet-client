@@ -1,7 +1,7 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-.editrealmtags {
+.realmsettingstags {
 	&--tag {
 		position: relative;
 
@@ -38,7 +38,7 @@
 	}
 }
 
-.editrealmtags-counter {
+.realmsettingstags-counter {
 	transition: color 0.2s;
 
 	font-size: $font-size-small;

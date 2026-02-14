@@ -2,19 +2,19 @@ import { Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 
-class EditRealmTagsCounter extends ModelComponent{
+class RealmSettingsTagsCounter extends ModelComponent{
 	constructor(module, tags, opt) {
 		let countCb = opt?.count || ((m) => Object.keys(m.props).length);
 
 		let txt = new Txt('', {
 			tagName: 'div',
-			className: 'editrealmtags-counter' + (opt?.className ? ' ' + opt.className : ''),
+			className: 'realmsettingstags-counter' + (opt?.className ? ' ' + opt.className : ''),
 			duration: 0,
 		});
 		let update = () => {
 			let max = module.hubInfo.getControl().maxRealmTags;
 			let count = countCb(tags);
-			txt.setText(l10n.l('editRealmTags.countOfMax', "{count}/{max}", {
+			txt.setText(l10n.l('realmSettingsTags.countOfMax', "{count}/{max}", {
 				count,
 				max: max || '?',
 			}));
@@ -27,14 +27,11 @@ class EditRealmTagsCounter extends ModelComponent{
 			new ModelComponent(
 				tags,
 				txt,
-				(m, c, change) => {
-					console.log("CHANGE: ", change);
-					update();
-				},
+				(m, c, change) => update(),
 			),
 			() => update(),
 		);
 	}
 }
 
-export default EditRealmTagsCounter;
+export default RealmSettingsTagsCounter;

@@ -33,6 +33,8 @@ class RouteRealmSettings {
 			'dialogCropImage',
 			'file',
 			'confirm',
+			'mode',
+			'realmUpgrade',
 		], this._init.bind(this));
 	}
 

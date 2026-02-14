@@ -49,4 +49,17 @@
 		flex: 1;
 		max-width: 100px;
 	}
+
+	&--section-hr.common--hr {
+		padding-bottom: 8px;
+	}
+
+	&--state {
+		line-height: 20px;
+	}
+
+	&--version {
+		font-size: $font-size-small;
+		color: $color4;
+	}
 }

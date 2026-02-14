@@ -18,12 +18,13 @@ class RouteRealmsRealmBadge {
 
 	render(el) {
 		let updateFader = new Fader();
+		console.log("MODEL REALM: ", this.model.realmId, this.realm);
 
 		this.elem = new Elem(n => n.elem('badge', 'div', {
 			className: 'routerealms-realmbadge badge dark large btn',
 			events: {
 				click: (c, ev) => {
-					this.module.self.setRoute({ realmId: this.model.realm == this.realm
+					this.module.self.setRoute({ realmId: this.model.realmId == this.realm.id
 						? null
 						: this.realm.id,
 					});
@@ -75,7 +76,7 @@ class RouteRealmsRealmBadge {
 				]),
 			]),
 			n.component(new ModelCollapser(this.model, [{
-				condition: m => m.realm == this.realm,
+				condition: m => m.realmId == this.realm.id,
 				factory: m => new RouteRealmsRealmBadgeContent(this.module, this.realm),
 			}])),
 		]));

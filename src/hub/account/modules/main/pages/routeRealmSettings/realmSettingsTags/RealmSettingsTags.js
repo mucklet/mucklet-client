@@ -1,13 +1,13 @@
 import { Collection } from 'modapp-resource';
 import compareSortOrderId from 'utils/compareSortOrderId';
-import EditRealmTagsComponent from './EditRealmTagsComponent';
-import EditRealmTagsCounter from './EditRealmTagsCounter';
-import './editRealmTags.scss';
+import RealmSettingsTagsComponent from './RealmSettingsTagsComponent';
+import RealmSettingsTagsCounter from './RealmSettingsTagsCounter';
+import './realmSettingsTags.scss';
 
 /**
- * EditRealmTags adds the Tags-section to RouteRealmSettings.
+ * RealmSettingsTags adds the Tags-section to RouteRealmSettings.
  */
-class EditRealmTags {
+class RealmSettingsTags {
 	constructor(app, params) {
 		this.app = app;
 		this.app.require([
@@ -29,10 +29,10 @@ class EditRealmTags {
 		});
 
 		this.module.routeRealmSettings.addTool({
-			id: 'editRealmTags',
+			id: 'realmSettingsTags',
 			type: 'section',
 			sortOrder: 10,
-			componentFactory: (realm, state) => new EditRealmTagsComponent(this.module, realm, state),
+			componentFactory: (realm, state) => new RealmSettingsTagsComponent(this.module, realm, state),
 		});
 	}
 
@@ -78,15 +78,15 @@ class EditRealmTags {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {() => void} [opt.onUpdate] Callback function called when the counter updates.
 	 * @param {(tags: Model) => number} [opt.count] Custom count callback.
-	 * @returns {EditRealmTagsCounter} Counter component.
+	 * @returns {RealmSettingsTagsCounter} Counter component.
 	 */
 	newCounter(tags, opt) {
-		return new EditRealmTagsCounter(this.module, tags, opt);
+		return new RealmSettingsTagsCounter(this.module, tags, opt);
 	}
 
 	dispose() {
-		this.module.routeRealmSettings.removeTool('editRealmTags');
+		this.module.routeRealmSettings.removeTool('realmSettingsTags');
 	}
 }
 
-export default EditRealmTags;
+export default RealmSettingsTags;
