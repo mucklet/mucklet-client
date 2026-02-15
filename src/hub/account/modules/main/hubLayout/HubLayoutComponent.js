@@ -55,43 +55,44 @@ class HubLayoutComponent {
 									n.elem('div', { className: 'hublayout--profilename' }, [
 										n.component(new Txt(l10n.l('hubLayout.account', "Mucklet account"), { tagName: 'h2' })),
 									]),
-
-									// Active mode switch
-									n.component(new CollectionComponent(
-										this.module.mode.getModes(),
-										new Collapser(),
-										(col, c) => c.setComponent(col.length > 1
-											? c.getComponent() || new CollectionList(
-												this.module.mode.getModes(),
-												(mode) => new ModelComponent(
-													this.module.mode.getModel(),
-													new Elem(n => n.elem('button', {
-														className: 'hublayout--mode btn tiny',
-														events: {
-															click: (c, ev) => {
-																ev.stopPropagation();
-																this.module.mode.setMode(mode.key);
-															},
-														},
-													}, [
-														n.component(new Txt(mode.name)),
-													])),
-													(m, c) => {
-														c[m.mode == mode.key ? 'addClass' : 'removeClass']('primary');
-														c[m.mode != mode.key ? 'addClass' : 'removeClass']('darken');
-													},
-												),
-												{
-													className: 'hublayout--modes flex-row sm gap8',
-													horizontal: true,
-												},
-											)
-											: null,
-										),
-									)),
 								]),
 							]),
 							n.elem('div', { className: 'hublayout--panelmain' }, [
+
+								// Active mode switch
+								n.component(new CollectionComponent(
+									this.module.mode.getModes(),
+									new Collapser(),
+									(col, c) => c.setComponent(col.length > 1
+										? c.getComponent() || new CollectionList(
+											this.module.mode.getModes(),
+											(mode) => new ModelComponent(
+												this.module.mode.getModel(),
+												new Elem(n => n.elem('button', {
+													className: 'hublayout--mode btn tiny',
+													events: {
+														click: (c, ev) => {
+															ev.stopPropagation();
+															this.module.mode.setMode(mode.key);
+														},
+													},
+												}, [
+													n.component(new Txt(mode.name)),
+												])),
+												(m, c) => {
+													c[m.mode == mode.key ? 'addClass' : 'removeClass']('primary');
+													c[m.mode != mode.key ? 'addClass' : 'removeClass']('darken');
+												},
+											),
+											{
+												className: 'hublayout--modes flex-row sm gap8',
+												horizontal: true,
+											},
+										)
+										: null,
+									),
+								)),
+
 								n.component(new Context(
 									() => new CollectionWrapper(this.module.router.getRoutes(), {
 										eventBus: this.module.self.app.eventBus,
@@ -142,7 +143,9 @@ class HubLayoutComponent {
 										onToggle: (c, menuOpen) => this.module.self.toggleMenu(menuOpen),
 									})),
 									n.elem('div', { className: 'hublayout-common--maxwidth' }, [
-										n.elem('a', { className: 'flex-row flex-center sm', events: { click: () => this.module.router.setDefaultRoute() }}, [
+										n.elem('a', { className: 'flex-row flex-center sm', events: {
+											click: () => this.module.router.setRoute(null),
+										}}, [
 											n.elem('img', { className: 'hublayout--logo flex-auto', attributes: { src: '/mucklet-logo.svg' }}),
 											n.component(new Txt(l10n.l('hubLayout.account', "Mucklet account"), { tagName: 'h3' })),
 											n.component(new Context(
