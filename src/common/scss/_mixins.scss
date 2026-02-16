@@ -19,16 +19,25 @@
 ) {
 	background: $bg;
 	color: $color;
+	& > svg {
+		fill: $color;
+	}
 
 	&:not(:disabled) {
 		&:hover {
 			background: $bg-hover;
 			color: $color-hover;
+			& > svg {
+				fill: $color-hover;
+			}
 		}
 
 		&:active, &:focus {
 			background: $bg-active;
 			color: $color;
+			& > svg {
+				fill: $color;
+			}
 		}
 	}
 }

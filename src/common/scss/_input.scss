@@ -28,6 +28,10 @@ input, textarea {
 	}
 }
 
+.input--incomplete {
+	color: $color4-light;
+}
+
 input[type='text'], textarea {
 	-webkit-appearance: none; // make iOS inputs pretty
 }

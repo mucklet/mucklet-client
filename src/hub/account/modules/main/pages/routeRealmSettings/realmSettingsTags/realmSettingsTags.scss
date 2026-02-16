@@ -1,0 +1,51 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.realmsettingstags {
+	&--tag {
+		position: relative;
+
+		> input {
+			padding-right: 38px;
+		}
+	}
+
+	&--add.iconbtn {
+		@include btn-style(none, $color1-lighter, $color1-lightest, $color4-light, $color4-lighter);
+		position: absolute;
+		right: 3px;
+		top: 3px;
+	}
+
+	&--title {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&--tools {
+		flex: 1 1 0px;
+		margin-left: 12px;
+
+		> * {
+			display: inline-block;
+		}
+	}
+
+	&--counter {
+		flex: 0 0 auto;
+		padding-right: 16px;
+	}
+}
+
+.realmsettingstags-counter {
+	transition: color 0.2s;
+
+	font-size: $font-size-small;
+	&.maxed {
+		color: $color3;
+	}
+	&.exceeded {
+		color: $color5;
+	}
+}

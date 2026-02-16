@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	let links = document.getElementsByClassName('styleguide-screenshot');
 	for (let l of links) {
 		let href = l.getAttribute('href');
-		console.log("CONVERTING HREF: ", href);
 		l.setAttribute('href', 'javascript:;');
 		l.addEventListener('click', (ev) => onClickImg(href, ev));
 	}

@@ -41,7 +41,7 @@ export default class PageList {
 			fetchingOffset: null,
 			count: 0,
 			items: null,
-			total: null,
+			total: typeof opt.total == 'number' ? opt.total : null,
 		}});
 
 		if (opt.page) {
@@ -148,7 +148,7 @@ export default class PageList {
 		(this.opt.fetch
 			? this.opt.fetch(offset, limit + 1)
 			: this.opt.fetchCollection
-				? this.opt.fetchCollection(offset, limit + 1).then(col => ({ items: col, total: undefined }))
+				? Promise.resolve(this.opt.fetchCollection(offset, limit + 1)).then(col => ({ items: col, total: undefined }))
 				: Promise.resolve({ items: [], total: 0 })
 		).then(result => {
 			let { items, total } = result;
