@@ -18,7 +18,6 @@ class RouteRealmsRealmBadge {
 
 	render(el) {
 		let updateFader = new Fader();
-		console.log("MODEL REALM: ", this.model.realmId, this.realm);
 
 		this.elem = new Elem(n => n.elem('badge', 'div', {
 			className: 'routerealms-realmbadge badge dark large btn',
