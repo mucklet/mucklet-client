@@ -54,7 +54,7 @@ class RealmSettingsActionsComponent {
 								events: {
 									click: (c, ev) => {
 										ev.stopPropagation();
-										this.module.confirm.open(() => this._callRealm('restart'), {
+										this.module.confirm.open(() => this._callRealm('serviceRestart'), {
 											title: l10n.l('realmSettingsActions.confirmRestart', "Confirm restart"),
 											body: new Elem(n => n.elem('div', [
 												n.component(new Txt(l10n.l('realmSettingsActions.restartRealmBody', "Do you really wish to restart the realm service?"), { tagName: 'p' })),
@@ -102,7 +102,7 @@ class RealmSettingsActionsComponent {
 	}
 
 	_callRealm(method, params) {
-		this.module.api.call(`control.overseer.realm.${this.realm.id}`, method, params)
+		this.module.api.call(`control.realm.${this.realm.id}.details`, method, params)
 			.then((taskRun) => {
 				let o = callRealmMethods[method];
 				// Only give toaster feedback for update and restart calls.

@@ -328,6 +328,13 @@ class RouteRealmSettingsRealm {
 		}
 	}
 
+	_callRealm(method, params) {
+		let rid = this.module.mode.getModel().mode == 'overseer'
+			? `control.overseer.realm.${this.realm.id}`
+			: `control.realm.${this.realm.id}.details`;
+		return this.module.api.call(rid, method, params);
+	}
+
 	_save(model) {
 		let params = model.getModifications();
 		if (!params) {
@@ -343,7 +350,11 @@ class RouteRealmSettingsRealm {
 		}
 
 		this._setMessage();
-		return this.realm.call('set', params).then(() => {
+		return this._callRealm('set', {
+			...params,
+			// Non-overseers also apply updates to the containers
+			update: this.module.mode.getModel().mode != 'overseer',
+		}).then(() => {
 			model.reset();
 		}).catch(err => {
 			this._setMessage(errString(err));
@@ -359,7 +370,7 @@ class RouteRealmSettingsRealm {
 
 	_setImage(file, points, mode) {
 		return this.module.file.upload(file, 'control.upload.realmImage')
-			.then(result => this.realm.call('setImage', {
+			.then(result => this._callRealm('setImage', {
 				uploadId: result.uploadId,
 				x1: parseInt(points[0]),
 				y1: parseInt(points[1]),
@@ -376,7 +387,7 @@ class RouteRealmSettingsRealm {
 	}
 
 	_deleteImage() {
-		return this.realm.call('deleteImage')
+		return this._callRealm('deleteImage')
 			.then(() => this.module.toaster.open({
 				title: l10n.l('routeRealmSettings.imageDeleted', "Image deleted"),
 				content: new Txt(l10n.l('routeRealmSettings.imageDeletedBody', "Image was successfully deleted.")),
@@ -389,7 +400,7 @@ class RouteRealmSettingsRealm {
 
 	_setIcon(file, points, mode) {
 		return this.module.file.upload(file, 'control.upload.realmIcon')
-			.then(result => this.realm.call('setIcon', {
+			.then(result => this._callRealm('setIcon', {
 				uploadId: result.uploadId,
 				x1: parseInt(points[0]),
 				y1: parseInt(points[1]),
@@ -406,7 +417,7 @@ class RouteRealmSettingsRealm {
 	}
 
 	_deleteIcon() {
-		return this.realm.call('deleteIcon')
+		return this._callRealm('deleteIcon')
 			.then(() => this.module.toaster.open({
 				title: l10n.l('routeRealmSettings.iconDeleted', "Icon deleted"),
 				content: new Txt(l10n.l('routeRealmSettings.iconDeletedBody', "Icon was successfully deleted.")),
