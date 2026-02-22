@@ -242,6 +242,7 @@ class RouteRealmSettingsRealm {
 					{
 						className: 'common--sectionpadding',
 						noToggle: true,
+						popupTip: l10n.l('routeRealmSettings.descriptionInfo', "Short description of the realm. It is shown together with tags to give players a quick idea of the theme.\nMay be formatted with text style formatting."),
 					},
 				)),
 
