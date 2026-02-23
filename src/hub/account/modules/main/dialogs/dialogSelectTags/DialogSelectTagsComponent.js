@@ -44,7 +44,7 @@ class DialogSelectTagsComponent {
 						: l10n.l('dialogSelectTags.close', "Close"))),
 				]),
 				// Counter
-				n.component(this.module.editRealmTags.newCounter(this.model, {
+				n.component(this.module.realmSettingsTags.newCounter(this.model, {
 					className: 'dialogselecttags--counter',
 					count: (m) => Object.keys(m.props).filter(k => k != 'isModified').length, // Filter out isModified property of ModifyModel
 				})),

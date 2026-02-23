@@ -12,7 +12,7 @@ class DialogSelectTags {
 	constructor(app, params) {
 		this.app = app;
 		this.app.require([
-			'editRealmTags',
+			'realmSettingsTags',
 			'toaster',
 			'api',
 		], this._init.bind(this));
@@ -21,7 +21,7 @@ class DialogSelectTags {
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
 
-		this.module.editRealmTags.addTool({
+		this.module.realmSettingsTags.addTool({
 			id: 'dialogSelectTags',
 			sortOrder: 10,
 			componentFactory: (realm) => new Elem(n => n.elem('button', { className: 'iconbtn tiny', events: {
@@ -61,7 +61,7 @@ class DialogSelectTags {
 	}
 
 	dispose() {
-		this.module.editRealmTags.removeTool('dialogSelectTags');
+		this.module.realmSettingsTags.removeTool('dialogSelectTags');
 	}
 }
 

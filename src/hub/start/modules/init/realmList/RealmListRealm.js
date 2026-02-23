@@ -37,11 +37,15 @@ function addCounters(n, realm) {
 	return [
 		n.elem('div', { className: 'realmlist-realm--counter' }, [
 			n.elem('span', { className: 'realmlist-realm--dot highlight' }),
-			n.component(new ModelTxt(realm.population, m => l10n.l('realmList.countAwake', "{count} Awake", { count: formatNumber(m?.awakeChars) }))),
+			n.component(new ModelTxt(realm.population, m => l10n.l('realmList.countAwake', "{count} Awake", { count: formatNumber(m?.awakeChars) }), {
+				duration: 0,
+			})),
 		]),
 		n.elem('div', { className: 'realmlist-realm--counter' }, [
 			n.elem('span', { className: 'realmlist-realm--dot' }),
-			n.component(new ModelTxt(realm.population, m => l10n.l('realmList.countCharacters', "{count} Characters", { count: formatNumber(m?.totalChars) }))),
+			n.component(new ModelTxt(realm.population, m => l10n.l('realmList.countCharacters', "{count} Characters", { count: formatNumber(m?.totalChars) }), {
+				duration: 0,
+			})),
 		]),
 	];
 }
