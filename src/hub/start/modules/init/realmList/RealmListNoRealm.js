@@ -19,7 +19,7 @@ class RealmListComponent {
 
 	render(el) {
 		this.elem = new Elem(n => n.elem('div', { className: 'realmlist-norealm' }, [
-			n.component(new Img('img/search-no-results.svg', { className: 'realmlist-norealm--img' })),
+			n.component(new Img('/img/search-no-results.svg', { className: 'realmlist-norealm--img' })),
 			n.elem('div', { className: 'realmlist-norealm--info' }, [
 				n.component(new Txt(l10n.l('realmList.noRealmsInfo', "No matching realm. Try again with some other genre or theme."), { tagName: 'p' })),
 				n.component(new Html(txtTips[tipCount++ % txtTips.length], { tagName: 'p', className: 'realmlist-norealm--tip' })),
