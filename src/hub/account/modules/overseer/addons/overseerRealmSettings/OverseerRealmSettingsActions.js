@@ -1,11 +1,10 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { ModelComponent, ModelTxt } from 'modapp-resource-component';
+import { ModelComponent } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import { getProjectState } from 'utils/projectStates';
 import ModelCollapser from 'components/ModelCollapser';
-import ProjectState from 'components/ProjectState';
 import errToL10n from 'utils/errToL10n';
 import taskRunDone from 'utils/taskRunDone';
 
@@ -43,9 +42,9 @@ const callRealmMethods = {
 };
 
 /**
- * OverseerRealmSettingsTopSection draws the overseer edit form top section for a realm.
+ * OverseerRealmSettingsActions draws the overseer edit form top section for a realm.
  */
-class RouteRealmSettingsRealms {
+class OverseerRealmSettingsActions {
 	constructor(module, realm) {
 		this.module = module;
 		this.realm = realm;
@@ -54,29 +53,7 @@ class RouteRealmSettingsRealms {
 	render(el) {
 		let updateCollapser = new Collapser();
 
-		this.elem = new Elem(n => n.elem('div', { className: 'overseerrealmsettings-topsection' }, [
-
-			// Realm state
-			n.elem('div', { className: 'common--sectionpadding' }, [
-				n.elem('div', { className: 'flex-row' }, [
-
-					// Realm state
-					n.elem('div', { className: 'flex-1' }, [
-						n.component(new ProjectState(this.realm, {
-							size: 'medium',
-						})),
-					]),
-
-					// Realm API version
-					n.component(new ModelTxt(
-						this.realm,
-						m => m.versionName
-							? l10n.l('overseerRealmSettings.version', "Version {version}", { version: m.versionName })
-							: '',
-						{ className: 'overseerrealmsettings-topsection--version flex-auto' },
-					)),
-				]),
-			]),
+		this.elem = new Elem(n => n.elem('div', { className: 'overseerrealmsettings-actions common--sectionpadding' }, [
 
 			// Update required
 			n.component(new ModelComponent(
@@ -155,6 +132,14 @@ class RouteRealmSettingsRealms {
 							},
 						)),
 					]),
+
+					// Upgrade button
+					n.elem('div', { className: 'flex-auto' }, [
+						// Realm upgrade
+						n.component(this.module.realmUpgrade.newButton(this.realm, {
+							size: 'small',
+						})),
+					]),
 				])),
 			}])),
 
@@ -202,11 +187,9 @@ class RouteRealmSettingsRealms {
 			n.component(new ModelCollapser(this.realm, [{
 				condition: m => m.containers,
 				factory: m => this.module.nodeContainers.newNodeContainers(m.containers, {
-					className: 'overseerrealmsettings-topsection--containers',
+					className: 'overseerrealmsettings-actions--containers',
 				}),
 			}])),
-
-			n.elem('div', { className: 'common--hr' }),
 
 		]));
 
@@ -261,10 +244,10 @@ class RouteRealmSettingsRealms {
 			this.realm.composition.configHash != this.realm.configHash;
 
 		collapser.setComponent(show
-			? collapser.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"), { className: 'overseerrealmsettings-topsection--updaterequired' })
+			? collapser.getComponent() || new Txt(l10n.l('routeRealms.updateRequired', "Update required"), { className: 'overseerrealmsettings-actions--updaterequired' })
 			: null,
 		);
 	}
 }
 
-export default RouteRealmSettingsRealms;
+export default OverseerRealmSettingsActions;

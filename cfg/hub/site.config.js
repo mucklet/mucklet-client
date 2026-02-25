@@ -7,6 +7,7 @@ module.exports = {
 
 	API_HOST_PATH: 'wss://api.mucklet.com/',
 	API_WEBRESOURCE_PATH: 'https://api.mucklet.com/api/',
+	API_FILE_PATH: 'https://file.mucklet.com/',
 	API_IDENTITY_PATH: 'https://auth.mucklet.com/',
 	API_CROSS_ORIGIN: true,
 
@@ -15,6 +16,8 @@ module.exports = {
 	AUTH_AUTHENTICATE_URL: 'https://auth.mucklet.com/authenticate?noredirect',
 	AUTH_LOGIN_RID: 'identity',
 	AUTH_AUTHENTICATE_RID: 'identity',
+
+	REALM_LOGIN_PATH: 'auth/oauth2/login',
 
 	HUB_PATH: 'https://mucklet.com/',
 };

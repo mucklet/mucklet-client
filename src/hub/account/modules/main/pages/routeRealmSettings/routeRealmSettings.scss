@@ -16,4 +16,50 @@
 			display: inline-block;
 		}
 	}
+
+	&--image {
+		display: block;
+		border-radius: 10px;
+		width: 480px;
+		max-width: 100%;
+		background: $color1-lighter;
+
+		&:not(.placeholder) {
+			cursor: pointer;
+		}
+	}
+
+	&--icon {
+		display: block;
+		border-radius: 10px;
+		width: 140px;
+		max-width: 100%;
+		background: $color1-lighter;
+
+		&:not(.placeholder) {
+			cursor: pointer;
+		}
+	}
+
+	&--cropimage.dialogcropimage {
+		width: 516px;
+	}
+
+	&--hidden {
+		flex: 1;
+		max-width: 100px;
+	}
+
+	&--section-hr.common--hr {
+		padding-bottom: 8px;
+	}
+
+	&--state {
+		line-height: 20px;
+	}
+
+	&--version {
+		font-size: $font-size-small;
+		color: $color4;
+	}
 }

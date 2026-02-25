@@ -194,6 +194,16 @@
 	}
 }
 
+.iconbtn.svg {
+	display: flex;
+	align-items: center;
+	> svg {
+		width: 40px;
+		display: block;
+		margin: auto;
+	}
+}
+
 .iconbtn.medium {
 	font-size: 22px;
 	border-radius: 4px;
@@ -201,6 +211,9 @@
 	height: 32px;
 	> i {
 		line-height: 32px;
+	}
+	&.svg > svg {
+		width: 22px;
 	}
 	&.order {
 		flex: 1 1 0;

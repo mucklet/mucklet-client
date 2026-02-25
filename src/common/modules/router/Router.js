@@ -243,7 +243,7 @@ class Router {
 
 	/**
 	 * Sets a route by id and optional params.
-	 * @param {string} routeId Id of route
+	 * @param {string | null} routeId Id of route
 	 * @param {object=} params Optional params object
 	 * @param {boolean=} pushHistoryState Optional flag if history params should be pushed. Default is true.
 	 * @param {boolean=} force Force the route even if onBeforeUnload says otherwise, and set even if current.

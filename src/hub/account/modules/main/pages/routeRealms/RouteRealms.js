@@ -12,7 +12,6 @@ const pathDef = [
 	[ 'realm', '$realmId' ],
 ];
 
-
 /**
  * RouteRealms adds the realms route.
  */
@@ -26,9 +25,8 @@ class RouteRealms {
 			'router',
 			'routeError',
 			'auth',
-			'confirm',
-			'toaster',
 			'mode',
+			'realmUpgrade',
 		], this._init.bind(this));
 	}
 
@@ -37,7 +35,7 @@ class RouteRealms {
 
 		this.model = new Model({ data: {
 			realms: null,
-			realm: null,
+			realmId: null,
 			user: null,
 			error: null,
 		}, eventBus: this.app.eventBus });
@@ -111,7 +109,7 @@ class RouteRealms {
 
 	async reloadState() {
 		return this._setState({
-			realmId: this.model.realm?.id,
+			realmId: this.model.realmId,
 			userId: this.model.user?.id,
 		});
 	}
@@ -128,8 +126,7 @@ class RouteRealms {
 					: this.module.api.get(`control.user.${user.id}.realms`)
 			)
 				.then(realms => {
-					let realm = (params?.realmId && realms.toArray().find(r => r.id == params.realmId)) || null;
-					this._setModel({ realms, realm, user: params.userId ? user : null });
+					this._setModel({ realms, realmId: params.realmId, user: params.userId ? user : null });
 				}),
 			)
 			.catch(error => {
@@ -141,8 +138,8 @@ class RouteRealms {
 	_setModel(props) {
 		props = props || {};
 		return this.model.set({
-			realm: relistenResource(this.model.realm, props.realm),
 			realms: relistenResource(this.model.realms, props.realms),
+			realmId: props.realmId || null,
 			user: relistenResource(this.model.user, props.user),
 			error: props.error || null,
 		});

@@ -1,0 +1,60 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.dialogselecttags {
+	padding: 16px;
+	margin: 0;
+
+	&--footer {
+		position: relative;
+	}
+
+	&--counter {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+	}
+}
+
+.dialogselecttags-section {
+	&--title {
+		font-size: $font-size-large;
+	}
+}
+
+.dialogselecttags-tag {
+	&--label {
+		cursor: pointer;
+	}
+
+	> * {
+		line-height: 16px;
+	}
+
+	&--key {
+		font-size: $font-size-small;
+	}
+
+	&--type- {
+		&genre {
+			color: $color6;
+			&:hover {
+				color: $color6-hover;
+			}
+		}
+
+		&theme {
+			color: $color4;
+			&:hover {
+				color: $color4-lighter;
+			}
+		}
+
+		&warn {
+			color: $color5;
+			&:hover {
+				color: $color5-light;
+			}
+		}
+	}
+}

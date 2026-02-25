@@ -49,9 +49,9 @@ class ClientBoot {
 		this._tryAuthenticate();
 	}
 
-	_tryAuthenticate() {
+	_tryAuthenticate(ignoreError) {
 		let q = uri.getQuery();
-		if (q.error) {
+		if (q.error && !ignoreError) {
 			let err;
 			try {
 				err = JSON.parse(atob(q.error));
@@ -103,16 +103,16 @@ class ClientBoot {
 			buttonTxt: txtTryAgain,
 			onClose: () => {
 				this.module.screen.setComponent(null);
-				this._tryAuthenticate();
+				this._tryAuthenticate(true);
 			},
 		}));
 	}
 
 	_showOffline() {
 		let cb = () => {
-			window.addEventListener('online', cb);
+			window.removeEventListener('online', cb);
 			this.module.screen.setComponent(null);
-			this._tryAuthenticate();
+			this._tryAuthenticate(true);
 		};
 		window.addEventListener('online', cb);
 		this.module.screen.setComponent(new ConfirmScreenDialog({

@@ -137,9 +137,7 @@ $hublayout-sidepanel-width: 240px;
 	}
 
 	&--modes {
-		padding-top:10px;
-		position:relative;
-		top: 10px;
+		padding-bottom: 10px;
 		justify-content: center;
 	}
 
@@ -259,6 +257,14 @@ $hublayout-sidepanel-width: 240px;
 		&--headertools {
 			top: 16px;
 			right: 16px;
+		}
+
+		&--modes {
+			position: relative;
+			top: 60px;
+			left: 20px;
+			padding-bottom: 28px;
+			justify-content: left;
 		}
 
 	}
