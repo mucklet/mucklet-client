@@ -39,6 +39,7 @@ class Login {
 			'api',
 			'screen',
 			'policies',
+			'promo',
 		], this._init.bind(this));
 	}
 
@@ -134,7 +135,7 @@ class Login {
 			formData.append('email', email);
 		}
 		// Include promo code if available
-		let p = URLSearchParams ? new URLSearchParams(window.location.search).get('p') : '';
+		let p = this.module.promo.getPromo();
 		if (p) {
 			formData.append('p', p);
 		}
@@ -260,8 +261,7 @@ class Login {
 		}
 	}
 
-	dispose() {
-	}
+	dispose() {}
 }
 
 export default Login;
