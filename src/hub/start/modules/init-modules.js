@@ -1,9 +1,11 @@
 import Api from 'modules/api/Api';
 import Auth from 'modules/auth/Auth';
+import Promo from 'modules/promo/Promo';
 
 const modules = {
 	api: Api,
 	auth: Auth,
+	promo: Promo,
 };
 
 const req = require.context("./init/", true, /^\..*\/([^/]*)\/\1.js$/i);

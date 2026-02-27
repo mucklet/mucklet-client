@@ -1,7 +1,9 @@
 import Screen from 'modules/screen/Screen';
+import Promo from 'modules/promo/Promo';
 
 const modules = {
 	screen: Screen,
+	promo: Promo,
 };
 
 const req = require.context("./init/", true, /^\..*\/([^/]*)\/\1.js$/i);
