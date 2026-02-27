@@ -148,18 +148,22 @@ class RealmListComponent {
 						n.elem('div', { className: 'realmlist-realm--counters' }, addCounters(n, this.realm)),
 
 						// Enter button
-						n.elem('button', {
-							className: 'realmlist-realm--signin btn primary',
-							events: {
-								click: (c, ev) => {
-									this._onEnter();
-									ev.stopPropagation();
+						n.component(new ModelComponent(
+							this.realm,
+							new Elem(n => n.elem('a', {
+								className: 'realmlist-realm--signin btn primary icon-center',
+								events: {
+									click: (c, ev) => {
+										this._onEnter();
+										ev.stopPropagation();
+									},
 								},
-							},
-						}, [
-							n.component(new Txt('Enter')),
-							n.elem('i', { className: 'fa fa-sign-in' }),
-						]),
+							}, [
+								n.component(new Txt('Enter')),
+								n.elem('i', { className: 'fa fa-sign-in' }),
+							])),
+							(m, c) => c.setAttribute('href', this.realm.clientUrl.replace(/\/$/g, '') + '/' + realmLoginPath.replace(/^\//g, '')),
+						)),
 					]),
 				]),
 
