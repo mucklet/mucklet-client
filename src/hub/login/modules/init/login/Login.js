@@ -49,8 +49,6 @@ class Login {
 		this.loginResolve = null;
 		this.state = {};
 
-		console.log("PROMO: ", this.module.promo.getPromo());
-
 		this.authenticate();
 	}
 
