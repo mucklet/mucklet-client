@@ -56,8 +56,13 @@ class PageRoomExitChars {
 			idAttribute: null,
 			eventBus: this.module.self.app.eventBus,
 		});
+		// Filter out highly idle characters (away/idle level 3)
+		this.filteredChars = new CollectionWrapper(this.chars, {
+			filter: ch => ch.idle !== 3,
+			eventBus: this.module.self.app.eventBus,
+		});
 		this.component = new CollectionComponent(
-			this.chars,
+			this.filteredChars,
 			new CollectionList(
 				this.rows,
 				row => new CollectionList(
@@ -151,7 +156,7 @@ class PageRoomExitChars {
 	_updateRows() {
 		if (!this.rows) return;
 
-		let rowCount = Math.ceil(this.chars.length / this.perRow);
+		let rowCount = Math.ceil(this.filteredChars.length / this.perRow);
 		let currentCount = this.rows.length;
 
 		if (rowCount == currentCount) {
@@ -165,7 +170,7 @@ class PageRoomExitChars {
 			 }
 		} else {
 			for (let i = currentCount; i < rowCount; i++) {
-				let row = new CollectionWrapper(this.chars, {
+				let row = new CollectionWrapper(this.filteredChars, {
 					begin: i * this.perRow,
 					end: (i + 1) * this.perRow,
 					eventBus: this.module.self.app.eventBus,
@@ -183,6 +188,10 @@ class PageRoomExitChars {
 				row.dispose();
 			}
 			this.rows = null;
+			if (this.filteredChars) {
+				this.filteredChars.dispose();
+				this.filteredChars = null;
+			}
 		}
 	}
 }

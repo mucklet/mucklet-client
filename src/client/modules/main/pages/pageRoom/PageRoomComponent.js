@@ -7,12 +7,11 @@ import Img from 'components/Img';
 import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
 import NameSection from 'components/NameSection';
-// import FormatTxt from 'components/FormatTxt';
+import LabelToggleBox from 'components/LabelToggleBox';
 import ModelCollapser from 'components/ModelCollapser';
 import ImgModal from 'classes/ImgModal';
-import PageRoomChar from './PageRoomChar';
+import PageRoomChar from './PageRoomChar'; 
 import PageRoomExits from './PageRoomExits';
-// import { notSet } from './pageRoomTxt';
 
 /**
  * PageRoomComponent renders a room info page.
@@ -27,6 +26,14 @@ class PageRoomComponent {
 		this.roomState = this.state['room_' + room.id] || {};
 		this.state['room_' + room.id] = this.roomState;
 		this.roomState.description = this.roomState.description || {};
+		// Default sleepers section to closed
+		if (this.state.sleepersOpen === undefined) {
+			this.state.sleepersOpen = false;
+		}
+		// Default split sleepers to false
+		if (this.state.splitSleepers === undefined) {
+			this.state.splitSleepers = false;
+		}
 	}
 
 	render(el) {
@@ -35,6 +42,12 @@ class PageRoomComponent {
 				click: () => new ImgModal(this.room.image.href).open(),
 			}})),
 		]));
+		
+		// Store references to Fader components for refreshing
+		this.awakeCharsFader = new Fader();
+		this.sleepersCharsFader = new Fader();
+		this.sleepersPanelCollapser = new Collapser();
+		
 		this.elem = new ModelComponent(
 			this.room,
 			new Context(
@@ -151,6 +164,17 @@ class PageRoomComponent {
 							onToggle: (c, v) => this.state.exitsOpen = v,
 						},
 					)),
+					// Split sleepers togglebox
+					n.component('showSleepers', new LabelToggleBox(l10n.l('pageRoom.showSleepers', "Hide sleepers (split)"), this.state.splitSleepers, {
+						className: 'common--formmargin ',
+						onChange: v => {
+							this.state.splitSleepers = v;
+							this._refreshCharSections();
+						},
+						popupTip: l10n.l('pageRoom.showSleepersInfo', "Filter the list to filter out asleep and highly idle characters (away/idle level 3)."),
+						popupTipClassName: 'popuptip--width-s popuptip--position-left-bottom',
+					})),
+					//Awake people
 					n.component(new PanelSection(
 						new Elem(n => n.elem('div', { className: 'pageroom--inroomheader' }, [
 							n.component(new Txt(l10n.l('pageRoom.inRoom', "In room"), { tagName: 'h3' })),
@@ -172,21 +196,34 @@ class PageRoomComponent {
 						])),
 						new ModelComponent(
 							this.room,
-							new Fader(),
+							this.awakeCharsFader,
 							(m, c, changed) => {
 								if (changed && !changed.hasOwnProperty('chars')) return;
-								c.setComponent(m.chars
-									? new CollectionList(m.chars, m => new PageRoomChar(this.module, this.ctrl, m))
-									: new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }),
-								);
+								if (!m.chars) {
+									c.setComponent(new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }));
+									return;
+								}
+								// Filter to show only awake and active characters (exclude asleep and away/idle level 3)
+								c.setComponent(new Context(
+									() => new CollectionWrapper(m.chars, {
+										filter: ch => this.state.splitSleepers ? ch.state !== 'asleep' && ch.idle !== 3 : true,
+									}),
+									awakeChars => awakeChars.dispose(),
+									awakeChars => awakeChars.length
+										? new CollectionList(awakeChars, m => new PageRoomChar(this.module, this.ctrl, m))
+										: new Txt(l10n.l('pageRoom.noAwake', "No one awake in room."), { className: 'common--nolistplaceholder' }),
+								));
 							},
 						),
+					
 						{
 							className: 'pageroom--chars common--sectionpadding',
 							open: this.state.inRoomOpen,
 							onToggle: (c, v) => this.state.inRoomOpen = v,
 						},
 					)),
+					//Asleep people - conditionally render entire section
+					n.component(this.sleepersPanelCollapser),
 				])),
 			),
 			(m, c, change) => {
@@ -197,7 +234,12 @@ class PageRoomComponent {
 			},
 		);
 
-		return this.elem.render(el);
+		let result = this.elem.render(el);
+		
+		// Initialize the character sections based on current state
+		this._refreshCharSections();
+		
+		return result;
 	}
 
 	unrender() {
@@ -213,6 +255,67 @@ class PageRoomComponent {
 
 	_canDelete() {
 		return this.module.self.canDelete(this.ctrl, this.room);
+	}
+
+	_refreshCharSections() {
+		// Manually update the character lists by recreating the filtered collections
+		let chars = this.room.chars;
+		
+		if (!chars) {
+			this.awakeCharsFader.setComponent(new Txt(l10n.l('pageRoom.isDark', "The room is too dark."), { className: 'common--nolistplaceholder' }));
+			this.sleepersPanelCollapser.setComponent(null);
+			return;
+		}
+		
+		// Update awake characters section
+		this.awakeCharsFader.setComponent(new Context(
+			() => new CollectionWrapper(chars, {
+				filter: ch => this.state.splitSleepers ? ch.state !== 'asleep' && ch.idle !== 3 : true,
+			}),
+			awakeChars => awakeChars.dispose(),
+			awakeChars => awakeChars.length
+				? new CollectionList(awakeChars, m => new PageRoomChar(this.module, this.ctrl, m))
+				: new Txt(l10n.l('pageRoom.noAwake', "No one awake in room."), { className: 'common--nolistplaceholder' }),
+		));
+		
+		// Show/hide entire sleepers panel section
+		if (!this.state.splitSleepers) {
+			this.sleepersPanelCollapser.setComponent(null);
+			return;
+		}
+		
+		// Create the entire sleepers panel
+		this.sleepersPanelCollapser.setComponent(new PanelSection(
+			new Elem(n => n.elem('div', { className: 'pageroom--inroomheader' }, [
+				n.component(new Txt(l10n.l('pageRoom.sleepers', "Sleepers"), { tagName: 'h3' })),
+			])),
+			new ModelComponent(
+				this.room,
+				this.sleepersCharsFader,
+				(m, c, changed) => {
+					if (changed && !changed.hasOwnProperty('chars')) return;
+					if (!m.chars) {
+						c.setComponent(null);
+						return;
+					}
+					// Filter to show asleep characters and highly idle characters (away/idle level 3)
+					c.setComponent(new Context(
+						() => new CollectionWrapper(m.chars, {
+							filter: ch => ch.state === 'asleep' || ch.idle === 3,
+						}),
+						asleepChars => asleepChars.dispose(),
+						asleepChars => asleepChars.length
+							? new CollectionList(asleepChars, m => new PageRoomChar(this.module, this.ctrl, m))
+							: new Txt(l10n.l('pageRoom.noSleepers', "No sleepers in room."), { className: 'common--nolistplaceholder' }),
+					));
+				},
+			),
+			{
+				className: 'pageroom--chars common--sectionpadding',
+				open: this.state.sleepersOpen,
+				onToggle: (c, v) => this.state.sleepersOpen = v,
+			},
+		));
 	}
 }
 
