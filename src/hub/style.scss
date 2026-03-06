@@ -477,7 +477,9 @@ body {
 			}
 		}
 		&--topbartools {
-			display: none;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
 		}
 
 		&--subheading {
