@@ -89,3 +89,18 @@
 		}
 	}
 }
+
+@media screen and (max-width: 720px) {
+	.signin {
+		&--joinbtn, &--loginbtn {
+			min-width: 0;
+			padding: 4px 12px;
+			font-size: $font-size-small;
+			height: 36px;
+		}
+
+		&--joinbtn {
+			display: none;
+		}
+	}
+}
