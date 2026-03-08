@@ -1,14 +1,6 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-.simplebar-content-wrapper {
-	overflow: auto;
-}
-
-.simplebar-scrollbar::before {
-	background-color: $color4;
-}
-
 .mobilepanel {
 	position: absolute;
 	transform: translateX(0%);
@@ -19,6 +11,14 @@
 	z-index: 4;
 
 	@include transition(transform 200ms ease-out, background-color 200ms linear);
+
+	.simplebar-content-wrapper {
+		overflow: auto;
+	}
+
+	.simplebar-scrollbar::before {
+		background-color: $color4;
+	}
 
 	&--header {
 		display: flex;
