@@ -7,6 +7,7 @@ import l10n from 'modapp-l10n';
 import RealmTagsList from 'components/RealmTagsList';
 import { redirect } from 'utils/reload';
 import FormatTxt from 'components/FormatTxt';
+import SimpleBar from 'components/SimpleBar';
 
 const realmLoginPath = REALM_LOGIN_PATH;
 
@@ -135,10 +136,16 @@ class RealmListComponent {
 
 					// Description
 					n.elem('div', { className: 'realmlist-realm--desktop realmlist-realm--desc' }, [
-						n.component(new ModelComponent(
-							this.realm,
-							new FormatTxt("", { className: 'common--desc-size', mode: 'default' }),
-							(m, c) => c.setFormatText(m.desc),
+						n.component(new SimpleBar(
+							new ModelComponent(
+								this.realm,
+								new FormatTxt("", { className: 'common--desc-size', mode: 'default' }),
+								(m, c) => c.setFormatText(m.desc),
+							),
+							{
+								autoHide: false,
+								className: 'realmlist-realm--descsb',
+							},
 						)),
 					]),
 
