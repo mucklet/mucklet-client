@@ -235,6 +235,13 @@
 		padding-top: 4px;
 	}
 
+	&--card {
+		position: relative;
+		background: $log-card;
+		padding: 5px 11px;
+		border-radius: 8px;
+	}
+
 	.simplebar-scrollbar::before {
 		background-color: $color1-lightest;
 	}
