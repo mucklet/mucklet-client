@@ -62,4 +62,17 @@
 		font-size: $font-size-small;
 		color: $color4;
 	}
+
+	&--medialinks {
+		width: 100%;
+		td {
+			padding: 2px 0 8px 0;
+		}
+		td:first-child {
+			width: 140px;
+		}
+		td:not(:last-child) {
+			padding-right: 12px;
+		}
+	}
 }

@@ -154,7 +154,9 @@
 	&--counters {
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap;
 		column-gap: 24px;
+		row-gap: 12px;
 		font-size: $font-size-small;
 	}
 
@@ -413,7 +415,9 @@
 			font-size: $font-size-tiny;
 			display: flex;
 			flex-direction: row;
+			flex-wrap: wrap;
 			column-gap: 18px;
+			row-gap: 2px;
 		}
 
 		&--desc {
