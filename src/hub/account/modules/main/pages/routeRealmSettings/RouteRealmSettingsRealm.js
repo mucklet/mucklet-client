@@ -1,6 +1,7 @@
 import { Elem, Txt, Context, Input, Textarea } from 'modapp-base-component';
 import { ModifyModel, CollectionWrapper } from 'modapp-resource';
 import { ModelComponent, CollectionList, ModelTxt } from 'modapp-resource-component';
+import { equal as objEqual } from 'modapp-utils/obj';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
@@ -281,6 +282,40 @@ class RouteRealmSettingsRealm {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('routeRealmSettings.searchVisibilityInfo', "Hidden realms will not showing up among the results when players searches for realms."),
+					},
+				)),
+
+				// Social links
+				n.component(new PanelSection(
+					l10n.l('routeRealmSettings.socialAccounts', "Social accounts"),
+					new Elem(n => n.elem('table', { className: 'routerealmsettings-realm--medialinks' }, [
+						{ id: 'homepage', name: l10n.l('routeRealmSettings.homepage', "Homepage"), icon: 'home' },
+						{ id: 'discord', name: l10n.l('routeRealmSettings.discord', "Discord"), icon: 'discord' },
+						{ id: 'reddit', name: l10n.l('routeRealmSettings.reddit', "Reddit"), icon: 'reddit' },
+						{ id: 'facebook', name: l10n.l('routeRealmSettings.facebook', "Facebook"), icon: 'facebook' },
+					].map(o => n.elem('tr', [
+						n.elem('td', [
+							n.component(new Txt(o.name)),
+						]),
+						n.elem('td', [
+							n.component(new ModelComponent(
+								realm,
+								new Input("", {
+									events: {
+										input: c => {
+											let links = { ...realm.links, [o.id]: c.getValue() };
+											realm.set({ links: objEqual(links, this.realm.links) ? this.realm.links : links });
+										},
+									},
+									attributes: { name: 'routerealmsettings-name', spellcheck: 'false' },
+								}),
+								(m, c) => c.setValue(m.links[o.id] || ''),
+							)),
+						]),
+					])))),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
 					},
 				)),
 
