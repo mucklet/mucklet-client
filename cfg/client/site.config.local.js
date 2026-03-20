@@ -18,5 +18,5 @@ module.exports = {
 	AUTH_LOGIN_RID: 'auth',
 	AUTH_AUTHENTICATE_RID: 'auth',
 
-	HUB_PATH: 'https://mucklet.com/',
+	HUB_PATH: 'http://localhost:6460/',
 };

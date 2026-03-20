@@ -3,7 +3,6 @@ import Collapser from './Collapser';
 import Fader from './Fader';
 import FAIcon from './FAIcon';
 import PopupTip from './PopupTip';
-import './panelSection.scss';
 import isComponent from 'utils/isComponent';
 
 import './panelSection.scss';

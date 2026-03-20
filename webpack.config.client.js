@@ -110,6 +110,7 @@ module.exports = function(ctx) {
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
 				chunkFilename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
+				ignoreOrder: true,
 			}),
 			new Webpack.DefinePlugin(Object.assign(ctx.jsonEncodeObject(ctx.siteConfig), {
 				APP_VERSION: JSON.stringify(ctx.pkg.version),

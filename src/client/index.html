@@ -14,7 +14,12 @@
 	<script type="text/javascript">
 window.appProps = {<% if (APP_ISTEMPLATE) { %>
 {{- with .Realm }}
-	realmName: "{{ .Name | js }}",
+	realm: {
+		id: "{{ .ID | js }}",
+		name: "{{ .Name | js }}",
+		image: "{{ .Image | js }}",
+		icon: "{{ .Icon | js }}",
+	},
 	apiHostPath: "{{ .APIWSPath | js }}",
 	apiWebresourcePath: "{{ .APIResourcePath | js }}",
 	apiFilePath: "{{ .APIFilePath | js }}",
@@ -22,7 +27,9 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 {{- with .Error }}
 	error: {{ . }},
 {{- end }}<% } else { %>
-	realmName: <%= JSON.stringify(APP_TITLE) %>,
+	realm: {
+		name: <%= JSON.stringify(APP_TITLE) %>,
+	},
 	apiHostPath: <%= JSON.stringify(API_HOST_PATH) %>,
 	apiWebresourcePath: <%= JSON.stringify(API_WEBRESOURCE_PATH) %>,
 	apiFilePath: <%= JSON.stringify(API_FILE_PATH) %>,<% } %>
