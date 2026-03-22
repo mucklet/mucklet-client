@@ -6,6 +6,7 @@
 - Keep changes small and localized.
 - Always ask before adding a third party dependency.
 - Avoid new third party dependencies if possible.
+- When working with components, always read `docs/understanding-components.md` into context before changing lifecycle behavior.
 
 ## Terminology
 - component - an object that renders a graphical component onto the DOM. For more info, see `docs/understanding-components.md`

@@ -5,7 +5,6 @@ import Img from 'components/Img';
 // import RealmTagsList from 'components/RealmTagsList';
 // import SimpleBar from 'components/SimpleBar';
 // import FormatTxt from 'components/FormatTxt';
-import renderingModes from 'utils/renderingModes';
 
 // function hasValidTag(tags) {
 // 	let props = tags?.props || tags;
@@ -58,11 +57,6 @@ class GreetingScreenRealm {
 						(m, c, changed) => {
 							c.setSrc(m?.image ? m.image.href + '?thumb=mw' : '/img/realm-placeholder.svg');
 							c[m?.image ? 'removeClass' : 'addClass']('placeholder');
-							for (let mode of renderingModes) {
-								if (mode.className) {
-									c[m?.image?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
-								}
-							}
 						},
 					)),
 
@@ -76,11 +70,6 @@ class GreetingScreenRealm {
 							(m, c, changed) => {
 								c.setSrc(m?.icon ? m.icon.href + '?thumb=m' : hubFileUrl + '/img/realmicon-placeholder.svg');
 								c[m?.icon ? 'removeClass' : 'addClass']('placeholder');
-								for (let mode of renderingModes) {
-									if (mode.className) {
-										c[m?.icon?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
-									}
-								}
 							},
 						)),
 
