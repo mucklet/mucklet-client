@@ -48,7 +48,7 @@ function loadImage(src, opt) {
 	}
 
 	// If it is a data url, do not fetch.
-	if (src.match(/^(?:blob:|data:)/i)) {
+	if (!opt?.renderingHeader || src.match(/^(?:blob:|data:)/i)) {
 		return preloadImage(src).then(
 			() => new LoadedImg(src, src),
 			() => errorResult(src, opt),
@@ -56,8 +56,10 @@ function loadImage(src, opt) {
 	}
 
 	return fetch(src, {
-		mode: opt?.crossOrigin === false ? 'same-origin' : 'cors',
-		credentials: opt?.crossOrigin === false ? 'same-origin' : 'include',
+		mode: 'cors',
+		credentials: opt?.crossOrigin != 'anonymous'
+			? 'include'
+			: 'same-origin',
 	})
 		.then(response => {
 			if (!response.ok) {
@@ -94,7 +96,8 @@ class Img extends RootElem {
 	 * @param {object} [opt.errorPlaceholder] Placeholder image to use on error.
 	 * @param {string} [opt.placeholderClassName] ClassName to add when using placeholder.
 	 * @param {string} [opt.errorClassName] ClassName to add on error.
-	 * @param {boolean} [opt.crossOrigin] Cross origin fetch. Defaults to true.
+	 * @param {boolean} [opt.renderingHeader] Using header Image-Rendering to set rendering mode. Defaults to false.
+	 * @param {"anonymous"|"use-credentials"} [opt.crossOrigin] Cross origin mode. Defaults to "use-credentials" when using renderingHeader.
 	 */
 	constructor(src, opt) {
 		opt = Object.assign({}, opt);
@@ -274,4 +277,3 @@ class Img extends RootElem {
 }
 
 export default Img;
-

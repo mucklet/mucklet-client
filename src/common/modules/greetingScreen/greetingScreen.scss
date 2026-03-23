@@ -14,9 +14,8 @@
 		max-width: 776px;
 		padding: 68px 0;
 		position: relative;
-		background-color: $color1-light;
-		box-shadow: 0px 3px 6px #00000029;
-		border-radius: 16px;
+		background-color: mix($color2, $color1, 2%);
+		// box-shadow: 0px 3px 6px #00000029;
 	}
 
 	&--realm {
@@ -33,10 +32,13 @@
 
 	&--img {
 		border-radius: 10px;
-		background: pink;
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		display: block;
+
+		&.placeholder {
+			background: $color1-light;
+		}
 	}
 
 	&--tags {
@@ -54,6 +56,10 @@
 		width: 48px;
 		height: 48px;
 		border-radius: 10px;
+
+		&.placeholder {
+			background: $color1-light;
+		}
 	}
 
 	&--title-cont {

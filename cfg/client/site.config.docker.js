@@ -6,6 +6,8 @@ module.exports = {
 	APP_TITLE: "Docker Wolfery",
 	APP_DESCRIPTION: "A textual world of role play. Create a character, wake them up, and join in.",
 	APP_ROOT: '/',
+	APP_IMAGE: '',
+	APP_ICON: '',
 
 	API_HOST_PATH: 'ws://api.mucklet.localhost/',
 	API_WEBRESOURCE_PATH: 'http://api.mucklet.localhost/api/',

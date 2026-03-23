@@ -1,5 +1,5 @@
 import { Elem } from 'modapp-base-component';
-import { ModelComponent, ModelTxt } from 'modapp-resource-component';
+import { ModelTxt } from 'modapp-resource-component';
 // import Collapser from 'components/Collapser';
 import Img from 'components/Img';
 // import RealmTagsList from 'components/RealmTagsList';
@@ -24,54 +24,30 @@ class GreetingScreenRealm {
 		this.module = module;
 		this.realm = info;
 		this.tags = tags;
+		let realm = this.module.self.app.props.realm;
+		this.imageUrl = realm?.image;
+		this.iconUrl = realm?.icon;
 	}
 
 	render(el) {
-		// this.elem = <Elem class='greetingscreen'>
-		// 	<div class='greetingscreen--card'>
-		// 		<div nodeId="tjo" class='greetingscreen--realm'>
-		// 			<ModelComponent
-		// 				model={this.realm}
-		// 				update={(m, c, changed) => {
-		// 					c.setSrc(m?.image ? m.image.href + '?thumb=mw' : '/img/realm-placeholder.svg');
-		// 					c[m?.image ? 'removeClass' : 'addClass']('placeholder');
-		// 					for (let mode of renderingModes) {
-		// 						if (mode.className) {
-		// 							c[m?.image?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
-		// 						}
-		// 					}
-		// 				}}
-		// 			><Img class="greetingscreen--img"/></ModelComponent>
-		// 		</div>
-		// 	</div>
-		// </Elem>;
-
 		this.elem = new Elem(n => n.elem('div', { className: 'greetingscreen' }, [
 			n.elem('div', { className: 'greetingscreen--card' }, [
 				n.elem('div', { className: 'greetingscreen--realm' }, [
 
 					// Image
-					n.component(new ModelComponent(
-						this.realm,
-						new Img('', { className: 'greetingscreen--img' }),
-						(m, c, changed) => {
-							c.setSrc(m?.image ? m.image.href + '?thumb=mw' : '/img/realm-placeholder.svg');
-							c[m?.image ? 'removeClass' : 'addClass']('placeholder');
-						},
-					)),
+					n.component(new Img(this.imageUrl ? this.imageUrl : '/img/realm-placeholder.svg', {
+						className: 'greetingscreen--img' + (this.imageUrl ? '' : ' placeholder'),
+						renderingHeader: true,
+					})),
 
 					// n.elem('img', { attributes: { src: '/img/realm1.png' }, className: 'greetingscreen--img' }),
 					n.elem('div', { className: 'greetingscreen--header' }, [
 
 						// Icon
-						n.component(new ModelComponent(
-							this.realm,
-							new Img('', { className: 'greetingscreen--icon' }),
-							(m, c, changed) => {
-								c.setSrc(m?.icon ? m.icon.href + '?thumb=m' : hubFileUrl + '/img/realmicon-placeholder.svg');
-								c[m?.icon ? 'removeClass' : 'addClass']('placeholder');
-							},
-						)),
+						n.component(new Img(this.iconUrl ? this.iconUrl : '/img/realmicon-placeholder.svg', {
+							className: 'greetingscreen--icon' + (this.iconUrl ? '' : ' placeholder'),
+							renderingHeader: true,
+						})),
 
 						n.elem('div', { className: 'greetingscreen--title-cont' }, [
 

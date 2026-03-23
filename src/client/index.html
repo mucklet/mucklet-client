@@ -29,6 +29,8 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 {{- end }}<% } else { %>
 	realm: {
 		name: <%= JSON.stringify(APP_TITLE) %>,
+		image: <%= JSON.stringify(APP_IMAGE) %>,
+		icon: <%= JSON.stringify(APP_ICON) %>,
 	},
 	apiHostPath: <%= JSON.stringify(API_HOST_PATH) %>,
 	apiWebresourcePath: <%= JSON.stringify(API_WEBRESOURCE_PATH) %>,

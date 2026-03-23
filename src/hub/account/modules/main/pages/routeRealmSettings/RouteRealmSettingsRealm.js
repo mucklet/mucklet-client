@@ -11,6 +11,7 @@ import errString from 'utils/errString';
 import Img from 'components/Img';
 import FileButton from 'components/FileButton';
 import ImgModal from 'classes/ImgModal';
+import renderingModes from 'utils/renderingModes';
 import ProjectState from 'components/ProjectState';
 
 /**
@@ -93,6 +94,11 @@ class RouteRealmSettingsRealm {
 								(m, c, changed) => {
 									c.setSrc(m.image ? m.image.href + '?thumb=lw' : '/img/realm-placeholder.svg');
 									c[m.image ? 'removeClass' : 'addClass']('placeholder');
+									for (let mode of renderingModes) {
+										if (mode.className) {
+											c[m.image?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
+										}
+									}
 								},
 							)),
 						]),
@@ -156,6 +162,11 @@ class RouteRealmSettingsRealm {
 								(m, c, changed) => {
 									c.setSrc(m.icon ? m.icon.href + '?thumb=xl' : '/img/realmicon-placeholder.svg');
 									c[m.icon ? 'removeClass' : 'addClass']('placeholder');
+									for (let mode of renderingModes) {
+										if (mode.className) {
+											c[m.icon?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
+										}
+									}
 								},
 							)),
 						]),

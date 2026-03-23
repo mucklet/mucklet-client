@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelTxt, ModelComponent } from 'modapp-resource-component';
 import Collapser from 'components/Collapser';
 import Img from 'components/Img';
+import renderingModes from 'utils/renderingModes';
 import l10n from 'modapp-l10n';
 import RealmTagsList from 'components/RealmTagsList';
 import { redirect } from 'utils/reload';
@@ -84,6 +85,11 @@ class RealmListComponent {
 						(m, c, changed) => {
 							c.setSrc(m?.image ? m.image.href + '?thumb=mw' : '/img/realm-placeholder.svg');
 							c[m?.image ? 'removeClass' : 'addClass']('placeholder');
+							for (let mode of renderingModes) {
+								if (mode.className) {
+									c[m?.image?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
+								}
+							}
 						},
 					)),
 
@@ -97,6 +103,11 @@ class RealmListComponent {
 							(m, c, changed) => {
 								c.setSrc(m?.icon ? m.icon.href + '?thumb=m' : '/img/realmicon-placeholder.svg');
 								c[m?.icon ? 'removeClass' : 'addClass']('placeholder');
+								for (let mode of renderingModes) {
+									if (mode.className) {
+										c[m?.icon?.rendering == mode.key ? 'addClass' : 'removeClass'](mode.className);
+									}
+								}
 							},
 						)),
 
