@@ -83,17 +83,16 @@ class GreetingScreenRealm {
 
 							// Sign in button
 							n.elem('div', { className: 'greetingscreen--button' }, [
-								n.elem('login', 'button', {
+								n.elem('button', {
 									events: {
 										click: (c, ev) => {
 											ev.preventDefault();
-											this._onLogin();
+											this.module.auth.redirectToLogin(true);
 										},
 									},
 									attributes: { type: 'submit' },
 									className: 'btn primary greetingscreen--signin icon-left',
 								}, [
-									// n.elem('loginSpinner', 'div', { className: 'spinner spinner--btn fade hide' }),
 									n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
 									n.component(new FAIcon('sign-in')),
 								]),
