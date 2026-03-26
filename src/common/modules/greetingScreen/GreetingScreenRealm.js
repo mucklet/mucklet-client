@@ -1,32 +1,36 @@
-import { Elem } from 'modapp-base-component';
-import { ModelTxt } from 'modapp-resource-component';
-// import Collapser from 'components/Collapser';
+import { Elem, Txt, Html } from 'modapp-base-component';
+import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import Img from 'components/Img';
-// import RealmTagsList from 'components/RealmTagsList';
-// import SimpleBar from 'components/SimpleBar';
-// import FormatTxt from 'components/FormatTxt';
+import l10n from 'modapp-l10n';
+import FAIcon from 'components/FAIcon';
+import Collapser from 'components/Collapser';
+import RealmTagsList, { hasTags } from 'components/RealmTagsList';
+import socialLinks, { hasLink } from 'utils/socialLinks';
 
-// function hasValidTag(tags) {
-// 	let props = tags?.props || tags;
-// 	if (props) {
-// 		for (let k in props) {
-// 			if (props[k].key) {
-// 				return true;
-// 			}
-// 		}
-// 	}
-// 	return false;
-// }
+function formatNumber(n) {
+	if (typeof n != 'number') {
+		return "?";
+	}
+	let s = String(n);
+	for (let i = s.length - 3; i > 0; i -= 3) {
+		s = s.slice(0, i) + ' ' + s.slice(i);
+	}
+	return s;
+}
 
 class GreetingScreenRealm {
 
-	constructor(module, info, tags) {
+	constructor(module, info, realm, population) {
 		this.module = module;
-		this.realm = info;
-		this.tags = tags;
-		let realm = this.module.self.app.props.realm;
-		this.imageUrl = realm?.image;
-		this.iconUrl = realm?.icon;
+		this.info = info;
+		this.realm = realm;
+		this.tags = realm?.tags;
+		this.population = population;
+		let appRealm = this.module.self.app.props.realm;
+		this.imageUrl = appRealm?.image;
+		this.iconUrl = appRealm?.icon;
+
+
 	}
 
 	render(el) {
@@ -40,62 +44,142 @@ class GreetingScreenRealm {
 						renderingHeader: true,
 					})),
 
-					// n.elem('img', { attributes: { src: '/img/realm1.png' }, className: 'greetingscreen--img' }),
-					n.elem('div', { className: 'greetingscreen--header' }, [
+					n.elem('div', { className: 'greetingscreen--content' }, [
 
-						// Icon
-						n.component(new Img(this.iconUrl ? this.iconUrl : '/img/realmicon-placeholder.svg', {
-							className: 'greetingscreen--icon' + (this.iconUrl ? '' : ' placeholder'),
-							renderingHeader: true,
-						})),
+						// Header
+						n.elem('div', { className: 'greetingscreen--header' }, [
 
-						n.elem('div', { className: 'greetingscreen--title-cont' }, [
+							// Icon
+							n.component(new Img(this.iconUrl ? this.iconUrl : '/img/realmicon-placeholder.svg', {
+								className: 'greetingscreen--icon' + (this.iconUrl ? '' : ' placeholder'),
+								renderingHeader: true,
+							})),
 
-							// Title
-							n.elem('span', { className: 'greetingscreen--title' }, [
-								n.component(new ModelTxt(this.realm, m => m?.name || '')),
+							n.elem('div', { className: 'greetingscreen--title-cont' }, [
+
+								// Title
+								n.elem('span', { className: 'greetingscreen--title' }, [
+									n.component(new Txt(this.module.self.app.props.realm.name)),
+								]),
+
+								n.elem('div', { className: 'greetingscreen--counters' }, [
+									n.elem('div', { className: 'greetingscreen--counter' }, [
+										n.elem('span', { className: 'greetingscreen--dot highlight' }),
+										n.component(new ModelTxt(this.population, m => l10n.l('realmList.countAwake', "{count} Awake", { count: formatNumber(m?.awakeChars) }), {
+											duration: 0,
+										})),
+									]),
+									n.elem('div', { className: 'greetingscreen--counter' }, [
+										n.elem('span', { className: 'greetingscreen--dot' }),
+										n.component(new ModelTxt(this.population, m => l10n.l('realmList.countCharacters', "{count} Characters", { count: formatNumber(m?.totalChars) }), {
+											duration: 0,
+										})),
+									]),
+								]),
 							]),
 						]),
+
+						n.elem('div', { className: 'greetingscreen--sidebar' }, [
+
+							// Sign in button
+							n.elem('div', { className: 'greetingscreen--button' }, [
+								n.elem('login', 'button', {
+									events: {
+										click: (c, ev) => {
+											ev.preventDefault();
+											this._onLogin();
+										},
+									},
+									attributes: { type: 'submit' },
+									className: 'btn primary greetingscreen--signin icon-left',
+								}, [
+									// n.elem('loginSpinner', 'div', { className: 'spinner spinner--btn fade hide' }),
+									n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
+									n.component(new FAIcon('sign-in')),
+								]),
+							]),
+
+							// Tags
+							// Only show tags if there is at least one valid tag.
+							n.component(new ModelComponent(
+								this.tags,
+								new Collapser(),
+								(m, c) => c.setComponent(hasTags(m)
+									? c.getComponent() || new Elem(n => n.elem('div', { className: 'greetingscreen--infosection' }, [
+										n.component(new Txt(l10n.l('greetingScreen.tags', "Tags"), { tagName: 'h4', className: 'greetingscreen--infotitle' })),
+										n.component(new RealmTagsList(m, { className: 'greetingscreen--tags', static: true })),
+									]))
+									: null,
+								),
+							)),
+
+							// Social
+							// Only show social if there is at least one valid account.
+							n.component(new ModelComponent(
+								this.realm,
+								new Collapser(),
+								(m, c, change) => {
+									if (!change || change.hasOwnProperty('links')) {
+										let links = m.links;
+										c.setComponent(hasLink(links)
+											? c.getComponent() || new Elem(n => n.elem('div', { className: 'greetingscreen--infosection' }, [
+												n.component(new Txt(l10n.l('greetingScreen.socialLinks', "Social links"), { tagName: 'h4', className: 'greetingscreen--infotitle' })),
+												n.component(new Elem(n => n.elem('div', { className: 'greetingscreen--links' },
+													socialLinks
+														.filter(l => !!links[l.id])
+														.map(l => n.elem('a', {
+															className: 'iconbtn solid semilarge' + (l.svg ? ' svg' : ''),
+															attributes: {
+																href: links[l.id],
+																rel: 'noopener noreferrer',
+																'aria-label': l10n.t(l.name),
+															},
+														}, [
+															l.svg
+																? n.html(l.svg)
+																: n.component(new FAIcon(l.icon)),
+														])),
+												))),
+											]))
+											: null,
+										);
+									}
+								},
+							)),
+
+						]),
+
+						// Description
+						n.elem('div', { className: 'greetingscreen--desc' }, [
+							n.component(new ModelComponent(
+								this.info,
+								new Html("", { className: 'common--desc-size', mode: 'default' }),
+								(m, c) => c.setHtml(m.greeting),
+							)),
+						]),
 					]),
-
-					// // Tags
-					// // Only show tags if there is at least one valid tag.
-					// n.component(new ModelComponent(
-					// 	this.realm?.tags,
-					// 	new Collapser(),
-					// 	(m, c) => c.setComponent(hasValidTag(m)
-					// 		? new RealmTagsList(m, { className: 'greetingscreen--tags', static: true })
-					// 		: null,
-					// 	),
-					// )),
-
-					// // Description
-					// n.elem('div', { className: 'greetingscreen--desktop greetingscreen--desc' }, [
-					// 	n.component(new SimpleBar(
-					// 		new ModelComponent(
-					// 			this.realm,
-					// 			new FormatTxt("", { className: 'common--desc-size', mode: 'default' }),
-					// 			(m, c) => c.setFormatText(m.desc),
-					// 		),
-					// 		{
-					// 			autoHide: false,
-					// 			className: 'greetingscreen--descsb',
-					// 		},
-					// 	)),
-					// ]),
-
-					// n.elem('div', { className: 'greetingscreen--desktop greetingscreen--footer' }, [
-					// ]),
 				]),
 
-				// // Mobile description
-				// n.component('mobile', new Collapser(null, { className: 'greetingscreen--mobile' })),
+				// Footer
+				n.elem('div', { className: 'greetingscreen--footer' }, [
+					n.elem('a', {
+						className: 'greetingscreen--footer-logo',
+						attributes: {
+							href: 'https://mucklet.com',
+						},
+					}, [
+						n.elem('img', {
+							className: 'greetingscreen--footer-logo-img',
+							attributes: { src: '/mucklet-logo.svg' },
+						}),
+						n.elem('span', { className: 'greetingscreen--footer-logo-text' }, [
+							n.text("mucklet.com"),
+						]),
+					]),
+				]),
+
 			]),
 
-		// 	// // Caret on mobile devices
-		// 	// n.elem('div', { className: 'greetingscreen--caret' }, [
-		// 	// 	n.elem('i', { className: 'fa fa-angle-down' }),
-		// 	// ]),
 		]));
 		let rel = this.elem.render(el);
 		return rel;

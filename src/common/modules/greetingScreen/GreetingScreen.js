@@ -55,11 +55,13 @@ class GreetingScreen {
 		try {
 			let info = await this.module.api.get('core.info').then(info => this._tryListen('info', info));
 			let realmId = info.realmId || '';
-			let tags = realmId
-				? await this.module.api.get(`control.realm.${realmId}.tags`).then(tags => this._tryListen('tags', tags))
-				: null;
-			this.module.screen.setComponent(new GreetingScreenRealm(this.module, info, tags));
-			console.log(tags);
+			let [ realm, population ] = await Promise.all([
+				realmId
+					? await this.module.api.get(`control.realm.${realmId}`).then(tags => this._tryListen('tags', tags))
+					: null,
+				this.module.api.get('core.population').then(population => this._tryListen('population', population)),
+			]);
+			this.module.screen.setComponent(new GreetingScreenRealm(this.module, info, realm, population));
 		} catch (err) {
 			this._unlistenAll();
 			console.error(err);

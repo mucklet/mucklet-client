@@ -13,6 +13,7 @@ import FileButton from 'components/FileButton';
 import ImgModal from 'classes/ImgModal';
 import renderingModes from 'utils/renderingModes';
 import ProjectState from 'components/ProjectState';
+import socialLinks from 'utils/socialLinks';
 
 /**
  * RouteRealmSettingsRealm draws the settings form for a realm.
@@ -287,13 +288,8 @@ class RouteRealmSettingsRealm {
 
 				// Social links
 				n.component(new PanelSection(
-					l10n.l('routeRealmSettings.socialAccounts', "Social accounts"),
-					new Elem(n => n.elem('table', { className: 'routerealmsettings-realm--medialinks' }, [
-						{ id: 'homepage', name: l10n.l('routeRealmSettings.homepage', "Homepage"), icon: 'home' },
-						{ id: 'discord', name: l10n.l('routeRealmSettings.discord', "Discord"), icon: 'discord' },
-						{ id: 'reddit', name: l10n.l('routeRealmSettings.reddit', "Reddit"), icon: 'reddit' },
-						{ id: 'facebook', name: l10n.l('routeRealmSettings.facebook', "Facebook"), icon: 'facebook' },
-					].map(o => n.elem('tr', [
+					l10n.l('routeRealmSettings.socialLinks', "Social links"),
+					new Elem(n => n.elem('table', { className: 'routerealmsettings-realm--medialinks' }, socialLinks.map(o => n.elem('tr', [
 						n.elem('td', [
 							n.component(new Txt(o.name)),
 						]),

@@ -4,7 +4,7 @@ import Collapser from 'components/Collapser';
 import Img from 'components/Img';
 import renderingModes from 'utils/renderingModes';
 import l10n from 'modapp-l10n';
-import RealmTagsList from 'components/RealmTagsList';
+import RealmTagsList, { hasTags } from 'components/RealmTagsList';
 import { redirect } from 'utils/reload';
 import FormatTxt from 'components/FormatTxt';
 import SimpleBar from 'components/SimpleBar';
@@ -20,18 +20,6 @@ function formatNumber(n) {
 		s = s.slice(0, i) + ' ' + s.slice(i);
 	}
 	return s;
-}
-
-function hasValidTag(tags) {
-	let props = tags?.props || tags;
-	if (props) {
-		for (let k in props) {
-			if (props[k].key) {
-				return true;
-			}
-		}
-	}
-	return false;
 }
 
 function addCounters(n, realm) {
@@ -128,8 +116,8 @@ class RealmListComponent {
 					n.component(new ModelComponent(
 						this.realm?.tags,
 						new Collapser(),
-						(m, c) => c.setComponent(hasValidTag(m)
-							? new RealmTagsList(m, { className: 'realmlist-realm--tags', static: true })
+						(m, c) => c.setComponent(hasTags(m)
+							? c.getComponent() || new RealmTagsList(m, { className: 'realmlist-realm--tags', static: true })
 							: null,
 						),
 					)),
@@ -207,7 +195,7 @@ class RealmListComponent {
 									},
 								},
 							}, [
-								n.component(new Txt('Enter')),
+								n.component(new Txt(l10n.l('realmList.enter', "Enter"))),
 								n.elem('i', { className: 'fa fa-sign-in' }),
 							]),
 						]),

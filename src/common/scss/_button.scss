@@ -204,6 +204,19 @@
 	}
 }
 
+.iconbtn.semilarge {
+	font-size: 26px;
+	border-radius: 6px;
+	width: 42px;
+	height: 42px;
+	> i {
+		line-height: 42px;
+	}
+	&.svg > svg {
+		width: 26px;
+	}
+}
+
 .iconbtn.medium {
 	font-size: 22px;
 	border-radius: 4px;
