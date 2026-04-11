@@ -27,8 +27,8 @@ class GreetingScreenRealm {
 		this.tags = realm?.tags;
 		this.population = population;
 		let appRealm = this.module.self.app.props.realm;
-		this.imageUrl = appRealm?.image;
-		this.iconUrl = appRealm?.icon;
+		this.hasImage = !!appRealm?.image;
+		this.hasIcon = !!appRealm?.icon;
 
 
 	}
@@ -39,9 +39,9 @@ class GreetingScreenRealm {
 				n.elem('div', { className: 'greetingscreen--realm' }, [
 
 					// Image
-					n.component(new Img(this.imageUrl ? this.imageUrl : '/img/realm-placeholder.svg', {
-						className: 'greetingscreen--img' + (this.imageUrl ? '' : ' placeholder'),
-						renderingHeader: true,
+					n.component(new Img(this.hasImage ? '/img/realm.png' : '/img/realm-placeholder.svg', {
+						className: 'greetingscreen--img' + (this.hasImage ? '' : ' placeholder'),
+						renderingHeader: false,
 					})),
 
 					n.elem('div', { className: 'greetingscreen--content' }, [
@@ -50,9 +50,9 @@ class GreetingScreenRealm {
 						n.elem('div', { className: 'greetingscreen--header' }, [
 
 							// Icon
-							n.component(new Img(this.iconUrl ? this.iconUrl : '/img/realmicon-placeholder.svg', {
-								className: 'greetingscreen--icon' + (this.iconUrl ? '' : ' placeholder'),
-								renderingHeader: true,
+							n.component(new Img(this.hasIcon ? '/img/realmicon-l.png' : '/img/realmicon-placeholder.svg', {
+								className: 'greetingscreen--icon' + (this.hasIcon ? '' : ' placeholder'),
+								renderingHeader: false,
 							})),
 
 							n.elem('div', { className: 'greetingscreen--title-cont' }, [
