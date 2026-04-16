@@ -45,6 +45,13 @@
 		width: 516px;
 	}
 
+	&--maskediconinfo {
+		display: block;
+		margin-top: 12px;
+		font-size: $font-size-small;
+		font-style: italic;
+	}
+
 	&--hidden {
 		flex: 1;
 		max-width: 100px;

@@ -182,6 +182,8 @@ class RouteRealmSettingsRealm {
 									(dataUrl, points, mode) => this._setIcon(file, points, mode),
 									{
 										withRenderingMode: true,
+										maskable: true,
+										footer: new Txt(l10n.l('routeRealmSettings.maskedIconInfo', "Keep important artwork within the safe area circle."), { className: 'routerealmsettings-realm--maskediconinfo' }),
 									},
 								),
 								{ className: 'btn medium icon-left' },

@@ -8,10 +8,11 @@ import './croppie.scss';
  * The options may contain any option from {@link https://github.com/jirenius/modapp-base-component/blob/master/src/RootElem.js|RootElem}
  * and options of {@link https://foliotek.github.io/Croppie/|croppie}.
  * @param {object} [opt] Options.
+ * @param {boolean} [opt.maskable] Toggle the safe area for maskable icons.
  */
 class Croppie extends RootElem {
 	constructor(opt) {
-		opt = Object.assign({}, opt);
+		opt = Object.assign({}, opt, opt?.maskable ? { className: 'croppie--maskable' + (opt?.className ? ' ' + opt.className : '') } : null);
 		super('div', opt);
 		this._croppie = null;
 		this.opt = opt;

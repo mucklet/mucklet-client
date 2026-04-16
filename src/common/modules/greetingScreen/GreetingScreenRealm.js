@@ -41,7 +41,7 @@ class GreetingScreenRealm {
 					// Image
 					n.component(new Img(this.hasImage ? '/img/realm.png' : '/img/realm-placeholder.svg', {
 						className: 'greetingscreen--img' + (this.hasImage ? '' : ' placeholder'),
-						renderingHeader: false,
+						renderingHeader: true,
 					})),
 
 					n.elem('div', { className: 'greetingscreen--content' }, [
@@ -52,7 +52,7 @@ class GreetingScreenRealm {
 							// Icon
 							n.component(new Img(this.hasIcon ? '/img/realmicon-l.png' : '/img/realmicon-placeholder.svg', {
 								className: 'greetingscreen--icon' + (this.hasIcon ? '' : ' placeholder'),
-								renderingHeader: false,
+								renderingHeader: true,
 							})),
 
 							n.elem('div', { className: 'greetingscreen--title-cont' }, [

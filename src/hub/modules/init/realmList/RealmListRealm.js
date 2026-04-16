@@ -89,7 +89,7 @@ class RealmListComponent {
 							this.realm,
 							new Img('', { className: 'realmlist-realm--icon' }),
 							(m, c, changed) => {
-								c.setSrc(m?.icon ? m.icon.href + '?thumb=m' : '/img/realmicon-placeholder.svg');
+								c.setSrc(m?.icon ? m.icon.href + '?thumb=xxl' : '/img/realmicon-placeholder.svg');
 								c[m?.icon ? 'removeClass' : 'addClass']('placeholder');
 								for (let mode of renderingModes) {
 									if (mode.className) {
