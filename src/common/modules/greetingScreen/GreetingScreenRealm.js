@@ -6,6 +6,7 @@ import FAIcon from 'components/FAIcon';
 import Collapser from 'components/Collapser';
 import RealmTagsList, { hasTags } from 'components/RealmTagsList';
 import socialLinks, { hasLink } from 'utils/socialLinks';
+import { getRenderingMode } from 'utils/renderingModes';
 
 function formatNumber(n) {
 	if (typeof n != 'number') {
@@ -18,6 +19,18 @@ function formatNumber(n) {
 	return s;
 }
 
+function imgClass(className, img) {
+	if (!img) {
+		className += ' greetingscreen--img';
+	} else {
+		let mode = getRenderingMode(img.rendering);
+		if (mode?.className) {
+			className += ' ' + mode.className;
+		}
+	}
+	return className.trim();
+}
+
 class GreetingScreenRealm {
 
 	constructor(module, info, realm, population) {
@@ -27,10 +40,8 @@ class GreetingScreenRealm {
 		this.tags = realm?.tags;
 		this.population = population;
 		let appRealm = this.module.self.app.props.realm;
-		this.hasImage = !!appRealm?.image;
-		this.hasIcon = !!appRealm?.icon;
-
-
+		this.image = appRealm?.image;
+		this.icon = appRealm?.icon;
 	}
 
 	render(el) {
@@ -39,9 +50,8 @@ class GreetingScreenRealm {
 				n.elem('div', { className: 'greetingscreen--realm' }, [
 
 					// Image
-					n.component(new Img(this.hasImage ? '/img/realm.png' : '/img/realm-placeholder.svg', {
-						className: 'greetingscreen--img' + (this.hasImage ? '' : ' placeholder'),
-						renderingHeader: true,
+					n.component(new Img(this.image ? '/img/realm.png' : '/img/realm-placeholder.svg', {
+						className: imgClass('greetingscreen--img', this.image),
 					})),
 
 					n.elem('div', { className: 'greetingscreen--content' }, [
@@ -50,9 +60,8 @@ class GreetingScreenRealm {
 						n.elem('div', { className: 'greetingscreen--header' }, [
 
 							// Icon
-							n.component(new Img(this.hasIcon ? '/img/realmicon-l.png' : '/img/realmicon-placeholder.svg', {
-								className: 'greetingscreen--icon' + (this.hasIcon ? '' : ' placeholder'),
-								renderingHeader: true,
+							n.component(new Img(this.icon ? '/img/realmicon-l.png' : '/img/realmicon-placeholder.svg', {
+								className: imgClass('greetingscreen--icon', this.icon),
 							})),
 
 							n.elem('div', { className: 'greetingscreen--title-cont' }, [

@@ -13,24 +13,30 @@
 	<link rel="manifest" href="/site.webmanifest">
 	<script type="text/javascript">
 window.appProps = {<% if (APP_ISTEMPLATE) { %>
-{{- with .Realm }}
+{{- if .Realm }}
 	realm: {
-		id: "{{ .ID | js }}",
-		name: "{{ .Name | js }}",
-		image: "{{ .Image | js }}",
-		icon: "{{ .Icon | js }}",
+		id: "{{ .Realm.ID | js }}",
+		name: "{{ .Realm.Name | js }}",
+		image: {{ with .Image }}{
+			id: "{{ .ID | js }}",
+			rendering: "{{ .Rendering | js }}",
+		}{{ else }}null{{ end }},
+		icon: {{ with .Icon }}{
+			id: "{{ .ID | js }}",
+			rendering: "{{ .Rendering | js }}",
+		}{{ else }}null{{ end }},
 	},
-	apiHostPath: "{{ .APIWSPath | js }}",
-	apiWebresourcePath: "{{ .APIResourcePath | js }}",
-	apiFilePath: "{{ .APIFilePath | js }}",
+	apiHostPath: "{{ .Realm.APIWSPath | js }}",
+	apiWebresourcePath: "{{ .Realm.APIResourcePath | js }}",
+	apiFilePath: "{{ .Realm.APIFilePath | js }}",
 {{- end }}
 {{- with .Error }}
 	error: {{ . }},
 {{- end }}<% } else { %>
 	realm: {
 		name: <%= JSON.stringify(APP_TITLE) %>,
-		image: <%= JSON.stringify(APP_IMAGE) %>,
-		icon: <%= JSON.stringify(APP_ICON) %>,
+		image: null,
+		icon: null,
 	},
 	apiHostPath: <%= JSON.stringify(API_HOST_PATH) %>,
 	apiWebresourcePath: <%= JSON.stringify(API_WEBRESOURCE_PATH) %>,

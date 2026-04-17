@@ -6,8 +6,6 @@ module.exports = {
 	APP_TITLE: '', // Set in template
 	APP_DESCRIPTION: '', // Set in template
 	APP_ROOT: '', // Set in template
-	APP_IMAGE: '', // Set in template
-	APP_ICON: '', // Set in template
 
 	API_HOST_PATH: '', // Set in template
 	API_WEBRESOURCE_PATH: '', // Set in template

@@ -6,8 +6,6 @@ module.exports = {
 	APP_TITLE: "Dev Wolfery Mirror Realm",
 	APP_DESCRIPTION: "A textual world of role play. Create a character, wake them up, and join in.",
 	APP_ROOT: '/',
-	APP_IMAGE: '',
-	APP_ICON: '',
 
 	API_HOST_PATH: 'wss://api.test.mucklet.com/',
 	API_WEBRESOURCE_PATH: 'https://api.test.mucklet.com/api/',
