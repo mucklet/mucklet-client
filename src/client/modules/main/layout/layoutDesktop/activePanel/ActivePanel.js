@@ -1,8 +1,8 @@
 import { Elem } from 'modapp-base-component';
-import { Collection } from 'modapp-resource';
+import { Model, Collection } from 'modapp-resource';
 import Fader from 'components/Fader';
 import compareSortOrderId from 'utils/compareSortOrderId';
-import ActivePanelPlaceholder from './ActivePanelPlaceholder';
+import ActivePanelRealm from './ActivePanelRealm';
 import './activePanel.scss';
 
 /**
@@ -16,6 +16,7 @@ class ActivePanel {
 			'player',
 			'api',
 			'info',
+			'realmInfo',
 		], this._init.bind(this));
 
 		// Bind callbacks
@@ -33,6 +34,14 @@ class ActivePanel {
 		});
 		this.renderedOverlays = {};
 
+		this.model = new Model({ data: { resources: null }});
+		this.module.realmInfo.getResources().then(resources => {
+			if (!this.model) {
+				this.module.realmInfo.releaseResources();
+			} else {
+				this.model.set({ resources });
+			}
+		});
 		this.info = this.module.info.getCore();
 
 		this.elem = new Elem(n => n.elem('div', { className: 'activepanel' }, [
@@ -113,16 +122,19 @@ class ActivePanel {
 		if (changed && !changed.hasOwnProperty('activeChar')) {
 			return;
 		}
-		this.module.layoutDesktop.setNode('activePanel', this.playerModel.activeChar ? this : new ActivePanelPlaceholder(this.module, this.info));
+		this.module.layoutDesktop.setNode('activePanel', this.playerModel.activeChar
+			? this
+			: new ActivePanelRealm(this.module, this.model),
+		);
 	}
 
 
 	dispose() {
 		this.module.layoutDesktop.setActivePanel(null);
-		if (this.info) {
-			this.info.dispose();
-			this.info = null;
+		if (this.model?.resources) {
+			this.module.realmInfo.releaseResources();
 		}
+		this.model = null;
 	}
 }
 

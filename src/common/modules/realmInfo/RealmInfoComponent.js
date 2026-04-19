@@ -21,7 +21,7 @@ function formatNumber(n) {
 
 function imgClass(className, img) {
 	if (!img) {
-		className += ' greetingscreen--img';
+		className += ' realminfo--img';
 	} else {
 		let mode = getRenderingMode(img.rendering);
 		if (mode?.className) {
@@ -31,14 +31,26 @@ function imgClass(className, img) {
 	return className.trim();
 }
 
-class GreetingScreenRealm {
+class RealmInfoComponent {
 
-	constructor(module, info, tags, links, population) {
+	/**
+	 *
+	 * @param {object} module Modules.
+	 * @param {Model} info Realm info model.
+	 * @param {Model} tags Realm tags model.
+	 * @param {Model} links Realm links model.
+	 * @param {Model} population Population model.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {boolean} [opt.withSignIn] Flag to enable sign in.
+	 * @param {boolean} [opt.withSponsor] Flag to enable sponsor button.
+	 */
+	constructor(module, info, tags, links, population, opt) {
 		this.module = module;
 		this.info = info;
 		this.tags = tags;
 		this.links = links;
 		this.population = population;
+		this.opt = opt;
 		let appRealm = this.module.self.app.props.realm;
 		this.name = appRealm?.name;
 		this.image = appRealm?.image;
@@ -46,41 +58,41 @@ class GreetingScreenRealm {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'greetingscreen' }, [
-			n.elem('div', { className: 'greetingscreen--card' }, [
-				n.elem('div', { className: 'greetingscreen--realm' }, [
+		this.elem = new Elem(n => n.elem('div', { className: 'realminfo' + (this.opt?.className ? ' ' + this.opt.className : '') }, [
+			n.elem('div', { className: 'realminfo--card' }, [
+				n.elem('div', { className: 'realminfo--realm' }, [
 
 					// Image
 					n.component(new Img(this.image ? '/img/realm.png' : '/img/realm-placeholder.svg', {
-						className: imgClass('greetingscreen--img', this.image),
+						className: imgClass('realminfo--img', this.image),
 					})),
 
-					n.elem('div', { className: 'greetingscreen--content' }, [
+					n.elem('div', { className: 'realminfo--content' }, [
 
 						// Header
-						n.elem('div', { className: 'greetingscreen--header' }, [
+						n.elem('div', { className: 'realminfo--header' }, [
 
 							// Icon
 							n.component(new Img(this.icon ? '/img/realmicon-l.png' : '/img/realmicon-placeholder.svg', {
-								className: imgClass('greetingscreen--icon', this.icon),
+								className: imgClass('realminfo--icon', this.icon),
 							})),
 
-							n.elem('div', { className: 'greetingscreen--title-cont' }, [
+							n.elem('div', { className: 'realminfo--title-cont' }, [
 
 								// Title
-								n.elem('span', { className: 'greetingscreen--title' }, [
+								n.elem('span', { className: 'realminfo--title' }, [
 									n.component(new Txt(this.name)),
 								]),
 
-								n.elem('div', { className: 'greetingscreen--counters' }, [
-									n.elem('div', { className: 'greetingscreen--counter' }, [
-										n.elem('span', { className: 'greetingscreen--dot highlight' }),
+								n.elem('div', { className: 'realminfo--counters' }, [
+									n.elem('div', { className: 'realminfo--counter' }, [
+										n.elem('span', { className: 'realminfo--dot highlight' }),
 										n.component(new ModelTxt(this.population, m => l10n.l('realmList.countAwake', "{count} Awake", { count: formatNumber(m?.awakeChars) }), {
 											duration: 0,
 										})),
 									]),
-									n.elem('div', { className: 'greetingscreen--counter' }, [
-										n.elem('span', { className: 'greetingscreen--dot' }),
+									n.elem('div', { className: 'realminfo--counter' }, [
+										n.elem('span', { className: 'realminfo--dot' }),
 										n.component(new ModelTxt(this.population, m => l10n.l('realmList.countCharacters', "{count} Characters", { count: formatNumber(m?.totalChars) }), {
 											duration: 0,
 										})),
@@ -89,24 +101,29 @@ class GreetingScreenRealm {
 							]),
 						]),
 
-						n.elem('div', { className: 'greetingscreen--sidebar' }, [
+						n.elem('div', { className: 'realminfo--sidebar' }, [
 
 							// Sign in button
-							n.elem('div', { className: 'greetingscreen--button' }, [
-								n.elem('button', {
-									events: {
-										click: (c, ev) => {
-											ev.preventDefault();
-											this.module.auth.redirectToLogin(true);
-										},
-									},
-									attributes: { type: 'submit' },
-									className: 'btn primary greetingscreen--signin icon-left',
-								}, [
-									n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
-									n.component(new FAIcon('sign-in')),
-								]),
-							]),
+							...(this.opt?.withSignIn
+								? [
+									n.elem('div', { className: 'realminfo--button' }, [
+										n.elem('button', {
+											events: {
+												click: (c, ev) => {
+													ev.preventDefault();
+													this.module.auth.redirectToLogin(true);
+												},
+											},
+											attributes: { type: 'submit' },
+											className: 'btn primary realminfo--signin icon-left',
+										}, [
+											n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
+											n.component(new FAIcon('sign-in')),
+										]),
+									]),
+								]
+								: []
+							),
 
 							// Tags
 							// Only show tags if there is at least one valid tag.
@@ -114,9 +131,9 @@ class GreetingScreenRealm {
 								this.tags,
 								new Collapser(),
 								(m, c) => c.setComponent(hasTags(m)
-									? c.getComponent() || new Elem(n => n.elem('div', { className: 'greetingscreen--infosection' }, [
-										n.component(new Txt(l10n.l('greetingScreen.tags', "Tags"), { tagName: 'h4', className: 'greetingscreen--infotitle' })),
-										n.component(new RealmTagsList(m, { className: 'greetingscreen--tags', static: true })),
+									? c.getComponent() || new Elem(n => n.elem('div', { className: 'realminfo--infosection' }, [
+										n.component(new Txt(l10n.l('realmInfo.tags', "Tags"), { tagName: 'h4', className: 'realminfo--infotitle' })),
+										n.component(new RealmTagsList(m, { className: 'realminfo--tags', static: true })),
 									]))
 									: null,
 								),
@@ -128,9 +145,9 @@ class GreetingScreenRealm {
 								this.links,
 								new Collapser(),
 								(links, c) => c.setComponent(hasLink(links)
-									? c.getComponent() || new Elem(n => n.elem('div', { className: 'greetingscreen--infosection' }, [
-										n.component(new Txt(l10n.l('greetingScreen.socialLinks', "Social links"), { tagName: 'h4', className: 'greetingscreen--infotitle' })),
-										n.component(new Elem(n => n.elem('div', { className: 'greetingscreen--links' },
+									? c.getComponent() || new Elem(n => n.elem('div', { className: 'realminfo--infosection' }, [
+										n.component(new Txt(l10n.l('realmInfo.socialLinks', "Social links"), { tagName: 'h4', className: 'realminfo--infotitle' })),
+										n.component(new Elem(n => n.elem('div', { className: 'realminfo--links' },
 											socialLinks
 												.filter(l => !!links[l.id])
 												.map(l => n.elem('a', {
@@ -154,7 +171,7 @@ class GreetingScreenRealm {
 						]),
 
 						// Description
-						n.elem('div', { className: 'greetingscreen--desc' }, [
+						n.elem('div', { className: 'realminfo--desc' }, [
 							n.component(new ModelComponent(
 								this.info,
 								new Html("", { className: 'common--desc-size', mode: 'default' }),
@@ -165,18 +182,18 @@ class GreetingScreenRealm {
 				]),
 
 				// Footer
-				n.elem('div', { className: 'greetingscreen--footer' }, [
+				n.elem('div', { className: 'realminfo--footer' }, [
 					n.elem('a', {
-						className: 'greetingscreen--footer-logo',
+						className: 'realminfo--footer-logo',
 						attributes: {
 							href: 'https://mucklet.com',
 						},
 					}, [
 						n.elem('img', {
-							className: 'greetingscreen--footer-logo-img',
+							className: 'realminfo--footer-logo-img',
 							attributes: { src: '/mucklet-logo.svg' },
 						}),
-						n.elem('span', { className: 'greetingscreen--footer-logo-text' }, [
+						n.elem('span', { className: 'realminfo--footer-logo-text' }, [
 							n.text("mucklet.com"),
 						]),
 					]),
@@ -198,4 +215,4 @@ class GreetingScreenRealm {
 	}
 }
 
-export default GreetingScreenRealm;
+export default RealmInfoComponent;

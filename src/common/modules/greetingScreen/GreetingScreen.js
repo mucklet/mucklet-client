@@ -1,9 +1,9 @@
 import l10n from 'modapp-l10n';
 // import Err from 'classes/Err';
-import { relistenResource } from 'utils/listenResource';
+// import { relistenResource } from 'utils/listenResource';
 import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
 // import GreetingScreenComponent from './GreetingScreenComponent';
-import GreetingScreenRealm from './GreetingScreenRealm';
+// import GreetingScreenRealm from './GreetingScreenRealm';
 import './greetingScreen.scss';
 
 /**
@@ -18,13 +18,14 @@ class GreetingScreen {
 			'screen',
 			'auth',
 			'api',
+			'realmInfo',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.disposed = false;
 		this._showRealm();
-
 	}
 
 	// _showGreeting() {
@@ -51,19 +52,18 @@ class GreetingScreen {
 	// }
 
 	async _showRealm() {
-		this.loaded = {};
 		try {
-			let info = await this.module.api.get('core.info').then(info => this._tryListen('info', info));
-			let realmId = info.realmId || '';
-			let [ realm, population ] = await Promise.all([
-				realmId
-					? await this.module.api.get(`control.realm.${realmId}`).then(tags => this._tryListen('tags', tags))
-					: null,
-				this.module.api.get('core.population').then(population => this._tryListen('population', population)),
-			]);
-			this.module.screen.setComponent(new GreetingScreenRealm(this.module, info, realm, population));
+			const resources = await this.module.realmInfo.getResources();
+			if (this.disposed) {
+				this.module.realmInfo.releaseResources();
+				return;
+			}
+			this.resources = resources;
+			this.module.screen.setComponent(this.module.realmInfo.newRealmInfo(this.resources));
 		} catch (err) {
-			this._unlistenAll();
+			if (this.resources) {
+				this.module.realmInfo.releaseResources();
+			}
 			console.error(err);
 			// Fallback dialog
 			this.module.screen.setComponent(new ConfirmScreenDialog({
@@ -75,25 +75,12 @@ class GreetingScreen {
 		}
 	}
 
-	_tryListen(key, m) {
-		if (this.loaded) {
-			this.loaded[key] = relistenResource(this.loaded[key], m);
-		}
-		return m;
-	}
-
-	_unlistenAll() {
-		if (this.loaded) {
-			for (let k in this.loaded) {
-				this._tryListen(k, null);
-			}
-			this.loaded = null;
-		}
-	}
-
 	dispose() {
-		this._unlistenAll();
-		this.loaded = null;
+		if (this.resources) {
+			this.module.realmInfo.releaseResources();
+			this.resources = null;
+		}
+		this.disposed = true;
 	}
 }
 

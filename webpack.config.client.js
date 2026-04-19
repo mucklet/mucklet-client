@@ -119,10 +119,10 @@ module.exports = function(ctx) {
 					: ''),
 				__SW_REALM_IMAGE__: JSON.stringify(ctx.siteConfig.APP_ISTEMPLATE
 					? '{{ with .Realm }}{{ .Image | js }}{{ end }}'
-					: ''),
+					: ctx.siteConfig.APP_IMAGE?.id || ''),
 				__SW_REALM_ICON__: JSON.stringify(ctx.siteConfig.APP_ISTEMPLATE
 					? '{{ with .Realm }}{{ .Icon | js }}{{ end }}'
-					: ''),
+					: ctx.siteConfig.APP_ICON?.id || ''),
 			})),
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,
