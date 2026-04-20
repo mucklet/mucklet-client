@@ -1,10 +1,5 @@
 import l10n from 'modapp-l10n';
-// import Err from 'classes/Err';
-// import { relistenResource } from 'utils/listenResource';
 import ConfirmScreenDialog from 'components/ConfirmScreenDialog';
-// import GreetingScreenComponent from './GreetingScreenComponent';
-// import GreetingScreenRealm from './GreetingScreenRealm';
-import './greetingScreen.scss';
 
 /**
  * GreetingScreen shows a greeting screen.
@@ -59,7 +54,7 @@ class GreetingScreen {
 				return;
 			}
 			this.resources = resources;
-			this.module.screen.setComponent(this.module.realmInfo.newRealmInfo(this.resources));
+			this.module.screen.setComponent(this.module.realmInfo.newRealmInfo(this.resources, { withSignIn: true }));
 		} catch (err) {
 			if (this.resources) {
 				this.module.realmInfo.releaseResources();

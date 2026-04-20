@@ -50,10 +50,13 @@ class RealmInfo {
 	/**
 	 * Creates a new RealmInfoComponent using resources returned by getResources()
 	 * @param {object} resources Resource object.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {boolean} [opt.withSignIn] Flag to enable sign in.
+	 * @param {boolean} [opt.withSponsor] Flag to enable sponsor button.
 	 * @returns {Component} RealmInfoComponent.
 	 */
-	newRealmInfo(resources) {
-		return new RealmInfoComponent(this.module, resources.info, resources.tags, resources.links, resources.population);
+	newRealmInfo(resources, opt) {
+		return new RealmInfoComponent(this.module, resources.info, resources.tags, resources.links, resources.population, opt);
 	}
 
 	async _fetchResources() {
