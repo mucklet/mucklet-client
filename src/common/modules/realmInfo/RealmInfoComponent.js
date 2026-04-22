@@ -7,6 +7,10 @@ import Collapser from 'components/Collapser';
 import RealmTagsList, { hasTags } from 'components/RealmTagsList';
 import socialLinks, { hasLink } from 'utils/socialLinks';
 import { getRenderingMode } from 'utils/renderingModes';
+import ResizeObserverComponent from 'components/ResizeObserverComponent';
+import ModelCollapser from 'components/ModelCollapser';
+
+const narrowWidth = 720;
 
 function formatNumber(n) {
 	if (typeof n != 'number') {
@@ -42,7 +46,8 @@ class RealmInfoComponent {
 	 * @param {Model} population Population model.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {boolean} [opt.withSignIn] Flag to enable sign in.
-	 * @param {boolean} [opt.withSponsor] Flag to enable sponsor button.
+	 * @param {boolean} [opt.withSupporter] Flag to enable supporter button.
+	 * @param {boolean} [opt.withFooter] Flag to enable footer Mucklet icon.
 	 */
 	constructor(module, info, tags, links, population, opt) {
 		this.module = module;
@@ -55,10 +60,16 @@ class RealmInfoComponent {
 		this.name = appRealm?.name;
 		this.image = appRealm?.image;
 		this.icon = appRealm?.icon;
+
+		// Bind callbacks
+		this._onResize = this._onResize.bind(this);
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('div', { className: 'realminfo' + (this.opt?.className ? ' ' + this.opt.className : '') }, [
+		// Get playerModule if loaded.
+		let playerModule = this.opt?.withSupporter && this.module.self.app.getModule('player');
+
+		let content = new Elem(n => n.elem('div', { className: 'realminfo' + (this.opt?.className ? ' ' + this.opt.className : '') }, [
 			n.elem('div', { className: 'realminfo--card' }, [
 				n.elem('div', { className: 'realminfo--realm' }, [
 
@@ -106,7 +117,7 @@ class RealmInfoComponent {
 							// Sign in button
 							...(this.opt?.withSignIn
 								? [
-									n.elem('div', { className: 'realminfo--button' }, [
+									n.elem('div', { className: 'realminfo--signin' }, [
 										n.elem('button', {
 											events: {
 												click: (c, ev) => {
@@ -115,7 +126,7 @@ class RealmInfoComponent {
 												},
 											},
 											attributes: { type: 'submit' },
-											className: 'btn primary realminfo--signin icon-left',
+											className: 'btn primary realminfo--btn icon-left',
 										}, [
 											n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
 											n.component(new FAIcon('sign-in')),
@@ -168,6 +179,37 @@ class RealmInfoComponent {
 								),
 							)),
 
+							// Support button
+							...(this.opt?.withSupporter
+								? [
+									n.component(new ModelCollapser(playerModule?.getModel(), [
+										{
+											condition: m => playerModule && !playerModule?.hasIdRoles('supporter'),
+											factory: m => new Elem(n => n.elem('div', { className: 'realminfo--support' }, [
+												n.elem('button', {
+													events: {
+														click: (c, ev) => {
+															ev.preventDefault();
+															this._openSupporter();
+														},
+													},
+													attributes: { type: 'submit' },
+													className: 'btn primary small full-width',
+												}, [
+													n.component(new FAIcon('heart')),
+													n.component(new Txt(l10n.l('login.becomeASupporter', "Become a supporter"))),
+												]),
+											])),
+										},
+										{
+											condition: m => playerModule && playerModule?.hasIdRoles('supporter'),
+											factory: m => new Txt(l10n.l('realmInfo.thanksForTheSupport', "Thanks for your support!"), { tagName: 'div', className: 'realminfo--supporter' }),
+										},
+									])),
+								]
+								: []
+							),
+
 						]),
 
 						// Description
@@ -182,28 +224,34 @@ class RealmInfoComponent {
 				]),
 
 				// Footer
-				n.elem('div', { className: 'realminfo--footer' }, [
-					n.elem('a', {
-						className: 'realminfo--footer-logo',
-						attributes: {
-							href: 'https://mucklet.com',
-						},
-					}, [
-						n.elem('img', {
-							className: 'realminfo--footer-logo-img',
-							attributes: { src: '/mucklet-logo.svg' },
-						}),
-						n.elem('span', { className: 'realminfo--footer-logo-text' }, [
-							n.text("mucklet.com"),
+				...(this.opt?.withFooter
+					? [
+						n.elem('div', { className: 'realminfo--footer' }, [
+							n.elem('a', {
+								className: 'realminfo--footer-logo',
+								attributes: {
+									href: 'https://mucklet.com',
+								},
+							}, [
+								n.elem('img', {
+									className: 'realminfo--footer-logo-img',
+									attributes: { src: '/mucklet-logo.svg' },
+								}),
+								n.elem('span', { className: 'realminfo--footer-logo-text' }, [
+									n.text("mucklet.com"),
+								]),
+							]),
 						]),
-					]),
-				]),
+					]
+					: []
+				),
 
 			]),
 
 		]));
-		let rel = this.elem.render(el);
-		return rel;
+
+		this.elem = new ResizeObserverComponent(content, this._onResize);
+		return this.elem.render(el);
 	}
 
 
@@ -212,6 +260,21 @@ class RealmInfoComponent {
 			this.elem.unrender();
 			this.elem = null;
 		}
+	}
+
+	_onResize(rect) {
+		let el = this.elem?.getComponent();
+		if (!el || !rect) return;
+
+		if (rect.width < narrowWidth) {
+			el.addClass('realminfo--narrow');
+		} else {
+			el.removeClass('realminfo--narrow');
+		}
+	}
+
+	_openSupporter() {
+		this.module.auth.redirectToHub('account#overview');
 	}
 }
 

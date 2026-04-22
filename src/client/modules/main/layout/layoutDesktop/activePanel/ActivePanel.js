@@ -42,7 +42,6 @@ class ActivePanel {
 				this.model.set({ resources });
 			}
 		});
-		this.info = this.module.info.getCore();
 
 		this.elem = new Elem(n => n.elem('div', { className: 'activepanel' }, [
 			n.component('charPanel', new Fader(null, { className: 'activepanel--charpanel' })),

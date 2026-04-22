@@ -23,29 +23,6 @@ class GreetingScreen {
 		this._showRealm();
 	}
 
-	// _showGreeting() {
-	// 	return fetch('/greeting/greeting.html')
-	// 		.then(response => {
-	// 			if (!response.ok) {
-	// 				throw new Err('greetingScreen.responseError', "{status} - {statusText}", { statusText: response.statusText, status: response.status });
-	// 			}
-	// 			return response.text();
-	// 		})
-	// 		.then(html => {
-	// 			this.module.screen.setComponent(new GreetingScreenComponent(this.module, html));
-	// 		})
-	// 		.catch(err => {
-	// 			console.error(err);
-	// 			// Fallback dialog
-	// 			this.module.screen.setComponent(new ConfirmScreenDialog({
-	// 				title: l10n.l('greetingScreen.welcome', "Welcome to {realmName}", { realmName: app.props.realm.name }),
-	// 				confirm: l10n.l('greetingScreen.gotToLogin', "Go to login"),
-	// 				body: l10n.l('greetingScreen.welcomeBody', "You are currently not logged in."),
-	// 				onConfirm: () => this.module.auth.redirectToLogin(true),
-	// 			}));
-	// 		});
-	// }
-
 	async _showRealm() {
 		try {
 			const resources = await this.module.realmInfo.getResources();
@@ -54,7 +31,10 @@ class GreetingScreen {
 				return;
 			}
 			this.resources = resources;
-			this.module.screen.setComponent(this.module.realmInfo.newRealmInfo(this.resources, { withSignIn: true }));
+			this.module.screen.setComponent(this.module.realmInfo.newRealmInfo(this.resources, {
+				withSignIn: true,
+				withFooter: true,
+			}));
 		} catch (err) {
 			if (this.resources) {
 				this.module.realmInfo.releaseResources();

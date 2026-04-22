@@ -2,7 +2,7 @@ import { Elem } from 'modapp-base-component';
 import { Collection, Model } from 'modapp-resource';
 import Fader from 'components/Fader';
 import compareSortOrderId from 'utils/compareSortOrderId';
-import MobileActivePanelPlaceholder from './MobileActivePanelPlaceholder';
+import MobileActivePanelRealm from './MobileActivePanelRealm';
 import './mobileActivePanel.scss';
 
 /**
@@ -20,6 +20,7 @@ class MobileActivePanel {
 			'roomPages',
 			'layout',
 			'charLog',
+			'realmInfo',
 		], this._init.bind(this));
 
 		// Bind callbacks
@@ -46,6 +47,15 @@ class MobileActivePanel {
 			eventBus: this.app.eventBus,
 		});
 		this.renderedOverlays = {};
+
+		this.model = new Model({ data: { resources: null }});
+		this.module.realmInfo.getResources().then(resources => {
+			if (!this.model) {
+				this.module.realmInfo.releaseResources();
+			} else {
+				this.model.set({ resources });
+			}
+		});
 
 		this.info = this.module.info.getCore();
 		this.isHidden = false;
@@ -153,7 +163,9 @@ class MobileActivePanel {
 		if (changed && !changed.hasOwnProperty('activeChar')) {
 			return;
 		}
-		this.module.layoutMobile.setMainComponent(this.playerModel.activeChar ? this : new MobileActivePanelPlaceholder(this.module, this.info));
+		this.module.layoutMobile.setMainComponent(this.playerModel.activeChar
+			? this
+			: new MobileActivePanelRealm(this.module, this.model));
 	}
 
 	_setModelIfMobile(charPanelOpen, roomPanelOpen) {
@@ -186,10 +198,10 @@ class MobileActivePanel {
 	dispose() {
 		this._setListeners(false);
 		this.module.layoutMobile.setMainComponent(null);
-		if (this.info) {
-			this.info.dispose();
-			this.info = null;
+		if (this.model?.resources) {
+			this.module.realmInfo.releaseResources();
 		}
+		this.model = null;
 	}
 }
 

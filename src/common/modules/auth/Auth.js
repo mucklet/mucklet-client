@@ -238,9 +238,9 @@ class Auth {
 	}
 
 
-	redirectToHub() {
+	redirectToHub(path) {
 		this._afterFade(() => {
-			redirect(hubUrl, true);
+			redirect(hubUrl + (path || '').replace(/^\/+/, ''), true);
 		});
 	}
 
