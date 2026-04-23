@@ -238,9 +238,13 @@ class Auth {
 	}
 
 
+	/**
+	 * Redirects to the hub page after fading out, optionally to a subpage path.
+	 * @param {string} [path] Sub page path. Leading slash is not required.
+	 */
 	redirectToHub(path) {
 		this._afterFade(() => {
-			redirect(hubUrl + (path || '').replace(/^\/+/, ''), true);
+			redirect(hubUrl + (path || '').replace(/^\/+/, ''), true, true);
 		});
 	}
 
