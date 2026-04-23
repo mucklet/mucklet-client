@@ -1,4 +1,4 @@
-import { Elem, Txt, Html } from 'modapp-base-component';
+import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import Img from 'components/Img';
 import l10n from 'modapp-l10n';
@@ -9,8 +9,10 @@ import socialLinks, { hasLink } from 'utils/socialLinks';
 import { getRenderingMode } from 'utils/renderingModes';
 import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import ModelCollapser from 'components/ModelCollapser';
+import FormatTxt from 'components/FormatTxt';
 
 const narrowWidth = 720;
+const txtAboutPlaceholder = l10n.t('realmInfo.aboutPlaceholder', "_This is a new realm yet to be described._");
 
 function formatNumber(n) {
 	if (typeof n != 'number') {
@@ -216,8 +218,8 @@ class RealmInfoComponent {
 						n.elem('div', { className: 'realminfo--desc' }, [
 							n.component(new ModelComponent(
 								this.info,
-								new Html("", { className: 'common--desc-size', mode: 'default' }),
-								(m, c) => c.setHtml(m.greeting),
+								new FormatTxt('', { className: 'common--desc-size', noInteraction: true }),
+								(m, c) => c.setFormatText(m.about || txtAboutPlaceholder),
 							)),
 						]),
 					]),

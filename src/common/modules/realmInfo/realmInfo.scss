@@ -168,6 +168,11 @@
 	&--desc {
 		grid-area: 2 / 1 / 3 / 2;
 		font-size: $font-size;
+
+		p {
+			margin: 0;
+			@include log-pad();
+		}
 	}
 
 
