@@ -458,8 +458,16 @@ class Router {
 
 			let title = setRoute.route.name;
 			let url = this.getUrl(setRoute.route, setRoute.params, { keepQuery: true });
+			let currentState = history.state;
+			let currentUrl = window.location.pathname + window.location.search + window.location.hash;
 
-			history.pushState(state, title, url);
+			if (currentUrl != url || currentState?.routeId !== state?.routeId || !obj.equal(currentState?.params, state?.params)) {
+				if (currentUrl == url) {
+					history.replaceState(state, title, url);
+				} else {
+					history.pushState(state, title, url);
+				}
+			}
 		}
 
 		/**

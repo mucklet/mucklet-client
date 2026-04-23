@@ -159,8 +159,8 @@
 	height: 28px;
 
 	> .fa, > * > .fa {
-		width: 16px;
-		font-size: 16px;
+		width: 14px;
+		font-size: 14px;
 	}
 	> .fa + *, > * > .fa + * {
 		padding-left: 10px;
@@ -201,6 +201,19 @@
 		width: 40px;
 		display: block;
 		margin: auto;
+	}
+}
+
+.iconbtn.semilarge {
+	font-size: 26px;
+	border-radius: 6px;
+	width: 42px;
+	height: 42px;
+	> i {
+		line-height: 42px;
+	}
+	&.svg > svg {
+		width: 26px;
 	}
 }
 

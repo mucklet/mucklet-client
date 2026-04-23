@@ -110,9 +110,19 @@ module.exports = function(ctx) {
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
 				chunkFilename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
+				ignoreOrder: true,
 			}),
 			new Webpack.DefinePlugin(Object.assign(ctx.jsonEncodeObject(ctx.siteConfig), {
 				APP_VERSION: JSON.stringify(ctx.pkg.version),
+				__SW_REALM_HASH__: JSON.stringify(ctx.siteConfig.APP_ISTEMPLATE
+					? '{{ with .Realm }}{{ .Hash | js }}{{ end }}'
+					: ''),
+				__SW_REALM_IMAGE__: JSON.stringify(ctx.siteConfig.APP_ISTEMPLATE
+					? '{{ with .Realm }}{{ .Image | js }}{{ end }}'
+					: ctx.siteConfig.APP_IMAGE?.id || ''),
+				__SW_REALM_ICON__: JSON.stringify(ctx.siteConfig.APP_ISTEMPLATE
+					? '{{ with .Realm }}{{ .Icon | js }}{{ end }}'
+					: ctx.siteConfig.APP_ICON?.id || ''),
 			})),
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,

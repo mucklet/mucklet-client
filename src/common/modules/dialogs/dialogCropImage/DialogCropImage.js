@@ -20,6 +20,7 @@ class DialogCropImage {
 	 * @param {function} onCrop Callback called on crop: function(dataUrl, croppiePoints)
 	 * @param {object} [opt] Optional parameters.
 	 * @param {boolean} [opt.withRenderingMode] Show option for selecting rendering mode (pixelated). Defaults to false.
+	 * @param {boolean} [opt.maskable] Adds a transparent circle to indicate the safe area for a maskable icon. Defaults to false.
 	 * @param {string|LocaleString} [opt.title] Title of the dialog. Defaults to "Crop image".
 	 * @param {string|LocaleString} [opt.submit] Submit button text. Defaults to "Upload image".
 	 * @param {object} [opt.viewport] Viewport.

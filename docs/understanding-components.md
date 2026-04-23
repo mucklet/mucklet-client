@@ -20,6 +20,23 @@ and unrendered:
 span.unrender();
 ```
 
+## Component lifecycle
+
+Calling `unrender()` removes a component from the DOM, but it should generally
+not be treated as final teardown or disposal. A component instance may be
+rendered again later.
+
+When working with components, keep these rules in mind:
+
+* `render()` / `unrender()` are to be reversible for the same instance.
+* `unrender()` should stop DOM bindings, listeners, timers, or similar work tied
+  to being rendered.
+* `unrender()` should not discard persistent state that is needed for a later
+  `render()`, unless `render()` will recreate that state.
+* If a component needs true one-way teardown, that should be handled by an
+  explicit dispose pattern rather than assuming `unrender()` means the instance
+  will never be used again.
+
 ## Modapp base components
 
 While the components system is just a simple interface, without any

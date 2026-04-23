@@ -17,6 +17,11 @@ const typeOrder = {
 	warn: 2,
 };
 
+/**
+ * Check if the tags model has any non-error tag.
+ * @param {Model | object} tags Tags model.
+ * @returns {boolean} True if any valid tag exists.
+ */
 export function hasTags(tags) {
 	if (tags) {
 		tags = tags.props ? tags.props : tags;

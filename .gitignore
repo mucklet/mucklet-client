@@ -5,6 +5,9 @@ node_modules
 # local config
 /webpack.alias.js
 /webpack.alias.js.*
+/cfg/client/module.config.local.js
+/cfg/client/site.config.local.js
+
 
 # production
 build

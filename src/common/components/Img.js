@@ -1,24 +1,84 @@
 import { anim } from 'modapp-utils';
 import { RootElem } from 'modapp-base-component';
+import { getRenderingMode } from 'utils/renderingModes';
 
-function whenImageLoaded(src, opt) {
-	return src
-		? new Promise((resolve, reject) => {
-			let im = new Image();
-			let clear = () => im = im.onerror = im.onabort = im.onload = null;
-			let onErr = ev => {
-				clear();
-				resolve({ src, url: opt?.errorPlaceholder || '', cl: opt?.errorClassName || null });
-			};
-			im.onload = ev => {
-				clear();
-				resolve({ src, url: src, cl: null });
-			};
-			im.onerror = onErr;
-			im.onabort = onErr;
-			im.src = src;
+const cleanupDelay = 5000;
+
+class LoadedImg {
+	constructor(src, url, cl, objectUrl) {
+		this.src = src;
+		this.url = url || '';
+		this.cl = cl || null;
+		this.objectUrl = objectUrl || null;
+	}
+}
+
+function errorResult(src, opt) {
+	return new LoadedImg(src, opt?.errorPlaceholder, opt?.errorClassName);
+}
+
+// revokeObjectUrl revokes the objectUrl unless it is the expectedObjectUrl.
+function revokeObjectUrl(objectUrl, expectedObjectUrl) {
+	if (objectUrl && objectUrl != expectedObjectUrl) {
+		URL.revokeObjectURL(objectUrl);
+	}
+}
+
+function preloadImage(src) {
+	return new Promise((resolve, reject) => {
+		let im = new Image();
+		let clear = () => im = im.onerror = im.onabort = im.onload = null;
+		let onErr = () => {
+			clear();
+			reject(new Error('imageLoadFailed'));
+		};
+		im.onload = () => {
+			clear();
+			resolve();
+		};
+		im.onerror = onErr;
+		im.onabort = onErr;
+		im.src = src;
+	});
+}
+
+function loadImage(src, opt) {
+	if (!src) {
+		return Promise.resolve(new LoadedImg(src, opt?.placeholder, opt?.placeholderClassName));
+	}
+
+	// If it is a data url, do not fetch.
+	if (!opt?.renderingHeader || src.match(/^(?:blob:|data:)/i)) {
+		return preloadImage(src).then(
+			() => new LoadedImg(src, src),
+			() => errorResult(src, opt),
+		);
+	}
+
+	return fetch(src, {
+		mode: 'cors',
+		credentials: opt?.crossOrigin != 'anonymous'
+			? 'include'
+			: 'same-origin',
+	})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('imageResponseError');
+			}
+
+			let mode = getRenderingMode(response.headers.get('Image-Rendering')?.trim().toLowerCase() || '');
+			return response.blob().then(blob => {
+				let objectUrl = URL.createObjectURL(blob);
+				return preloadImage(objectUrl).then(
+					() => new LoadedImg(src, objectUrl, mode.className, objectUrl),
+					(err) => {
+						revokeObjectUrl(objectUrl);
+						throw err;
+					},
+				);
+			});
 		})
-		: Promise.resolve({ src, url: opt?.placeholder || '', cl: opt?.placeholderClassName || null });
+		.catch(() => errorResult(src, opt));
 }
 
 /**
@@ -36,15 +96,18 @@ class Img extends RootElem {
 	 * @param {object} [opt.errorPlaceholder] Placeholder image to use on error.
 	 * @param {string} [opt.placeholderClassName] ClassName to add when using placeholder.
 	 * @param {string} [opt.errorClassName] ClassName to add on error.
+	 * @param {boolean} [opt.renderingHeader] Using header Image-Rendering to set rendering mode. Defaults to false.
+	 * @param {"anonymous"|"use-credentials"} [opt.crossOrigin] Cross origin mode. Defaults to "use-credentials" when using renderingHeader.
 	 */
 	constructor(src, opt) {
 		opt = Object.assign({}, opt);
 		super('img', opt);
 
 		this.animId = null;
-		this.current = null;
+		this.current = null; // Currently rendered result. Null if not rendered.
 		this.loadPromise = null;
 		this.loaded = null;
+		this.cleanupTimeout = null;
 		this.opt = opt;
 
 		this.setSrc(src);
@@ -60,27 +123,26 @@ class Img extends RootElem {
 
 		if (this.src === src) return this;
 
-		// Start loading image
 		this.src = src;
-		this.loaded = null;
-		this.loadPromise = whenImageLoaded(src, this.opt).then(result => {
-			// Make sure the image src hasn't changed while loading.
-			if (src === this.src) {
-				this.loaded = result;
-			}
-		});
-
 		let el = super.getElement();
-		if (!el) return this;
-
-		anim.stop(this.animId);
 
 		// Same src as currently showing? Fade it to visibility again.
-		if (this.current?.src === src && this.current?.url) {
+		if (el && this.current?.src === src && this.current?.url) {
+			// Release any objectUrl that we might have already loaded.
+			this._releaseLoaded();
+			this.loaded = this.current;
+			this.loadPromise = Promise.resolve(this.current);
+			anim.stop(this.animId);
 			this.animId = anim.fade(el, 1);
 			return this;
 		}
 
+		this._clearCleanupTimeout();
+		this._loadSrc(src);
+
+		if (!el) return this;
+
+		anim.stop(this.animId);
 		this.animId = anim.fade(el, 0, {
 			callback: () => {
 				if (this.src === src) {
@@ -101,18 +163,28 @@ class Img extends RootElem {
 
 	render(el) {
 		let e = super.render(el);
+		this._clearCleanupTimeout();
+
 		if (this.loaded && this.loaded?.src === this.src) {
 			this._setSrcAttr(this.loaded);
-		} else {
-			e.style.opacity = 0;
-			this._setCurrent();
+			return;
 		}
+
+		if (!this.loadPromise) {
+			this._loadSrc(this.src);
+		}
+
+		e.style.opacity = 0;
+		this._setCurrent();
 	}
 
 	unrender() {
 		anim.stop(this.animId);
 		super.unrender();
 		this.current = null;
+		if (this.loaded?.objectUrl) {
+			this._scheduleCleanup();
+		}
 	}
 
 	/**
@@ -150,9 +222,58 @@ class Img extends RootElem {
 				this._rootElem.addClass(next.cl);
 			}
 		}
+		revokeObjectUrl(prev?.objectUrl, next?.objectUrl);
+
 		this.current = next;
+	}
+
+	_loadSrc(src) {
+		this._releaseLoaded();
+		this.loaded = null;
+		this.loadPromise = loadImage(src, this.opt).then(result => {
+			// Make sure the image src is still the one we want to load
+			// and that it hasn't been loaded in another process.
+			if (src !== this.src || this.loaded?.src === src) {
+				// Revoke the objectUrl (unless it equals the loaded one).
+				revokeObjectUrl(result.objectUrl, this.loaded?.objectUrl);
+				return;
+			}
+			this.loaded = result;
+			// If we are not rendered, schedule a cleanup.
+			if (!super.getElement() && result.objectUrl) {
+				this._scheduleCleanup();
+			}
+			return result;
+		});
+	}
+
+	// Releases the loaded objectUrl, unless it is the current objectUrl.
+	_releaseLoaded() {
+		if (this.loaded) {
+			revokeObjectUrl(this.loaded.objectUrl, this.current?.objectUrl);
+		}
+	}
+
+	_clearCleanupTimeout() {
+		clearTimeout(this.cleanupTimeout);
+		this.cleanupTimeout = null;
+	}
+
+	_scheduleCleanup() {
+		this._clearCleanupTimeout();
+
+		let timeout = setTimeout(() => {
+			if (!this.cleanupTimeout || this.cleanupTimeout !== timeout) {
+				return;
+			}
+			revokeObjectUrl(this.loaded.objectUrl);
+			this.loaded = null;
+			this.loadPromise = null;
+			this.cleanupTimeout = null;
+		}, cleanupDelay);
+
+		this.cleanupTimeout = timeout;
 	}
 }
 
 export default Img;
-

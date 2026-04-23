@@ -1,6 +1,60 @@
 import { precacheAndRoute } from 'workbox-precaching';
 
-precacheAndRoute(self.__WB_MANIFEST);
+// Store template-driven revisions on self so bundling/minification does not
+// fold the checks before the template has been rendered by the server.
+self.__swRevisions = {
+	realmHash: __SW_REALM_HASH__,
+	realmImage: __SW_REALM_IMAGE__,
+	realmIcon: __SW_REALM_ICON__,
+};
+
+// Files to precache that are part of the webpack build, but might be overridden
+// with a different file by the web server.
+const revisionedFiles = {
+	// Image files
+	'favicon.ico': { key: 'realmIcon', append: false },
+	'img/realmicon-l.png': { key: 'realmIcon', append: false },
+	'img/realm.png': { key: 'realmImage', append: false },
+	// Templated files
+	'index.html': { key: 'realmHash', append: true },
+	'welcome/index.html': { key: 'realmHash', append: true },
+	'scripteditor/index.html': { key: 'realmHash', append: true },
+	'site.webmanifest': { key: 'realmHash', append: true },
+};
+
+// Files to precache that are not part of the webpack build, but provided by
+// the web server.
+const additionalFiles = [
+	// Currently no files
+];
+
+// Create manifest with revisioned files replaced
+const manifest = self.__WB_MANIFEST.map((entry) => {
+	const o = revisionedFiles[entry.url];
+	if (o) {
+		const revision = self.__swRevisions[o.key];
+		if (revision) {
+			return {
+				...entry,
+				revision: ((o.append && entry.revision) || '') + revision,
+			};
+		}
+	}
+	return entry;
+});
+
+// Add additional files to manifest
+for (const entry of additionalFiles) {
+	const revision = self.__swRevisions[entry.key];
+	if (revision) {
+		manifest.push({
+			url: entry.url,
+			revision,
+		});
+	}
+}
+
+precacheAndRoute(manifest);
 
 const SW_VERSION = '1';
 

@@ -14,5 +14,5 @@ const renderingModes = [
 export default renderingModes;
 
 export function getRenderingMode(mode) {
-	return modes[mode] || modes[smooth];
+	return modes[mode] || modes.smooth;
 }

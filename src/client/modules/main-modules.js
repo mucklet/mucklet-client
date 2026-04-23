@@ -8,6 +8,7 @@ import VerifyEmail from 'modules/verifyEmail/VerifyEmail';
 import DialogChangeEmail from 'modules/dialogs/dialogChangeEmail/DialogChangeEmail';
 import DialogChangePassword from 'modules/dialogs/dialogChangePassword/DialogChangePassword';
 import DialogCropImage from 'modules/dialogs/dialogCropImage/DialogCropImage';
+import RealmInfo from 'modules/realmInfo/RealmInfo';
 
 const modules = {
 	viewport: Viewport,
@@ -20,6 +21,7 @@ const modules = {
 	dialogChangeEmail: DialogChangeEmail,
 	dialogChangePassword: DialogChangePassword,
 	dialogCropImage: DialogCropImage,
+	realmInfo: RealmInfo,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);
