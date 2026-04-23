@@ -13,6 +13,8 @@ self.__swRevisions = {
 const revisionedFiles = {
 	// Image files
 	'favicon.ico': { key: 'realmIcon', append: false },
+	'img/realmicon-l.png': { key: 'realmIcon', append: false },
+	'img/realm.png': { key: 'realmImage', append: false },
 	// Templated files
 	'index.html': { key: 'realmHash', append: true },
 	'welcome/index.html': { key: 'realmHash', append: true },
@@ -23,8 +25,7 @@ const revisionedFiles = {
 // Files to precache that are not part of the webpack build, but provided by
 // the web server.
 const additionalFiles = [
-	{ url: 'img/realmicon-l.png', key: 'realmIcon' },
-	{ url: 'img/realm.png', key: 'realmImage' },
+	// Currently no files
 ];
 
 // Create manifest with revisioned files replaced

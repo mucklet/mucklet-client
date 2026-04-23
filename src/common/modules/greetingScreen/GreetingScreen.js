@@ -40,9 +40,10 @@ class GreetingScreen {
 				this.module.realmInfo.releaseResources();
 			}
 			console.error(err);
+			let realmName = this.app.props.realm?.name || l10n.t('greetingScreen.thisRealm', "this realm");
 			// Fallback dialog
 			this.module.screen.setComponent(new ConfirmScreenDialog({
-				title: l10n.l('greetingScreen.welcome', "Welcome to {realmName}", { realmName: app.props.realm.name }),
+				title: l10n.l('greetingScreen.welcome', "Welcome to {realmName}", { realmName }),
 				confirm: l10n.l('greetingScreen.gotToLogin', "Go to login"),
 				body: l10n.l('greetingScreen.welcomeBody', "You are currently not logged in."),
 				onConfirm: () => this.module.auth.redirectToLogin(true),

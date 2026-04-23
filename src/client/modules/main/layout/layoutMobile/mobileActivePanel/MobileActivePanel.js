@@ -39,6 +39,7 @@ class MobileActivePanel {
 		this.model = new Model({ data: {
 			charPanelOpen: false,
 			roomPanelOpen: false,
+			resources: null,
 		}, eventBus: this.app.eventBus });
 
 		this.overlays = new Collection({
@@ -48,7 +49,6 @@ class MobileActivePanel {
 		});
 		this.renderedOverlays = {};
 
-		this.model = new Model({ data: { resources: null }});
 		this.module.realmInfo.getResources().then(resources => {
 			if (!this.model) {
 				this.module.realmInfo.releaseResources();
