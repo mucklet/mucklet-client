@@ -100,6 +100,12 @@ class RouteTaskRunsTaskRun {
 						filter: m => !!m.done,
 						component: new ModelTxt(this.taskRun, m => formatDuration(m.done - m.started)),
 					},
+					// Params
+					{
+						title: l10n.l('routeTaskRuns.params', "Params"),
+						filter: m => !!m.params,
+						component: new ModelTxt(this.taskRun, m => JSON.stringify(m.params), { className: 'params' }),
+					},
 				], {
 					filter: m => m.filter ? m.filter(this.taskRun) : true,
 				}),
