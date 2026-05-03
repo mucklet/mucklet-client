@@ -13,9 +13,10 @@
 			"type": "image/png"
 		},
 		{
-			"src": ${ ICON_SITEICON_SVG_PATH },
-			"sizes": "any",
-			"type": "image/svg+xml"
+			"src": ${ ICON_512x512_PNG_PATH },
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
 		}
 	],
 	"theme_color": "#252a40",

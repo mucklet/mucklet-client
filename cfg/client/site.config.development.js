@@ -3,9 +3,11 @@
 module.exports = {
 	APP_ISTEMPLATE: false,
 	APP_VERSION: '0', // Overwritten by version in package.json
-	APP_TITLE: "Dev Wolfery",
+	APP_TITLE: "Dev Realm",
 	APP_DESCRIPTION: "A textual world of role play. Create a character, wake them up, and join in.",
 	APP_ROOT: '/',
+	APP_IMAGE: null,
+	APP_ICON: null,
 
 	API_HOST_PATH: 'ws://localhost:8080/',
 	API_WEBRESOURCE_PATH: 'http://localhost:8080/api/',

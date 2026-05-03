@@ -15,11 +15,11 @@ module.exports = function(ctx) {
 		let cfg = ctx.siteConfig;
 		let fields = cfg.APP_ISTEMPLATE
 			? {
-				APP_NAME: () => `"{{ with .Realm }}{{ .Name | js }}{{ else }}Mucklet realm{{ end }}"`,
-				APP_DESC: () => `"{{ with .Realm }}{{ .Desc | js }}{{ else }}A textual world of roleplay.{{ end }}"`,
-				ICON_192x192_PNG_PATH: () => `"{{ .RootURL | js}}android-chrome-192x192.png"`,
-				ICON_512x512_PNG_PATH: () => `"{{ .RootURL | js }}android-chrome-512x512.png"`,
-				ICON_SITEICON_SVG_PATH: () => `"{{ .RootURL | js }}siteicon.svg"`,
+				APP_NAME: () => `"{{ with .Realm }}{{ .Name | json }}{{ else }}Mucklet realm{{ end }}"`,
+				APP_DESC: () => `"{{ with .Realm }}{{ .Desc | json }}{{ else }}A textual world of roleplay.{{ end }}"`,
+				ICON_192x192_PNG_PATH: () => `"{{ .RootURL | json}}android-chrome-192x192.png"`,
+				ICON_512x512_PNG_PATH: () => `"{{ .RootURL | json }}android-chrome-512x512.png"`,
+				ICON_SITEICON_SVG_PATH: () => `"{{ .RootURL | json }}siteicon.svg"`,
 			}
 			: {
 				APP_NAME: () => JSON.stringify(cfg.APP_TITLE),
@@ -110,9 +110,19 @@ module.exports = function(ctx) {
 			new MiniCssExtractPlugin({
 				filename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
 				chunkFilename: ctx.devMode ? '[name].css' : '[name].[contenthash:8].css',
+				ignoreOrder: true,
 			}),
 			new Webpack.DefinePlugin(Object.assign(ctx.jsonEncodeObject(ctx.siteConfig), {
 				APP_VERSION: JSON.stringify(ctx.pkg.version),
+				__SW_REALM_HASH__: ctx.siteConfig.APP_ISTEMPLATE
+					? '"{{ with .Realm }}{{ .Hash | json }}{{ end }}"'
+					: '',
+				__SW_REALM_IMAGE__: ctx.siteConfig.APP_ISTEMPLATE
+					? '"{{ with .Realm }}{{ .Image | json }}{{ end }}"'
+					: JSON.stringify(ctx.siteConfig.APP_IMAGE?.id || ''),
+				__SW_REALM_ICON__: ctx.siteConfig.APP_ISTEMPLATE
+					? '"{{ with .Realm }}{{ .Icon | json }}{{ end }}"'
+					: JSON.stringify(ctx.siteConfig.APP_ICON?.id || ''),
 			})),
 			new GenerateJsonPlugin('info.json', {
 				version: ctx.pkg.version,

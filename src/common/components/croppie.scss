@@ -248,3 +248,15 @@ background: #ccc;
 .cr-rotate-r i:before {
 	content: '↻';
 }
+
+.croppie--maskable {
+	.cr-viewport::after {
+		content: '';
+		position: absolute;
+		inset: 10%;
+		border: 2px solid #ffffff40;
+		border-radius: 50%;
+		box-sizing: border-box;
+		pointer-events: none;
+	}
+}

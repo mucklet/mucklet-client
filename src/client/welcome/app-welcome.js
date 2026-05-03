@@ -5,6 +5,7 @@ import Api from 'modules/api/Api';
 import Auth from 'modules/auth/Auth';
 import Screen from 'modules/screen/Screen';
 import GreetingScreen from 'modules/greetingScreen/GreetingScreen';
+import RealmInfo from 'modules/realmInfo/RealmInfo';
 
 import 'scss/index.scss';
 
@@ -13,6 +14,7 @@ const modules = {
 	auth: Auth,
 	screen: Screen,
 	greetingScreen: GreetingScreen,
+	realmInfo: RealmInfo,
 };
 
 // Create app and load core modules

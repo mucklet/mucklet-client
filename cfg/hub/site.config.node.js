@@ -19,5 +19,5 @@ module.exports = {
 
 	REALM_LOGIN_PATH: 'auth/oauth2/login',
 
-	HUB_PATH: 'http://localhost:6460/',
+	HUB_PATH: 'http://mucklet.localhost/',
 };

@@ -1,7 +1,9 @@
 import GreetingScreen from 'modules/greetingScreen/GreetingScreen';
+import RealmInfo from 'modules/realmInfo/RealmInfo';
 
 const modules = {
 	greetingScreen: GreetingScreen,
+	realmInfo: RealmInfo,
 };
 
 const req = require.context("./greeting/", true, /^\..*\/([^/]*)\/\1.js$/i);

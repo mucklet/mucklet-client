@@ -1,6 +1,7 @@
 import { Elem, Txt, Context, Input, Textarea } from 'modapp-base-component';
 import { ModifyModel, CollectionWrapper } from 'modapp-resource';
 import { ModelComponent, CollectionList, ModelTxt } from 'modapp-resource-component';
+import { equal as objEqual } from 'modapp-utils/obj';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import PageHeader from 'components/PageHeader';
@@ -12,6 +13,7 @@ import FileButton from 'components/FileButton';
 import ImgModal from 'classes/ImgModal';
 import renderingModes from 'utils/renderingModes';
 import ProjectState from 'components/ProjectState';
+import socialLinks from 'utils/socialLinks';
 
 /**
  * RouteRealmSettingsRealm draws the settings form for a realm.
@@ -180,6 +182,8 @@ class RouteRealmSettingsRealm {
 									(dataUrl, points, mode) => this._setIcon(file, points, mode),
 									{
 										withRenderingMode: true,
+										maskable: true,
+										footer: new Txt(l10n.l('routeRealmSettings.maskedIconInfo', "Keep important artwork within the safe area circle."), { className: 'routerealmsettings-realm--maskediconinfo' }),
 									},
 								),
 								{ className: 'btn medium icon-left' },
@@ -281,6 +285,35 @@ class RouteRealmSettingsRealm {
 						className: 'common--sectionpadding',
 						noToggle: true,
 						popupTip: l10n.l('routeRealmSettings.searchVisibilityInfo', "Hidden realms will not showing up among the results when players searches for realms."),
+					},
+				)),
+
+				// Social links
+				n.component(new PanelSection(
+					l10n.l('routeRealmSettings.socialLinks', "Social links"),
+					new Elem(n => n.elem('table', { className: 'routerealmsettings-realm--medialinks' }, socialLinks.map(o => n.elem('tr', [
+						n.elem('td', [
+							n.component(new Txt(o.name)),
+						]),
+						n.elem('td', [
+							n.component(new ModelComponent(
+								realm,
+								new Input("", {
+									events: {
+										input: c => {
+											let links = { ...realm.links, [o.id]: c.getValue() };
+											realm.set({ links: objEqual(links, this.realm.links) ? this.realm.links : links });
+										},
+									},
+									attributes: { name: 'routerealmsettings-name', spellcheck: 'false' },
+								}),
+								(m, c) => c.setValue(m.links[o.id] || ''),
+							)),
+						]),
+					])))),
+					{
+						className: 'common--sectionpadding',
+						noToggle: true,
 					},
 				)),
 
