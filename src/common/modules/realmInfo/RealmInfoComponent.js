@@ -218,7 +218,7 @@ class RealmInfoComponent {
 						n.elem('div', { className: 'realminfo--desc' }, [
 							n.component(new ModelComponent(
 								this.info,
-								new FormatTxt('', { className: 'common--desc-size', noInteraction: true }),
+								new FormatTxt('', { className: 'common--desc-size' }),
 								(m, c) => c.setFormatText(m.about || txtAboutPlaceholder),
 							)),
 						]),
