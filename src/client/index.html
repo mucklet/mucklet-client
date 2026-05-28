@@ -134,6 +134,13 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 		return toHex(hslToRgb(hsl));
 	}
 
+	function alpha(color, opacity) {
+		var rgb = toRgb(color);
+		return rgb
+			? 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', ' + opacity + ')'
+			: null;
+	}
+
 	function mix(color1, color2, weight) {
 		var c1 = toRgb(color1);
 		var c2 = toRgb(color2);
@@ -184,6 +191,8 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 	set('--theme-color-danger-active', adjust(danger, -16));
 	set('--theme-color-action-hover', adjust(action, -8));
 	set('--theme-color-action-active', adjust(action, -16));
+	set('--theme-color-badge-highlight', alpha(adjust(base, 22, 8), 0.5));
+	set('--theme-color-badge-highlight-hover', alpha(adjust(base, 19, 8), 0.5));
 
 	set('--theme-log-error', mix(danger, muted, 70));
 	set('--theme-log-cmd', accent);

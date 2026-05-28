@@ -65,6 +65,9 @@ $color-google-active: darken($color-google, 16%);
 $color-paypal-hover: darken($color-paypal, 8%);
 $color-paypal-active: darken($color-paypal, 16%);
 
+$theme-color-badge-highlight-default: rgba(lighten(saturate($color1, 8%), 22%), 0.5);
+$theme-color-badge-highlight-hover-default: darken($theme-color-badge-highlight-default, 3%);
+
 $theme-color-base-light: var(--theme-color-base-light, #{$color1-light});
 $theme-color-base-lighter: var(--theme-color-base-lighter, #{$color1-lighter});
 $theme-color-base-lightest: var(--theme-color-base-lightest, #{$color1-lightest});
@@ -83,6 +86,8 @@ $theme-color-danger-hover: var(--theme-color-danger-hover, #{darken($color5, 8%)
 $theme-color-danger-active: var(--theme-color-danger-active, #{darken($color5, 16%)});
 $theme-color-action-hover: var(--theme-color-action-hover, #{$color6-hover});
 $theme-color-action-active: var(--theme-color-action-active, #{$color6-active});
+$theme-color-badge-highlight: var(--theme-color-badge-highlight, #{$theme-color-badge-highlight-default});
+$theme-color-badge-highlight-hover: var(--theme-color-badge-highlight-hover, #{$theme-color-badge-highlight-hover-default});
 
 /* Log colors */
 $log-error: #9a593e;
