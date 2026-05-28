@@ -8,6 +8,16 @@ module.exports = {
 	APP_ROOT: '/',
 	APP_IMAGE: null,
 	APP_ICON: null,
+	APP_THEME: {
+		colors: {
+			base: '#161926',
+			accent: '#c1a657',
+			contrast: '#fffcf2',
+			muted: '#93969f',
+			danger: '#c96036',
+			action: '#4a9fc3',
+		},
+	},
 
 	API_HOST_PATH: 'ws://localhost:8080/',
 	API_WEBRESOURCE_PATH: 'http://localhost:8080/api/',

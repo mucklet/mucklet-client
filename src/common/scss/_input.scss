@@ -1,35 +1,35 @@
 
 input, textarea, .input--textarea {
-	background: $color1-lightest;
+	background: $theme-color-base-lightest;
 	font-size: $font-size;
 	font-family: $font-text;
 	border: none;
 	padding: 8px;
 	border-radius: 4px;
-	color: $color3;
+	color: $theme-color-contrast;
 	width: 100%;
 
 	&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: $color1-placeholder-light;
+		color: $theme-color-base-placeholder-light;
 		opacity: 1; /* Firefox */
 	}
 	&:-ms-input-placeholder { /* Internet Explorer 10-11 */
-		color: $color1-placeholder-light;
+		color: $theme-color-base-placeholder-light;
 	}
 	&::-ms-input-placeholder { /* Microsoft Edge */
-		color: $color1-placeholder-light;
+		color: $theme-color-base-placeholder-light;
 	}
 }
 
 input, textarea {
 	&:focus {
 		outline: 0;
-		box-shadow: 0 0 4px 1px $color2;
+		box-shadow: 0 0 4px 1px $theme-color-accent;
 	}
 }
 
 .input--incomplete {
-	color: $color4-light;
+	color: $theme-color-muted-light;
 }
 
 input[type='text'], textarea {
@@ -42,16 +42,16 @@ input.autocomplete {
 	&:autofill:focus,
 	&:autofill:active {
 		font-size: $font-size;
-		color: mix($color6, $color3, 80%) !important;
-		background: $color1-lightest !important;
+		color: $theme-log-bot !important;
+		background: $theme-color-base-lightest !important;
 	}
 
 	&:-webkit-autofill,
 	&:-webkit-autofill:hover,
 	&:-webkit-autofill:focus,
 	&:-webkit-autofill:active {
-		-webkit-text-fill-color: mix($color6, $color3, 80%);
-		-webkit-box-shadow: 0 0 0 32px $color1-lightest inset !important;
+		-webkit-text-fill-color: $theme-log-bot;
+		-webkit-box-shadow: 0 0 0 32px $theme-color-base-lightest inset !important;
 		transition: background-color 5000s ease-in-out 0s;
 		border-radius: 4px !important;
 	}

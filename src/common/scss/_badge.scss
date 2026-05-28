@@ -3,7 +3,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 .badge {
 	width: 100%;
 	border: none;
-	background: $color1;
+	background: $theme-color-base;
 	color: $white;
 	padding: 4px;
 	border-radius: 8px;
@@ -13,7 +13,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	}
 
 	&.dark {
-		background: $color1-dark;
+		background: $theme-color-base-dark;
 	}
 
 	&.inactive {
@@ -54,7 +54,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 
 	&--symbol {
 		font-size: $font-size-tiny;
-		color: $color4;
+		color: $theme-color-muted;
 		flex: 0 0 auto;
 		align-self: center;
 	}
@@ -66,8 +66,8 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 			line-height: 32px;
 		}
 		transition: 0.2s color, 0.2s background-color;
-		color: $color4;
-		background: $color1-lighter;
+		color: $theme-color-muted;
+		background: $theme-color-base-lighter;
 
 		&.smallicon {
 			font-size: 18px;
@@ -137,12 +137,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	}
 
 	&--text {
-		color: $color4;
+		color: $theme-color-muted;
 	}
 
 	&--title {
 		font-size: $font-size-tiny + 1px;
-		color: $color2;
+		color: $theme-color-accent;
 	}
 
 	&--micro {
@@ -150,19 +150,19 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	}
 
 	&--subtitle {
-		color: $color2;
+		color: $theme-color-accent;
 	}
 
 	&--strong {
-		color: $color3;
+		color: $theme-color-contrast;
 	}
 
 	&--highlight {
-		color: $log-instance;
+		color: $theme-log-instance;
 	}
 
 	&--error {
-		color: $color5;
+		color: $theme-color-danger;
 	}
 
 	&--strikethrough {
@@ -175,7 +175,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 
 	&--divider {
 		margin-top: 6px;
-		border-top: 1px solid $color1-lightest;
+		border-top: 1px solid $theme-color-base-lightest;
 		padding-bottom: 4px;
 	}
 
@@ -269,4 +269,3 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		}
 	}
 }
-

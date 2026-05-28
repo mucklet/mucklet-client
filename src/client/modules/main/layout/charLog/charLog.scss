@@ -37,35 +37,35 @@
 
 	// Colors
 	&--strong {
-		color: $color3;
+		color: $theme-color-contrast;
 	}
 
 	&--cmd {
-		color: $log-cmd;
+		color: $theme-log-cmd;
 	}
 
 	&--error {
-		color: $log-error;
+		color: $theme-log-error;
 	}
 
 	&--listitem {
-		color: $log-listitem;
+		color: $theme-log-listitem;
 	}
 
 	&--default {
-		color: $color4;
+		color: $theme-color-muted;
 	}
 
 	&--ooc {
-		color: $color4-dark;
+		color: $theme-color-muted-dark;
 	}
 
 	&--comm {
-		color: $color4-lightest;
+		color: $theme-color-muted-lightest;
 	}
 
 	&--placeholder {
-		color: $color4-dark;
+		color: $theme-color-muted-dark;
 		font-style: italic;
 	}
 
@@ -75,7 +75,7 @@
 
 	// Should have higher priority than the others.
 	&--char {
-		color: $log-listitem;
+		color: $theme-log-listitem;
 	}
 
 
@@ -96,15 +96,15 @@
 	// Common styling
 	&--fieldset {
 		position: relative;
-		border: 1px solid $color4-dark;
+		border: 1px solid $theme-color-muted-dark;
 		padding: 5px 10px;
 		border-radius: 8px;
 	}
 
 	&--fieldset-label {
-		color: $color4;
+		color: $theme-color-muted;
 		position: absolute;
-		background: $color1;
+		background: $theme-color-base;
 		top: -1px;
 		height: 2px;
 		left: 16px;
@@ -120,7 +120,7 @@
 
 	&--tag {
 		font-size: $font-size-tiny;
-		color: $color4;
+		color: $theme-color-muted;
 		position: absolute;
 		margin-left: -1em;
 		margin-top: -13px;
@@ -134,11 +134,11 @@
 	&--code-simple {
 		font-size: $font-size-small;
 		font-family: $font-code;
-		color: $color2;
+		color: $theme-color-accent;
 	}
 
 	&--source {
-		color: $log-text;
+		color: $theme-log-text;
 		font-family: $font-code;
 	}
 
@@ -146,7 +146,7 @@
 		font-style: normal;
 		font-size: $font-size-small;
 		padding: 6px 10px;
-		background: $color1-dark;
+		background: $theme-color-base-dark;
 		border-radius: 8px;
 
 		h4 {
@@ -161,10 +161,10 @@
 		code {
 			font-size: $font-size-small;
 			font-family: $font-code;
-			color: $color2;
+			color: $theme-color-accent;
 
 			em {
-				color: $color6;
+				color: $theme-color-action;
 				font-style: normal;
 			}
 		}
@@ -172,16 +172,16 @@
 		.opt {
 			&::before {
 				content: "[";
-				color: $color4-dark;
+				color: $theme-color-muted-dark;
 			}
 			&::after {
 				content: "]";
-				color: $color4-dark;
+				color: $theme-color-muted-dark;
 			}
 		}
 
 		.param {
-			color: $log-listitem;
+			color: $theme-log-listitem;
 			&::before {
 				content: "<";
 			}
@@ -191,7 +191,7 @@
 		}
 
 		.comment {
-			color: $color4;
+			color: $theme-color-muted;
 		}
 
 		sup {
@@ -225,25 +225,25 @@
 	}
 
 	&--info {
-		color: $color4-dark;
+		color: $theme-color-muted-dark;
 		padding-top: 4px;
 	}
 
 	&--title {
 		padding: 6px 0 2px 0;
-		color: $color3-dark;
+		color: $theme-color-contrast-dark;
 		padding-top: 4px;
 	}
 
 	&--card {
 		position: relative;
-		background: $log-card;
+		background: $theme-log-card;
 		padding: 5px 11px;
 		border-radius: 8px;
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $color1-lightest;
+		background-color: $theme-color-base-lightest;
 	}
 }
 
@@ -252,11 +252,11 @@
 	right: 0px;
 	top: 0px;
 
-	@include btn-style(rgba($color1, 0.8), $color1-lighter, $color1-lightest, $color4, $color4-light);
+	@include btn-style(rgba($color1, 0.8), $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
 
 	&--menu {
 		position: absolute;
-		background: $color1-lighter;
+		background: $theme-color-base-lighter;
 		min-width: 100px;
 		// min-height: 100px;
 		box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.65);
@@ -278,7 +278,7 @@
 		width: 100%;
 		transition: color 0.2s, background-color 0.2s;
 		cursor: pointer;
-		@include btn-style(none, $color1-lightest, $color1-lightest, $color4-light, $color4-lighter);
+		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
 	}
 
 	&--btnicon {
@@ -306,4 +306,3 @@
 		opacity: 1;
 	}
 }
-
