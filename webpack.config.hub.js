@@ -9,6 +9,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = function(ctx) {
+	const baseColor = ctx.siteConfig.BASE_COLOR || '#161926';
 
 	// Get policies
 	let policiesHtmlPlugins = [];
@@ -79,12 +80,14 @@ module.exports = function(ctx) {
 			new HtmlWebpackPlugin({
 				template: path.resolve(ctx.srcPath, 'index.html'),
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'app' ],
 			}),
 			...pages.map(page => new HtmlWebpackPlugin({
 				filename: page + '/index.html',
 				template: path.resolve(ctx.srcPath, page + '/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ page ],
 			})),
 			...policiesHtmlPlugins,

@@ -9,6 +9,8 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
 
 module.exports = function(ctx) {
+	const baseColor = ctx.siteConfig.BASE_COLOR || '#161926';
+
 	// transformSitemap looks for ${ NAME | MOD } patterns in a text, and replaces
 	// them with the preset content.
 	function transformSitemap(content, path) {
@@ -93,18 +95,21 @@ module.exports = function(ctx) {
 				template: path.resolve(ctx.srcPath, 'index.html'),
 				filename: 'index.html',
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'app' ],
 			}),
 			new HtmlWebpackPlugin({
 				filename: 'welcome/index.html',
 				template: path.resolve(ctx.srcPath, 'welcome/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'welcome' ],
 			}),
 			new HtmlWebpackPlugin({
 				filename: 'scripteditor/index.html',
 				template: path.resolve(ctx.srcPath, 'scripteditor/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'scripteditor' ],
 			}),
 			new MiniCssExtractPlugin({
