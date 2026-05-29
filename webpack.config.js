@@ -10,6 +10,21 @@ const disableServiceWorker = !!process.env.DISABLE_SERVICEWORKER;
 const devMode = env != 'production';
 const commonPath = path.resolve(__dirname, 'src/common/');
 
+// Default colors
+//
+// These may be overridden by site.config.*.js:
+//   APP_COLORS: { base: '#00ff00' }
+//
+// The colors are injected into sass as '$default-theme-color-*'
+const defaultColors = {
+	base: '#161926',
+	accent: '#c1a657',
+	contrast: '#fffcf2',
+	muted: '#93969f',
+	danger: '#c96036',
+	action: '#4a9fc3',
+};
+
 function jsonEncodeObject(o) {
 	let jo = {};
 	for (let k in o) {
@@ -31,6 +46,12 @@ function resolveFirstExistingFile(filePath, files) {
 	return p;
 }
 
+function sassColorVariables(colors = {}) {
+	return Object.keys(colors)
+		.map(k => `$default-theme-color-${k}: ${colors[k]};`)
+		.join('\n');
+}
+
 const apps = [ 'client', 'hub' ];
 let appExports = [];
 for (let app of apps) {
@@ -50,6 +71,8 @@ for (let app of apps) {
 		'site.config.js',
 	]);
 	ctx.siteConfig = require(siteConfigPath);
+	// Set default app colors
+	ctx.siteConfig.APP_COLORS = Object.assign({}, defaultColors, ctx.siteConfig.APP_COLORS);
 
 	// Resolve module config file path
 	let moduleConfigPath = resolveFirstExistingFile(ctx.cfgPath, [
@@ -112,7 +135,12 @@ for (let app of apps) {
 					use: [
 						MiniCssExtractPlugin.loader,
 						'css-loader',
-						'sass-loader',
+						{
+							loader: 'sass-loader',
+							options: {
+								additionalData: sassColorVariables(ctx.siteConfig.APP_COLORS),
+							},
+						},
 					],
 				},
 			],

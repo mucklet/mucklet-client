@@ -9,7 +9,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = function(ctx) {
-	const baseColor = ctx.siteConfig.BASE_COLOR || '#161926';
+	const baseColor = ctx.siteConfig.APP_COLORS?.base;
 
 	// Get policies
 	let policiesHtmlPlugins = [];

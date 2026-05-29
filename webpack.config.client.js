@@ -9,7 +9,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
 
 module.exports = function(ctx) {
-	const baseColor = ctx.siteConfig.BASE_COLOR || '#161926';
+	const baseColor = ctx.siteConfig.APP_COLORS.base;
 
 	// transformSitemap looks for ${ NAME | MOD } patterns in a text, and replaces
 	// them with the preset content.

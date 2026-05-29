@@ -8,12 +8,14 @@ $font-size-micro: 11px;
 /* Colors */
 $white: #fff;
 $black: #000;
-$default-theme-color-base: rgba(22, 25, 38, 1);
-$default-theme-color-accent: rgba(193, 166, 87, 1);
-$default-theme-color-contrast: rgba(255, 252, 242, 1);
-$default-theme-color-muted: lighten(rgba(125, 129, 140, 1), 8%);
-$default-theme-color-danger: rgba(201, 96, 54, 1);
-$default-theme-color-action: #4a9fc3;
+
+// The following colors are injected from webpack.config.js
+// $default-theme-color-base
+// $default-theme-color-accent
+// $default-theme-color-contrast
+// $default-theme-color-muted
+// $default-theme-color-danger
+// $default-theme-color-action
 
 $theme-color-base: var(--mu-color-base, #{$default-theme-color-base});
 $theme-color-accent: var(--mu-color-accent, #{$default-theme-color-accent});
