@@ -7,7 +7,7 @@
 
 	&--dir-icons {
 		padding-right: 4px;
-		border-right: solid 1px $color1-dark;
+		border-right: solid 1px $color-base-dark;
 	}
 	&--misc-icons {
 		padding-left: 4px;
@@ -17,11 +17,11 @@
 		padding: 0 2px 2px 0;
 
 		> .iconbtn {
-			@include btn-style(none, $color1-lighter, $color1-lighter, $color4-dark, $color4-semidark);
+			@include btn-style(none, $color-base-lighter, $color-base-lighter, $color-muted-dark, $color-muted-semidark);
 		}
 
 		> .iconbtn.active {
-			@include btn-style($color6, $color6-hover, $color6-hover, $color1-light, $color1-lighter);
+			@include btn-style($color-action, $color-action-hover, $color-action-hover, $color-base-light, $color-base-lighter);
 		}
 	}
 }

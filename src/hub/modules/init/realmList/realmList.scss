@@ -47,12 +47,12 @@
 	}
 	&--tip {
 		font-size: $font-size;
-		color: $color4-dark;
+		color: $color-muted-dark;
 
 		> code {
 			display: inline-block;
 			padding: 3px 5px;
-			background: $color1-dark;
+			background: $color-base-dark;
 			border-radius: 8px;
 		}
 	}
@@ -61,7 +61,7 @@
 .realmlist-realm {
 
 	position: relative;
-	background-color: $color1-light;
+	background-color: $color-base-light;
 	box-shadow: 0px 3px 6px #00000029;
 	border-radius: 16px;
 	height: 100%;
@@ -114,7 +114,7 @@
 		align-items: center;
 		flex: 1 1 0px;
 		font-family: $font-text;
-		color: $color3;
+		color: $color-contrast;
 		font-size: 24px;
 		line-height: 24px;
 	}
@@ -136,7 +136,7 @@
 		padding-right: 10px;
 
 		.simplebar-scrollbar::before {
-		background-color: $color1-lightest;
+		background-color: $color-base-lightest;
 		}
 	}
 
@@ -177,7 +177,7 @@
 	}
 
 	&--dot {
-		background: $color4;
+		background: $color-muted;
 		display: inline-block;
 		width: 10px;
 		height: 10px;
@@ -187,7 +187,7 @@
 		vertical-align: middle;
 		margin-right: 10px;
 		&.highlight {
-			background: $color6;
+			background: $color-action;
 		}
 	}
 }
@@ -208,7 +208,7 @@
 .realmlist-placeholder {
 
 	position: relative;
-	background-color: $color1-light;
+	background-color: $color-base-light;
 	box-shadow: 0px 3px 6px #00000029;
 	border-radius: 16px;
 	height: 100%;
@@ -221,7 +221,7 @@
 	}
 
 	&--img {
-		background-color: $color1;
+		background-color: $color-base;
 		border-radius: 10px;
 		width: 100%;
 		aspect-ratio: 16 / 9;
@@ -239,7 +239,7 @@
 		> span.word {
 			display: inline-block;
 			height: 26px;
-			background: $color1-lighter;
+			background: $color-base-lighter;
 			border-radius: 4px;
 		}
 	}
@@ -255,7 +255,7 @@
 		width: 48px;
 		height: 48px;
 		border-radius: 10px;
-		background-color: $color1;
+		background-color: $color-base;
 	}
 
 	&--title-cont {
@@ -277,7 +277,7 @@
 		> span.word {
 			display: inline-block;
 			height: 22px;
-			background: $color4-darker;
+			background: $color-muted-darker;
 			border-radius: 4px;
 		}
 	}
@@ -298,7 +298,7 @@
 		> span.word {
 			display: block;
 			height: 18px;
-			background: $color1-lighter;
+			background: $color-base-lighter;
 			border-radius: 4px;
 		}
 	}
@@ -329,12 +329,12 @@
 		display: inline-block;
 		width: 6em;
 		height: 10px;
-		background: $color1-lighter;
+		background: $color-base-lighter;
 		border-radius: 2px;
 	}
 
 	&--dot {
-		background: $color1-lighter;
+		background: $color-base-lighter;
 		display: inline-block;
 		width: 10px;
 		height: 10px;

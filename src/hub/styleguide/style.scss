@@ -68,46 +68,46 @@
 		}
 
 		&.color1 {
-			color: $color3;
-			background: $color1;
+			color: $color-contrast;
+			background: $color-base;
 			.sub1 {
-				background: $color1-light;
+				background: $color-base-light;
 			}
 			.sub2 {
-				background: $color1-lighter;
+				background: $color-base-lighter;
 			}
 			.sub3 {
-				background: $color1-lightest;
+				background: $color-base-lightest;
 			}
 		}
 		&.color2 {
 			color: $black;
-			background: $color2;
+			background: $color-accent;
 		}
 		&.color3 {
 			color: $black;
-			background: $color3;
+			background: $color-contrast;
 		}
 		&.color4 {
 			color: $black;
-			background: $color4;
+			background: $color-muted;
 			.sub1 {
-				background: $color4-light;
+				background: $color-muted-light;
 			}
 			.sub2 {
-				background: $color4-lighter;
+				background: $color-muted-lighter;
 			}
 			.sub3 {
-				background: $color4-lightest;
+				background: $color-muted-lightest;
 			}
 		}
 		&.color5 {
 			color: $black;
-			background: $color5;
+			background: $color-danger;
 		}
 		&.color6 {
 			color: $black;
-			background: $color6;
+			background: $color-action;
 		}
 	}
 
@@ -129,7 +129,7 @@
 	&--font {
 		margin-bottom: 20px;
 		padding: 20px 0px;
-		background: $color1-light;
+		background: $color-base-light;
 		display: flex;
 		flex-direction: row;
 	}
@@ -138,19 +138,19 @@
 		padding: 0 20px;
 		flex: 1 1 0px;
 		&.amatic {
-			color: $color2;
+			color: $color-accent;
 			font-family: $font-header;
 			font-size: 30px;
 			line-height: 36px;
 		}
 		&.opensans {
-			color: $color4-light;
+			color: $color-muted-light;
 			font-family: $font-text;
 			font-size: 18px;
 			line-height: 30px;
 		}
 		&.consolas {
-			color: $color6;
+			color: $color-action;
 			font-family: $font-code;
 			font-size: 18px;
 			line-height: 30px;
@@ -161,7 +161,7 @@
 		font-size: $font-size-small;
 		padding: 0 20px;
 		flex: 1 1 0px;
-		border-left: 1px solid $color2;
+		border-left: 1px solid $color-accent;
 	}
 
 	&--icons {

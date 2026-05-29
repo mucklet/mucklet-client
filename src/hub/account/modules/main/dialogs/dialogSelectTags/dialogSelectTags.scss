@@ -37,23 +37,23 @@
 
 	&--type- {
 		&genre {
-			color: $color6;
+			color: $color-action;
 			&:hover {
-				color: $color6-hover;
+				color: $color-action-hover;
 			}
 		}
 
 		&theme {
-			color: $color4;
+			color: $color-muted;
 			&:hover {
-				color: $color4-lighter;
+				color: $color-muted-lighter;
 			}
 		}
 
 		&warn {
-			color: $color5;
+			color: $color-danger;
 			&:hover {
-				color: $color5-light;
+				color: $color-danger-light;
 			}
 		}
 	}

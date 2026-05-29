@@ -11,9 +11,9 @@ $charlog-labelpad: 8px;
 }
 
 .ev- {
-	// color: $color4-dark; // Info, OOC
-	// color: $color4; // Events (default)
-	// color: $color4-lightest; // Communication
+	// color: $color-muted-dark; // Info, OOC
+	// color: $color-muted; // Events (default)
+	// color: $color-muted-lightest; // Communication
 
 	&error, &errorComponent, &localError {
 		color: $log-error;
@@ -56,7 +56,7 @@ $charlog-labelpad: 8px;
 		&--room {
 			padding: 16px 0 4px 0;
 			font-size: $font-size;
-			color: $color2;
+			color: $color-accent;
 		}
 	}
 }

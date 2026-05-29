@@ -1,6 +1,6 @@
 .counter, .counter-standalone {
 	pointer-events: none;
-	background: $color4;
+	background: $color-muted;
 	color: $black;
 	height: 16px;
 	min-width: 16px;
@@ -26,11 +26,11 @@
 	}
 
 	&.alert {
-		background: $color5;
+		background: $color-danger;
 	}
 
 	&.highlight {
-		background: $color6;
+		background: $color-action;
 	}
 
 	&.small {

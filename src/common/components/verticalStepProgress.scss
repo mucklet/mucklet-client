@@ -27,40 +27,40 @@
 			left: -36px;
 			width: 12px;
 			height: 12px;
-			border: 2px solid $color1-lightest;
+			border: 2px solid $color-base-lightest;
 			border-radius: 50%;
-			background-color: $color1;
+			background-color: $color-base;
 		}
 
 		&.completed::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $color6;
-			background-color: $color6;
+			border: 2px solid $color-action;
+			background-color: $color-action;
 		}
 		&.warning::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $color2;
-			background-color: $color2;
+			border: 2px solid $color-accent;
+			background-color: $color-accent;
 		}
 		&.error::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $color5;
-			background-color: $color5;
+			border: 2px solid $color-danger;
+			background-color: $color-danger;
 		}
 	}
 
 	> *:not(:last-child) {
 		.verticalstepprogress--step {
 			&::before {
-				border-left: 2px solid $color1-lightest;
+				border-left: 2px solid $color-base-lightest;
 			}
 
 			&.nextcompleted {
 				&::before {
-					border-left: 2px solid $color6;
+					border-left: 2px solid $color-action;
 				}
 			}
 		}

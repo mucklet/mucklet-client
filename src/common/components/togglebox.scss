@@ -2,7 +2,7 @@
 
 .togglebox {
 	display: inline-block;
-	border: 4px solid $color4;
+	border: 4px solid $color-muted;
 	background: transparent;
 	border-radius: 3px;
 	padding: 0;
@@ -30,15 +30,15 @@
 }
 
 .togglebox.value-1 > div {
-	background: $color6;
+	background: $color-action;
 	&:hover:not(:disabled) {
-		background: lighten($color6, 5%);
+		background: lighten($color-action, 5%);
 	}
 }
 
 .togglebox.value-2 > div {
-	background: $color5;
+	background: $color-danger;
 	&:hover:not(:disabled) {
-		background: lighten($color5, 5%);
+		background: lighten($color-danger, 5%);
 	}
 }

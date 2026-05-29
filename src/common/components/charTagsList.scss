@@ -22,8 +22,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 6px 4px 4px;
-		color: $color4;
-		border: 1px solid $color4;
+		color: $color-muted;
+		border: 1px solid $color-muted;
 		border-radius: 4px;
 		border-left: 13px solid;
 
@@ -31,7 +31,7 @@
 			font-family: FontAwesome;
 			font-style: normal;
 			position: absolute;
-			color: $color1;
+			color: $color-base;
 			left: -11px;
 			font-size: 10px;
 		}
@@ -41,16 +41,16 @@
 		}
 
 		&.dislike {
-			color: $color5;
-			border-color: $color5;
+			color: $color-danger;
+			border-color: $color-danger;
 			&::before {
 				content: "\f05e";
 			}
 		}
 
 		&.title {
-			color: $color6;
-			border-color: $color6;
+			color: $color-action;
+			border-color: $color-action;
 			&::before {
 				content: "\f132";
 				left: -10px;
@@ -70,17 +70,17 @@
 			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 
 			&:hover {
-				color: $color4-lighter;
-				border-color: $color4-lighter;
+				color: $color-muted-lighter;
+				border-color: $color-muted-lighter;
 				&.dislike {
-					color: $color5-light;
-					border-color: $color5-light;
+					color: $color-danger-light;
+					border-color: $color-danger-light;
 				}
 				&.title {
-					color: $color6-hover;
-					border-color: $color6-hover;
+					color: $color-action-hover;
+					border-color: $color-action-hover;
 				}
-				// background: $color1;
+				// background: $color-base;
 			}
 		}
 	}
@@ -97,7 +97,7 @@
 		width: 17px;
 		height: 17px;
 		text-align: center;
-		@include btn-style(none, $color1-lightest, $color1-lightest, $color4, $color4-light);
+		@include btn-style(none, $color-base-lightest, $color-base-lightest, $color-muted, $color-muted-light);
 		> i {
 			line-height: 15px;
 		}

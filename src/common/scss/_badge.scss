@@ -208,12 +208,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
-			background: darken($color1, 3%);
+			background: darken($color-base, 3%);
 			&.highlight {
 				background: darken($color-highlight, 3%);
 			}
 			&.dark {
-				background: darken($color1-dark, 2%);
+				background: darken($color-base-dark, 2%);
 			}
 		}
 	}

@@ -1,0 +1,12 @@
+/* Colors used by hub only */
+$color-success: #458136;
+
+/* Brand colors */
+$color-google:#d9534f;
+$color-paypal: #0070ba;
+
+/* Variants */
+$color-google-hover: darken($color-google, 8%);
+$color-google-active: darken($color-google, 16%);
+$color-paypal-hover: darken($color-paypal, 8%);
+$color-paypal-active: darken($color-paypal, 16%);

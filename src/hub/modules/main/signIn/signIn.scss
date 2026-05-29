@@ -9,7 +9,7 @@
 	column-gap: 24px;
 
 	&--headerbtn.btn, &--headerbtn.iconbtn {
-		@include btn-style($color1, $color1-light, $color1-lighter, $color4-light, $color4-lightest);
+		@include btn-style($color-base, $color-base-light, $color-base-lighter, $color-muted-light, $color-muted-lightest);
 	}
 
 	&--helpbtn {
@@ -22,7 +22,7 @@
 		font-size: 20px;
 	}
 	&--joinbtn, &--loginbtn {
-		// color: $color1 !important;
+		// color: $color-base !important;
 		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%) !important;
 		padding: 4px 18px;
 		min-width: 120px;
@@ -50,7 +50,7 @@
 	flex-direction: column;
 	row-gap: 8px;
 
-	background: $color1;
+	background: $color-base;
 	animation-name: signin-menu-appear;
 	animation-duration: 0.3s;
 	transform-origin: 100% 0%;
@@ -63,8 +63,8 @@
 	&--logout, &--item {
 		display: block;
 		padding: 8px 16px 8px 12px;
-		background: $color1;
-		color: $color4-lightest;
+		background: $color-base;
+		color: $color-muted-lightest;
 		cursor: pointer;
 		-webkit-transition: color 0.2s, background-color 0.2s;
 		-ms-transition: color 0.2s, background-color 0.2s;
@@ -73,8 +73,8 @@
 
 
 		&:hover {
-			background: $color1-lighter;
-			color: $color4-lightestest;
+			background: $color-base-lighter;
+			color: $color-muted-lightestest;
 		}
 	}
 

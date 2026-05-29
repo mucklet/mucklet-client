@@ -21,7 +21,7 @@
 
 
 .tbl-hr, .tbl thead, .tbl-small thead {
-	border-bottom: 1px solid $color1-lighter;
+	border-bottom: 1px solid $color-base-lighter;
 }
 
 .tbl-nomargin {
@@ -35,5 +35,5 @@
 }
 
 .tbl-header {
-	color: $color3;
+	color: $color-contrast;
 }

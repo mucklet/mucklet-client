@@ -2,7 +2,7 @@
 
 .listemailusers {
 	&--deleted > code {
-		color: $color4;
+		color: $color-muted;
 	}
 	&--banned > code {
 		color: $log-error;

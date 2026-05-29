@@ -43,10 +43,10 @@
 
 		&:hover, &:focus {
 			.pageawake--showall-line {
-				background: $color4-lighter;
+				background: $color-muted-lighter;
 			}
 			.pageawake--showall-icon {
-				color: $color4-lighter;
+				color: $color-muted-lighter;
 			}
 		}
 	}
@@ -55,21 +55,21 @@
 		height: 1px;
 		margin-right: 4px;
 		margin-bottom: 1px; // aligning with icon
-		background: $color4;
+		background: $color-muted;
 		transition: background-color 0.2s;
 	}
 	&--showall-icon {
-		color: $color4;
+		color: $color-muted;
 		flex: 0 0 auto;
 		transition: color 0.2s;
 	}
 
 	&--unwatched {
 		padding-top: 4px;
-		// border-top: 1px solid $color2;
+		// border-top: 1px solid $color-accent;
 		// > *:first-child {
 		// 	padding-top: 4px;
-		// 	border-top: 1px solid $color2;
+		// 	border-top: 1px solid $color-accent;
 		// }
 	}
 
@@ -82,7 +82,7 @@
 	}
 
 	&--filter-clear.iconbtn {
-		@include btn-style(none, $color1-lighter, $color1-lightest, $color4-light, $color4-lighter);
+		@include btn-style(none, $color-base-lighter, $color-base-lightest, $color-muted-light, $color-muted-lighter);
 		position: absolute;
 		right: 3px;
 		top: 3px;
@@ -126,7 +126,7 @@
 	}
 
 	&--status {
-		color: mix($color4, $color2, 20%);
+		color: mix($color-muted, $color-accent, 20%);
 		font-style: italic;
 	}
 }

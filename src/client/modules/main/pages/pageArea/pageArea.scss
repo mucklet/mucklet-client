@@ -32,7 +32,7 @@
 		position: relative;
 		top: -8px;
 		font-size: $font-size-tiny;
-		color: $color4;
+		color: $color-muted;
 		cursor: help;
 	}
 
@@ -51,7 +51,7 @@
 		transition: 0.5s border;
 
 		&.inlocation {
-			border-left: 4px solid $color2;
+			border-left: 4px solid $color-accent;
 		}
 	}
 
@@ -62,7 +62,7 @@
 	&.selected {
 		.btn.badge {
 			&:not(:disabled) {
-				background: darken($color1, 3%);
+				background: darken($color-base, 3%);
 			}
 		}
 	}
@@ -148,17 +148,17 @@
 		width: 28px;
 		height: 28px;
 		border-radius: 50%;
-		border: 14px solid rgba($color5, 0.6);
+		border: 14px solid rgba($color-danger, 0.6);
 		box-shadow: inset 0px 0px 6px 1px #000, 0px 0px 6px 2px #000;
 
 		&.current {
 			width: 48px;
 			height: 48px;
-			border: 6px solid rgba($color5, 0.6);
+			border: 6px solid rgba($color-danger, 0.6);
 		}
 
 		&.selected {
-			border-color: rgba($color5, 0.8);
+			border-color: rgba($color-danger, 0.8);
 		}
 	}
 }

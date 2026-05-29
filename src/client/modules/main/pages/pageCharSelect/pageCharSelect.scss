@@ -11,11 +11,11 @@
 		> .btn {
 			background: none;
 			width: 100%;
-			border: dashed 2px $color4;
+			border: dashed 2px $color-muted;
 
 			&:hover, &:focus {
-				color: $color4-lighter;
-				background: $color1-light;
+				color: $color-muted-lighter;
+				background: $color-base-light;
 			}
 
 			> .fa {
@@ -33,7 +33,7 @@
 	padding: 3px 0;
 
 	&.suspended .pagecharselect-char--title {
-		color: $color5;
+		color: $color-danger;
 	}
 }
 
@@ -41,6 +41,6 @@
 	padding: 3px 0;
 
 	.suspended {
-		color: $color5;
+		color: $color-danger;
 	}
 }

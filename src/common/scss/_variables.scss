@@ -10,93 +10,78 @@ $white: #fff;
 $black: #000;
 
 // The following colors are injected from webpack.config.js
-// $default-theme-color-base
-// $default-theme-color-accent
-// $default-theme-color-contrast
-// $default-theme-color-muted
-// $default-theme-color-danger
-// $default-theme-color-action
+// $color-base
+// $color-accent
+// $color-contrast
+// $color-muted
+// $color-danger
+// $color-action
 
-$theme-color-base: var(--mu-color-base, #{$default-theme-color-base});
-$theme-color-accent: var(--mu-color-accent, #{$default-theme-color-accent});
-$theme-color-contrast: var(--mu-color-contrast, #{$default-theme-color-contrast});
-$theme-color-muted: var(--mu-color-muted, #{$default-theme-color-muted});
-$theme-color-danger: var(--mu-color-danger, #{$default-theme-color-danger});
-$theme-color-action: var(--mu-color-action, #{$default-theme-color-action});
-
-$color1: $default-theme-color-base;
-$color2: $default-theme-color-accent;
-$color3: $default-theme-color-contrast;
-$color4: $default-theme-color-muted;
-$color5: $default-theme-color-danger;
-$color6: $default-theme-color-action;
-$green: #458136;
-/* Other brands */
-$color-google:#d9534f;
-$color-paypal: #0070ba;
 /* Shadow */
 $shadow: rgba(0, 0, 0, 0.3);
 
 /* Variants */
-$color1-light: lighten($color1, 4%);
-$color1-lighter: lighten($color1, 8%);
-$color1-lightest: lighten($color1, 14%);
-$color1-placeholder: desaturate(lighten($color1, 24%), 15%);
-$color1-placeholder-light: desaturate(lighten($color1, 34%), 15%);
-$color1-dark: darken($color1, 4%);
+$color-base-light: lighten($color-base, 4%);
+$color-base-lighter: lighten($color-base, 8%);
+$color-base-lightest: lighten($color-base, 14%);
+$color-base-placeholder: desaturate(lighten($color-base, 24%), 15%);
+$color-base-placeholder-light: desaturate(lighten($color-base, 34%), 15%);
+$color-base-dark: darken($color-base, 4%);
 
-$color4-light: lighten($color4, 4%);
-$color4-lighter: lighten($color4, 8%);
-$color4-lightest: lighten($color4, 16%);
-$color4-lightestest: lighten($color4, 20%);
+$color-muted-light: lighten($color-muted, 4%);
+$color-muted-lighter: lighten($color-muted, 8%);
+$color-muted-lightest: lighten($color-muted, 16%);
+$color-muted-lightestest: lighten($color-muted, 20%);
+$color-muted-semidark: darken($color-muted, 8%);
+$color-muted-dark: darken($color-muted, 16%);
+$color-muted-darker: darken($color-muted, 24%);
 
-$color4-semidark: darken($color4, 8%);
-$color4-dark: darken($color4, 16%);
-$color4-darker: darken($color4, 24%);
+$color-contrast-dark: darken($color-contrast, 16%);
 
-$color3-dark: darken($color3, 16%);
+$color-danger-light: lighten($color-danger, 6%);
+$color-danger-dark: darken($color-danger, 10%);
 
-$color5-light: lighten($color5, 6%);
-$color5-dark: darken($color5, 10%);
+$color-action-hover: darken($color-action, 8%);
+$color-action-active: darken($color-action, 16%);
 
-$color6-hover: darken($color6, 8%);
-$color6-active: darken($color6, 16%);
+// Var wrapped colors
+$theme-color-base: var(--mu-color-base, #{$color-base});
+$theme-color-accent: var(--mu-color-accent, #{$color-accent});
+$theme-color-contrast: var(--mu-color-contrast, #{$color-contrast});
+$theme-color-muted: var(--mu-color-muted, #{$color-muted});
+$theme-color-danger: var(--mu-color-danger, #{$color-danger});
+$theme-color-action: var(--mu-color-action, #{$color-action});
 
-$color-google-hover: darken($color-google, 8%);
-$color-google-active: darken($color-google, 16%);
-$color-paypal-hover: darken($color-paypal, 8%);
-$color-paypal-active: darken($color-paypal, 16%);
+$theme-color-base-light: var(--mu-color-base-light, #{$color-base-light});
+$theme-color-base-lighter: var(--mu-color-base-lighter, #{$color-base-lighter});
+$theme-color-base-lightest: var(--mu-color-base-lightest, #{$color-base-lightest});
+$theme-color-base-dark: var(--mu-color-base-dark, #{$color-base-dark});
+$theme-color-base-placeholder-light: var(--mu-color-base-placeholder-light, #{$color-base-placeholder-light});
 
-$theme-color-base-light: var(--mu-color-base-light, #{$color1-light});
-$theme-color-base-lighter: var(--mu-color-base-lighter, #{$color1-lighter});
-$theme-color-base-lightest: var(--mu-color-base-lightest, #{$color1-lightest});
-$theme-color-base-dark: var(--mu-color-base-dark, #{$color1-dark});
-$theme-color-base-placeholder-light: var(--mu-color-base-placeholder-light, #{$color1-placeholder-light});
+$theme-color-muted-light: var(--mu-color-muted-light, #{$color-muted-light});
+$theme-color-muted-lighter: var(--mu-color-muted-lighter, #{$color-muted-lighter});
+$theme-color-muted-lightest: var(--mu-color-muted-lightest, #{$color-muted-lightest});
+$theme-color-muted-dark: var(--mu-color-muted-dark, #{$color-muted-dark});
+$theme-color-muted-darker: var(--mu-color-muted-darker, #{$color-muted-darker});
 
-$theme-color-muted-light: var(--mu-color-muted-light, #{$color4-light});
-$theme-color-muted-lighter: var(--mu-color-muted-lighter, #{$color4-lighter});
-$theme-color-muted-lightest: var(--mu-color-muted-lightest, #{$color4-lightest});
-$theme-color-muted-dark: var(--mu-color-muted-dark, #{$color4-dark});
-$theme-color-muted-darker: var(--mu-color-muted-darker, #{$color4-darker});
-
-$theme-color-contrast-dark: var(--mu-color-contrast-dark, #{$color3-dark});
-$theme-color-danger-light: var(--mu-color-danger-light, #{$color5-light});
-$theme-color-danger-hover: var(--mu-color-danger-hover, #{darken($color5, 8%)});
-$theme-color-danger-active: var(--mu-color-danger-active, #{darken($color5, 16%)});
-$theme-color-action-hover: var(--mu-color-action-hover, #{$color6-hover});
-$theme-color-action-active: var(--mu-color-action-active, #{$color6-active});
+$theme-color-contrast-dark: var(--mu-color-contrast-dark, #{$color-contrast-dark});
+$theme-color-danger-light: var(--mu-color-danger-light, #{$color-danger-light});
+$theme-color-danger-hover: var(--mu-color-danger-hover, #{darken($color-danger, 8%)});
+$theme-color-danger-active: var(--mu-color-danger-active, #{darken($color-danger, 16%)});
+$theme-color-action-hover: var(--mu-color-action-hover, #{$color-action-hover});
+$theme-color-action-active: var(--mu-color-action-active, #{$color-action-active});
 
 /* Log colors */
 $log-error: #9a593e;
-$log-cmd: $color2;
-$log-attr: $color2;
-$log-listitem: mix($color6, $color4, 50%);
-$log-delim: $color4;
-$log-text: $color4-lightest;
-$log-entityid: $color4-lightest;
-$log-bot: mix($color6, $color3, 80%);
-$log-instance: mix($color6, $color4, 60%);
-$log-card: mix($color2, $color1, 10%);
+$log-cmd: $color-accent;
+$log-attr: $color-accent;
+$log-listitem: mix($color-action, $color-muted, 50%);
+$log-delim: $color-muted;
+$log-text: $color-muted-lightest;
+$log-entityid: $color-muted-lightest;
+$log-bot: mix($color-action, $color-contrast, 80%);
+$log-instance: mix($color-action, $color-muted, 60%);
+$log-card: mix($color-accent, $color-base, 10%);
 
 $theme-log-error: var(--mu-log-error, #{$log-error});
 $theme-log-cmd: var(--mu-log-cmd, #{$log-cmd});

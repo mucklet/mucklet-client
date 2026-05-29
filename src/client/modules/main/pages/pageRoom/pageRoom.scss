@@ -8,7 +8,7 @@
 		position: relative;
 		top: -8px;
 		font-size: $font-size-tiny;
-		color: $color4;
+		color: $color-muted;
 	}
 
 	&--tools {
@@ -39,7 +39,7 @@
 	&--name {
 		padding: 10px 0 4px 0;
 		font-family: $font-text;
-		color: $color3;
+		color: $color-contrast;
 		font-size: 20px;
 	}
 
@@ -79,7 +79,7 @@
 		text-align: left;
 		white-space: pre;
 		font-size: $font-size-tiny;
-		color: $color4-lighter;
+		color: $color-muted-lighter;
 		line-height: 18px;
 	}
 
@@ -99,12 +99,12 @@
 		@include transition(border 0.5s);
 
 		&.looking {
-			border-left: 4px solid $color2;
+			border-left: 4px solid $color-accent;
 		}
 	}
 
 	&--looking {
-		color: $color4-light;
+		color: $color-muted-light;
 		font-size: $font-size-tiny;
 		position: absolute;
 		top: 4px;
@@ -136,7 +136,7 @@
 	}
 
 	&--status {
-		color: mix($color4, $color2, 20%);
+		color: mix($color-muted, $color-accent, 20%);
 		font-style: italic;
 	}
 }

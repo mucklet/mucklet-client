@@ -252,7 +252,7 @@
 	right: 0px;
 	top: 0px;
 
-	@include btn-style(rgba($color1, 0.8), $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
+	@include btn-style(rgba($color-base, 0.8), $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
 
 	&--menu {
 		position: absolute;

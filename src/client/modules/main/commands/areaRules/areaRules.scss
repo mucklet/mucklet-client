@@ -5,7 +5,7 @@
 	@include log-pad(huge);
 
 	&--areaname {
-		color: $color3;
+		color: $color-contrast;
 		font-size: $font-size;
 	}
 

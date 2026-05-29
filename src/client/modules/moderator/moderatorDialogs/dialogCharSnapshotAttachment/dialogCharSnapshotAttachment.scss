@@ -18,12 +18,12 @@
 	&--notset {
 		font-style: italic;
 		font-size: $font-size;
-		color: $color4-dark;
+		color: $color-muted-dark;
 	}
 
 	&--fullname {
 		font-family: $font-text;
-		color: $color3;
+		color: $color-contrast;
 		font-size: $font-size-large;
 		line-height: 24px;
 	}
@@ -34,7 +34,7 @@
 	}
 
 	&--image, &--avatar {
-		background: $color1-lighter;
+		background: $color-base-lighter;
 	}
 
 	&--imagebtn {

@@ -15,7 +15,7 @@ const commonPath = path.resolve(__dirname, 'src/common/');
 // These may be overridden by site.config.*.js:
 //   APP_COLORS: { base: '#00ff00' }
 //
-// The colors are injected into sass as '$default-theme-color-*'
+// The colors are injected into sass as '$color-*'
 const defaultColors = {
 	base: '#161926',
 	accent: '#c1a657',
@@ -48,7 +48,7 @@ function resolveFirstExistingFile(filePath, files) {
 
 function sassColorVariables(colors = {}) {
 	return Object.keys(colors)
-		.map(k => `$default-theme-color-${k}: ${colors[k]};`)
+		.map(k => `$color-${k}: ${colors[k]};`)
 		.join('\n');
 }
 

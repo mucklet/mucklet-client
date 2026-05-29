@@ -1,7 +1,7 @@
 @import '~scss/variables';
 
 .autocomplete {
-	color: $color4-darker;
+	color: $color-muted-darker;
 	background: white;
 	z-index: 1000;
 	font-size: $font-size;
@@ -31,19 +31,19 @@
 	}
 
 	> div:hover:not(.group) {
-		background: lighten($color6, 20%);
+		background: lighten($color-action, 20%);
 	}
 
 	> div.selected {
-		background: lighten($color6, 30%);
+		background: lighten($color-action, 30%);
 		cursor: pointer;
 	}
 }
 
 .autocomplete.autocomplete-dark {
-	color: $color4;
+	color: $color-muted;
 	background: $black;
-	border: 1px solid $color2;
+	border: 1px solid $color-accent;
 
 	> div > em {
 		font-weight: bold;
@@ -51,17 +51,17 @@
 	}
 
 	.group {
-		background: $color1-dark;
+		background: $color-base-dark;
 	}
 
 	> div:hover:not(.group) {
-		background: $color1;
+		background: $color-base;
 	}
 
 	> div.selected {
-		background: $color1-light;
+		background: $color-base-light;
 		&:hover {
-			background: $color1-lighter;
+			background: $color-base-lighter;
 		}
 	}
 }

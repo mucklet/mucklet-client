@@ -12,7 +12,7 @@
 	}
 
 	&--message {
-		color: $color5;
+		color: $color-danger;
 	}
 
 	&--disclaimer {
@@ -39,6 +39,6 @@
 	&--email {
 		display: inline-block;
 		font-family: $font-text;
-		color: $color3;
+		color: $color-contrast;
 	}
 }

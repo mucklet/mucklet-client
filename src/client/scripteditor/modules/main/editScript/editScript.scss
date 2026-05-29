@@ -13,7 +13,7 @@
 
 	&--header {
 		flex: 0 0 auto;
-		background-color: $color1-lighter;
+		background-color: $color-base-lighter;
 		position: relative;
 		width: 100%;
 	}
@@ -48,10 +48,10 @@
 		}
 	}
 	&--headerinfo-room {
-		color: $color3;
+		color: $color-contrast;
 	}
 	&--headerinfo-key {
-		color: $color4;
+		color: $color-muted;
 	}
 
 	&--headerbuttons {
@@ -88,7 +88,7 @@
 	}
 
 	&--erroricon {
-		color: $color5;
+		color: $color-danger;
 	}
 
 	&--update.btn {
@@ -114,11 +114,11 @@
 	.cm-editor {
 		width: 100%;
 		height: 100%;
-		background: $color1;
+		background: $color-base;
 	}
 	.cm-scroller {
 		overflow: auto;
-		scrollbar-color: $color1-lightest transparent;
+		scrollbar-color: $color-base-lightest transparent;
 		&::-webkit-scrollbar {
 			width: 12px;
 			height: 12px;
@@ -128,24 +128,24 @@
 			background-color: transparent;
 		}
 		&::-webkit-scrollbar-track {
-			background: $color1;
+			background: $color-base;
 		}
 		&::-webkit-scrollbar-thumb {
-			background: $color1-lightest;
-			border: 2px solid $color1;
+			background: $color-base-lightest;
+			border: 2px solid $color-base;
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar-thumb:hover {
-			background: lighten($color1, 18%);
+			background: lighten($color-base, 18%);
 		}
 	}
 	.cm-gutters {
-		color: $color4-darker;
-		background-color: $color1;
+		color: $color-muted-darker;
+		background-color: $color-base;
 		border: none;
 	}
 	.cm-activeLineGutter {
-		background-color: $color1-light;
+		background-color: $color-base-light;
 	}
 	.cm-lineNumbers .cm-gutterElement {
 		padding-right: 12px;
@@ -153,40 +153,40 @@
 
 	// Style
 	&--keyword {
-		color: $color2;
+		color: $color-accent;
 	}
 	&--name {
-		color: $color3;
+		color: $color-contrast;
 	}
 	&--variable {
-		color: $color3;
+		color: $color-contrast;
 	}
 	&--constant {
-		color: $color3;
+		color: $color-contrast;
 	}
 	&--separator {
-		color: $color3;
+		color: $color-contrast;
 	}
 	&--type {
-		color: $color2;
+		color: $color-accent;
 	}
 	&--operator {
-		color: $color4;
+		color: $color-muted;
 	}
 	&--comment {
-		color: $color4-dark;
+		color: $color-muted-dark;
 	}
 	&--link {
-		color: $color6;
+		color: $color-action;
 	}
 	&--heading {
-		color: $color2;
+		color: $color-accent;
 	}
 	&--bool {
-		color: $color2;
+		color: $color-accent;
 	}
 	&--string {
-		color: $color6;
+		color: $color-action;
 	}
 	&--invalid {
 		color: $log-error;
@@ -195,13 +195,13 @@
 
 .editscript-errors {
 	height: 8em;
-	background-color: $color1-lighter;
+	background-color: $color-base-lighter;
 	padding: 8px 48px 16px 16px;
 	position: relative;
 
 
 	&--cont {
-		background: $color1;
+		background: $color-base;
 		border-radius: 4px;
 		position: relative;
 		height: 100%;
@@ -215,7 +215,7 @@
 	&--text {
 		font-family: $font-code;
 		font-size: $font-size-small;
-		color: $color5;
+		color: $color-danger;
 		white-space: pre;
 	}
 

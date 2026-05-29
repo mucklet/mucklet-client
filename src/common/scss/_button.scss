@@ -99,10 +99,6 @@
 	@include btn-style($theme-color-danger, $theme-color-danger-hover, $theme-color-danger-active, $black, $black);
 }
 
-.btn.google {
-	@include btn-style($color-google, $color-google-hover, $color-google-active, $white, $white);
-}
-
 .btn.light, .iconbtn.light {
 	@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
 }

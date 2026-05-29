@@ -14,12 +14,12 @@
 	}
 
 	&--badge > .btn.badge, &--toggle.iconbtn {
-		box-shadow: 0px 0px 8px 4px $color1;
+		box-shadow: 0px 0px 8px 4px $color-base;
 		height: 28px;
-		background: $color1-lighter;
+		background: $color-base-lighter;
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: lighten($color1-lighter, 3%);
+				background: lighten($color-base-lighter, 3%);
 			}
 		}
 	}
@@ -57,7 +57,7 @@
 .overlaynav-area {
 	padding-left: 4px;
 	&--map {
-		box-shadow: 0px 0px 8px 4px $color1;
+		box-shadow: 0px 0px 8px 4px $color-base;
 	}
 }
 

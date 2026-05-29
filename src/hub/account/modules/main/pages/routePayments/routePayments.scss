@@ -1,21 +1,22 @@
 @import '~scss/variables';
+@import '~scss/hubvariables';
 @import '~scss/mixins';
 
 
 .routepayments {
 	&--product {
 		font-family: $font-text;
-		color: $color3;
+		color: $color-contrast;
 		font-size: $font-size-large;
 	}
 
 	&--cost, &--amountrefunded {
 		font-size: $font-size;
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--unit {
-		color: $color4;
+		color: $color-muted;
 	}
 
 	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
@@ -28,7 +29,7 @@
 
 	&--featuretitle {
 		font-size: $font-size-small;
-		color: $color2;
+		color: $color-accent;
 	}
 
 	&--featuredesc {
@@ -53,13 +54,13 @@
 .routepayments-paymentbadge {
 	&.method-card {
 		.badge--faicon {
-			background: $color6;
-			color: $color1-light;
+			background: $color-action;
+			color: $color-base-light;
 		}
 		&:hover {
 			.badge--faicon {
-				background: darken($color6, 8%);
-				color: darken($color1-light, 8%);
+				background: darken($color-action, 8%);
+				color: darken($color-base-light, 8%);
 			}
 		}
 	}
@@ -77,15 +78,15 @@
 	}
 	&.refunded, &.canceled{
 		.badge--faicon {
-			// background: $green;
-			background: $color5;
-			color: $color1-light;
+			// background: $color-success;
+			background: $color-danger;
+			color: $color-base-light;
 		}
 		&:hover, &:active {
 			.badge--faicon {
-				// background: darken($green, 8%);
-				background: darken($color5, 8%);
-				color: darken($color1-light, 8%);
+				// background: darken($color-success, 8%);
+				background: darken($color-danger, 8%);
+				color: darken($color-base-light, 8%);
 			}
 		}
 	}
@@ -100,17 +101,17 @@
 	}
 
 	&--date {
-		color: $color4;
+		color: $color-muted;
 		line-height: 20px;
 		font-size: $font-size-small;
 	}
 
 	&--cost, &--refundednew {
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--refundedcost {
-		color: $color5;
+		color: $color-danger;
 		text-decoration: line-through;
 	}
 }
@@ -127,11 +128,11 @@
 
 .routepayments-payment {
 	&--cost, &--refundednew {
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--refundedcost {
-		color: $color5;
+		color: $color-danger;
 		text-decoration: line-through;
 	}
 

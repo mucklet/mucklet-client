@@ -6,7 +6,7 @@
 
 	&--scriptid {
 		display: block;
-		color: $color3;
+		color: $color-contrast;
 		font-family: $font-code;
 	}
 
@@ -15,7 +15,7 @@
 	}
 
 	&--logscont {
-		background: $color1;
+		background: $color-base;
 		border-radius: 4px;
 		padding: 4px 4px;
 		height: 320px;
@@ -37,7 +37,7 @@
 	&--logtime {
 		display: block;
 		font-size: $font-size-tiny;
-		color: $color4-lightestest;
+		color: $color-muted-lightestest;
 		line-height: 1.2em;
 	}
 
@@ -48,14 +48,14 @@
 	}
 
 	&--log {
-		&-log { color: $color4; }
-		&-debug { color: $color4-dark; }
-		&-info { color: $color3; }
+		&-log { color: $color-muted; }
+		&-debug { color: $color-muted-dark; }
+		&-info { color: $color-contrast; }
 		&-warn { color: $log-cmd; }
 		&-error { color: $log-error; }
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $color1-lightest;
+		background-color: $color-base-lightest;
 	}
 }

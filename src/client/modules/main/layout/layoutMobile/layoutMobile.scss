@@ -15,7 +15,7 @@
 	&--topbar {
 		position: relative;
 		flex: 0 0 auto;
-		background-color: $color1-lighter;
+		background-color: $color-base-lighter;
 		z-index: 5;
 		-webkit-box-shadow: 4px 0px 5px 0px $shadow;
 		-moz-box-shadow: 4px 0px 5px 0px $shadow;
@@ -40,7 +40,7 @@
 	}
 
 	&--tabpage {
-		background-color: $color1-lighter;
+		background-color: $color-base-lighter;
 		min-height: 100%;
 	}
 

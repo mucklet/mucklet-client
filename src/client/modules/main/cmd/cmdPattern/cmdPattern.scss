@@ -4,7 +4,7 @@
 
 	&--usage {
 		font-family: $font-code;
-		color: $color2;
+		color: $color-accent;
 	}
 
 	&--field {
@@ -13,6 +13,6 @@
 	}
 
 	&--opt {
-		color: $color4-dark;
+		color: $color-muted-dark;
 	}
 }
