@@ -11,6 +11,7 @@ const tokens = {
 	'color.base.lighter': (c) => adjust(c.base, 8),
 	'color.base.lightest': (c) => adjust(c.base, 14),
 	'color.base.dark': (c) => adjust(c.base, -4),
+	'color.base.placeholder': (c) => adjust(c.base, 24, -15),
 	'color.base.placeholder.light': (c) => adjust(c.base, 34, -15),
 	// Color muted variants
 	'color.muted.light': (c) => adjust(c.muted, 4),
@@ -52,6 +53,37 @@ const tokens = {
 	'common.level.idle': (c) => c.accent,
 	'common.level.inactive': (c) => mix(c.danger, c.accent, 80),
 	'common.level.bot': (c) => mix(c.action, c.contrast, 80),
+
+	// src/common/components/autocomplete.scss
+	'autocomplete.hover.background': (c) => adjust(c.action, 20),
+	'autocomplete.selected.background': (c) => adjust(c.action, 30),
+
+	// src/common/components/navButtons.scss
+	'navbuttons.btn.hover.fill': (c) => adjust(c.base, 19),
+
+	// src/common/components/kebabMenu.scss
+	'kebabmenu.btn.background': (c) => alpha(c.base, 0.8),
+
+	// src/common/components/togglebox.scss
+	'togglebox.action.hover': (c) => adjust(c.action, 5),
+	'togglebox.danger.hover': (c) => adjust(c.danger, 5),
+
+	// src/common/classes/tooltip.scss
+	'tooltip.background': (c) => alpha(adjust(c.base, -10), 0.9),
+
+	// src/common/components/popupTip.scss
+	'popuptip.background': (c) => alpha(adjust(c.base, -10), 0.9),
+
+	// src/common/components/popupPill.scss
+	'popuppill.tip.background': (c) => alpha(adjust(c.base, -10), 0.9),
+
+	// src/common/modules/toaster/toaster.scss
+	'toaster.info.background': 'rgba(48,55,83,90%)',
+	'toaster.success.background': 'rgba(39,67,42,90%)',
+	'toaster.warn.background': 'rgba(73,40,28,90%)',
+	'toaster.success.background.hover': '#27432a',
+	'toaster.warn.background.hover': 'rgba(73,40,28,1)',
+	'toaster.close.background.hover': 'rgba(255,255,255,6%)',
 };
 
 export default tokens;

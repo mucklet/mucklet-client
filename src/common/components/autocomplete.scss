@@ -1,7 +1,14 @@
 @import '~scss/variables';
 
+// Autocomplete colors
+$autocomplete-hover-background: lighten($color-action, 20%);
+$autocomplete-selected-background: lighten($color-action, 30%);
+// Autocomplete theme vars
+$theme-autocomplete-hover-background: var(--mu-autocomplete-hover-background, #{$autocomplete-hover-background});
+$theme-autocomplete-selected-background: var(--mu-autocomplete-selected-background, #{$autocomplete-selected-background});
+
 .autocomplete {
-	color: $color-muted-darker;
+	color: $theme-color-muted-darker;
 	background: white;
 	z-index: 1000;
 	font-size: $font-size;
@@ -31,19 +38,19 @@
 	}
 
 	> div:hover:not(.group) {
-		background: lighten($color-action, 20%);
+		background: $theme-autocomplete-hover-background;
 	}
 
 	> div.selected {
-		background: lighten($color-action, 30%);
+		background: $theme-autocomplete-selected-background;
 		cursor: pointer;
 	}
 }
 
 .autocomplete.autocomplete-dark {
-	color: $color-muted;
+	color: $theme-color-muted;
 	background: $black;
-	border: 1px solid $color-accent;
+	border: 1px solid $theme-color-accent;
 
 	> div > em {
 		font-weight: bold;
@@ -51,17 +58,17 @@
 	}
 
 	.group {
-		background: $color-base-dark;
+		background: $theme-color-base-dark;
 	}
 
 	> div:hover:not(.group) {
-		background: $color-base;
+		background: $theme-color-base;
 	}
 
 	> div.selected {
-		background: $color-base-light;
+		background: $theme-color-base-light;
 		&:hover {
-			background: $color-base-lighter;
+			background: $theme-color-base-lighter;
 		}
 	}
 }

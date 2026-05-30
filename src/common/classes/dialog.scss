@@ -33,7 +33,7 @@
 		opacity: 1;
 	}
 
-	background: $color-base-lightest;
+	background: $theme-color-base-lightest;
 
 	&.fullscreen {
 		width: 100%;
@@ -61,7 +61,7 @@
 		margin: 0;
 		padding: 8px 16px;
 	}
-	border-bottom: 1px solid $color-accent;
+	border-bottom: 1px solid $theme-color-accent;
 }
 
 .dialog--content-wrap {
@@ -80,22 +80,22 @@
 
 .dialog--input {
 	width: 100%;
-	background: $color-muted-lighter;
+	background: $theme-color-muted-lighter;
 	color: $black;
 }
 
 .dialog--incomplete {
-	color: $color-base-placeholder;
+	color: $theme-color-base-placeholder;
 }
 
 .dialog--error {
-	color: $color-danger;
+	color: $theme-color-danger;
 }
 
 .dialog--strong {
 	display: inline-block;
 	font-family: $font-text;
-	color: $color-contrast;
+	color: $theme-color-contrast;
 }
 
 .dialog--emphasis {
@@ -152,4 +152,3 @@
 		}
 	}
 }
-

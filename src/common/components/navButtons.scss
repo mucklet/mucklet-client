@@ -1,9 +1,14 @@
 @import '~scss/variables';
 
+// Navbuttons colors
+$navbuttons-btn-hover-fill: lighten($color-base-lightest, 5%);
+// Navbuttons theme vars
+$theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbuttons-btn-hover-fill});
+
 .navbuttons {
 
 	svg.shadow {
-		filter: drop-shadow(0px 0px 8px $color-base);
+		filter: drop-shadow(0px 0px 8px $theme-color-base);
 	}
 
 	text {
@@ -16,13 +21,13 @@
 	&--count {
 		font-family: $font-text;
 		font-size: $font-size-small;
-		fill: $color-muted-light;
+		fill: $theme-color-muted-light;
 		fill-opacity: 0;
 	}
 
 	&--icon {
 		font-family:'FontAwesome';
-		fill: $color-muted-light;
+		fill: $theme-color-muted-light;
 		fill-opacity: 0;
 	}
 
@@ -31,36 +36,36 @@
 	}
 
 	&--btn {
-		fill: $color-base-lightest;
+		fill: $theme-color-base-lightest;
 
 		&:not(.disabled) {
 			cursor: pointer;
 			&:hover, &:focus {
-				fill: lighten($color-base-lightest, 5%);
+				fill: $theme-navbuttons-btn-hover-fill;
 				outline: 0;
 				.navbuttons--icon {
-					fill:$color-muted-lighter;
+					fill:$theme-color-muted-lighter;
 				}
 			}
 
 			&.selected {
-				fill: $color-action;
+				fill: $theme-color-action;
 				.navbuttons--icon {
-					fill: $color-base-light;
+					fill: $theme-color-base-light;
 				}
 				&:not(.disabled):hover, &:not(.disabled):focus {
-					fill: $color-action-hover;
+					fill: $theme-color-action-hover;
 					.navbuttons--icon {
-						fill: $color-base-lighter;
+						fill: $theme-color-base-lighter;
 					}
 				}
 			}
 		}
 		&.selected:not(.disabled) {
 			&:hover, &:focus {
-				fill: lighten($color-base-lightest, 5%);
+				fill: $theme-navbuttons-btn-hover-fill;
 				.navbuttons--icon {
-					fill: $color-muted-lighter;
+					fill: $theme-color-muted-lighter;
 				}
 			}
 		}

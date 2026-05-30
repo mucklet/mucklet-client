@@ -22,8 +22,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 16px 4px 13px;
-		color: $color-muted;
-		border: 1px solid $color-muted;
+		color: $theme-color-muted;
+		border: 1px solid $theme-color-muted;
 		border-radius: 4px;
 		border-left: 15px solid;
 
@@ -31,14 +31,14 @@
 			font-family: FontAwesome;
 			font-style: normal;
 			position: absolute;
-			color: $color-base;
+			color: $theme-color-base;
 			left: -12px;
 			font-size: 10px;
 		}
 
 		&.realmtagslist--type-genre {
-			color: $color-action;
-			border-color: $color-action;
+			color: $theme-color-action;
+			border-color: $theme-color-action;
 			&::before {
 				content: "\f132";
 				left: -11px;
@@ -50,8 +50,8 @@
 			}
 		}
 		&.realmtagslist--type-warn {
-			color: $color-danger;
-			border-color: $color-danger;
+			color: $theme-color-danger;
+			border-color: $theme-color-danger;
 			&::before {
 				content: "\f071";
 			}
@@ -73,7 +73,7 @@
 		width: 17px;
 		height: 17px;
 		text-align: center;
-		@include btn-style(none, $color-base-lightest, $color-base-lightest, $color-muted, $color-muted-light);
+		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
 		> i {
 			line-height: 15px;
 		}

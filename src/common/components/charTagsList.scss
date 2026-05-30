@@ -22,8 +22,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 6px 4px 4px;
-		color: $color-muted;
-		border: 1px solid $color-muted;
+		color: $theme-color-muted;
+		border: 1px solid $theme-color-muted;
 		border-radius: 4px;
 		border-left: 13px solid;
 
@@ -31,7 +31,7 @@
 			font-family: FontAwesome;
 			font-style: normal;
 			position: absolute;
-			color: $color-base;
+			color: $theme-color-base;
 			left: -11px;
 			font-size: 10px;
 		}
@@ -41,16 +41,16 @@
 		}
 
 		&.dislike {
-			color: $color-danger;
-			border-color: $color-danger;
+			color: $theme-color-danger;
+			border-color: $theme-color-danger;
 			&::before {
 				content: "\f05e";
 			}
 		}
 
 		&.title {
-			color: $color-action;
-			border-color: $color-action;
+			color: $theme-color-action;
+			border-color: $theme-color-action;
 			&::before {
 				content: "\f132";
 				left: -10px;
@@ -70,17 +70,17 @@
 			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 
 			&:hover {
-				color: $color-muted-lighter;
-				border-color: $color-muted-lighter;
+				color: $theme-color-muted-lighter;
+				border-color: $theme-color-muted-lighter;
 				&.dislike {
-					color: $color-danger-light;
-					border-color: $color-danger-light;
+					color: $theme-color-danger-light;
+					border-color: $theme-color-danger-light;
 				}
 				&.title {
-					color: $color-action-hover;
-					border-color: $color-action-hover;
+					color: $theme-color-action-hover;
+					border-color: $theme-color-action-hover;
 				}
-				// background: $color-base;
+				// background: $theme-color-base;
 			}
 		}
 	}
@@ -97,7 +97,7 @@
 		width: 17px;
 		height: 17px;
 		text-align: center;
-		@include btn-style(none, $color-base-lightest, $color-base-lightest, $color-muted, $color-muted-light);
+		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
 		> i {
 			line-height: 15px;
 		}

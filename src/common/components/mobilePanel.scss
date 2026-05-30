@@ -17,7 +17,7 @@
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $color-muted;
+		background-color: $theme-color-muted;
 	}
 
 	&--header {
@@ -106,6 +106,5 @@
 	}
 
 }
-
 
 

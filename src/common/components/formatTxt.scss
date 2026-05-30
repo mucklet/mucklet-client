@@ -12,7 +12,7 @@
 			}
 			.panelsection--caret {
 				bottom: 9px;
-				// color: $color-muted-light;
+				// color: $theme-color-muted-light;
 			}
 		}
 	}
@@ -35,7 +35,7 @@
 		> .panelsection--head {
 			padding-bottom: 0;
 			.panelsection--caret {
-				color: $color-accent;
+				color: $theme-color-accent;
 			}
 		}
 	}

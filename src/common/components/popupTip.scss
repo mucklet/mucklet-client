@@ -1,6 +1,9 @@
 @import '~scss/variables';
 
-$popuptip-background: #{'rgba(3,4,6,90%)'};
+// Popuptip colors
+$popuptip-background: rgba(darken($color-base, 10%), 0.9);
+// Popuptip theme vars
+$theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background});
 
 .popuptip {
 	display: block;
@@ -13,7 +16,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	&--tip {
 		position: absolute;
 		z-index: 100;
-		background: $popuptip-background;
+		background: $theme-popuptip-background;
 		padding: 8px 16px;
 		border-radius: 4px;
 	}
@@ -37,7 +40,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 				margin-top: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent transparent $popuptip-background;
+				border-color: transparent transparent transparent $theme-popuptip-background;
 			}
 		}
 	}
@@ -56,7 +59,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 				margin-top: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent transparent $popuptip-background;
+				border-color: transparent transparent transparent $theme-popuptip-background;
 			}
 		}
 	}
@@ -75,7 +78,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 				margin-left: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: $popuptip-background transparent transparent transparent;
+				border-color: $theme-popuptip-background transparent transparent transparent;
 			}
 		}
 	}
@@ -94,7 +97,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 				margin-left: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent $popuptip-background transparent;
+				border-color: transparent transparent $theme-popuptip-background transparent;
 			}
 		}
 	}
@@ -114,7 +117,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 				margin-top: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent $popuptip-background transparent transparent ;
+				border-color: transparent $theme-popuptip-background transparent transparent ;
 			}
 		}
 	}
@@ -133,7 +136,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 				margin-left: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent $popuptip-background transparent;
+				border-color: transparent transparent $theme-popuptip-background transparent;
 			}
 		}
 	}

@@ -1,17 +1,22 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+// Kebab menu colors
+$kebabmenu-btn-background: rgba($color-base, 0.8);
+// Kebab menu theme vars
+$theme-kebabmenu-btn-background: var(--mu-kebabmenu-btn-background, #{$kebabmenu-btn-background});
+
 .kebabmenu {
 
 	position: relative;
 
 	&--btn {
-		@include btn-style(rgba($color-base, 0.8), $color-base-lighter, $color-base-lightest, $color-muted, $color-muted-light);
+		@include btn-style($theme-kebabmenu-btn-background, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
 	}
 
 	&--menu {
 		position: absolute;
-		background: $color-base-lighter;
+		background: $theme-color-base-lighter;
 		min-width: 100px;
 		// min-height: 100px;
 		box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.65);
@@ -37,7 +42,7 @@
 		width: 100%;
 		transition: color 0.2s, background-color 0.2s;
 		cursor: pointer;
-		@include btn-style(none, $color-base-lightest, $color-base-lightest, $color-muted-light, $color-muted-lighter);
+		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
 	}
 
 	&--itemicon {

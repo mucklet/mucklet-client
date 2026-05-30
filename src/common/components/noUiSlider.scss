@@ -8,7 +8,7 @@
 		box-shadow: none;
 	}
 	.noUi-connect {
-		background: $color-accent;
+		background: $theme-color-accent;
 	}
 
 	.noUi-handle {
@@ -20,7 +20,7 @@
 	}
 
 	&.noUi-target {
-		background: $color-base-dark;
+		background: $theme-color-base-dark;
 		border: none;
 		border-radius: 2px;
 	}
@@ -28,7 +28,7 @@
 		border-radius: 2px;
 	}
 	.noUi-connect {
-		background: $color-accent;
+		background: $theme-color-accent;
 	}
 	.noUi-draggable {
 		cursor: ew-resize;
@@ -41,7 +41,7 @@
 		width: 18px;
 		top: -7px;
 		right: -9px; /* half the width */
-		background: $color-muted;
+		background: $theme-color-muted;
 		border-radius: 9px;
 		box-shadow: none;
 		border: none;
@@ -235,7 +235,7 @@
 */
 .noUi-marker {
 	position: absolute;
-	background: $color-muted-lighter;
+	background: $theme-color-muted-lighter;
 }
 .noUi-marker-sub {
 	background: #AAA;

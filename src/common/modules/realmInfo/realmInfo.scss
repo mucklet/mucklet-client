@@ -33,7 +33,7 @@
 		display: block;
 
 		&.placeholder {
-			background: $color-base-light;
+			background: $theme-color-base-light;
 		}
 	}
 
@@ -61,7 +61,7 @@
 
 	&--title {
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $theme-color-contrast;
 		font-size: 32px;
 		line-height: 110%;
 	}
@@ -81,7 +81,7 @@
 	}
 
 	&--dot {
-		background: $color-muted;
+		background: $theme-color-muted;
 		display: inline-block;
 		width: 10px;
 		height: 10px;
@@ -91,7 +91,7 @@
 		vertical-align: middle;
 		margin-right: 10px;
 		&.highlight {
-			background: $color-action;
+			background: $theme-color-action;
 		}
 	}
 
@@ -102,7 +102,7 @@
 		box-shadow: 0px 3px 6px #00000029;
 
 		&.placeholder {
-			background: $color-base-light;
+			background: $theme-color-base-light;
 		}
 	}
 
@@ -151,7 +151,7 @@
 		font-size: $font-size-tiny;
 		text-transform: uppercase;
 		line-height: 125%;
-		color: $color-muted;
+		color: $theme-color-muted;
 		font-family: "Open Sans", sans-serif;
 		font-weight: 300;
 		margin-bottom: 20px;
@@ -191,7 +191,7 @@
 
 		&:hover {
 			.greetingscreen--footer-logo-text {
-				color: $color-action;
+				color: $theme-color-action;
 			}
 		}
 	}
