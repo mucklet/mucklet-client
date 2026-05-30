@@ -1,4 +1,14 @@
-$color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
+
+// Badge colors
+$badge-highlight: rgba(saturate(lighten($color-base, 22%), 8%), 0.5);
+$badge-highlight-hover: rgba(saturate(lighten($color-base, 19%), 8%), 0.5);
+$badge-dark-hover: darken($color-base-dark, 2%);
+$badge-hover: darken($color-base, 3%);
+// Badge theme vars
+$theme-badge-highlight: var(--mu-badge-highlight, #{$badge-highlight});
+$theme-badge-highlight-hover: var(--mu-badge-highlight-hover, #{$badge-highlight-hover});
+$theme-badge-dark-hover: var(--mu-badge-dark-hover, #{$badge-dark-hover});
+$theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 .badge {
 	width: 100%;
@@ -9,7 +19,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	border-radius: 8px;
 
 	&.highlight {
-		background: $color-highlight;
+		background: $theme-badge-highlight;
 	}
 
 	&.dark {
@@ -208,12 +218,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
-			background: darken($color-base, 3%);
+			background: $theme-badge-hover;
 			&.highlight {
-				background: darken($color-highlight, 3%);
+				background: $theme-badge-highlight-hover;
 			}
 			&.dark {
-				background: darken($color-base-dark, 2%);
+				background: $theme-badge-dark-hover;
 			}
 		}
 	}

@@ -11,7 +11,7 @@
 		margin-top: -10px;
 		margin-left: -10px;
 		border-radius: 50%;
-		border-top: 2px solid $color-danger;
+		border-top: 2px solid $theme-color-danger;
 		border-right: 2px solid transparent;
 		animation: comp-spinner 1s linear infinite;
 	}
@@ -24,7 +24,7 @@
 	}
 
 	&.dark:before {
-		border-top-color: $color-base;
+		border-top-color: $theme-color-base;
 	}
 }
 
@@ -33,7 +33,7 @@
 	top: 50%;
 	left: 26px;
 	&:before {
-		border-top-color: $color-base;
+		border-top-color: $theme-color-base;
 	}
 }
 

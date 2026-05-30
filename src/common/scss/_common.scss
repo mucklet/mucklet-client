@@ -1,3 +1,16 @@
+// Common colors
+$common-level-asleep: $color-muted;
+$common-level-active: $color-contrast;
+$common-level-idle: $color-accent;
+$common-level-inactive: mix($color-danger, $color-accent, 80%);
+$common-level-bot: $log-bot;
+// Common theme vars
+$theme-common-level-asleep: var(--mu-common-level-asleep, #{$common-level-asleep});
+$theme-common-level-active: var(--mu-common-level-active, #{$common-level-active});
+$theme-common-level-idle: var(--mu-common-level-idle, #{$common-level-idle});
+$theme-common-level-inactive: var(--mu-common-level-inactive, #{$common-level-inactive});
+$theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
+
 .common {
 	&--placeholder {
 		font-style: italic;
@@ -24,7 +37,7 @@
 	}
 
 	&--error {
-		color: $color-danger;
+		color: $theme-color-danger;
 		font-size: 90%;
 	}
 
@@ -54,7 +67,7 @@
 			font-size: $font-size-large;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $color-accent;
+			color: $theme-color-accent;
 			margin: 1em 0 0.5em 0;
 		}
 
@@ -63,7 +76,7 @@
 			font-size: $font-size;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $color-accent;
+			color: $theme-color-accent;
 			margin: 1em 0 0.5em 0;
 		}
 
@@ -72,25 +85,25 @@
 			font-size: $font-size-small;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $color-accent;
+			color: $theme-color-accent;
 			margin: 1em 0 0.5em 0;
 		}
 
 		span.ooc {
-			color: $color-muted-dark;
+			color: $theme-color-muted-dark;
 		}
 		span.cmd {
 			font-family: $font-code;
-			color: $color-accent;
+			color: $theme-color-accent;
 		}
 		a {
-			color: $color-action;
+			color: $theme-color-action;
 			transition: color 0.2s;
 			&:hover {
-				color: lighten($color-action, 8%);
+				color: $theme-color-action-hover;
 			}
 			&:active {
-				color: lighten($color-action, 16%);
+				color: $theme-color-action-active;
 			}
 		}
 		sup, sub {
@@ -106,12 +119,12 @@
 			bottom: -0.25em;
 		}
 		span.err {
-			color: $color-danger;
+			color: $theme-color-danger;
 		}
 		table {
 			margin: 8px 0 12px 0;
 			th {
-				color: $color-contrast;
+				color: $theme-color-contrast;
 			}
 			th, td {
 				// padding: 1px 8px 1px 0;
@@ -132,9 +145,9 @@
 			font-family: $font-code;
 			font-style: normal;
 			font-size: $font-size-small;
-			color: $color-accent;
+			color: $theme-color-accent;
 			padding: 6px 10px;
-			background: $color-base-dark;
+			background: $theme-color-base-dark;
 			border-radius: 8px;
 			margin: 0.5em 0 0.25em 0;
 		}
@@ -148,25 +161,25 @@
 	&--durationinput {
 		transition: 0.2s color;
 		&.invalid {
-			color: $color-muted;
+			color: $theme-color-muted;
 		}
 	}
 
 	&--level {
 		&-asleep {
-			color: $color-muted;
+			color: $theme-common-level-asleep;
 		}
 		&-active {
-			color: $color-contrast;
+			color: $theme-common-level-active;
 		}
 		&-idle {
-			color: $color-accent;
+			color: $theme-common-level-idle;
 		}
 		&-inactive {
-			color: mix($color-danger, $color-accent, 80%);
+			color: $theme-common-level-inactive;
 		}
 		&-bot {
-			color: $log-bot;
+			color: $theme-common-level-bot;
 		}
 	}
 
@@ -185,11 +198,11 @@
 	&--addbtn.btn {
 		background: none;
 		width: 100%;
-		border: dashed 2px $color-muted;
+		border: dashed 2px $theme-color-muted;
 
 		&:hover, &:focus {
-			color: $color-muted-lighter;
-			background: $color-base;
+			color: $theme-color-muted-lighter;
+			background: $theme-color-base;
 		}
 
 		> .fa {
@@ -207,7 +220,7 @@
 
 	&--itemtitle {
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $theme-color-contrast;
 		font-size: $font-size-large;
 	}
 
@@ -219,7 +232,7 @@
 		display: block;
 		padding-bottom: 20px;
 		margin-bottom: 16px;
-		border-bottom: 1px solid $color-accent;
+		border-bottom: 1px solid $theme-color-accent;
 	}
 
 	&--tooltip {

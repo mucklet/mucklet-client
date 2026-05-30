@@ -1,5 +1,4 @@
-import { adjust, alpha, mix } from "utils/color";
-
+import themeTokens from './themeTokens';
 const defaultColors = APP_COLORS;
 
 function keyToCssVar(key) {
@@ -18,6 +17,7 @@ class Theme {
 
 		this.appTheme = this.app.props.theme || {};
 		this.tokens = {};
+		this.colors = {};
 		// Add standard color tokens
 		this._addColorTokens();
 
@@ -36,18 +36,18 @@ class Theme {
 	 * Adds a theme token.
 	 * If a value resolves to an empty value, the css variable is not set.
 	 * @param {string} key Token key. Modules should prefix it with its own name, lower-cased.
-	 * @param {string | (getToken: (key: string) => string) => (string)} value Token default value, or callback function that returns the default value.
-	 * @returns {this}
+	 * @param {string | (colors: Record<string, string>, getToken: (key: string) => string) => (string)} value Token default value, or callback function that returns the default value.
+	 * @returns {string} Token value
 	 */
 	addToken(key, value) {
 		if (this.tokens[key]) {
 			console.error("[Theme] Duplicate token key: " + key);
-			return this;
+			return null;
 		}
 
 		let v = this.appTheme[key] || (
 			typeof value == 'function'
-				? value(this.getToken)
+				? value(this.colors, this.getToken)
 				: String(value ?? '')
 		);
 
@@ -56,7 +56,7 @@ class Theme {
 		}
 		this.tokens[key] = v;
 
-		return this;
+		return v;
 	}
 
 	removeToken(key) {
@@ -68,55 +68,15 @@ class Theme {
 	}
 
 	_addColorTokens() {
+		// Set theme colors
 		for (let k in defaultColors) {
-			this.addToken('color.' + k, defaultColors[k]);
+			let v = this.addToken('color.' + k, defaultColors[k]);
+			Object.defineProperty(this.colors, k, { value: v });
 		}
 
-		let standard = {
-			// Color base variants
-			'base.light': (t) => adjust(t('color.base'), 4),
-			'base.lighter': (t) => adjust(t('color.base'), 8),
-			'base.lightest': (t) => adjust(t('color.base'), 14),
-			'base.dark': (t) => adjust(t('color.base'), -4),
-			'base.placeholder.light': (t) => adjust(t('color.base'), 34, -15),
-			// Color muted variants
-			'muted.light': (t) => adjust(t('color.muted'), 4),
-			'muted.lighter': (t) => adjust(t('color.muted'), 8),
-			'muted.lightest': (t) => adjust(t('color.muted'), 16),
-			'muted.dark': (t) => adjust(t('color.muted'), -16),
-			'muted.darker': (t) => adjust(t('color.muted'), -24),
-
-			// Color contrast variants
-			'contrast.dark': (t) => adjust(t('color.contrast'), -16),
-
-			// Color danger variants
-			'danger.light': (t) => adjust(t('color.danger'), 6),
-			'danger.hover': (t) => adjust(t('color.danger'), -8),
-			'danger.active': (t) => adjust(t('color.danger'), -16),
-
-			// Color action variants
-			'action.hover': (t) => adjust(t('color.action'), -8),
-			'action.active': (t) => adjust(t('color.action'), -16),
-
-			// Base specific
-			'badge.highlight': (t) => alpha(adjust(t('color.base'), 22, 8), 0.5),
-			'badge.highlight.hover': (t) => alpha(adjust(t('color.base'), 19, 8), 0.5),
-
-			// Log colors
-			'log.error': (t) => mix(t('color.danger'), t('color.muted'), 70),
-			'log.cmd': (t) => t('color.accent'),
-			'log.attr': (t) => t('color.accent'),
-			'log.listitem': (t) => mix(t('color.action'), t('color.muted'), 50),
-			'log.delim': (t) => t('color.muted'),
-			'log.text': (t) => adjust(t('color.muted'), 16),
-			'log.entityid': (t) => adjust(t('color.muted'), 16),
-			'log.bot': (t) => mix(t('color.action'), t('color.contrast'), 80),
-			'log.instance': (t) => mix(t('color.action'), t('color.muted'), 60),
-			'log.card': (t) => mix(t('color.accent'), t('color.base'), 10),
-		};
-
-		for (let k in standard) {
-			this.addToken(k, standard[k]);
+		// Set additional theme tokens
+		for (let k in themeTokens) {
+			this.addToken(k, themeTokens[k]);
 		}
 	}
 

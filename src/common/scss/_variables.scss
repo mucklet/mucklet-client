@@ -44,7 +44,7 @@ $color-danger-dark: darken($color-danger, 10%);
 $color-action-hover: darken($color-action, 8%);
 $color-action-active: darken($color-action, 16%);
 
-// Var wrapped colors
+// Color theme vars
 $theme-color-base: var(--mu-color-base, #{$color-base});
 $theme-color-accent: var(--mu-color-accent, #{$color-accent});
 $theme-color-contrast: var(--mu-color-contrast, #{$color-contrast});
@@ -83,6 +83,7 @@ $log-bot: mix($color-action, $color-contrast, 80%);
 $log-instance: mix($color-action, $color-muted, 60%);
 $log-card: mix($color-accent, $color-base, 10%);
 
+// Log theme vars
 $theme-log-error: var(--mu-log-error, #{$log-error});
 $theme-log-cmd: var(--mu-log-cmd, #{$log-cmd});
 $theme-log-attr: var(--mu-log-attr, #{$log-attr});
