@@ -1,6 +1,11 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+// Page awake colors
+$pageawake-char-status: mix($color-muted, $color-accent, 20%);
+// Page awake theme vars
+$theme-pageawake-char-status: var(--mu-pageawake-char-status, #{$pageawake-char-status});
+
 .pageawake {
 	padding: 14px 14px 16px 14px;
 
@@ -43,10 +48,10 @@
 
 		&:hover, &:focus {
 			.pageawake--showall-line {
-				background: $color-muted-lighter;
+				background: $theme-color-muted-lighter;
 			}
 			.pageawake--showall-icon {
-				color: $color-muted-lighter;
+				color: $theme-color-muted-lighter;
 			}
 		}
 	}
@@ -55,21 +60,21 @@
 		height: 1px;
 		margin-right: 4px;
 		margin-bottom: 1px; // aligning with icon
-		background: $color-muted;
+		background: $theme-color-muted;
 		transition: background-color 0.2s;
 	}
 	&--showall-icon {
-		color: $color-muted;
+		color: $theme-color-muted;
 		flex: 0 0 auto;
 		transition: color 0.2s;
 	}
 
 	&--unwatched {
 		padding-top: 4px;
-		// border-top: 1px solid $color-accent;
+		// border-top: 1px solid $theme-color-accent;
 		// > *:first-child {
 		// 	padding-top: 4px;
-		// 	border-top: 1px solid $color-accent;
+		// 	border-top: 1px solid $theme-color-accent;
 		// }
 	}
 
@@ -82,7 +87,7 @@
 	}
 
 	&--filter-clear.iconbtn {
-		@include btn-style(none, $color-base-lighter, $color-base-lightest, $color-muted-light, $color-muted-lighter);
+		@include btn-style(none, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
 		position: absolute;
 		right: 3px;
 		top: 3px;
@@ -126,7 +131,7 @@
 	}
 
 	&--status {
-		color: mix($color-muted, $color-accent, 20%);
+		color: $theme-pageawake-char-status;
 		font-style: italic;
 	}
 }

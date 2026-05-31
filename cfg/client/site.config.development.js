@@ -9,12 +9,19 @@ module.exports = {
 	APP_IMAGE: null,
 	APP_ICON: null,
 	APP_THEME: {
-		// 'color.base': '#161926',
+		// 'color.base': '#192616',
 		// 'color.accent': '#c1a657',
 		// 'color.contrast': '#fffcf2',
 		// 'color.muted': '#93969f',
 		// 'color.danger': '#c96036',
 		// 'color.action': '#4a9fc3',
+
+		'color.base': '#22181C',
+		'color.accent': '#E0D290',
+		'color.contrast': '#F6E8EA',
+		'color.muted': '#8A8585',
+		'color.danger': '#EF626C',
+		'color.action': '#84DCCF',
 	},
 
 	API_HOST_PATH: 'ws://localhost:8080/',

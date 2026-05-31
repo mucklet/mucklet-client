@@ -2,10 +2,10 @@
 
 .listexits {
 	&-active {
-		color: $color-action;
+		color: $theme-color-action;
 	}
 
 	&-inactive {
-		color: $color-base-lighter;
+		color: $theme-color-base-lighter;
 	}
 }

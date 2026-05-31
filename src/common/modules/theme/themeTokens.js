@@ -17,6 +17,8 @@ const tokens = {
 	'color.muted.light': (c) => adjust(c.muted, 4),
 	'color.muted.lighter': (c) => adjust(c.muted, 8),
 	'color.muted.lightest': (c) => adjust(c.muted, 16),
+	'color.muted.lightestest': (c) => adjust(c.muted, 20),
+	'color.muted.semidark': (c) => adjust(c.muted, -8),
 	'color.muted.dark': (c) => adjust(c.muted, -16),
 	'color.muted.darker': (c) => adjust(c.muted, -24),
 	// Color contrast variants

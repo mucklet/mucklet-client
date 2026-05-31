@@ -5,8 +5,13 @@ import getCtrlId from 'utils/getCtrlId';
 import mobile from 'is-mobile';
 import './console.scss';
 import listenResource from 'utils/listenResource';
+import { adjust } from 'utils/color';
 
 const namespace = 'module.console';
+
+const themeTokens = {
+	'console.scrollbar.thumb': (c) => adjust(c.base, 18),
+};
 
 /**
  * Console draws player char menu.
@@ -36,11 +41,13 @@ class Console {
 			'avatar',
 			'media',
 			'consoleModeSettings',
+			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 		this.model = new Model({ data: { state: null, mode: this._getMode() }, eventBus: this.app.eventBus });
 		this.keymapModel = new Model({ eventBus: this.app.eventBus });
 		this.charStates = {};
@@ -174,6 +181,7 @@ class Console {
 	dispose() {
 		this._setListeners(false);
 		listenResource(this.settings, false, this._updateMode);
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

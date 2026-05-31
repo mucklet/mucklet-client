@@ -8,13 +8,13 @@
 	padding: 2px 0;
 
 	&--tools i {
-		color: $color-base;
+		color: $theme-color-base;
 		transition: color 0.3s;
 	}
 
 	&:hover {
 		.pageteleportchar-room--tools i, .pageteleportchar-node--tools i {
-			color: $color-muted-light;
+			color: $theme-color-muted-light;
 		}
 	}
 }

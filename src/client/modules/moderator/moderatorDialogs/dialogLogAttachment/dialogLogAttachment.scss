@@ -13,7 +13,7 @@
 
 	&--fullname {
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $theme-color-contrast;
 		font-size: $font-size-large;
 		line-height: 24px;
 	}
@@ -29,7 +29,7 @@
 	}
 
 	&--eventscont {
-		background: $color-base;
+		background: $theme-color-base;
 		border-radius: 4px;
 		padding: 4px 4px;
 	}
@@ -43,7 +43,7 @@
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $color-base-lightest;
+		background-color: $theme-color-base-lightest;
 	}
 
 

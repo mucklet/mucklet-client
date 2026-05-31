@@ -1,5 +1,10 @@
 @import '~scss/variables';
 
+// Edit script colors
+$editscript-scrollbar-thumb-hover: lighten($color-base, 18%);
+// Edit script theme vars
+$theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hover, #{$editscript-scrollbar-thumb-hover});
+
 .editscript, .editscript-container {
 	width: 100%;
 	height: 100%;
@@ -13,7 +18,7 @@
 
 	&--header {
 		flex: 0 0 auto;
-		background-color: $color-base-lighter;
+		background-color: $theme-color-base-lighter;
 		position: relative;
 		width: 100%;
 	}
@@ -48,10 +53,10 @@
 		}
 	}
 	&--headerinfo-room {
-		color: $color-contrast;
+		color: $theme-color-contrast;
 	}
 	&--headerinfo-key {
-		color: $color-muted;
+		color: $theme-color-muted;
 	}
 
 	&--headerbuttons {
@@ -88,7 +93,7 @@
 	}
 
 	&--erroricon {
-		color: $color-danger;
+		color: $theme-color-danger;
 	}
 
 	&--update.btn {
@@ -114,11 +119,11 @@
 	.cm-editor {
 		width: 100%;
 		height: 100%;
-		background: $color-base;
+		background: $theme-color-base;
 	}
 	.cm-scroller {
 		overflow: auto;
-		scrollbar-color: $color-base-lightest transparent;
+		scrollbar-color: $theme-color-base-lightest transparent;
 		&::-webkit-scrollbar {
 			width: 12px;
 			height: 12px;
@@ -128,24 +133,24 @@
 			background-color: transparent;
 		}
 		&::-webkit-scrollbar-track {
-			background: $color-base;
+			background: $theme-color-base;
 		}
 		&::-webkit-scrollbar-thumb {
-			background: $color-base-lightest;
-			border: 2px solid $color-base;
+			background: $theme-color-base-lightest;
+			border: 2px solid $theme-color-base;
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar-thumb:hover {
-			background: lighten($color-base, 18%);
+			background: $theme-editscript-scrollbar-thumb-hover;
 		}
 	}
 	.cm-gutters {
-		color: $color-muted-darker;
-		background-color: $color-base;
+		color: $theme-color-muted-darker;
+		background-color: $theme-color-base;
 		border: none;
 	}
 	.cm-activeLineGutter {
-		background-color: $color-base-light;
+		background-color: $theme-color-base-light;
 	}
 	.cm-lineNumbers .cm-gutterElement {
 		padding-right: 12px;
@@ -153,55 +158,55 @@
 
 	// Style
 	&--keyword {
-		color: $color-accent;
+		color: $theme-color-accent;
 	}
 	&--name {
-		color: $color-contrast;
+		color: $theme-color-contrast;
 	}
 	&--variable {
-		color: $color-contrast;
+		color: $theme-color-contrast;
 	}
 	&--constant {
-		color: $color-contrast;
+		color: $theme-color-contrast;
 	}
 	&--separator {
-		color: $color-contrast;
+		color: $theme-color-contrast;
 	}
 	&--type {
-		color: $color-accent;
+		color: $theme-color-accent;
 	}
 	&--operator {
-		color: $color-muted;
+		color: $theme-color-muted;
 	}
 	&--comment {
-		color: $color-muted-dark;
+		color: $theme-color-muted-dark;
 	}
 	&--link {
-		color: $color-action;
+		color: $theme-color-action;
 	}
 	&--heading {
-		color: $color-accent;
+		color: $theme-color-accent;
 	}
 	&--bool {
-		color: $color-accent;
+		color: $theme-color-accent;
 	}
 	&--string {
-		color: $color-action;
+		color: $theme-color-action;
 	}
 	&--invalid {
-		color: $log-error;
+		color: $theme-log-error;
 	}
 }
 
 .editscript-errors {
 	height: 8em;
-	background-color: $color-base-lighter;
+	background-color: $theme-color-base-lighter;
 	padding: 8px 48px 16px 16px;
 	position: relative;
 
 
 	&--cont {
-		background: $color-base;
+		background: $theme-color-base;
 		border-radius: 4px;
 		position: relative;
 		height: 100%;
@@ -215,7 +220,7 @@
 	&--text {
 		font-family: $font-code;
 		font-size: $font-size-small;
-		color: $color-danger;
+		color: $theme-color-danger;
 		white-space: pre;
 	}
 

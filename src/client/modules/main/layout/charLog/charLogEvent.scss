@@ -11,12 +11,12 @@ $charlog-labelpad: 8px;
 }
 
 .ev- {
-	// color: $color-muted-dark; // Info, OOC
-	// color: $color-muted; // Events (default)
-	// color: $color-muted-lightest; // Communication
+	// color: $theme-color-muted-dark; // Info, OOC
+	// color: $theme-color-muted; // Events (default)
+	// color: $theme-color-muted-lightest; // Communication
 
 	&error, &errorComponent, &localError {
-		color: $log-error;
+		color: $theme-log-error;
 		font-size: $font-size-small;
 		padding-top: $charlog-textpad;
 	}
@@ -44,11 +44,11 @@ $charlog-labelpad: 8px;
 
 	&warn {
 		.charlog--fieldset {
-			border-color: $log-error;
+			border-color: $theme-log-error;
 		}
 
 		.charlog--fieldset-label {
-			color: $log-error;
+			color: $theme-log-error;
 		}
 	}
 
@@ -56,7 +56,7 @@ $charlog-labelpad: 8px;
 		&--room {
 			padding: 16px 0 4px 0;
 			font-size: $font-size;
-			color: $color-accent;
+			color: $theme-color-accent;
 		}
 	}
 }

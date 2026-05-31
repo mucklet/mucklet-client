@@ -1,5 +1,11 @@
 @import '~scss/variables';
 
+// Page mail colors
+$pagemail-mail-unread-background: darken($color-base, 6%);
+$pagemail-mail-unread-background-hover: darken($color-base, 9%);
+// Page mail theme vars
+$theme-pagemail-mail-unread-background: var(--mu-pagemail-mail-unread-background, #{$pagemail-mail-unread-background});
+$theme-pagemail-mail-unread-background-hover: var(--mu-pagemail-mail-unread-background-hover, #{$pagemail-mail-unread-background-hover});
 
 .pagemail {
 	padding: 12px 0 16px 0;
@@ -22,11 +28,11 @@
 	padding: 2px 14px;
 
 	&--badge.unread {
-		background: darken($color-base, 6%);
+		background: $theme-pagemail-mail-unread-background;
 
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: darken($color-base, 9%);
+				background: $theme-pagemail-mail-unread-background-hover;
 			}
 		}
 	}
@@ -39,7 +45,7 @@
 
 	&--ooc {
 		font-size: 75%;
-		color: $color-muted;
+		color: $theme-color-muted;
 		line-height: 0;
 		position: relative;
 		vertical-align: baseline;

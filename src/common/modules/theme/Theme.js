@@ -59,12 +59,36 @@ class Theme {
 		return v;
 	}
 
+	/**
+	 * Adds a set of theme tokens.
+	 * @param {Record<string, string | (colors: Record<string, string>, getToken: (key: string) => string) => (string)>} tokens Token key/value object.
+	 * @returns {this}
+	 */
+	addTokens(tokens) {
+		for (let k in tokens) {
+			this.addToken(k, tokens[k]);
+		}
+		return this;
+	}
+
 	removeToken(key) {
 		let v = this.tokens[key];
 		if (v) {
 			document.documentElement.style.removeProperty(keyToCssVar(key));
 		}
 		delete this.tokens[key];
+	}
+
+	/**
+	 * Removes a set of theme tokens.
+	 * @param {Record<string, any>} tokens Token key/value object.
+	 * @returns {this}
+	 */
+	removeTokens(tokens) {
+		for (let k in tokens) {
+			this.removeToken(k);
+		}
+		return this;
 	}
 
 	_addColorTokens() {

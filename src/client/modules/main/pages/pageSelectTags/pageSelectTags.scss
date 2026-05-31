@@ -23,13 +23,13 @@
 		cursor: pointer;
 
 		&:hover {
-			color: $color-muted-lighter;
+			color: $theme-color-muted-lighter;
 		}
 
 		&.roletag {
-			color: $color-action;
+			color: $theme-color-action;
 			&:hover {
-				color: $color-action-hover;
+				color: $theme-color-action-hover;
 			}
 		}
 	}

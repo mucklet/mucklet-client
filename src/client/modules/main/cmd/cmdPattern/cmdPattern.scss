@@ -4,15 +4,15 @@
 
 	&--usage {
 		font-family: $font-code;
-		color: $color-accent;
+		color: $theme-color-accent;
 	}
 
 	&--field {
 		font-family: $font-code;
-		color: $log-listitem;
+		color: $theme-log-listitem;
 	}
 
 	&--opt {
-		color: $color-muted-dark;
+		color: $theme-color-muted-dark;
 	}
 }

@@ -1,6 +1,11 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+// Page room colors
+$pageroom-char-status: mix($color-muted, $color-accent, 20%);
+// Page room theme vars
+$theme-pageroom-char-status: var(--mu-pageroom-char-status, #{$pageroom-char-status});
+
 .pageroom {
 	padding: 8px 16px;
 
@@ -8,7 +13,7 @@
 		position: relative;
 		top: -8px;
 		font-size: $font-size-tiny;
-		color: $color-muted;
+		color: $theme-color-muted;
 	}
 
 	&--tools {
@@ -39,7 +44,7 @@
 	&--name {
 		padding: 10px 0 4px 0;
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $theme-color-contrast;
 		font-size: 20px;
 	}
 
@@ -79,7 +84,7 @@
 		text-align: left;
 		white-space: pre;
 		font-size: $font-size-tiny;
-		color: $color-muted-lighter;
+		color: $theme-color-muted-lighter;
 		line-height: 18px;
 	}
 
@@ -99,12 +104,12 @@
 		@include transition(border 0.5s);
 
 		&.looking {
-			border-left: 4px solid $color-accent;
+			border-left: 4px solid $theme-color-accent;
 		}
 	}
 
 	&--looking {
-		color: $color-muted-light;
+		color: $theme-color-muted-light;
 		font-size: $font-size-tiny;
 		position: absolute;
 		top: 4px;
@@ -136,7 +141,7 @@
 	}
 
 	&--status {
-		color: mix($color-muted, $color-accent, 20%);
+		color: $theme-pageroom-char-status;
 		font-style: italic;
 	}
 }

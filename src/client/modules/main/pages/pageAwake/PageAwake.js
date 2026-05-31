@@ -4,7 +4,12 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import compareSortOrderId from 'utils/compareSortOrderId';
 import PageAwakeComponent from './PageAwakeComponent';
+import { mix } from 'utils/color';
 import './pageAwake.scss';
+
+const themeTokens = {
+	'pageawake.char.status': (c) => mix(c.muted, c.accent, 20),
+};
 
 /**
  * PageAwake draws player panel.
@@ -18,11 +23,13 @@ class PageAwake {
 			'avatar',
 			'dialogEditNote',
 			'dialogAboutChar',
+			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
@@ -88,6 +95,7 @@ class PageAwake {
 
 	dispose() {
 		this.module.playerTabs.removeTab('awake');
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 
