@@ -10,6 +10,7 @@ import { getRenderingMode } from 'utils/renderingModes';
 import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import ModelCollapser from 'components/ModelCollapser';
 import FormatTxt from 'components/FormatTxt';
+import RealmPlaceholder from 'components/RealmPlaceholder';
 
 const narrowWidth = 720;
 const txtAboutPlaceholder = l10n.t('realmInfo.aboutPlaceholder', "_This is a new realm yet to be described._");
@@ -26,13 +27,9 @@ function formatNumber(n) {
 }
 
 function imgClass(className, img) {
-	if (!img) {
-		className += ' realminfo--img';
-	} else {
-		let mode = getRenderingMode(img.rendering);
-		if (mode?.className) {
-			className += ' ' + mode.className;
-		}
+	let mode = getRenderingMode(img.rendering);
+	if (mode?.className) {
+		className += ' ' + mode.className;
 	}
 	return className.trim();
 }
@@ -76,9 +73,14 @@ class RealmInfoComponent {
 				n.elem('div', { className: 'realminfo--realm' }, [
 
 					// Image
-					n.component(new Img(this.image ? '/img/realm.png' : '/img/realm-placeholder.svg', {
-						className: imgClass('realminfo--img', this.image),
-					})),
+					n.component(this.image
+						? new Img('/img/realm.png', {
+							className: imgClass('realminfo--img', this.image),
+						})
+						: new RealmPlaceholder({
+							className: 'realminfo--img placeholder',
+						}),
+					),
 
 					n.elem('div', { className: 'realminfo--content' }, [
 

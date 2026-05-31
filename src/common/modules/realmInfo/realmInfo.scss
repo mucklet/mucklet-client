@@ -34,6 +34,8 @@
 
 		&.placeholder {
 			background: $theme-color-base-light;
+			color: $theme-color-base-dark;
+			overflow: hidden;
 		}
 	}
 
