@@ -5,4 +5,8 @@
 	top: 8px;
 	left: 12px;
 	box-shadow: 0px 0px 8px 4px $theme-color-base;
+	> svg {
+		background-color: $theme-color-base-lighter;
+		color: $theme-color-base;
+	}
 }

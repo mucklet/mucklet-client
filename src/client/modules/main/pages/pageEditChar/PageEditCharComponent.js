@@ -7,8 +7,6 @@ import FAIcon from 'components/FAIcon';
 import FileButton from 'components/FileButton';
 import PanelSection from 'components/PanelSection';
 import LabelToggleBox from 'components/LabelToggleBox';
-import Img from 'components/Img';
-import ImgModal from 'classes/ImgModal';
 
 class PageEditCharComponent {
 	constructor(module, ctrl, state, close) {
@@ -30,20 +28,12 @@ class PageEditCharComponent {
 				l10n.l('pageEditChar.image', "Image"),
 				new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 					n.elem('div', { className: 'flex-1' }, [
-						n.component(new ModelComponent(
-							this.ctrl,
-							new Img('', { className: 'pageeditchar--image', events: {
-								click: c => {
-									if (!c.hasClass('placeholder')) {
-										new ImgModal(this.ctrl.image.href).open();
-									}
-								},
-							}}),
-							(m, c, changed) => {
-								c.setSrc(m.image ? m.image.href + '?thumb=xl' : '/img/avatar-l.png');
-								c[m.image ? 'removeClass' : 'addClass']('placeholder');
-							},
-						)),
+						n.component(this.module.avatar.newCharImg(this.ctrl, {
+							className: 'pageeditchar--image',
+							size: 'xlarge',
+							modalOnClick: true,
+							resolve: v => v.href,
+						})),
 					]),
 					n.elem('div', { className: 'pageeditchar--imagebtn flex-1' }, [
 						n.component(new FileButton(
@@ -92,7 +82,10 @@ class PageEditCharComponent {
 				l10n.l('pageEditChar.avatar', "Avatar"),
 				new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 					n.elem('div', { className: 'flex-auto' }, [
-						n.component(this.module.avatar.newAvatar(this.ctrl, { size: 'large' })),
+						n.component(this.module.avatar.newAvatar(this.ctrl, {
+							className: 'pageeditchar--image',
+							size: 'large',
+						})),
 					]),
 					n.elem('div', { className: 'pageeditchar--avatarbtn flex-1' }, [
 						n.component(new FileButton(

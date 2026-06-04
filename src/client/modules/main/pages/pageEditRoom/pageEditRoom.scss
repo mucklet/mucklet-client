@@ -5,14 +5,9 @@
 	margin: 0;
 
 	&--image {
-		display: block;
-		border-radius: 10px;
-		width: 140px;
-		height: 140px;
-		background: $theme-color-base-lighter;
-
-		&:not(.placeholder) {
-			cursor: pointer;
+		> svg {
+			background: $theme-color-base-lighter;
+			color: $theme-color-base;
 		}
 	}
 

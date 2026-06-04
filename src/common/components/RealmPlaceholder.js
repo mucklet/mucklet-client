@@ -10,20 +10,15 @@ class RealmPlaceholder {
 	constructor(opt) {
 		this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 		this.svg.setAttribute('viewBox', '0 0 960 540');
-		this.svg.setAttribute('version', '1.1');
-		this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+		this.svg.setAttribute('fill', 'currentColor');
 		this.svg.setAttribute('class', 'realmplaceholder' + (opt?.className ? ' ' + opt.className : ''));
 
-		this.svg.innerHTML = `<g>
-	<path
-		style="fill:currentColor;fill-opacity:1;stroke:none"
+		this.svg.innerHTML = `<path
 		d="M 960,300 810,150 630,330 540,240 330,450 210,330 150,390 0,240 V 540 h 960 z" />
 	<circle
-		style="fill:currentColor;fill-opacity:1;stroke:none"
 		cx="210"
 		cy="150"
-		r="90" />
-</g>`;
+		r="90" />`;
 	}
 
 	render(el) {

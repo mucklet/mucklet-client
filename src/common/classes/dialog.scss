@@ -118,6 +118,13 @@
 	margin-bottom: 10px;
 }
 
+.dialog--avatar {
+	> svg {
+		background-color: $theme-color-base-lighter;
+		color: $theme-color-base;
+	}
+}
+
 @keyframes dialog-opacity {
 	from {
 		transform: translateX(-50%) translateY(-50%) scale(0.9);

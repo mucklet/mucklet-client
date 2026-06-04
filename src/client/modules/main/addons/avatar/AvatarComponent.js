@@ -4,6 +4,7 @@ import Fader from 'components/Fader';
 import Img from 'components/Img';
 import ImgModal from 'classes/ImgModal';
 import { relistenResource } from 'utils/listenResource';
+import PlaceholderSvg from 'components/PlaceholderSvg';
 
 // Get character initials.
 function getInitials(c) {
@@ -19,9 +20,18 @@ const sizeMap = {
 };
 
 const placeholderMap = {
-	avatar: { img: '/img/avatar-l.png', err: '/img/avatar-error-l.png' },
-	room: { img: '/img/room-l.png', err: '/img/room-error-l.png' },
-	area: { img: '/img/area-l.png', err: '/img/area-error-l.png' },
+	avatar: {
+		img: () => new PlaceholderSvg('avatar'),
+		err: () => new PlaceholderSvg('avatar', { withError: true }),
+	},
+	room: {
+		img: () => new PlaceholderSvg('room'),
+		err: () => new PlaceholderSvg('room', { withError: true }),
+	},
+	area: {
+		img: () => new PlaceholderSvg('area'),
+		err: () => new PlaceholderSvg('area', { withError: true }),
+	},
 };
 
 function getHref(v) {
@@ -102,27 +112,30 @@ class AvatarComponent extends Fader {
 			}
 		}
 
-		this.setComponent(isError || !(src || this.initials)
+		let comp = isError || !(src || this.initials)
 			? this.placeholder
-				? new Img(isError ? this.placeholder.err : this.placeholder.img)
+				? isError
+					? this.placeholder.err()
+					: this.placeholder.img()
 				: null
 			: src
-				? new Img(src + this.query, this.modalOnClick ? {
-					className: 'clickable',
-					errorPlaceholder: this.placeholder.err,
-					errorClassName: 'avatar--error',
-					events: {
-						click: c => {
-							if (!c.hasClass('avatar--error')) {
-								new ImgModal(src).open();
-							}
-						},
+				? new Img(src + this.query, Object.assign({
+					onError: () => {
+						if (this.getComponent() == comp) {
+							this.setComponent(this.placeholder.err());
+						}
 					},
-				} : {
-					errorPlaceholder: this.placeholder.err,
-				})
-				: new ModelTxt(this.char || m, m => getInitials(m), { tagName: 'span' }),
-		);
+				}, this.modalOnClick
+					? {
+						className: 'clickable',
+						events: {
+							click: c => new ImgModal(src).open(),
+						},
+					}
+					: null,
+				))
+				: new ModelTxt(this.char || m, m => getInitials(m), { tagName: 'span' });
+		this.setComponent(comp);
 		if (isError || src || !this.initials) {
 			this._clearHue();
 		} else {

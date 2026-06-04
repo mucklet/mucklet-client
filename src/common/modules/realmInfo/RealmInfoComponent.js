@@ -11,6 +11,7 @@ import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import ModelCollapser from 'components/ModelCollapser';
 import FormatTxt from 'components/FormatTxt';
 import RealmPlaceholder from 'components/RealmPlaceholder';
+import RealmIconPlaceholder from 'components/RealmIconPlaceholder';
 
 const narrowWidth = 720;
 const txtAboutPlaceholder = l10n.t('realmInfo.aboutPlaceholder', "_This is a new realm yet to be described._");
@@ -88,9 +89,14 @@ class RealmInfoComponent {
 						n.elem('div', { className: 'realminfo--header' }, [
 
 							// Icon
-							n.component(new Img(this.icon ? '/img/realmicon-l.png' : '/img/realmicon-placeholder.svg', {
-								className: imgClass('realminfo--icon', this.icon),
-							})),
+							n.component(this.icon
+								? new Img('/img/realmicon-l.png', {
+									className: imgClass('realminfo--icon', this.icon),
+								})
+								: new RealmIconPlaceholder({
+									className: 'realminfo--icon placeholder',
+								}),
+							),
 
 							n.elem('div', { className: 'realminfo--title-cont' }, [
 

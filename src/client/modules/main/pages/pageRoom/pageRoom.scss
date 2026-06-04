@@ -92,6 +92,13 @@ $theme-pageroom-char-status: var(--mu-pageroom-char-status, #{$pageroom-char-sta
 		@include transition(color 1s);
 		font-size: $font-size-tiny + 1px;
 	}
+
+	&--avatar {
+		> svg {
+			background-color: $theme-color-base-lighter;
+			color: $theme-color-base;
+		}
+	}
 }
 
 .pageroom-char {

@@ -78,6 +78,7 @@ class PageRoomExitChars {
 							n.elem('cont', 'div', [
 								n.component(this.module.avatar.newAvatar(char, {
 									size: 'tiny',
+									className: 'pageroom-exitchars--avatar',
 								})),
 							]),
 						])),

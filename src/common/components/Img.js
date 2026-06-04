@@ -14,6 +14,7 @@ class LoadedImg {
 }
 
 function errorResult(src, opt) {
+	opt?.onError?.(src);
 	return new LoadedImg(src, opt?.errorPlaceholder, opt?.errorClassName);
 }
 
@@ -92,6 +93,7 @@ class Img extends RootElem {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Class name
 	 * @param {object} [opt.attributes] Key/value attributes object
+	 * @param {(src: string) => void} [opt.onError] Callback called when a src fails to load.
 	 * @param {object} [opt.placeholder] Placeholder image to use if no src is set.
 	 * @param {object} [opt.errorPlaceholder] Placeholder image to use on error.
 	 * @param {string} [opt.placeholderClassName] ClassName to add when using placeholder.

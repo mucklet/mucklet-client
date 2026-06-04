@@ -33,10 +33,6 @@
 		line-height: 20px;
 	}
 
-	&--image, &--avatar {
-		background: $theme-color-base-lighter;
-	}
-
 	&--imagebtn {
 		> .btn + .btn {
 			margin-top: 8px;

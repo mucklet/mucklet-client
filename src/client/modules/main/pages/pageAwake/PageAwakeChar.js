@@ -24,7 +24,7 @@ class PageAwakeChar {
 						},
 					}}, [
 						n.elem('div', { className: 'badge--select' }, [
-							n.component(this.module.avatar.newAvatar(this.char, { size: 'small', className: 'badge--icon' })),
+							n.component(this.module.avatar.newAvatar(this.char, { size: 'small', className: 'badge--avatar' })),
 							n.elem('div', { className: 'badge--info' }, [
 								n.elem('fullname', 'div', { className: 'pageawake-char--name badge--title badge--nowrap' }, [
 									n.component('name', new Txt()),

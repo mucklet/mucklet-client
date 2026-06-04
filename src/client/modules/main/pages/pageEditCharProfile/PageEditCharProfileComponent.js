@@ -32,7 +32,11 @@ class PageEditCharProfileComponent {
 					l10n.l('pageEditCharProfile.image', "Image"),
 					new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 						n.elem('div', { className: 'flex-1' }, [
-							n.component(this.module.avatar.newCharImg(this.profile, { modalOnClick: true, size: 'xlarge' })),
+							n.component(this.module.avatar.newCharImg(this.profile, {
+								modalOnClick: true,
+								size: 'xlarge',
+								className: 'pageeditcharprofile--image',
+							})),
 						]),
 						n.elem('div', { className: 'pageeditcharprofile--imagebtn flex-1' }, [
 							n.component(new FileButton(
@@ -66,6 +70,7 @@ class PageEditCharProfileComponent {
 														n.component(this.module.avatar.newCharImg(this.ctrl, {
 															size: 'xlarge',
 															resolve: v => v.href,
+															className: 'dialog--avatar',
 														})),
 													])),
 													confirm: l10n.l('pageEditCharProfile.update', "Update"),
@@ -112,7 +117,11 @@ class PageEditCharProfileComponent {
 					l10n.l('pageEditCharProfile.avatar', "Avatar"),
 					new Elem(n => n.elem('div', { className: 'flex-row pad8' }, [
 						n.elem('div', { className: 'flex-auto' }, [
-							n.component(this.module.avatar.newAvatar(this.profile, { char: this.ctrl, size: 'large' })),
+							n.component(this.module.avatar.newAvatar(this.profile, {
+								char: this.ctrl,
+								size: 'large',
+								className: 'pageeditcharprofile--image',
+							})),
 						]),
 						n.elem('div', { className: 'pageeditchar--avatarbtn flex-auto' }, [
 							n.component(new FileButton(
@@ -143,7 +152,10 @@ class PageEditCharProfileComponent {
 													title: l10n.l('pageEditCharProfile.confirmUpdate', "Confirm avatar update"),
 													body: new Elem(n => n.elem('div', [
 														n.component(new Txt(l10n.l('pageEditCharProfile.deleteAvatarBody', "Do you really wish to update the profile with current character avatar?"), { tagName: 'p' })),
-														n.component(this.module.avatar.newAvatar(this.ctrl, { size: 'large' })),
+														n.component(this.module.avatar.newAvatar(this.ctrl, {
+															size: 'large',
+															className: 'dialog--avatar',
+														})),
 													])),
 													confirm: l10n.l('pageEditCharProfile.update', "Update"),
 													onClose: () => ctx.dialog = null,

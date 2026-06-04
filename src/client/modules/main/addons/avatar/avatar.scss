@@ -15,10 +15,7 @@
 	> img {
 		width: 48px;
 		height: 48px;
-
-		&.clickable:not(.avatar--error) {
-			cursor: pointer;
-		}
+		cursor: pointer;
 	}
 
 	&.avatar--tiny {

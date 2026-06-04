@@ -5,12 +5,14 @@ import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import FileButton from 'components/FileButton';
-import Img from 'components/Img';
+// import Img from 'components/Img';
 import PanelSection from 'components/PanelSection';
-import ImgModal from 'classes/ImgModal';
+// import ImgModal from 'classes/ImgModal';
 import Err from 'classes/Err';
 import LabelToggleBox from 'components/LabelToggleBox';
 import DurationInput from 'components/DurationInput';
+// import Fader from 'components/Fader';
+// import PlaceholderSvg from 'components/PlaceholderSvg';
 
 const txtUpdate = l10n.l('pageEditRoom.update', "Save edits");
 const txtClose = l10n.l('pageEditRoom.close', "Close");
@@ -47,20 +49,12 @@ class PageEditRoomComponent {
 					l10n.l('pageEditRoom.image', "Image"),
 					new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 						n.elem('div', { className: 'flex-1' }, [
-							n.component(new ModelComponent(
-								this.room,
-								new Img('', { className: 'pageeditroom--image', events: {
-									click: c => {
-										if (!c.hasClass('placeholder')) {
-											new ImgModal(this.room.image.href).open();
-										}
-									},
-								}}),
-								(m, c, changed) => {
-									c.setSrc(m.image ? m.image.href + '?thumb=xl' : '/img/room-l.png');
-									c[m.image ? 'removeClass' : 'addClass']('placeholder');
-								},
-							)),
+							n.component(this.module.avatar.newRoomImg(this.room, {
+								className: 'pageeditroom--image',
+								size: 'xlarge',
+								modalOnClick: true,
+								resolve: v => v.href,
+							})),
 						]),
 						n.elem('div', { className: 'pageeditroom--imagebtn flex-1' }, [
 							n.component(new FileButton(

@@ -135,6 +135,10 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 		+ * {
 			margin-left: 8px;
 		}
+		> svg {
+			background-color: $theme-color-base-lighter;
+			color: $theme-color-base;
+		}
 	}
 
 }

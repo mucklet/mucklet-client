@@ -66,7 +66,7 @@ class DialogCharSnapshotAttachmentSnapshot {
 			n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 				n.elem('div', { className: 'flex-auto' }, [
 					n.component(this.module.avatar.newAvatar(this.snapshot, {
-						className: 'dialogcharsnapshotattachment--image badge--icon',
+						className: 'dialog--avatar badge--icon',
 						size: 'large',
 						resolve: (v) => v.href,
 					})),
@@ -134,7 +134,7 @@ class DialogCharSnapshotAttachmentSnapshot {
 					new Elem(n => n.elem('div', { className: 'flex-row flex-stretch gap8' }, [
 						n.elem('div', { className: 'flex-1' }, [
 							n.component(this.module.avatar.newCharImg(this.snapshot, {
-								className: 'dialogcharsnapshotattachment--image',
+								className: 'dialog--avatar',
 								size: 'xlarge',
 								modalOnClick: true,
 								resolve: v => v.href,
