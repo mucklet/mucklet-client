@@ -25,6 +25,12 @@ const defaultColors = {
 	action: '#4a9fc3',
 };
 
+// Theme color is the one used in manifest
+//
+// This may be overridden by site.config.*.js:
+//   APP_THEME_COLOR: { base: '#00ff00' }
+const defaulThemeColor = '#252a40';
+
 function jsonEncodeObject(o) {
 	let jo = {};
 	for (let k in o) {
@@ -70,7 +76,7 @@ for (let app of apps) {
 		'site.config.' + env + '.js',
 		'site.config.js',
 	]);
-	ctx.siteConfig = require(siteConfigPath);
+	ctx.siteConfig = Object.assign({ APP_THEME_COLOR: defaulThemeColor }, require(siteConfigPath));
 	// Set default app colors
 	ctx.siteConfig.APP_COLORS = Object.assign({}, defaultColors, ctx.siteConfig.APP_COLORS);
 

@@ -19,8 +19,8 @@
 			"purpose": "maskable"
 		}
 	],
-	"theme_color": "#252a40",
-	"background_color": "#252a40",
+	"theme_color": ${ THEME_COLOR },
+	"background_color": ${ THEME_COLOR },
 	"display": "standalone",
 	"description": ${ APP_DESC },
 	"start_url": ".",

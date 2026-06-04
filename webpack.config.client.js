@@ -22,6 +22,7 @@ module.exports = function(ctx) {
 				ICON_192x192_PNG_PATH: () => `"{{ .RootURL | json}}android-chrome-192x192.png"`,
 				ICON_512x512_PNG_PATH: () => `"{{ .RootURL | json }}android-chrome-512x512.png"`,
 				ICON_SITEICON_SVG_PATH: () => `"{{ .RootURL | json }}siteicon.svg"`,
+				THEME_COLOR: () => `"{{ or .ThemeColor "${cfg.APP_THEME_COLOR}" }}"`,
 			}
 			: {
 				APP_NAME: () => JSON.stringify(cfg.APP_TITLE),
@@ -29,6 +30,7 @@ module.exports = function(ctx) {
 				ICON_192x192_PNG_PATH: () => JSON.stringify((cfg.APP_ROOT || "/") + "android-chrome-192x192.png"),
 				ICON_512x512_PNG_PATH: () => JSON.stringify((cfg.APP_ROOT || "/") + "android-chrome-512x512.png"),
 				ICON_SITEICON_SVG_PATH: () => JSON.stringify((cfg.APP_ROOT || "/") + "siteicon.svg"),
+				THEME_COLOR: () => JSON.stringify(cfg.APP_THEME_COLOR),
 			};
 		return content.toString().replace(/\$\{\s*([^}| ]*)\s*(?:|\|\s*([^} ]*)\s*)\}/g, (m, name, mod) => {
 			let f = fields[name] || ((v, mod) => JSON.stringify("Unknown:" + v));
