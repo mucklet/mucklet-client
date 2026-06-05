@@ -22,7 +22,7 @@ module.exports = function(ctx) {
 				ICON_192x192_PNG_PATH: () => `"{{ .RootURL | json}}android-chrome-192x192.png"`,
 				ICON_512x512_PNG_PATH: () => `"{{ .RootURL | json }}android-chrome-512x512.png"`,
 				ICON_SITEICON_SVG_PATH: () => `"{{ .RootURL | json }}siteicon.svg"`,
-				THEME_COLOR: () => `"{{ or .ThemeColor "${cfg.APP_THEME_COLOR}" }}"`,
+				THEME_COLOR: () => `"{{ or (and .Realm .Realm.ThemeColor) "${cfg.APP_THEME_COLOR}" }}"`,
 			}
 			: {
 				APP_NAME: () => JSON.stringify(cfg.APP_TITLE),

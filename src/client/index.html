@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta name="description" content="<%= APP_ISTEMPLATE ? "{{ with .Realm }}{{ .Desc | html }}{{ end }}" : APP_DESCRIPTION %>">
-	<meta name="theme-color" content="<%= APP_ISTEMPLATE ? "{{ or .ThemeColor `" + APP_THEME_COLOR + "` }}" : APP_THEME_COLOR %>" />
+	<meta name="theme-color" content="<%= APP_ISTEMPLATE ? "{{ or (and .Realm .Realm.ThemeColor) `" + APP_THEME_COLOR + "` }}" : APP_THEME_COLOR %>" />
 	<link href="/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="/fonts/fonts.css" rel="stylesheet">
 	<link href="/icons/style.css" rel="stylesheet">
