@@ -124,6 +124,9 @@ module.exports = function(ctx) {
 				__SW_REALM_HASH__: ctx.siteConfig.APP_ISTEMPLATE
 					? '"{{ with .Realm }}{{ .Hash | json }}{{ end }}"'
 					: '',
+				__SW_THEME_HASH__: ctx.siteConfig.APP_ISTEMPLATE
+					? '"{{ .ThemeHash | json }}"'
+					: '',
 				__SW_REALM_IMAGE__: ctx.siteConfig.APP_ISTEMPLATE
 					? '"{{ with .Realm }}{{ .Image | json }}{{ end }}"'
 					: JSON.stringify(ctx.siteConfig.APP_IMAGE?.id || ''),
