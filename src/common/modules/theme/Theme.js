@@ -11,6 +11,7 @@ function keyToCssVar(key) {
 class Theme {
 	constructor(app, params) {
 		this.app = app;
+		this.params = params;
 
 		// Bind callbacks
 		this.getToken = this.getToken.bind(this);
@@ -45,7 +46,7 @@ class Theme {
 			return null;
 		}
 
-		let v = this.appTheme[key] || (
+		let v = this._getParam(key) || this.appTheme[key] || (
 			typeof value == 'function'
 				? value(this.colors, this.getToken)
 				: String(value ?? '')
@@ -91,7 +92,7 @@ class Theme {
 		return this;
 	}
 
-	_addColorTokens() {
+	_addColorTokens(params) {
 		// Set theme colors
 		for (let k in defaultColors) {
 			let v = this.addToken('color.' + k, defaultColors[k]);
@@ -102,6 +103,18 @@ class Theme {
 		for (let k in themeTokens) {
 			this.addToken(k, themeTokens[k]);
 		}
+	}
+
+	_getParam(key) {
+		let parts = key.split('.');
+		let v = this.params;
+		for (let p of parts) {
+			if (!(v && typeof v == 'object' && v.hasOwnProperty(p))) {
+				return null;
+			}
+			v = v[p];
+		}
+		return typeof v == 'string' ? v : null;
 	}
 
 	dispose() {

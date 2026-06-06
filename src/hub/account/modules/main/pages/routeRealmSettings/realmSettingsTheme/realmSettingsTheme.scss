@@ -1,0 +1,64 @@
+@import '~scss/variables';
+@import '~scss/mixins';
+
+.realmsettingstheme {
+	&--theme {
+		position: relative;
+	}
+
+	&--tokens {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	&--token {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	&--tokeninfo {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	&--tokenname {
+		color: $color-contrast;
+	}
+
+	&--tokendesc {
+		font-size: $font-size-small;
+		color: $color-muted;
+	}
+
+	&--tokencolor {
+		flex: 0 0 auto;
+		width: 32px;
+		height: 32px;
+		border: 1px solid $color-muted;
+		border-radius: 4px;
+		background: $color-base;
+	}
+
+	&--tokencont {
+		position: relative;
+		flex: 0 0 128px;
+	}
+
+	&--tokeninput {
+		width: 100%;
+		padding-right: 38px;
+		text-transform: uppercase;
+		font-size: $font-size-large;
+		font-family: $font-code;
+	}
+
+	&--tokenreset {
+		@include btn-style(none, $color-base-lighter, $color-base-lightest, $color-muted-light, $color-muted-lighter);
+		position: absolute;
+		right: 3px;
+		top: 3px;
+	}
+
+}

@@ -369,7 +369,7 @@ class RouteRealmSettingsRealm {
 		return this.module.api.call(rid, method, params);
 	}
 
-	_save(model) {
+	async _save(model) {
 		let params = model.getModifications();
 		if (!params) {
 			return;
@@ -379,12 +379,19 @@ class RouteRealmSettingsRealm {
 		let mode = this.module.mode.getModel().mode;
 		for (let tool of this.module.self.getTools()) {
 			if (!tool.mode || tool.mode == mode) {
-				params = tool.onSave?.(params) || params;
+				// Some tools may make a separate call to update.
+				// Catch any error that occurs and show it.
+				try {
+					params = await Promise.resolve(tool.onSave?.(params) || params);
+				} catch (err) {
+					this._setMessage(errString(err));
+					return;
+				}
 			}
 		}
 
 		this._setMessage();
-		return this._callRealm('set', {
+		return await this._callRealm('set', {
 			...params,
 			// Non-overseers also apply updates to the containers
 			update: this.module.mode.getModel().mode != 'overseer',
