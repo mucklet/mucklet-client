@@ -50,82 +50,85 @@ class RealmSettingsThemeComponent {
 	}
 
 	render(el) {
-		let model = new ModifyModel(this.theme, {
-			modifiedOnNew: true,
-		});
-
-		this.elem = new PanelSection(
-			new Elem(n => n.elem('div', { className: 'realmsettingstheme--title' }, [
-				n.component(new Txt(l10n.l('realmSettingsTheme.colorTheme', "Color theme"), { tagName: 'h3' })),
-				n.component(new Context(
-					() => new CollectionWrapper(this.module.self.getTools(), {
-						filter: t => (!t.type || t.type == 'title') && (t.filter ? t.filter(this.realm) : true),
-					}),
-					tools => tools.dispose(),
-					tools => new CollectionList(
-						tools,
-						t => t.componentFactory(this.realm, this.state),
-						{
-							className: 'realmsettingstheme--tools',
-							subClassName: t => t.className || null,
-							horizontal: true,
-						},
-					),
-				)),
-			])),
-			new Elem(n => n.elem('div', [
-				// Token list
-				n.elem('div', { className: 'common--sectionpadding' }, [
-					n.component(new CollectionList(
-						themeTokens,
-						t => this._newToken(t, model),
-						{
-							className: 'realmsettingstheme--tokens',
-						},
+		this.elem = new Context(
+			() => new ModifyModel(this.theme, {
+				props: this.state,
+				modifiedOnNew: true,
+			}),
+			model => model.dispose(),
+			model => new PanelSection(
+				new Elem(n => n.elem('div', { className: 'realmsettingstheme--title' }, [
+					n.component(new Txt(l10n.l('realmSettingsTheme.colorTheme', "Color theme"), { tagName: 'h3' })),
+					n.component(new Context(
+						() => new CollectionWrapper(this.module.self.getTools(), {
+							filter: t => (!t.type || t.type == 'title') && (t.filter ? t.filter(this.realm) : true),
+						}),
+						tools => tools.dispose(),
+						tools => new CollectionList(
+							tools,
+							t => t.componentFactory(this.realm, this.state),
+							{
+								className: 'realmsettingstheme--tools',
+								subClassName: t => t.className || null,
+								horizontal: true,
+							},
+						),
 					)),
-				]),
-
-				// Try out link
-				n.component(new ModelCollapser(model, [{
-					condition: m => m.isModified,
-					factory: m => {
-						let txt = new Elem(n => n.elem('a', {
-							className: 'link realmsettingstheme--link',
-							attributes: {
-								target: '_blank',
+				])),
+				new Elem(n => n.elem('div', [
+					// Token list
+					n.elem('div', { className: 'common--sectionpadding' }, [
+						n.component(new CollectionList(
+							themeTokens,
+							t => this._newToken(t, model),
+							{
+								className: 'realmsettingstheme--tokens',
 							},
-							events: {
-								click: (c, ev) => ev.stopPropagation(),
-							},
-						}, [
-							n.component(new FAIcon('external-link')),
-							n.html('&nbsp;&nbsp;'),
-							n.component(new Txt(l10n.l('realmSettingsTheme.tryChanges', "Try theme"))),
-						]));
-						let update = () => {
-							let q = Object.keys(m.props)
-								.filter(k => k != '_hash' && k != 'isModified')
-								.map(k => `theme.${encodeURIComponent(k)}=${encodeURIComponent(m.props[k])}`)
-								.join('&');
-							let url = this.realm.clientUrl;
-							if (q) {
-								url += (url.includes('?') ? '&' : '?') + q;
-							}
-							txt.setAttribute('href', url);
-						};
-						return new ModelComponent(
-							this.realm,
-							new ModelComponent(m, txt, update),
-							update,
-						);
-					},
-				}])),
+						)),
+					]),
 
-			])),
-			{
-				className: 'realmsettingstheme common--sectionpadding',
-				noToggle: true,
-			},
+					// Try out link
+					n.component(new ModelCollapser(model, [{
+						condition: m => m.isModified,
+						factory: m => {
+							let txt = new Elem(n => n.elem('a', {
+								className: 'link realmsettingstheme--link',
+								attributes: {
+									target: '_blank',
+								},
+								events: {
+									click: (c, ev) => ev.stopPropagation(),
+								},
+							}, [
+								n.component(new FAIcon('external-link')),
+								n.html('&nbsp;&nbsp;'),
+								n.component(new Txt(l10n.l('realmSettingsTheme.tryChanges', "Try theme"))),
+							]));
+							let update = () => {
+								let q = Object.keys(m.props)
+									.filter(k => k != '_hash' && k != 'isModified')
+									.map(k => `theme.${encodeURIComponent(k)}=${encodeURIComponent(m.props[k])}`)
+									.join('&');
+								let url = this.realm.clientUrl;
+								if (q) {
+									url += (url.includes('?') ? '&' : '?') + q;
+								}
+								txt.setAttribute('href', url);
+							};
+							return new ModelComponent(
+								this.realm,
+								new ModelComponent(m, txt, update),
+								update,
+							);
+						},
+					}])),
+
+				])),
+				{
+					className: 'realmsettingstheme common--sectionpadding',
+					noToggle: true,
+				},
+			),
 		);
 		return this.elem.render(el);
 	}
@@ -160,10 +163,13 @@ class RealmSettingsThemeComponent {
 							input: (c) => {
 								let v = c.getValue();
 								let color = this._normalizeHexColor(v);
-								c[color ? 'removeClass' : 'addClass']('input--incomplete');
-								if (color) {
+								c[!v || color ? 'removeClass' : 'addClass']('input--incomplete');
+
+								if (!v) {
+									this._setModel(model, token, undefined);
+								} else if (color) {
 									this._setModel(model, token, color);
-									c.setValue(color.toUpperCase());
+									c.setValue(color);
 								}
 							},
 							blur: c => {
@@ -178,7 +184,7 @@ class RealmSettingsThemeComponent {
 							type: 'button',
 						},
 						events: {
-							click: () => this._setModel(model, token, undefined),
+							click: () => this._setModel(model, token, this.theme.props[token.key]),
 						},
 					}, [
 						n.component(new FAIcon('times')),
@@ -186,6 +192,9 @@ class RealmSettingsThemeComponent {
 				]),
 			])),
 			(m, c, change) => {
+				// Set disable button
+				c.setNodeProperty('reset', 'disabled', model.getModifications()?.hasOwnProperty(token.key) ? null : 'disabled');
+
 				if (change && !change.hasOwnProperty(token.key)) {
 					return;
 				}
@@ -194,13 +203,13 @@ class RealmSettingsThemeComponent {
 				c.setNodeStyle('color', 'backgroundColor', color || APP_COLORS[token.key.split('.')[1]] || '');
 				input.setValue(color || '');
 				input.removeClass('input--incomplete');
-				c.setNodeProperty('reset', 'disabled', color ? null : 'disabled');
 			},
 		);
 	}
 
 	_setModel(model, token, value) {
 		model.set({ [token.key]: value });
+		this.state = model.getModifications();
 		// Set realm with our model if it has been modified,
 		// to make it signal that there is updated properties.
 		this.realm.set({ theme: model.isModified ? model : this.theme });

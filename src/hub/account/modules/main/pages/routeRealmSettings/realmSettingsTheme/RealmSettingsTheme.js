@@ -34,7 +34,13 @@ class RealmSettingsTheme {
 			componentFactory: (realm, state) => new RealmSettingsThemeComponent(this.module, realm, state),
 			onSave: async (params) => {
 				if (params.theme) {
-					await params.theme.getModel().call('set', params.theme.getModifications());
+					let mods = params.theme.getModifications();
+					for (let k in mods) {
+						if (!mods[k]) {
+							mods[k] = '';
+						}
+					}
+					await params.theme.getModel().call('set', mods);
 					delete params.theme;
 				}
 				return params;
