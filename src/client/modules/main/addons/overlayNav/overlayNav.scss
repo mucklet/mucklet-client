@@ -1,5 +1,10 @@
 @import '~scss/variables';
 
+// Overlay nav colors
+$overlaynav-badge-background-hover: lighten($color-base-lighter, 3%);
+// Overlay nav theme vars
+$theme-overlaynav-badge-background-hover: var(--mu-overlaynav-badge-background-hover, #{$overlaynav-badge-background-hover});
+
 .overlaynav {
 	position: absolute;
 	top: 9px;
@@ -14,12 +19,12 @@
 	}
 
 	&--badge > .btn.badge, &--toggle.iconbtn {
-		box-shadow: 0px 0px 8px 4px $color1;
+		box-shadow: 0px 0px 8px 4px $theme-color-base;
 		height: 28px;
-		background: $color1-lighter;
+		background: $theme-color-base-lighter;
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: lighten($color1-lighter, 3%);
+				background: $theme-overlaynav-badge-background-hover;
 			}
 		}
 	}
@@ -57,7 +62,7 @@
 .overlaynav-area {
 	padding-left: 4px;
 	&--map {
-		box-shadow: 0px 0px 8px 4px $color1;
+		box-shadow: 0px 0px 8px 4px $theme-color-base;
 	}
 }
 

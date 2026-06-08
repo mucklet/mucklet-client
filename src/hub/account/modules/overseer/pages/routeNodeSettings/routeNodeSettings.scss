@@ -8,7 +8,7 @@
 	&--key {
 		font-size: $font-size-large;
 		line-height: 24px;
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--realms, &--containers {
@@ -20,7 +20,7 @@
 	}
 
 	&--updaterequired {
-		color: $color5;
+		color: $color-danger;
 		font-size: $font-size-small;
 		position: relative;
 		top: -6px;

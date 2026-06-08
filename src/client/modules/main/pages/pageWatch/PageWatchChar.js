@@ -20,7 +20,7 @@ class PageWatchChar {
 				click: () => this.module.dialogAboutChar.open(this.char), // this._toggleInfo()
 			}}, [
 				n.elem('div', { className: 'badge--select' }, [
-					n.component(this.module.avatar.newAvatar(this.char, { size: 'small', className: 'badge--icon' })),
+					n.component(this.module.avatar.newAvatar(this.char, { size: 'small', className: 'badge--avatar' })),
 					n.elem('div', { className: 'badge--info' }, [
 						n.elem('div', { className: 'badge--title badge--nowrap' }, [
 							n.component(new ModelTxt(this.char, c => c.name)),

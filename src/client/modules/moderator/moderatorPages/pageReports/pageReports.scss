@@ -1,11 +1,18 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+// Page reports colors
+$pagereports-report-unassigned-background: darken($color-base, 6%);
+$pagereports-report-unassigned-background-hover: darken($color-base, 9%);
+// Page reports theme vars
+$theme-pagereports-report-unassigned-background: var(--mu-pagereports-report-unassigned-background, #{$pagereports-report-unassigned-background});
+$theme-pagereports-report-unassigned-background-hover: var(--mu-pagereports-report-unassigned-background-hover, #{$pagereports-report-unassigned-background-hover});
+
 .pagereports {
 	padding: 16px 14px;
 
 	&--name {
-		color: $color3;
+		color: $theme-color-contrast;
 		font-size: $font-size;
 	}
 
@@ -26,19 +33,19 @@
 	padding: 2px 0;
 
 	&--icon.accepted {
-		@include btn-style($color6, $color6, $color6, $black, $black);
+		@include btn-style($theme-color-action, $theme-color-action, $theme-color-action, $black, $black);
 	}
 
 	&--icon.rejected, &--icon.failed {
-		@include btn-style($color5, $color5, $color5, $black, $black);
+		@include btn-style($theme-color-danger, $theme-color-danger, $theme-color-danger, $black, $black);
 	}
 
 	&--badge.unassigned {
-		background: darken($color1, 6%);
+		background: $theme-pagereports-report-unassigned-background;
 
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: darken($color1, 9%);
+				background: $theme-pagereports-report-unassigned-background-hover;
 			}
 		}
 	}

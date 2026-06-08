@@ -11,7 +11,7 @@
 	}
 
 	&--add.iconbtn {
-		@include btn-style(none, $color1-lighter, $color1-lightest, $color4-light, $color4-lighter);
+		@include btn-style(none, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
 		position: absolute;
 		right: 3px;
 		top: 3px;

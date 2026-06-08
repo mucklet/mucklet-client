@@ -34,7 +34,11 @@ class PageEditRoomProfileComponent {
 					l10n.l('pageEditRoomProfile.image', "Image"),
 					new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 						n.elem('div', { className: 'flex-1' }, [
-							n.component(this.module.avatar.newRoomImg(this.profile, { modalOnClick: true, size: 'xlarge' })),
+							n.component(this.module.avatar.newRoomImg(this.profile, {
+								modalOnClick: true,
+								size: 'xlarge',
+								className: 'pageeditroomprofile--image',
+							})),
 						]),
 						n.elem('div', { className: 'pageeditroomprofile--imagebtn flex-1' }, [
 							n.component(new FileButton(
@@ -68,6 +72,7 @@ class PageEditRoomProfileComponent {
 														n.component(this.module.avatar.newRoomImg(this.room, {
 															size: 'xlarge',
 															resolve: v => v.href,
+															className: 'dialog--avatar',
 														})),
 													])),
 													confirm: l10n.l('pageEditRoomProfile.update', "Update"),

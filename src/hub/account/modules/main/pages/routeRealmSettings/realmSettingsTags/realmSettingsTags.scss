@@ -11,7 +11,7 @@
 	}
 
 	&--add.iconbtn {
-		@include btn-style(none, $color1-lighter, $color1-lightest, $color4-light, $color4-lighter);
+		@include btn-style(none, $color-base-lighter, $color-base-lightest, $color-muted-light, $color-muted-lighter);
 		position: absolute;
 		right: 3px;
 		top: 3px;
@@ -43,9 +43,9 @@
 
 	font-size: $font-size-small;
 	&.maxed {
-		color: $color3;
+		color: $color-contrast;
 	}
 	&.exceeded {
-		color: $color5;
+		color: $color-danger;
 	}
 }

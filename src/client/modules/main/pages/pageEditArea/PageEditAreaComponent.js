@@ -5,10 +5,8 @@ import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
 import FAIcon from 'components/FAIcon';
 import FileButton from 'components/FileButton';
-import Img from 'components/Img';
 import PanelSection from 'components/PanelSection';
 import LabelToggleBox from 'components/LabelToggleBox';
-import ImgModal from 'classes/ImgModal';
 
 const txtUpdate = l10n.l('pageEditArea.update', "Save edits");
 const txtClose = l10n.l('pageEditArea.close', "Close");
@@ -43,20 +41,12 @@ class PageEditAreaComponent {
 				l10n.l('pageEditArea.mapImage', "Map Image"),
 				new Elem(n => n.elem('div', { className: 'flex-row flex-stretch pad8' }, [
 					n.elem('div', { className: 'flex-1' }, [
-						n.component(new ModelComponent(
-							this.area,
-							new Img('', { className: 'pageeditarea--image', events: {
-								click: c => {
-									if (!c.hasClass('placeholder')) {
-										new ImgModal(this.area.image.href).open();
-									}
-								},
-							}}),
-							(m, c, changed) => {
-								c.setSrc(m.image ? m.image.href + '?thumb=xl' : '/img/area-l.png');
-								c[m.image ? 'removeClass' : 'addClass']('placeholder');
-							},
-						)),
+						n.component(this.module.avatar.newAreaImg(this.area, {
+							className: 'pageeditarea--image',
+							size: 'xlarge',
+							modalOnClick: true,
+							resolve: v => v.href,
+						})),
 					]),
 					n.elem('div', { className: 'pageeditarea--imagebtn flex-1' }, [
 						n.component(new FileButton(

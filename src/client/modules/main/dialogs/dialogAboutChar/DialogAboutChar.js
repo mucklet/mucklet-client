@@ -72,7 +72,7 @@ class DialogAboutChar {
 					new Elem(n => n.elem('div', [
 						n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 							n.elem('div', { className: 'flex-auto' }, [
-								n.component(this.module.avatar.newAvatar(char, { size: 'large' })),
+								n.component(this.module.avatar.newAvatar(char, { className: 'dialog--avatar', size: 'large' })),
 							]),
 							n.elem('div', { className: 'flex-1' }, [
 								n.component('name', new Txt('', {

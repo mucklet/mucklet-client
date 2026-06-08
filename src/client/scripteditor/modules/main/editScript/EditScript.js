@@ -3,9 +3,14 @@ import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import fetchRoomScriptSource from 'utils/fetchRoomScriptSource';
 import { addBeforeUnload, removeBeforeUnload } from 'utils/reload';
+import { adjust } from 'utils/color';
 
 import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
+
+const themeTokens = {
+	'editscript.scrollbar.thumb.hover': (c) => adjust(c.base, 18),
+};
 
 const pathDef = [
 	[ '$scriptId', '$mode' ],
@@ -30,6 +35,7 @@ class EditScript {
 			'editorLayout',
 			'confirm',
 			'toaster',
+			'theme',
 		], this._init.bind(this));
 	}
 
@@ -45,6 +51,7 @@ class EditScript {
 		 * }}
 		 */
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 
 		this.model = new Model({ data: { roomScript: null, source: '', version: null, boilerplate: null, isModified: false }, eventBus: this.app.eventBus });
 
@@ -131,6 +138,7 @@ class EditScript {
 		this._setState(null, null);
 		this.module.router.removeRoute('editscript');
 		removeBeforeUnload(this._onBeforeUnload);
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

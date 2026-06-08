@@ -1,18 +1,21 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-$popuptip-background: #{'rgba(3,4,6,90%)'};
+// Popuppill colors
+$popuppill-tip-background: rgba(darken($color-base, 10%), 0.9);
+// Popuppill theme vars
+$theme-popuppill-tip-background: var(--mu-popuppill-tip-background, #{$popuppill-tip-background});
 
 .popuppill {
 	&--pill {
 		width: 20px;
 		border-radius: 3px;
-		border: solid 4px $color4;
+		border: solid 4px $theme-color-muted;
 	}
 
 	&--tip {
 		position: absolute;
-		background: $popuptip-background;
+		background: $theme-popuppill-tip-background;
 		padding: 8px 14px 14px 8px;
 		left: 16px;
 		right: 16px;
@@ -28,7 +31,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 		margin-top: -18px;
 		border-width: 5px;
 		border-style: solid;
-		border-color: $popuptip-background transparent transparent transparent;
+		border-color: $theme-popuppill-tip-background transparent transparent transparent;
 
 	}
 }
@@ -44,7 +47,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	}
 
 	&channelborder {
-		border-color: $color6;
+		border-color: $theme-color-action;
 		border-width: 1px 1px 1px 5px;
 		height: 8px;
 	}

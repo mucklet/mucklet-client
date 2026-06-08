@@ -20,6 +20,7 @@ class PageEditArea {
 			'toaster',
 			'file',
 			'createLimits',
+			'avatar',
 		], this._init.bind(this));
 	}
 

@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta name="theme-color" content="<%= APP_ISTEMPLATE ? "{{ or (and .Realm .Realm.ThemeColor) `" + APP_THEME_COLOR + "` }}" : APP_THEME_COLOR %>" />
 	<link href="/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="/fonts/fonts.css" rel="stylesheet">
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -24,6 +25,7 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 			rendering: "{{ .Rendering | js }}",
 		}{{ else }}null{{ end }},
 	},
+	theme: null,
 	apiHostPath: "{{ .Realm.APIWSPath | js }}",
 	apiWebresourcePath: "{{ .Realm.APIResourcePath | js }}",
 	apiFilePath: "{{ .Realm.APIFilePath | js }}",
@@ -36,11 +38,19 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 		image: <%= JSON.stringify(APP_IMAGE) %>,
 		icon: <%= JSON.stringify(APP_ICON) %>,
 	},
+	theme: <%= JSON.stringify(APP_THEME || null) %>,
 	apiHostPath: <%= JSON.stringify(API_HOST_PATH) %>,
 	apiWebresourcePath: <%= JSON.stringify(API_WEBRESOURCE_PATH) %>,
 	apiFilePath: <%= JSON.stringify(API_FILE_PATH) %>,<% } %>
 };
+(function() {
+	var base = (window.appProps.theme || {})['color.base'];
+	if (base) {
+		document.documentElement.style.setProperty('--mu-color-base', base);
+	}
+})();
 	</script>
+	<style>body { background: var(--mu-color-base, <%= htmlWebpackPlugin.options.baseColor %>); }</style>
 	<title><%= APP_ISTEMPLATE ? "{{ with .Realm }}{{ .Name | html }}{{ end }}" : htmlWebpackPlugin.options.title %> script editor</title>
 </head>
 <body>

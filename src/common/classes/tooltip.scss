@@ -3,11 +3,14 @@
 
 
 
-$popuptip-background: #{'rgba(3,4,6,90%)'};
+// Tooltip colors
+$tooltip-background: rgba(darken($color-base, 10%), 0.9);
+// Tooltip theme vars
+$theme-tooltip-background: var(--mu-tooltip-background, #{$tooltip-background});
 
 .tooltip {
 	position: absolute;
-	background: $popuptip-background;
+	background: $theme-tooltip-background;
 	padding: 8px 16px;
 	z-index: 1000;
 	// left: 16px;
@@ -33,7 +36,7 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 	&--text {
 		white-space: pre;
 		font-size: $font-size-small;
-		color: $color4-lighter;
+		color: $theme-color-muted-lighter;
 	}
 
 	&--left {
@@ -84,10 +87,10 @@ $popuptip-background: #{'rgba(3,4,6,90%)'};
 		border-width: 5px;
 		border-style: solid;
 		transform: translateY(-5px) translateX(-5px);
-		border-color: $popuptip-background transparent transparent transparent;
+		border-color: $theme-tooltip-background transparent transparent transparent;
 	}
 
 	&--caret.tooltip--pos-bottom {
-		border-color: transparent transparent $popuptip-background transparent;
+		border-color: transparent transparent $theme-tooltip-background transparent;
 	}
 }

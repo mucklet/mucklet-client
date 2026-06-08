@@ -6,6 +6,7 @@ import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
 import compareSortOrderId from 'utils/compareSortOrderId';
+import { alpha } from 'utils/color';
 import {
 	msgEvent,
 	sayEvent,
@@ -37,6 +38,10 @@ import './charLog.scss';
 import './charLogEvent.scss';
 import './charLogHighlight.scss';
 
+const themeTokens = {
+	'charlog.invalid.background': (c, getToken) => alpha(getToken('log.error'), 0.5),
+	'charlog.eventmenu.background': (c) => alpha(c.base, 0.8),
+};
 
 const componentFactories = {
 	component: (charId, ev) => ev.component,
@@ -98,11 +103,13 @@ class CharLog {
 			'charLogStore',
 			'layout',
 			'highlightSettings',
+			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 		this.localId = 0;
 		this.sessionId = Math.random().toString(36).substring(7);
 		this.activeCharId = null;
@@ -720,6 +727,7 @@ class CharLog {
 		this._setListeners(false);
 		this.charComponents = {};
 		document.removeEventListener('visibilitychange', this._onVisibilityChange);
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

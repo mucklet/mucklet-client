@@ -3,11 +3,13 @@ import Auth from 'modules/auth/Auth';
 import Screen from 'modules/screen/Screen';
 import Policies from 'modules/policies/Policies';
 import ServiceWorker from 'modules/serviceWorker/ServiceWorker';
+import Theme from 'modules/theme/Theme';
 
 const modules = {
 	api: Api,
 	auth: Auth,
 	screen: Screen,
+	theme: Theme,
 	policies: Policies,
 	serviceWorker: ServiceWorker,
 };

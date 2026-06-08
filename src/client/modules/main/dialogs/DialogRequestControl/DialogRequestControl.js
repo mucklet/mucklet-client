@@ -34,7 +34,7 @@ class DialogRequestControl {
 			content: new Elem(n => n.elem('div', [
 				n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 					n.elem('div', { className: 'flex-auto' }, [
-						n.component(this.module.avatar.newAvatar(puppeteer.puppet, { size: 'large' })),
+						n.component(this.module.avatar.newAvatar(puppeteer.puppet, { className: 'dialog--avatar', size: 'large' })),
 					]),
 					n.elem('div', { className: 'flex-1' }, [
 						n.component(new ModelTxt(puppeteer.puppet, m => (m.name + " " + m.surname).trim(), {
