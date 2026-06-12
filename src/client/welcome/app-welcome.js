@@ -6,6 +6,7 @@ import Auth from 'modules/auth/Auth';
 import Screen from 'modules/screen/Screen';
 import GreetingScreen from 'modules/greetingScreen/GreetingScreen';
 import RealmInfo from 'modules/realmInfo/RealmInfo';
+import Theme from 'modules/theme/Theme';
 
 import 'scss/index.scss';
 
@@ -13,6 +14,7 @@ const modules = {
 	api: Api,
 	auth: Auth,
 	screen: Screen,
+	theme: Theme,
 	greetingScreen: GreetingScreen,
 	realmInfo: RealmInfo,
 };

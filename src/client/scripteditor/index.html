@@ -25,7 +25,7 @@ window.appProps = {<% if (APP_ISTEMPLATE) { %>
 			rendering: "{{ .Rendering | js }}",
 		}{{ else }}null{{ end }},
 	},
-	theme: null,
+	theme: {{ .Theme | jsonmarshal }},
 	apiHostPath: "{{ .Realm.APIWSPath | js }}",
 	apiWebresourcePath: "{{ .Realm.APIResourcePath | js }}",
 	apiFilePath: "{{ .Realm.APIFilePath | js }}",

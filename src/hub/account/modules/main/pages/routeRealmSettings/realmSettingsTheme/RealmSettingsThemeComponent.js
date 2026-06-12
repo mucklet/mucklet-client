@@ -45,14 +45,15 @@ class RealmSettingsThemeComponent {
 		this.module = module;
 		this.realm = realm;
 		this.theme = realm.theme;
-		this.state = state.realmSettingsTheme || {};
-		state.realmSettingsTheme = this.state;
+		this.state = state;
+		this.themeState = state.realmSettingsTheme || {};
+		state.realmSettingsTheme = this.themeState;
 	}
 
 	render(el) {
 		this.elem = new Context(
 			() => new ModifyModel(this.theme, {
-				props: this.state,
+				props: this.themeState,
 				modifiedOnNew: true,
 			}),
 			model => model.dispose(),
@@ -66,7 +67,7 @@ class RealmSettingsThemeComponent {
 						tools => tools.dispose(),
 						tools => new CollectionList(
 							tools,
-							t => t.componentFactory(this.realm, this.state),
+							t => t.componentFactory(this.realm, this.themeState),
 							{
 								className: 'realmsettingstheme--tools',
 								subClassName: t => t.className || null,
@@ -209,7 +210,8 @@ class RealmSettingsThemeComponent {
 
 	_setModel(model, token, value) {
 		model.set({ [token.key]: value });
-		this.state = model.getModifications();
+		this.themeState = model.getModifications() || {};
+		this.state.realmSettingsTheme = this.themeState;
 		// Set realm with our model if it has been modified,
 		// to make it signal that there is updated properties.
 		this.realm.set({ theme: model.isModified ? model : this.theme });
