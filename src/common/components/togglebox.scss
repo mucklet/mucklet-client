@@ -1,8 +1,15 @@
 @import '~scss/variables';
 
+// Togglebox colors
+$togglebox-action-hover: lighten($color-action, 5%);
+$togglebox-danger-hover: lighten($color-danger, 5%);
+// Togglebox theme vars
+$theme-togglebox-action-hover: var(--mu-togglebox-action-hover, #{$togglebox-action-hover});
+$theme-togglebox-danger-hover: var(--mu-togglebox-danger-hover, #{$togglebox-danger-hover});
+
 .togglebox {
 	display: inline-block;
-	border: 4px solid $color4;
+	border: 4px solid $theme-color-muted;
 	background: transparent;
 	border-radius: 3px;
 	padding: 0;
@@ -30,15 +37,15 @@
 }
 
 .togglebox.value-1 > div {
-	background: $color6;
+	background: $theme-color-action;
 	&:hover:not(:disabled) {
-		background: lighten($color6, 5%);
+		background: $theme-togglebox-action-hover;
 	}
 }
 
 .togglebox.value-2 > div {
-	background: $color5;
+	background: $theme-color-danger;
 	&:hover:not(:disabled) {
-		background: lighten($color5, 5%);
+		background: $theme-togglebox-danger-hover;
 	}
 }

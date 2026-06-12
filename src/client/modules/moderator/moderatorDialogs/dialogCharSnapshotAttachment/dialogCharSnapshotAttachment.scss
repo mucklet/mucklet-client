@@ -18,12 +18,12 @@
 	&--notset {
 		font-style: italic;
 		font-size: $font-size;
-		color: $color4-dark;
+		color: $theme-color-muted-dark;
 	}
 
 	&--fullname {
 		font-family: $font-text;
-		color: $color3;
+		color: $theme-color-contrast;
 		font-size: $font-size-large;
 		line-height: 24px;
 	}
@@ -31,10 +31,6 @@
 	&--status, &--timestamp {
 		font-size: $font-size-small;
 		line-height: 20px;
-	}
-
-	&--image, &--avatar {
-		background: $color1-lighter;
 	}
 
 	&--imagebtn {

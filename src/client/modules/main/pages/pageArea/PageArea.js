@@ -2,7 +2,14 @@ import { Model } from 'modapp-resource';
 import PageAreaComponent from './PageAreaComponent';
 import PageAreaImage from './PageAreaImage';
 import { areaInfo } from './pageAreaTxt';
+import { adjust, alpha } from 'utils/color';
 import './pageArea.scss';
+
+const themeTokens = {
+	'pagearea.location.selected.background': (c) => adjust(c.base, -3),
+	'pagearea.image.location.border': (c) => alpha(c.danger, 0.6),
+	'pagearea.image.location.border.selected': (c) => alpha(c.danger, 0.8),
+};
 
 /**
  * PageArea opens an in-panel edit room page in the room panel.
@@ -14,11 +21,13 @@ class PageArea {
 		this.app.require([
 			'roomPages',
 			'player',
+			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 
 		this.tools = new Model({ eventBus: this.app.eventBus });
 		this.module.roomPages.setDefaultAreaPageFactory({
@@ -83,6 +92,7 @@ class PageArea {
 
 	dispose() {
 		this.module.roomPages.setDefaultAreaPageFactory(null);
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

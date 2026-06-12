@@ -23,7 +23,7 @@ class PageCharSelectChar {
 					click: () => this._toggleActions(),
 				}}, [
 					n.elem('div', { className: 'badge--select' }, [
-						n.component(this.module.avatar.newAvatar(this.char, { className: 'badge--icon' })),
+						n.component(this.module.avatar.newAvatar(this.char, { className: 'badge--avatar' })),
 						n.elem('div', { className: 'badge--info large' }, [
 							n.elem('fullname', 'div', { className: 'pagecharselect-char--title badge--title badge--nowrap' }, [
 								n.component(new ModelTxt(this.char, c => c.name)),

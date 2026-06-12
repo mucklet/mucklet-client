@@ -4,6 +4,7 @@ import { precacheAndRoute } from 'workbox-precaching';
 // fold the checks before the template has been rendered by the server.
 self.__swRevisions = {
 	realmHash: __SW_REALM_HASH__,
+	themeHash: __SW_THEME_HASH__,
 	realmImage: __SW_REALM_IMAGE__,
 	realmIcon: __SW_REALM_ICON__,
 };
@@ -12,14 +13,14 @@ self.__swRevisions = {
 // with a different file by the web server.
 const revisionedFiles = {
 	// Image files
-	'favicon.ico': { key: 'realmIcon', append: false },
-	'img/realmicon-l.png': { key: 'realmIcon', append: false },
-	'img/realm.png': { key: 'realmImage', append: false },
+	'favicon.ico': { keys: [ 'realmIcon' ], append: false },
+	'img/realmicon-l.png': { keys: [ 'realmIcon' ], append: false },
+	'img/realm.png': { keys: [ 'realmImage' ], append: false },
 	// Templated files
-	'index.html': { key: 'realmHash', append: true },
-	'welcome/index.html': { key: 'realmHash', append: true },
-	'scripteditor/index.html': { key: 'realmHash', append: true },
-	'site.webmanifest': { key: 'realmHash', append: true },
+	'index.html': { keys: [ 'realmHash', 'themeHash' ], append: true },
+	'welcome/index.html': { keys: [ 'realmHash', 'themeHash' ], append: true },
+	'scripteditor/index.html': { keys: [ 'realmHash', 'themeHash' ], append: true },
+	'site.webmanifest': { keys: [ 'realmHash' ], append: true },
 };
 
 // Files to precache that are not part of the webpack build, but provided by
@@ -32,7 +33,7 @@ const additionalFiles = [
 const manifest = self.__WB_MANIFEST.map((entry) => {
 	const o = revisionedFiles[entry.url];
 	if (o) {
-		const revision = self.__swRevisions[o.key];
+		const revision = o.keys.map(k => self.__swRevisions[k]).join('');
 		if (revision) {
 			return {
 				...entry,

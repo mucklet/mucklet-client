@@ -26,7 +26,7 @@ class PageCharSelectPuppet {
 							click: () => this._toggleActions(),
 						}}, [
 							n.elem('div', { className: 'badge--select' }, [
-								n.component(this.module.avatar.newAvatar(this.puppet, { className: 'badge--icon' })),
+								n.component(this.module.avatar.newAvatar(this.puppet, { className: 'badge--avatar' })),
 								n.elem('div', { className: 'badge--info large' }, [
 									n.elem('fullname', 'div', { className: 'pagecharselect-puppet--title badge--title badge--nowrap' }, [
 										n.component(new ModelTxt(this.puppet, c => c.name)),

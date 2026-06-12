@@ -1,4 +1,6 @@
 @import '~scss/variables';
+@import '~scss/hubvariables';
+@import '~scss/mixins';
 
 .login {
 
@@ -11,16 +13,20 @@
 
 	&--btn {
 		width: 100%;
+
+		&.google.btn {
+			@include btn-style($color-google, $color-google-hover, $color-google-active, $white, $white);
+		}
 	}
 
 	&--message {
-		color: $color5;
+		color: $color-danger;
 	}
 
 	&--divider {
 		width: 100%;
 		height: 2px;
-		background: $color2;
+		background: $color-accent;
 		margin: 32px 0;
 		position: relative;
 
@@ -28,7 +34,7 @@
 			position: absolute;
 			display: block;
 			padding: 0 10px;
-			background: $color1;
+			background: $color-base;
 			left: 50%;
 			margin: 0 -50% 0 0;
 			transform: translate(-50%, -50%);
@@ -68,7 +74,7 @@
 	}
 
 	&--realmname {
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--agree {

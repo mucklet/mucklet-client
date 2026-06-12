@@ -73,7 +73,7 @@ class Whois {
 						},
 					}}, [
 						n.elem('div', { className: 'badge--select' }, [
-							n.component(this.module.avatar.newAvatar(c, { className: 'badge--icon' })),
+							n.component(this.module.avatar.newAvatar(c, { className: 'badge--avatar' })),
 							n.elem('div', { className: 'badge--info large' }, [
 								n.elem('div', { className: 'badge--title badge--nowrap' }, [
 									n.component(new Txt(charName)),

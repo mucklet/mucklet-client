@@ -5,7 +5,13 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import counterString from 'utils/counterString';
 import PageMailComponent from './PageMailComponent';
+import { adjust } from 'utils/color';
 import './pageMail.scss';
+
+const themeTokens = {
+	'pagemail.mail.unread.background': (c) => adjust(c.base, -6),
+	'pagemail.mail.unread.background.hover': (c) => adjust(c.base, -9),
+};
 
 /**
  * PageMail adds the mail for player panel page
@@ -26,11 +32,13 @@ class PageMail {
 			'avatar',
 			'notify',
 			'playerEvent',
+			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 		this.unread = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.state = { mailId: null, offset: 0 };
 
@@ -139,6 +147,7 @@ class PageMail {
 		this.module.playerTabs.removeTab('mail');
 		this.unread.dispose();
 		this.unread = null;
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

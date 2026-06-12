@@ -1,37 +1,38 @@
 @import '~scss/variables';
+@import '~scss/hubvariables';
 
 .taskrunstates {
 	&-- {
 		// &none, &queued {
-		// 	color: $color4-darker !important;
+		// 	color: $color-muted-darker !important;
 		// }
 		&running:not(.bg) {
-			color: $color6 !important;
+			color: $color-action !important;
 		}
 		&success:not(.bg) {
-			color: $green !important;
+			color: $color-success !important;
 		}
 		&warning:not(.bg) {
-			color: $color2 !important;
+			color: $color-accent !important;
 		}
 		&error:not(.bg) {
-			color: $color5 !important;
+			color: $color-danger !important;
 		}
 
 		// &none, &queued {
-		// 	background: $color4-darker !important;
+		// 	background: $color-muted-darker !important;
 		// }
 		&running.bg {
-			background: $color6 !important;
+			background: $color-action !important;
 		}
 		&success.bg {
-			background: $green !important;
+			background: $color-success !important;
 		}
 		&warning.bg {
-			background: $color2 !important;
+			background: $color-accent !important;
 		}
 		&error.bg {
-			background: $color5 !important;
+			background: $color-danger !important;
 		}
 	}
 }

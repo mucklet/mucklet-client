@@ -8,11 +8,11 @@
 	&--title {
 		line-height: 26px;
 		font-size: $font-size;
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--date {
-		color: $color4;
+		color: $color-muted;
 		line-height: 20px;
 		font-size: $font-size-small;
 	}
@@ -22,7 +22,7 @@
 	}
 
 	&--updaterequired {
-		color: $color5;
+		color: $color-danger;
 		font-size: $font-size-small;
 	}
 }

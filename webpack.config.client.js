@@ -9,6 +9,8 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
 
 module.exports = function(ctx) {
+	const baseColor = ctx.siteConfig.APP_COLORS.base;
+
 	// transformSitemap looks for ${ NAME | MOD } patterns in a text, and replaces
 	// them with the preset content.
 	function transformSitemap(content, path) {
@@ -20,6 +22,7 @@ module.exports = function(ctx) {
 				ICON_192x192_PNG_PATH: () => `"{{ .RootURL | json}}android-chrome-192x192.png"`,
 				ICON_512x512_PNG_PATH: () => `"{{ .RootURL | json }}android-chrome-512x512.png"`,
 				ICON_SITEICON_SVG_PATH: () => `"{{ .RootURL | json }}siteicon.svg"`,
+				THEME_COLOR: () => `"{{ or (and .Realm .Realm.ThemeColor) "${cfg.APP_THEME_COLOR}" }}"`,
 			}
 			: {
 				APP_NAME: () => JSON.stringify(cfg.APP_TITLE),
@@ -27,6 +30,7 @@ module.exports = function(ctx) {
 				ICON_192x192_PNG_PATH: () => JSON.stringify((cfg.APP_ROOT || "/") + "android-chrome-192x192.png"),
 				ICON_512x512_PNG_PATH: () => JSON.stringify((cfg.APP_ROOT || "/") + "android-chrome-512x512.png"),
 				ICON_SITEICON_SVG_PATH: () => JSON.stringify((cfg.APP_ROOT || "/") + "siteicon.svg"),
+				THEME_COLOR: () => JSON.stringify(cfg.APP_THEME_COLOR),
 			};
 		return content.toString().replace(/\$\{\s*([^}| ]*)\s*(?:|\|\s*([^} ]*)\s*)\}/g, (m, name, mod) => {
 			let f = fields[name] || ((v, mod) => JSON.stringify("Unknown:" + v));
@@ -93,18 +97,21 @@ module.exports = function(ctx) {
 				template: path.resolve(ctx.srcPath, 'index.html'),
 				filename: 'index.html',
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'app' ],
 			}),
 			new HtmlWebpackPlugin({
 				filename: 'welcome/index.html',
 				template: path.resolve(ctx.srcPath, 'welcome/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'welcome' ],
 			}),
 			new HtmlWebpackPlugin({
 				filename: 'scripteditor/index.html',
 				template: path.resolve(ctx.srcPath, 'scripteditor/index.html'),
 				title: ctx.siteConfig.APP_TITLE,
+				baseColor,
 				chunks: [ 'scripteditor' ],
 			}),
 			new MiniCssExtractPlugin({
@@ -116,6 +123,9 @@ module.exports = function(ctx) {
 				APP_VERSION: JSON.stringify(ctx.pkg.version),
 				__SW_REALM_HASH__: ctx.siteConfig.APP_ISTEMPLATE
 					? '"{{ with .Realm }}{{ .Hash | json }}{{ end }}"'
+					: '',
+				__SW_THEME_HASH__: ctx.siteConfig.APP_ISTEMPLATE
+					? '"{{ .ThemeHash | json }}"'
 					: '',
 				__SW_REALM_IMAGE__: ctx.siteConfig.APP_ISTEMPLATE
 					? '"{{ with .Realm }}{{ .Image | json }}{{ end }}"'

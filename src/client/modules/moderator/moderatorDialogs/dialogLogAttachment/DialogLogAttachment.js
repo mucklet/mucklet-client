@@ -37,7 +37,10 @@ class DialogLogAttachment {
 					content: new Elem(n => n.elem('div', [
 						n.elem('div', { className: 'flex-row pad12 pad-bottom-l' }, [
 							n.elem('div', { className: 'flex-auto' }, [
-								n.component(this.module.avatar.newAvatar(log.char, { size: 'large' })),
+								n.component(this.module.avatar.newAvatar(log.char, {
+									size: 'large',
+									className: 'dialog--avatar',
+								})),
 							]),
 							n.elem('div', { className: 'flex-1' }, [
 								n.component(new ModelTxt(log.char, m => errString(m, m => (m.name + ' ' + m.surname).trim(), txtUnknown), { tagName: 'div', className: 'dialoglogattachment--fullname' })),

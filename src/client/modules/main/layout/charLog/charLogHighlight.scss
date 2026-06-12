@@ -4,8 +4,8 @@
 .charlog--highlight-triggers {
 	.common--formattext {
 		span.highlight {
-			color: $color4-lightest;
-			background: $color1-lighter;
+			color: $theme-color-muted-lightest;
+			background: $theme-color-base-lighter;
 			padding: 0 3px;
 			margin: 0 -1px;
 			border-radius: 4px;
@@ -13,7 +13,7 @@
 		// Inline ooc text
 		span.ooc {
 			span.highlight {
-				color: $color4-light;
+				color: $theme-color-muted-light;
 			}
 		}
 	}
@@ -21,14 +21,14 @@
 	// Highlight text color for ooc text
 	.charlog--ooc .common--formattext {
 		span.highlight {
-			color: $color4-light;
+			color: $theme-color-muted-light;
 		}
 	}
 	// Highlight text color for communication text
 	.charlog--comm {
 		.common--formattext {
 			span.highlight {
-				color: $color3;
+				color: $theme-color-contrast;
 			}
 		}
 	}
@@ -38,7 +38,7 @@
 .charlog--highlight-mention {
 	.charlog--ev.mentioned, .charlog--ev.targeted {
 		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
-			background: $color1-light;
+			background: $theme-color-base-light;
 		}
 	}
 }
@@ -47,7 +47,7 @@
 .charlog--highlight-own {
 	.charlog--ev.own {
 		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
-			background: $color1-light;
+			background: $theme-color-base-light;
 		}
 	}
 }
@@ -56,20 +56,20 @@
 .charlog--highlight-mention {
 	.charlog--ev.mentioned, .charlog--ev.targeted {
 		// Default color
-		color: $color4-light;
+		color: $theme-color-muted-light;
 		// Inline ooc text
 		.common--formattext {
 			span.ooc {
-				color: $color4-semidark;
+				color: $theme-color-muted-semidark;
 			}
 		}
 		// Brighten comm
 		.charlog--comm {
-			color: $color4-lightestest;
+			color: $theme-color-muted-lightestest;
 		}
 		// Brighten ooc
 		.charlog--ooc {
-			color: $color4-semidark;
+			color: $theme-color-muted-semidark;
 		}
 	}
 }
@@ -78,20 +78,20 @@
 .charlog--highlight-own {
 	.charlog--ev.own{
 		// Default color
-		color: $color4-light;
+		color: $theme-color-muted-light;
 		// Inline ooc text
 		.common--formattext {
 			span.ooc {
-				color: $color4-semidark;
+				color: $theme-color-muted-semidark;
 			}
 		}
 		// Brighten comm
 		.charlog--comm {
-			color: $color4-lightestest;
+			color: $theme-color-muted-lightestest;
 		}
 		// Brighten ooc
 		.charlog--ooc {
-			color: $color4-semidark;
+			color: $theme-color-muted-semidark;
 		}
 	}
 }
@@ -101,11 +101,11 @@
 	.charlog--ev.mentioned, .charlog--ev.targeted {
 		.common--formattext {
 			span.highlight {
-				background: $color1-lightest;
+				background: $theme-color-base-lightest;
 			}
 			span.ooc {
 				span.highlight {
-					color: $color4-lighter;
+					color: $theme-color-muted-lighter;
 				}
 			}
 		}
@@ -121,7 +121,7 @@
 		.charlog--ooc {
 			.common--formattext {
 				span.highlight {
-					color: $color4-lighter;
+					color: $theme-color-muted-lighter;
 				}
 			}
 		}
@@ -133,11 +133,11 @@
 	.charlog--ev.own {
 		.common--formattext {
 			span.highlight {
-				background: $color1-lightest;
+				background: $theme-color-base-lightest;
 			}
 			span.ooc {
 				span.highlight {
-					color: $color4-lighter;
+					color: $theme-color-muted-lighter;
 				}
 			}
 		}
@@ -153,7 +153,7 @@
 		.charlog--ooc {
 			.common--formattext {
 				span.highlight {
-					color: $color4-lighter;
+					color: $theme-color-muted-lighter;
 				}
 			}
 		}

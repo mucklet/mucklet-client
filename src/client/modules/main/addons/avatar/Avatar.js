@@ -12,6 +12,7 @@ class Avatar {
 		this.avatarPattern = (v) => apiFilePath + 'core/char/avatar/' + v;
 		this.charImgPattern = (v) => apiFilePath + 'core/char/img/' + v;
 		this.roomImgPattern = (v) => apiFilePath + 'core/room/img/' + v;
+		this.areaImgPattern = (v) => apiFilePath + 'core/area/img/' + v;
 
 		this.app.require([], this._init.bind(this));
 	}
@@ -80,6 +81,26 @@ class Avatar {
 		}, opt));
 	}
 
+	/**
+	 * Creates a new avatar component instance for area images.
+	 * @param {Model|object} area Area or profile model or object.
+	 * @param {object} [opt] Optional parameters.
+	 * @param {object} [opt.char] Character object used to fetch initials in profile is not a character.
+	 * @param {string} [opt.size] Avatar size. May be 'small', 'medium', 'large', or 'xlarge'.
+	 * @param {string} [opt.property] Char property to get the image ID. Defaults to 'area'.
+	 * @param {string} [opt.placeholder] Placeholder image to use instead of initials. May be 'avatar'. Defaults to 'avatar'.
+	 * @param {boolean} [opt.modalOnClick] Flag if clicking on the image should show the full image in a modal.
+	 * @param {(v: any) => string} [opt.resolve] Resolves the image href from the image property.
+	 * @returns {Component} Avatar component.
+	 */
+	newAreaImg(area, opt) {
+		return new AvatarComponent(area, Object.assign({
+			resolve: this.areaImgPattern,
+			placeholder: 'area',
+			property: 'image',
+		}, opt));
+	}
+
 	charImgHref(char) {
 		return char.image ? this.charImgPattern(char.image) : null;
 	}
@@ -90,6 +111,10 @@ class Avatar {
 
 	roomImgHref(room) {
 		return room.image ? this.roomImgPattern(room.image) : null;
+	}
+
+	areaImgHref(area) {
+		return area.image ? this.areaImgPattern(area.image) : null;
 	}
 
 }

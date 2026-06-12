@@ -1,17 +1,18 @@
 @import '~scss/variables';
+@import '~scss/hubvariables';
 
 // .routetaskruns {}
 
 .routetaskruns-taskrunbadge {
 	&--icon.badge--faicon {
-		color: $color1-dark;
-		background: $color4-darker;
+		color: $color-base-dark;
+		background: $color-muted-darker;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		> .spinner:before {
-			border-top-color: $color1-dark;
+			border-top-color: $color-base-dark;
 		}
 	}
 	&--state- {
@@ -20,22 +21,22 @@
 		// }
 		&running {
 			&.badge--faicon {
-				background: $color6;
+				background: $color-action;
 			}
 		}
 		&success {
 			&.badge--faicon {
-				background: $green;
+				background: $color-success;
 			}
 		}
 		&warning {
 			&.badge--faicon {
-				background: $color2;
+				background: $color-accent;
 			}
 		}
 		&error {
 			&.badge--faicon {
-				background: $color5;
+				background: $color-danger;
 			}
 		}
 	}
@@ -49,7 +50,7 @@
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--pagelistitem {
@@ -67,7 +68,7 @@
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--info {
@@ -76,7 +77,7 @@
 
 	&--error {
 		padding-top: 6px;
-		color: $color5;
+		color: $color-danger;
 	}
 
 	&--steps {
@@ -88,7 +89,7 @@
 	}
 
 	&--stepname {
-		color: $color3;
+		color: $color-contrast;
 		font-size: $font-size-small;
 	}
 	&--stepduration {
@@ -96,7 +97,7 @@
 	}
 	&--stepsubtitle {
 		display: block;
-		color: $color2;
+		color: $color-accent;
 		font-size: $font-size-small;
 		padding: 6px 0 2px 0;
 	}
@@ -105,7 +106,7 @@
 		font-style: normal;
 		font-size: $font-size-tiny;
 		font-family: $font-code;
-		background: $color1-dark;
+		background: $color-base-dark;
 		border-radius: 8px;
 	}
 	&--steplogtxt {

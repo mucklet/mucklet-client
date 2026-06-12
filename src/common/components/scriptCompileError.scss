@@ -4,15 +4,14 @@
 .scriptcompileerror {
 	@include log-pad(large);
 
-	color: $log-error;
+	color: $theme-log-error;
 
 	&--msg {
 		padding-top: 8px;
 		white-space: pre-wrap;
-		color: $log-text;
+		color: $theme-log-text;
 		font-family: $font-code;
 		font-style: normal;
 		font-size: $font-size-small;
 	}
 }
-

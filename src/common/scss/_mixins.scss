@@ -11,32 +11,32 @@
 
 // set default variables to be base button colors.
 @mixin btn-style (
-	$bg:          $color1-light,
-	$bg-hover:    $color1-lighter,
-	$bg-active:   $color1-lightest,
-	$color:       $color4,
-	$color-hover: $color4-light
+	$bg:               $theme-color-base-light,
+	$bg-hover:         $theme-color-base-lighter,
+	$bg-active:        $theme-color-base-lightest,
+	$text-color:       $theme-color-muted,
+	$text-color-hover: $theme-color-muted-light
 ) {
 	background: $bg;
-	color: $color;
+	color: $text-color;
 	& > svg {
-		fill: $color;
+		fill: $text-color;
 	}
 
 	&:not(:disabled) {
 		&:hover {
 			background: $bg-hover;
-			color: $color-hover;
+			color: $text-color-hover;
 			& > svg {
-				fill: $color-hover;
+				fill: $text-color-hover;
 			}
 		}
 
 		&:active, &:focus {
 			background: $bg-active;
-			color: $color;
+			color: $text-color;
 			& > svg {
-				fill: $color;
+				fill: $text-color;
 			}
 		}
 	}

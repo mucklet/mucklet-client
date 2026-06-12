@@ -15,7 +15,7 @@
 	&--playerpanel {
 		height: 100%;
 		flex: 0 0 auto;
-		background-color: $color1-lighter;
+		background-color: $theme-color-base-lighter;
 		z-index: 5;
 		-webkit-box-shadow: 4px 0px 5px 0px $shadow;
 		-moz-box-shadow: 4px 0px 5px 0px $shadow;
@@ -25,6 +25,6 @@
 	&--activepanel {
 		height: 100%;
 		flex: 1 1 0px;
-		background-color: $color1;
+		background-color: $theme-color-base;
 	}
 }

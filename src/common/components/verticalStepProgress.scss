@@ -27,40 +27,40 @@
 			left: -36px;
 			width: 12px;
 			height: 12px;
-			border: 2px solid $color1-lightest;
+			border: 2px solid $theme-color-base-lightest;
 			border-radius: 50%;
-			background-color: $color1;
+			background-color: $theme-color-base;
 		}
 
 		&.completed::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $color6;
-			background-color: $color6;
+			border: 2px solid $theme-color-action;
+			background-color: $theme-color-action;
 		}
 		&.warning::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $color2;
-			background-color: $color2;
+			border: 2px solid $theme-color-accent;
+			background-color: $theme-color-accent;
 		}
 		&.error::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $color5;
-			background-color: $color5;
+			border: 2px solid $theme-color-danger;
+			background-color: $theme-color-danger;
 		}
 	}
 
 	> *:not(:last-child) {
 		.verticalstepprogress--step {
 			&::before {
-				border-left: 2px solid $color1-lightest;
+				border-left: 2px solid $theme-color-base-lightest;
 			}
 
 			&.nextcompleted {
 				&::before {
-					border-left: 2px solid $color6;
+					border-left: 2px solid $theme-color-action;
 				}
 			}
 		}

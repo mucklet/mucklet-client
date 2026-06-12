@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import '~scss/hubvariables';
 @import '~scss/mixins';
 
 .overviewsupporterstatus {
@@ -25,43 +26,43 @@
 	}
 
 	&--unit {
-		color: $color4;
+		color: $color-muted;
 	}
 
 	&--badge.recurrence-once {
 		.badge--faicon {
-			background: $color1-lightest;
-			color: $color1;
+			background: $color-base-lightest;
+			color: $color-base;
 		}
 	}
 	&--badge.recurrence-month {
 		.badge--faicon {
-			background: $color6;
-			color: $color1-light;
+			background: $color-action;
+			color: $color-base-light;
 		}
 	}
 	&--badge.recurrence-quarter {
 		.badge--faicon {
-			background: $color2;
-			color: $color1-light;
+			background: $color-accent;
+			color: $color-base-light;
 		}
 	}
 
 	&--badge.btn.badge.recurrence-once:not(:disabled):hover {
 		.badge--faicon {
-			color: $color1-dark;
+			color: $color-base-dark;
 		}
 	}
 	&--badge.btn.badge.recurrence-month:not(:disabled):hover {
 		.badge--faicon {
-			background: darken($color6, 8%);
-			color: $color1;
+			background: darken($color-action, 8%);
+			color: $color-base;
 		}
 	}
 	&--badge.btn.badge.recurrence-quarter:not(:disabled):hover {
 		.badge--faicon {
-			background: darken($color2, 8%);
-			color: $color1;
+			background: darken($color-accent, 8%);
+			color: $color-base;
 		}
 	}
 }
@@ -76,7 +77,7 @@
 
 .overviewsupporterstatus-nosubscription {
 	&--until {
-		color: $color3;
+		color: $color-contrast;
 		font-size: $font-size-small;
 	}
 }

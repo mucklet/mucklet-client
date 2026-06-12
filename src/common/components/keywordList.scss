@@ -23,8 +23,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 6px;
-		color: $color4;
-		border: 1px solid $color4;
+		color: $theme-color-muted;
+		border: 1px solid $theme-color-muted;
 		border-radius: 4px;
 
 		&.editable {
@@ -32,8 +32,8 @@
 			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 
 			&:hover {
-				color: $color4-lighter;
-				border-color: $color4-lighter;
+				color: $theme-color-muted-lighter;
+				border-color: $theme-color-muted-lighter;
 			}
 		}
 	}
@@ -50,7 +50,7 @@
 		width: 17px;
 		height: 17px;
 		text-align: center;
-		@include btn-style(none, $color1-lightest, $color1-lightest, $color4, $color4-light);
+		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
 		> i {
 			line-height: 15px;
 		}

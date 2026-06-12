@@ -21,7 +21,7 @@
 
 	&--footertools {
 		margin: 0 -2px;
-		border-top: 1px solid $color1-dark;
+		border-top: 1px solid $theme-color-base-dark;
 		padding-top: 8px;
 
 		> div {
@@ -44,14 +44,14 @@
 	&--fullname {
 		padding: 10px 0 4px 0;
 		font-family: $font-text;
-		color: $color3;
+		color: $theme-color-contrast;
 		font-size: 20px;
 	}
 
 	&--notset {
 		font-style: italic;
 		font-size: $font-size;
-		color: $color4-dark;
+		color: $theme-color-muted-dark;
 	}
 
 	&--tags {

@@ -8,7 +8,7 @@
 	&--key {
 		font-size: $font-size-large;
 		line-height: 24px;
-		color: $color3;
+		color: $color-contrast;
 	}
 
 	&--footertools {
@@ -22,7 +22,7 @@
 		border-radius: 10px;
 		width: 480px;
 		max-width: 100%;
-		background: $color1-lighter;
+		background: $color-base-lighter;
 
 		&:not(.placeholder) {
 			cursor: pointer;
@@ -34,7 +34,7 @@
 		border-radius: 10px;
 		width: 140px;
 		max-width: 100%;
-		background: $color1-lighter;
+		background: $color-base-lighter;
 
 		&:not(.placeholder) {
 			cursor: pointer;
@@ -67,7 +67,7 @@
 
 	&--version {
 		font-size: $font-size-small;
-		color: $color4;
+		color: $color-muted;
 	}
 
 	&--medialinks {

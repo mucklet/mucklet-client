@@ -1,6 +1,21 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
+// Toaster colors
+$toaster-success-background: #{'rgba(39,67,42,90%)'};
+$toaster-info-background: #{'rgba(48,55,83,90%)'};
+$toaster-warn-background: #{'rgba(73,40,28,90%)'};
+$toaster-success-background-hover: #27432a;
+$toaster-warn-background-hover: #49281c;
+$toaster-close-background-hover: #{'rgba(255,255,255,6%)'};
+// Toaster theme vars
+$theme-toaster-success-background: var(--mu-toaster-success-background, #{$toaster-success-background});
+$theme-toaster-info-background: var(--mu-toaster-info-background, #{$toaster-info-background});
+$theme-toaster-warn-background: var(--mu-toaster-warn-background, #{$toaster-warn-background});
+$theme-toaster-success-background-hover: var(--mu-toaster-success-background-hover, #{$toaster-success-background-hover});
+$theme-toaster-warn-background-hover: var(--mu-toaster-warn-background-hover, #{$toaster-warn-background-hover});
+$theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, #{$toaster-close-background-hover});
+
 .toaster {
 	position: fixed;
 	z-index: 800;
@@ -8,11 +23,6 @@
 	right: 14px;
 	width: 360px;
 }
-
-$success-background: #{'rgba(39,67,42,90%)'};
-$info-background: #{'rgba(48,55,83,90%)'};
-$warn-background: #{'rgba(73,40,28,90%)'};
-$white-transparent: #{'rgba(255,255,255,6%)'};
 
 .toaster-toast {
 	padding-bottom: 10px;
@@ -26,23 +36,23 @@ $white-transparent: #{'rgba(255,255,255,6%)'};
 
 
 		&.info {
-			background: $info-background;
+			background: $theme-toaster-info-background;
 			&:hover {
-				background: $color1-lightest;
+				background: $theme-color-base-lightest;
 			}
 		}
 
 		&.success {
-			background: $success-background;
+			background: $theme-toaster-success-background;
 			&:hover {
-				background: #27432a;
+				background: $theme-toaster-success-background-hover;
 			}
 		}
 
 		&.warn {
-			background: $warn-background;
+			background: $theme-toaster-warn-background;
 			&:hover {
-				background: rgba(73,40,28,1);
+				background: $theme-toaster-warn-background-hover;
 			}
 		}
 
@@ -66,7 +76,7 @@ $white-transparent: #{'rgba(255,255,255,6%)'};
 		position: absolute;
 		top: 4px;
 		right: 4px;
-		@include btn-style(none, $white-transparent, $white-transparent, $color4-light, $color4-lighter);
+		@include btn-style(none, $theme-toaster-close-background-hover, $theme-toaster-close-background-hover, $theme-color-muted-light, $theme-color-muted-lighter);
 	}
 }
 
@@ -78,4 +88,3 @@ $white-transparent: #{'rgba(255,255,255,6%)'};
 		width: initial;
 	}
 }
-

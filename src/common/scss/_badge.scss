@@ -1,19 +1,35 @@
-$color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
+
+// Badge colors
+$badge-highlight: rgba(saturate(lighten($color-base, 22%), 8%), 0.5);
+$badge-highlight-hover: rgba(saturate(lighten($color-base, 19%), 8%), 0.5);
+$badge-dark-hover: darken($color-base-dark, 2%);
+$badge-hover: darken($color-base, 3%);
+// Badge theme vars
+$theme-badge-highlight: var(--mu-badge-highlight, #{$badge-highlight});
+$theme-badge-highlight-hover: var(--mu-badge-highlight-hover, #{$badge-highlight-hover});
+$theme-badge-dark-hover: var(--mu-badge-dark-hover, #{$badge-dark-hover});
+$theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 .badge {
 	width: 100%;
 	border: none;
-	background: $color1;
+	background: $theme-color-base;
 	color: $white;
 	padding: 4px;
 	border-radius: 8px;
 
 	&.highlight {
-		background: $color-highlight;
+		background: $theme-badge-highlight;
 	}
 
 	&.dark {
-		background: $color1-dark;
+		background: $theme-color-base-dark;
+		.badge--avatar {
+			> svg {
+				background-color: $theme-color-base-light;
+				color: $theme-color-base-dark;
+			}
+		}
 	}
 
 	&.inactive {
@@ -46,15 +62,22 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		}
 	}
 
-	&--icon, &--faicon {
+	&--icon, &--faicon, &--avatar {
 		flex: 0 0 auto;
 		width: 32px;
 		height: 32px;
 	}
 
+	&--avatar {
+		> svg {
+			background-color: $theme-color-base-lighter;
+			color: $theme-color-base;
+		}
+	}
+
 	&--symbol {
 		font-size: $font-size-tiny;
-		color: $color4;
+		color: $theme-color-muted;
 		flex: 0 0 auto;
 		align-self: center;
 	}
@@ -66,8 +89,8 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 			line-height: 32px;
 		}
 		transition: 0.2s color, 0.2s background-color;
-		color: $color4;
-		background: $color1-lighter;
+		color: $theme-color-muted;
+		background: $theme-color-base-lighter;
 
 		&.smallicon {
 			font-size: 18px;
@@ -137,12 +160,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	}
 
 	&--text {
-		color: $color4;
+		color: $theme-color-muted;
 	}
 
 	&--title {
 		font-size: $font-size-tiny + 1px;
-		color: $color2;
+		color: $theme-color-accent;
 	}
 
 	&--micro {
@@ -150,19 +173,19 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 	}
 
 	&--subtitle {
-		color: $color2;
+		color: $theme-color-accent;
 	}
 
 	&--strong {
-		color: $color3;
+		color: $theme-color-contrast;
 	}
 
 	&--highlight {
-		color: $log-instance;
+		color: $theme-log-instance;
 	}
 
 	&--error {
-		color: $color5;
+		color: $theme-color-danger;
 	}
 
 	&--strikethrough {
@@ -175,7 +198,7 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 
 	&--divider {
 		margin-top: 6px;
-		border-top: 1px solid $color1-lightest;
+		border-top: 1px solid $theme-color-base-lightest;
 		padding-bottom: 4px;
 	}
 
@@ -208,12 +231,12 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
-			background: darken($color1, 3%);
+			background: $theme-badge-hover;
 			&.highlight {
-				background: darken($color-highlight, 3%);
+				background: $theme-badge-highlight-hover;
 			}
 			&.dark {
-				background: darken($color1-dark, 2%);
+				background: $theme-badge-dark-hover;
 			}
 		}
 	}
@@ -269,4 +292,3 @@ $color-highlight: rgba(56, 70, 115, 0.5); //#0a1535;
 		}
 	}
 }
-

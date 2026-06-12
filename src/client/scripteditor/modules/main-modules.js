@@ -5,6 +5,7 @@ import Boot from 'modules/boot/Boot';
 import Router from 'modules/router/Router';
 import Confirm from 'modules/confirm/Confirm';
 import Toaster from 'modules/toaster/Toaster';
+import Theme from 'modules/theme/Theme';
 
 const modules = {
 	api: Api,
@@ -14,6 +15,7 @@ const modules = {
 	router: Router,
 	confirm: Confirm,
 	toaster: Toaster,
+	theme: Theme,
 };
 
 const req = require.context("./main/", true, /^\..*\/([^/]*)\/\1.js$/i);
