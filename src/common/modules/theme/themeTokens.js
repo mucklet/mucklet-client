@@ -80,12 +80,12 @@ const tokens = {
 	'popuppill.tip.background': (c) => alpha(adjust(c.base, -10), 0.9),
 
 	// src/common/modules/toaster/toaster.scss
-	'toaster.info.background': 'rgba(48,55,83,90%)',
-	'toaster.success.background': 'rgba(39,67,42,90%)',
-	'toaster.warn.background': 'rgba(73,40,28,90%)',
-	'toaster.success.background.hover': '#27432a',
-	'toaster.warn.background.hover': 'rgba(73,40,28,1)',
-	'toaster.close.background.hover': 'rgba(255,255,255,6%)',
+	'toaster.info.background': (c) => alpha(adjust(c.base, 14), 0.9),
+	'toaster.success.background': (c) => alpha(adjust(mix(c.accent, c.action, 52), -38, 14), 0.9),
+	'toaster.warn.background': (c) => alpha(adjust(mix(c.danger, c.base, 63), -16, -3), 0.9),
+	'toaster.success.background.hover': (c) => adjust(mix(c.accent, c.action, 52), -38, 14),
+	'toaster.warn.background.hover': (c) => adjust(mix(c.danger, c.base, 63), -16, -3),
+	'toaster.close.background.hover': (c) => alpha(adjust(c.contrast, 4), 0.06),
 };
 
 export default tokens;
