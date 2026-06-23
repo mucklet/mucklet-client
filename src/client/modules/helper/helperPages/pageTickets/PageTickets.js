@@ -9,8 +9,8 @@ import { adjust } from 'utils/color';
 import './pageTickets.scss';
 
 const themeTokens = {
-	'pagetickets.ticket.unassigned.background': (c) => adjust(c.base, -6),
-	'pagetickets.ticket.unassigned.background.hover': (c) => adjust(c.base, -9),
+	'pagetickets.ticket.unassigned.background': (getToken) => adjust(getToken('color.base.200'), -6),
+	'pagetickets.ticket.unassigned.background.hover': (getToken) => adjust(getToken('color.base.200'), -9),
 };
 
 /**

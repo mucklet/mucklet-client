@@ -9,7 +9,7 @@ import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
 
 const themeTokens = {
-	'editscript.scrollbar.thumb.hover': (c) => adjust(c.base, 18),
+	'editscript.scrollbar.thumb.hover': (getToken) => adjust(getToken('color.base.200'), 18),
 };
 
 const pathDef = [

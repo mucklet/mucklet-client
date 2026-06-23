@@ -1,15 +1,15 @@
 // Common colors
-$common-level-asleep: $color-muted;
-$common-level-active: $color-contrast;
-$common-level-idle: $color-accent;
-$common-level-inactive: mix($color-danger, $color-accent, 80%);
+$common-level-asleep: $color-neutral-300;
+$common-level-active: $color-contrast-300;
+$common-level-idle: $color-accent-300;
+$common-level-inactive: mix($color-danger-300, $color-accent-300, 80%);
 $common-level-bot: $log-bot;
 // Common theme vars
-$theme-common-level-asleep: var(--mu-common-level-asleep, #{$common-level-asleep});
-$theme-common-level-active: var(--mu-common-level-active, #{$common-level-active});
-$theme-common-level-idle: var(--mu-common-level-idle, #{$common-level-idle});
-$theme-common-level-inactive: var(--mu-common-level-inactive, #{$common-level-inactive});
-$theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
+$theme-common-level-asleep: $theme-idlelevel-asleep-fg;
+$theme-common-level-active: $theme-idlelevel-active-fg;
+$theme-common-level-idle: $theme-idlelevel-idle-fg;
+$theme-common-level-inactive: $theme-idlelevel-away-fg;
+$theme-common-level-bot: $theme-idlelevel-bot-fg;
 
 .common {
 	&--placeholder {

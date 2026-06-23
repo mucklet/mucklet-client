@@ -9,8 +9,8 @@ import { adjust } from 'utils/color';
 import './pageReports.scss';
 
 const themeTokens = {
-	'pagereports.report.unassigned.background': (c) => adjust(c.base, -6),
-	'pagereports.report.unassigned.background.hover': (c) => adjust(c.base, -9),
+	'pagereports.report.unassigned.background': (getToken) => adjust(getToken('color.base.200'), -6),
+	'pagereports.report.unassigned.background.hover': (getToken) => adjust(getToken('color.base.200'), -9),
 };
 
 /**

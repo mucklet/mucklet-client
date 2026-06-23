@@ -20,7 +20,7 @@ const defaultColors = {
 	base: '#161926',
 	accent: '#c1a657',
 	contrast: '#fffcf2',
-	muted: '#93969f',
+	neutral: '#93969f',
 	danger: '#c96036',
 	action: '#4a9fc3',
 };

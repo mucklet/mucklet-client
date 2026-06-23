@@ -39,8 +39,8 @@ import './charLogEvent.scss';
 import './charLogHighlight.scss';
 
 const themeTokens = {
-	'charlog.invalid.background': (c, getToken) => alpha(getToken('log.error'), 0.5),
-	'charlog.eventmenu.background': (c) => alpha(c.base, 0.8),
+	'charlog.invalid.background': (getToken) => alpha(getToken('log.error.fg'), 0.5),
+	'charlog.eventmenu.background': (getToken) => alpha(getToken('color.base.200'), 0.8),
 };
 
 const componentFactories = {

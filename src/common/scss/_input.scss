@@ -10,21 +10,21 @@ input, textarea, .input--textarea {
 	width: 100%;
 
 	&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: $theme-color-base-placeholder-light;
+		color: $theme-control-placeholder-fg;
 		opacity: 1; /* Firefox */
 	}
 	&:-ms-input-placeholder { /* Internet Explorer 10-11 */
-		color: $theme-color-base-placeholder-light;
+		color: $theme-control-placeholder-fg;
 	}
 	&::-ms-input-placeholder { /* Microsoft Edge */
-		color: $theme-color-base-placeholder-light;
+		color: $theme-control-placeholder-fg;
 	}
 }
 
 input, textarea {
 	&:focus {
 		outline: 0;
-		box-shadow: 0 0 4px 1px $theme-color-accent;
+		box-shadow: 0 0 4px 1px $theme-focus-ring;
 	}
 }
 

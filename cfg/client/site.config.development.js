@@ -12,7 +12,7 @@ module.exports = {
 		'color.base': '#22181C',
 		'color.accent': '#E0D290',
 		'color.contrast': '#F6E8EA',
-		'color.muted': '#8A8585',
+		'color.neutral': '#8A8585',
 		'color.danger': '#EF626C',
 		'color.action': '#84DCCF',
 	},

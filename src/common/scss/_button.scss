@@ -26,7 +26,7 @@
 .btn:focus {
 	outline: 0;
 	&:not(.nooutline) {
-		box-shadow: 0 0 4px 1px $theme-color-accent;
+		box-shadow: 0 0 4px 1px $theme-focus-ring;
 	}
 }
 

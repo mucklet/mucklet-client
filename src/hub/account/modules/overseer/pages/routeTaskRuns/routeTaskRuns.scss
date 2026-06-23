@@ -5,14 +5,14 @@
 
 .routetaskruns-taskrunbadge {
 	&--icon.badge--faicon {
-		color: $color-base-dark;
+		color: $color-base-100;
 		background: $color-muted-darker;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		> .spinner:before {
-			border-top-color: $color-base-dark;
+			border-top-color: $color-base-100;
 		}
 	}
 	&--state- {
@@ -106,7 +106,7 @@
 		font-style: normal;
 		font-size: $font-size-tiny;
 		font-family: $font-code;
-		background: $color-base-dark;
+		background: $color-base-100;
 		border-radius: 8px;
 	}
 	&--steplogtxt {

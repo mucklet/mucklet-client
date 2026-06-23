@@ -10,7 +10,7 @@ import { adjust } from 'utils/color';
 const namespace = 'module.console';
 
 const themeTokens = {
-	'console.scrollbar.thumb': (c) => adjust(c.base, 18),
+	'console.scrollbar.thumb': (getToken) => adjust(getToken('color.base.200'), 18),
 };
 
 /**

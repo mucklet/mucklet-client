@@ -9,8 +9,8 @@ import { adjust } from 'utils/color';
 import './pageMail.scss';
 
 const themeTokens = {
-	'pagemail.mail.unread.background': (c) => adjust(c.base, -6),
-	'pagemail.mail.unread.background.hover': (c) => adjust(c.base, -9),
+	'pagemail.mail.unread.background': (getToken) => adjust(getToken('color.base.200'), -6),
+	'pagemail.mail.unread.background.hover': (getToken) => adjust(getToken('color.base.200'), -9),
 };
 
 /**

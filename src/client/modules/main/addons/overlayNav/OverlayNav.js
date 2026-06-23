@@ -3,7 +3,7 @@ import { adjust } from 'utils/color';
 import './overlayNav.scss';
 
 const themeTokens = {
-	'overlaynav.badge.background.hover': (c, getToken) => adjust(getToken('color.base.lighter'), 3),
+	'overlaynav.badge.background.hover': (getToken) => adjust(getToken('color.base.400'), 3),
 };
 
 /**

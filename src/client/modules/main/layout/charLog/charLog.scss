@@ -44,35 +44,35 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 
 	// Colors
 	&--strong {
-		color: $theme-color-contrast;
+		color: $theme-log-strong-fg;
 	}
 
 	&--cmd {
-		color: $theme-log-cmd;
+		color: $theme-log-cmd-fg;
 	}
 
 	&--error {
-		color: $theme-log-error;
+		color: $theme-log-error-fg;
 	}
 
 	&--listitem {
-		color: $theme-log-listitem;
+		color: $theme-log-listitem-fg;
 	}
 
 	&--default {
-		color: $theme-color-muted;
+		color: $theme-log-default-fg;
 	}
 
 	&--ooc {
-		color: $theme-color-muted-dark;
+		color: $theme-log-ooc-fg;
 	}
 
 	&--comm {
-		color: $theme-color-muted-lightest;
+		color: $theme-log-comm-fg;
 	}
 
 	&--placeholder {
-		color: $theme-color-muted-dark;
+		color: $theme-log-placeholder-fg;
 		font-style: italic;
 	}
 
@@ -82,7 +82,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 
 	// Should have higher priority than the others.
 	&--char {
-		color: $theme-log-listitem;
+		color: $theme-log-char-fg;
 	}
 
 
@@ -141,11 +141,11 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	&--code-simple {
 		font-size: $font-size-small;
 		font-family: $font-code;
-		color: $theme-color-accent;
+		color: $theme-log-code-fg;
 	}
 
 	&--source {
-		color: $theme-log-text;
+		color: $theme-log-source-fg;
 		font-family: $font-code;
 	}
 
@@ -153,7 +153,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		font-style: normal;
 		font-size: $font-size-small;
 		padding: 6px 10px;
-		background: $theme-color-base-dark;
+		background: $theme-log-code-bg;
 		border-radius: 8px;
 
 		h4 {
@@ -168,7 +168,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		code {
 			font-size: $font-size-small;
 			font-family: $font-code;
-			color: $theme-color-accent;
+			color: $theme-log-code-fg;
 
 			em {
 				color: $theme-color-action;
@@ -232,19 +232,19 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	}
 
 	&--info {
-		color: $theme-color-muted-dark;
+		color: $theme-log-info-fg;
 		padding-top: 4px;
 	}
 
 	&--title {
 		padding: 6px 0 2px 0;
-		color: $theme-color-contrast-dark;
+		color: $theme-log-title-fg;
 		padding-top: 4px;
 	}
 
 	&--card {
 		position: relative;
-		background: $theme-log-card;
+		background: $theme-log-card-bg;
 		padding: 5px 11px;
 		border-radius: 8px;
 	}

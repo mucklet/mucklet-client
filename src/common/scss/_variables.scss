@@ -13,90 +13,208 @@ $black: #000;
 // $color-base
 // $color-accent
 // $color-contrast
-// $color-muted
+// $color-neutral
 // $color-danger
 // $color-action
 
 /* Shadow */
 $shadow: rgba(0, 0, 0, 0.3);
 
-/* Variants */
-$color-base-light: lighten($color-base, 4%);
-$color-base-lighter: lighten($color-base, 8%);
-$color-base-lightest: lighten($color-base, 14%);
-$color-base-placeholder: desaturate(lighten($color-base, 24%), 15%);
-$color-base-placeholder-light: desaturate(lighten($color-base, 34%), 15%);
-$color-base-dark: darken($color-base, 4%);
+/* Primitive color fallbacks */
+$color-base-100: darken($color-base, 4%);
+$color-base-200: $color-base;
+$color-base-300: lighten($color-base, 4%);
+$color-base-400: lighten($color-base, 8%);
+$color-base-500: lighten($color-base, 14%);
 
-$color-muted-light: lighten($color-muted, 4%);
-$color-muted-lighter: lighten($color-muted, 8%);
-$color-muted-lightest: lighten($color-muted, 16%);
-$color-muted-lightestest: lighten($color-muted, 20%);
-$color-muted-semidark: darken($color-muted, 8%);
-$color-muted-dark: darken($color-muted, 16%);
-$color-muted-darker: darken($color-muted, 24%);
+$color-accent-300: $color-accent;
+$color-contrast-200: darken($color-contrast, 16%);
+$color-contrast-300: $color-contrast;
 
-$color-contrast-dark: darken($color-contrast, 16%);
+$color-neutral-100: darken($color-neutral, 24%);
+$color-neutral-200: darken($color-neutral, 16%);
+$color-neutral-250: darken($color-neutral, 8%);
+$color-neutral-300: $color-neutral;
+$color-neutral-400: lighten($color-neutral, 4%);
+$color-neutral-500: lighten($color-neutral, 8%);
+$color-neutral-600: lighten($color-neutral, 16%);
+$color-neutral-700: lighten($color-neutral, 20%);
 
-$color-danger-light: lighten($color-danger, 6%);
-$color-danger-dark: darken($color-danger, 10%);
+$color-danger-100: darken($color-danger, 16%);
+$color-danger-200: darken($color-danger, 8%);
+$color-danger-300: $color-danger;
+$color-danger-400: lighten($color-danger, 6%);
+$color-action-100: darken($color-action, 16%);
+$color-action-200: darken($color-action, 8%);
+$color-action-300: $color-action;
 
-$color-action-hover: darken($color-action, 8%);
-$color-action-active: darken($color-action, 16%);
+$content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
+$control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
 
-// Color theme vars
+/* Internal Sass compatibility aliases */
+$color-base-dark: $color-base-100;
+$color-base-light: $color-base-300;
+$color-base-lighter: $color-base-400;
+$color-base-lightest: $color-base-500;
+
+$color-contrast-dark: $color-contrast-200;
+$color-muted: $color-neutral;
+$color-muted-darker: $color-neutral-100;
+$color-muted-dark: $color-neutral-200;
+$color-muted-semidark: $color-neutral-250;
+$color-muted-light: $color-neutral-400;
+$color-muted-lighter: $color-neutral-500;
+$color-muted-lightest: $color-neutral-600;
+$color-muted-lightestest: $color-neutral-700;
+$color-danger-active: $color-danger-100;
+$color-danger-hover: $color-danger-200;
+$color-danger-light: $color-danger-400;
+$color-action-active: $color-action-100;
+$color-action-hover: $color-action-200;
+
+/* Primitive theme vars */
+$theme-color-base-100: var(--mu-color-base-100, #{$color-base-100});
+$theme-color-base-200: var(--mu-color-base-200, #{$color-base-200});
+$theme-color-base-300: var(--mu-color-base-300, #{$color-base-300});
+$theme-color-base-400: var(--mu-color-base-400, #{$color-base-400});
+$theme-color-base-500: var(--mu-color-base-500, #{$color-base-500});
+
 $theme-color-base: var(--mu-color-base, #{$color-base});
 $theme-color-accent: var(--mu-color-accent, #{$color-accent});
 $theme-color-contrast: var(--mu-color-contrast, #{$color-contrast});
-$theme-color-muted: var(--mu-color-muted, #{$color-muted});
+$theme-color-neutral: var(--mu-color-neutral, #{$color-neutral});
 $theme-color-danger: var(--mu-color-danger, #{$color-danger});
 $theme-color-action: var(--mu-color-action, #{$color-action});
 
-$theme-color-base-light: var(--mu-color-base-light, #{$color-base-light});
-$theme-color-base-lighter: var(--mu-color-base-lighter, #{$color-base-lighter});
-$theme-color-base-lightest: var(--mu-color-base-lightest, #{$color-base-lightest});
-$theme-color-base-dark: var(--mu-color-base-dark, #{$color-base-dark});
-$theme-color-base-placeholder: var(--mu-color-base-placeholder, #{$color-base-placeholder});
-$theme-color-base-placeholder-light: var(--mu-color-base-placeholder-light, #{$color-base-placeholder-light});
+$theme-color-accent-300: var(--mu-color-accent-300, #{$color-accent-300});
+$theme-color-contrast-200: var(--mu-color-contrast-200, #{$color-contrast-200});
+$theme-color-contrast-300: var(--mu-color-contrast-300, #{$color-contrast-300});
 
-$theme-color-muted-light: var(--mu-color-muted-light, #{$color-muted-light});
-$theme-color-muted-lighter: var(--mu-color-muted-lighter, #{$color-muted-lighter});
-$theme-color-muted-lightest: var(--mu-color-muted-lightest, #{$color-muted-lightest});
-$theme-color-muted-lightestest: var(--mu-color-muted-lightestest, #{$color-muted-lightestest});
-$theme-color-muted-semidark: var(--mu-color-muted-semidark, #{$color-muted-semidark});
-$theme-color-muted-dark: var(--mu-color-muted-dark, #{$color-muted-dark});
-$theme-color-muted-darker: var(--mu-color-muted-darker, #{$color-muted-darker});
+$theme-color-neutral-100: var(--mu-color-neutral-100, #{$color-neutral-100});
+$theme-color-neutral-200: var(--mu-color-neutral-200, #{$color-neutral-200});
+$theme-color-neutral-250: var(--mu-color-neutral-250, #{$color-neutral-250});
+$theme-color-neutral-300: var(--mu-color-neutral-300, #{$color-neutral-300});
+$theme-color-neutral-400: var(--mu-color-neutral-400, #{$color-neutral-400});
+$theme-color-neutral-500: var(--mu-color-neutral-500, #{$color-neutral-500});
+$theme-color-neutral-600: var(--mu-color-neutral-600, #{$color-neutral-600});
+$theme-color-neutral-700: var(--mu-color-neutral-700, #{$color-neutral-700});
 
-$theme-color-contrast-dark: var(--mu-color-contrast-dark, #{$color-contrast-dark});
-$theme-color-danger-light: var(--mu-color-danger-light, #{$color-danger-light});
-$theme-color-danger-hover: var(--mu-color-danger-hover, #{darken($color-danger, 8%)});
-$theme-color-danger-active: var(--mu-color-danger-active, #{darken($color-danger, 16%)});
-$theme-color-action-hover: var(--mu-color-action-hover, #{$color-action-hover});
-$theme-color-action-active: var(--mu-color-action-active, #{$color-action-active});
+$theme-color-danger-100: var(--mu-color-danger-100, #{$color-danger-100});
+$theme-color-danger-200: var(--mu-color-danger-200, #{$color-danger-200});
+$theme-color-danger-300: var(--mu-color-danger-300, #{$color-danger-300});
+$theme-color-danger-400: var(--mu-color-danger-400, #{$color-danger-400});
+$theme-color-action-100: var(--mu-color-action-100, #{$color-action-100});
+$theme-color-action-200: var(--mu-color-action-200, #{$color-action-200});
+$theme-color-action-300: var(--mu-color-action-300, #{$color-action-300});
 
-/* Log colors */
-$log-error: #9a593e;
-$log-cmd: $color-accent;
-$log-attr: $color-accent;
-$log-listitem: mix($color-action, $color-muted, 50%);
-$log-delim: $color-muted;
-$log-text: $color-muted-lightest;
-$log-entityid: $color-muted-lightest;
-$log-bot: mix($color-action, $color-contrast, 80%);
-$log-instance: mix($color-action, $color-muted, 60%);
-$log-card: mix($color-accent, $color-base, 10%);
+/* Semantic theme vars */
+$theme-surface-100-bg: var(--mu-surface-100-bg, #{$color-base-100});
+$theme-surface-200-bg: var(--mu-surface-200-bg, #{$color-base-200});
+$theme-surface-300-bg: var(--mu-surface-300-bg, #{$color-base-300});
+$theme-surface-400-bg: var(--mu-surface-400-bg, #{$color-base-400});
+$theme-surface-500-bg: var(--mu-surface-500-bg, #{$color-base-500});
 
-// Log theme vars
-$theme-log-error: var(--mu-log-error, #{$log-error});
-$theme-log-cmd: var(--mu-log-cmd, #{$log-cmd});
-$theme-log-attr: var(--mu-log-attr, #{$log-attr});
-$theme-log-listitem: var(--mu-log-listitem, #{$log-listitem});
-$theme-log-delim: var(--mu-log-delim, #{$log-delim});
-$theme-log-text: var(--mu-log-text, #{$log-text});
-$theme-log-entityid: var(--mu-log-entityid, #{$log-entityid});
-$theme-log-bot: var(--mu-log-bot, #{$log-bot});
-$theme-log-instance: var(--mu-log-instance, #{$log-instance});
-$theme-log-card: var(--mu-log-card, #{$log-card});
+$theme-content-default-fg: var(--mu-content-default-fg, #{$color-neutral-300});
+$theme-content-strong-fg: var(--mu-content-strong-fg, #{$color-contrast-300});
+$theme-content-muted-fg: var(--mu-content-muted-fg, #{$color-neutral-200});
+$theme-content-subtle-fg: var(--mu-content-subtle-fg, #{$color-neutral-100});
+$theme-content-error-fg: var(--mu-content-error-fg, #{$color-danger-300});
+$theme-content-placeholder-fg: var(--mu-content-placeholder-fg, #{$content-placeholder-fg});
+$theme-control-placeholder-fg: var(--mu-control-placeholder-fg, #{$control-placeholder-fg});
+
+$theme-link-default-fg: var(--mu-link-default-fg, #{$color-action-300});
+$theme-link-default-fg-hover: var(--mu-link-default-fg-hover, #{$color-action-200});
+$theme-link-default-fg-active: var(--mu-link-default-fg-active, #{$color-action-100});
+$theme-focus-ring: var(--mu-focus-ring, #{$color-accent-300});
+
+$theme-idlelevel-asleep-fg: var(--mu-idlelevel-asleep-fg, #{$color-neutral-300});
+$theme-idlelevel-active-fg: var(--mu-idlelevel-active-fg, #{$color-contrast-300});
+$theme-idlelevel-idle-fg: var(--mu-idlelevel-idle-fg, #{$color-accent-300});
+$theme-idlelevel-away-fg: var(--mu-idlelevel-away-fg, #{mix($color-danger-300, $color-accent-300, 80%)});
+$theme-idlelevel-bot-fg: var(--mu-idlelevel-bot-fg, #{mix($color-action-300, $color-contrast-300, 80%)});
+
+$theme-log-error-fg: var(--mu-log-error-fg, #{mix($color-danger-300, $color-neutral-300, 70%)});
+$theme-log-cmd-fg: var(--mu-log-cmd-fg, #{$color-accent-300});
+$theme-log-attr-fg: var(--mu-log-attr-fg, #{$color-accent-300});
+$theme-log-listitem-fg: var(--mu-log-listitem-fg, #{mix($color-action-300, $color-neutral-300, 50%)});
+$theme-log-delim-fg: var(--mu-log-delim-fg, #{$color-neutral-300});
+$theme-log-text-fg: var(--mu-log-text-fg, #{$color-neutral-600});
+$theme-log-entityid-fg: var(--mu-log-entityid-fg, #{$color-neutral-600});
+$theme-log-bot-fg: var(--mu-log-bot-fg, #{mix($color-action-300, $color-contrast-300, 80%)});
+$theme-log-instance-fg: var(--mu-log-instance-fg, #{mix($color-action-300, $color-neutral-300, 60%)});
+$theme-log-card-bg: var(--mu-log-card-bg, #{mix($color-accent-300, $color-base-200, 10%)});
+$theme-log-strong-fg: var(--mu-log-strong-fg, #{$color-contrast-300});
+$theme-log-default-fg: var(--mu-log-default-fg, #{$color-neutral-300});
+$theme-log-ooc-fg: var(--mu-log-ooc-fg, #{$color-neutral-200});
+$theme-log-comm-fg: var(--mu-log-comm-fg, #{$color-neutral-600});
+$theme-log-placeholder-fg: var(--mu-log-placeholder-fg, #{$color-neutral-200});
+$theme-log-char-fg: var(--mu-log-char-fg, #{mix($color-action-300, $color-neutral-300, 50%)});
+$theme-log-source-fg: var(--mu-log-source-fg, #{$color-neutral-600});
+$theme-log-info-fg: var(--mu-log-info-fg, #{$color-neutral-200});
+$theme-log-title-fg: var(--mu-log-title-fg, #{$color-contrast-200});
+$theme-log-code-fg: var(--mu-log-code-fg, #{$color-accent-300});
+$theme-log-code-bg: var(--mu-log-code-bg, #{$color-base-100});
+
+$theme-tag-default-fg: var(--mu-tag-default-fg, #{$color-neutral-300});
+$theme-tag-default-border: var(--mu-tag-default-border, #{$color-neutral-300});
+$theme-tag-default-fg-hover: var(--mu-tag-default-fg-hover, #{$color-neutral-500});
+$theme-tag-default-border-hover: var(--mu-tag-default-border-hover, #{$color-neutral-500});
+$theme-tag-dislike-fg: var(--mu-tag-dislike-fg, #{$color-danger-300});
+$theme-tag-dislike-border: var(--mu-tag-dislike-border, #{$color-danger-300});
+$theme-tag-dislike-fg-hover: var(--mu-tag-dislike-fg-hover, #{$color-danger-400});
+$theme-tag-dislike-border-hover: var(--mu-tag-dislike-border-hover, #{$color-danger-400});
+$theme-tag-title-fg: var(--mu-tag-title-fg, #{$color-action-300});
+$theme-tag-title-border: var(--mu-tag-title-border, #{$color-action-300});
+$theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$color-action-200});
+$theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$color-action-200});
+$theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$color-base-200});
+
+/* Internal theme variable compatibility aliases */
+$theme-color-muted: $theme-color-neutral-300;
+
+$theme-color-base-dark: $theme-color-base-100;
+$theme-color-base-light: $theme-color-base-300;
+$theme-color-base-lighter: $theme-color-base-400;
+$theme-color-base-lightest: $theme-color-base-500;
+$theme-color-base-placeholder: $theme-content-placeholder-fg;
+$theme-color-base-placeholder-light: $theme-control-placeholder-fg;
+
+$theme-color-muted-darker: $theme-color-neutral-100;
+$theme-color-muted-dark: $theme-color-neutral-200;
+$theme-color-muted-semidark: $theme-color-neutral-250;
+$theme-color-muted-light: $theme-color-neutral-400;
+$theme-color-muted-lighter: $theme-color-neutral-500;
+$theme-color-muted-lightest: $theme-color-neutral-600;
+$theme-color-muted-lightestest: $theme-color-neutral-700;
+
+$theme-color-contrast-dark: $theme-color-contrast-200;
+$theme-color-danger-active: $theme-color-danger-100;
+$theme-color-danger-hover: $theme-color-danger-200;
+$theme-color-danger-light: $theme-color-danger-400;
+$theme-color-action-active: $theme-color-action-100;
+$theme-color-action-hover: $theme-color-action-200;
+
+$log-error: mix($color-danger-300, $color-neutral-300, 70%);
+$log-cmd: $color-accent-300;
+$log-attr: $color-accent-300;
+$log-listitem: mix($color-action-300, $color-neutral-300, 50%);
+$log-delim: $color-neutral-300;
+$log-text: $color-neutral-600;
+$log-entityid: $color-neutral-600;
+$log-bot: mix($color-action-300, $color-contrast-300, 80%);
+$log-instance: mix($color-action-300, $color-neutral-300, 60%);
+$log-card: mix($color-accent-300, $color-base-200, 10%);
+
+$theme-log-error: $theme-log-error-fg;
+$theme-log-cmd: $theme-log-cmd-fg;
+$theme-log-attr: $theme-log-attr-fg;
+$theme-log-listitem: $theme-log-listitem-fg;
+$theme-log-delim: $theme-log-delim-fg;
+$theme-log-text: $theme-log-text-fg;
+$theme-log-entityid: $theme-log-entityid-fg;
+$theme-log-bot: $theme-log-bot-fg;
+$theme-log-instance: $theme-log-instance-fg;
+$theme-log-card: $theme-log-card-bg;
 
 /* Font families */
 // @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Open+Sans&display=swap');

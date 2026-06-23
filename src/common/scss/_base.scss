@@ -2,8 +2,8 @@ body {
 	font-variant-ligatures: none;
 	font-family: $font-text;
 	font-size: $font-size;
-	color: $theme-color-muted;
-	background-color: $theme-color-base;
+	color: $theme-content-default-fg;
+	background-color: $theme-surface-200-bg;
 	margin: 0;
 	line-height: 125%;
 }
@@ -22,10 +22,10 @@ a {
 }
 
 a.link {
-	color: $theme-color-action;
+	color: $theme-link-default-fg;
 	transition: color 0.2s;
 	&:hover {
-		color: $theme-color-action-hover;
+		color: $theme-link-default-fg-hover;
 	}
 }
 

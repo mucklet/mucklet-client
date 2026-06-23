@@ -11,8 +11,8 @@ import { adjust, alpha } from 'utils/color';
 import './dialogTag.scss';
 
 const themeTokens = {
-	'dialogtag.desc.disabled.background': (c, getToken) => alpha(getToken('color.muted.lighter'), 0.1),
-	'dialogtag.pref.dislike.background.hover': (c) => adjust(c.danger, 5),
+	'dialogtag.desc.disabled.background': (getToken) => alpha(getToken('color.neutral.500'), 0.1),
+	'dialogtag.pref.dislike.background.hover': (getToken) => adjust(getToken('color.danger.300'), 5),
 };
 
 class DialogTag {

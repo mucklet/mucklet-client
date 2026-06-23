@@ -9,7 +9,7 @@ import { roomInfo } from './pageRoomTxt';
 import './pageRoom.scss';
 
 const themeTokens = {
-	'pageroom.char.status': (c) => mix(c.muted, c.accent, 20),
+	'pageroom.char.status': (getToken) => mix(getToken('color.neutral.300'), getToken('color.accent.300'), 20),
 };
 
 /**

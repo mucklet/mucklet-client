@@ -131,7 +131,7 @@ class StripePaymentElement {
 					colorBackground: '#303753', // $color-base-lightest
 					colorText: '#fffcf2', // $color-contrast
 					colorDanger: '#9a593e', // $log-error
-					colorTextPlaceholder: '#676c82', // $color-base-placeholder-light
+					colorTextPlaceholder: '#676c82', // $control-placeholder-fg
 					colorTextSecondary: '#93969f', // $color-muted
 					colorIcon: '#fffcf2', // $color-contrast
 					fontSizeBase: '16px', // $font-size

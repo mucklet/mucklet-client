@@ -1,9 +1,14 @@
 import themeTokens from './themeTokens';
-const defaultColors = APP_COLORS;
+const seedColors = APP_COLORS;
 
 function keyToCssVar(key) {
 	return '--mu-' + key.replaceAll('.', '-');
 }
+
+// Legacy mappings.
+const legacyMapping = {
+	'color.neutral': 'color.muted',
+};
 
 /**
  * Theme handles the theme tokens and css variables.
@@ -46,11 +51,15 @@ class Theme {
 			return null;
 		}
 
-		let v = this._getParam(key) || this.appTheme[key] || (
-			typeof value == 'function'
-				? value(this.colors, this.getToken)
-				: String(value ?? '')
-		);
+		let v = this._getParam(key) ||
+			this._getParam(legacyMapping[key]) ||
+			this.appTheme[key] ||
+			this.appTheme[legacyMapping[key]] ||
+			(
+				typeof value == 'function'
+					? value(this.getToken)
+					: String(value ?? '')
+			);
 
 		if (v) {
 			document.documentElement.style.setProperty(keyToCssVar(key), v);
@@ -93,9 +102,9 @@ class Theme {
 	}
 
 	_addColorTokens(params) {
-		// Set theme colors
-		for (let k in defaultColors) {
-			let v = this.addToken('color.' + k, defaultColors[k]);
+		// Set theme seed colors
+		for (let k in seedColors) {
+			let v = this.addToken('color.' + k, seedColors[k]);
 			Object.defineProperty(this.colors, k, { value: v });
 		}
 
@@ -106,6 +115,9 @@ class Theme {
 	}
 
 	_getParam(key) {
+		if (!key) {
+			return null;
+		}
 		let parts = key.split('.');
 		let v = this.params;
 		for (let p of parts) {

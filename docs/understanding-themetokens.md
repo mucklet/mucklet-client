@@ -13,24 +13,30 @@ Prefer short but clear names. Use `bg` for background and `fg` for foreground.
 Primitive colors use:
 
 ```text
+color.<family>
 color.<family>.<level>
 ```
 
 Examples:
 
 ```text
+color.base
 color.base.100
 color.base.200
 color.base.300
-color.neutral.300
-color.action.300
-color.danger.300
+color.neutral
+color.action
+color.danger
 ```
 
 Primitive colors should describe the palette only. They should not include UI
 usage, component names, or states such as `hover` or `active`.
 
-Color levels describe the role within the color family, not absolute luminosity.
+The token without a level is the seed color. Numbered levels are calculated from
+that seed color by default. Seed colors are palette inputs only and should not be
+used as defaults for semantic colors. Use a numbered primitive level for those
+defaults instead. Color levels describe the role within the color family, not
+absolute luminosity.
 
 ## Semantic colors
 
@@ -59,13 +65,23 @@ control.primary.bg.active
 status.danger.fg
 status.danger.bg
 
+idlelevel.active.fg
+idlelevel.away.fg
+
+log.cmd.fg
+log.card.bg
+
+tag.default.fg
+tag.default.border
+
 focus.ring
 selection.bg
 selection.fg
 ```
 
 Semantic colors should describe reusable UI meaning. They may default to
-primitive colors, but may also be overridden directly.
+numbered primitive colors or other semantic colors, but may also be overridden
+directly.
 
 Example defaults:
 
@@ -75,6 +91,9 @@ surface.100.fg      -> color.neutral.300
 control.primary.bg  -> color.action.300
 control.primary.fg  -> color.base.100
 status.danger.fg    -> color.danger.300
+idlelevel.idle.fg   -> color.accent.300
+log.cmd.fg          -> color.accent.300
+tag.dislike.fg      -> color.danger.300
 ```
 
 ## Component colors
@@ -101,8 +120,6 @@ toaster.success.bg.hover
 toaster.close.bg.hover
 
 realmtag.genre.fg
-log.error.fg
-log.card.bg
 ```
 
 Component colors should normally default to semantic colors. They exist when a
@@ -158,6 +175,11 @@ muted
 subtle
 disabled
 overlay
+asleep
+active
+idle
+away
+bot
 ```
 
 ## States
@@ -183,3 +205,41 @@ focus
 
 Use `focus.ring` for the visible keyboard focus indicator, such as an outline or
 box shadow around a focused control.
+
+## Current semantic groups
+
+Idle level colors use `idlelevel` as one lowercase segment:
+
+```text
+idlelevel.asleep.fg
+idlelevel.active.fg
+idlelevel.idle.fg
+idlelevel.away.fg
+idlelevel.bot.fg
+```
+
+Log text colors use `log`:
+
+```text
+log.default.fg
+log.strong.fg
+log.cmd.fg
+log.ooc.fg
+log.comm.fg
+log.card.bg
+```
+
+Tag colors use `tag`:
+
+```text
+tag.default.fg
+tag.default.border
+tag.dislike.fg
+tag.dislike.border
+tag.title.fg
+tag.title.border
+tag.icon.fg
+```
+
+Legacy token keys are documented in [Legacy theme tokens](./legacythemetokens.md).
+They are not runtime aliases.

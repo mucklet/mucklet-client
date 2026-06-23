@@ -24,9 +24,9 @@ const themeTokens = [
 		info: l10n.l('realmSettingsTheme.contrastInfo', "High contrast color used for active states and emphasized text."),
 	},
 	{
-		key: 'color.muted',
-		name: l10n.l('realmSettingsTheme.muted', "Muted"),
-		info: l10n.l('realmSettingsTheme.mutedInfo', "Muted color used for regular text and less prominent details."),
+		key: 'color.neutral',
+		name: l10n.l('realmSettingsTheme.neutral', "Neutral"),
+		info: l10n.l('realmSettingsTheme.neutralInfo', "Neutral color used for regular text and less prominent details."),
 	},
 	{
 		key: 'color.danger',

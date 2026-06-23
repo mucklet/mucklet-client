@@ -8,7 +8,7 @@ import { mix } from 'utils/color';
 import './pageAwake.scss';
 
 const themeTokens = {
-	'pageawake.char.status': (c) => mix(c.muted, c.accent, 20),
+	'pageawake.char.status': (getToken) => mix(getToken('color.neutral.300'), getToken('color.accent.300'), 20),
 };
 
 /**
