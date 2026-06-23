@@ -8,7 +8,7 @@ $theme-autocomplete-hover-background: var(--mu-autocomplete-hover-background, #{
 $theme-autocomplete-selected-background: var(--mu-autocomplete-selected-background, #{$autocomplete-selected-background});
 
 .autocomplete {
-	color: $theme-color-muted-darker;
+	color: $theme-color-neutral-100;
 	background: white;
 	z-index: 1000;
 	font-size: $font-size;
@@ -48,9 +48,9 @@ $theme-autocomplete-selected-background: var(--mu-autocomplete-selected-backgrou
 }
 
 .autocomplete.autocomplete-dark {
-	color: $theme-color-muted;
+	color: $theme-color-neutral-300;
 	background: $black;
-	border: 1px solid $theme-color-accent;
+	border: 1px solid $theme-color-accent-300;
 
 	> div > em {
 		font-weight: bold;
@@ -58,17 +58,17 @@ $theme-autocomplete-selected-background: var(--mu-autocomplete-selected-backgrou
 	}
 
 	.group {
-		background: $theme-color-base-dark;
+		background: $theme-color-base-100;
 	}
 
 	> div:hover:not(.group) {
-		background: $theme-color-base;
+		background: $theme-color-base-200;
 	}
 
 	> div.selected {
-		background: $theme-color-base-light;
+		background: $theme-color-base-300;
 		&:hover {
-			background: $theme-color-base-lighter;
+			background: $theme-color-base-400;
 		}
 	}
 }

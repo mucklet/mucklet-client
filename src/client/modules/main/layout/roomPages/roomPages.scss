@@ -31,7 +31,7 @@
 
 	&--bar {
 		height: 12px;
-		background: $theme-color-muted;
+		background: $theme-color-neutral-300;
 		border-radius: 3px;
 		opacity: 0.6;
 		cursor: pointer;
@@ -43,10 +43,10 @@
 
 		&.current {
 			opacity: 1;
-			background: $theme-color-accent;
+			background: $theme-color-accent-300;
 			&:hover {
 				opacity: 0.8;
-				// background: darken($theme-color-accent, 8%);
+				// background: darken($theme-color-accent-300, 8%);
 			}
 		}
 	}

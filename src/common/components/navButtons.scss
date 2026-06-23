@@ -1,14 +1,14 @@
 @import '~scss/variables';
 
 // Navbuttons colors
-$navbuttons-btn-hover-fill: lighten($color-base-lightest, 5%);
+$navbuttons-btn-hover-fill: lighten($color-base-500, 5%);
 // Navbuttons theme vars
 $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbuttons-btn-hover-fill});
 
 .navbuttons {
 
 	svg.shadow {
-		filter: drop-shadow(0px 0px 8px $theme-color-base);
+		filter: drop-shadow(0px 0px 8px $theme-color-base-200);
 	}
 
 	text {
@@ -21,13 +21,13 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 	&--count {
 		font-family: $font-text;
 		font-size: $font-size-small;
-		fill: $theme-color-muted-light;
+		fill: $theme-color-neutral-400;
 		fill-opacity: 0;
 	}
 
 	&--icon {
 		font-family:'FontAwesome';
-		fill: $theme-color-muted-light;
+		fill: $theme-color-neutral-400;
 		fill-opacity: 0;
 	}
 
@@ -36,7 +36,7 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 	}
 
 	&--btn {
-		fill: $theme-color-base-lightest;
+		fill: $theme-color-base-500;
 
 		&:not(.disabled) {
 			cursor: pointer;
@@ -44,19 +44,19 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 				fill: $theme-navbuttons-btn-hover-fill;
 				outline: 0;
 				.navbuttons--icon {
-					fill:$theme-color-muted-lighter;
+					fill:$theme-color-neutral-500;
 				}
 			}
 
 			&.selected {
-				fill: $theme-color-action;
+				fill: $theme-color-action-300;
 				.navbuttons--icon {
-					fill: $theme-color-base-light;
+					fill: $theme-color-base-300;
 				}
 				&:not(.disabled):hover, &:not(.disabled):focus {
-					fill: $theme-color-action-hover;
+					fill: $theme-color-action-200;
 					.navbuttons--icon {
-						fill: $theme-color-base-lighter;
+						fill: $theme-color-base-400;
 					}
 				}
 			}
@@ -65,7 +65,7 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 			&:hover, &:focus {
 				fill: $theme-navbuttons-btn-hover-fill;
 				.navbuttons--icon {
-					fill: $theme-color-muted-lighter;
+					fill: $theme-color-neutral-500;
 				}
 			}
 		}

@@ -2,15 +2,15 @@
 
 .containerstates {
 	&--created, &--exited, &--dead {
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 	}
 	&--running {
-		color: $theme-color-action;
+		color: $theme-color-action-300;
 	}
 	&--paused {
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 	}
 	&--restarting, &--removing {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 }

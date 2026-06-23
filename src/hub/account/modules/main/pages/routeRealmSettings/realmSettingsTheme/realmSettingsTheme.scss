@@ -29,14 +29,14 @@
 
 	&--tokendesc {
 		font-size: $font-size-small;
-		color: $color-muted;
+		color: $color-neutral;
 	}
 
 	&--tokencolor {
 		flex: 0 0 auto;
 		width: 32px;
 		height: 32px;
-		border: 1px solid $color-muted;
+		border: 1px solid $color-neutral;
 		border-radius: 4px;
 		background: $color-base;
 	}
@@ -55,7 +55,7 @@
 	}
 
 	&--tokenreset {
-		@include btn-style(none, $color-base-lighter, $color-base-lightest, $color-muted-light, $color-muted-lighter);
+		@include btn-style(none, $color-base-400, $color-base-500, $color-neutral-400, $color-neutral-500);
 		position: absolute;
 		right: 3px;
 		top: 3px;

@@ -16,7 +16,7 @@
 	}
 
 	&--unit {
-		color: $color-muted;
+		color: $color-neutral;
 	}
 
 	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
@@ -55,12 +55,12 @@
 	&.method-card {
 		.badge--faicon {
 			background: $color-action;
-			color: $color-base-light;
+			color: $color-base-300;
 		}
 		&:hover {
 			.badge--faicon {
 				background: darken($color-action, 8%);
-				color: darken($color-base-light, 8%);
+				color: darken($color-base-300, 8%);
 			}
 		}
 	}
@@ -80,13 +80,13 @@
 		.badge--faicon {
 			// background: $color-success;
 			background: $color-danger;
-			color: $color-base-light;
+			color: $color-base-300;
 		}
 		&:hover, &:active {
 			.badge--faicon {
 				// background: darken($color-success, 8%);
 				background: darken($color-danger, 8%);
-				color: darken($color-base-light, 8%);
+				color: darken($color-base-300, 8%);
 			}
 		}
 	}
@@ -101,7 +101,7 @@
 	}
 
 	&--date {
-		color: $color-muted;
+		color: $color-neutral;
 		line-height: 20px;
 		font-size: $font-size-small;
 	}

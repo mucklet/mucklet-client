@@ -6,7 +6,7 @@
 
 	&--scriptid {
 		display: block;
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 		font-family: $font-code;
 	}
 
@@ -15,7 +15,7 @@
 	}
 
 	&--logscont {
-		background: $theme-color-base;
+		background: $theme-color-base-200;
 		border-radius: 4px;
 		padding: 4px 4px;
 		height: 320px;
@@ -37,7 +37,7 @@
 	&--logtime {
 		display: block;
 		font-size: $font-size-tiny;
-		color: $theme-color-muted-lightestest;
+		color: $theme-color-neutral-700;
 		line-height: 1.2em;
 	}
 
@@ -48,14 +48,14 @@
 	}
 
 	&--log {
-		&-log { color: $theme-color-muted; }
-		&-debug { color: $theme-color-muted-dark; }
-		&-info { color: $theme-color-contrast; }
-		&-warn { color: $theme-log-cmd; }
-		&-error { color: $theme-log-error; }
+		&-log { color: $theme-color-neutral-300; }
+		&-debug { color: $theme-color-neutral-200; }
+		&-info { color: $theme-color-contrast-300; }
+		&-warn { color: $theme-log-cmd-fg; }
+		&-error { color: $theme-log-error-fg; }
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $theme-color-base-lightest;
+		background-color: $theme-color-base-500;
 	}
 }

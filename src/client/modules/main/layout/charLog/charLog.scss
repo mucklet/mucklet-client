@@ -2,7 +2,7 @@
 @import '~scss/mixins';
 
 // Charlog colors
-$charlog-invalid-background: rgba($log-error, 0.5);
+$charlog-invalid-background: rgba($log-error-fg, 0.5);
 $charlog-eventmenu-background: rgba($color-base, 0.8);
 // Charlog theme vars
 $theme-charlog-invalid-background: var(--mu-charlog-invalid-background, #{$charlog-invalid-background});
@@ -103,15 +103,15 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	// Common styling
 	&--fieldset {
 		position: relative;
-		border: 1px solid $theme-color-muted-dark;
+		border: 1px solid $theme-color-neutral-200;
 		padding: 5px 10px;
 		border-radius: 8px;
 	}
 
 	&--fieldset-label {
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 		position: absolute;
-		background: $theme-color-base;
+		background: $theme-color-base-200;
 		top: -1px;
 		height: 2px;
 		left: 16px;
@@ -127,7 +127,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 
 	&--tag {
 		font-size: $font-size-tiny;
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 		position: absolute;
 		margin-left: -1em;
 		margin-top: -13px;
@@ -171,7 +171,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 			color: $theme-log-code-fg;
 
 			em {
-				color: $theme-color-action;
+				color: $theme-color-action-300;
 				font-style: normal;
 			}
 		}
@@ -179,16 +179,16 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		.opt {
 			&::before {
 				content: "[";
-				color: $theme-color-muted-dark;
+				color: $theme-color-neutral-200;
 			}
 			&::after {
 				content: "]";
-				color: $theme-color-muted-dark;
+				color: $theme-color-neutral-200;
 			}
 		}
 
 		.param {
-			color: $theme-log-listitem;
+			color: $theme-log-listitem-fg;
 			&::before {
 				content: "<";
 			}
@@ -198,7 +198,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		}
 
 		.comment {
-			color: $theme-color-muted;
+			color: $theme-color-neutral-300;
 		}
 
 		sup {
@@ -250,7 +250,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $theme-color-base-lightest;
+		background-color: $theme-color-base-500;
 	}
 }
 
@@ -259,11 +259,11 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	right: 0px;
 	top: 0px;
 
-	@include btn-style($theme-charlog-eventmenu-background, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
+	@include btn-style($theme-charlog-eventmenu-background, $theme-color-base-400, $theme-color-base-500, $theme-color-neutral-300, $theme-color-neutral-400);
 
 	&--menu {
 		position: absolute;
-		background: $theme-color-base-lighter;
+		background: $theme-color-base-400;
 		min-width: 100px;
 		// min-height: 100px;
 		box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.65);
@@ -285,7 +285,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		width: 100%;
 		transition: color 0.2s, background-color 0.2s;
 		cursor: pointer;
-		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
+		@include btn-style(none, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
 	}
 
 	&--btnicon {

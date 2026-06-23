@@ -9,7 +9,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	padding: 1px 14px 14px 14px;
 
 	&--container {
-		background-color: $theme-color-base-light;
+		background-color: $theme-color-base-300;
 		border-radius: 16px; // rounded corners
 		display: flex;
 		flex-direction: column;
@@ -25,7 +25,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 		padding: 4px 12px 2px 12px;
 		display: flex;
 		flex-direction: row;
-		border-bottom: 2px solid $theme-color-base;
+		border-bottom: 2px solid $theme-color-base-200;
 	}
 
 	&--editorcont {
@@ -117,7 +117,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	border-bottom: 2px transparent;
 
 	&.active {
-		border-bottom: 2px solid $theme-color-danger;
+		border-bottom: 2px solid $theme-color-danger-300;
 	}
 
 	> .btn:focus {
@@ -136,8 +136,8 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 			margin-left: 8px;
 		}
 		> svg {
-			background-color: $theme-color-base-lighter;
-			color: $theme-color-base;
+			background-color: $theme-color-base-400;
+			color: $theme-color-base-200;
 		}
 	}
 
@@ -150,7 +150,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 		position: absolute;
 		top: 5px;
 		left: 3px;
-		color: $theme-color-base-placeholder;
+		color: $theme-content-placeholder-fg;
 		display: none;
 	}
 
@@ -163,7 +163,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	> .cm-editor {
 		.cm-content {
 			font-family: $font-text;
-			caret-color: $theme-color-contrast;
+			caret-color: $theme-color-contrast-300;
 			padding: 4px 0 0 0;
 			min-height: 100px;
 			// white-space: pre-line;

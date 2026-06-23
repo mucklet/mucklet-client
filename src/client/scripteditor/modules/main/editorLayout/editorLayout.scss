@@ -30,7 +30,7 @@ $editorlayout-sidepanel-width: 240px;
 		max-width: $editorlayout-sidepanel-width;
 		flex: 0 0 auto;
 		position: relative;
-		background-color: $theme-color-base-lighter;
+		background-color: $theme-color-base-400;
 		z-index: 5;
 
 		/* Hide scrollbar for Chrome, Safari and Opera */
@@ -53,7 +53,7 @@ $editorlayout-sidepanel-width: 240px;
 	}
 	&--panelfooter {
 		flex: 0 0 auto;
-		border-top: 1px solid $theme-color-base;
+		border-top: 1px solid $theme-color-base-200;
 	}
 
 	&--maincontainer {
@@ -65,7 +65,7 @@ $editorlayout-sidepanel-width: 240px;
 
 	&--header {
 		flex: 0 0 auto;
-		background-color: $theme-color-base-lighter;
+		background-color: $theme-color-base-400;
 		position: relative;
 		display: none;
 	}
@@ -89,10 +89,10 @@ $editorlayout-sidepanel-width: 240px;
 		display: none;
 
 		.hamburger--svg-open {
-			fill: $theme-color-muted;
+			fill: $theme-color-neutral-300;
 		}
 		.hamburger--svg-close {
-			fill: $theme-color-muted-lightest;
+			fill: $theme-color-neutral-600;
 		}
 
 		.hamburger--icon {
@@ -139,7 +139,7 @@ $editorlayout-sidepanel-width: 240px;
 
 .editorlayout-menuitem, .editorlayout--logout {
 	font-size: $font-size;
-	color: $theme-color-muted-light;
+	color: $theme-color-neutral-400;
 	display: flex;
 	width: 100%;
 	text-decoration: none;
@@ -168,18 +168,18 @@ $editorlayout-sidepanel-width: 240px;
 	}
 
 	&:hover, &:focus {
-		background: $theme-color-base-lightest;
-		color: $theme-color-muted-lightest;
+		background: $theme-color-base-500;
+		color: $theme-color-neutral-600;
 		outline: 0;
 	}
 
 	&.active {
-		border-right-color: $theme-color-accent;
-		color: $theme-color-muted-lightest;
+		border-right-color: $theme-color-accent-300;
+		color: $theme-color-neutral-600;
 	}
 
 	&.active:hover, &.active:focus {
-		color: $theme-color-muted-lightestest;
+		color: $theme-color-neutral-700;
 	}
 
 	&--name {
@@ -226,7 +226,7 @@ $editorlayout-sidepanel-width: 240px;
 			top: 0;
 			left: 0;
 			box-shadow: 0 0 8px $black;
-			// background-color: $theme-color-base-light;
+			// background-color: $theme-color-base-300;
 			transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
 			-webkit-transform: translate(-110%, 0);
 			transform: translate(-110%, 0);

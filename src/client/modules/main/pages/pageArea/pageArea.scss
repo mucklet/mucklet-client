@@ -41,7 +41,7 @@ $theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location
 		position: relative;
 		top: -8px;
 		font-size: $font-size-tiny;
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 		cursor: help;
 	}
 
@@ -60,7 +60,7 @@ $theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location
 		transition: 0.5s border;
 
 		&.inlocation {
-			border-left: 4px solid $theme-color-accent;
+			border-left: 4px solid $theme-color-accent-300;
 		}
 	}
 

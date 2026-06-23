@@ -5,9 +5,9 @@ kbd {
 	font-family: $font-text;
 	font-size: 11px;
 	color: $black;
-	text-shadow: 0 1px 0 $theme-color-muted-lightest;
-	background-color: $theme-color-muted-light;
-	border: 1px solid $theme-color-muted-dark;
+	text-shadow: 0 1px 0 $theme-color-neutral-600;
+	background-color: $theme-color-neutral-400;
+	border: 1px solid $theme-color-neutral-200;
 	border-radius: 3px;
 	box-shadow: 0 1px 1px rgba(0,0,0,0.30), inset 0 1px 0 0 #fff;
 	overflow-wrap: break-word;

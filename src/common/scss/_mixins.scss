@@ -11,11 +11,11 @@
 
 // set default variables to be base button colors.
 @mixin btn-style (
-	$bg:               $theme-color-base-light,
-	$bg-hover:         $theme-color-base-lighter,
-	$bg-active:        $theme-color-base-lightest,
-	$text-color:       $theme-color-muted,
-	$text-color-hover: $theme-color-muted-light
+	$bg:               $theme-color-base-300,
+	$bg-hover:         $theme-color-base-400,
+	$bg-active:        $theme-color-base-500,
+	$text-color:       $theme-color-neutral-300,
+	$text-color-hover: $theme-color-neutral-400
 ) {
 	background: $bg;
 	color: $text-color;

@@ -7,7 +7,7 @@
 		@include log-pad();
 	}
 	&--experiment {
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 		font-size: 75%;
 		line-height: 0;
 		position: relative;
@@ -16,6 +16,6 @@
 	}
 	&--disclaimer {
 		font-size: $font-size-small;
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 	}
 }

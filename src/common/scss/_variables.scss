@@ -51,27 +51,6 @@ $color-action-300: $color-action;
 $content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
 $control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
 
-/* Internal Sass compatibility aliases */
-$color-base-dark: $color-base-100;
-$color-base-light: $color-base-300;
-$color-base-lighter: $color-base-400;
-$color-base-lightest: $color-base-500;
-
-$color-contrast-dark: $color-contrast-200;
-$color-muted: $color-neutral;
-$color-muted-darker: $color-neutral-100;
-$color-muted-dark: $color-neutral-200;
-$color-muted-semidark: $color-neutral-250;
-$color-muted-light: $color-neutral-400;
-$color-muted-lighter: $color-neutral-500;
-$color-muted-lightest: $color-neutral-600;
-$color-muted-lightestest: $color-neutral-700;
-$color-danger-active: $color-danger-100;
-$color-danger-hover: $color-danger-200;
-$color-danger-light: $color-danger-400;
-$color-action-active: $color-action-100;
-$color-action-hover: $color-action-200;
-
 /* Primitive theme vars */
 $theme-color-base-100: var(--mu-color-base-100, #{$color-base-100});
 $theme-color-base-200: var(--mu-color-base-200, #{$color-base-200});
@@ -133,16 +112,27 @@ $theme-idlelevel-idle-fg: var(--mu-idlelevel-idle-fg, #{$color-accent-300});
 $theme-idlelevel-away-fg: var(--mu-idlelevel-away-fg, #{mix($color-danger-300, $color-accent-300, 80%)});
 $theme-idlelevel-bot-fg: var(--mu-idlelevel-bot-fg, #{mix($color-action-300, $color-contrast-300, 80%)});
 
-$theme-log-error-fg: var(--mu-log-error-fg, #{mix($color-danger-300, $color-neutral-300, 70%)});
-$theme-log-cmd-fg: var(--mu-log-cmd-fg, #{$color-accent-300});
-$theme-log-attr-fg: var(--mu-log-attr-fg, #{$color-accent-300});
-$theme-log-listitem-fg: var(--mu-log-listitem-fg, #{mix($color-action-300, $color-neutral-300, 50%)});
-$theme-log-delim-fg: var(--mu-log-delim-fg, #{$color-neutral-300});
-$theme-log-text-fg: var(--mu-log-text-fg, #{$color-neutral-600});
-$theme-log-entityid-fg: var(--mu-log-entityid-fg, #{$color-neutral-600});
-$theme-log-bot-fg: var(--mu-log-bot-fg, #{mix($color-action-300, $color-contrast-300, 80%)});
-$theme-log-instance-fg: var(--mu-log-instance-fg, #{mix($color-action-300, $color-neutral-300, 60%)});
-$theme-log-card-bg: var(--mu-log-card-bg, #{mix($color-accent-300, $color-base-200, 10%)});
+$log-error-fg: mix($color-danger-300, $color-neutral-300, 70%);
+$log-cmd-fg: $color-accent-300;
+$log-attr-fg: $color-accent-300;
+$log-listitem-fg: mix($color-action-300, $color-neutral-300, 50%);
+$log-delim-fg: $color-neutral-300;
+$log-text-fg: $color-neutral-600;
+$log-entityid-fg: $color-neutral-600;
+$log-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
+$log-instance-fg: mix($color-action-300, $color-neutral-300, 60%);
+$log-card-bg: mix($color-accent-300, $color-base-200, 10%);
+
+$theme-log-error-fg: var(--mu-log-error-fg, #{$log-error-fg});
+$theme-log-cmd-fg: var(--mu-log-cmd-fg, #{$log-cmd-fg});
+$theme-log-attr-fg: var(--mu-log-attr-fg, #{$log-attr-fg});
+$theme-log-listitem-fg: var(--mu-log-listitem-fg, #{$log-listitem-fg});
+$theme-log-delim-fg: var(--mu-log-delim-fg, #{$log-delim-fg});
+$theme-log-text-fg: var(--mu-log-text-fg, #{$log-text-fg});
+$theme-log-entityid-fg: var(--mu-log-entityid-fg, #{$log-entityid-fg});
+$theme-log-bot-fg: var(--mu-log-bot-fg, #{$log-bot-fg});
+$theme-log-instance-fg: var(--mu-log-instance-fg, #{$log-instance-fg});
+$theme-log-card-bg: var(--mu-log-card-bg, #{$log-card-bg});
 $theme-log-strong-fg: var(--mu-log-strong-fg, #{$color-contrast-300});
 $theme-log-default-fg: var(--mu-log-default-fg, #{$color-neutral-300});
 $theme-log-ooc-fg: var(--mu-log-ooc-fg, #{$color-neutral-200});
@@ -168,53 +158,6 @@ $theme-tag-title-border: var(--mu-tag-title-border, #{$color-action-300});
 $theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$color-action-200});
 $theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$color-action-200});
 $theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$color-base-200});
-
-/* Internal theme variable compatibility aliases */
-$theme-color-muted: $theme-color-neutral-300;
-
-$theme-color-base-dark: $theme-color-base-100;
-$theme-color-base-light: $theme-color-base-300;
-$theme-color-base-lighter: $theme-color-base-400;
-$theme-color-base-lightest: $theme-color-base-500;
-$theme-color-base-placeholder: $theme-content-placeholder-fg;
-$theme-color-base-placeholder-light: $theme-control-placeholder-fg;
-
-$theme-color-muted-darker: $theme-color-neutral-100;
-$theme-color-muted-dark: $theme-color-neutral-200;
-$theme-color-muted-semidark: $theme-color-neutral-250;
-$theme-color-muted-light: $theme-color-neutral-400;
-$theme-color-muted-lighter: $theme-color-neutral-500;
-$theme-color-muted-lightest: $theme-color-neutral-600;
-$theme-color-muted-lightestest: $theme-color-neutral-700;
-
-$theme-color-contrast-dark: $theme-color-contrast-200;
-$theme-color-danger-active: $theme-color-danger-100;
-$theme-color-danger-hover: $theme-color-danger-200;
-$theme-color-danger-light: $theme-color-danger-400;
-$theme-color-action-active: $theme-color-action-100;
-$theme-color-action-hover: $theme-color-action-200;
-
-$log-error: mix($color-danger-300, $color-neutral-300, 70%);
-$log-cmd: $color-accent-300;
-$log-attr: $color-accent-300;
-$log-listitem: mix($color-action-300, $color-neutral-300, 50%);
-$log-delim: $color-neutral-300;
-$log-text: $color-neutral-600;
-$log-entityid: $color-neutral-600;
-$log-bot: mix($color-action-300, $color-contrast-300, 80%);
-$log-instance: mix($color-action-300, $color-neutral-300, 60%);
-$log-card: mix($color-accent-300, $color-base-200, 10%);
-
-$theme-log-error: $theme-log-error-fg;
-$theme-log-cmd: $theme-log-cmd-fg;
-$theme-log-attr: $theme-log-attr-fg;
-$theme-log-listitem: $theme-log-listitem-fg;
-$theme-log-delim: $theme-log-delim-fg;
-$theme-log-text: $theme-log-text-fg;
-$theme-log-entityid: $theme-log-entityid-fg;
-$theme-log-bot: $theme-log-bot-fg;
-$theme-log-instance: $theme-log-instance-fg;
-$theme-log-card: $theme-log-card-bg;
 
 /* Font families */
 // @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Open+Sans&display=swap');

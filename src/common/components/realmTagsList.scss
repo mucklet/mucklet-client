@@ -73,7 +73,7 @@
 		width: 17px;
 		height: 17px;
 		text-align: center;
-		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
+		@include btn-style(none, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-300, $theme-color-neutral-400);
 		> i {
 			line-height: 15px;
 		}

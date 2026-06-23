@@ -38,7 +38,7 @@ $theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, 
 		&.info {
 			background: $theme-toaster-info-background;
 			&:hover {
-				background: $theme-color-base-lightest;
+				background: $theme-color-base-500;
 			}
 		}
 
@@ -76,7 +76,7 @@ $theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, 
 		position: absolute;
 		top: 4px;
 		right: 4px;
-		@include btn-style(none, $theme-toaster-close-background-hover, $theme-toaster-close-background-hover, $theme-color-muted-light, $theme-color-muted-lighter);
+		@include btn-style(none, $theme-toaster-close-background-hover, $theme-toaster-close-background-hover, $theme-color-neutral-400, $theme-color-neutral-500);
 	}
 }
 

@@ -88,31 +88,31 @@
 // Set colors for your buttons, see the button mixin at the top of this
 // file to see how the hex colors are allocated
 .btn.primary, .iconbtn.primary {
-	@include btn-style($theme-color-action, $theme-color-action-hover, $theme-color-action-active, $theme-color-base-light, $theme-color-base-lighter);
+	@include btn-style($theme-color-action-300, $theme-color-action-200, $theme-color-action-100, $theme-color-base-300, $theme-color-base-400);
 }
 
 .btn.secondary, .iconbtn.secondary {
-	@include btn-style($theme-color-muted, $theme-color-muted-dark, $theme-color-muted-darker, $theme-color-base-light, $theme-color-base-lighter);
+	@include btn-style($theme-color-neutral-300, $theme-color-neutral-200, $theme-color-neutral-100, $theme-color-base-300, $theme-color-base-400);
 }
 
 .btn.warning {
-	@include btn-style($theme-color-danger, $theme-color-danger-hover, $theme-color-danger-active, $black, $black);
+	@include btn-style($theme-color-danger-300, $theme-color-danger-200, $theme-color-danger-100, $black, $black);
 }
 
 .btn.light, .iconbtn.light {
-	@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
+	@include btn-style(none, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
 }
 
 .btn.lighten, .iconbtn.lighten {
-	@include btn-style(none, rgba($white, 0.07), rgba($white, 0.10), $theme-color-muted-light, $theme-color-muted-lighter);
+	@include btn-style(none, rgba($white, 0.07), rgba($white, 0.10), $theme-color-neutral-400, $theme-color-neutral-500);
 }
 
 .btn.darken, .iconbtn.darken {
-	@include btn-style(rgba($black, 0.3), rgba($black, 0.5), rgba($black, 0.6), $theme-color-muted-light, $theme-color-muted-lighter);
+	@include btn-style(rgba($black, 0.3), rgba($black, 0.5), rgba($black, 0.6), $theme-color-neutral-400, $theme-color-neutral-500);
 }
 
 .btn.solid, .iconbtn.solid {
-	@include btn-style($theme-color-base-lighter, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
+	@include btn-style($theme-color-base-400, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
 }
 
 // Add this class to a <button> or element with a .btn class
@@ -184,7 +184,7 @@
 	width: 52px;
 	height: 52px;
 	text-align: center;
-	@include btn-style(none, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
+	@include btn-style(none, $theme-color-base-400, $theme-color-base-500, $theme-color-neutral-300, $theme-color-neutral-400);
 	> i {
 		line-height: 51px;
 	}

@@ -9,7 +9,7 @@
 	column-gap: 24px;
 
 	&--headerbtn.btn, &--headerbtn.iconbtn {
-		@include btn-style($color-base, $color-base-light, $color-base-lighter, $color-muted-light, $color-muted-lightest);
+		@include btn-style($color-base, $color-base-300, $color-base-400, $color-neutral-400, $color-neutral-600);
 	}
 
 	&--helpbtn {
@@ -64,7 +64,7 @@
 		display: block;
 		padding: 8px 16px 8px 12px;
 		background: $color-base;
-		color: $color-muted-lightest;
+		color: $color-neutral-600;
 		cursor: pointer;
 		-webkit-transition: color 0.2s, background-color 0.2s;
 		-ms-transition: color 0.2s, background-color 0.2s;
@@ -73,8 +73,8 @@
 
 
 		&:hover {
-			background: $color-base-lighter;
-			color: $color-muted-lightestest;
+			background: $color-base-400;
+			color: $color-neutral-700;
 		}
 	}
 

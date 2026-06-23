@@ -17,13 +17,13 @@
 		> .btn {
 			background: none;
 			width: 100%;
-			border: dashed 2px $theme-color-muted;
+			border: dashed 2px $theme-color-neutral-300;
 			padding: 4px 12px;
 			height: inherit;
 
 			&:hover, &:focus {
-				color: $theme-color-muted-lighter;
-				background: $theme-color-base-light;
+				color: $theme-color-neutral-500;
+				background: $theme-color-base-300;
 			}
 		}
 	}

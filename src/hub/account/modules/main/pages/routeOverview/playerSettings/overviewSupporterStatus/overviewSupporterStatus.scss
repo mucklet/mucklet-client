@@ -26,25 +26,25 @@
 	}
 
 	&--unit {
-		color: $color-muted;
+		color: $color-neutral;
 	}
 
 	&--badge.recurrence-once {
 		.badge--faicon {
-			background: $color-base-lightest;
+			background: $color-base-500;
 			color: $color-base;
 		}
 	}
 	&--badge.recurrence-month {
 		.badge--faicon {
 			background: $color-action;
-			color: $color-base-light;
+			color: $color-base-300;
 		}
 	}
 	&--badge.recurrence-quarter {
 		.badge--faicon {
 			background: $color-accent;
-			color: $color-base-light;
+			color: $color-base-300;
 		}
 	}
 

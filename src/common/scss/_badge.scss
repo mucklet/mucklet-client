@@ -13,7 +13,7 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 .badge {
 	width: 100%;
 	border: none;
-	background: $theme-color-base;
+	background: $theme-color-base-200;
 	color: $white;
 	padding: 4px;
 	border-radius: 8px;
@@ -23,11 +23,11 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&.dark {
-		background: $theme-color-base-dark;
+		background: $theme-color-base-100;
 		.badge--avatar {
 			> svg {
-				background-color: $theme-color-base-light;
-				color: $theme-color-base-dark;
+				background-color: $theme-color-base-300;
+				color: $theme-color-base-100;
 			}
 		}
 	}
@@ -70,14 +70,14 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&--avatar {
 		> svg {
-			background-color: $theme-color-base-lighter;
-			color: $theme-color-base;
+			background-color: $theme-color-base-400;
+			color: $theme-color-base-200;
 		}
 	}
 
 	&--symbol {
 		font-size: $font-size-tiny;
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 		flex: 0 0 auto;
 		align-self: center;
 	}
@@ -89,8 +89,8 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 			line-height: 32px;
 		}
 		transition: 0.2s color, 0.2s background-color;
-		color: $theme-color-muted;
-		background: $theme-color-base-lighter;
+		color: $theme-color-neutral-300;
+		background: $theme-color-base-400;
 
 		&.smallicon {
 			font-size: 18px;
@@ -160,12 +160,12 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&--text {
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 	}
 
 	&--title {
 		font-size: $font-size-tiny + 1px;
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 
 	&--micro {
@@ -173,19 +173,19 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&--subtitle {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 
 	&--strong {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 
 	&--highlight {
-		color: $theme-log-instance;
+		color: $theme-log-instance-fg;
 	}
 
 	&--error {
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 	}
 
 	&--strikethrough {
@@ -198,7 +198,7 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&--divider {
 		margin-top: 6px;
-		border-top: 1px solid $theme-color-base-lightest;
+		border-top: 1px solid $theme-color-base-500;
 		padding-bottom: 4px;
 	}
 

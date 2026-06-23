@@ -13,7 +13,7 @@
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $theme-color-muted;
+		background-color: $theme-color-neutral-300;
 	}
 
 	&--container {
@@ -39,7 +39,7 @@
 
 	&--footer {
 		flex: 0 0 auto;
-		border-top: 1px solid $theme-color-base;
+		border-top: 1px solid $theme-color-base-200;
 	}
 
 	&--btncont {
@@ -110,7 +110,7 @@
 	.panel {
 		cursor: pointer;
 		&:hover {
-			background-color: $theme-color-base-lighter;
+			background-color: $theme-color-base-400;
 		}
 	}
 

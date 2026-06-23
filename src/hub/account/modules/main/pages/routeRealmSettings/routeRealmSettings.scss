@@ -22,7 +22,7 @@
 		border-radius: 10px;
 		width: 480px;
 		max-width: 100%;
-		background: $color-base-lighter;
+		background: $color-base-400;
 
 		&:not(.placeholder) {
 			cursor: pointer;
@@ -34,7 +34,7 @@
 		border-radius: 10px;
 		width: 140px;
 		max-width: 100%;
-		background: $color-base-lighter;
+		background: $color-base-400;
 
 		&:not(.placeholder) {
 			cursor: pointer;
@@ -67,7 +67,7 @@
 
 	&--version {
 		font-size: $font-size-small;
-		color: $color-muted;
+		color: $color-neutral;
 	}
 
 	&--medialinks {

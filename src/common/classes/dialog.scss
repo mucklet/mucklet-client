@@ -33,7 +33,7 @@
 		opacity: 1;
 	}
 
-	background: $theme-color-base-lightest;
+	background: $theme-color-base-500;
 
 	&.fullscreen {
 		width: 100%;
@@ -61,7 +61,7 @@
 		margin: 0;
 		padding: 8px 16px;
 	}
-	border-bottom: 1px solid $theme-color-accent;
+	border-bottom: 1px solid $theme-color-accent-300;
 }
 
 .dialog--content-wrap {
@@ -80,22 +80,22 @@
 
 .dialog--input {
 	width: 100%;
-	background: $theme-color-muted-lighter;
+	background: $theme-color-neutral-500;
 	color: $black;
 }
 
 .dialog--incomplete {
-	color: $theme-color-base-placeholder;
+	color: $theme-content-placeholder-fg;
 }
 
 .dialog--error {
-	color: $theme-color-danger;
+	color: $theme-color-danger-300;
 }
 
 .dialog--strong {
 	display: inline-block;
 	font-family: $font-text;
-	color: $theme-color-contrast;
+	color: $theme-color-contrast-300;
 }
 
 .dialog--emphasis {
@@ -120,8 +120,8 @@
 
 .dialog--avatar {
 	> svg {
-		background-color: $theme-color-base-lighter;
-		color: $theme-color-base;
+		background-color: $theme-color-base-400;
+		color: $theme-color-base-200;
 	}
 }
 

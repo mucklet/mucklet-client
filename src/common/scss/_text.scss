@@ -1,18 +1,18 @@
 h1, h2, h3 {
 	font-family: $font-header;
-	color: $theme-color-accent;
+	color: $theme-color-accent-300;
 }
 
 h4 {
 	font-size: 14px;
-	color: $theme-color-accent
+	color: $theme-color-accent-300
 }
 
 // Subtitles
 h6 {
 	font-family: $font-text;
 	font-size: $font-size-small;
-	color: $theme-color-muted;
+	color: $theme-color-neutral-300;
 }
 
 p {

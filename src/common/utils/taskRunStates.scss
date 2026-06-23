@@ -4,7 +4,7 @@
 .taskrunstates {
 	&-- {
 		// &none, &queued {
-		// 	color: $color-muted-darker !important;
+		// 	color: $color-neutral-100 !important;
 		// }
 		&running:not(.bg) {
 			color: $color-action !important;
@@ -20,7 +20,7 @@
 		}
 
 		// &none, &queued {
-		// 	background: $color-muted-darker !important;
+		// 	background: $color-neutral-100 !important;
 		// }
 		&running.bg {
 			background: $color-action !important;

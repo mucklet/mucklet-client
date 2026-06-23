@@ -7,7 +7,7 @@
 
 	&--dir-icons {
 		padding-right: 4px;
-		border-right: solid 1px $theme-color-base-dark;
+		border-right: solid 1px $theme-color-base-100;
 	}
 	&--misc-icons {
 		padding-left: 4px;
@@ -17,11 +17,11 @@
 		padding: 0 2px 2px 0;
 
 		> .iconbtn {
-			@include btn-style(none, $theme-color-base-lighter, $theme-color-base-lighter, $theme-color-muted-dark, $theme-color-muted-semidark);
+			@include btn-style(none, $theme-color-base-400, $theme-color-base-400, $theme-color-neutral-200, $theme-color-neutral-250);
 		}
 
 		> .iconbtn.active {
-			@include btn-style($theme-color-action, $theme-color-action-hover, $theme-color-action-hover, $theme-color-base-light, $theme-color-base-lighter);
+			@include btn-style($theme-color-action-300, $theme-color-action-200, $theme-color-action-200, $theme-color-base-300, $theme-color-base-400);
 		}
 	}
 }

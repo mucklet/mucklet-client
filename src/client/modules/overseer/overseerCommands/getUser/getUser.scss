@@ -2,9 +2,9 @@
 
 .getplayer {
 	&--suspended {
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 	}
 	&--awake {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 }

@@ -1,12 +1,12 @@
 
 input, textarea, .input--textarea {
-	background: $theme-color-base-lightest;
+	background: $theme-color-base-500;
 	font-size: $font-size;
 	font-family: $font-text;
 	border: none;
 	padding: 8px;
 	border-radius: 4px;
-	color: $theme-color-contrast;
+	color: $theme-color-contrast-300;
 	width: 100%;
 
 	&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -29,7 +29,7 @@ input, textarea {
 }
 
 .input--incomplete {
-	color: $theme-color-muted-light;
+	color: $theme-color-neutral-400;
 }
 
 input[type='text'], textarea {
@@ -42,16 +42,16 @@ input.autocomplete {
 	&:autofill:focus,
 	&:autofill:active {
 		font-size: $font-size;
-		color: $theme-log-bot !important;
-		background: $theme-color-base-lightest !important;
+		color: $theme-log-bot-fg !important;
+		background: $theme-color-base-500 !important;
 	}
 
 	&:-webkit-autofill,
 	&:-webkit-autofill:hover,
 	&:-webkit-autofill:focus,
 	&:-webkit-autofill:active {
-		-webkit-text-fill-color: $theme-log-bot;
-		-webkit-box-shadow: 0 0 0 32px $theme-color-base-lightest inset !important;
+		-webkit-text-fill-color: $theme-log-bot-fg;
+		-webkit-box-shadow: 0 0 0 32px $theme-color-base-500 inset !important;
 		transition: background-color 5000s ease-in-out 0s;
 		border-radius: 4px !important;
 	}

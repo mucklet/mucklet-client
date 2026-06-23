@@ -27,40 +27,40 @@
 			left: -36px;
 			width: 12px;
 			height: 12px;
-			border: 2px solid $theme-color-base-lightest;
+			border: 2px solid $theme-color-base-500;
 			border-radius: 50%;
-			background-color: $theme-color-base;
+			background-color: $theme-color-base-200;
 		}
 
 		&.completed::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $theme-color-action;
-			background-color: $theme-color-action;
+			border: 2px solid $theme-color-action-300;
+			background-color: $theme-color-action-300;
 		}
 		&.warning::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $theme-color-accent;
-			background-color: $theme-color-accent;
+			border: 2px solid $theme-color-accent-300;
+			background-color: $theme-color-accent-300;
 		}
 		&.error::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $theme-color-danger;
-			background-color: $theme-color-danger;
+			border: 2px solid $theme-color-danger-300;
+			background-color: $theme-color-danger-300;
 		}
 	}
 
 	> *:not(:last-child) {
 		.verticalstepprogress--step {
 			&::before {
-				border-left: 2px solid $theme-color-base-lightest;
+				border-left: 2px solid $theme-color-base-500;
 			}
 
 			&.nextcompleted {
 				&::before {
-					border-left: 2px solid $theme-color-action;
+					border-left: 2px solid $theme-color-action-300;
 				}
 			}
 		}

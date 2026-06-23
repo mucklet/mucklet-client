@@ -36,7 +36,7 @@ $theme-tooltip-background: var(--mu-tooltip-background, #{$tooltip-background});
 	&--text {
 		white-space: pre;
 		font-size: $font-size-small;
-		color: $theme-color-muted-lighter;
+		color: $theme-color-neutral-500;
 	}
 
 	&--left {

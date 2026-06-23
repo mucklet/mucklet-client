@@ -9,7 +9,7 @@ $theme-togglebox-danger-hover: var(--mu-togglebox-danger-hover, #{$togglebox-dan
 
 .togglebox {
 	display: inline-block;
-	border: 4px solid $theme-color-muted;
+	border: 4px solid $theme-color-neutral-300;
 	background: transparent;
 	border-radius: 3px;
 	padding: 0;
@@ -37,14 +37,14 @@ $theme-togglebox-danger-hover: var(--mu-togglebox-danger-hover, #{$togglebox-dan
 }
 
 .togglebox.value-1 > div {
-	background: $theme-color-action;
+	background: $theme-color-action-300;
 	&:hover:not(:disabled) {
 		background: $theme-togglebox-action-hover;
 	}
 }
 
 .togglebox.value-2 > div {
-	background: $theme-color-danger;
+	background: $theme-color-danger-300;
 	&:hover:not(:disabled) {
 		background: $theme-togglebox-danger-hover;
 	}

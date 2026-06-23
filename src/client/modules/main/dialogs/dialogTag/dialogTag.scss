@@ -1,7 +1,7 @@
 @import '~scss/variables';
 
 // Dialog tag colors
-$dialogtag-desc-disabled-background: rgba($color-muted-lighter, 0.1);
+$dialogtag-desc-disabled-background: rgba($color-neutral-500, 0.1);
 $dialogtag-pref-dislike-background-hover: lighten($color-danger, 5%);
 // Dialog tag theme vars
 $theme-dialogtag-desc-disabled-background: var(--mu-dialogtag-desc-disabled-background, #{$dialogtag-desc-disabled-background});
@@ -14,13 +14,13 @@ $theme-dialogtag-pref-dislike-background-hover: var(--mu-dialogtag-pref-dislike-
 		transition: color 0.2s, background-color 0.2s;
 
 		&:disabled {
-			color: $theme-color-muted;
+			color: $theme-color-neutral-300;
 			background: $theme-dialogtag-desc-disabled-background;
 		}
 	}
 
 	&--pref-dislike > .togglebox.value-1 > div {
-		background: $theme-color-danger;
+		background: $theme-color-danger-300;
 		&:hover {
 			background: $theme-dialogtag-pref-dislike-background-hover;
 		}

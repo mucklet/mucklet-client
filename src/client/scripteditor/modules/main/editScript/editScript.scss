@@ -18,7 +18,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 
 	&--header {
 		flex: 0 0 auto;
-		background-color: $theme-color-base-lighter;
+		background-color: $theme-color-base-400;
 		position: relative;
 		width: 100%;
 	}
@@ -53,10 +53,10 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 		}
 	}
 	&--headerinfo-room {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 	&--headerinfo-key {
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 	}
 
 	&--headerbuttons {
@@ -93,7 +93,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 	}
 
 	&--erroricon {
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 	}
 
 	&--update.btn {
@@ -119,11 +119,11 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 	.cm-editor {
 		width: 100%;
 		height: 100%;
-		background: $theme-color-base;
+		background: $theme-color-base-200;
 	}
 	.cm-scroller {
 		overflow: auto;
-		scrollbar-color: $theme-color-base-lightest transparent;
+		scrollbar-color: $theme-color-base-500 transparent;
 		&::-webkit-scrollbar {
 			width: 12px;
 			height: 12px;
@@ -133,11 +133,11 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 			background-color: transparent;
 		}
 		&::-webkit-scrollbar-track {
-			background: $theme-color-base;
+			background: $theme-color-base-200;
 		}
 		&::-webkit-scrollbar-thumb {
-			background: $theme-color-base-lightest;
-			border: 2px solid $theme-color-base;
+			background: $theme-color-base-500;
+			border: 2px solid $theme-color-base-200;
 			border-radius: 6px;
 		}
 		&::-webkit-scrollbar-thumb:hover {
@@ -145,12 +145,12 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 		}
 	}
 	.cm-gutters {
-		color: $theme-color-muted-darker;
-		background-color: $theme-color-base;
+		color: $theme-color-neutral-100;
+		background-color: $theme-color-base-200;
 		border: none;
 	}
 	.cm-activeLineGutter {
-		background-color: $theme-color-base-light;
+		background-color: $theme-color-base-300;
 	}
 	.cm-lineNumbers .cm-gutterElement {
 		padding-right: 12px;
@@ -158,55 +158,55 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 
 	// Style
 	&--keyword {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 	&--name {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 	&--variable {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 	&--constant {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 	&--separator {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 	&--type {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 	&--operator {
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 	}
 	&--comment {
-		color: $theme-color-muted-dark;
+		color: $theme-color-neutral-200;
 	}
 	&--link {
-		color: $theme-color-action;
+		color: $theme-color-action-300;
 	}
 	&--heading {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 	&--bool {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 	&--string {
-		color: $theme-color-action;
+		color: $theme-color-action-300;
 	}
 	&--invalid {
-		color: $theme-log-error;
+		color: $theme-log-error-fg;
 	}
 }
 
 .editscript-errors {
 	height: 8em;
-	background-color: $theme-color-base-lighter;
+	background-color: $theme-color-base-400;
 	padding: 8px 48px 16px 16px;
 	position: relative;
 
 
 	&--cont {
-		background: $theme-color-base;
+		background: $theme-color-base-200;
 		border-radius: 4px;
 		position: relative;
 		height: 100%;
@@ -220,7 +220,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 	&--text {
 		font-family: $font-code;
 		font-size: $font-size-small;
-		color: $theme-color-danger;
+		color: $theme-color-danger-300;
 		white-space: pre;
 	}
 

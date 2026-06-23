@@ -33,8 +33,8 @@
 		display: block;
 
 		&.placeholder {
-			background: $theme-color-base-light;
-			color: $theme-color-base-dark;
+			background: $theme-color-base-300;
+			color: $theme-color-base-100;
 			overflow: hidden;
 		}
 	}
@@ -63,7 +63,7 @@
 
 	&--title {
 		font-family: $font-text;
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 		font-size: 32px;
 		line-height: 110%;
 	}
@@ -83,7 +83,7 @@
 	}
 
 	&--dot {
-		background: $theme-color-muted;
+		background: $theme-color-neutral-300;
 		display: inline-block;
 		width: 10px;
 		height: 10px;
@@ -93,7 +93,7 @@
 		vertical-align: middle;
 		margin-right: 10px;
 		&.highlight {
-			background: $theme-color-action;
+			background: $theme-color-action-300;
 		}
 	}
 
@@ -105,8 +105,8 @@
 		display: block;
 
 		&.placeholder {
-			background: $theme-color-base-light;
-			color: $theme-color-base-dark;
+			background: $theme-color-base-300;
+			color: $theme-color-base-100;
 			overflow: hidden;
 		}
 	}
@@ -156,7 +156,7 @@
 		font-size: $font-size-tiny;
 		text-transform: uppercase;
 		line-height: 125%;
-		color: $theme-color-muted;
+		color: $theme-color-neutral-300;
 		font-family: "Open Sans", sans-serif;
 		font-weight: 300;
 		margin-bottom: 20px;
@@ -196,7 +196,7 @@
 
 		&:hover {
 			.greetingscreen--footer-logo-text {
-				color: $theme-color-action;
+				color: $theme-color-action-300;
 			}
 		}
 	}

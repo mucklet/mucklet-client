@@ -39,21 +39,21 @@
 		&genre {
 			color: $color-action;
 			&:hover {
-				color: $color-action-hover;
+				color: $color-action-200;
 			}
 		}
 
 		&theme {
-			color: $color-muted;
+			color: $color-neutral;
 			&:hover {
-				color: $color-muted-lighter;
+				color: $color-neutral-500;
 			}
 		}
 
 		&warn {
 			color: $color-danger;
 			&:hover {
-				color: $color-danger-light;
+				color: $color-danger-400;
 			}
 		}
 	}

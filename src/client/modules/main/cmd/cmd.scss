@@ -3,34 +3,34 @@
 
 .cmd {
 	// Tokens
-	&--error { color: $theme-log-error; }  // invalid
-	&--listitem { color: $theme-log-listitem; } // attributeValue
-	&--text { color: $theme-log-text; }  // string
-	&--delim { color: $theme-log-delim; } // operator
-	&--cmd { color: $theme-log-cmd; } // name
-	&--attr { color: $theme-log-attr; } // propertyName
-	&--unknown { color: $theme-log-error; } // comment
-	&--entityid { color: $theme-log-entityid; } // keyword
-	&--listitem { color: $theme-log-listitem; } // attributeValue
-	&--ooc { color: $theme-color-muted-semidark; } // meta
+	&--error { color: $theme-log-error-fg; }  // invalid
+	&--listitem { color: $theme-log-listitem-fg; } // attributeValue
+	&--text { color: $theme-log-text-fg; }  // string
+	&--delim { color: $theme-log-delim-fg; } // operator
+	&--cmd { color: $theme-log-cmd-fg; } // name
+	&--attr { color: $theme-log-attr-fg; } // propertyName
+	&--unknown { color: $theme-log-error-fg; } // comment
+	&--entityid { color: $theme-log-entityid-fg; } // keyword
+	&--listitem { color: $theme-log-listitem-fg; } // attributeValue
+	&--ooc { color: $theme-color-neutral-250; } // meta
 	&--code {
-		color: $theme-log-text;
+		color: $theme-log-text-fg;
 		font-family: $font-code;
 	} // macroName
 
 	// Formatted text
 	&--format-header &--text {
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 	&--format-tableheader &--text {
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 	}
 	&--format-formatter &--text, &--format-formatter &--ooc {
-		color: $theme-color-muted-dark;
+		color: $theme-color-neutral-200;
 	}
 	&--format-codeformatter &--text, &--format-codeformatter &--ooc {
 		font-family: $font-code;
-		color: $theme-color-muted-dark;
+		color: $theme-color-neutral-200;
 	}
 	&--format-em {
 		font-style: italic;
@@ -39,20 +39,20 @@
 		font-weight: 700;
 	}
 	&--format-ooc &--text, &--format-ooc &--ooc {
-		color: $theme-color-muted-semidark;
+		color: $theme-color-neutral-250;
 	}
 	&--format-cmd &--text, &--format-cmd &--ooc {
 		font-family: $font-code;
-		color: $theme-color-accent;
+		color: $theme-color-accent-300;
 	}
 	&--format-strikethrough {
 		text-decoration: line-through;
 	}
 	&--format-link &--text, &--format-link &--ooc {
-		color: $theme-color-action;
+		color: $theme-color-action-300;
 	}
 	&--format-linkurl &--text, &--format-linkurl &--ooc {
-		color: $theme-color-action;
+		color: $theme-color-action-300;
 	}
 	&--format-sup, &--format-sub {
 		font-size: 75%;

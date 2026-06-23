@@ -71,13 +71,13 @@
 			color: $color-contrast;
 			background: $color-base;
 			.sub1 {
-				background: $color-base-light;
+				background: $color-base-300;
 			}
 			.sub2 {
-				background: $color-base-lighter;
+				background: $color-base-400;
 			}
 			.sub3 {
-				background: $color-base-lightest;
+				background: $color-base-500;
 			}
 		}
 		&.color2 {
@@ -90,15 +90,15 @@
 		}
 		&.color4 {
 			color: $black;
-			background: $color-muted;
+			background: $color-neutral;
 			.sub1 {
-				background: $color-muted-light;
+				background: $color-neutral-400;
 			}
 			.sub2 {
-				background: $color-muted-lighter;
+				background: $color-neutral-500;
 			}
 			.sub3 {
-				background: $color-muted-lightest;
+				background: $color-neutral-600;
 			}
 		}
 		&.color5 {
@@ -129,7 +129,7 @@
 	&--font {
 		margin-bottom: 20px;
 		padding: 20px 0px;
-		background: $color-base-light;
+		background: $color-base-300;
 		display: flex;
 		flex-direction: row;
 	}
@@ -144,7 +144,7 @@
 			line-height: 36px;
 		}
 		&.opensans {
-			color: $color-muted-light;
+			color: $color-neutral-400;
 			font-family: $font-text;
 			font-size: 18px;
 			line-height: 30px;

@@ -18,12 +18,12 @@
 	&--notset {
 		font-style: italic;
 		font-size: $font-size;
-		color: $theme-color-muted-dark;
+		color: $theme-color-neutral-200;
 	}
 
 	&--fullname {
 		font-family: $font-text;
-		color: $theme-color-contrast;
+		color: $theme-color-contrast-300;
 		font-size: $font-size-large;
 		line-height: 24px;
 	}
