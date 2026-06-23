@@ -3,7 +3,7 @@
 
 // Charlog colors
 $charlog-invalid-background: rgba($log-error-fg, 0.5);
-$charlog-eventmenu-background: rgba($color-base, 0.8);
+$charlog-eventmenu-background: rgba($color-base-200, 0.8);
 // Charlog theme vars
 $theme-charlog-invalid-background: var(--mu-charlog-invalid-background, #{$charlog-invalid-background});
 $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$charlog-eventmenu-background});

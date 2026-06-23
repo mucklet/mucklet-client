@@ -2,8 +2,8 @@
 @import '~scss/mixins';
 
 // Page tickets colors
-$pagetickets-ticket-unassigned-background: darken($color-base, 6%);
-$pagetickets-ticket-unassigned-background-hover: darken($color-base, 9%);
+$pagetickets-ticket-unassigned-background: darken($color-base-200, 6%);
+$pagetickets-ticket-unassigned-background-hover: darken($color-base-200, 9%);
 // Page tickets theme vars
 $theme-pagetickets-ticket-unassigned-background: var(--mu-pagetickets-ticket-unassigned-background, #{$pagetickets-ticket-unassigned-background});
 $theme-pagetickets-ticket-unassigned-background-hover: var(--mu-pagetickets-ticket-unassigned-background-hover, #{$pagetickets-ticket-unassigned-background-hover});

@@ -2,7 +2,7 @@
 @import '~scss/mixins';
 
 // Popuppill colors
-$popuppill-tip-background: rgba(darken($color-base, 10%), 0.9);
+$popuppill-tip-background: rgba(darken($color-base-200, 10%), 0.9);
 // Popuppill theme vars
 $theme-popuppill-tip-background: var(--mu-popuppill-tip-background, #{$popuppill-tip-background});
 

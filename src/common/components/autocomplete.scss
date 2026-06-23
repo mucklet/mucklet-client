@@ -1,8 +1,8 @@
 @import '~scss/variables';
 
 // Autocomplete colors
-$autocomplete-hover-background: lighten($color-action, 20%);
-$autocomplete-selected-background: lighten($color-action, 30%);
+$autocomplete-hover-background: lighten($color-action-300, 20%);
+$autocomplete-selected-background: lighten($color-action-300, 30%);
 // Autocomplete theme vars
 $theme-autocomplete-hover-background: var(--mu-autocomplete-hover-background, #{$autocomplete-hover-background});
 $theme-autocomplete-selected-background: var(--mu-autocomplete-selected-background, #{$autocomplete-selected-background});

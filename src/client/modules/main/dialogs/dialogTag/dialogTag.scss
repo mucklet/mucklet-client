@@ -2,7 +2,7 @@
 
 // Dialog tag colors
 $dialogtag-desc-disabled-background: rgba($color-neutral-500, 0.1);
-$dialogtag-pref-dislike-background-hover: lighten($color-danger, 5%);
+$dialogtag-pref-dislike-background-hover: lighten($color-danger-300, 5%);
 // Dialog tag theme vars
 $theme-dialogtag-desc-disabled-background: var(--mu-dialogtag-desc-disabled-background, #{$dialogtag-desc-disabled-background});
 $theme-dialogtag-pref-dislike-background-hover: var(--mu-dialogtag-pref-dislike-background-hover, #{$dialogtag-pref-dislike-background-hover});

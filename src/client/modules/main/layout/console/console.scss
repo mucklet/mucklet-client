@@ -1,7 +1,7 @@
 @import '~scss/variables';
 
 // Console colors
-$console-scrollbar-thumb: lighten($color-base, 18%);
+$console-scrollbar-thumb: lighten($color-base-200, 18%);
 // Console theme vars
 $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scrollbar-thumb});
 

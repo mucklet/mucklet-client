@@ -1,7 +1,7 @@
 @import '~scss/variables';
 
 // Popuptip colors
-$popuptip-background: rgba(darken($color-base, 10%), 0.9);
+$popuptip-background: rgba(darken($color-base-200, 10%), 0.9);
 // Popuptip theme vars
 $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background});
 

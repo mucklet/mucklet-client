@@ -2,9 +2,9 @@
 @import '~scss/mixins';
 
 // Page area colors
-$pagearea-location-selected-background: darken($color-base, 3%);
-$pagearea-image-location-border: rgba($color-danger, 0.6);
-$pagearea-image-location-border-selected: rgba($color-danger, 0.8);
+$pagearea-location-selected-background: darken($color-base-200, 3%);
+$pagearea-image-location-border: rgba($color-danger-300, 0.6);
+$pagearea-image-location-border-selected: rgba($color-danger-300, 0.8);
 // Page area theme vars
 $theme-pagearea-location-selected-background: var(--mu-pagearea-location-selected-background, #{$pagearea-location-selected-background});
 $theme-pagearea-image-location-border: var(--mu-pagearea-image-location-border, #{$pagearea-image-location-border});

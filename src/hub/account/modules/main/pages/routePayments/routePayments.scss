@@ -59,7 +59,7 @@
 		}
 		&:hover {
 			.badge--faicon {
-				background: darken($color-action, 8%);
+				background: darken($color-action-300, 8%);
 				color: darken($color-base-300, 8%);
 			}
 		}
@@ -85,7 +85,7 @@
 		&:hover, &:active {
 			.badge--faicon {
 				// background: darken($color-success, 8%);
-				background: darken($color-danger, 8%);
+				background: darken($color-danger-300, 8%);
 				color: darken($color-base-300, 8%);
 			}
 		}

@@ -2,7 +2,7 @@
 @import '~scss/mixins';
 
 // Page awake colors
-$pageawake-char-status: mix($color-neutral, $color-accent, 20%);
+$pageawake-char-status: mix($color-neutral-300, $color-accent-300, 20%);
 // Page awake theme vars
 $theme-pageawake-char-status: var(--mu-pageawake-char-status, #{$pageawake-char-status});
 

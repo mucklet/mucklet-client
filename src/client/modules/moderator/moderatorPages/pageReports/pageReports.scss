@@ -2,8 +2,8 @@
 @import '~scss/mixins';
 
 // Page reports colors
-$pagereports-report-unassigned-background: darken($color-base, 6%);
-$pagereports-report-unassigned-background-hover: darken($color-base, 9%);
+$pagereports-report-unassigned-background: darken($color-base-200, 6%);
+$pagereports-report-unassigned-background-hover: darken($color-base-200, 9%);
 // Page reports theme vars
 $theme-pagereports-report-unassigned-background: var(--mu-pagereports-report-unassigned-background, #{$pagereports-report-unassigned-background});
 $theme-pagereports-report-unassigned-background-hover: var(--mu-pagereports-report-unassigned-background-hover, #{$pagereports-report-unassigned-background-hover});

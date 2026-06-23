@@ -2,7 +2,7 @@
 @import '~scss/mixins';
 
 // Kebab menu colors
-$kebabmenu-btn-background: rgba($color-base, 0.8);
+$kebabmenu-btn-background: rgba($color-base-200, 0.8);
 // Kebab menu theme vars
 $theme-kebabmenu-btn-background: var(--mu-kebabmenu-btn-background, #{$kebabmenu-btn-background});
 

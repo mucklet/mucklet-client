@@ -1,9 +1,9 @@
 
 // Badge colors
-$badge-highlight: rgba(saturate(lighten($color-base, 22%), 8%), 0.5);
-$badge-highlight-hover: rgba(saturate(lighten($color-base, 19%), 8%), 0.5);
+$badge-highlight: rgba(saturate(lighten($color-base-200, 22%), 8%), 0.5);
+$badge-highlight-hover: rgba(saturate(lighten($color-base-200, 19%), 8%), 0.5);
 $badge-dark-hover: darken($color-base-100, 2%);
-$badge-hover: darken($color-base, 3%);
+$badge-hover: darken($color-base-200, 3%);
 // Badge theme vars
 $theme-badge-highlight: var(--mu-badge-highlight, #{$badge-highlight});
 $theme-badge-highlight-hover: var(--mu-badge-highlight-hover, #{$badge-highlight-hover});
