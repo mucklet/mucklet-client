@@ -37,21 +37,21 @@
 
 	&--type- {
 		&genre {
-			color: $color-action;
+			color: $color-action-300;
 			&:hover {
 				color: $color-action-200;
 			}
 		}
 
 		&theme {
-			color: $color-neutral;
+			color: $color-neutral-300;
 			&:hover {
 				color: $color-neutral-500;
 			}
 		}
 
 		&warn {
-			color: $color-danger;
+			color: $color-danger-300;
 			&:hover {
 				color: $color-danger-400;
 			}

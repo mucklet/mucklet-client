@@ -6,17 +6,17 @@
 .routepayments {
 	&--product {
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $color-contrast-300;
 		font-size: $font-size-large;
 	}
 
 	&--cost, &--amountrefunded {
 		font-size: $font-size;
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--unit {
-		color: $color-neutral;
+		color: $color-neutral-300;
 	}
 
 	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
@@ -29,7 +29,7 @@
 
 	&--featuretitle {
 		font-size: $font-size-small;
-		color: $color-accent;
+		color: $color-accent-300;
 	}
 
 	&--featuredesc {
@@ -54,7 +54,7 @@
 .routepayments-paymentbadge {
 	&.method-card {
 		.badge--faicon {
-			background: $color-action;
+			background: $color-action-300;
 			color: $color-base-300;
 		}
 		&:hover {
@@ -79,7 +79,7 @@
 	&.refunded, &.canceled{
 		.badge--faicon {
 			// background: $color-success;
-			background: $color-danger;
+			background: $color-danger-300;
 			color: $color-base-300;
 		}
 		&:hover, &:active {
@@ -101,17 +101,17 @@
 	}
 
 	&--date {
-		color: $color-neutral;
+		color: $color-neutral-300;
 		line-height: 20px;
 		font-size: $font-size-small;
 	}
 
 	&--cost, &--refundednew {
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--refundedcost {
-		color: $color-danger;
+		color: $color-danger-300;
 		text-decoration: line-through;
 	}
 }
@@ -128,11 +128,11 @@
 
 .routepayments-payment {
 	&--cost, &--refundednew {
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--refundedcost {
-		color: $color-danger;
+		color: $color-danger-300;
 		text-decoration: line-through;
 	}
 

@@ -43,9 +43,9 @@
 
 	font-size: $font-size-small;
 	&.maxed {
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 	&.exceeded {
-		color: $color-danger;
+		color: $color-danger-300;
 	}
 }

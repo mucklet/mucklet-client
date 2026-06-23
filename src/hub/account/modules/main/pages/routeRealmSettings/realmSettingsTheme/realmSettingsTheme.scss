@@ -24,21 +24,21 @@
 	}
 
 	&--tokenname {
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--tokendesc {
 		font-size: $font-size-small;
-		color: $color-neutral;
+		color: $color-neutral-300;
 	}
 
 	&--tokencolor {
 		flex: 0 0 auto;
 		width: 32px;
 		height: 32px;
-		border: 1px solid $color-neutral;
+		border: 1px solid $color-neutral-300;
 		border-radius: 4px;
-		background: $color-base;
+		background: $color-base-200;
 	}
 
 	&--tokencont {

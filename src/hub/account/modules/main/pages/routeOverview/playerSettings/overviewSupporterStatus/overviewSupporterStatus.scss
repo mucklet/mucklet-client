@@ -26,24 +26,24 @@
 	}
 
 	&--unit {
-		color: $color-neutral;
+		color: $color-neutral-300;
 	}
 
 	&--badge.recurrence-once {
 		.badge--faicon {
 			background: $color-base-500;
-			color: $color-base;
+			color: $color-base-200;
 		}
 	}
 	&--badge.recurrence-month {
 		.badge--faicon {
-			background: $color-action;
+			background: $color-action-300;
 			color: $color-base-300;
 		}
 	}
 	&--badge.recurrence-quarter {
 		.badge--faicon {
-			background: $color-accent;
+			background: $color-accent-300;
 			color: $color-base-300;
 		}
 	}
@@ -56,13 +56,13 @@
 	&--badge.btn.badge.recurrence-month:not(:disabled):hover {
 		.badge--faicon {
 			background: darken($color-action, 8%);
-			color: $color-base;
+			color: $color-base-200;
 		}
 	}
 	&--badge.btn.badge.recurrence-quarter:not(:disabled):hover {
 		.badge--faicon {
 			background: darken($color-accent, 8%);
-			color: $color-base;
+			color: $color-base-200;
 		}
 	}
 }
@@ -77,7 +77,7 @@
 
 .overviewsupporterstatus-nosubscription {
 	&--until {
-		color: $color-contrast;
+		color: $color-contrast-300;
 		font-size: $font-size-small;
 	}
 }

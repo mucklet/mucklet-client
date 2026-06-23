@@ -114,7 +114,7 @@
 		align-items: center;
 		flex: 1 1 0px;
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $color-contrast-300;
 		font-size: 24px;
 		line-height: 24px;
 	}
@@ -177,7 +177,7 @@
 	}
 
 	&--dot {
-		background: $color-neutral;
+		background: $color-neutral-300;
 		display: inline-block;
 		width: 10px;
 		height: 10px;
@@ -187,7 +187,7 @@
 		vertical-align: middle;
 		margin-right: 10px;
 		&.highlight {
-			background: $color-action;
+			background: $color-action-300;
 		}
 	}
 }
@@ -221,7 +221,7 @@
 	}
 
 	&--img {
-		background-color: $color-base;
+		background-color: $color-base-200;
 		border-radius: 10px;
 		width: 100%;
 		aspect-ratio: 16 / 9;
@@ -255,7 +255,7 @@
 		width: 48px;
 		height: 48px;
 		border-radius: 10px;
-		background-color: $color-base;
+		background-color: $color-base-200;
 	}
 
 	&--title-cont {

@@ -30,7 +30,7 @@ body {
 	}
 
 	&--inner {
-		background: $color-base;
+		background: $color-base-200;
 		max-width: 2400px;
 		margin: 0 auto;
 		box-shadow: 0px 0px 50px 3px #000000;
@@ -115,7 +115,7 @@ body {
 			vertical-align: middle;
 		}
 		&-text {
-			color: $color-contrast;
+			color: $color-contrast-300;
 			font-family: $font-header;
 			font-size: 56px;
 			margin-left: 20px;
@@ -130,7 +130,7 @@ body {
 	&--subheading {
 		text-transform: uppercase;
 		line-height: initial;
-		color: $color-neutral;
+		color: $color-neutral-300;
 		font-family: $font-text;
 		font-weight: 300;
 		letter-spacing: 11.4px;
@@ -140,7 +140,7 @@ body {
 	}
 
 	&--heading {
-		color: $color-accent;
+		color: $color-accent-300;
 		text-align: center;
 		font-size: 108px;
 		line-height: initial;
@@ -160,7 +160,7 @@ body {
 
 		> h2 {
 			text-transform: uppercase;
-			color: $color-neutral;
+			color: $color-neutral-300;
 			font-family: $font-text;
 			font-weight: 300;
 			letter-spacing: 3.42px;
@@ -324,7 +324,7 @@ body {
 				vertical-align: middle;
 			}
 			&-text {
-				color: $color-contrast;
+				color: $color-contrast-300;
 				font-family: $font-header;
 				font-size: 32px;
 				margin-left: 12px;
@@ -499,7 +499,7 @@ body {
 
 			> h2 {
 				text-transform: uppercase;
-				color: $color-neutral;
+				color: $color-neutral-300;
 				font-family: $font-text;
 				font-weight: 300;
 				letter-spacing: 3.42px;

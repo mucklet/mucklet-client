@@ -21,7 +21,7 @@
 		// }
 		&running {
 			&.badge--faicon {
-				background: $color-action;
+				background: $color-action-300;
 			}
 		}
 		&success {
@@ -31,12 +31,12 @@
 		}
 		&warning {
 			&.badge--faicon {
-				background: $color-accent;
+				background: $color-accent-300;
 			}
 		}
 		&error {
 			&.badge--faicon {
-				background: $color-danger;
+				background: $color-danger-300;
 			}
 		}
 	}
@@ -50,7 +50,7 @@
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--pagelistitem {
@@ -68,7 +68,7 @@
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--info {
@@ -77,7 +77,7 @@
 
 	&--error {
 		padding-top: 6px;
-		color: $color-danger;
+		color: $color-danger-300;
 	}
 
 	&--steps {
@@ -89,7 +89,7 @@
 	}
 
 	&--stepname {
-		color: $color-contrast;
+		color: $color-contrast-300;
 		font-size: $font-size-small;
 	}
 	&--stepduration {
@@ -97,7 +97,7 @@
 	}
 	&--stepsubtitle {
 		display: block;
-		color: $color-accent;
+		color: $color-accent-300;
 		font-size: $font-size-small;
 		padding: 6px 0 2px 0;
 	}
