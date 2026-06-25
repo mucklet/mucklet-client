@@ -53,6 +53,9 @@ $color-action-300: $color-action;
 /* Semantic color fallbacks */
 $content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
 $control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
+$surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
+$idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
+$idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
 
 /* Primitive theme vars */
 $theme-color-base-100: var(--mu-color-base-100, #{$color-base-100});
@@ -86,88 +89,126 @@ $theme-color-action-300: var(--mu-color-action-300, #{$color-action-300});
 
 /* Semantic theme vars */
 // Surfaces
-$surface-100-bg: var(--mu-surface-100-bg, #{$color-base-100});
-$theme-surface-100-bg: var(--mu-surface-100-bg, #{$surface-100-bg});
-$surface-200-bg: var(--mu-surface-200-bg, #{$color-base-200});
-$theme-surface-200-bg: var(--mu-surface-200-bg, #{$surface-200-bg});
-$surface-300-bg: var(--mu-surface-300-bg, #{$color-base-300});
-$theme-surface-300-bg: var(--mu-surface-300-bg, #{$surface-300-bg});
-$surface-400-bg: var(--mu-surface-400-bg, #{$color-base-400});
-$theme-surface-400-bg: var(--mu-surface-400-bg, #{$surface-400-bg});
-$surface-500-bg: var(--mu-surface-500-bg, #{$color-base-500});
-$theme-surface-500-bg: var(--mu-surface-500-bg, #{$surface-500-bg});
+$theme-surface-100-bg: var(--mu-surface-100-bg, #{$theme-color-base-100});
+$theme-surface-200-bg: var(--mu-surface-200-bg, #{$theme-color-base-200});
+$theme-surface-300-bg: var(--mu-surface-300-bg, #{$theme-color-base-300});
+$theme-surface-400-bg: var(--mu-surface-400-bg, #{$theme-color-base-400});
+$theme-surface-500-bg: var(--mu-surface-500-bg, #{$theme-color-base-500});
+$theme-surface-overlay-bg: var(--mu-surface-overlay-bg, #{$surface-overlay-bg});
 
-// Content and controls
-$theme-content-default-fg: var(--mu-content-default-fg, #{$color-neutral-300});
-$theme-content-strong-fg: var(--mu-content-strong-fg, #{$color-contrast-300});
-$theme-content-muted-fg: var(--mu-content-muted-fg, #{$color-neutral-200});
-$theme-content-subtle-fg: var(--mu-content-subtle-fg, #{$color-neutral-100});
-$theme-content-error-fg: var(--mu-content-error-fg, #{$color-danger-300});
+// Compatibility aliases
+$surface-100-bg: $theme-surface-100-bg;
+$surface-200-bg: $theme-surface-200-bg;
+$surface-300-bg: $theme-surface-300-bg;
+$surface-400-bg: $theme-surface-400-bg;
+$surface-500-bg: $theme-surface-500-bg;
+
+// Content
+$theme-content-default-fg: var(--mu-content-default-fg, #{$theme-color-neutral-300});
+$theme-content-strong-fg: var(--mu-content-strong-fg, #{$theme-color-contrast-300});
+$theme-content-muted-fg: var(--mu-content-muted-fg, #{$theme-color-neutral-200});
+$theme-content-subtle-fg: var(--mu-content-subtle-fg, #{$theme-color-neutral-100});
+$theme-content-disabled-fg: var(--mu-content-disabled-fg, #{$theme-color-neutral-100});
 $theme-content-placeholder-fg: var(--mu-content-placeholder-fg, #{$content-placeholder-fg});
+$theme-content-error-fg: var(--mu-content-error-fg, #{$theme-color-danger-300});
+
+// Controls
+$theme-control-default-bg: var(--mu-control-default-bg, #{$theme-color-base-300});
+$theme-control-default-bg-hover: var(--mu-control-default-bg-hover, #{$theme-color-base-400});
+$theme-control-default-bg-active: var(--mu-control-default-bg-active, #{$theme-color-base-500});
+$theme-control-default-fg: var(--mu-control-default-fg, #{$theme-color-neutral-300});
+$theme-control-default-fg-hover: var(--mu-control-default-fg-hover, #{$theme-color-neutral-400});
+$theme-control-primary-bg: var(--mu-control-primary-bg, #{$theme-color-action-300});
+$theme-control-primary-bg-hover: var(--mu-control-primary-bg-hover, #{$theme-color-action-200});
+$theme-control-primary-bg-active: var(--mu-control-primary-bg-active, #{$theme-color-action-100});
+$theme-control-primary-fg: var(--mu-control-primary-fg, #{$theme-color-base-300});
+$theme-control-secondary-bg: var(--mu-control-secondary-bg, #{$theme-color-neutral-300});
+$theme-control-secondary-bg-hover: var(--mu-control-secondary-bg-hover, #{$theme-color-neutral-200});
+$theme-control-secondary-bg-active: var(--mu-control-secondary-bg-active, #{$theme-color-neutral-100});
+$theme-control-secondary-fg: var(--mu-control-secondary-fg, #{$theme-color-base-300});
+$theme-control-danger-bg: var(--mu-control-danger-bg, #{$theme-color-danger-300});
+$theme-control-danger-bg-hover: var(--mu-control-danger-bg-hover, #{$theme-color-danger-200});
+$theme-control-danger-bg-active: var(--mu-control-danger-bg-active, #{$theme-color-danger-100});
+$theme-control-danger-fg: var(--mu-control-danger-fg, #{$black});
 $theme-control-placeholder-fg: var(--mu-control-placeholder-fg, #{$control-placeholder-fg});
 
-// Links and focus
-$theme-link-default-fg: var(--mu-link-default-fg, #{$color-action-300});
-$theme-link-default-fg-hover: var(--mu-link-default-fg-hover, #{$color-action-200});
-$theme-link-default-fg-active: var(--mu-link-default-fg-active, #{$color-action-100});
-$theme-focus-ring: var(--mu-focus-ring, #{$color-accent-300});
+// Inputs
+$theme-input-default-bg: var(--mu-input-default-bg, #{$theme-color-base-500});
+$theme-input-default-fg: var(--mu-input-default-fg, #{$theme-color-contrast-300});
+$theme-input-default-placeholder-fg: var(--mu-input-default-placeholder-fg, #{$theme-control-placeholder-fg});
+$theme-input-default-caret: var(--mu-input-default-caret, #{$theme-color-contrast-300});
+
+// Dividers and focus
+$theme-divider-default-border: var(--mu-divider-default-border, #{$theme-color-base-400});
+$theme-divider-muted-border: var(--mu-divider-muted-border, #{$theme-color-base-300});
+$theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-accent-300});
+$theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
+
+// Status
+$theme-status-danger-fg: var(--mu-status-danger-fg, #{$theme-color-danger-300});
+$theme-status-danger-bg: var(--mu-status-danger-bg, #{$theme-color-danger-300});
+$theme-status-danger-border: var(--mu-status-danger-border, #{$theme-color-danger-300});
+$theme-status-info-fg: var(--mu-status-info-fg, #{$theme-color-action-300});
+$theme-status-info-bg: var(--mu-status-info-bg, #{$theme-color-action-300});
+$theme-status-info-border: var(--mu-status-info-border, #{$theme-color-action-300});
+
+// Links
+$theme-link-default-fg: var(--mu-link-default-fg, #{$theme-color-action-300});
+$theme-link-default-fg-hover: var(--mu-link-default-fg-hover, #{$theme-color-action-200});
+$theme-link-default-fg-active: var(--mu-link-default-fg-active, #{$theme-color-action-100});
 
 // Idle levels
-$theme-idlelevel-asleep-fg: var(--mu-idlelevel-asleep-fg, #{$color-neutral-300});
-$theme-idlelevel-active-fg: var(--mu-idlelevel-active-fg, #{$color-contrast-300});
-$theme-idlelevel-idle-fg: var(--mu-idlelevel-idle-fg, #{$color-accent-300});
-$theme-idlelevel-away-fg: var(--mu-idlelevel-away-fg, #{mix($color-danger-300, $color-accent-300, 80%)});
-$theme-idlelevel-bot-fg: var(--mu-idlelevel-bot-fg, #{mix($color-action-300, $color-contrast-300, 80%)});
+$theme-idlelevel-asleep-fg: var(--mu-idlelevel-asleep-fg, #{$theme-color-neutral-300});
+$theme-idlelevel-active-fg: var(--mu-idlelevel-active-fg, #{$theme-color-contrast-300});
+$theme-idlelevel-idle-fg: var(--mu-idlelevel-idle-fg, #{$theme-color-accent-300});
+$theme-idlelevel-away-fg: var(--mu-idlelevel-away-fg, #{$idlelevel-away-fg});
+$theme-idlelevel-bot-fg: var(--mu-idlelevel-bot-fg, #{$idlelevel-bot-fg});
 
 // Log fallbacks
 $log-error-fg: mix($color-danger-300, $color-neutral-300, 70%);
-$log-cmd-fg: $color-accent-300;
-$log-attr-fg: $color-accent-300;
 $log-listitem-fg: mix($color-action-300, $color-neutral-300, 50%);
-$log-delim-fg: $color-neutral-300;
-$log-text-fg: $color-neutral-600;
-$log-entityid-fg: $color-neutral-600;
 $log-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
 $log-instance-fg: mix($color-action-300, $color-neutral-300, 60%);
 $log-card-bg: mix($color-accent-300, $color-base-200, 10%);
+$log-char-fg: mix($color-action-300, $color-neutral-300, 50%);
 
 // Logs
 $theme-log-error-fg: var(--mu-log-error-fg, #{$log-error-fg});
-$theme-log-cmd-fg: var(--mu-log-cmd-fg, #{$log-cmd-fg});
-$theme-log-attr-fg: var(--mu-log-attr-fg, #{$log-attr-fg});
+$theme-log-cmd-fg: var(--mu-log-cmd-fg, #{$theme-color-accent-300});
+$theme-log-attr-fg: var(--mu-log-attr-fg, #{$theme-color-accent-300});
 $theme-log-listitem-fg: var(--mu-log-listitem-fg, #{$log-listitem-fg});
-$theme-log-delim-fg: var(--mu-log-delim-fg, #{$log-delim-fg});
-$theme-log-text-fg: var(--mu-log-text-fg, #{$log-text-fg});
-$theme-log-entityid-fg: var(--mu-log-entityid-fg, #{$log-entityid-fg});
+$theme-log-delim-fg: var(--mu-log-delim-fg, #{$theme-color-neutral-300});
+$theme-log-text-fg: var(--mu-log-text-fg, #{$theme-color-neutral-600});
+$theme-log-entityid-fg: var(--mu-log-entityid-fg, #{$theme-color-neutral-600});
 $theme-log-bot-fg: var(--mu-log-bot-fg, #{$log-bot-fg});
 $theme-log-instance-fg: var(--mu-log-instance-fg, #{$log-instance-fg});
 $theme-log-card-bg: var(--mu-log-card-bg, #{$log-card-bg});
-$theme-log-strong-fg: var(--mu-log-strong-fg, #{$color-contrast-300});
-$theme-log-default-fg: var(--mu-log-default-fg, #{$color-neutral-300});
-$theme-log-ooc-fg: var(--mu-log-ooc-fg, #{$color-neutral-200});
-$theme-log-comm-fg: var(--mu-log-comm-fg, #{$color-neutral-600});
-$theme-log-placeholder-fg: var(--mu-log-placeholder-fg, #{$color-neutral-200});
-$theme-log-char-fg: var(--mu-log-char-fg, #{mix($color-action-300, $color-neutral-300, 50%)});
-$theme-log-source-fg: var(--mu-log-source-fg, #{$color-neutral-600});
-$theme-log-info-fg: var(--mu-log-info-fg, #{$color-neutral-200});
-$theme-log-title-fg: var(--mu-log-title-fg, #{$color-contrast-200});
-$theme-log-code-fg: var(--mu-log-code-fg, #{$color-accent-300});
-$theme-log-code-bg: var(--mu-log-code-bg, #{$color-base-100});
+$theme-log-strong-fg: var(--mu-log-strong-fg, #{$theme-color-contrast-300});
+$theme-log-default-fg: var(--mu-log-default-fg, #{$theme-color-neutral-300});
+$theme-log-ooc-fg: var(--mu-log-ooc-fg, #{$theme-color-neutral-200});
+$theme-log-comm-fg: var(--mu-log-comm-fg, #{$theme-color-neutral-600});
+$theme-log-placeholder-fg: var(--mu-log-placeholder-fg, #{$theme-color-neutral-200});
+$theme-log-char-fg: var(--mu-log-char-fg, #{$log-char-fg});
+$theme-log-source-fg: var(--mu-log-source-fg, #{$theme-color-neutral-600});
+$theme-log-info-fg: var(--mu-log-info-fg, #{$theme-color-neutral-200});
+$theme-log-title-fg: var(--mu-log-title-fg, #{$theme-color-contrast-200});
+$theme-log-code-fg: var(--mu-log-code-fg, #{$theme-color-accent-300});
+$theme-log-code-bg: var(--mu-log-code-bg, #{$theme-color-base-100});
 
 // Tags
-$theme-tag-default-fg: var(--mu-tag-default-fg, #{$color-neutral-300});
-$theme-tag-default-border: var(--mu-tag-default-border, #{$color-neutral-300});
-$theme-tag-default-fg-hover: var(--mu-tag-default-fg-hover, #{$color-neutral-500});
-$theme-tag-default-border-hover: var(--mu-tag-default-border-hover, #{$color-neutral-500});
-$theme-tag-dislike-fg: var(--mu-tag-dislike-fg, #{$color-danger-300});
-$theme-tag-dislike-border: var(--mu-tag-dislike-border, #{$color-danger-300});
-$theme-tag-dislike-fg-hover: var(--mu-tag-dislike-fg-hover, #{$color-danger-400});
-$theme-tag-dislike-border-hover: var(--mu-tag-dislike-border-hover, #{$color-danger-400});
-$theme-tag-title-fg: var(--mu-tag-title-fg, #{$color-action-300});
-$theme-tag-title-border: var(--mu-tag-title-border, #{$color-action-300});
-$theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$color-action-200});
-$theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$color-action-200});
-$theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$color-base-200});
+$theme-tag-default-fg: var(--mu-tag-default-fg, #{$theme-color-neutral-300});
+$theme-tag-default-border: var(--mu-tag-default-border, #{$theme-color-neutral-300});
+$theme-tag-default-fg-hover: var(--mu-tag-default-fg-hover, #{$theme-color-neutral-500});
+$theme-tag-default-border-hover: var(--mu-tag-default-border-hover, #{$theme-color-neutral-500});
+$theme-tag-dislike-fg: var(--mu-tag-dislike-fg, #{$theme-color-danger-300});
+$theme-tag-dislike-border: var(--mu-tag-dislike-border, #{$theme-color-danger-300});
+$theme-tag-dislike-fg-hover: var(--mu-tag-dislike-fg-hover, #{$theme-color-danger-400});
+$theme-tag-dislike-border-hover: var(--mu-tag-dislike-border-hover, #{$theme-color-danger-400});
+$theme-tag-title-fg: var(--mu-tag-title-fg, #{$theme-color-action-300});
+$theme-tag-title-border: var(--mu-tag-title-border, #{$theme-color-action-300});
+$theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$theme-color-action-200});
+$theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$theme-color-action-200});
+$theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$theme-color-base-200});
 
 /* Font families */
 // @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Open+Sans&display=swap');

@@ -83,18 +83,116 @@ Semantic colors should describe reusable UI meaning. They may default to
 numbered primitive colors or other semantic colors, but may also be overridden
 directly.
 
+Component and module SCSS should prefer semantic tokens over primitive
+`$theme-color-*` variables. Primitive variables remain available for defining
+semantic fallbacks and for color meanings that have not been classified yet.
+
 Example defaults:
 
 ```text
 surface.100.bg      -> color.base.100
 surface.100.fg      -> color.neutral.300
 control.primary.bg  -> color.action.300
-control.primary.fg  -> color.base.100
+control.primary.fg  -> color.base.300
 status.danger.fg    -> color.danger.300
 idlelevel.idle.fg   -> color.accent.300
 log.cmd.fg          -> color.accent.300
 tag.dislike.fg      -> color.danger.300
 ```
+
+## Initial semantic groups
+
+Surface colors describe reusable layers from the darkest base surface through
+raised surfaces. The overlay surface is shared by tooltips, popup tips, popup
+pills, and menu-like overlays unless a component needs a more specific
+opacity, hover, pointer, or contrast override:
+
+```text
+surface.100.bg
+surface.200.bg
+surface.300.bg
+surface.400.bg
+surface.500.bg
+surface.overlay.bg
+```
+
+Content colors describe text and icon emphasis:
+
+```text
+content.default.fg
+content.strong.fg
+content.muted.fg
+content.subtle.fg
+content.disabled.fg
+content.placeholder.fg
+content.error.fg
+```
+
+Control colors describe reusable default, primary, secondary, and destructive
+control states:
+
+```text
+control.default.bg
+control.default.bg.hover
+control.default.bg.active
+control.default.fg
+control.default.fg.hover
+control.primary.bg
+control.primary.bg.hover
+control.primary.bg.active
+control.primary.fg
+control.secondary.bg
+control.secondary.bg.hover
+control.secondary.bg.active
+control.secondary.fg
+control.danger.bg
+control.danger.bg.hover
+control.danger.bg.active
+control.danger.fg
+control.placeholder.fg
+```
+
+Input colors describe the shared default input appearance:
+
+```text
+input.default.bg
+input.default.fg
+input.default.placeholder.fg
+input.default.caret
+```
+
+Divider and focus colors describe separators and the common focus indicator:
+
+```text
+divider.default.border
+divider.muted.border
+divider.accent.border
+focus.ring
+```
+
+The initial status group covers reusable danger and informational meanings:
+
+```text
+status.danger.fg
+status.danger.bg
+status.danger.border
+status.info.fg
+status.info.bg
+status.info.border
+```
+
+Success and warning remain unclassified in the initial set because current
+usage does not provide a single generic fallback without introducing another
+palette family. Toaster status surfaces remain component tokens because their
+opacity and hover behavior are component-specific.
+
+Unread mail and unassigned ticket or report rows do not define an attention
+surface token. Their background treatment is being replaced by a danger-colored
+attention dot in a later migration step.
+
+Generic badges use badge component tokens rather than automatically sharing tag
+semantics. Widget styling for Croppie and noUiSlider, and hub landing-page
+brand or art-directed colors, remain outside the generic semantic token set.
 
 ## Component colors
 
