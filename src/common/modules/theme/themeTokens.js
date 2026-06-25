@@ -179,6 +179,8 @@ const tokens = {
 
 	// src/common/classes/dialog.scss
 	'dialog.overlay.bg': '#000',
+	'dialog.input.bg': (getToken) => getToken('color.neutral.500'),
+	'dialog.input.fg': '#000',
 
 	// src/common/classes/imgModal.scss
 	'imgmodal.overlay.bg': 'rgba(0, 0, 0, 0.5)',

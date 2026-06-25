@@ -72,6 +72,8 @@ $badge-default-bg-hover: darken($color-base-200, 3%);
 $common-format-divider-border: rgba($white, 0.2);
 
 $dialog-overlay-bg: $black;
+$dialog-input-bg: $color-neutral-500;
+$dialog-input-fg: $black;
 
 $imgmodal-overlay-bg: rgba($black, 0.5);
 $imgmodal-shadow: $black;
@@ -285,6 +287,8 @@ $theme-common-addbtn-fg-hover: var(--mu-common-addbtn-fg-hover, #{$theme-color-n
 
 // Dialogs and overlays
 $theme-dialog-overlay-bg: var(--mu-dialog-overlay-bg, #{$dialog-overlay-bg});
+$theme-dialog-input-bg: var(--mu-dialog-input-bg, #{$dialog-input-bg});
+$theme-dialog-input-fg: var(--mu-dialog-input-fg, #{$dialog-input-fg});
 $theme-imgmodal-overlay-bg: var(--mu-imgmodal-overlay-bg, #{$imgmodal-overlay-bg});
 $theme-imgmodal-shadow: var(--mu-imgmodal-shadow, #{$imgmodal-shadow});
 $theme-tooltip-background: var(--mu-tooltip-background, #{$theme-surface-overlay-bg});
