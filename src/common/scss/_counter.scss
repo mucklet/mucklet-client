@@ -1,7 +1,7 @@
 .counter, .counter-standalone {
 	pointer-events: none;
-	background: $theme-color-neutral-300;
-	color: $black;
+	background: $theme-control-secondary-bg;
+	color: $theme-control-danger-fg;
 	height: 16px;
 	min-width: 16px;
 	font-size: 12px;
@@ -26,11 +26,11 @@
 	}
 
 	&.alert {
-		background: $theme-color-danger-300;
+		background: $theme-status-danger-bg;
 	}
 
 	&.highlight {
-		background: $theme-color-action-300;
+		background: $theme-status-info-bg;
 	}
 
 	&.small {
@@ -52,5 +52,4 @@
 	top: -3px;
 	right: -3px;
 }
-
 

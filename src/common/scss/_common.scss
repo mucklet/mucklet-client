@@ -1,9 +1,3 @@
-// Common colors
-$common-level-asleep: $color-neutral-300;
-$common-level-active: $color-contrast-300;
-$common-level-idle: $color-accent-300;
-$common-level-inactive: mix($color-danger-300, $color-accent-300, 80%);
-$common-level-bot: $log-bot-fg;
 // Common theme vars
 $theme-common-level-asleep: $theme-idlelevel-asleep-fg;
 $theme-common-level-active: $theme-idlelevel-active-fg;
@@ -37,7 +31,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 	}
 
 	&--error {
-		color: $theme-color-danger-300;
+		color: $theme-content-error-fg;
 		font-size: 90%;
 	}
 
@@ -67,7 +61,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 			font-size: $font-size-large;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $theme-color-accent-300;
+			color: $theme-content-accent-fg;
 			margin: 1em 0 0.5em 0;
 		}
 
@@ -76,7 +70,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 			font-size: $font-size;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $theme-color-accent-300;
+			color: $theme-content-accent-fg;
 			margin: 1em 0 0.5em 0;
 		}
 
@@ -85,25 +79,25 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 			font-size: $font-size-small;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $theme-color-accent-300;
+			color: $theme-content-accent-fg;
 			margin: 1em 0 0.5em 0;
 		}
 
 		span.ooc {
-			color: $theme-color-neutral-200;
+			color: $theme-log-ooc-fg;
 		}
 		span.cmd {
 			font-family: $font-code;
-			color: $theme-color-accent-300;
+			color: $theme-log-cmd-fg;
 		}
 		a {
-			color: $theme-color-action-300;
+			color: $theme-link-default-fg;
 			transition: color 0.2s;
 			&:hover {
-				color: $theme-color-action-200;
+				color: $theme-link-default-fg-hover;
 			}
 			&:active {
-				color: $theme-color-action-100;
+				color: $theme-link-default-fg-active;
 			}
 		}
 		sup, sub {
@@ -119,12 +113,12 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 			bottom: -0.25em;
 		}
 		span.err {
-			color: $theme-color-danger-300;
+			color: $theme-log-error-fg;
 		}
 		table {
 			margin: 8px 0 12px 0;
 			th {
-				color: $theme-color-contrast-300;
+				color: $theme-content-strong-fg;
 			}
 			th, td {
 				// padding: 1px 8px 1px 0;
@@ -136,7 +130,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 			}
 		}
 		thead {
-			border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+			border-bottom: 1px solid $theme-common-format-divider-border;
 		}
 		span.nobr {
 			white-space: nowrap;
@@ -145,9 +139,9 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 			font-family: $font-code;
 			font-style: normal;
 			font-size: $font-size-small;
-			color: $theme-color-accent-300;
+			color: $theme-log-code-fg;
 			padding: 6px 10px;
-			background: $theme-color-base-100;
+			background: $theme-log-code-bg;
 			border-radius: 8px;
 			margin: 0.5em 0 0.25em 0;
 		}
@@ -161,7 +155,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 	&--durationinput {
 		transition: 0.2s color;
 		&.invalid {
-			color: $theme-color-neutral-300;
+			color: $theme-content-default-fg;
 		}
 	}
 
@@ -198,11 +192,11 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 	&--addbtn.btn {
 		background: none;
 		width: 100%;
-		border: dashed 2px $theme-color-neutral-300;
+		border: dashed 2px $theme-divider-strong-border;
 
 		&:hover, &:focus {
-			color: $theme-color-neutral-500;
-			background: $theme-color-base-200;
+			color: $theme-common-addbtn-fg-hover;
+			background: $theme-surface-200-bg;
 		}
 
 		> .fa {
@@ -220,7 +214,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 
 	&--itemtitle {
 		font-family: $font-text;
-		color: $theme-color-contrast-300;
+		color: $theme-content-strong-fg;
 		font-size: $font-size-large;
 	}
 
@@ -232,7 +226,7 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 		display: block;
 		padding-bottom: 20px;
 		margin-bottom: 16px;
-		border-bottom: 1px solid $theme-color-accent-300;
+		border-bottom: 1px solid $theme-divider-accent-border;
 	}
 
 	&--tooltip {

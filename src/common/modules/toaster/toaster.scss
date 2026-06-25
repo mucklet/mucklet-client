@@ -1,21 +1,6 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-// Toaster colors
-$toaster-success-background: #{'rgba(39,67,42,90%)'};
-$toaster-info-background: #{'rgba(48,55,83,90%)'};
-$toaster-warn-background: #{'rgba(73,40,28,90%)'};
-$toaster-success-background-hover: #27432a;
-$toaster-warn-background-hover: #49281c;
-$toaster-close-background-hover: #{'rgba(255,255,255,6%)'};
-// Toaster theme vars
-$theme-toaster-success-background: var(--mu-toaster-success-background, #{$toaster-success-background});
-$theme-toaster-info-background: var(--mu-toaster-info-background, #{$toaster-info-background});
-$theme-toaster-warn-background: var(--mu-toaster-warn-background, #{$toaster-warn-background});
-$theme-toaster-success-background-hover: var(--mu-toaster-success-background-hover, #{$toaster-success-background-hover});
-$theme-toaster-warn-background-hover: var(--mu-toaster-warn-background-hover, #{$toaster-warn-background-hover});
-$theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, #{$toaster-close-background-hover});
-
 .toaster {
 	position: fixed;
 	z-index: 800;
@@ -28,7 +13,7 @@ $theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, 
 	padding-bottom: 10px;
 
 	.toaster-toast--cont {
-		box-shadow: 2px 2px 8px 0px #000;
+		box-shadow: 2px 2px 8px 0px $theme-toaster-shadow;
 		padding: 8px 16px;
 		position: relative;
 
@@ -38,7 +23,7 @@ $theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, 
 		&.info {
 			background: $theme-toaster-info-background;
 			&:hover {
-				background: $theme-color-base-500;
+				background: $theme-surface-500-bg;
 			}
 		}
 
@@ -76,7 +61,7 @@ $theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, 
 		position: absolute;
 		top: 4px;
 		right: 4px;
-		@include btn-style(none, $theme-toaster-close-background-hover, $theme-toaster-close-background-hover, $theme-color-neutral-400, $theme-color-neutral-500);
+		@include btn-style(none, $theme-toaster-close-background-hover, $theme-toaster-close-background-hover, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 	}
 }
 

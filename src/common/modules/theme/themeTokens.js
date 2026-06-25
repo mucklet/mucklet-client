@@ -44,6 +44,7 @@ const tokens = {
 
 	'content.default.fg': (getToken) => getToken('color.neutral.300'),
 	'content.strong.fg': (getToken) => getToken('color.contrast.300'),
+	'content.accent.fg': (getToken) => getToken('color.accent.300'),
 	'content.muted.fg': (getToken) => getToken('color.neutral.200'),
 	'content.subtle.fg': (getToken) => getToken('color.neutral.100'),
 	'content.disabled.fg': (getToken) => getToken('color.neutral.100'),
@@ -59,10 +60,12 @@ const tokens = {
 	'control.primary.bg.hover': (getToken) => getToken('color.action.200'),
 	'control.primary.bg.active': (getToken) => getToken('color.action.100'),
 	'control.primary.fg': (getToken) => getToken('color.base.300'),
+	'control.primary.fg.hover': (getToken) => getToken('color.base.400'),
 	'control.secondary.bg': (getToken) => getToken('color.neutral.300'),
 	'control.secondary.bg.hover': (getToken) => getToken('color.neutral.200'),
 	'control.secondary.bg.active': (getToken) => getToken('color.neutral.100'),
 	'control.secondary.fg': (getToken) => getToken('color.base.300'),
+	'control.secondary.fg.hover': (getToken) => getToken('color.base.400'),
 	'control.danger.bg': (getToken) => getToken('color.danger.300'),
 	'control.danger.bg.hover': (getToken) => getToken('color.danger.200'),
 	'control.danger.bg.active': (getToken) => getToken('color.danger.100'),
@@ -73,9 +76,13 @@ const tokens = {
 	'input.default.fg': (getToken) => getToken('color.contrast.300'),
 	'input.default.placeholder.fg': (getToken) => getToken('control.placeholder.fg'),
 	'input.default.caret': (getToken) => getToken('color.contrast.300'),
+	'input.incomplete.fg': (getToken) => getToken('color.neutral.400'),
 
 	'divider.default.border': (getToken) => getToken('color.base.400'),
 	'divider.muted.border': (getToken) => getToken('color.base.300'),
+	'divider.subtle.border': (getToken) => getToken('color.base.200'),
+	'divider.strong.border': (getToken) => getToken('color.neutral.300'),
+	'divider.contrast.border': '#000',
 	'divider.accent.border': (getToken) => getToken('color.accent.300'),
 
 	'link.default.fg': (getToken) => getToken('color.action.300'),
@@ -135,11 +142,55 @@ const tokens = {
 	'tag.title.border.hover': (getToken) => getToken('tag.title.fg.hover'),
 	'tag.icon.fg': (getToken) => getToken('color.base.200'),
 
+	// src/common/scss/_button.scss
+	'button.light.fg.hover': (getToken) => getToken('color.neutral.500'),
+	'button.lighten.bg.hover': 'rgba(255, 255, 255, 0.07)',
+	'button.lighten.bg.active': 'rgba(255, 255, 255, 0.1)',
+	'button.darken.bg': 'rgba(0, 0, 0, 0.3)',
+	'button.darken.bg.hover': 'rgba(0, 0, 0, 0.5)',
+	'button.darken.bg.active': 'rgba(0, 0, 0, 0.6)',
+
 	// src/common/scss/_badge.scss
+	'badge.default.bg': (getToken) => getToken('surface.200.bg'),
+	'badge.default.fg': '#fff',
 	'badge.highlight': (getToken) => alpha(adjust(getToken('color.base.200'), 22, 8), 0.5),
 	'badge.highlight.hover': (getToken) => alpha(adjust(getToken('color.base.200'), 19, 8), 0.5),
+	'badge.dark.bg': (getToken) => getToken('surface.100.bg'),
 	'badge.dark.hover': (getToken) => adjust(getToken('color.base.200'), -6),
 	'badge.hover': (getToken) => adjust(getToken('color.base.200'), -3),
+	'badge.avatar.bg': (getToken) => getToken('surface.400.bg'),
+	'badge.avatar.fg': (getToken) => getToken('surface.200.bg'),
+	'badge.dark.avatar.bg': (getToken) => getToken('surface.300.bg'),
+	'badge.dark.avatar.fg': (getToken) => getToken('surface.100.bg'),
+	'badge.symbol.fg': (getToken) => getToken('content.default.fg'),
+	'badge.icon.bg': (getToken) => getToken('surface.400.bg'),
+	'badge.icon.fg': (getToken) => getToken('content.default.fg'),
+	'badge.text.fg': (getToken) => getToken('content.default.fg'),
+	'badge.title.fg': (getToken) => getToken('content.accent.fg'),
+	'badge.subtitle.fg': (getToken) => getToken('content.accent.fg'),
+	'badge.strong.fg': (getToken) => getToken('content.strong.fg'),
+	'badge.highlight.fg': (getToken) => getToken('log.instance.fg'),
+	'badge.error.fg': (getToken) => getToken('content.error.fg'),
+	'badge.divider.border': (getToken) => getToken('surface.500.bg'),
+
+	// src/common/scss/_common.scss
+	'common.format.divider.border': 'rgba(255, 255, 255, 0.2)',
+	'common.addbtn.fg.hover': (getToken) => getToken('color.neutral.500'),
+
+	// src/common/classes/dialog.scss
+	'dialog.overlay.bg': '#000',
+
+	// src/common/classes/imgModal.scss
+	'imgmodal.overlay.bg': 'rgba(0, 0, 0, 0.5)',
+	'imgmodal.shadow': '#000',
+
+	// src/common/scss/_kbd.scss
+	'kbd.fg': (getToken) => getToken('control.danger.fg'),
+	'kbd.text.shadow': (getToken) => getToken('color.neutral.600'),
+	'kbd.bg': (getToken) => getToken('color.neutral.400'),
+	'kbd.border': (getToken) => getToken('color.neutral.200'),
+	'kbd.shadow': 'rgba(0, 0, 0, 0.3)',
+	'kbd.highlight': '#fff',
 
 	// src/common/components/autocomplete.scss
 	'autocomplete.hover.background': (getToken) => adjust(getToken('color.action.300'), 20),
@@ -157,6 +208,7 @@ const tokens = {
 
 	// src/common/classes/tooltip.scss
 	'tooltip.background': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
+	'tooltip.fg': (getToken) => getToken('color.neutral.500'),
 
 	// src/common/components/popupTip.scss
 	'popuptip.background': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
@@ -171,6 +223,7 @@ const tokens = {
 	'toaster.success.background.hover': (getToken) => adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14),
 	'toaster.warn.background.hover': (getToken) => adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3),
 	'toaster.close.background.hover': (getToken) => alpha(adjust(getToken('color.contrast.300'), 4), 0.06),
+	'toaster.shadow': '#000',
 };
 
 export default tokens;

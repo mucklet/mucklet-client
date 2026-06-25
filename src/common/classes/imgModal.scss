@@ -1,7 +1,7 @@
 @import '~scss/variables';
 
 .imgmodal {
-	background: #{'rgba(0,0,0,50%)'};
+	background: $theme-imgmodal-overlay-bg;
 
 	position: fixed;
 	top: 0;
@@ -15,7 +15,7 @@
 
 
 	&--img {
-		background: $theme-color-base-400;
+		background: $theme-surface-400-bg;
 		position: absolute;
 		max-width: 90%;
 		max-height: 90%;
@@ -25,8 +25,8 @@
 		animation-name: imgmodal-zoom;
 		animation-duration: 0.3s;
 		transform: translateX(-50%) translateY(-50%);
-		-webkit-box-shadow: 0px 0px 20px 6px #000;
-		box-shadow: 0px 0px 20px 6px #000;
+		-webkit-box-shadow: 0px 0px 20px 6px $theme-imgmodal-shadow;
+		box-shadow: 0px 0px 20px 6px $theme-imgmodal-shadow;
 	}
 
 	@keyframes imgmodal-zoom {

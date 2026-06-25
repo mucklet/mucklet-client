@@ -1,13 +1,5 @@
 @import '~scss/variables';
 @import '~scss/mixins';
-
-
-
-// Tooltip colors
-$tooltip-background: rgba(darken($color-base-200, 10%), 0.9);
-// Tooltip theme vars
-$theme-tooltip-background: var(--mu-tooltip-background, #{$tooltip-background});
-
 .tooltip {
 	position: absolute;
 	background: $theme-tooltip-background;
@@ -36,7 +28,7 @@ $theme-tooltip-background: var(--mu-tooltip-background, #{$tooltip-background});
 	&--text {
 		white-space: pre;
 		font-size: $font-size-small;
-		color: $theme-color-neutral-500;
+		color: $theme-tooltip-fg;
 	}
 
 	&--left {

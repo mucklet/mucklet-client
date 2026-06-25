@@ -1,7 +1,7 @@
 @import '~scss/variables';
 
 .dialog--overlay {
-	background: #000;
+	background: $theme-dialog-overlay-bg;
 	opacity: 0.25;
 	filter: Alpha(Opacity=25);
 }
@@ -33,7 +33,7 @@
 		opacity: 1;
 	}
 
-	background: $theme-color-base-500;
+	background: $theme-surface-500-bg;
 
 	&.fullscreen {
 		width: 100%;
@@ -61,7 +61,7 @@
 		margin: 0;
 		padding: 8px 16px;
 	}
-	border-bottom: 1px solid $theme-color-accent-300;
+	border-bottom: 1px solid $theme-divider-accent-border;
 }
 
 .dialog--content-wrap {
@@ -80,8 +80,8 @@
 
 .dialog--input {
 	width: 100%;
-	background: $theme-color-neutral-500;
-	color: $black;
+	background: $theme-input-default-bg;
+	color: $theme-input-default-fg;
 }
 
 .dialog--incomplete {
@@ -89,13 +89,13 @@
 }
 
 .dialog--error {
-	color: $theme-color-danger-300;
+	color: $theme-content-error-fg;
 }
 
 .dialog--strong {
 	display: inline-block;
 	font-family: $font-text;
-	color: $theme-color-contrast-300;
+	color: $theme-content-strong-fg;
 }
 
 .dialog--emphasis {
@@ -120,8 +120,8 @@
 
 .dialog--avatar {
 	> svg {
-		background-color: $theme-color-base-400;
-		color: $theme-color-base-200;
+		background-color: $theme-surface-400-bg;
+		color: $theme-surface-200-bg;
 	}
 }
 

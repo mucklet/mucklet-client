@@ -1,33 +1,22 @@
 
-// Badge colors
-$badge-highlight: rgba(saturate(lighten($color-base-200, 22%), 8%), 0.5);
-$badge-highlight-hover: rgba(saturate(lighten($color-base-200, 19%), 8%), 0.5);
-$badge-dark-hover: darken($color-base-100, 2%);
-$badge-hover: darken($color-base-200, 3%);
-// Badge theme vars
-$theme-badge-highlight: var(--mu-badge-highlight, #{$badge-highlight});
-$theme-badge-highlight-hover: var(--mu-badge-highlight-hover, #{$badge-highlight-hover});
-$theme-badge-dark-hover: var(--mu-badge-dark-hover, #{$badge-dark-hover});
-$theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
-
 .badge {
 	width: 100%;
 	border: none;
-	background: $theme-color-base-200;
-	color: $white;
+	background: $theme-badge-default-bg;
+	color: $theme-badge-default-fg;
 	padding: 4px;
 	border-radius: 8px;
 
 	&.highlight {
-		background: $theme-badge-highlight;
+		background: $theme-badge-highlight-bg;
 	}
 
 	&.dark {
-		background: $theme-color-base-100;
+		background: $theme-badge-dark-bg;
 		.badge--avatar {
 			> svg {
-				background-color: $theme-color-base-300;
-				color: $theme-color-base-100;
+				background-color: $theme-badge-dark-avatar-bg;
+				color: $theme-badge-dark-avatar-fg;
 			}
 		}
 	}
@@ -70,14 +59,14 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&--avatar {
 		> svg {
-			background-color: $theme-color-base-400;
-			color: $theme-color-base-200;
+			background-color: $theme-badge-avatar-bg;
+			color: $theme-badge-avatar-fg;
 		}
 	}
 
 	&--symbol {
 		font-size: $font-size-tiny;
-		color: $theme-color-neutral-300;
+		color: $theme-badge-symbol-fg;
 		flex: 0 0 auto;
 		align-self: center;
 	}
@@ -89,8 +78,8 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 			line-height: 32px;
 		}
 		transition: 0.2s color, 0.2s background-color;
-		color: $theme-color-neutral-300;
-		background: $theme-color-base-400;
+		color: $theme-badge-icon-fg;
+		background: $theme-badge-icon-bg;
 
 		&.smallicon {
 			font-size: 18px;
@@ -160,12 +149,12 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&--text {
-		color: $theme-color-neutral-300;
+		color: $theme-badge-text-fg;
 	}
 
 	&--title {
 		font-size: $font-size-tiny + 1px;
-		color: $theme-color-accent-300;
+		color: $theme-badge-title-fg;
 	}
 
 	&--micro {
@@ -173,19 +162,19 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&--subtitle {
-		color: $theme-color-accent-300;
+		color: $theme-badge-subtitle-fg;
 	}
 
 	&--strong {
-		color: $theme-color-contrast-300;
+		color: $theme-badge-strong-fg;
 	}
 
 	&--highlight {
-		color: $theme-log-instance-fg;
+		color: $theme-badge-highlight-fg;
 	}
 
 	&--error {
-		color: $theme-color-danger-300;
+		color: $theme-badge-error-fg;
 	}
 
 	&--strikethrough {
@@ -198,7 +187,7 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&--divider {
 		margin-top: 6px;
-		border-top: 1px solid $theme-color-base-500;
+		border-top: 1px solid $theme-badge-divider-border;
 		padding-bottom: 4px;
 	}
 
@@ -231,12 +220,12 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
-			background: $theme-badge-hover;
+			background: $theme-badge-default-bg-hover;
 			&.highlight {
-				background: $theme-badge-highlight-hover;
+				background: $theme-badge-highlight-bg-hover;
 			}
 			&.dark {
-				background: $theme-badge-dark-hover;
+				background: $theme-badge-dark-bg-hover;
 			}
 		}
 	}

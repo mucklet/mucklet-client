@@ -57,6 +57,36 @@ $surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
 $idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
 $idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
 
+/* Shared component color fallbacks */
+$button-lighten-bg-hover: rgba($white, 0.07);
+$button-lighten-bg-active: rgba($white, 0.10);
+$button-darken-bg: rgba($black, 0.3);
+$button-darken-bg-hover: rgba($black, 0.5);
+$button-darken-bg-active: rgba($black, 0.6);
+
+$badge-highlight-bg: rgba(saturate(lighten($color-base-200, 22%), 8%), 0.5);
+$badge-highlight-bg-hover: rgba(saturate(lighten($color-base-200, 19%), 8%), 0.5);
+$badge-dark-bg-hover: darken($color-base-100, 2%);
+$badge-default-bg-hover: darken($color-base-200, 3%);
+
+$common-format-divider-border: rgba($white, 0.2);
+
+$dialog-overlay-bg: $black;
+
+$imgmodal-overlay-bg: rgba($black, 0.5);
+$imgmodal-shadow: $black;
+
+$kbd-shadow: rgba($black, 0.3);
+$kbd-highlight: $white;
+
+$toaster-success-bg-hover: saturate(darken(mix($color-accent-300, $color-action-300, 52%), 38%), 14%);
+$toaster-warning-bg-hover: desaturate(darken(mix($color-danger-300, $color-base-200, 63%), 16%), 3%);
+$toaster-success-bg: rgba($toaster-success-bg-hover, 0.9);
+$toaster-info-bg: rgba(lighten($color-base-200, 14%), 0.9);
+$toaster-warning-bg: rgba($toaster-warning-bg-hover, 0.9);
+$toaster-close-bg-hover: rgba(lighten($color-contrast-300, 4%), 0.06);
+$toaster-shadow: $black;
+
 /* Primitive theme vars */
 $theme-color-base-100: var(--mu-color-base-100, #{$color-base-100});
 $theme-color-base-200: var(--mu-color-base-200, #{$color-base-200});
@@ -106,6 +136,7 @@ $surface-500-bg: $theme-surface-500-bg;
 // Content
 $theme-content-default-fg: var(--mu-content-default-fg, #{$theme-color-neutral-300});
 $theme-content-strong-fg: var(--mu-content-strong-fg, #{$theme-color-contrast-300});
+$theme-content-accent-fg: var(--mu-content-accent-fg, #{$theme-color-accent-300});
 $theme-content-muted-fg: var(--mu-content-muted-fg, #{$theme-color-neutral-200});
 $theme-content-subtle-fg: var(--mu-content-subtle-fg, #{$theme-color-neutral-100});
 $theme-content-disabled-fg: var(--mu-content-disabled-fg, #{$theme-color-neutral-100});
@@ -122,10 +153,12 @@ $theme-control-primary-bg: var(--mu-control-primary-bg, #{$theme-color-action-30
 $theme-control-primary-bg-hover: var(--mu-control-primary-bg-hover, #{$theme-color-action-200});
 $theme-control-primary-bg-active: var(--mu-control-primary-bg-active, #{$theme-color-action-100});
 $theme-control-primary-fg: var(--mu-control-primary-fg, #{$theme-color-base-300});
+$theme-control-primary-fg-hover: var(--mu-control-primary-fg-hover, #{$theme-color-base-400});
 $theme-control-secondary-bg: var(--mu-control-secondary-bg, #{$theme-color-neutral-300});
 $theme-control-secondary-bg-hover: var(--mu-control-secondary-bg-hover, #{$theme-color-neutral-200});
 $theme-control-secondary-bg-active: var(--mu-control-secondary-bg-active, #{$theme-color-neutral-100});
 $theme-control-secondary-fg: var(--mu-control-secondary-fg, #{$theme-color-base-300});
+$theme-control-secondary-fg-hover: var(--mu-control-secondary-fg-hover, #{$theme-color-base-400});
 $theme-control-danger-bg: var(--mu-control-danger-bg, #{$theme-color-danger-300});
 $theme-control-danger-bg-hover: var(--mu-control-danger-bg-hover, #{$theme-color-danger-200});
 $theme-control-danger-bg-active: var(--mu-control-danger-bg-active, #{$theme-color-danger-100});
@@ -137,10 +170,14 @@ $theme-input-default-bg: var(--mu-input-default-bg, #{$theme-color-base-500});
 $theme-input-default-fg: var(--mu-input-default-fg, #{$theme-color-contrast-300});
 $theme-input-default-placeholder-fg: var(--mu-input-default-placeholder-fg, #{$theme-control-placeholder-fg});
 $theme-input-default-caret: var(--mu-input-default-caret, #{$theme-color-contrast-300});
+$theme-input-incomplete-fg: var(--mu-input-incomplete-fg, #{$theme-color-neutral-400});
 
 // Dividers and focus
 $theme-divider-default-border: var(--mu-divider-default-border, #{$theme-color-base-400});
 $theme-divider-muted-border: var(--mu-divider-muted-border, #{$theme-color-base-300});
+$theme-divider-subtle-border: var(--mu-divider-subtle-border, #{$theme-color-base-200});
+$theme-divider-strong-border: var(--mu-divider-strong-border, #{$theme-color-neutral-300});
+$theme-divider-contrast-border: var(--mu-divider-contrast-border, #{$black});
 $theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-accent-300});
 $theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
 
@@ -209,6 +246,66 @@ $theme-tag-title-border: var(--mu-tag-title-border, #{$theme-color-action-300});
 $theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$theme-color-action-200});
 $theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$theme-color-action-200});
 $theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$theme-color-base-200});
+
+/* Shared component theme vars */
+// Buttons
+$theme-button-light-fg-hover: var(--mu-button-light-fg-hover, #{$theme-color-neutral-500});
+$theme-button-lighten-bg-hover: var(--mu-button-lighten-bg-hover, #{$button-lighten-bg-hover});
+$theme-button-lighten-bg-active: var(--mu-button-lighten-bg-active, #{$button-lighten-bg-active});
+$theme-button-darken-bg: var(--mu-button-darken-bg, #{$button-darken-bg});
+$theme-button-darken-bg-hover: var(--mu-button-darken-bg-hover, #{$button-darken-bg-hover});
+$theme-button-darken-bg-active: var(--mu-button-darken-bg-active, #{$button-darken-bg-active});
+
+// Badges
+$theme-badge-default-bg: var(--mu-badge-default-bg, #{$theme-surface-200-bg});
+$theme-badge-default-fg: var(--mu-badge-default-fg, #{$white});
+$theme-badge-default-bg-hover: var(--mu-badge-hover, #{$badge-default-bg-hover});
+$theme-badge-highlight-bg: var(--mu-badge-highlight, #{$badge-highlight-bg});
+$theme-badge-highlight-bg-hover: var(--mu-badge-highlight-hover, #{$badge-highlight-bg-hover});
+$theme-badge-dark-bg: var(--mu-badge-dark-bg, #{$theme-surface-100-bg});
+$theme-badge-dark-bg-hover: var(--mu-badge-dark-hover, #{$badge-dark-bg-hover});
+$theme-badge-avatar-bg: var(--mu-badge-avatar-bg, #{$theme-surface-400-bg});
+$theme-badge-avatar-fg: var(--mu-badge-avatar-fg, #{$theme-surface-200-bg});
+$theme-badge-dark-avatar-bg: var(--mu-badge-dark-avatar-bg, #{$theme-surface-300-bg});
+$theme-badge-dark-avatar-fg: var(--mu-badge-dark-avatar-fg, #{$theme-surface-100-bg});
+$theme-badge-symbol-fg: var(--mu-badge-symbol-fg, #{$theme-content-default-fg});
+$theme-badge-icon-bg: var(--mu-badge-icon-bg, #{$theme-surface-400-bg});
+$theme-badge-icon-fg: var(--mu-badge-icon-fg, #{$theme-content-default-fg});
+$theme-badge-text-fg: var(--mu-badge-text-fg, #{$theme-content-default-fg});
+$theme-badge-title-fg: var(--mu-badge-title-fg, #{$theme-content-accent-fg});
+$theme-badge-subtitle-fg: var(--mu-badge-subtitle-fg, #{$theme-content-accent-fg});
+$theme-badge-strong-fg: var(--mu-badge-strong-fg, #{$theme-content-strong-fg});
+$theme-badge-highlight-fg: var(--mu-badge-highlight-fg, #{$theme-log-instance-fg});
+$theme-badge-error-fg: var(--mu-badge-error-fg, #{$theme-content-error-fg});
+$theme-badge-divider-border: var(--mu-badge-divider-border, #{$theme-surface-500-bg});
+
+// Common formatted content
+$theme-common-format-divider-border: var(--mu-common-format-divider-border, #{$common-format-divider-border});
+$theme-common-addbtn-fg-hover: var(--mu-common-addbtn-fg-hover, #{$theme-color-neutral-500});
+
+// Dialogs and overlays
+$theme-dialog-overlay-bg: var(--mu-dialog-overlay-bg, #{$dialog-overlay-bg});
+$theme-imgmodal-overlay-bg: var(--mu-imgmodal-overlay-bg, #{$imgmodal-overlay-bg});
+$theme-imgmodal-shadow: var(--mu-imgmodal-shadow, #{$imgmodal-shadow});
+$theme-tooltip-background: var(--mu-tooltip-background, #{$theme-surface-overlay-bg});
+$theme-tooltip-fg: var(--mu-tooltip-fg, #{$theme-color-neutral-500});
+
+// Keyboard hints
+$theme-kbd-fg: var(--mu-kbd-fg, #{$theme-control-danger-fg});
+$theme-kbd-text-shadow: var(--mu-kbd-text-shadow, #{$theme-color-neutral-600});
+$theme-kbd-bg: var(--mu-kbd-bg, #{$theme-color-neutral-400});
+$theme-kbd-border: var(--mu-kbd-border, #{$theme-color-neutral-200});
+$theme-kbd-shadow: var(--mu-kbd-shadow, #{$kbd-shadow});
+$theme-kbd-highlight: var(--mu-kbd-highlight, #{$kbd-highlight});
+
+// Toaster
+$theme-toaster-success-background: var(--mu-toaster-success-background, #{$toaster-success-bg});
+$theme-toaster-info-background: var(--mu-toaster-info-background, #{$toaster-info-bg});
+$theme-toaster-warn-background: var(--mu-toaster-warn-background, #{$toaster-warning-bg});
+$theme-toaster-success-background-hover: var(--mu-toaster-success-background-hover, #{$toaster-success-bg-hover});
+$theme-toaster-warn-background-hover: var(--mu-toaster-warn-background-hover, #{$toaster-warning-bg-hover});
+$theme-toaster-close-background-hover: var(--mu-toaster-close-background-hover, #{$toaster-close-bg-hover});
+$theme-toaster-shadow: var(--mu-toaster-shadow, #{$toaster-shadow});
 
 /* Font families */
 // @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Open+Sans&display=swap');

@@ -13,7 +13,7 @@
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $theme-color-neutral-300;
+		background-color: $theme-content-default-fg;
 	}
 
 	&--container {
@@ -25,7 +25,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		border-bottom: 1px solid $black;
+		border-bottom: 1px solid $theme-divider-contrast-border;
 	}
 
 	&--header {
@@ -39,7 +39,7 @@
 
 	&--footer {
 		flex: 0 0 auto;
-		border-top: 1px solid $theme-color-base-200;
+		border-top: 1px solid $theme-divider-subtle-border;
 	}
 
 	&--btncont {
@@ -110,7 +110,7 @@
 	.panel {
 		cursor: pointer;
 		&:hover {
-			background-color: $theme-color-base-400;
+			background-color: $theme-surface-400-bg;
 		}
 	}
 

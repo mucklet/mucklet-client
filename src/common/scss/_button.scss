@@ -88,31 +88,31 @@
 // Set colors for your buttons, see the button mixin at the top of this
 // file to see how the hex colors are allocated
 .btn.primary, .iconbtn.primary {
-	@include btn-style($theme-color-action-300, $theme-color-action-200, $theme-color-action-100, $theme-color-base-300, $theme-color-base-400);
+	@include btn-style($theme-control-primary-bg, $theme-control-primary-bg-hover, $theme-control-primary-bg-active, $theme-control-primary-fg, $theme-control-primary-fg-hover);
 }
 
 .btn.secondary, .iconbtn.secondary {
-	@include btn-style($theme-color-neutral-300, $theme-color-neutral-200, $theme-color-neutral-100, $theme-color-base-300, $theme-color-base-400);
+	@include btn-style($theme-control-secondary-bg, $theme-control-secondary-bg-hover, $theme-control-secondary-bg-active, $theme-control-secondary-fg, $theme-control-secondary-fg-hover);
 }
 
 .btn.warning {
-	@include btn-style($theme-color-danger-300, $theme-color-danger-200, $theme-color-danger-100, $black, $black);
+	@include btn-style($theme-control-danger-bg, $theme-control-danger-bg-hover, $theme-control-danger-bg-active, $theme-control-danger-fg, $theme-control-danger-fg);
 }
 
 .btn.light, .iconbtn.light {
-	@include btn-style(none, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
+	@include btn-style(none, $theme-surface-500-bg, $theme-surface-500-bg, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 }
 
 .btn.lighten, .iconbtn.lighten {
-	@include btn-style(none, rgba($white, 0.07), rgba($white, 0.10), $theme-color-neutral-400, $theme-color-neutral-500);
+	@include btn-style(none, $theme-button-lighten-bg-hover, $theme-button-lighten-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 }
 
 .btn.darken, .iconbtn.darken {
-	@include btn-style(rgba($black, 0.3), rgba($black, 0.5), rgba($black, 0.6), $theme-color-neutral-400, $theme-color-neutral-500);
+	@include btn-style($theme-button-darken-bg, $theme-button-darken-bg-hover, $theme-button-darken-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 }
 
 .btn.solid, .iconbtn.solid {
-	@include btn-style($theme-color-base-400, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
+	@include btn-style($theme-control-default-bg-hover, $theme-control-default-bg-active, $theme-control-default-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 }
 
 // Add this class to a <button> or element with a .btn class
@@ -184,7 +184,7 @@
 	width: 52px;
 	height: 52px;
 	text-align: center;
-	@include btn-style(none, $theme-color-base-400, $theme-color-base-500, $theme-color-neutral-300, $theme-color-neutral-400);
+	@include btn-style(none, $theme-control-default-bg-hover, $theme-control-default-bg-active, $theme-control-default-fg, $theme-control-default-fg-hover);
 	> i {
 		line-height: 51px;
 	}
