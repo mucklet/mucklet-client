@@ -14,13 +14,13 @@ $theme-dialogtag-pref-dislike-background-hover: var(--mu-dialogtag-pref-dislike-
 		transition: color 0.2s, background-color 0.2s;
 
 		&:disabled {
-			color: $theme-color-neutral-300;
+			color: $theme-content-default-fg;
 			background: $theme-dialogtag-desc-disabled-background;
 		}
 	}
 
 	&--pref-dislike > .togglebox.value-1 > div {
-		background: $theme-color-danger-300;
+		background: $theme-status-danger-bg;
 		&:hover {
 			background: $theme-dialogtag-pref-dislike-background-hover;
 		}

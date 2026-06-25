@@ -5,7 +5,7 @@
 	padding: 16px 14px;
 
 	&--name {
-		color: $theme-color-contrast-300;
+		color: $theme-content-strong-fg;
 		font-size: $font-size;
 	}
 
@@ -26,10 +26,10 @@
 	padding: 2px 0;
 
 	&--icon.accepted {
-		@include btn-style($theme-color-action-300, $theme-color-action-300, $theme-color-action-300, $black, $black);
+		@include btn-style($theme-status-info-bg, $theme-status-info-bg, $theme-status-info-bg, $theme-control-danger-fg, $theme-control-danger-fg);
 	}
 
 	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-color-danger-300, $theme-color-danger-300, $theme-color-danger-300, $black, $black);
+		@include btn-style($theme-status-danger-bg, $theme-status-danger-bg, $theme-status-danger-bg, $theme-control-danger-fg, $theme-control-danger-fg);
 	}
 }
