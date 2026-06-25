@@ -9,7 +9,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	padding: 1px 14px 14px 14px;
 
 	&--container {
-		background-color: $theme-color-base-300;
+		background-color: $theme-surface-300-bg;
 		border-radius: 16px; // rounded corners
 		display: flex;
 		flex-direction: column;
@@ -25,7 +25,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 		padding: 4px 12px 2px 12px;
 		display: flex;
 		flex-direction: row;
-		border-bottom: 2px solid $theme-color-base-200;
+		border-bottom: 2px solid $theme-divider-subtle-border;
 	}
 
 	&--editorcont {
@@ -136,8 +136,8 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 			margin-left: 8px;
 		}
 		> svg {
-			background-color: $theme-color-base-400;
-			color: $theme-color-base-200;
+			background-color: $theme-surface-400-bg;
+			color: $theme-surface-200-bg;
 		}
 	}
 
@@ -163,7 +163,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	> .cm-editor {
 		.cm-content {
 			font-family: $font-text;
-			caret-color: $theme-color-contrast-300;
+			caret-color: $theme-input-default-caret;
 			padding: 4px 0 0 0;
 			min-height: 100px;
 			// white-space: pre-line;

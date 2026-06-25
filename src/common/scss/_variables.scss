@@ -127,6 +127,7 @@ $theme-surface-300-bg: var(--mu-surface-300-bg, #{$theme-color-base-300});
 $theme-surface-400-bg: var(--mu-surface-400-bg, #{$theme-color-base-400});
 $theme-surface-500-bg: var(--mu-surface-500-bg, #{$theme-color-base-500});
 $theme-surface-overlay-bg: var(--mu-surface-overlay-bg, #{$surface-overlay-bg});
+$theme-surface-raised-shadow: var(--mu-surface-raised-shadow, #{$shadow});
 
 // Compatibility aliases
 $surface-100-bg: $theme-surface-100-bg;

@@ -33,6 +33,22 @@ small, reviewable, and tied to one visual area.
 - Do not edit unrelated JavaScript unless a style class reference must be changed;
   avoid class changes unless absolutely necessary.
 
+## Runtime Theme Token Sync
+
+- If a sub-plan adds, renames, or changes a token in
+  `src/common/scss/_variables.scss`, update
+  `src/common/modules/theme/themeTokens.js` in the same change.
+- Every `--mu-*` custom property defined in `_variables.scss` should have a
+  matching runtime token key in `themeTokens.js`, unless the omission is
+  documented.
+- Token keys must map through `Theme.js` naming:
+  - `surface.overlay.bg` -> `--mu-surface-overlay-bg`
+  - `dialog.input.bg` -> `--mu-dialog-input-bg`
+- Runtime fallback formulas should match the Sass fallback intent as closely as
+  possible using the existing color helpers.
+- Do not update the realm theme editor UI unless the active plan explicitly
+  includes that scope.
+
 ## Execution Order
 
 Execute the domain plans in this order:
@@ -54,3 +70,5 @@ art-directed styling that should not shape the core semantic token model.
   `rgba`, `mix`, `lighten`, `darken`, and `desaturate`.
 - Document any remaining primitive, raw, or calculated color usage with a reason.
 - Confirm the final changed file list matches the active sub-plan scope.
+- If `_variables.scss` changed, compare new or changed `--mu-*` variables against
+  `themeTokens.js` and document any intentional omissions.

@@ -15,11 +15,11 @@
 	&--topbar {
 		position: relative;
 		flex: 0 0 auto;
-		background-color: $theme-color-base-400;
+		background-color: $theme-surface-400-bg;
 		z-index: 5;
-		-webkit-box-shadow: 4px 0px 5px 0px $shadow;
-		-moz-box-shadow: 4px 0px 5px 0px $shadow;
-		box-shadow: 2px 0px 6px 0px $shadow;
+		-webkit-box-shadow: 4px 0px 5px 0px $theme-surface-raised-shadow;
+		-moz-box-shadow: 4px 0px 5px 0px $theme-surface-raised-shadow;
+		box-shadow: 2px 0px 6px 0px $theme-surface-raised-shadow;
 	}
 
 	&--tabscont {
@@ -40,7 +40,7 @@
 	}
 
 	&--tabpage {
-		background-color: $theme-color-base-400;
+		background-color: $theme-surface-400-bg;
 		min-height: 100%;
 	}
 

@@ -41,6 +41,7 @@ const tokens = {
 	'surface.400.bg': (getToken) => getToken('color.base.400'),
 	'surface.500.bg': (getToken) => getToken('color.base.500'),
 	'surface.overlay.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
+	'surface.raised.shadow': 'rgba(0, 0, 0, 0.3)',
 
 	'content.default.fg': (getToken) => getToken('color.neutral.300'),
 	'content.strong.fg': (getToken) => getToken('color.contrast.300'),
