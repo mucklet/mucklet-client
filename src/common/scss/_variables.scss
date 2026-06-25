@@ -86,11 +86,16 @@ $theme-color-action-300: var(--mu-color-action-300, #{$color-action-300});
 
 /* Semantic theme vars */
 // Surfaces
-$theme-surface-100-bg: var(--mu-surface-100-bg, #{$color-base-100});
-$theme-surface-200-bg: var(--mu-surface-200-bg, #{$color-base-200});
-$theme-surface-300-bg: var(--mu-surface-300-bg, #{$color-base-300});
-$theme-surface-400-bg: var(--mu-surface-400-bg, #{$color-base-400});
-$theme-surface-500-bg: var(--mu-surface-500-bg, #{$color-base-500});
+$surface-100-bg: var(--mu-surface-100-bg, #{$color-base-100});
+$theme-surface-100-bg: var(--mu-surface-100-bg, #{$surface-100-bg});
+$surface-200-bg: var(--mu-surface-200-bg, #{$color-base-200});
+$theme-surface-200-bg: var(--mu-surface-200-bg, #{$surface-200-bg});
+$surface-300-bg: var(--mu-surface-300-bg, #{$color-base-300});
+$theme-surface-300-bg: var(--mu-surface-300-bg, #{$surface-300-bg});
+$surface-400-bg: var(--mu-surface-400-bg, #{$color-base-400});
+$theme-surface-400-bg: var(--mu-surface-400-bg, #{$surface-400-bg});
+$surface-500-bg: var(--mu-surface-500-bg, #{$color-base-500});
+$theme-surface-500-bg: var(--mu-surface-500-bg, #{$surface-500-bg});
 
 // Content and controls
 $theme-content-default-fg: var(--mu-content-default-fg, #{$color-neutral-300});
