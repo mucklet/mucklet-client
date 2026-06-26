@@ -39,8 +39,17 @@ a missing token must be added to `_variables.scss`.
 ## Token Rules
 
 - Do not let hub landing-page artwork create generic semantic tokens.
-- Use component or hub-specific tokens only for repeated hub UI patterns that
-  need theme overrides.
+- Hub-specific colors are not runtime-themeable.
+- Do not add hub-only tokens to `src/common/modules/theme/themeTokens.js`.
+- Do not add hub-only runtime token registration through `Theme.js` or
+  module-level `addTokens`.
+- Do not add hub-only `--mu-*` custom properties to `_variables.scss`.
+- If a color meaning is reusable by the client app and hub account UI, use an
+  existing semantic token from `_variables.scss`.
+- If a color is hub-only, keep it in hub SCSS or `_hubvariables.scss`,
+  especially brand, landing-page, artwork, and third-party colors.
+- Only update `themeTokens.js` during Plan 4E if a newly added token is genuinely
+  shared application semantics, not hub-specific styling.
 - Leave raw colors in art-directed sections when replacing them would obscure
   intent or create false semantic meaning.
 - Document every remaining raw color in edited hub files as either brand,
@@ -52,6 +61,8 @@ a missing token must be added to `_variables.scss`.
 - Search edited hub files for primitive/raw color usage and document remaining
   cases.
 - Confirm no policy files were touched.
+- Confirm no hub-only token was added to `themeTokens.js`.
+- Confirm no hub module added `theme.addTokens` for hub-specific styling.
 - Confirm account/product UI has moved toward semantic tokens while landing art
   remains intentionally classified.
 
