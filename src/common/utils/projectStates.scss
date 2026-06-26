@@ -2,15 +2,15 @@
 
 .projectstates {
 	&--online {
-		color: $theme-color-action-300;
+		color: $theme-status-active-fg;
 	}
 	&--booting, &--restarting, &--resyncing, &--stopping, &--shuttingdown {
-		color: $theme-color-accent-300;
+		color: $theme-status-warning-fg;
 	}
 	&--offline, &--undefined {
-		color: $theme-color-danger-300;
+		color: $theme-status-danger-fg;
 	}
 	&--stopped {
-		color: $theme-color-neutral-300;
+		color: $theme-status-inactive-fg;
 	}
 }

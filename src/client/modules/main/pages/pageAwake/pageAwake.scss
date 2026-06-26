@@ -1,11 +1,6 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-// Page awake colors
-$pageawake-char-status: mix($color-neutral-300, $color-accent-300, 20%);
-// Page awake theme vars
-$theme-pageawake-char-status: var(--mu-pageawake-char-status, #{$pageawake-char-status});
-
 .pageawake {
 	padding: 14px 14px 16px 14px;
 
@@ -128,10 +123,5 @@ $theme-pageawake-char-status: var(--mu-pageawake-char-status, #{$pageawake-char-
 
 	&--badge:hover &--note:hover:not(.hasnote) i {
 		opacity: 1;
-	}
-
-	&--status {
-		color: $theme-pageawake-char-status;
-		font-style: italic;
 	}
 }

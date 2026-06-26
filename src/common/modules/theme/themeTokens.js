@@ -97,6 +97,18 @@ const tokens = {
 	'status.info.fg': (getToken) => getToken('color.action.300'),
 	'status.info.bg': (getToken) => getToken('color.action.300'),
 	'status.info.border': (getToken) => getToken('color.action.300'),
+	'status.success.fg': '#458136',
+	'status.success.bg': '#458136',
+	'status.success.border': '#458136',
+	'status.warning.fg': (getToken) => getToken('color.accent.300'),
+	'status.warning.bg': (getToken) => getToken('color.accent.300'),
+	'status.warning.border': (getToken) => getToken('color.accent.300'),
+	'status.active.fg': (getToken) => getToken('color.action.300'),
+	'status.active.bg': (getToken) => getToken('color.action.300'),
+	'status.active.border': (getToken) => getToken('color.action.300'),
+	'status.inactive.fg': (getToken) => getToken('color.neutral.300'),
+	'status.inactive.bg': (getToken) => getToken('color.neutral.300'),
+	'status.inactive.border': (getToken) => getToken('color.neutral.300'),
 
 	// IdleLevel colors
 	'idlelevel.asleep.fg': (getToken) => getToken('color.neutral.300'),

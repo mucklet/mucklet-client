@@ -56,6 +56,7 @@ $control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
 $surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
 $idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
 $idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
+$status-success: #458136;
 
 /* Shared component color fallbacks */
 $button-lighten-bg-hover: rgba($white, 0.07);
@@ -191,6 +192,18 @@ $theme-status-danger-border: var(--mu-status-danger-border, #{$theme-color-dange
 $theme-status-info-fg: var(--mu-status-info-fg, #{$theme-color-action-300});
 $theme-status-info-bg: var(--mu-status-info-bg, #{$theme-color-action-300});
 $theme-status-info-border: var(--mu-status-info-border, #{$theme-color-action-300});
+$theme-status-success-fg: var(--mu-status-success-fg, #{$status-success});
+$theme-status-success-bg: var(--mu-status-success-bg, #{$status-success});
+$theme-status-success-border: var(--mu-status-success-border, #{$status-success});
+$theme-status-warning-fg: var(--mu-status-warning-fg, #{$theme-color-accent-300});
+$theme-status-warning-bg: var(--mu-status-warning-bg, #{$theme-color-accent-300});
+$theme-status-warning-border: var(--mu-status-warning-border, #{$theme-color-accent-300});
+$theme-status-active-fg: var(--mu-status-active-fg, #{$theme-color-action-300});
+$theme-status-active-bg: var(--mu-status-active-bg, #{$theme-color-action-300});
+$theme-status-active-border: var(--mu-status-active-border, #{$theme-color-action-300});
+$theme-status-inactive-fg: var(--mu-status-inactive-fg, #{$theme-color-neutral-300});
+$theme-status-inactive-bg: var(--mu-status-inactive-bg, #{$theme-color-neutral-300});
+$theme-status-inactive-border: var(--mu-status-inactive-border, #{$theme-color-neutral-300});
 
 // Links
 $theme-link-default-fg: var(--mu-link-default-fg, #{$theme-color-action-300});

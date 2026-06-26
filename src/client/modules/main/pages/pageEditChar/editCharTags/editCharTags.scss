@@ -11,7 +11,7 @@
 	}
 
 	&--add.iconbtn {
-		@include btn-style(none, $theme-color-base-400, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
+		@include btn-style(none, $theme-control-default-bg-hover, $theme-control-default-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 		position: absolute;
 		right: 3px;
 		top: 3px;

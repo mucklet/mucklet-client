@@ -27,40 +27,40 @@
 			left: -36px;
 			width: 12px;
 			height: 12px;
-			border: 2px solid $theme-color-base-500;
+			border: 2px solid $theme-divider-default-border;
 			border-radius: 50%;
-			background-color: $theme-color-base-200;
+			background-color: $theme-surface-200-bg;
 		}
 
 		&.completed::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $theme-color-action-300;
-			background-color: $theme-color-action-300;
+			border: 2px solid $theme-status-info-border;
+			background-color: $theme-status-info-bg;
 		}
 		&.warning::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $theme-color-accent-300;
-			background-color: $theme-color-accent-300;
+			border: 2px solid $theme-status-warning-border;
+			background-color: $theme-status-warning-bg;
 		}
 		&.error::after {
 			content: '';
 			text-align: center;
-			border: 2px solid $theme-color-danger-300;
-			background-color: $theme-color-danger-300;
+			border: 2px solid $theme-status-danger-border;
+			background-color: $theme-status-danger-bg;
 		}
 	}
 
 	> *:not(:last-child) {
 		.verticalstepprogress--step {
 			&::before {
-				border-left: 2px solid $theme-color-base-500;
+				border-left: 2px solid $theme-divider-default-border;
 			}
 
 			&.nextcompleted {
 				&::before {
-					border-left: 2px solid $theme-color-action-300;
+					border-left: 2px solid $theme-status-info-border;
 				}
 			}
 		}

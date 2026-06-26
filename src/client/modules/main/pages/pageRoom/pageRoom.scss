@@ -1,11 +1,6 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-// Page room colors
-$pageroom-char-status: mix($color-neutral-300, $color-accent-300, 20%);
-// Page room theme vars
-$theme-pageroom-char-status: var(--mu-pageroom-char-status, #{$pageroom-char-status});
-
 .pageroom {
 	padding: 8px 16px;
 
@@ -145,10 +140,5 @@ $theme-pageroom-char-status: var(--mu-pageroom-char-status, #{$pageroom-char-sta
 
 	&--name {
 		@include transition(color 1s);
-	}
-
-	&--status {
-		color: $theme-pageroom-char-status;
-		font-style: italic;
 	}
 }
