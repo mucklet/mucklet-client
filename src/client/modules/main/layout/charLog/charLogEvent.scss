@@ -11,9 +11,9 @@ $charlog-labelpad: 8px;
 }
 
 .ev- {
-	// color: $theme-color-neutral-200; // Info, OOC
-	// color: $theme-color-neutral-300; // Events (default)
-	// color: $theme-color-neutral-600; // Communication
+	// color: $theme-log-info-fg; // Info, OOC
+	// color: $theme-log-default-fg; // Events (default)
+	// color: $theme-log-comm-fg; // Communication
 
 	&error, &errorComponent, &localError {
 		color: $theme-log-error-fg;
@@ -56,7 +56,7 @@ $charlog-labelpad: 8px;
 		&--room {
 			padding: 16px 0 4px 0;
 			font-size: $font-size;
-			color: $theme-color-accent-300;
+			color: $theme-log-header-fg;
 		}
 	}
 }

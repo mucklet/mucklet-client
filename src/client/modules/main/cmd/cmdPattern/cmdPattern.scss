@@ -4,7 +4,7 @@
 
 	&--usage {
 		font-family: $font-code;
-		color: $theme-color-accent-300;
+		color: $theme-log-cmd-fg;
 	}
 
 	&--field {
@@ -13,6 +13,6 @@
 	}
 
 	&--opt {
-		color: $theme-color-neutral-200;
+		color: $theme-log-formatter-fg;
 	}
 }

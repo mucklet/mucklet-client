@@ -40,7 +40,8 @@ import './charLogHighlight.scss';
 
 const themeTokens = {
 	'charlog.invalid.background': (getToken) => alpha(getToken('log.error.fg'), 0.5),
-	'charlog.eventmenu.background': (getToken) => alpha(getToken('color.base.200'), 0.8),
+	'charlog.eventmenu.background': (getToken) => alpha(getToken('surface.200.bg'), 0.8),
+	'charlog.eventmenu.shadow': 'rgba(0, 0, 0, 0.65)',
 };
 
 const componentFactories = {
