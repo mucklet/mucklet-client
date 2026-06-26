@@ -12,6 +12,10 @@ component token needs.
 - Plans 1-4F are complete.
 - `docs/theme-token-audit.md` exists and has a section for component-local color
   definitions.
+- Read `docs/tokenmigration/PLAN 4 - Domain Migration Rules.md` for runtime
+  token sync rules.
+- Read `docs/tokenmigration/PLAN 4E - Hub and Account Pages.md` for hub
+  non-themeability rules.
 - The latest SCSS builds successfully before starting.
 
 ## Key Changes
@@ -31,6 +35,8 @@ component token needs.
 - Move reusable component tokens to `_variables.scss` and update usages to the
   centralized token name.
 - Keep local non-color sizing/spacing variables untouched.
+- If the sweep becomes too large, stop after one coherent category and report
+  the recommended split instead of continuing broadly.
 
 ## Token Rules
 
@@ -38,10 +44,23 @@ component token needs.
   theme override.
 - Do not turn art-directed hub gradients, image masks, or third-party brand
   colors into generic semantic tokens.
+- If `_variables.scss` is changed, update
+  `src/common/modules/theme/themeTokens.js` in the same change for every new or
+  changed shared runtime token.
+- Do not add hub-only tokens to `themeTokens.js`, `Theme.js`, module-level
+  `addTokens`, or `_variables.scss` as `--mu-*` custom properties.
+- Hub-only colors should remain in hub SCSS or `_hubvariables.scss` unless the
+  meaning is genuinely shared application UI.
 - If a local calculated color appears in multiple domains, prefer a semantic
   token.
 - If a local calculated color appears in one reusable shared component, prefer a
   component token defaulting to a semantic token.
+- Known likely-retained categories include:
+  - hub landing artwork, masks, gradients, shadows, and third-party brand colors
+  - Croppie and noUiSlider vendor/widget styling
+  - technical transparency for carets, spinner edges, scrollbars, or masks
+  - component-specific charlog invalid/event-menu overlay/shadow fallbacks
+  - unresolved low-alpha shadow decisions
 
 ## Test Plan
 
@@ -51,6 +70,11 @@ component token needs.
 - Search all SCSS for remaining `$color-*`, `$theme-color-*`, raw hex, `rgba`,
   `mix`, `lighten`, `darken`, and `desaturate`.
 - Document every remaining local color variable with a reason.
+- If `_variables.scss` changed, compare new or changed `--mu-*` variables
+  against `themeTokens.js` and document intentional omissions.
+- Confirm no hub-only runtime token or hub module `addTokens` registration was
+  added.
+- Confirm no realm theme editor UI changes were made unless explicitly required.
 
 ## Assumptions
 
