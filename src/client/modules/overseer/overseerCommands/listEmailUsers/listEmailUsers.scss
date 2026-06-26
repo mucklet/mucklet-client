@@ -2,7 +2,7 @@
 
 .listemailusers {
 	&--deleted > code {
-		color: $theme-color-neutral-300;
+		color: $theme-log-default-fg;
 	}
 	&--banned > code {
 		color: $theme-log-error-fg;

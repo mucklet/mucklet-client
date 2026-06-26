@@ -1,18 +1,11 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-// Page reports colors
-$pagereports-report-unassigned-background: darken($color-base-200, 6%);
-$pagereports-report-unassigned-background-hover: darken($color-base-200, 9%);
-// Page reports theme vars
-$theme-pagereports-report-unassigned-background: var(--mu-pagereports-report-unassigned-background, #{$pagereports-report-unassigned-background});
-$theme-pagereports-report-unassigned-background-hover: var(--mu-pagereports-report-unassigned-background-hover, #{$pagereports-report-unassigned-background-hover});
-
 .pagereports {
 	padding: 16px 14px;
 
 	&--name {
-		color: $theme-color-contrast-300;
+		color: $theme-content-strong-fg;
 		font-size: $font-size;
 	}
 
@@ -33,19 +26,19 @@ $theme-pagereports-report-unassigned-background-hover: var(--mu-pagereports-repo
 	padding: 2px 0;
 
 	&--icon.accepted {
-		@include btn-style($theme-color-action-300, $theme-color-action-300, $theme-color-action-300, $black, $black);
+		@include btn-style($theme-status-success-bg, $theme-status-success-bg, $theme-status-success-bg, $theme-control-danger-fg, $theme-control-danger-fg);
 	}
 
 	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-color-danger-300, $theme-color-danger-300, $theme-color-danger-300, $black, $black);
+		@include btn-style($theme-status-danger-bg, $theme-status-danger-bg, $theme-status-danger-bg, $theme-control-danger-fg, $theme-control-danger-fg);
 	}
 
 	&--badge.unassigned {
-		background: $theme-pagereports-report-unassigned-background;
+		background: $theme-badge-dark-bg;
 
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: $theme-pagereports-report-unassigned-background-hover;
+				background: $theme-badge-dark-bg-hover;
 			}
 		}
 	}

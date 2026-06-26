@@ -5,13 +5,7 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import counterString from 'utils/counterString';
 import PageReportsComponent from './PageReportsComponent';
-import { adjust } from 'utils/color';
 import './pageReports.scss';
-
-const themeTokens = {
-	'pagereports.report.unassigned.background': (getToken) => adjust(getToken('color.base.200'), -6),
-	'pagereports.report.unassigned.background.hover': (getToken) => adjust(getToken('color.base.200'), -9),
-};
 
 /**
  * PageReports adds the reports panel and reports button to player panel's
@@ -38,13 +32,11 @@ class PageReports {
 			'confirm',
 			'notify',
 			'copyCharId',
-			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-		this.module.theme.addTokens(themeTokens);
 		this.model = new Model({ data: { reports: null }, eventBus: this.app.eventBus });
 		this.attachmentTypes = new Collection({
 			idAttribute: m => m.id,
@@ -182,7 +174,6 @@ class PageReports {
 			this.module.playerTabs.removeTab('reports');
 		}
 		this.model = null;
-		this.module.theme.removeTokens(themeTokens);
 	}
 }
 
