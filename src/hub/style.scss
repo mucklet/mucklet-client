@@ -17,7 +17,7 @@ body {
 	--gap: 64px;
 	min-height: 100vh;
 	width: 100%;
-	background: $color-base-100;
+	background: $theme-surface-100-bg;
 
 	ul {
 		list-style-position: outside;
@@ -30,7 +30,7 @@ body {
 	}
 
 	&--inner {
-		background: $color-base-200;
+		background: $theme-surface-200-bg;
 		max-width: 2400px;
 		margin: 0 auto;
 		box-shadow: 0px 0px 50px 3px #000000;
@@ -296,7 +296,7 @@ body {
 	}
 
 	&--footer {
-		background: $color-base-400;
+		background: $theme-surface-400-bg;
 
 		&-container {
 			width: 90%;
@@ -359,7 +359,7 @@ body {
 
 		&-disclaimer {
 			font-size: $font-size-small;
-			color: $color-neutral-200;
+			color: $theme-content-muted-fg;
 		}
 	}
 }
@@ -518,11 +518,11 @@ body {
 
 		&--searchinput {
 
-			background: $color-base-300;
+			background: $theme-surface-300-bg;
 			padding: 18px 16px;
 			border-radius: 14px;
-			border: 1px solid $color-base-500;
-			color: $color-neutral-500;
+			border: 1px solid $theme-surface-500-bg;
+			color: $theme-content-strong-fg;
 			padding-left: 64px;
 			font-size: 16px;
 			box-shadow: 0px 3px 6px #00000029;

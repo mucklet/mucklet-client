@@ -8,11 +8,11 @@
 	&--title {
 		line-height: 26px;
 		font-size: $font-size;
-		color: $color-contrast-300;
+		color: $theme-content-strong-fg;
 	}
 
 	&--date {
-		color: $color-neutral-300;
+		color: $theme-content-default-fg;
 		line-height: 20px;
 		font-size: $font-size-small;
 	}

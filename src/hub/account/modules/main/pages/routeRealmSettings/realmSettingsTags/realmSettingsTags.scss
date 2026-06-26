@@ -11,7 +11,7 @@
 	}
 
 	&--add.iconbtn {
-		@include btn-style(none, $color-base-400, $color-base-500, $color-neutral-400, $color-neutral-500);
+		@include btn-style(none, $theme-control-default-bg-hover, $theme-control-default-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 		position: absolute;
 		right: 3px;
 		top: 3px;
@@ -43,9 +43,9 @@
 
 	font-size: $font-size-small;
 	&.maxed {
-		color: $color-contrast-300;
+		color: $theme-content-strong-fg;
 	}
 	&.exceeded {
-		color: $color-danger-300;
+		color: $theme-status-danger-fg;
 	}
 }

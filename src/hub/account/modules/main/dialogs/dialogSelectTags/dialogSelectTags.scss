@@ -37,23 +37,23 @@
 
 	&--type- {
 		&genre {
-			color: $color-action-300;
+			color: $theme-tag-title-fg;
 			&:hover {
-				color: $color-action-200;
+				color: $theme-tag-title-fg-hover;
 			}
 		}
 
 		&theme {
-			color: $color-neutral-300;
+			color: $theme-tag-default-fg;
 			&:hover {
-				color: $color-neutral-500;
+				color: $theme-tag-default-fg-hover;
 			}
 		}
 
 		&warn {
-			color: $color-danger-300;
+			color: $theme-tag-dislike-fg;
 			&:hover {
-				color: $color-danger-400;
+				color: $theme-tag-dislike-fg-hover;
 			}
 		}
 	}
