@@ -1,10 +1,3 @@
-// Common theme vars
-$theme-common-level-asleep: $theme-idlelevel-asleep-fg;
-$theme-common-level-active: $theme-idlelevel-active-fg;
-$theme-common-level-idle: $theme-idlelevel-idle-fg;
-$theme-common-level-inactive: $theme-idlelevel-away-fg;
-$theme-common-level-bot: $theme-idlelevel-bot-fg;
-
 .common {
 	&--placeholder {
 		font-style: italic;
@@ -161,19 +154,19 @@ $theme-common-level-bot: $theme-idlelevel-bot-fg;
 
 	&--level {
 		&-asleep {
-			color: $theme-common-level-asleep;
+			color: $theme-idlelevel-asleep-fg;
 		}
 		&-active {
-			color: $theme-common-level-active;
+			color: $theme-idlelevel-active-fg;
 		}
 		&-idle {
-			color: $theme-common-level-idle;
+			color: $theme-idlelevel-idle-fg;
 		}
 		&-inactive {
-			color: $theme-common-level-inactive;
+			color: $theme-idlelevel-away-fg;
 		}
 		&-bot {
-			color: $theme-common-level-bot;
+			color: $theme-idlelevel-bot-fg;
 		}
 	}
 
