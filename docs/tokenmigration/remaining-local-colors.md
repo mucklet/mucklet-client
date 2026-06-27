@@ -2,13 +2,15 @@
 
 ## Purpose
 
-Plan 5A classifies the local color definitions that remain after Plans 1-4F.
-This is a reporting pass only. It does not move Sass variables, add runtime
-tokens, rename custom properties, or clean up local wrappers.
+This report classifies the local color definitions that remained after the broad
+theme-token migration passes. It is a reporting artifact only. It did not move
+Sass variables, add runtime tokens, rename custom properties, or clean up local
+wrappers.
 
-Plan 5B is only for entries classified as `module-theme-token`. Entries
-classified as `shared-component-candidate` require a separate shared component
-token decision and should not be handled during Plan 5B.
+Entries classified as `module-theme-token` were later standardized into
+module-owned `*-theme.scss` files. Entries classified as
+`shared-component-candidate` require a separate shared component token decision
+and should not be handled as module-owned tokens.
 
 The inventory was produced from:
 
@@ -28,7 +30,7 @@ is intentionally excluded from the local-definition search.
 These entries have local Sass fallback variables and local `$theme-*` custom
 property wrappers outside `_variables.scss`.
 
-| File | Local Sass variable | CSS custom property | Runtime token key | Fallback expression | Current usage summary | Classification | Recommended next plan |
+| File | Local Sass variable | CSS custom property | Runtime token key | Fallback expression | Current usage summary | Classification | Recommended next step |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `src/common/components/autocomplete.scss` | `$autocomplete-hover-background` | `--mu-autocomplete-hover-background` | `autocomplete.hover.background` | `lighten($color-action-300, 20%)` | Light autocomplete option hover background. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/autocomplete.scss` | `$autocomplete-selected-background` | `--mu-autocomplete-selected-background` | `autocomplete.selected.background` | `lighten($color-action-300, 30%)` | Light autocomplete selected option background. | `shared-component-candidate` | later shared component decision |
@@ -57,13 +59,13 @@ property wrappers outside `_variables.scss`.
 These entries are Sass variables outside `_variables.scss` without a local
 `--mu-*` wrapper in the same file.
 
-| File | Local Sass variable | CSS custom property | Runtime token key | Fallback expression | Current usage summary | Classification | Recommended next plan |
+| File | Local Sass variable | CSS custom property | Runtime token key | Fallback expression | Current usage summary | Classification | Recommended next step |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `src/common/scss/_common.scss` | `$theme-common-level-asleep` | none | `idlelevel.asleep.fg` | `$theme-idlelevel-asleep-fg` | Compatibility alias for old common idle level name. | `trivial-alias` | 5C |
-| `src/common/scss/_common.scss` | `$theme-common-level-active` | none | `idlelevel.active.fg` | `$theme-idlelevel-active-fg` | Compatibility alias for old common idle level name. | `trivial-alias` | 5C |
-| `src/common/scss/_common.scss` | `$theme-common-level-idle` | none | `idlelevel.idle.fg` | `$theme-idlelevel-idle-fg` | Compatibility alias for old common idle level name. | `trivial-alias` | 5C |
-| `src/common/scss/_common.scss` | `$theme-common-level-inactive` | none | `idlelevel.away.fg` | `$theme-idlelevel-away-fg` | Compatibility alias for old common inactive/away level name. | `trivial-alias` | 5C |
-| `src/common/scss/_common.scss` | `$theme-common-level-bot` | none | `idlelevel.bot.fg` | `$theme-idlelevel-bot-fg` | Compatibility alias for old common bot level name. | `trivial-alias` | 5C |
+| `src/common/scss/_common.scss` | `$theme-common-level-asleep` | none | `idlelevel.asleep.fg` | `$theme-idlelevel-asleep-fg` | Compatibility alias for old common idle level name. | `trivial-alias` | removed during trivial alias cleanup |
+| `src/common/scss/_common.scss` | `$theme-common-level-active` | none | `idlelevel.active.fg` | `$theme-idlelevel-active-fg` | Compatibility alias for old common idle level name. | `trivial-alias` | removed during trivial alias cleanup |
+| `src/common/scss/_common.scss` | `$theme-common-level-idle` | none | `idlelevel.idle.fg` | `$theme-idlelevel-idle-fg` | Compatibility alias for old common idle level name. | `trivial-alias` | removed during trivial alias cleanup |
+| `src/common/scss/_common.scss` | `$theme-common-level-inactive` | none | `idlelevel.away.fg` | `$theme-idlelevel-away-fg` | Compatibility alias for old common inactive/away level name. | `trivial-alias` | removed during trivial alias cleanup |
+| `src/common/scss/_common.scss` | `$theme-common-level-bot` | none | `idlelevel.bot.fg` | `$theme-idlelevel-bot-fg` | Compatibility alias for old common bot level name. | `trivial-alias` | removed during trivial alias cleanup |
 | `src/common/scss/_hubvariables.scss` | `$color-success` | none | none | `#458136` | Hub-only success color seed. | `hub-local` | keep |
 | `src/common/scss/_hubvariables.scss` | `$color-google` | none | none | `#d9534f` | Google brand button color for hub login. | `hub-local` | keep |
 | `src/common/scss/_hubvariables.scss` | `$color-paypal` | none | none | `#0070ba` | PayPal brand badge/button color for hub account payments. | `hub-local` | keep |
@@ -75,10 +77,11 @@ These entries are Sass variables outside `_variables.scss` without a local
 ## Direct Local Color Declarations
 
 These are raw, calculated, or structural color declarations without a local
-Sass fallback variable. They are included so Plan 5A has an explicit ownership
-decision for the remaining local colors found by the raw/calculated search.
+Sass fallback variable. They are included so this report has an explicit
+ownership decision for the remaining local colors found by the raw/calculated
+search.
 
-| File | Local Sass variable | CSS custom property | Runtime token key | Fallback expression | Current usage summary | Classification | Recommended next plan |
+| File | Local Sass variable | CSS custom property | Runtime token key | Fallback expression | Current usage summary | Classification | Recommended next step |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `src/common/components/autocomplete.scss` | none | none | none | `white`, `rgba(50, 50, 50, 0.6)`, `$black`, `#eee`, `$white` | Shared autocomplete base surfaces, text emphasis, border, group rows, and dark variant foregrounds/backgrounds. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/hamburger.scss` | none | none | none | `#000` | Shared hamburger open/close SVG fills. | `shared-component-candidate` | later shared component decision |
@@ -167,4 +170,4 @@ single local styling decision appears on multiple adjacent declarations.
   in this report.
 - Confirmed all `Theme.addTokens` / `removeTokens` call sites found by the JS
   search are listed in the runtime registration summary.
-- No SCSS or JS changes are part of Plan 5A.
+- This report did not include SCSS or JS changes.
