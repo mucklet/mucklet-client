@@ -232,6 +232,40 @@ tooltip.bg        -> surface.overlay.bg
 realmtag.genre.fg -> status.active.fg
 ```
 
+### Module-owned theme files
+
+Shared component tokens for common classes and components may live in
+`src/common/scss/_variables.scss` when they are part of the shared component
+contract.
+
+Module-specific tokens should stay with the owning module instead. Put their
+Sass fallback variables and `$theme-*` custom property wrappers in a
+`<module>-theme.scss` file next to the module SCSS file, and import it from the
+main module SCSS file before using the variables:
+
+```scss
+@import '~scss/variables';
+@import './overlayNav-theme';
+```
+
+The owning module should keep the matching runtime token keys in its module
+file and register them while the module is active:
+
+```javascript
+const themeTokens = {
+	'overlaynav.badge.background.hover': (getToken) => adjust(getToken('color.base.400'), 3),
+};
+
+this.module.theme.addTokens(themeTokens);
+```
+
+The module should unregister those same keys in `dispose` using
+`this.module.theme.removeTokens(themeTokens)`.
+
+Use the `-theme.scss` suffix only for module-owned theme-token definitions. Do
+not move module-specific tokens to `_variables.scss` unless they have become
+shared semantic or shared component tokens.
+
 ## Slots
 
 Use a small shared vocabulary for the visual property being colored:

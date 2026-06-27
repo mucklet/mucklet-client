@@ -1,0 +1,6 @@
+@import '~scss/variables';
+
+// Overlay nav colors
+$overlaynav-badge-background-hover: lighten($color-base-400, 3%);
+// Overlay nav theme vars
+$theme-overlaynav-badge-background-hover: var(--mu-overlaynav-badge-background-hover, #{$overlaynav-badge-background-hover});

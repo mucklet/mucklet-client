@@ -1,0 +1,8 @@
+@import '~scss/variables';
+
+// Page mail colors
+$pagemail-mail-unread-background: darken($color-base-200, 6%);
+$pagemail-mail-unread-background-hover: darken($color-base-200, 9%);
+// Page mail theme vars
+$theme-pagemail-mail-unread-background: var(--mu-pagemail-mail-unread-background, #{$pagemail-mail-unread-background});
+$theme-pagemail-mail-unread-background-hover: var(--mu-pagemail-mail-unread-background-hover, #{$pagemail-mail-unread-background-hover});

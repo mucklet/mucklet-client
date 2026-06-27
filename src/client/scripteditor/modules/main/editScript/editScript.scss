@@ -1,9 +1,5 @@
 @import '~scss/variables';
-
-// Edit script colors
-$editscript-scrollbar-thumb-hover: lighten($color-base-200, 18%);
-// Edit script theme vars
-$theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hover, #{$editscript-scrollbar-thumb-hover});
+@import './editScript-theme';
 
 .editscript, .editscript-container {
 	width: 100%;
