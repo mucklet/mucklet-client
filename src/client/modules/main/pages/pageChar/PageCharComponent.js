@@ -36,32 +36,6 @@ class PageCharComponent {
 				click: () => new ImgModal(this.char.image.href).open(),
 			}})),
 		]));
-		let about = new PanelSection(
-			l10n.l('pageChar.about', "About"),
-			new ModelComponent(
-				this.char,
-				new Elem(n => n.elem('div', [
-					n.component('about', new FormatTxt("", { className: 'common--desc-size', state: this.charState.about })),
-					n.component('tags', new Collapser()),
-				])),
-				(m, c, change) => {
-					c.getNode('about').setFormatText(m.about);
-					if (!change || change.hasOwnProperty('tags')) {
-						c.getNode('tags').setComponent(m.tags ? new CharTagsList(m.tags, {
-							className: 'pagechar--tags',
-							static: false,
-							eventBus: this.module.self.app.eventBus,
-							tooltipMargin: 'm',
-						}) : null);
-					}
-				},
-			),
-			{
-				className: 'common--sectionpadding',
-				open: this.state.aboutOpen || false,
-				onToggle: (c, v) => this.state.aboutOpen = v,
-			},
-		);
 		let o = {};
 		let elem = new Elem(n => n.elem('div', [
 			n.component(new Context(
@@ -140,7 +114,10 @@ class PageCharComponent {
 				{
 					condition: m => m.rp == 'lfrp' && m.lfrpDesc,
 					factory: m => new PanelSection(
-						l10n.l('pageChar.lookingForRoleplay', "Looking for roleplay"),
+						new Elem(n => n.elem('span', { className: 'pagechar--lfrp-header' }, [
+							n.component(new Txt(l10n.l('pageChar.lookingForRoleplay', "Looking for roleplay"), { tagName: 'h3' })),
+							n.elem('div', { className: 'pagechar--lfrp-counter counter small top-right-overlap highlight' }),
+						])),
 						new ModelComponent(
 							m,
 							new FormatTxt("", { className: 'common--desc-size', state: this.charState.lfrp }),
@@ -155,9 +132,10 @@ class PageCharComponent {
 				},
 				{
 					condition: m => m.rp == 'lfrp',
-					factory: m => new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."), {
-						className: 'dialogaboutchar--lfrp-placeholder',
-					}),
+					factory: m => new Elem(n => n.elem('div', { className: 'pagechar--lfrp-placeholder' }, [
+						n.elem('div', { className: 'counter small inline highlight' }),
+						n.component(new Txt(l10n.l('pageChar.currentlyLookingForRoleplay', "Currently looking for roleplay."))),
+					])),
 				},
 			])),
 			n.component(new PanelSection(
@@ -210,9 +188,9 @@ class PageCharComponent {
 				new ModelComponent(
 					this.char.tags,
 					new Collapser(null),
-					(m, c) => this._showAbout(c, about),
+					(m, c) => this._showAbout(c),
 				),
-				(m, c) => this._showAbout(c.getComponent(), about),
+				(m, c) => this._showAbout(c.getComponent()),
 			)),
 			n.component(new Context(
 				() => new CollectionWrapper(this.module.self.getTools(), {
@@ -291,9 +269,61 @@ class PageCharComponent {
 		return this.ctrl.call('release');
 	}
 
-	_showAbout(c, about) {
-		c.setComponent(this.char.about || hasTags(this.char.tags)
-			? about
+	_showAbout(c) {
+		c.setComponent(this.char.about || this.char.type == 'puppet' || this.char.puppeteer || hasTags(this.char.tags)
+			? c.getComponent() || new PanelSection(
+				l10n.l('pageChar.about', "About"),
+				new ModelComponent(
+					this.char,
+					new Elem(n => n.elem('div', [
+						n.component('about', new FormatTxt("", { className: 'common--desc-size', state: this.charState.about })),
+						n.component('puppet', new Collapser()),
+						n.component('tags', new Collapser()),
+					])),
+					(m, c, change) => {
+						// About text
+						c.getNode('about').setFormatText(m.about);
+
+						// Tags
+						let tags = c.getNode('tags');
+						tags.setComponent(m.tags
+							? tags.getComponent() || new CharTagsList(m.tags, {
+								className: 'pagechar--tags',
+								static: false,
+								eventBus: this.module.self.app.eventBus,
+								tooltipMargin: 'm',
+							})
+							: null,
+						);
+
+						// Puppeteer info
+						let puppet = c.getNode('puppet');
+						let component = m.type == 'puppet' || m.puppeteer
+							? puppet.getComponent() || new Elem(n => n.elem('div', { className: 'pagechar--puppet' }, [
+								n.elem('div', { className: 'counter small inline notice' }),
+								n.component('txt', new ModelTxt(
+									m.puppeteer,
+									m => m
+										? l10n.l('pageChar.controlledBy', "Controlled by {fullname}", { fullname: (m.name + ' ' + m.surname).trim() })
+										: l10n.l('pageChar.puppet', "Character is a puppet"),
+									{
+										className: 'pagechar--puppeteer',
+									},
+								)),
+							]))
+							: null;
+						if (component) {
+							component.getNode('txt').setModel(m.puppeteer);
+						}
+						puppet.setComponent(component);
+					},
+				),
+				{
+					className: 'common--sectionpadding',
+					open: this.state.aboutOpen || false,
+					onToggle: (c, v) => this.state.aboutOpen = v,
+				},
+			)
 			: null,
 		);
 	}

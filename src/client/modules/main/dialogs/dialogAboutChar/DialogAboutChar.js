@@ -42,7 +42,7 @@ class DialogAboutChar {
 			let lfrpComponent = new PanelSection(
 				new Elem(n => n.elem('span', { className: 'dialogaboutchar--lfrp-header' }, [
 					n.component(new Txt(l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"), { tagName: 'h3' })),
-					n.elem('div', { className: 'counter small top-right highlight' }),
+					n.elem('div', { className: 'dialogaboutchar--lfrp-counter counter small top-right-overlap highlight' }),
 				])),
 				new ModelComponent(
 					charInfo,
@@ -136,9 +136,10 @@ class DialogAboutChar {
 							(m, c) => c.setComponent(typeof m.lfrpDesc == 'string'
 								? m.lfrpDesc
 									? lfrpComponent
-									: new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."), {
-										className: 'dialogaboutchar--lfrp-placeholder',
-									})
+									: new Elem(n => n.elem('div', { className: 'dialogaboutchar--lfrp-placeholder' }, [
+										n.elem('div', { className: 'counter small inline highlight' }),
+										n.component(new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."))),
+									]))
 								: null,
 							),
 						)),

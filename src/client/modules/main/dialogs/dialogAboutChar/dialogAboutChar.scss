@@ -22,10 +22,15 @@
 
 	&--lastawake, &--puppeteer {
 		font-size: $font-size-small;
+		font-style: italic;
 	}
 
 	&--lfrp-header {
 		position: relative;
+	}
+
+	&--lfrp-counter.counter {
+		right: -12px;
 	}
 
 	&--lfrp-placeholder {
