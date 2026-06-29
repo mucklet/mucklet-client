@@ -40,10 +40,15 @@ class DialogAboutChar {
 				eventBus: this.app.eventBus,
 			});
 			let lfrpComponent = new PanelSection(
-				l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"),
+				new Elem(n => n.elem('span', { className: 'dialogaboutchar--lfrp-header' }, [
+					n.component(new Txt(l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"), { tagName: 'h3' })),
+					n.elem('div', { className: 'counter small highlight' }),
+				])),
 				new ModelComponent(
 					charInfo,
-					new FormatTxt("", { className: 'common--desc-size' }),
+					new FormatTxt("", {
+						className: 'common--desc-size',
+					}),
 					(m, c) => c.setFormatText(m.lfrpDesc || ''),
 				),
 				{
@@ -178,21 +183,24 @@ class DialogAboutChar {
 								: l10n.l('dialogAboutChar.neverSeen', "Never seen"),
 						);
 						let lvl = getCharIdleLevel(m);
+						let puppeteer = c.getNode('puppeteer');
 						c.getNode('idle').setText(lvl.text);
 						c.getNode('status').setText(m.status ? ' (' + m.status + ')' : '');
-						if (!change || change.hasOwnProperty('puppeteer')) {
-							c.getNode('puppeteer').setComponent(m.puppeteer
-							 	? new ModelTxt(
-									 m.puppeteer,
-									 m => l10n.l('dialogAboutChar.controlledBy', "Controlled by {fullname}", { fullname: (m.name + ' ' + m.surname).trim() }),
-									 {
-										tagName: 'div',
+						puppeteer.setComponent(m.type == 'puppet' || m.puppeteer
+							? puppeteer.getComponent() || new Elem(n => n.elem('div', [
+								n.elem('div', { className: 'counter-standalone inline small notice' }),
+								n.component(new ModelTxt(
+									m.puppeteer,
+									m => m
+										? l10n.l('dialogAboutChar.controlledBy', "Controlled by {fullname}", { fullname: (m.name + ' ' + m.surname).trim() })
+										: l10n.l('dialogAboutChar.puppet', "Character is a puppet"),
+									{
 										className: 'dialogaboutchar--puppeteer',
-									 },
-								)
-							 	: null,
-							);
-						}
+									},
+								)),
+							]))
+							: null,
+						);
 
 						for (let l of idleLevels) {
 							c[l == lvl ? 'addNodeClass' : 'removeNodeClass']('idleStatus', l.className);

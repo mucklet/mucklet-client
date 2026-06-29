@@ -12,6 +12,11 @@
 	transition: 0.2s opacity, 0.2s background-color;
 	text-align: center;
 
+	&.inline {
+		display: inline-block;
+		margin-right: 8px;
+	}
+
 	&.withtitle {
 		pointer-events: initial;
 		cursor: help;
@@ -47,11 +52,6 @@
 		border-radius: 4px;
 		top: 0px;
 		right: 0px;
-	}
-
-	&.indent  {
-		top: 4px;
-		right: 4px;
 	}
 }
 

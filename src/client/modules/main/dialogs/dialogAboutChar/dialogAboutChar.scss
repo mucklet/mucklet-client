@@ -24,6 +24,10 @@
 		font-size: $font-size-small;
 	}
 
+	&--lfrp-header {
+		position: relative;
+	}
+
 	&--lfrp-placeholder {
 		display: block;
 		font-style: italic;

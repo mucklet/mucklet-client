@@ -104,6 +104,16 @@ class Whois {
 							]))
 							: null,
 						),
+						n.elem('div', { className: 'counter-container' }, [
+							...(c.rp == 'lfrp'
+								? [ n.elem('lfrp', 'div', { className: 'counter small highlight' }) ]
+								: []
+							),
+							...(c.type == 'puppet'
+								? [ n.elem('puppet', 'div', { className: 'counter small notice' }) ]
+								: []
+							),
+						]),
 					]),
 				])));
 			});
