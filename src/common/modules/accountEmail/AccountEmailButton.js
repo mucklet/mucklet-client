@@ -66,7 +66,7 @@ class AccountEmailButton {
 									: l10n.l('accountEmail.recoverRequiresEmail', "Recovery requires email."),
 								{ tagName: 'div', className: 'common--error' },
 							)),
-							n.elem('alert', 'div', { className: 'counter small alert' }),
+							n.elem('alert', 'div', { className: 'counter small top-right alert' }),
 						]),
 					])),
 				),

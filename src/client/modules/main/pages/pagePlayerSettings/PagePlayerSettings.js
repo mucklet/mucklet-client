@@ -58,7 +58,7 @@ class PagePlayerSettings {
 					click: this._onClick,
 				}}, [
 					n.component(new FAIcon('cog')),
-					n.elem('alert', 'div', { className: 'counter small alert' }),
+					n.elem('alert', 'div', { className: 'counter small top-right alert' }),
 				])),
 				(m, c) => c[m.alert ? 'removeNodeClass' : 'addNodeClass']('alert', 'hide'),
 			),

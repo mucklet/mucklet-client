@@ -12,7 +12,7 @@ class HubLayoutCounterMarker {
 
 	render(el) {
 		let tagClassName = '';
-		let countComponent = new Elem(n => n.elem('div', { className: 'counter-standalone' }, [
+		let countComponent = new Elem(n => n.elem('div', { className: 'counter' }, [
 			n.component('count', new Txt()),
 		]));
 		this.elem = new ModelComponent(

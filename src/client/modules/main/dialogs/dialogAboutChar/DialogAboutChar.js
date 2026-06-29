@@ -42,7 +42,7 @@ class DialogAboutChar {
 			let lfrpComponent = new PanelSection(
 				new Elem(n => n.elem('span', { className: 'dialogaboutchar--lfrp-header' }, [
 					n.component(new Txt(l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"), { tagName: 'h3' })),
-					n.elem('div', { className: 'counter small highlight' }),
+					n.elem('div', { className: 'counter small top-right highlight' }),
 				])),
 				new ModelComponent(
 					charInfo,
@@ -188,7 +188,7 @@ class DialogAboutChar {
 						c.getNode('status').setText(m.status ? ' (' + m.status + ')' : '');
 						puppeteer.setComponent(m.type == 'puppet' || m.puppeteer
 							? puppeteer.getComponent() || new Elem(n => n.elem('div', [
-								n.elem('div', { className: 'counter-standalone inline small notice' }),
+								n.elem('div', { className: 'counter small inline notice' }),
 								n.component(new ModelTxt(
 									m.puppeteer,
 									m => m

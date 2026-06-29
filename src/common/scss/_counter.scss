@@ -1,4 +1,6 @@
-.counter, .counter-standalone {
+// Base counter styling defines appearance only. Use size modifiers for size,
+// placement modifiers for position, and .counter-group for grouped counters.
+.counter {
 	pointer-events: none;
 	background: $theme-control-secondary-bg;
 	color: $theme-control-danger-fg;
@@ -50,18 +52,22 @@
 		height: 8px;
 		min-width: 8px;
 		border-radius: 4px;
+	}
+
+	&.top-right-overlap {
+		position: absolute;
+		top: -3px;
+		right: -3px;
+	}
+
+	&.top-right {
+		position: absolute;
 		top: 0px;
 		right: 0px;
 	}
 }
 
-.counter {
-	position: absolute;
-	top: -3px;
-	right: -3px;
-}
-
-.counter-container {
+.counter-group {
 	position: absolute;
 	top: 4px;
 	right: 4px;
@@ -75,4 +81,3 @@
 		flex: 0 0 auto;
 	}
 }
-

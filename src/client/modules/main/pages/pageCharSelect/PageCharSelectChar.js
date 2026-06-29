@@ -44,7 +44,7 @@ class PageCharSelectChar {
 							]),
 						]),
 					]),
-					n.elem('div', { className: 'counter-container' }, [
+					n.elem('div', { className: 'counter-group' }, [
 						n.elem('puppet', 'div', { className: 'counter small notice' }),
 					]),
 					n.component('actions', new Collapser(null)),

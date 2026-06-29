@@ -104,7 +104,7 @@ class Whois {
 							]))
 							: null,
 						),
-						n.elem('div', { className: 'counter-container' }, [
+						n.elem('div', { className: 'counter-group' }, [
 							...(c.rp == 'lfrp'
 								? [ n.elem('lfrp', 'div', { className: 'counter small highlight' }) ]
 								: []

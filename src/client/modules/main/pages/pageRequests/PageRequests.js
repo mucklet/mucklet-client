@@ -67,7 +67,7 @@ class PageRequests {
 							requests => requests.dispose(),
 							requests => new CollectionComponent(
 								requests,
-								new Elem(n => n.elem('div', { className: 'counter alert' }, [
+								new Elem(n => n.elem('div', { className: 'counter top-right-overlap alert' }, [
 									n.component('txt', new Txt("")),
 								])),
 								(col, c) => {

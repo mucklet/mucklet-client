@@ -55,7 +55,7 @@ class PageMail {
 				n.component(new FAIcon('envelope')),
 				n.component(new ModelComponent(
 					this.unread,
-					new Elem(n => n.elem('div', { className: 'counter alert' }, [
+					new Elem(n => n.elem('div', { className: 'counter top-right-overlap alert' }, [
 						n.component('txt', new Txt("")),
 					])),
 					(m, c) => {

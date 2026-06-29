@@ -46,7 +46,7 @@ class OverlayNavComponent {
 			duration: 0,
 		});
 		let listenComponent = new Elem(n => n.elem('div', {
-			className: 'overlaynav--listen counter small alert hide withtitle',
+			className: 'overlaynav--listen counter small top-right alert hide withtitle',
 			attributes: {
 				title: l10n.t('overlayNav.somethingIsListening', "Something is listening"),
 			},

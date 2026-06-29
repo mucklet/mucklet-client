@@ -54,7 +54,7 @@ class PageRoomChar {
 										(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote'),
 									)),
 								]),
-								n.elem('div', { className: 'counter-container' }, [
+								n.elem('div', { className: 'counter-group' }, [
 									n.elem('lfrp', 'div', { className: 'counter small highlight' }),
 									n.elem('puppet', 'div', { className: 'counter small notice' }),
 								]),
