@@ -7,10 +7,6 @@
 	padding: 4px;
 	border-radius: 8px;
 
-	&.highlight {
-		background: $theme-badge-highlight-bg;
-	}
-
 	&.dark {
 		background: $theme-badge-dark-bg;
 		.badge--avatar {
@@ -221,9 +217,6 @@
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
 			background: $theme-badge-default-bg-hover;
-			&.highlight {
-				background: $theme-badge-highlight-bg-hover;
-			}
 			&.dark {
 				background: $theme-badge-dark-bg-hover;
 			}

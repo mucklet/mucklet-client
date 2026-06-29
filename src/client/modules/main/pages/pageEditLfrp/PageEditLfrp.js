@@ -38,7 +38,7 @@ class PageEditLfrp {
 					click: () => this.open(ctrl),
 				}}, [
 					n.component(new FAIcon('icosahedron')),
-					n.elem('lfrp', 'div', { className: 'counter small highlight' }),
+					n.elem('lfrp', 'div', { className: 'counter small top-right highlight' }),
 				])),
 				(m, c) => c[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'hide'),
 			),

@@ -70,7 +70,7 @@ class PageReports {
 								reports,
 								new CollectionComponent(
 									unassigned,
-									new Elem(n => n.elem('div', { className: 'counter' }, [
+									new Elem(n => n.elem('div', { className: 'counter top-right-overlap' }, [
 										n.component('txt', new Txt("")),
 									])),
 									(col, c) => this._setCounter(c, reports, unassigned),

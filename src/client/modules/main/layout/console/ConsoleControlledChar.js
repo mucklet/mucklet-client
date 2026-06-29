@@ -26,7 +26,7 @@ class ConsoleControlledChar extends Elem {
 						this.module.charLog.getUnseenTargeted(),
 						new ModelComponent(
 							this.module.charLog.getUnseen(),
-							new Elem(n => n.elem('div', { className: 'console-controlledchar--counter counter' }, [
+							new Elem(n => n.elem('div', { className: 'console-controlledchar--counter counter top-right-overlap' }, [
 								n.component('txt', new Txt("")),
 							])),
 							(m, c) => {

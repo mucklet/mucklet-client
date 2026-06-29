@@ -57,6 +57,29 @@
 	&--tags {
 		padding-top: 6px;
 	}
+	&--puppet {
+		padding-bottom: 8px;
+	}
+
+	&--lfrp-header {
+		position: relative;
+	}
+
+	&--lfrp-counter.counter {
+		right: -12px;
+	}
+
+	&--lfrp-placeholder {
+		display: block;
+		font-style: italic;
+		font-size: $font-size-small;
+		padding-bottom: 10px;
+	}
+
+	&--puppeteer {
+		font-size: $font-size-small;
+		font-style: italic;
+	}
 }
 
 .pagechar--sleep {

@@ -44,6 +44,9 @@ class PageCharSelectChar {
 							]),
 						]),
 					]),
+					n.elem('div', { className: 'counter-group' }, [
+						n.elem('puppet', 'div', { className: 'counter small notice' }),
+					]),
 					n.component('actions', new Collapser(null)),
 				]),
 			]),
@@ -60,12 +63,13 @@ class PageCharSelectChar {
 					component,
 					(m, c) => {
 						c[m.state !== 'asleep' ? 'addNodeClass' : 'removeNodeClass']('btn', 'inactive');
-						c[m.type == 'puppet' ? 'addNodeClass' : 'removeNodeClass']('btn', 'highlight');
 						c[m.suspended ? 'addClass' : 'removeClass']('suspended');
 						let lvl = getCharIdleLevel(m);
 						for (let l of idleLevels) {
 							c[m.state != 'asleep' && l == lvl ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
 						}
+						// Set puppet marker
+						c[m.type == 'puppet' ? 'removeNodeClass' : 'addNodeClass']('puppet', 'remove');
 					},
 				),
 				(m, c, change) => {
