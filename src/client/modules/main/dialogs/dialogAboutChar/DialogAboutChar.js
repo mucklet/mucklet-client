@@ -187,10 +187,10 @@ class DialogAboutChar {
 						let puppeteer = c.getNode('puppeteer');
 						c.getNode('idle').setText(lvl.text);
 						c.getNode('status').setText(m.status ? ' (' + m.status + ')' : '');
-						puppeteer.setComponent(m.type == 'puppet' || m.puppeteer
+						let puppeteerComponent = m.type == 'puppet' || m.puppeteer
 							? puppeteer.getComponent() || new Elem(n => n.elem('div', [
 								n.elem('div', { className: 'counter small inline notice' }),
-								n.component(new ModelTxt(
+								n.component('txt', new ModelTxt(
 									m.puppeteer,
 									m => m
 										? l10n.l('dialogAboutChar.controlledBy', "Controlled by {fullname}", { fullname: (m.name + ' ' + m.surname).trim() })
@@ -200,8 +200,11 @@ class DialogAboutChar {
 									},
 								)),
 							]))
-							: null,
-						);
+							: null;
+						if (puppeteerComponent) {
+							puppeteerComponent.getNode('txt').setModel(m.puppeteer);
+						}
+						puppeteer.setComponent(puppeteerComponent);
 
 						for (let l of idleLevels) {
 							c[l == lvl ? 'addNodeClass' : 'removeNodeClass']('idleStatus', l.className);
