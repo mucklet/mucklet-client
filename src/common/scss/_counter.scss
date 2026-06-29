@@ -25,12 +25,20 @@
 		}
 	}
 
+	&.remove {
+		display: none;
+	}
+
 	&.alert {
 		background: $theme-status-danger-bg;
 	}
 
 	&.highlight {
 		background: $theme-status-info-bg;
+	}
+
+	&.notice {
+		background: $theme-status-warning-bg;
 	}
 
 	&.small {
@@ -51,5 +59,20 @@
 	position: absolute;
 	top: -3px;
 	right: -3px;
+}
+
+.counter-container {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	display: flex;
+	flex-direction: row;
+	column-gap: 4px;
+	pointer-events: none;
+
+	> .counter {
+		position: static;
+		flex: 0 0 auto;
+	}
 }
 

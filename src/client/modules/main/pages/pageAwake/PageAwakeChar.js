@@ -53,7 +53,10 @@ class PageAwakeChar {
 								(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote'),
 							)),
 						]),
-						n.elem('lfrp', 'div', { className: 'counter small highlight indent' }),
+						n.elem('div', { className: 'counter-container' }, [
+							n.elem('lfrp', 'div', { className: 'counter small highlight' }),
+							n.elem('puppet', 'div', { className: 'counter small notice' }),
+						]),
 						// n.component(new ModelComponent(
 						// 	this.model,
 						// 	new Collapser(null),
@@ -80,7 +83,6 @@ class PageAwakeChar {
 				this._setTooltip(m, c);
 
 				c[m.match ? 'removeNodeClass' : 'addNodeClass']('badge', 'inactive');
-				c[m.type == 'puppet' ? 'addNodeClass' : 'removeNodeClass']('badge', 'highlight');
 				let lvl = getCharIdleLevel(m);
 				for (let l of idleLevels) {
 					c[lvl == l ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
@@ -89,8 +91,9 @@ class PageAwakeChar {
 				if (change && (change.hasOwnProperty('match') || change.hasOwnProperty('watch'))) {
 					this.onChange();
 				}
-				// Set lfrp marker
-				c[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'hide');
+				// Set lfrp and puppet marker
+				c[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'remove');
+				c[m.type == 'puppet' ? 'removeNodeClass' : 'addNodeClass']('puppet', 'remove');
 			},
 		);
 		return this.elem.render(el);

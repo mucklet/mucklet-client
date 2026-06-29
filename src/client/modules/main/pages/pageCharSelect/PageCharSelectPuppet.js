@@ -22,7 +22,7 @@ class PageCharSelectPuppet {
 				this.puppet,
 				new Elem(n =>
 					n.elem('div', { className: 'pagecharselect-puppet' }, [
-						n.elem('btn', 'div', { className: 'pagecharselect-puppet--btn badge btn large highlight', events: {
+						n.elem('btn', 'div', { className: 'pagecharselect-puppet--btn badge btn large', events: {
 							click: () => this._toggleActions(),
 						}}, [
 							n.elem('div', { className: 'badge--select' }, [
@@ -52,6 +52,9 @@ class PageCharSelectPuppet {
 										},
 									)),
 								]),
+							]),
+							n.elem('div', { className: 'counter-container' }, [
+								n.elem('puppet', 'div', { className: 'counter small notice' }),
 							]),
 							n.component('actions', new Collapser(null)),
 						]),

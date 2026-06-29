@@ -54,7 +54,10 @@ class PageRoomChar {
 										(m, c) => c[m.props[this.char.id] ? 'addNodeClass' : 'removeNodeClass']('note', 'hasnote'),
 									)),
 								]),
-								n.elem('lfrp', 'div', { className: 'counter small highlight indent' }),
+								n.elem('div', { className: 'counter-container' }, [
+									n.elem('lfrp', 'div', { className: 'counter small highlight' }),
+									n.elem('puppet', 'div', { className: 'counter small notice' }),
+								]),
 							]),
 						]),
 					])),
@@ -71,13 +74,13 @@ class PageRoomChar {
 				sc.getNode('status').setText(m.status ? '(' + m.status + ') ' : '');
 				this._setTooltip(m, sc);
 				sc[m.state == 'asleep' ? 'addNodeClass' : 'removeNodeClass']('btn', 'inactive');
-				sc[m.type == 'puppet' ? 'addNodeClass' : 'removeNodeClass']('btn', 'highlight');
 				let lvl = getCharIdleLevel(m);
 				for (let l of idleLevels) {
 					sc[lvl == l ? 'addNodeClass' : 'removeNodeClass']('fullname', l.className);
 				}
-				// Set lfrp marker
-				sc[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'hide');
+				// Set lfrp and puppet marker
+				sc[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'remove');
+				sc[m.type == 'puppet' ? 'removeNodeClass' : 'addNodeClass']('puppet', 'remove');
 			},
 		);
 		return this.elem.render(el);

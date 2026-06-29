@@ -33,3 +33,4 @@
 - Respect the project package manager and lockfiles.
 - When working with _modules_, always follow the guidelines in `docs/understanding-modules.md`
 - Follow the guidelines in `docs/style-guide.md`
+- When working or reviewing theme token changes, always follow the guidelines in `docs/understanding-themetokens.md`

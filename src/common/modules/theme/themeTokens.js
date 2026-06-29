@@ -187,8 +187,6 @@ const tokens = {
 	// src/common/scss/_badge.scss
 	'badge.default.bg': (getToken) => getToken('surface.200.bg'),
 	'badge.default.fg': '#fff',
-	'badge.highlight': (getToken) => alpha(adjust(getToken('color.base.200'), 22, 8), 0.5),
-	'badge.highlight.hover': (getToken) => alpha(adjust(getToken('color.base.200'), 19, 8), 0.5),
 	'badge.dark.bg': (getToken) => getToken('surface.100.bg'),
 	'badge.dark.hover': (getToken) => adjust(getToken('color.base.200'), -6),
 	'badge.hover': (getToken) => adjust(getToken('color.base.200'), -3),
