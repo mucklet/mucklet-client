@@ -119,7 +119,7 @@
 	}
 	.cm-scroller {
 		overflow: auto;
-		scrollbar-color: $theme-color-base-500 transparent;
+		scrollbar-color: $theme-color-base-600 transparent;
 		&::-webkit-scrollbar {
 			width: 12px;
 			height: 12px;
@@ -132,7 +132,7 @@
 			background: $theme-color-base-200;
 		}
 		&::-webkit-scrollbar-thumb {
-			background: $theme-color-base-500;
+			background: $theme-color-base-600;
 			border: 2px solid $theme-color-base-200;
 			border-radius: 6px;
 		}

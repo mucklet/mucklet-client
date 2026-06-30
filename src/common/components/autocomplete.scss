@@ -1,11 +1,11 @@
 @import '~scss/variables';
 
 // Autocomplete colors
-$autocomplete-hover-background: lighten($color-action-300, 20%);
-$autocomplete-selected-background: lighten($color-action-300, 30%);
+$autocomplete-hover-bg: lighten($color-action-300, 20%);
+$autocomplete-selected-bg: lighten($color-action-300, 30%);
 // Autocomplete theme vars
-$theme-autocomplete-hover-background: var(--mu-autocomplete-hover-background, #{$autocomplete-hover-background});
-$theme-autocomplete-selected-background: var(--mu-autocomplete-selected-background, #{$autocomplete-selected-background});
+$theme-autocomplete-hover-bg: var(--mu-autocomplete-hover-bg, #{$autocomplete-hover-bg});
+$theme-autocomplete-selected-bg: var(--mu-autocomplete-selected-bg, #{$autocomplete-selected-bg});
 
 .autocomplete {
 	color: $theme-color-neutral-100;
@@ -38,11 +38,11 @@ $theme-autocomplete-selected-background: var(--mu-autocomplete-selected-backgrou
 	}
 
 	> div:hover:not(.group) {
-		background: $theme-autocomplete-hover-background;
+		background: $theme-autocomplete-hover-bg;
 	}
 
 	> div.selected {
-		background: $theme-autocomplete-selected-background;
+		background: $theme-autocomplete-selected-bg;
 		cursor: pointer;
 	}
 }

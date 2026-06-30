@@ -128,7 +128,7 @@ class StripePaymentElement {
 				theme: 'flat',
 				variables: {
 					colorPrimary: '#c1a657', // $color-accent
-					colorBackground: '#303753', // $color-base-500
+					colorBackground: '#2c334d', // $color-base-500
 					colorText: '#fffcf2', // $color-contrast
 					colorDanger: '#9a593e', // $log-error-fg
 					colorTextPlaceholder: '#676c82', // $control-placeholder-fg

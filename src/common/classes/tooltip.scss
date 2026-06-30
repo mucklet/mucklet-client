@@ -2,7 +2,7 @@
 @import '~scss/mixins';
 .tooltip {
 	position: absolute;
-	background: $theme-tooltip-background;
+	background: $theme-tooltip-bg;
 	padding: 8px 16px;
 	z-index: 1000;
 	// left: 16px;
@@ -79,10 +79,10 @@
 		border-width: 5px;
 		border-style: solid;
 		transform: translateY(-5px) translateX(-5px);
-		border-color: $theme-tooltip-background transparent transparent transparent;
+		border-color: $theme-tooltip-bg transparent transparent transparent;
 	}
 
 	&--caret.tooltip--pos-bottom {
-		border-color: transparent transparent $theme-tooltip-background transparent;
+		border-color: transparent transparent $theme-tooltip-bg transparent;
 	}
 }

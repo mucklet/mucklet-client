@@ -1,10 +1,5 @@
 @import '~scss/variables';
 
-// Navbuttons colors
-$navbuttons-btn-hover-fill: lighten($color-base-500, 5%);
-// Navbuttons theme vars
-$theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbuttons-btn-hover-fill});
-
 .navbuttons {
 
 	svg.shadow {
@@ -41,10 +36,10 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 		&:not(.disabled) {
 			cursor: pointer;
 			&:hover, &:focus {
-				fill: $theme-navbuttons-btn-hover-fill;
+				fill: $theme-color-base-600;
 				outline: 0;
 				.navbuttons--icon {
-					fill:$theme-color-neutral-500;
+					fill: $theme-color-neutral-500;
 				}
 			}
 
@@ -63,7 +58,7 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 		}
 		&.selected:not(.disabled) {
 			&:hover, &:focus {
-				fill: $theme-navbuttons-btn-hover-fill;
+				fill: $theme-color-base-600;
 				.navbuttons--icon {
 					fill: $theme-color-neutral-500;
 				}

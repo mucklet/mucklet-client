@@ -1,9 +1,9 @@
 @import '~scss/variables';
 
 // Popuptip colors
-$popuptip-background: rgba(darken($color-base-200, 10%), 0.9);
+$popuptip-bg: rgba(darken($color-base-200, 10%), 0.9);
 // Popuptip theme vars
-$theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background});
+$theme-popuptip-bg: var(--mu-popuptip-bg, #{$popuptip-bg});
 
 .popuptip {
 	display: block;
@@ -16,7 +16,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 	&--tip {
 		position: absolute;
 		z-index: 100;
-		background: $theme-popuptip-background;
+		background: $theme-popuptip-bg;
 		padding: 8px 16px;
 		border-radius: 4px;
 	}
@@ -40,7 +40,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 				margin-top: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent transparent $theme-popuptip-background;
+				border-color: transparent transparent transparent $theme-popuptip-bg;
 			}
 		}
 	}
@@ -59,7 +59,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 				margin-top: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent transparent $theme-popuptip-background;
+				border-color: transparent transparent transparent $theme-popuptip-bg;
 			}
 		}
 	}
@@ -78,7 +78,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 				margin-left: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: $theme-popuptip-background transparent transparent transparent;
+				border-color: $theme-popuptip-bg transparent transparent transparent;
 			}
 		}
 	}
@@ -97,7 +97,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 				margin-left: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent $theme-popuptip-background transparent;
+				border-color: transparent transparent $theme-popuptip-bg transparent;
 			}
 		}
 	}
@@ -117,7 +117,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 				margin-top: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent $theme-popuptip-background transparent transparent ;
+				border-color: transparent $theme-popuptip-bg transparent transparent ;
 			}
 		}
 	}
@@ -136,7 +136,7 @@ $theme-popuptip-background: var(--mu-popuptip-background, #{$popuptip-background
 				margin-left: -5px;
 				border-width: 5px;
 				border-style: solid;
-				border-color: transparent transparent $theme-popuptip-background transparent;
+				border-color: transparent transparent $theme-popuptip-bg transparent;
 			}
 		}
 	}

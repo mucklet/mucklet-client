@@ -50,7 +50,7 @@
 		width: 17px;
 		height: 17px;
 		text-align: center;
-		@include btn-style(none, $theme-color-base-500, $theme-color-base-500, $theme-color-neutral-300, $theme-color-neutral-400);
+		@include btn-style(none, $theme-color-base-500, $theme-color-base-600, $theme-color-neutral-300, $theme-color-neutral-400);
 		> i {
 			line-height: 15px;
 		}

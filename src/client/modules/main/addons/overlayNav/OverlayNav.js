@@ -1,10 +1,5 @@
 import OverlayNavComponent from './OverlayNavComponent';
-import { adjust } from 'utils/color';
 import './overlayNav.scss';
-
-const themeTokens = {
-	'overlaynav.badge.background.hover': (getToken) => adjust(getToken('color.base.400'), 3),
-};
 
 /**
  * OverlayNav adds an map and navigation overlay to the activePanel main area.
@@ -20,13 +15,11 @@ class OverlayNav {
 			'roomPages',
 			'pageRoom',
 			'toaster',
-			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-		this.module.theme.addTokens(themeTokens);
 
 		this.module.charLog.addOverlay({
 			id: 'nav',
@@ -42,7 +35,6 @@ class OverlayNav {
 
 	dispose() {
 		this.module.charLog.removeOverlay('overlayNav');
-		this.module.theme.removeTokens(themeTokens);
 	}
 }
 
