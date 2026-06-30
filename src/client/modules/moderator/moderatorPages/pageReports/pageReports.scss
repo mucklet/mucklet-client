@@ -32,16 +32,6 @@
 	&--icon.rejected, &--icon.failed {
 		@include btn-style($theme-status-danger-bg, $theme-status-danger-bg, $theme-status-danger-bg, $theme-control-danger-fg, $theme-control-danger-fg);
 	}
-
-	&--badge.unassigned {
-		background: $theme-badge-dark-bg;
-
-		&:not(:disabled) {
-			&:hover, &:focus, &:active {
-				background: $theme-badge-dark-bg-hover;
-			}
-		}
-	}
 }
 
 .pagereports-report, .pagereports-reporter {
