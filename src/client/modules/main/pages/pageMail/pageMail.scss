@@ -20,16 +20,6 @@
 
 .pagemail-mail {
 	padding: 2px 14px;
-
-	&--badge.unread {
-		background: $theme-pagemail-mail-unread-background;
-
-		&:not(:disabled) {
-			&:hover, &:focus, &:active {
-				background: $theme-pagemail-mail-unread-background-hover;
-			}
-		}
-	}
 }
 
 .pagemail-mailcontent {
