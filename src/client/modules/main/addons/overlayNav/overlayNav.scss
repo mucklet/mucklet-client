@@ -17,15 +17,15 @@
 		// The shadow should be the same color as the surface to create a fade out effect.
 		box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
 		height: 28px;
-		background: $theme-control-raised-bg;
+		background: $theme-control-default-500-bg;
 		.badge--text {
-			color: $theme-control-raised-fg;
+			color: $theme-control-default-500-fg;
 		}
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: $theme-control-raised-bg-hover;
+				background: $theme-control-default-500-bg-hover;
 				.badge--text {
-					color: $theme-control-raised-fg-hover;
+					color: $theme-control-default-500-fg-hover;
 				}
 			}
 		}

@@ -17,7 +17,7 @@
 		padding: 0 2px 2px 0;
 
 		> .iconbtn {
-			@include btn-style(none, $theme-control-default-bg-hover, $theme-control-default-bg-hover, $theme-content-muted-fg, $theme-color-neutral-250);
+			@include btn-style(none, $theme-control-default-300-bg-hover, $theme-control-default-300-bg-active, $theme-content-muted-fg, $theme-color-neutral-250);
 		}
 
 		> .iconbtn.active {

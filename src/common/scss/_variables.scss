@@ -149,16 +149,16 @@ $theme-content-placeholder-fg: var(--mu-content-placeholder-fg, #{$content-place
 $theme-content-error-fg: var(--mu-content-error-fg, #{$theme-color-danger-300});
 
 // Controls
-$theme-control-default-bg: var(--mu-control-default-bg, #{$theme-color-base-300});
-$theme-control-default-bg-hover: var(--mu-control-default-bg-hover, #{$theme-color-base-400});
-$theme-control-default-bg-active: var(--mu-control-default-bg-active, #{$theme-color-base-500});
-$theme-control-default-fg: var(--mu-control-default-fg, #{$theme-color-neutral-300});
-$theme-control-default-fg-hover: var(--mu-control-default-fg-hover, #{$theme-color-neutral-400});
-$theme-control-raised-bg: var(--mu-control-raised-bg, #{$theme-color-base-500});
-$theme-control-raised-bg-hover: var(--mu-control-raised-bg-hover, #{$theme-color-base-600});
-$theme-control-raised-bg-active: var(--mu-control-raised-bg-active, #{$theme-color-base-600});
-$theme-control-raised-fg: var(--mu-control-raised-fg, #{$theme-color-neutral-400});
-$theme-control-raised-fg-hover: var(--mu-control-raised-fg-hover, #{$theme-color-neutral-500});
+$theme-control-default-300-bg: var(--mu-control-default-300-bg, #{$theme-color-base-300});
+$theme-control-default-300-bg-hover: var(--mu-control-default-300-bg-hover, #{$theme-color-base-400});
+$theme-control-default-300-bg-active: var(--mu-control-default-300-bg-active, #{$theme-color-base-500});
+$theme-control-default-300-fg: var(--mu-control-default-300-fg, #{$theme-color-neutral-300});
+$theme-control-default-300-fg-hover: var(--mu-control-default-300-fg-hover, #{$theme-color-neutral-400});
+$theme-control-default-500-bg: var(--mu-control-raised-bg, #{$theme-color-base-500});
+$theme-control-default-500-bg-hover: var(--mu-control-raised-bg-hover, #{$theme-color-base-600});
+$theme-control-default-500-bg-active: var(--mu-control-raised-bg-active, #{$theme-color-base-600});
+$theme-control-default-500-fg: var(--mu-control-raised-fg, #{$theme-color-neutral-400});
+$theme-control-default-500-fg-hover: var(--mu-control-raised-fg-hover, #{$theme-color-neutral-500});
 $theme-control-primary-bg: var(--mu-control-primary-bg, #{$theme-color-action-300});
 $theme-control-primary-bg-hover: var(--mu-control-primary-bg-hover, #{$theme-color-action-200});
 $theme-control-primary-bg-active: var(--mu-control-primary-bg-active, #{$theme-color-action-100});
