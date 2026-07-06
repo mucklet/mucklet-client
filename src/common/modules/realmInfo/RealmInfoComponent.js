@@ -172,7 +172,7 @@ class RealmInfoComponent {
 											socialLinks
 												.filter(l => !!links[l.id])
 												.map(l => n.elem('a', {
-													className: 'iconbtn solid semilarge' + (l.svg ? ' svg' : ''),
+													className: 'iconbtn default-400 filled semilarge' + (l.svg ? ' svg' : ''),
 													attributes: {
 														href: links[l.id],
 														rel: 'noopener noreferrer',

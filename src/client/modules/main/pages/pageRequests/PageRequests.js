@@ -55,7 +55,7 @@ class PageRequests {
 				this.module.playerTabs.addTab({
 					id: 'requests',
 					sortOrder: 100,
-					tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium light pagerequests--tool-btn', events: {
+					tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 pagerequests--tool-btn', events: {
 						click: (c, e) => {
 							click();
 							e.stopPropagation();

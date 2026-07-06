@@ -46,7 +46,7 @@ class Dialog {
 		this.comp = new Elem(n => n.elem('div', { className: 'dialog--container' }, [
 			n.elem('div', this.opt, [
 				n.elem('div', { className: 'dialog--head' }, [
-					n.elem('button', { className: 'dialog--close iconbtn medium', events: { click: () => this.close() }}, [
+					n.elem('button', { className: 'dialog--close iconbtn medium default-500', events: { click: () => this.close() }}, [
 						n.component(new FAIcon('close')),
 					]),
 					n.component(new Txt(typeof this.opt.title == 'function' ? this.opt.title(this) : this.opt.title, { tagName: 'h2' })),

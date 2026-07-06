@@ -15,7 +15,7 @@ class PageCharProfileProfileContent {
 
 	render(el) {
 		let editProfile = new Elem(n => n.elem('div', { className: 'badge--select badge--select-margin' }, [
-			n.elem('button', { className: 'iconbtn medium solid smallicon', events: {
+			n.elem('button', { className: 'iconbtn medium default-400 filled smallicon', events: {
 				click: (c, ev) => {
 					this._updateProfile();
 					ev.stopPropagation();
@@ -23,7 +23,7 @@ class PageCharProfileProfileContent {
 			}}, [
 				n.component(new FAIcon('refresh')),
 			]),
-			n.elem('button', { className: 'iconbtn medium solid smallicon', events: {
+			n.elem('button', { className: 'iconbtn medium default-400 filled smallicon', events: {
 				click: (c, ev) => {
 					this.module.pageEditCharProfile.open(this.ctrl, this.profile.id);
 					ev.stopPropagation();

@@ -81,7 +81,7 @@ class HubLayoutComponent {
 												])),
 												(m, c) => {
 													c[m.mode == mode.key ? 'addClass' : 'removeClass']('primary');
-													c[m.mode != mode.key ? 'addClass' : 'removeClass']('darken');
+													c[m.mode != mode.key ? 'addClass' : 'removeClass']('recessed');
 												},
 											),
 											{
@@ -165,7 +165,7 @@ class HubLayoutComponent {
 											)),
 											n.component(new KebabMenu(this.module.playerTools.getTools(), {
 												className: 'hublayout--kebabmenu',
-												btnClassName: 'iconbtn medium solid',
+												btnClassName: 'iconbtn medium default-400',
 												topMargin: 10,
 											})),
 										]),

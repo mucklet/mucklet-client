@@ -40,7 +40,7 @@ class EnvEditor {
 						n.elem('div', { className: 'flex-row' }, [
 							n.component(new Txt(key, { tagName: 'div', className: 'badge--title flex-1' })),
 							n.elem('button', {
-								className: 'iconbtn puny lighten flex-auto',
+								className: 'iconbtn puny flex-auto',
 								events: {
 									click: (el, e) => {
 										this.model.set({ [key]: undefined });

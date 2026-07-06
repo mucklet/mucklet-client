@@ -69,7 +69,7 @@ class OverseerRealmSettings {
 								type: 'success',
 								autoclose: true,
 							})),
-					}, className: 'iconbtn medium solid' }, [
+					}, className: 'iconbtn medium filled' }, [
 						n.component(new FAIcon('refresh')),
 					]),
 				])),
@@ -88,7 +88,7 @@ class OverseerRealmSettings {
 					body: l10n.l('overseerRealmSettings.deleteRealmBody', "Do you really wish to delete this realm?"),
 					confirm: l10n.l('overseerRealmSettings.delete', "Delete"),
 				}),
-			}, className: 'iconbtn medium solid' }, [
+			}, className: 'iconbtn medium filled' }, [
 				n.component(new FAIcon('trash')),
 			])),
 			mode: 'overseer',

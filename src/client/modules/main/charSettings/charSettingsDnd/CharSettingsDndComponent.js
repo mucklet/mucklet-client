@@ -39,7 +39,7 @@ class CharSettingsDndComponent {
 					(m, c) => c.setComponent(components.setDndMsg = m.dnd
 						? components.setDndMsg || new Elem(n => n.elem('button', { events: {
 							click: () => this.module.dialogEditDndMsg.open(this.char, this.puppeteer, this.charSettings),
-						}, className: 'btn medium light full-width icon-left' }, [
+						}, className: 'btn medium default-400 full-width icon-left' }, [
 							n.component(new FAIcon('pencil')),
 							n.component(new Txt(l10n.l('charSettingsDnd.editMessage', "Edit message"))),
 						]))

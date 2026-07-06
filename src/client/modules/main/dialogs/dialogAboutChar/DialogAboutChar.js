@@ -102,7 +102,7 @@ class DialogAboutChar {
 										let isWatched = m && m[char.id];
 
 										c.setComponent(new Elem(n => n.elem('button', {
-											className: 'btn lighten medium icon-left',
+											className: 'btn default-500 medium icon-left',
 											events: {
 												click: () => {
 													let rid = 'note.player.' + this.module.player.getPlayer().id + '.watch.' + char.id;

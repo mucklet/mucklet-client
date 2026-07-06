@@ -272,7 +272,8 @@ class RouteRealmSettingsRealm {
 							])),
 							(m, c) => {
 								c[v.hidden == m.hidden ? 'addClass' : 'removeClass']('primary');
-								c[v.hidden != m.hidden ? 'addClass' : 'removeClass']('darken');
+								c[v.hidden != m.hidden ? 'addClass' : 'removeClass']('default-400');
+								c[v.hidden != m.hidden ? 'addClass' : 'removeClass']('filled');
 							},
 						),
 						{

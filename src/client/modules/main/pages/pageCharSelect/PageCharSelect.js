@@ -38,7 +38,7 @@ class PageCharSelect {
 		this.module.playerTabs.addTab({
 			id: 'charSelect',
 			sortOrder: 5,
-			tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
+			tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400', events: {
 				click: (c, e) => {
 					click();
 					e.stopPropagation();

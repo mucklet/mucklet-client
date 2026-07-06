@@ -12,7 +12,7 @@ class PlayerSettingsSecurityComponent extends ModelCollapser {
 					l10n.l('playerSettingsSecurity.security', "Security"),
 					new Elem(n => n.elem('button', { events: {
 						click: () => module.dialogChangePassword.open(m.id),
-					}, className: 'btn medium light full-width icon-left' }, [
+					}, className: 'btn medium default-400 full-width icon-left' }, [
 						n.component(new FAIcon('key')),
 						n.component(new Txt(l10n.l('playerSettingsSecurity.changePassword', "Change password"))),
 					])),

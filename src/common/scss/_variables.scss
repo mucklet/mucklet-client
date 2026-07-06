@@ -60,11 +60,6 @@ $idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
 $status-success: #458136;
 
 /* Shared component color fallbacks */
-$button-lighten-bg-hover: rgba($white, 0.07);
-$button-lighten-bg-active: rgba($white, 0.10);
-$button-darken-bg: rgba($black, 0.3);
-$button-darken-bg-hover: rgba($black, 0.5);
-$button-darken-bg-active: rgba($black, 0.6);
 
 $badge-100-bg-hover: darken($color-base-100, 2%);
 
@@ -159,11 +154,11 @@ $theme-control-default-400-bg-hover: var(--mu-control-default-400-bg-hover, #{$t
 $theme-control-default-400-bg-active: var(--mu-control-default-400-bg-active, #{$theme-color-base-600});
 $theme-control-default-400-fg: var(--mu-control-default-400-fg, #{$theme-color-neutral-400});
 $theme-control-default-400-fg-hover: var(--mu-control-default-400-fg-hover, #{$theme-color-neutral-500});
-$theme-control-default-500-bg: var(--mu-control-raised-bg, #{$theme-color-base-500});
-$theme-control-default-500-bg-hover: var(--mu-control-raised-bg-hover, #{$theme-color-base-600});
-$theme-control-default-500-bg-active: var(--mu-control-raised-bg-active, #{$theme-color-base-600});
-$theme-control-default-500-fg: var(--mu-control-raised-fg, #{$theme-color-neutral-400});
-$theme-control-default-500-fg-hover: var(--mu-control-raised-fg-hover, #{$theme-color-neutral-500});
+$theme-control-default-500-bg: var(--mu-control-default-500-bg, #{$theme-color-base-500});
+$theme-control-default-500-bg-hover: var(--mu-control-default-500-bg-hover, #{$theme-color-base-600});
+$theme-control-default-500-bg-active: var(--mu-control-default-500-bg-active, #{$theme-color-base-600});
+$theme-control-default-500-fg: var(--mu-control-default-500-fg, #{$theme-color-neutral-400});
+$theme-control-default-500-fg-hover: var(--mu-control-default-500-fg-hover, #{$theme-color-neutral-500});
 $theme-control-primary-bg: var(--mu-control-primary-bg, #{$theme-color-action-300});
 $theme-control-primary-bg-hover: var(--mu-control-primary-bg-hover, #{$theme-color-action-200});
 $theme-control-primary-bg-active: var(--mu-control-primary-bg-active, #{$theme-color-action-100});
@@ -178,6 +173,11 @@ $theme-control-danger-bg: var(--mu-control-danger-bg, #{$theme-color-danger-300}
 $theme-control-danger-bg-hover: var(--mu-control-danger-bg-hover, #{$theme-color-danger-200});
 $theme-control-danger-bg-active: var(--mu-control-danger-bg-active, #{$theme-color-danger-100});
 $theme-control-danger-fg: var(--mu-control-danger-fg, #{$black});
+$theme-control-recessed-bg: var(--mu-control-default-200-bg, #{$theme-color-base-200});
+$theme-control-recessed-bg-hover: var(--mu-control-default-200-bg-hover, #{$theme-color-base-100});
+$theme-control-recessed-bg-active: var(--mu-control-default-200-bg-active, #{$theme-color-base-100});
+$theme-control-recessed-fg: var(--mu-control-default-200-fg, #{$theme-color-neutral-300});
+$theme-control-recessed-fg-hover: var(--mu-control-default-200-fg-hover, #{$theme-color-neutral-400});
 $theme-control-placeholder-fg: var(--mu-control-placeholder-fg, #{$control-placeholder-fg});
 
 // Inputs
@@ -296,12 +296,6 @@ $theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$theme-color-a
 $theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$theme-color-base-200});
 
 /* Shared component theme vars */
-// Buttons
-$theme-button-lighten-bg-hover: var(--mu-button-lighten-bg-hover, #{$button-lighten-bg-hover});
-$theme-button-lighten-bg-active: var(--mu-button-lighten-bg-active, #{$button-lighten-bg-active});
-$theme-button-darken-bg: var(--mu-button-darken-bg, #{$button-darken-bg});
-$theme-button-darken-bg-hover: var(--mu-button-darken-bg-hover, #{$button-darken-bg-hover});
-$theme-button-darken-bg-active: var(--mu-button-darken-bg-active, #{$button-darken-bg-active});
 
 // Badges
 $theme-badge-100-bg: var(--mu-badge-100-bg, #{$theme-surface-100-bg});

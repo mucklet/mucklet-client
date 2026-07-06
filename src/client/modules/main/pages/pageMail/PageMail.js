@@ -46,7 +46,7 @@ class PageMail {
 		this.module.playerTabs.addTab({
 			id: 'mail',
 			sortOrder: 30,
-			tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium light pagemail--tool-btn', events: {
+			tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 pagemail--tool-btn', events: {
 				click: (c, e) => {
 					click();
 					e.stopPropagation();

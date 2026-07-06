@@ -83,6 +83,11 @@ const tokens = {
 	'control.danger.bg.hover': (getToken) => getToken('color.danger.200'),
 	'control.danger.bg.active': (getToken) => getToken('color.danger.100'),
 	'control.danger.fg': '#000',
+	'control.recessed.bg': (getToken) => getToken('color.base.200'),
+	'control.recessed.bg.hover': (getToken) => getToken('color.base.100'),
+	'control.recessed.bg.active': (getToken) => getToken('color.base.100'),
+	'control.recessed.fg': (getToken) => getToken('color.neutral.300'),
+	'control.recessed.fg.hover': (getToken) => getToken('color.neutral.400'),
 	'control.placeholder.fg': (getToken) => adjust(getToken('color.base.200'), 34, -15),
 
 	'input.default.bg': (getToken) => getToken('color.base.500'),
@@ -193,13 +198,6 @@ const tokens = {
 	'svg.placeholder.100.fg': (getToken) => getToken('surface.100.bg'),
 	'svg.placeholder.200.bg': (getToken) => getToken('surface.400.bg'),
 	'svg.placeholder.200.fg': (getToken) => getToken('surface.200.bg'),
-
-	// src/common/scss/_button.scss
-	'button.lighten.bg.hover': 'rgba(255, 255, 255, 0.07)',
-	'button.lighten.bg.active': 'rgba(255, 255, 255, 0.1)',
-	'button.darken.bg': 'rgba(0, 0, 0, 0.3)',
-	'button.darken.bg.hover': 'rgba(0, 0, 0, 0.5)',
-	'button.darken.bg.active': 'rgba(0, 0, 0, 0.6)',
 
 	// src/common/scss/_badge.scss
 	'badge.100.bg': (getToken) => getToken('surface.100.bg'),

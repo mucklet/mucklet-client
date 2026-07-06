@@ -56,7 +56,7 @@ class PageReports {
 				this.module.playerTabs.addTab({
 					id: 'reports',
 					sortOrder: 110,
-					tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium light pagereports--tool-btn', events: {
+					tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 pagereports--tool-btn', events: {
 						click: (c, e) => {
 							click();
 							e.stopPropagation();

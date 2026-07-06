@@ -50,7 +50,7 @@ class ConsoleModeSettings {
 							])),
 							(m, c) => {
 								c[v.key == m.consoleMode ? 'addClass' : 'removeClass']('primary');
-								c[v.key != m.consoleMode ? 'addClass' : 'removeClass']('darken');
+								c[v.key != m.consoleMode ? 'addClass' : 'removeClass']('recessed');
 							},
 						),
 						{
