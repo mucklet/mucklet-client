@@ -1,5 +1,4 @@
 @import '~scss/variables';
-@import './overlayNav-theme';
 
 .overlaynav {
 	position: absolute;
@@ -15,12 +14,19 @@
 	}
 
 	&--badge > .btn.badge, &--toggle.iconbtn {
-		box-shadow: 0px 0px 8px 4px $theme-color-base-200;
+		// The shadow should be the same color as the surface to create a fade out effect.
+		box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
 		height: 28px;
-		background: $theme-color-base-400;
+		background: $theme-control-raised-bg;
+		.badge--text {
+			color: $theme-control-raised-fg;
+		}
 		&:not(:disabled) {
 			&:hover, &:focus, &:active {
-				background: $theme-overlaynav-badge-background-hover;
+				background: $theme-control-raised-bg-hover;
+				.badge--text {
+					color: $theme-control-raised-fg-hover;
+				}
 			}
 		}
 	}
@@ -58,12 +64,18 @@
 .overlaynav-area {
 	padding-left: 4px;
 	&--map {
-		box-shadow: 0px 0px 8px 4px $theme-color-base-200;
+		// The shadow should be the same color as the surface to create a fade out effect.
+		box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
 	}
 }
 
 .overlaynav-buttons {
 	padding: 2px 2px 0 0;
+
+	// The shadow should be the same color as the surface to create a fade out effect.
+	> svg {
+		filter: drop-shadow(0px 0px 8px $theme-surface-200-bg);
+	}
 
 	&--tooltip {
 		width: 262px;

@@ -1,15 +1,6 @@
 @import '~scss/variables';
 
-// Navbuttons colors
-$navbuttons-btn-hover-fill: lighten($color-base-500, 5%);
-// Navbuttons theme vars
-$theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbuttons-btn-hover-fill});
-
 .navbuttons {
-
-	svg.shadow {
-		filter: drop-shadow(0px 0px 8px $theme-color-base-200);
-	}
 
 	text {
 		-webkit-user-select: none;
@@ -21,13 +12,13 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 	&--count {
 		font-family: $font-text;
 		font-size: $font-size-small;
-		fill: $theme-color-neutral-400;
+		fill: $theme-control-raised-fg;
 		fill-opacity: 0;
 	}
 
 	&--icon {
-		font-family:'FontAwesome';
-		fill: $theme-color-neutral-400;
+		font-family: 'FontAwesome';
+		fill: $theme-control-raised-fg;
 		fill-opacity: 0;
 	}
 
@@ -36,36 +27,28 @@ $theme-navbuttons-btn-hover-fill: var(--mu-navbuttons-btn-hover-fill, #{$navbutt
 	}
 
 	&--btn {
-		fill: $theme-color-base-500;
+		fill: $theme-control-raised-bg;
 
 		&:not(.disabled) {
 			cursor: pointer;
 			&:hover, &:focus {
-				fill: $theme-navbuttons-btn-hover-fill;
+				fill: $theme-control-raised-bg-hover;
 				outline: 0;
 				.navbuttons--icon {
-					fill:$theme-color-neutral-500;
+					fill: $theme-control-raised-fg-hover;
 				}
 			}
 
 			&.selected {
-				fill: $theme-color-action-300;
+				fill: $theme-control-primary-bg;
 				.navbuttons--icon {
-					fill: $theme-color-base-300;
+					fill: $theme-control-primary-fg;
 				}
 				&:not(.disabled):hover, &:not(.disabled):focus {
-					fill: $theme-color-action-200;
+					fill: $theme-control-primary-bg-hover;
 					.navbuttons--icon {
-						fill: $theme-color-base-400;
+						fill: $theme-control-primary-fg-hover;
 					}
-				}
-			}
-		}
-		&.selected:not(.disabled) {
-			&:hover, &:focus {
-				fill: $theme-navbuttons-btn-hover-fill;
-				.navbuttons--icon {
-					fill: $theme-color-neutral-500;
 				}
 			}
 		}

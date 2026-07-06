@@ -90,8 +90,8 @@
 
 	&--avatar {
 		> svg {
-			background-color: $theme-color-base-400;
-			color: $theme-color-base-200;
+			background-color: $theme-svg-placeholder-200-bg;
+			color: $theme-svg-placeholder-200-fg;
 		}
 	}
 }

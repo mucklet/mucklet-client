@@ -87,7 +87,6 @@ class NavButtons {
 	 * @param {object} state Button state object.
 	 * @param {object} [opt] Optional parameters.
 	 * @param {string} [opt.className] Additional class names to append to font-awesome class names.
-	 * @param {bool} [opt.shadow] Add a drop shadow to the buttons.
 	 * @param {bool} [opt.center] Render a center button.
 	 * @param {(dir: string, c: NavButtons) => void} [opt.onClick] Callback called on click
 	 */
@@ -106,8 +105,7 @@ class NavButtons {
 	width="100"
 	version="1.1"
 	xmlns="http://www.w3.org/2000/svg"
-	xmlns:svg="http://www.w3.org/2000/svg"${opt?.shadow ? `
-	class="shadow"` : ''}>
+	xmlns:svg="http://www.w3.org/2000/svg">
 	<defs>
 		<path
 			id="btn"
@@ -125,7 +123,7 @@ class NavButtons {
 		>&#x${o.char};</text>`)
 		.join('\n\t\t')}
 	</defs>
-	${directions.map((dir, i) => `<g class="navbuttons--btn dir-${dir}" transform="rotate(${i * 45} 50 50)" tabindex="0">
+	${directions.map((dir, i) => `<g class="navbuttons--btn dir-${dir}" transform="rotate(${i * 45} 50 50)">
 	<title></title>
 	<use href="#btn"/>
 	${icons
@@ -274,6 +272,8 @@ class NavButtons {
 	_updateBtn(dir, btnState) {
 		let g = this.btns[dir];
 
+		// Tabindex -1 means tab should not give focus to element
+		g.setAttribute('tabindex', btnState.disabled ? '-1' : '0');
 		setClass(g, 'disabled', btnState.disabled);
 		setClass(g, 'selected', btnState.selected);
 		g.firstElementChild.textContent = btnState.title;

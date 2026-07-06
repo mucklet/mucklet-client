@@ -21,23 +21,23 @@
 
 
 		&.info {
-			background: $theme-toaster-info-background;
+			background: $theme-toaster-info-bg;
 			&:hover {
 				background: $theme-surface-500-bg;
 			}
 		}
 
 		&.success {
-			background: $theme-toaster-success-background;
+			background: $theme-toaster-success-bg;
 			&:hover {
-				background: $theme-toaster-success-background-hover;
+				background: $theme-toaster-success-bg-hover;
 			}
 		}
 
 		&.warn {
-			background: $theme-toaster-warn-background;
+			background: $theme-toaster-warn-bg;
 			&:hover {
-				background: $theme-toaster-warn-background-hover;
+				background: $theme-toaster-warn-bg-hover;
 			}
 		}
 
@@ -61,7 +61,7 @@
 		position: absolute;
 		top: 4px;
 		right: 4px;
-		@include btn-style(none, $theme-toaster-close-background-hover, $theme-toaster-close-background-hover, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
+		@include btn-style(none, $theme-toaster-close-bg-hover, $theme-toaster-close-bg-hover, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 	}
 }
 

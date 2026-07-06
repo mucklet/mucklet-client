@@ -10,7 +10,8 @@ const tokens = {
 	'color.base.200': (getToken) => getToken('color.base'),
 	'color.base.300': (getToken) => adjust(getToken('color.base'), 4),
 	'color.base.400': (getToken) => adjust(getToken('color.base'), 8),
-	'color.base.500': (getToken) => adjust(getToken('color.base'), 14),
+	'color.base.500': (getToken) => adjust(getToken('color.base'), 12),
+	'color.base.600': (getToken) => adjust(getToken('color.base'), 16),
 
 	'color.accent.300': (getToken) => getToken('color.accent'),
 	'color.contrast.200': (getToken) => adjust(getToken('color.contrast'), -16),
@@ -40,6 +41,7 @@ const tokens = {
 	'surface.300.bg': (getToken) => getToken('color.base.300'),
 	'surface.400.bg': (getToken) => getToken('color.base.400'),
 	'surface.500.bg': (getToken) => getToken('color.base.500'),
+	'surface.600.bg': (getToken) => getToken('color.base.600'),
 	'surface.overlay.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
 	'surface.raised.shadow': 'rgba(0, 0, 0, 0.3)',
 
@@ -57,6 +59,11 @@ const tokens = {
 	'control.default.bg.active': (getToken) => getToken('color.base.500'),
 	'control.default.fg': (getToken) => getToken('color.neutral.300'),
 	'control.default.fg.hover': (getToken) => getToken('color.neutral.400'),
+	'control.raised.bg': (getToken) => getToken('color.base.500'),
+	'control.raised.bg.hover': (getToken) => getToken('color.base.600'),
+	'control.raised.bg.active': (getToken) => getToken('color.base.600'),
+	'control.raised.fg': (getToken) => getToken('color.neutral.400'),
+	'control.raised.fg.hover': (getToken) => getToken('color.neutral.500'),
 	'control.primary.bg': (getToken) => getToken('color.action.300'),
 	'control.primary.bg.hover': (getToken) => getToken('color.action.200'),
 	'control.primary.bg.active': (getToken) => getToken('color.action.100'),
@@ -176,6 +183,12 @@ const tokens = {
 	'tag.title.border.hover': (getToken) => getToken('tag.title.fg.hover'),
 	'tag.icon.fg': (getToken) => getToken('color.base.200'),
 
+	// SVGs
+	'svg.placeholder.100.bg': (getToken) => getToken('surface.300.bg'),
+	'svg.placeholder.100.fg': (getToken) => getToken('surface.100.bg'),
+	'svg.placeholder.200.bg': (getToken) => getToken('surface.400.bg'),
+	'svg.placeholder.200.fg': (getToken) => getToken('surface.200.bg'),
+
 	// src/common/scss/_button.scss
 	'button.light.fg.hover': (getToken) => getToken('color.neutral.500'),
 	'button.lighten.bg.hover': 'rgba(255, 255, 255, 0.07)',
@@ -185,11 +198,11 @@ const tokens = {
 	'button.darken.bg.active': 'rgba(0, 0, 0, 0.6)',
 
 	// src/common/scss/_badge.scss
-	'badge.default.bg': (getToken) => getToken('surface.200.bg'),
-	'badge.default.fg': '#fff',
-	'badge.dark.bg': (getToken) => getToken('surface.100.bg'),
-	'badge.dark.hover': (getToken) => adjust(getToken('color.base.200'), -6),
-	'badge.hover': (getToken) => adjust(getToken('color.base.200'), -3),
+	'badge.100.bg': (getToken) => getToken('surface.100.bg'),
+	'badge.100.bg.hover': (getToken) => adjust(getToken('color.base.200'), -6),
+	'badge.200.bg': (getToken) => getToken('surface.200.bg'),
+	'badge.200.fg': '#fff',
+	'badge.200.bg.hover': (getToken) => getToken('surface.100.bg'),
 	'badge.avatar.bg': (getToken) => getToken('surface.400.bg'),
 	'badge.avatar.fg': (getToken) => getToken('surface.200.bg'),
 	'badge.dark.avatar.bg': (getToken) => getToken('surface.300.bg'),
@@ -227,36 +240,33 @@ const tokens = {
 	'kbd.highlight': '#fff',
 
 	// src/common/components/autocomplete.scss
-	'autocomplete.hover.background': (getToken) => adjust(getToken('color.action.300'), 20),
-	'autocomplete.selected.background': (getToken) => adjust(getToken('color.action.300'), 30),
-
-	// src/common/components/navButtons.scss
-	'navbuttons.btn.hover.fill': (getToken) => adjust(getToken('color.base.200'), 19),
-
-	// src/common/components/kebabMenu.scss
-	'kebabmenu.btn.background': (getToken) => alpha(getToken('color.base.200'), 0.8),
+	'autocomplete.hover.bg': (getToken) => adjust(getToken('color.action.300'), 20),
+	'autocomplete.selected.bg': (getToken) => adjust(getToken('color.action.300'), 30),
 
 	// src/common/components/togglebox.scss
 	'togglebox.action.hover': (getToken) => adjust(getToken('color.action.300'), 5),
 	'togglebox.danger.hover': (getToken) => adjust(getToken('color.danger.300'), 5),
 
 	// src/common/classes/tooltip.scss
-	'tooltip.background': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
+	'tooltip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
 	'tooltip.fg': (getToken) => getToken('color.neutral.500'),
 
 	// src/common/components/popupTip.scss
-	'popuptip.background': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
+	'popuptip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
 
 	// src/common/components/popupPill.scss
-	'popuppill.tip.background': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
+	'popuppill.tip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
 
 	// src/common/modules/toaster/toaster.scss
-	'toaster.info.background': (getToken) => alpha(adjust(getToken('color.base.200'), 14), 0.9),
-	'toaster.success.background': (getToken) => alpha(adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14), 0.9),
-	'toaster.warn.background': (getToken) => alpha(adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3), 0.9),
-	'toaster.success.background.hover': (getToken) => adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14),
-	'toaster.warn.background.hover': (getToken) => adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3),
-	'toaster.close.background.hover': (getToken) => alpha(adjust(getToken('color.contrast.300'), 4), 0.06),
+	//
+	// It is a module, but since it is also used by hub which doesn't have the
+	// Theme module, we register them here.
+	'toaster.info.bg': (getToken) => alpha(getToken('color.base.500'), 0.9),
+	'toaster.success.bg': (getToken) => alpha(adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14), 0.9),
+	'toaster.success.bg.hover': (getToken) => adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14),
+	'toaster.warn.bg': (getToken) => alpha(adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3), 0.9),
+	'toaster.warn.bg.hover': (getToken) => adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3),
+	'toaster.close.bg.hover': (getToken) => alpha(adjust(getToken('color.contrast.300'), 4), 0.06),
 	'toaster.shadow': '#000',
 };
 
