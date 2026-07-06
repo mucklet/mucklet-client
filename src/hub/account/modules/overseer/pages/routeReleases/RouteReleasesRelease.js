@@ -235,7 +235,7 @@ class RouteReleasesRelease {
 								body: l10n.l('routeReleases.deleteReleaseBody', "Do you really wish to delete this release?"),
 								confirm: l10n.l('routeReleases.delete', "Delete"),
 							}),
-						}, className: 'iconbtn medium solid' }, [
+						}, className: 'iconbtn medium filled' }, [
 							n.component(new FAIcon('trash')),
 						]),
 					]),

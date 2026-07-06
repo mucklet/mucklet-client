@@ -11,7 +11,6 @@
 	}
 
 	&--add.iconbtn {
-		@include btn-style(none, $theme-control-default-bg-hover, $theme-control-default-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
 		position: absolute;
 		right: 3px;
 		top: 3px;

@@ -24,7 +24,7 @@ class PageReportsReportContent {
 
 	render(el) {
 		let subcomponents = {
-			comment: new Elem(n => n.elem('button', { className: 'iconbtn tiny solid tinyicon flex-auto', events: {
+			comment: new Elem(n => n.elem('button', { className: 'iconbtn tiny default-400 filled tinyicon flex-auto', events: {
 				click: (el, e) => {
 					this._comment();
 					e.stopPropagation();

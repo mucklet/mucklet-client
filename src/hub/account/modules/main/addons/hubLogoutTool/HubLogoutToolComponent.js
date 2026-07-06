@@ -8,7 +8,7 @@ class HubLogoutToolComponent {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('button', { className: 'btn medium hublogouttool lighten', events: {
+		this.elem = new Elem(n => n.elem('button', { className: 'btn medium hublogouttool icon-center default-400', events: {
 			click: () => this.module.self.logout(),
 		}}, [
 			n.component(new FAIcon('sign-out')),

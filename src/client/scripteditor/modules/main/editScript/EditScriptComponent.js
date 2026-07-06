@@ -54,25 +54,30 @@ class EditScriptEditor {
 		this.elem = new Elem(n => n.elem('div', { className: 'editscript' }, [
 
 			// Toggle button for script errors
-			n.component(new ModelFader(this.stateModel, [{
-				condition: m => m.errors,
-				factory: m => new Elem(n => n.elem('button', {
-					className: 'iconbtn medium editscript--errorsbtn lighten',
-					events: {
-						click: () => this._toggleErrors(),
-					},
-				}, [
-					n.component(new ModelFader(this.stateModel, [
-						{
-							condition: m => m.errorsOpen,
-							factory: m => new FAIcon('times'),
+			n.component(new ModelFader(this.stateModel, [
+				{
+					condition: m => m.errors && m.errorsOpen,
+					factory: m => new Elem(n => n.elem('button', {
+						className: 'iconbtn medium default-500',
+						events: {
+							click: () => this._toggleErrors(),
 						},
-						{
-							factory: m => new FAIcon('exclamation-triangle', { className: 'editscript--erroricon' }),
-						},
+					}, [
+						n.component(new FAIcon('times')),
 					])),
-				])),
-			}])),
+				},
+				{
+					condition: m => m.errors,
+					factory: m => new Elem(n => n.elem('button', {
+						className: 'iconbtn medium',
+						events: {
+							click: () => this._toggleErrors(),
+						},
+					}, [
+						n.component(new FAIcon('exclamation-triangle', { className: 'editscript--erroricon' })),
+					])),
+				},
+			], { className: 'editscript--errorsbtn' })),
 
 			// Header
 			n.elem('div', { className: 'editscript--header' }, [
@@ -92,7 +97,7 @@ class EditScriptEditor {
 								target: '_blank',
 								rel: 'noopener noreferrer',
 							},
-							className: 'editscript--helpbtn iconbtn light',
+							className: 'editscript--helpbtn iconbtn default-400',
 						}, [
 							n.component(new FAIcon('question-circle')),
 						]),

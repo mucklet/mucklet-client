@@ -76,7 +76,7 @@ class DialogCropImage {
 							])),
 							(m, c) => {
 								c[m.mode == mode.key ? 'addClass' : 'removeClass']('primary');
-								c[m.mode != mode.key ? 'addClass' : 'removeClass']('darken');
+								c[m.mode != mode.key ? 'addClass' : 'removeClass']('recessed');
 							},
 						)))),
 						// n.component(new LabelToggleBox(l10n.l('dialogCropImage.pixelated', "Pixelated"), false, {

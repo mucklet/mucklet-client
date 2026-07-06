@@ -52,7 +52,7 @@ class PlayerPanel {
 				closeOnReselect: true,
 				hideDefaultTab: true,
 			}),
-			btnClass: 'light',
+			btnClass: 'default-400',
 		});
 
 		this._setListeners(true);

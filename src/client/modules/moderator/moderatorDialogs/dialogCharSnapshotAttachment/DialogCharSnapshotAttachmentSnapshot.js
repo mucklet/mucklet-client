@@ -109,7 +109,7 @@ class DialogCharSnapshotAttachmentSnapshot {
 					condition: avatar => avatar?.href && !avatar?.deleted,
 					factory: avatar => new Elem(n => n.elem('div', { className: 'dialogcharsnapshotattachment--imagebtn' }, [
 						n.elem('button', {
-							className: 'btn medium icon-left lighten',
+							className: 'btn medium icon-left default-500',
 							events: {
 								click: () => this.module.confirm.open(() => this._wipeCharAvatar(), {
 									title: l10n.l('dialogCharSnapshotAttachment.confirmWipe', "Confirm avatar wipe"),
@@ -145,7 +145,7 @@ class DialogCharSnapshotAttachmentSnapshot {
 							condition: image => image?.href && !image?.deleted,
 							factory: image => new Elem(n => n.elem('div', { className: 'dialogcharsnapshotattachment--imagebtn flex-auto' }, [
 								n.elem('button', {
-									className: 'btn medium icon-left lighten',
+									className: 'btn medium icon-left default-500',
 									events: {
 										click: () => this.module.confirm.open(() => this._wipeCharImage(), {
 											title: l10n.l('dialogCharSnapshotAttachment.confirmWipe', "Confirm image wipe"),

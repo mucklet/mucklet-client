@@ -19,7 +19,7 @@ class EditTxt extends Elem {
 			n.elem('div', opt, [
 				n.component('text', new Txt(value)),
 				n.component('input', new Input(null, { events: { blur: () => this._onBlur() }})),
-				n.elem('btn', { className: 'dialog--close iconbtn medium', events: { click: () => this.toggleEdit() }}, [
+				n.elem('btn', { className: 'iconbtn medium', events: { click: () => this.toggleEdit() }}, [
 					n.component('icon', new FAIcon('pencil')),
 				]),
 			])

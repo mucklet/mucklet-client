@@ -32,7 +32,7 @@ class LayoutMobileComponent {
 									})),
 									n.component(new KebabMenu(this.module.playerTools.getTools(), {
 										className: 'layoutmobile--kebabmenu',
-										btnClassName: 'iconbtn medium light',
+										btnClassName: 'iconbtn medium default-400',
 										topMargin: 10,
 									})),
 								]),

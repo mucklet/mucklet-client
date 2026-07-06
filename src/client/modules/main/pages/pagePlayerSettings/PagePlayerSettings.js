@@ -54,7 +54,7 @@ class PagePlayerSettings {
 			sortOrder: 100,
 			componentFactory: () => new ModelComponent(
 				this.model,
-				new Elem(n => n.elem('button', { className: 'iconbtn medium lighten pageplayersettings--tool-btn', events: {
+				new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 pageplayersettings--tool-btn', events: {
 					click: this._onClick,
 				}}, [
 					n.component(new FAIcon('cog')),

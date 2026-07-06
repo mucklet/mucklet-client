@@ -253,7 +253,7 @@
 	right: 0px;
 	top: 0px;
 
-	@include btn-style($theme-charlog-eventmenu-background, $theme-control-default-bg-hover, $theme-control-default-bg-active, $theme-control-default-fg, $theme-control-default-fg-hover);
+	@include btn-style($theme-charlog-eventmenu-background, $theme-control-default-300-bg-hover, $theme-control-default-300-bg-active, $theme-control-default-300-fg, $theme-control-default-300-fg-hover);
 
 	&--menu {
 		position: absolute;
@@ -279,7 +279,7 @@
 		width: 100%;
 		transition: color 0.2s, background-color 0.2s;
 		cursor: pointer;
-		@include btn-style(none, $theme-control-default-bg-active, $theme-control-default-bg-active, $theme-control-default-fg-hover, $theme-button-light-fg-hover);
+		@include btn-style(none, $theme-control-default-300-bg-active, $theme-control-default-300-bg-active, $theme-control-default-400-fg, $theme-control-default-400-fg-hover);
 	}
 
 	&--btnicon {

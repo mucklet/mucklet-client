@@ -30,7 +30,7 @@ class PageTicketsTicketContent {
 			msg: new Elem(n => n.elem('div', { className: 'badge--text' }, [
 				n.component(new ModelHtml(this.ticket, m => formatText(m.msg), { tagName: 'span', className: 'common--formattext' })),
 			])),
-			comment: new Elem(n => n.elem('button', { className: 'iconbtn tiny solid tinyicon flex-auto', events: {
+			comment: new Elem(n => n.elem('button', { className: 'iconbtn tiny default-400 filled tinyicon flex-auto', events: {
 				click: (el, e) => {
 					this._comment();
 					e.stopPropagation();

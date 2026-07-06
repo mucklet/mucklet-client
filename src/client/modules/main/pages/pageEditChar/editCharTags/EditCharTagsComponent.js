@@ -74,7 +74,7 @@ class EditCharTagsComponent {
 							},
 						})),
 						n.elem('add', 'button', {
-							className: 'editchartags--add iconbtn medium tinyicon',
+							className: 'editchartags--add iconbtn default-400 medium tinyicon',
 							attributes: { type: 'button' },
 							events: {
 								click: (c, e) => {

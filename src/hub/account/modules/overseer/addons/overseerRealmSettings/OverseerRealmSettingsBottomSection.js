@@ -202,7 +202,8 @@ class OverseerRealmSettingsBottomSection {
 						])),
 						(m, c) => {
 							c[v.key == m.type ? 'addClass' : 'removeClass']('primary');
-							c[v.key != m.type ? 'addClass' : 'removeClass']('darken');
+							c[v.key != m.type ? 'addClass' : 'removeClass']('default-400');
+							c[v.key != m.type ? 'addClass' : 'removeClass']('filled');
 						},
 					),
 					{

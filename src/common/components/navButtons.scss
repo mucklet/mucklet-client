@@ -12,13 +12,13 @@
 	&--count {
 		font-family: $font-text;
 		font-size: $font-size-small;
-		fill: $theme-control-raised-fg;
+		fill: $theme-control-default-500-fg;
 		fill-opacity: 0;
 	}
 
 	&--icon {
 		font-family: 'FontAwesome';
-		fill: $theme-control-raised-fg;
+		fill: $theme-control-default-500-fg;
 		fill-opacity: 0;
 	}
 
@@ -27,15 +27,15 @@
 	}
 
 	&--btn {
-		fill: $theme-control-raised-bg;
+		fill: $theme-control-default-500-bg;
 
 		&:not(.disabled) {
 			cursor: pointer;
 			&:hover, &:focus {
-				fill: $theme-control-raised-bg-hover;
+				fill: $theme-control-default-500-bg-hover;
 				outline: 0;
 				.navbuttons--icon {
-					fill: $theme-control-raised-fg-hover;
+					fill: $theme-control-default-500-fg-hover;
 				}
 			}
 

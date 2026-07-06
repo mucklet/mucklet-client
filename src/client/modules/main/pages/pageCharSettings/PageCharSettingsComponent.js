@@ -71,7 +71,7 @@ class PageCharSettingsComponent {
 					]),
 					n.elem('button', { events: {
 						click: () => this.module.dialogDeleteChar.open(this.char),
-					}, className: 'iconbtn medium light' }, [
+					}, className: 'iconbtn medium default-400' }, [
 						n.component(new FAIcon('trash')),
 					]),
 				]),

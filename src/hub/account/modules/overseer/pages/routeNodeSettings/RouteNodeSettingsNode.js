@@ -334,7 +334,7 @@ class RouteNodeSettingsNode {
 											type: 'success',
 											autoclose: true,
 										})),
-								}, className: 'iconbtn medium solid' }, [
+								}, className: 'iconbtn medium filled' }, [
 									n.component(new FAIcon('refresh')),
 								]),
 							])),
@@ -346,7 +346,7 @@ class RouteNodeSettingsNode {
 								body: l10n.l('routeNodeSettings.deleteNodeBody', "Do you really wish to delete this node?"),
 								confirm: l10n.l('routeNodeSettings.delete', "Delete"),
 							}),
-						}, className: 'iconbtn medium solid' }, [
+						}, className: 'iconbtn medium filled' }, [
 							n.component(new FAIcon('trash')),
 						]),
 					]),
