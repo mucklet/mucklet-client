@@ -94,11 +94,11 @@
 	@include btn-style($theme-control-secondary-bg, $theme-control-secondary-bg-hover, $theme-control-secondary-bg-active, $theme-control-secondary-fg, $theme-control-secondary-fg-hover);
 }
 
-.btn.warning {
+.btn.warning, .iconbtn.warning {
 	@include btn-style($theme-control-danger-bg, $theme-control-danger-bg-hover, $theme-control-danger-bg-active, $theme-control-danger-fg, $theme-control-danger-fg);
 }
 
-.btn.recessed {
+.btn.recessed, .iconbtn.recessed {
 	@include btn-style(
 		$theme-control-recessed-bg,
 		$theme-control-recessed-bg-hover,

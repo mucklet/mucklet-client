@@ -8,20 +8,42 @@
 	&--dir-icons {
 		padding-right: 4px;
 		border-right: solid 1px $theme-surface-100-bg;
+
+		display: grid;
+		grid-template-columns: auto auto auto;
+		grid-template-rows: auto auto auto;
+		gap: 2px 2px;
 	}
 	&--misc-icons {
 		padding-left: 4px;
+
+		display: grid;
+		grid-template-columns: auto auto;
+		grid-template-rows: auto auto;
+		gap: 2px 2px;
 	}
 
-	&--icon {
-		padding: 0 2px 2px 0;
+	// &--icon {
+	// 	padding: 0 2px 2px 0;
 
-		> .iconbtn {
-			@include btn-style(none, $theme-control-default-300-bg-hover, $theme-control-default-300-bg-active, $theme-content-muted-fg, $theme-color-neutral-250);
-		}
+	// 	> .iconbtn {
+	// 		@include btn-style(
+	// 			none,
+	// 			$theme-control-default-300-bg-hover,
+	// 			$theme-control-default-300-bg-active,
+	// 			$theme-control-default-300-fg,
+	// 			$theme-control-default-300-fg-hover
+	// 		);
+	// 	}
 
-		> .iconbtn.active {
-			@include btn-style($theme-control-primary-bg, $theme-control-primary-bg-hover, $theme-control-primary-bg-hover, $theme-control-primary-fg, $theme-control-primary-fg-hover);
-		}
-	}
+	// 	> .iconbtn.active {
+	// 		@include btn-style(
+	// 			$theme-control-primary-bg,
+	// 			$theme-control-primary-bg-hover,
+	// 			$theme-control-primary-bg-hover,
+	// 			$theme-control-primary-fg,
+	// 			$theme-control-primary-fg-hover
+	// 		);
+	// 	}
+	// }
 }

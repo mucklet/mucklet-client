@@ -35,7 +35,6 @@ $color-contrast-300: $color-contrast;
 
 $color-neutral-100: darken($color-neutral, 24%);
 $color-neutral-200: darken($color-neutral, 16%);
-$color-neutral-250: darken($color-neutral, 8%);
 $color-neutral-300: $color-neutral;
 $color-neutral-400: lighten($color-neutral, 4%);
 $color-neutral-500: lighten($color-neutral, 8%);
@@ -98,7 +97,6 @@ $theme-color-contrast-300: var(--mu-color-contrast-300, #{$color-contrast-300});
 
 $theme-color-neutral-100: var(--mu-color-neutral-100, #{$color-neutral-100});
 $theme-color-neutral-200: var(--mu-color-neutral-200, #{$color-neutral-200});
-$theme-color-neutral-250: var(--mu-color-neutral-250, #{$color-neutral-250});
 $theme-color-neutral-300: var(--mu-color-neutral-300, #{$color-neutral-300});
 $theme-color-neutral-400: var(--mu-color-neutral-400, #{$color-neutral-400});
 $theme-color-neutral-500: var(--mu-color-neutral-500, #{$color-neutral-500});
@@ -260,7 +258,7 @@ $theme-log-code-fg: var(--mu-log-code-fg, #{$theme-color-accent-300});
 $theme-log-code-bg: var(--mu-log-code-bg, #{$theme-color-base-100});
 $theme-log-header-fg: var(--mu-log-header-fg, #{$theme-color-accent-300});
 $theme-log-link-fg: var(--mu-log-link-fg, #{$theme-link-default-fg});
-$theme-log-cmd-ooc-fg: var(--mu-log-cmd-ooc-fg, #{$theme-color-neutral-250});
+$theme-log-cmd-ooc-fg: var(--mu-log-cmd-ooc-fg, #{$theme-color-neutral-300});
 $theme-log-formatter-fg: var(--mu-log-formatter-fg, #{$theme-color-neutral-200});
 $theme-log-emphasis-fg: var(--mu-log-emphasis-fg, #{$theme-color-action-300});
 $theme-log-fieldset-border: var(--mu-log-fieldset-border, #{$theme-color-neutral-200});
@@ -274,7 +272,7 @@ $theme-log-highlight-ooc-fg: var(--mu-log-highlight-ooc-fg, #{$theme-color-neutr
 $theme-log-highlight-comm-fg: var(--mu-log-highlight-comm-fg, #{$theme-color-contrast-300});
 $theme-log-highlight-event-bg: var(--mu-log-highlight-event-bg, #{$theme-surface-300-bg});
 $theme-log-highlight-event-fg: var(--mu-log-highlight-event-fg, #{$theme-color-neutral-400});
-$theme-log-highlight-event-ooc-fg: var(--mu-log-highlight-event-ooc-fg, #{$theme-color-neutral-250});
+$theme-log-highlight-event-ooc-fg: var(--mu-log-highlight-event-ooc-fg, #{$theme-color-neutral-300});
 $theme-log-highlight-event-comm-fg: var(--mu-log-highlight-event-comm-fg, #{$theme-color-neutral-700});
 $theme-log-highlight-active-bg: var(--mu-log-highlight-active-bg, #{$theme-surface-500-bg});
 $theme-log-highlight-active-fg: var(--mu-log-highlight-active-fg, #{$theme-color-neutral-500});
