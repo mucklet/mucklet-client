@@ -279,7 +279,7 @@
 		width: 100%;
 		transition: color 0.2s, background-color 0.2s;
 		cursor: pointer;
-		@include btn-style(none, $theme-control-default-300-bg-active, $theme-control-default-300-bg-active, $theme-control-default-300-fg-hover, $theme-button-light-fg-hover);
+		@include btn-style(none, $theme-control-default-300-bg-active, $theme-control-default-300-bg-active, $theme-control-default-400-fg, $theme-control-default-400-fg-hover);
 	}
 
 	&--btnicon {

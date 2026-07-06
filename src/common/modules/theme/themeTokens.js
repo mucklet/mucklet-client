@@ -59,6 +59,11 @@ const tokens = {
 	'control.default.300.bg.active': (getToken) => getToken('color.base.500'),
 	'control.default.300.fg': (getToken) => getToken('color.neutral.300'),
 	'control.default.300.fg.hover': (getToken) => getToken('color.neutral.400'),
+	'control.default.400.bg': (getToken) => getToken('color.base.400'),
+	'control.default.400.bg.hover': (getToken) => getToken('color.base.500'),
+	'control.default.400.bg.active': (getToken) => getToken('color.base.600'),
+	'control.default.400.fg': (getToken) => getToken('color.neutral.400'),
+	'control.default.400.fg.hover': (getToken) => getToken('color.neutral.500'),
 	'control.default.500.bg': (getToken) => getToken('color.base.500'),
 	'control.default.500.bg.hover': (getToken) => getToken('color.base.600'),
 	'control.default.500.bg.active': (getToken) => getToken('color.base.600'),
@@ -190,7 +195,6 @@ const tokens = {
 	'svg.placeholder.200.fg': (getToken) => getToken('surface.200.bg'),
 
 	// src/common/scss/_button.scss
-	'button.light.fg.hover': (getToken) => getToken('color.neutral.500'),
 	'button.lighten.bg.hover': 'rgba(255, 255, 255, 0.07)',
 	'button.lighten.bg.active': 'rgba(255, 255, 255, 0.1)',
 	'button.darken.bg': 'rgba(0, 0, 0, 0.3)',

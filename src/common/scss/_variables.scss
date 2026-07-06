@@ -154,6 +154,11 @@ $theme-control-default-300-bg-hover: var(--mu-control-default-300-bg-hover, #{$t
 $theme-control-default-300-bg-active: var(--mu-control-default-300-bg-active, #{$theme-color-base-500});
 $theme-control-default-300-fg: var(--mu-control-default-300-fg, #{$theme-color-neutral-300});
 $theme-control-default-300-fg-hover: var(--mu-control-default-300-fg-hover, #{$theme-color-neutral-400});
+$theme-control-default-400-bg: var(--mu-control-default-400-bg, #{$theme-color-base-400});
+$theme-control-default-400-bg-hover: var(--mu-control-default-400-bg-hover, #{$theme-color-base-500});
+$theme-control-default-400-bg-active: var(--mu-control-default-400-bg-active, #{$theme-color-base-600});
+$theme-control-default-400-fg: var(--mu-control-default-400-fg, #{$theme-color-neutral-400});
+$theme-control-default-400-fg-hover: var(--mu-control-default-400-fg-hover, #{$theme-color-neutral-500});
 $theme-control-default-500-bg: var(--mu-control-raised-bg, #{$theme-color-base-500});
 $theme-control-default-500-bg-hover: var(--mu-control-raised-bg-hover, #{$theme-color-base-600});
 $theme-control-default-500-bg-active: var(--mu-control-raised-bg-active, #{$theme-color-base-600});
@@ -292,7 +297,6 @@ $theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$theme-color-base-200});
 
 /* Shared component theme vars */
 // Buttons
-$theme-button-light-fg-hover: var(--mu-button-light-fg-hover, #{$theme-color-neutral-500});
 $theme-button-lighten-bg-hover: var(--mu-button-lighten-bg-hover, #{$button-lighten-bg-hover});
 $theme-button-lighten-bg-active: var(--mu-button-lighten-bg-active, #{$button-lighten-bg-active});
 $theme-button-darken-bg: var(--mu-button-darken-bg, #{$button-darken-bg});
