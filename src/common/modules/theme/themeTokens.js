@@ -95,6 +95,9 @@ const tokens = {
 	'control.recessed.fg': (getToken) => getToken('color.neutral.300'),
 	'control.recessed.fg.hover': (getToken) => getToken('color.neutral.400'),
 	'control.placeholder.fg': (getToken) => adjust(getToken('color.base.200'), 34, -15),
+	'control.overlay.bg': (getToken) => 'rgba(255, 255, 255, 0.02)',
+	'control.overlay.bg.hover': (getToken) => 'rgba(255, 255, 255, 0.06)',
+	'control.overlay.bg.active': (getToken) => 'rgba(255, 255, 255, 0.08)',
 
 	'input.default.bg': (getToken) => getToken('color.base.500'),
 	'input.default.fg': (getToken) => getToken('color.contrast.300'),
@@ -271,8 +274,8 @@ const tokens = {
 	// It is a module, but since it is also used by hub which doesn't have the
 	// Theme module, we register them here.
 	'toaster.info.bg': (getToken) => alpha(getToken('color.base.500'), 0.9),
-	'toaster.success.bg': (getToken) => alpha(adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14), 0.9),
-	'toaster.success.bg.hover': (getToken) => adjust(mix(getToken('color.accent.300'), getToken('color.action.300'), 52), -38, 14),
+	'toaster.success.bg': (getToken) => alpha(mix(getToken('status.success.bg'), getToken('color.base.200'), 50), 0.9),
+	'toaster.success.bg.hover': (getToken) => mix(getToken('status.success.bg'), getToken('color.base.200'), 50),
 	'toaster.warn.bg': (getToken) => alpha(adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3), 0.9),
 	'toaster.warn.bg.hover': (getToken) => adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3),
 	'toaster.close.bg.hover': (getToken) => alpha(adjust(getToken('color.contrast.300'), 4), 0.06),

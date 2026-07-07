@@ -72,7 +72,6 @@ The mixin signature is:
 | --- | --- | --- |
 | `src/client/modules/main/layout/charLog/charLog.scss:282` | `.charlog-eventmenu--btn` | `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` |
 | `src/common/components/kebabMenu.scss:36` | `.kebabmenu--btn` | `none`, `$theme-color-base-500`, `$theme-color-base-600`, `$theme-color-neutral-400`, `$theme-content-strong-fg` |
-| `src/common/modules/toaster/toaster.scss:64` | `.toaster--close` | `none`, `$theme-toaster-close-bg-hover`, `$theme-toaster-close-bg-hover`, `$theme-control-default-300-fg-hover`, `$theme-control-default-400-fg-hover` |
 | `src/common/scss/_button.scss:116` | `.btn.default-400, .iconbtn.default-400` | `none`, `$theme-control-default-400-bg-hover`, `$theme-control-default-400-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` |
 | `src/common/scss/_button.scss:129` | `.btn.default-500, .iconbtn.default-500` | `none`, `$theme-control-default-500-bg-hover`, `$theme-control-default-500-bg-active`, `$theme-control-default-500-fg`, `$theme-control-default-500-fg-hover` |
 | `src/common/scss/_button.scss:210` | `.iconbtn` | `none`, `$theme-control-default-300-bg-hover`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` |
@@ -112,23 +111,6 @@ The default transparent icon style uses the 300 control level:
 The shared `.btn.default-400, .iconbtn.default-400` and
 `.btn.default-500, .iconbtn.default-500` variants provide stronger control
 levels without local `@include btn-style` calls in module SCSS.
-
-### Small remove/close icon buttons
-
-The tag remove buttons are identical:
-
-| Files | Arguments |
-| --- | --- |
-| `charTagsList.scss:99`, `realmTagsList.scss:76` | `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` |
-
-`keywordList.scss:53` is visually similar but uses primitive base hover colors
-and weaker foreground colors. It should be checked against the tag remove
-buttons; if no distinct contrast is needed, all three can move to one shared
-small remove icon style.
-
-`toaster.scss:64` is also a small close button, but its hover background is
-component-specific and should stay separate unless toaster close styling becomes
-a shared component variant.
 
 ### Menu item buttons
 
@@ -174,5 +156,4 @@ hover background when the first argument is `none`.
 | `none`, `$theme-control-default-300-bg-hover`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` | `_button.scss:210` | `.iconbtn` | `default icon` |
 | `none`, `$theme-control-default-400-bg-hover`, `$theme-control-default-400-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` | `_button.scss:116` | `.btn.default-400, .iconbtn.default-400` | `default-400` |
 | `none`, `$theme-control-default-500-bg-hover`, `$theme-control-default-500-bg-active`, `$theme-control-default-500-fg`, `$theme-control-default-500-fg-hover` | `_button.scss:129` | `.btn.default-500, .iconbtn.default-500` | `default-500` |
-| `none`, `$theme-toaster-close-bg-hover`, `$theme-toaster-close-bg-hover`, `$theme-control-default-300-fg-hover`, `$theme-control-default-400-fg-hover` | `toaster.scss:64` | `.toaster--close` | (Uses toaster specific with white) |
 | `rgba($white, 0.5)`, `rgba($white, 0.6)`, `rgba($white, 0.7)`, `$black`, `$black` | `pageArea.scss:108` | `.pagearea--btn.iconbtn` | none |

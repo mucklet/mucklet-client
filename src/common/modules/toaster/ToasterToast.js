@@ -15,7 +15,7 @@ class ToasterToast {
 			let opt = this.opt;
 			if (opt.closeOn == 'button') {
 				children.push(n.elem('button', {
-					className: 'toaster-toast--close iconbtn small',
+					className: 'toaster-toast--close iconbtn small default-400 overlay',
 					events: {
 						click: () => this.close(),
 					},

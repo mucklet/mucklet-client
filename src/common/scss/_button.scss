@@ -151,6 +151,24 @@
 	}
 }
 
+.btn.default-300, .iconbtn.default-300,
+.btn.default-400, .iconbtn.default-400,
+.btn.default-500, .iconbtn.default-500 {
+	&.overlay {
+		&:not(:disabled) {
+			&:hover {
+				background: $theme-control-overlay-bg-hover;
+			}
+			&:active, &:focus {
+				background: $theme-control-overlay-bg-active;
+			}
+		}
+		&.filled {
+			background: $theme-control-overlay-bg;
+		}
+	}
+}
+
 // Add this class to a <button> or element with a .btn class
 // to create a larger sized button.
 .btn.large {
