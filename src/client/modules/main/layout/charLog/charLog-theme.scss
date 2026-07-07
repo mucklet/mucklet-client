@@ -1,10 +1,8 @@
 @import '~scss/variables';
 
 // Charlog colors
-$charlog-invalid-background: rgba($log-error-fg, 0.5);
-$charlog-eventmenu-background: rgba($color-base-200, 0.8);
-$charlog-eventmenu-shadow: rgba($black, 0.65);
+$charlog-invalid-bg: mix($color-base-200, $color-danger, 80%);
+$charlog-eventmenu-bg: rgba($color-base-200, 0.8);
 // Charlog theme vars
-$theme-charlog-invalid-background: var(--mu-charlog-invalid-background, #{$charlog-invalid-background});
-$theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$charlog-eventmenu-background});
-$theme-charlog-eventmenu-shadow: var(--mu-charlog-eventmenu-shadow, #{$charlog-eventmenu-shadow});
+$theme-charlog-invalid-bg: var(--mu-charlog-invalid-bg, #{$charlog-invalid-bg});
+$theme-charlog-eventmenu-bg: var(--mu-charlog-eventmenu-bg, #{$charlog-eventmenu-bg});

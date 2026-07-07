@@ -71,7 +71,7 @@
 	}
 
 	&--invalid {
-		background: $theme-charlog-invalid-background;
+		background: $theme-charlog-invalid-bg;
 	}
 
 	// Should have higher priority than the others.
@@ -252,15 +252,15 @@
 	position: absolute;
 	right: 0px;
 	top: 0px;
-
-	@include btn-style($theme-charlog-eventmenu-background, $theme-control-default-300-bg-hover, $theme-control-default-300-bg-active, $theme-control-default-300-fg, $theme-control-default-300-fg-hover);
+	box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
+	background: $theme-charlog-eventmenu-bg;
 
 	&--menu {
 		position: absolute;
 		background: $theme-surface-400-bg;
 		min-width: 100px;
 		// min-height: 100px;
-		box-shadow: 1px 2px 4px 0px $theme-charlog-eventmenu-shadow;
+		box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
 		padding: 8px 0;
 		// Animation
 		transform: translate(-100%, 0px);

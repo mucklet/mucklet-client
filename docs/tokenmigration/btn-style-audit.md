@@ -221,8 +221,7 @@ hover background when the first argument is `none`.
 
 | Arguments | File | Selector/context | Matching .btn selector |
 | --- | --- | --- | --- |
-| `$color-google`, `$color-google-hover`, `$color-google-active`, `$white`, `$white` | `login.scss:18` | `.login--btn.google.btn` | none |
-| `$theme-charlog-eventmenu-background`, `$theme-control-default-300-bg-hover`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` | `charLog.scss:256` | `.charlog-eventmenu` | none |
+| `$color-google`, `$color-google-hover`, `$color-google-active`, `$white`, `$white` | `login.scss:18` | `.login--btn.google.btn` | (Hub color. Leave) |
 | `$theme-control-danger-bg`, `$theme-control-danger-bg-hover`, `$theme-control-danger-bg-active`, `$theme-control-danger-fg`, `$theme-control-danger-fg` | `_button.scss:98` | `.btn.warning, .iconbtn.warning` | `warning` |
 | implicit defaults: `$theme-control-default-300-bg`, `$theme-control-default-300-bg-hover`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` | `_button.scss:34` | `.btn` | `default` |
 | `$theme-control-primary-bg`, `$theme-control-primary-bg-hover`, `$theme-control-primary-bg-active`, `$theme-control-primary-fg`, `$theme-control-primary-fg-hover` | `_button.scss:90` | `.btn.primary, .iconbtn.primary` | `primary` |
