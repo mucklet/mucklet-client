@@ -24,18 +24,6 @@
 		}
 	}
 
-	&--itembtn {
-		padding: 8px 20px;
-		font-size: $font-size;
-		font-family: $font-text;
-		text-decoration: none;
-		border: 0;
-		width: 100%;
-		transition: color 0.2s, background-color 0.2s;
-		cursor: pointer;
-		@include btn-style(none, $theme-color-base-500, $theme-color-base-600, $theme-color-neutral-400, $theme-content-strong-fg);
-	}
-
 	&--itemicon {
 		min-width: 20px;
 	}

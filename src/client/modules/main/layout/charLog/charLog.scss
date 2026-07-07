@@ -270,18 +270,6 @@
 		z-index: 5;
 	}
 
-	&--btn {
-		padding: 4px 12px;
-		font-size: $font-size-small;
-		font-family: $font-text;
-		text-decoration: none;
-		border: 0;
-		width: 100%;
-		transition: color 0.2s, background-color 0.2s;
-		cursor: pointer;
-		@include btn-style(none, $theme-control-default-300-bg-active, $theme-control-default-300-bg-active, $theme-control-default-400-fg, $theme-control-default-400-fg-hover);
-	}
-
 	&--btnicon {
 		min-width: 20px;
 	}
