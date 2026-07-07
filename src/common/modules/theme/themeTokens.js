@@ -251,10 +251,6 @@ const tokens = {
 	'kbd.shadow': 'rgba(0, 0, 0, 0.3)',
 	'kbd.highlight': '#fff',
 
-	// src/common/components/autocomplete.scss
-	'autocomplete.hover.bg': (getToken) => adjust(getToken('color.action.300'), 20),
-	'autocomplete.selected.bg': (getToken) => adjust(getToken('color.action.300'), 30),
-
 	// src/common/components/togglebox.scss
 	'togglebox.action.hover': (getToken) => adjust(getToken('color.action.300'), 5),
 	'togglebox.danger.hover': (getToken) => adjust(getToken('color.danger.300'), 5),

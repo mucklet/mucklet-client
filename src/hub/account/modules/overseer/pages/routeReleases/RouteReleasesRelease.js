@@ -102,7 +102,6 @@ class RouteReleasesRelease {
 						release,
 						new AutoComplete({
 							className: 'routereleases-release--next',
-							innerClassName: 'autocomplete-dark',
 							attributes: {
 								placeholder: l10n.t('routeReleases.searchRelease', "Search release (Name)"),
 								name: 'routereleases-release--next',
