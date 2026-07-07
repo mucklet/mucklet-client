@@ -60,27 +60,6 @@ The mixin signature is:
 | --- | --- | --- |
 | `src/common/scss/_button.scss:94` | `.btn.secondary, .iconbtn.secondary` | `$theme-control-secondary-bg`, `$theme-control-secondary-bg-hover`, `$theme-control-secondary-bg-active`, `$theme-control-secondary-fg`, `$theme-control-secondary-fg-hover` |
 
-### `$theme-status-danger-bg`
-
-| File | Selector/context | Arguments |
-| --- | --- | --- |
-| `src/client/modules/helper/helperPages/pageTickets/pageTickets.scss:33` | `.pagetickets-ticket--icon.rejected, .pagetickets-ticket--icon.failed` | `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` |
-| `src/client/modules/main/pages/pageRequests/pageRequests.scss:33` | `.pagerequests-request--icon.rejected, .pagerequests-request--icon.failed` | `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` |
-| `src/client/modules/moderator/moderatorPages/pageReports/pageReports.scss:33` | `.pagereports-report--icon.rejected, .pagereports-report--icon.failed` | `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` |
-
-### `$theme-status-info-bg`
-
-| File | Selector/context | Arguments |
-| --- | --- | --- |
-| `src/client/modules/main/pages/pageRequests/pageRequests.scss:29` | `.pagerequests-request--icon.accepted` | `$theme-status-info-bg`, `$theme-status-info-bg`, `$theme-status-info-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` |
-
-### `$theme-status-success-bg`
-
-| File | Selector/context | Arguments |
-| --- | --- | --- |
-| `src/client/modules/helper/helperPages/pageTickets/pageTickets.scss:29` | `.pagetickets-ticket--icon.accepted` | `$theme-status-success-bg`, `$theme-status-success-bg`, `$theme-status-success-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` |
-| `src/client/modules/moderator/moderatorPages/pageReports/pageReports.scss:29` | `.pagereports-report--icon.accepted` | `$theme-status-success-bg`, `$theme-status-success-bg`, `$theme-status-success-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` |
-
 ### `$theme-surface-200-bg`
 
 | File | Selector/context | Arguments |
@@ -173,22 +152,6 @@ variables if kept, then all three can use one shared icon-button style.
 `passwordInput.scss:21` is a darker inverse variant and may need a separate
 shared style only if it is expected outside password fields.
 
-### Status icon buttons
-
-The ticket, report, and request page status icons use constant background and
-foreground colors for all states:
-
-| Candidate style | Files |
-| --- | --- |
-| success status icon | `pageTickets.scss:29`, `pageReports.scss:29` |
-| danger status icon | `pageTickets.scss:33`, `pageReports.scss:33`, `pageRequests.scss:33` |
-| info status icon | `pageRequests.scss:29` |
-
-These are good candidates for shared `.iconbtn.status-success`,
-`.iconbtn.status-danger`, and `.iconbtn.status-info` styles in `_button.scss`.
-They probably do not need separate hover or active colors unless the UI should
-show interactivity beyond the icon state.
-
 ### Menu item buttons
 
 `kebabMenu.scss:36` and `charLog.scss:282` both style full-width menu row
@@ -227,9 +190,7 @@ hover background when the first argument is `none`.
 | `$theme-control-primary-bg`, `$theme-control-primary-bg-hover`, `$theme-control-primary-bg-active`, `$theme-control-primary-fg`, `$theme-control-primary-fg-hover` | `_button.scss:90` | `.btn.primary, .iconbtn.primary` | `primary` |
 | `$theme-control-recessed-bg`, `$theme-control-recessed-bg-hover`, `$theme-control-recessed-bg-active`, `$theme-control-recessed-fg`, `$theme-control-recessed-fg-hover` | `_button.scss:102` | `.btn.recessed, .iconbtn.recessed` | `recessed` |
 | `$theme-control-secondary-bg`, `$theme-control-secondary-bg-hover`, `$theme-control-secondary-bg-active`, `$theme-control-secondary-fg`, `$theme-control-secondary-fg-hover` | `_button.scss:94` | `.btn.secondary, .iconbtn.secondary` | `secondary` |
-| `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-status-danger-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` | `pageReports.scss:33` | `.pagereports-report--icon.rejected, .pagereports-report--icon.failed` | none |
-| `$theme-status-success-bg`, `$theme-status-success-bg`, `$theme-status-success-bg`, `$theme-control-danger-fg`, `$theme-control-danger-fg` | `pageReports.scss:29` | `.pagereports-report--icon.accepted` | none |
-| `$theme-surface-200-bg`, `$theme-surface-300-bg`, `$theme-surface-400-bg`, `$theme-control-default-300-fg-hover`, `$theme-content-strong-fg` | `signIn.scss:12` | `.signin--headerbtn.btn, .signin--headerbtn.iconbtn` | none |
+| `$theme-surface-200-bg`, `$theme-surface-300-bg`, `$theme-surface-400-bg`, `$theme-control-default-300-fg-hover`, `$theme-content-strong-fg` | `signIn.scss:12` | `.signin--headerbtn.btn, .signin--headerbtn.iconbtn` | (Hub color. Leave) |
 | `none`, `$color-base-400`, `$color-base-500`, `$color-neutral-400`, `$color-neutral-500` | `realmSettingsTheme.scss:58` | `.realmsettingstheme--tokenreset` | none |
 | `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` | `pageAwake.scss:85` | `.pageawake--filter-clear.iconbtn` | none |
 | `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` | `passwordInput.scss:12` | `.passwordinput--eye.iconbtn` | none |
