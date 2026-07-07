@@ -71,18 +71,11 @@ The mixin signature is:
 | File | Selector/context | Arguments |
 | --- | --- | --- |
 | `src/client/modules/main/layout/charLog/charLog.scss:282` | `.charlog-eventmenu--btn` | `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` |
-| `src/client/modules/main/pages/pageAwake/pageAwake.scss:85` | `.pageawake--filter-clear.iconbtn` | `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` |
-| `src/common/components/charTagsList.scss:99` | `.chartagslist--remove` | `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` |
 | `src/common/components/kebabMenu.scss:36` | `.kebabmenu--btn` | `none`, `$theme-color-base-500`, `$theme-color-base-600`, `$theme-color-neutral-400`, `$theme-content-strong-fg` |
-| `src/common/components/keywordList.scss:53` | `.keywordlist--remove` | `none`, `$theme-color-base-500`, `$theme-color-base-600`, `$theme-color-neutral-300`, `$theme-color-neutral-400` |
-| `src/common/components/passwordInput.scss:12` | `.passwordinput--eye.iconbtn` | `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` |
-| `src/common/components/passwordInput.scss:21` | `.passwordinput.darkeye .passwordinput--eye.iconbtn` | `none`, `$theme-color-neutral-300`, `$theme-color-neutral-300`, `$theme-color-base-400`, `$theme-color-base-300` |
-| `src/common/components/realmTagsList.scss:76` | `.realmtagslist--remove` | `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` |
 | `src/common/modules/toaster/toaster.scss:64` | `.toaster--close` | `none`, `$theme-toaster-close-bg-hover`, `$theme-toaster-close-bg-hover`, `$theme-control-default-300-fg-hover`, `$theme-control-default-400-fg-hover` |
 | `src/common/scss/_button.scss:116` | `.btn.default-400, .iconbtn.default-400` | `none`, `$theme-control-default-400-bg-hover`, `$theme-control-default-400-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` |
 | `src/common/scss/_button.scss:129` | `.btn.default-500, .iconbtn.default-500` | `none`, `$theme-control-default-500-bg-hover`, `$theme-control-default-500-bg-active`, `$theme-control-default-500-fg`, `$theme-control-default-500-fg-hover` |
 | `src/common/scss/_button.scss:210` | `.iconbtn` | `none`, `$theme-control-default-300-bg-hover`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` |
-| `src/hub/account/modules/main/pages/routeRealmSettings/realmSettingsTheme/realmSettingsTheme.scss:58` | `.realmsettingstheme--tokenreset` | `none`, `$color-base-400`, `$color-base-500`, `$color-neutral-400`, `$color-neutral-500` |
 
 ### `rgba($white, 0.5)`
 
@@ -137,21 +130,6 @@ small remove icon style.
 component-specific and should stay separate unless toaster close styling becomes
 a shared component variant.
 
-### Input clear/visibility buttons
-
-These two uses are identical:
-
-| Files | Arguments |
-| --- | --- |
-| `passwordInput.scss:12`, `pageAwake.scss:85` | `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` |
-
-`realmSettingsTheme.scss:58` is the non-themed equivalent using `$color-*`
-fallback variables instead of `$theme-color-*`. It should be normalized to theme
-variables if kept, then all three can use one shared icon-button style.
-
-`passwordInput.scss:21` is a darker inverse variant and may need a separate
-shared style only if it is expected outside password fields.
-
 ### Menu item buttons
 
 `kebabMenu.scss:36` and `charLog.scss:282` both style full-width menu row
@@ -191,17 +169,10 @@ hover background when the first argument is `none`.
 | `$theme-control-recessed-bg`, `$theme-control-recessed-bg-hover`, `$theme-control-recessed-bg-active`, `$theme-control-recessed-fg`, `$theme-control-recessed-fg-hover` | `_button.scss:102` | `.btn.recessed, .iconbtn.recessed` | `recessed` |
 | `$theme-control-secondary-bg`, `$theme-control-secondary-bg-hover`, `$theme-control-secondary-bg-active`, `$theme-control-secondary-fg`, `$theme-control-secondary-fg-hover` | `_button.scss:94` | `.btn.secondary, .iconbtn.secondary` | `secondary` |
 | `$theme-surface-200-bg`, `$theme-surface-300-bg`, `$theme-surface-400-bg`, `$theme-control-default-300-fg-hover`, `$theme-content-strong-fg` | `signIn.scss:12` | `.signin--headerbtn.btn, .signin--headerbtn.iconbtn` | (Hub color. Leave) |
-| `none`, `$color-base-400`, `$color-base-500`, `$color-neutral-400`, `$color-neutral-500` | `realmSettingsTheme.scss:58` | `.realmsettingstheme--tokenreset` | none |
-| `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` | `pageAwake.scss:85` | `.pageawake--filter-clear.iconbtn` | none |
-| `none`, `$theme-color-base-400`, `$theme-color-base-500`, `$theme-color-neutral-400`, `$theme-color-neutral-500` | `passwordInput.scss:12` | `.passwordinput--eye.iconbtn` | none |
-| `none`, `$theme-color-base-500`, `$theme-color-base-600`, `$theme-color-neutral-300`, `$theme-color-neutral-400` | `keywordList.scss:53` | `.keywordlist--remove` | none |
 | `none`, `$theme-color-base-500`, `$theme-color-base-600`, `$theme-color-neutral-400`, `$theme-content-strong-fg` | `kebabMenu.scss:36` | `.kebabmenu--btn` | none |
-| `none`, `$theme-color-neutral-300`, `$theme-color-neutral-300`, `$theme-color-base-400`, `$theme-color-base-300` | `passwordInput.scss:21` | `.passwordinput.darkeye .passwordinput--eye.iconbtn` | none |
-| `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` | `charTagsList.scss:99` | `.chartagslist--remove` | none |
-| `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` | `realmTagsList.scss:76` | `.realmtagslist--remove` | none |
 | `none`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` | `charLog.scss:282` | `.charlog-eventmenu--btn` | none |
 | `none`, `$theme-control-default-300-bg-hover`, `$theme-control-default-300-bg-active`, `$theme-control-default-300-fg`, `$theme-control-default-300-fg-hover` | `_button.scss:210` | `.iconbtn` | `default icon` |
 | `none`, `$theme-control-default-400-bg-hover`, `$theme-control-default-400-bg-active`, `$theme-control-default-400-fg`, `$theme-control-default-400-fg-hover` | `_button.scss:116` | `.btn.default-400, .iconbtn.default-400` | `default-400` |
 | `none`, `$theme-control-default-500-bg-hover`, `$theme-control-default-500-bg-active`, `$theme-control-default-500-fg`, `$theme-control-default-500-fg-hover` | `_button.scss:129` | `.btn.default-500, .iconbtn.default-500` | `default-500` |
-| `none`, `$theme-toaster-close-bg-hover`, `$theme-toaster-close-bg-hover`, `$theme-control-default-300-fg-hover`, `$theme-control-default-400-fg-hover` | `toaster.scss:64` | `.toaster--close` | none |
+| `none`, `$theme-toaster-close-bg-hover`, `$theme-toaster-close-bg-hover`, `$theme-control-default-300-fg-hover`, `$theme-control-default-400-fg-hover` | `toaster.scss:64` | `.toaster--close` | (Uses toaster specific with white) |
 | `rgba($white, 0.5)`, `rgba($white, 0.6)`, `rgba($white, 0.7)`, `$black`, `$black` | `pageArea.scss:108` | `.pagearea--btn.iconbtn` | none |

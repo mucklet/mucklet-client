@@ -58,7 +58,7 @@ class CharSettingsTriggersComponent {
 										},
 									})),
 									n.elem('add', 'button', {
-										className: 'charsettingstriggers--add iconbtn default-400 medium tinyicon',
+										className: 'charsettingstriggers--add iconbtn default-500 medium tinyicon',
 										attributes: { type: 'button' },
 										events: {
 											click: (c, e) => {

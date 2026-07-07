@@ -66,6 +66,7 @@ $common-format-divider-border: rgba($white, 0.2);
 
 $dialog-overlay-bg: $black;
 $dialog-input-bg: $color-neutral-500;
+$dialog-input-bg-hover: $color-neutral-300;
 $dialog-input-fg: $black;
 
 $imgmodal-overlay-bg: rgba($black, 0.5);
@@ -79,7 +80,7 @@ $toaster-warning-bg-hover: desaturate(darken(mix($color-danger-300, $color-base-
 $toaster-success-bg: rgba($toaster-success-bg-hover, 0.9);
 $toaster-info-bg: rgba($color-base-500, 0.9);
 $toaster-warning-bg: rgba($toaster-warning-bg-hover, 0.9);
-$toaster-close-bg-hover: rgba(lighten($color-contrast-300, 4%), 0.06);
+$toaster-close-bg-hover: rgba(255, 255, 255, 0.06);
 $toaster-shadow: $black;
 
 /* Primitive theme vars */
@@ -326,6 +327,7 @@ $theme-common-addbtn-fg-hover: var(--mu-common-addbtn-fg-hover, #{$theme-color-n
 // Dialogs and overlays
 $theme-dialog-overlay-bg: var(--mu-dialog-overlay-bg, #{$dialog-overlay-bg});
 $theme-dialog-input-bg: var(--mu-dialog-input-bg, #{$dialog-input-bg});
+$theme-dialog-input-bg-hover: var(--mu-dialog-input-bg-hover, #{$dialog-input-bg-hover});
 $theme-dialog-input-fg: var(--mu-dialog-input-fg, #{$dialog-input-fg});
 $theme-imgmodal-overlay-bg: var(--mu-imgmodal-overlay-bg, #{$imgmodal-overlay-bg});
 $theme-imgmodal-shadow: var(--mu-imgmodal-shadow, #{$imgmodal-shadow});

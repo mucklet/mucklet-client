@@ -112,7 +112,7 @@ class CharTagsList {
 						}, [
 							n.component(new ModelTxt(cont.tag, m => m.key)),
 							n.component(onDelete ? new Elem(n => n.elem('button', {
-								className: 'chartagslist--delete',
+								className: 'chartagslist--delete iconbtn puny default-400',
 								events: {
 									click: (c, e) => {
 										onDelete(cont.tag, cont.pref, this.tags);

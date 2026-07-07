@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import '~scss/mixins';
 
 .dialog--overlay {
 	background: $theme-dialog-overlay-bg;
@@ -82,6 +83,10 @@
 	width: 100%;
 	background: $theme-dialog-input-bg;
 	color: $theme-dialog-input-fg;
+}
+
+.dialog--input-icon {
+	@include btn-style(none, $theme-dialog-input-bg-hover, $theme-dialog-input-bg-hover, $theme-color-base-400, $theme-color-base-300);
 }
 
 .dialog--incomplete {

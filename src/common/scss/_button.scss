@@ -112,6 +112,19 @@
 	background: $theme-control-default-300-bg;
 }
 
+.btn.default-300, .iconbtn.default-300 {
+	@include btn-style(
+		none,
+		$theme-control-default-300-bg-hover,
+		$theme-control-default-300-bg-active,
+		$theme-control-default-300-fg,
+		$theme-control-default-300-fg-hover
+	);
+	&.filled {
+		background: $theme-control-default-300-bg;
+	}
+}
+
 .btn.default-400, .iconbtn.default-400 {
 	@include btn-style(
 		none,

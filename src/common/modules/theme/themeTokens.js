@@ -233,6 +233,7 @@ const tokens = {
 	// src/common/classes/dialog.scss
 	'dialog.overlay.bg': '#000',
 	'dialog.input.bg': (getToken) => getToken('color.neutral.500'),
+	'dialog.input.bg.hover': (getToken) => getToken('color.neutral.300'),
 	'dialog.input.fg': '#000',
 
 	// src/common/classes/imgModal.scss

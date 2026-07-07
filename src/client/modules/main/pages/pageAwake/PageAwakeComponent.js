@@ -83,7 +83,7 @@ class PageAwakeComponent {
 							},
 						})),
 						n.elem('clear', 'button', {
-							className: 'pageawake--filter-clear iconbtn medium tinyicon',
+							className: 'pageawake--filter-clear iconbtn medium tinyicon default-500',
 							attributes: { type: 'button' },
 							events: {
 								click: (c, e) => {
