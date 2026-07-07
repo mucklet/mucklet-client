@@ -2,7 +2,7 @@
 
 .getplayer {
 	&--suspended {
-		color: $theme-status-danger-fg;
+		color: $theme-content-danger-fg;
 	}
 	&--awake {
 		color: $theme-content-strong-fg;

@@ -140,6 +140,13 @@ $theme-content-subtle-fg: var(--mu-content-subtle-fg, #{$theme-color-neutral-100
 $theme-content-disabled-fg: var(--mu-content-disabled-fg, #{$theme-color-neutral-100});
 $theme-content-placeholder-fg: var(--mu-content-placeholder-fg, #{$content-placeholder-fg});
 $theme-content-error-fg: var(--mu-content-error-fg, #{$theme-color-danger-300});
+// Content - status
+$theme-content-danger-fg: var(--mu-content-danger-fg, #{$theme-color-danger-300});
+$theme-content-info-fg: var(--mu-content-info-fg, #{$theme-color-action-300});
+$theme-content-success-fg: var(--mu-content-success-fg, #{$status-success});
+$theme-content-warning-fg: var(--mu-content-warning-fg, #{$theme-color-accent-300});
+$theme-content-active-fg: var(--mu-content-active-fg, #{$theme-color-action-300});
+$theme-content-inactive-fg: var(--mu-content-inactive-fg, #{$theme-color-neutral-300});
 
 // Controls
 $theme-control-default-300-bg: var(--mu-control-default-300-bg, #{$theme-color-base-300});
@@ -195,23 +202,23 @@ $theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-acc
 $theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
 
 // Status
-$theme-status-danger-fg: var(--mu-status-danger-fg, #{$theme-color-danger-300});
 $theme-status-danger-bg: var(--mu-status-danger-bg, #{$theme-color-danger-300});
+$theme-status-danger-fg: var(--mu-status-danger-fg, #{$theme-color-base-200});
 $theme-status-danger-border: var(--mu-status-danger-border, #{$theme-color-danger-300});
-$theme-status-info-fg: var(--mu-status-info-fg, #{$theme-color-action-300});
 $theme-status-info-bg: var(--mu-status-info-bg, #{$theme-color-action-300});
+$theme-status-info-fg: var(--mu-status-info-fg, #{$theme-color-base-200});
 $theme-status-info-border: var(--mu-status-info-border, #{$theme-color-action-300});
-$theme-status-success-fg: var(--mu-status-success-fg, #{$status-success});
 $theme-status-success-bg: var(--mu-status-success-bg, #{$status-success});
+$theme-status-success-fg: var(--mu-status-success-fg, #{$theme-color-base-200});
 $theme-status-success-border: var(--mu-status-success-border, #{$status-success});
-$theme-status-warning-fg: var(--mu-status-warning-fg, #{$theme-color-accent-300});
 $theme-status-warning-bg: var(--mu-status-warning-bg, #{$theme-color-accent-300});
+$theme-status-warning-fg: var(--mu-status-warning-fg, #{$theme-color-base-200});
 $theme-status-warning-border: var(--mu-status-warning-border, #{$theme-color-accent-300});
-$theme-status-active-fg: var(--mu-status-active-fg, #{$theme-color-action-300});
 $theme-status-active-bg: var(--mu-status-active-bg, #{$theme-color-action-300});
+$theme-status-active-fg: var(--mu-status-active-fg, #{$theme-color-base-200});
 $theme-status-active-border: var(--mu-status-active-border, #{$theme-color-action-300});
-$theme-status-inactive-fg: var(--mu-status-inactive-fg, #{$theme-color-neutral-300});
 $theme-status-inactive-bg: var(--mu-status-inactive-bg, #{$theme-color-neutral-300});
+$theme-status-inactive-fg: var(--mu-status-inactive-fg, #{$theme-color-base-200});
 $theme-status-inactive-border: var(--mu-status-inactive-border, #{$theme-color-neutral-300});
 
 // Links
@@ -264,7 +271,7 @@ $theme-log-emphasis-fg: var(--mu-log-emphasis-fg, #{$theme-color-action-300});
 $theme-log-fieldset-border: var(--mu-log-fieldset-border, #{$theme-color-neutral-200});
 $theme-log-fieldset-label-fg: var(--mu-log-fieldset-label-fg, #{$theme-log-default-fg});
 $theme-log-fieldset-label-bg: var(--mu-log-fieldset-label-bg, #{$theme-surface-200-bg});
-$theme-log-active-fg: var(--mu-log-active-fg, #{$theme-status-active-fg});
+$theme-log-active-fg: var(--mu-log-active-fg, #{$theme-content-active-fg});
 $theme-log-inactive-fg: var(--mu-log-inactive-fg, #{$theme-color-base-400});
 $theme-log-highlight-fg: var(--mu-log-highlight-fg, #{$theme-color-neutral-600});
 $theme-log-highlight-bg: var(--mu-log-highlight-bg, #{$theme-surface-400-bg});

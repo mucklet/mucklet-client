@@ -6,16 +6,16 @@
 		// 	color: $theme-content-subtle-fg !important;
 		// }
 		&running:not(.bg) {
-			color: $theme-status-active-fg !important;
+			color: $theme-content-active-fg !important;
 		}
 		&success:not(.bg) {
-			color: $theme-status-success-fg !important;
+			color: $theme-content-success-fg !important;
 		}
 		&warning:not(.bg) {
-			color: $theme-status-warning-fg !important;
+			color: $theme-content-warning-fg !important;
 		}
 		&error:not(.bg) {
-			color: $theme-status-danger-fg !important;
+			color: $theme-content-danger-fg !important;
 		}
 
 		// &none, &queued {
