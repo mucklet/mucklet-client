@@ -44,7 +44,6 @@ property wrappers outside `_variables.scss`.
 | `src/client/modules/main/dialogs/dialogTag/dialogTag.scss` | `$dialogtag-desc-disabled-background` | `--mu-dialogtag-desc-disabled-background` | `dialogtag.desc.disabled.background` | `rgba($color-neutral-500, 0.1)` | Disabled tag description textarea background. | `module-theme-token` | keep |
 | `src/client/modules/main/dialogs/dialogTag/dialogTag.scss` | `$dialogtag-pref-dislike-background-hover` | `--mu-dialogtag-pref-dislike-background-hover` | `dialogtag.pref.dislike.background.hover` | `lighten($color-danger-300, 5%)` | Dislike preference toggle hover background. | `module-theme-token` | keep |
 | `src/client/modules/main/addons/overlayNav/overlayNav.scss` | `$overlaynav-badge-background-hover` | `--mu-overlaynav-badge-background-hover` | `overlaynav.badge.background.hover` | `lighten($color-base-400, 3%)` | Overlay navigation badge/toggle hover background. | `module-theme-token` | keep |
-| `src/client/modules/main/layout/console/console.scss` | `$console-scrollbar-thumb` | `--mu-console-scrollbar-thumb` | `console.scrollbar.thumb` | `lighten($color-base-200, 18%)` | Console simplebar scrollbar thumb. | `module-theme-token` | keep |
 | `src/client/modules/main/pages/pageMail/pageMail.scss` | `$pagemail-mail-unread-background` | `--mu-pagemail-mail-unread-background` | `pagemail.mail.unread.background` | `darken($color-base-200, 6%)` | Unread mail badge/list row background. | `module-theme-token` | keep |
 | `src/client/modules/main/pages/pageMail/pageMail.scss` | `$pagemail-mail-unread-background-hover` | `--mu-pagemail-mail-unread-background-hover` | `pagemail.mail.unread.background.hover` | `darken($color-base-200, 9%)` | Unread mail badge/list row hover background. | `module-theme-token` | keep |
 | `src/client/modules/main/pages/pageArea/pageArea.scss` | `$pagearea-location-selected-background` | `--mu-pagearea-location-selected-background` | `pagearea.location.selected.background` | `darken($color-base-200, 3%)` | Selected page-area location badge background. | `module-theme-token` | keep |
@@ -122,7 +121,6 @@ Module-owned runtime registrations currently exist only in these files:
 | `src/client/scripteditor/modules/main/editScript/EditScript.js` | `editscript.scrollbar.thumb.hover` | `module-theme-token` |
 | `src/client/modules/main/dialogs/dialogTag/DialogTag.js` | `dialogtag.desc.disabled.background`, `dialogtag.pref.dislike.background.hover` | `module-theme-token` |
 | `src/client/modules/main/addons/overlayNav/OverlayNav.js` | `overlaynav.badge.background.hover` | `module-theme-token` |
-| `src/client/modules/main/layout/console/Console.js` | `console.scrollbar.thumb` | `module-theme-token` |
 | `src/client/modules/main/pages/pageMail/PageMail.js` | `pagemail.mail.unread.background`, `pagemail.mail.unread.background.hover` | `module-theme-token` |
 | `src/client/modules/main/pages/pageArea/PageArea.js` | `pagearea.location.selected.background`, `pagearea.image.location.border`, `pagearea.image.location.border.selected` | `module-theme-token` |
 | `src/client/modules/main/layout/charLog/CharLog.js` | `charlog.invalid.background`, `charlog.eventmenu.background`, `charlog.eventmenu.shadow` | `module-theme-token` |
@@ -139,7 +137,7 @@ single local styling decision appears on multiple adjacent declarations.
 | Classification | Count |
 | --- | ---: |
 | `shared-component-candidate` | 14 |
-| `module-theme-token` | 14 |
+| `module-theme-token` | 13 |
 | `trivial-alias` | 5 |
 | `hub-local` | 13 |
 | `technical-color` | 13 |

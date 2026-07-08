@@ -200,6 +200,9 @@ $theme-divider-contrast-border: var(--mu-divider-contrast-border, #{$black});
 $theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-accent-300});
 $theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
 
+// Scrollbar
+$theme-scrollbar-thumb-bg: var(--mu-scrollbar-thumb-bg, #{$theme-color-neutral-300});
+
 // Status
 $theme-status-danger-bg: var(--mu-status-danger-bg, #{$theme-color-danger-300});
 $theme-status-danger-fg: var(--mu-status-danger-fg, #{$theme-color-base-200});

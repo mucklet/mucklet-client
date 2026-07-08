@@ -117,6 +117,8 @@ const tokens = {
 	'link.default.fg.active': (getToken) => getToken('color.action.100'),
 	'focus.ring': (getToken) => getToken('color.accent.300'),
 
+	'scrollbar.thumb.bg': (getToken) => getToken('color.neutral.300'),
+
 	'status.danger.bg': (getToken) => getToken('color.danger.300'),
 	'status.danger.fg': (getToken) => getToken('color.base.200'),
 	'status.danger.border': (getToken) => getToken('color.danger.300'),

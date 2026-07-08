@@ -1,5 +1,4 @@
 @import '~scss/variables';
-@import './console-theme';
 
 .console {
 	padding: 1px 14px 14px 14px;
@@ -60,7 +59,7 @@
 	}
 
 	.simplebar-scrollbar::before {
-		background-color: $theme-console-scrollbar-thumb;
+		background-color: $theme-scrollbar-thumb-bg;
 	}
 
 	&--touchonly {
