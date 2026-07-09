@@ -86,8 +86,8 @@ caret sides, invisible tracks, and scrollbar tracks.
 | --- | --- | --- | --- |
 | `src/common/scss/_spinner.scss` | 15 | technical color | Spinner invisible border edge. |
 | `src/common/classes/tooltip.scss` | 82, 86 | technical color | Tooltip caret transparent side borders. |
-| `src/common/components/popupTip.scss` | 43, 62, 81, 100, 120, 139 | technical color | Popup tip caret transparent side borders. |
-| `src/common/components/popupPill.scss` | 34 | technical color | Popup pill caret transparent side borders. |
+| `src/common/components/popupTip.scss` | 38, 57, 76, 95, 115, 134 | technical color | Popup tip caret transparent side borders. |
+| `src/common/components/popupPill.scss` | 29 | technical color | Popup pill caret transparent side borders. |
 | `src/common/components/togglebox.scss` | 13 | technical color | Empty togglebox transparent fill. |
 | `src/common/components/spinnerModal.scss` | 35 | technical color | Spinner modal invisible border edge. |
 | `src/client/scripteditor/modules/main/editScript/editScript.scss` | 122, 126, 129 | technical color | CodeMirror scrollbar track and corner transparency. |
@@ -105,12 +105,6 @@ without a focused design decision.
 
 | File | Lines | Category | Reason |
 | --- | --- | --- | --- |
-| `src/common/components/autocomplete.scss` | 4-5, 11-12, 19, 33, 37, 51-53, 57, 61, 65, 69, 71 | deferred design decision | Shared autocomplete has existing shared-component-candidate rows and direct primitive styling that needs a component-token decision. |
-| `src/common/components/kebabMenu.scss` | 5, 14, 19, 22, 45 | deferred design decision | Shared kebab trigger/menu styling has shared-component-candidate rows and direct primitive styling. |
-| `src/common/components/mobilePanel.scss` | 33 | deferred design decision | Shared mobile panel header divider border needs a component-token decision. |
-| `src/common/components/navButtons.scss` | 4, 11, 24, 30, 39, 47, 52, 54, 57, 59, 68 | deferred design decision | Shared SVG nav button fill/shadow styling needs a component-token decision. |
-| `src/common/components/popupPill.scss` | 5 | deferred design decision | Shared popup pill tip background has a shared-component-candidate row. |
-| `src/common/components/popupTip.scss` | 4 | deferred design decision | Shared popup tip background has a shared-component-candidate row. |
 | `src/common/components/spinnerModal.scss` | 16, 34 | deferred design decision | Shared modal scrim and spinner danger color need a component-token decision. |
 | `src/common/components/togglebox.scss` | 4-5, 12, 40, 47 | deferred design decision | Shared togglebox action/danger colors have shared-component-candidate rows. |
 | `src/common/components/placeholderSvg.scss` | 5 | deferred design decision | Fixed placeholder illustration mark color is neither clearly hub-only nor a reusable semantic token. |

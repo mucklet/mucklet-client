@@ -261,12 +261,6 @@ const tokens = {
 	'tooltip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
 	'tooltip.fg': (getToken) => getToken('color.neutral.500'),
 
-	// src/common/components/popupTip.scss
-	'popuptip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
-
-	// src/common/components/popupPill.scss
-	'popuppill.tip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
-
 	// src/common/modules/toaster/toaster.scss
 	//
 	// It is a module, but since it is also used by hub which doesn't have the

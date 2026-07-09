@@ -36,8 +36,6 @@ property wrappers outside `_variables.scss`.
 | `src/common/components/autocomplete.scss` | `$autocomplete-selected-background` | `--mu-autocomplete-selected-background` | `autocomplete.selected.background` | `lighten($color-action-300, 30%)` | Light autocomplete selected option background. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/kebabMenu.scss` | `$kebabmenu-btn-background` | `--mu-kebabmenu-btn-background` | `kebabmenu.btn.background` | `rgba($color-base-200, 0.8)` | Shared kebab trigger button background. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/navButtons.scss` | `$navbuttons-btn-hover-fill` | `--mu-navbuttons-btn-hover-fill` | `navbuttons.btn.hover.fill` | `lighten($color-base-500, 5%)` | SVG navigation button hover fill. | `shared-component-candidate` | later shared component decision |
-| `src/common/components/popupPill.scss` | `$popuppill-tip-background` | `--mu-popuppill-tip-background` | `popuppill.tip.background` | `rgba(darken($color-base-200, 10%), 0.9)` | Popup pill tooltip surface and caret color. | `shared-component-candidate` | later shared component decision |
-| `src/common/components/popupTip.scss` | `$popuptip-background` | `--mu-popuptip-background` | `popuptip.background` | `rgba(darken($color-base-200, 10%), 0.9)` | Popup tip surface and caret color. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/togglebox.scss` | `$togglebox-action-hover` | `--mu-togglebox-action-hover` | `togglebox.action.hover` | `lighten($color-action-300, 5%)` | Togglebox positive/action hover fill. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/togglebox.scss` | `$togglebox-danger-hover` | `--mu-togglebox-danger-hover` | `togglebox.danger.hover` | `lighten($color-danger-300, 5%)` | Togglebox danger/dislike hover fill. | `shared-component-candidate` | later shared component decision |
 | `src/client/scripteditor/modules/main/editScript/editScript.scss` | `$editscript-scrollbar-thumb-hover` | `--mu-editscript-scrollbar-thumb-hover` | `editscript.scrollbar.thumb.hover` | `lighten($color-base-200, 18%)` | CodeMirror scrollbar thumb hover in the script editor module. | `module-theme-token` | keep |
@@ -85,7 +83,6 @@ search.
 | `src/common/components/autocomplete.scss` | none | none | none | `white`, `rgba(50, 50, 50, 0.6)`, `$black`, `#eee`, `$white` | Shared autocomplete base surfaces, text emphasis, border, group rows, and dark variant foregrounds/backgrounds. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/hamburger.scss` | none | none | none | `#000` | Shared hamburger open/close SVG fills. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/kebabMenu.scss` | none | none | none | `rgba(0,0,0,0.65)` | Shared kebab menu shadow. | `shared-component-candidate` | later shared component decision |
-| `src/common/components/mobilePanel.scss` | none | none | none | `$black` | Shared mobile panel header divider border. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/spinnerModal.scss` | none | none | none | `rgba(0, 0, 0, 40%)` | Shared spinner modal scrim. | `shared-component-candidate` | later shared component decision |
 | `src/common/modules/realmInfo/realmInfo.scss` | none | none | none | `#00000029` | Shared realm info icon shadow. Similar shadows also appear in hub lists/search. | `shared-component-candidate` | later shared component decision |
 | `src/client/modules/main/pages/pageArea/pageArea.scss` | none | none | none | `rgba($white, 0.5)`, `rgba($white, 0.6)`, `rgba($white, 0.7)`, `$black`, `#000` | Page-area image overlay buttons and location marker shadows. | `module-theme-token` | later design decision |
@@ -136,7 +133,7 @@ single local styling decision appears on multiple adjacent declarations.
 
 | Classification | Count |
 | --- | ---: |
-| `shared-component-candidate` | 14 |
+| `shared-component-candidate` | 12 |
 | `module-theme-token` | 13 |
 | `trivial-alias` | 5 |
 | `hub-local` | 13 |
