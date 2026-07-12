@@ -239,7 +239,7 @@ const tokens = {
 	'common.format.divider.border': 'rgba(255, 255, 255, 0.2)',
 	'common.addbtn.fg.hover': (getToken) => getToken('color.neutral.500'),
 
-	// src/common/classes/dialog.scss
+	// src/common/classes/dialog-theme.scss
 	'dialog.input.bg': (getToken) => getToken('color.neutral.500'),
 	'dialog.input.bg.hover': (getToken) => getToken('color.neutral.300'),
 	'dialog.input.fg': '#000',
@@ -252,14 +252,14 @@ const tokens = {
 	'kbd.shadow': 'rgba(0, 0, 0, 0.3)',
 	'kbd.highlight': '#fff',
 
-	// src/common/components/simpleBar.scss
+	// src/common/components/simpleBar-theme.scss
 	'simplebar.thumb.bg': (getToken) => getToken('color.neutral.300'),
 
-	// src/common/components/togglebox.scss
+	// src/common/components/togglebox-theme.scss
 	'togglebox.action.hover': (getToken) => adjust(getToken('color.action.300'), 5),
 	'togglebox.danger.hover': (getToken) => adjust(getToken('color.danger.300'), 5),
 
-	// src/common/classes/tooltip.scss
+	// src/common/classes/tooltip-theme.scss
 	'tooltip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
 	'tooltip.fg': (getToken) => getToken('color.neutral.500'),
 

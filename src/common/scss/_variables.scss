@@ -68,10 +68,6 @@ $badge-100-bg-hover: darken($color-base-100, 2%);
 
 $common-format-divider-border: rgba($white, 0.2);
 
-$dialog-input-bg: $color-neutral-500;
-$dialog-input-bg-hover: $color-neutral-300;
-$dialog-input-fg: $black;
-
 $kbd-shadow: rgba($black, 0.3);
 $kbd-highlight: $white;
 
@@ -326,13 +322,6 @@ $theme-badge-divider-border: var(--mu-badge-divider-border, #{$theme-surface-500
 $theme-common-format-divider-border: var(--mu-common-format-divider-border, #{$common-format-divider-border});
 $theme-common-addbtn-fg-hover: var(--mu-common-addbtn-fg-hover, #{$theme-color-neutral-500});
 
-// Dialogs and overlays
-$theme-dialog-input-bg: var(--mu-dialog-input-bg, #{$dialog-input-bg});
-$theme-dialog-input-bg-hover: var(--mu-dialog-input-bg-hover, #{$dialog-input-bg-hover});
-$theme-dialog-input-fg: var(--mu-dialog-input-fg, #{$dialog-input-fg});
-$theme-tooltip-bg: var(--mu-tooltip-bg, #{$theme-surface-overlay-bg});
-$theme-tooltip-fg: var(--mu-tooltip-fg, #{$theme-color-neutral-500});
-
 // Keyboard hints
 $theme-kbd-fg: var(--mu-kbd-fg, #{$theme-control-danger-fg});
 $theme-kbd-text-shadow: var(--mu-kbd-text-shadow, #{$theme-color-neutral-600});
@@ -340,9 +329,6 @@ $theme-kbd-bg: var(--mu-kbd-bg, #{$theme-color-neutral-400});
 $theme-kbd-border: var(--mu-kbd-border, #{$theme-color-neutral-200});
 $theme-kbd-shadow: var(--mu-kbd-shadow, #{$kbd-shadow});
 $theme-kbd-highlight: var(--mu-kbd-highlight, #{$kbd-highlight});
-
-// Simplebar
-$theme-simplebar-thumb-bg: var(--mu-simplebar-thumb-bg, #{$theme-color-neutral-300});
 
 // SVGs
 $theme-svg-placeholder-100-bg: var(--mu-svg-placeholder-100-bg, #{$surface-300-bg});
