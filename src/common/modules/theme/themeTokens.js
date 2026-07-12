@@ -117,7 +117,7 @@ const tokens = {
 	'link.default.fg.active': (getToken) => getToken('color.action.100'),
 	'focus.ring': (getToken) => getToken('color.accent.300'),
 
-	'scrollbar.thumb.bg': (getToken) => getToken('color.neutral.300'),
+	'scrollbar.thumb.bg': (getToken) => mix(getToken('color.base.200'), getToken('color.neutral.300'), 50),
 
 	'status.danger.bg': (getToken) => getToken('color.danger.300'),
 	'status.danger.fg': (getToken) => getToken('color.base.200'),
@@ -251,6 +251,9 @@ const tokens = {
 	'kbd.border': (getToken) => getToken('color.neutral.200'),
 	'kbd.shadow': 'rgba(0, 0, 0, 0.3)',
 	'kbd.highlight': '#fff',
+
+	// src/common/components/simpleBar.scss
+	'simplebar.thumb.bg': (getToken) => getToken('color.neutral.300'),
 
 	// src/common/components/togglebox.scss
 	'togglebox.action.hover': (getToken) => adjust(getToken('color.action.300'), 5),

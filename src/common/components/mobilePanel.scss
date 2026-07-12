@@ -16,10 +16,6 @@
 		overflow: auto;
 	}
 
-	.simplebar-scrollbar::before {
-		background-color: $theme-scrollbar-thumb-bg;
-	}
-
 	&--header {
 		display: flex;
 		flex-direction: column;

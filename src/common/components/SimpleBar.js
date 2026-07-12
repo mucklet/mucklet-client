@@ -1,6 +1,7 @@
 import { RootElem } from 'modapp-base-component';
 import simplebar from 'simplebar';
 import 'simplebar/dist/simplebar.css';
+import './simpleBar.scss';
 
 /**
  * SimpleBar is a wrapper around simplebar.

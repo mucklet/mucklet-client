@@ -50,16 +50,17 @@ $color-action-300: $color-action;
 /* Semantic color fallbacks */
 $content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
 $control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
+$control-overlay-bg: rgba($white, 2%);
+$control-overlay-bg-hover: rgba($white, 6%);
+$control-overlay-bg-active: rgba($white, 8%);
 $surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
 $idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
 $idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
 $status-success: #458136;
-$control-overlay-bg: rgba($white, 2%);
-$control-overlay-bg-hover: rgba($white, 6%);
-$control-overlay-bg-active: rgba($white, 8%);
 $modal-overlay-bg: rgba($black, 0.4);
 $modal-shadow: rgba($black, 0.6);
 $surface-shadow: rgba(0, 0, 0, 0.3);
+$scrollbar-thumb-bg: mix($color-base-200, $color-neutral-300, 50%);
 
 /* Shared component color fallbacks */
 
@@ -197,7 +198,7 @@ $theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-acc
 $theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
 
 // Scrollbar
-$theme-scrollbar-thumb-bg: var(--mu-scrollbar-thumb-bg, #{$theme-color-neutral-300});
+$theme-scrollbar-thumb-bg: var(--mu-scrollbar-thumb-bg, #{$scrollbar-thumb-bg});
 
 // Status
 $theme-status-danger-bg: var(--mu-status-danger-bg, #{$theme-color-danger-300});
@@ -339,6 +340,9 @@ $theme-kbd-bg: var(--mu-kbd-bg, #{$theme-color-neutral-400});
 $theme-kbd-border: var(--mu-kbd-border, #{$theme-color-neutral-200});
 $theme-kbd-shadow: var(--mu-kbd-shadow, #{$kbd-shadow});
 $theme-kbd-highlight: var(--mu-kbd-highlight, #{$kbd-highlight});
+
+// Simplebar
+$theme-simplebar-thumb-bg: var(--mu-simplebar-thumb-bg, #{$theme-color-neutral-300});
 
 // SVGs
 $theme-svg-placeholder-100-bg: var(--mu-svg-placeholder-100-bg, #{$surface-300-bg});

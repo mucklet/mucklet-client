@@ -54,8 +54,4 @@
 		&-warn { color: $theme-log-cmd-fg; }
 		&-error { color: $theme-log-error-fg; }
 	}
-
-	.simplebar-scrollbar::before {
-		background-color: $theme-scrollbar-thumb-bg;
-	}
 }

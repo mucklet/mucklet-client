@@ -58,10 +58,6 @@
 		padding: 0 8px 0 4px;
 	}
 
-	.simplebar-scrollbar::before {
-		background-color: $theme-scrollbar-thumb-bg;
-	}
-
 	&--touchonly {
 		display: none;
 	}

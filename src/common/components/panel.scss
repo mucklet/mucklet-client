@@ -12,10 +12,6 @@
 		overflow: auto;
 	}
 
-	.simplebar-scrollbar::before {
-		background-color: $theme-scrollbar-thumb-bg;
-	}
-
 	&--container {
 		height: 100%;
 		position: relative;
