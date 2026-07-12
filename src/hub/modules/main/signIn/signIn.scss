@@ -41,8 +41,8 @@
 	position: absolute;
 	z-index: 1001;
 	border-radius: 6px;
-	-webkit-box-shadow: 1px 1px 6px 0px $theme-surface-raised-shadow;
-	box-shadow: 1px 1px 6px 0px $theme-surface-raised-shadow;
+	-webkit-box-shadow: 1px 1px 6px 0px $theme-surface-shadow;
+	box-shadow: 1px 1px 6px 0px $theme-surface-shadow;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;

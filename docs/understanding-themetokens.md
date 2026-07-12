@@ -104,10 +104,11 @@ tag.dislike.fg      -> color.danger.300
 
 ## Initial semantic groups
 
-Surface colors describe reusable layers from the darkest base surface through
-raised surfaces. The overlay surface is shared by tooltips, popup tips, popup
-pills, and menu-like overlays unless a component needs a more specific
-opacity, hover, pointer, or contrast override:
+Surface tokens describe reusable layers from the darkest base surface through
+raised surfaces, plus the shared shadow color for raised surfaces. The overlay
+surface is shared by tooltips, popup tips, popup pills, and menu-like overlays
+unless a component needs a more specific opacity, hover, pointer, or contrast
+override:
 
 ```text
 surface.100.bg
@@ -116,6 +117,7 @@ surface.300.bg
 surface.400.bg
 surface.500.bg
 surface.overlay.bg
+surface.shadow
 ```
 
 Content colors describe text and icon emphasis:

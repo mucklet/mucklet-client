@@ -42,7 +42,7 @@ const tokens = {
 	'surface.500.bg': (getToken) => getToken('color.base.500'),
 	'surface.600.bg': (getToken) => getToken('color.base.600'),
 	'surface.overlay.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),
-	'surface.raised.shadow': 'rgba(0, 0, 0, 0.3)',
+	'surface.shadow': 'rgba(0, 0, 0, 0.3)',
 
 	'content.default.fg': (getToken) => getToken('color.neutral.300'),
 	'content.strong.fg': (getToken) => getToken('color.contrast.300'),
@@ -210,6 +210,10 @@ const tokens = {
 	'svg.placeholder.200.bg': (getToken) => getToken('surface.400.bg'),
 	'svg.placeholder.200.fg': (getToken) => getToken('surface.200.bg'),
 
+	// Modals
+	'modal.overlay.bg': 'rgba(0, 0, 0, 0.4)',
+	'modal.shadow': 'rgba(0, 0, 0, 0.6)',
+
 	// src/common/scss/_badge.scss
 	'badge.100.bg': (getToken) => getToken('surface.100.bg'),
 	'badge.100.bg.hover': (getToken) => adjust(getToken('color.base.200'), -6),
@@ -236,14 +240,9 @@ const tokens = {
 	'common.addbtn.fg.hover': (getToken) => getToken('color.neutral.500'),
 
 	// src/common/classes/dialog.scss
-	'dialog.overlay.bg': '#000',
 	'dialog.input.bg': (getToken) => getToken('color.neutral.500'),
 	'dialog.input.bg.hover': (getToken) => getToken('color.neutral.300'),
 	'dialog.input.fg': '#000',
-
-	// src/common/classes/imgModal.scss
-	'imgmodal.overlay.bg': 'rgba(0, 0, 0, 0.5)',
-	'imgmodal.shadow': '#000',
 
 	// src/common/scss/_kbd.scss
 	'kbd.fg': (getToken) => getToken('control.danger.fg'),

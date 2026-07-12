@@ -17,9 +17,6 @@ $black: #000;
 // $color-danger
 // $color-action
 
-/* Shadow */
-$shadow: rgba(0, 0, 0, 0.3);
-
 /* Primitive color fallback levels */
 $color-base-100: darken($color-base, 4%);
 $color-base-200: $color-base;
@@ -60,6 +57,9 @@ $status-success: #458136;
 $control-overlay-bg: rgba($white, 2%);
 $control-overlay-bg-hover: rgba($white, 6%);
 $control-overlay-bg-active: rgba($white, 8%);
+$modal-overlay-bg: rgba($black, 0.4);
+$modal-shadow: rgba($black, 0.6);
+$surface-shadow: rgba(0, 0, 0, 0.3);
 
 /* Shared component color fallbacks */
 
@@ -67,13 +67,9 @@ $badge-100-bg-hover: darken($color-base-100, 2%);
 
 $common-format-divider-border: rgba($white, 0.2);
 
-$dialog-overlay-bg: $black;
 $dialog-input-bg: $color-neutral-500;
 $dialog-input-bg-hover: $color-neutral-300;
 $dialog-input-fg: $black;
-
-$imgmodal-overlay-bg: rgba($black, 0.5);
-$imgmodal-shadow: $black;
 
 $kbd-shadow: rgba($black, 0.3);
 $kbd-highlight: $white;
@@ -117,7 +113,7 @@ $theme-surface-400-bg: var(--mu-surface-400-bg, #{$theme-color-base-400});
 $theme-surface-500-bg: var(--mu-surface-500-bg, #{$theme-color-base-500});
 $theme-surface-600-bg: var(--mu-surface-600-bg, #{$theme-color-base-600});
 $theme-surface-overlay-bg: var(--mu-surface-overlay-bg, #{$surface-overlay-bg});
-$theme-surface-raised-shadow: var(--mu-surface-raised-shadow, #{$shadow});
+$theme-surface-shadow: var(--mu-surface-shadow, #{$surface-shadow});
 
 // Compatibility aliases
 $surface-100-bg: $theme-surface-100-bg;
@@ -302,6 +298,10 @@ $theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$theme-color-action-20
 $theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$theme-color-action-200});
 $theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$theme-color-base-200});
 
+// Modals
+$theme-modal-overlay-bg: var(--mu-modal-overlay-bg, #{$modal-overlay-bg});
+$theme-modal-shadow: var(--mu-modal-shadow, #{$modal-shadow});
+
 /* Shared component theme vars */
 
 // Badges
@@ -326,12 +326,9 @@ $theme-common-format-divider-border: var(--mu-common-format-divider-border, #{$c
 $theme-common-addbtn-fg-hover: var(--mu-common-addbtn-fg-hover, #{$theme-color-neutral-500});
 
 // Dialogs and overlays
-$theme-dialog-overlay-bg: var(--mu-dialog-overlay-bg, #{$dialog-overlay-bg});
 $theme-dialog-input-bg: var(--mu-dialog-input-bg, #{$dialog-input-bg});
 $theme-dialog-input-bg-hover: var(--mu-dialog-input-bg-hover, #{$dialog-input-bg-hover});
 $theme-dialog-input-fg: var(--mu-dialog-input-fg, #{$dialog-input-fg});
-$theme-imgmodal-overlay-bg: var(--mu-imgmodal-overlay-bg, #{$imgmodal-overlay-bg});
-$theme-imgmodal-shadow: var(--mu-imgmodal-shadow, #{$imgmodal-shadow});
 $theme-tooltip-bg: var(--mu-tooltip-bg, #{$theme-surface-overlay-bg});
 $theme-tooltip-fg: var(--mu-tooltip-fg, #{$theme-color-neutral-500});
 
