@@ -1,0 +1,256 @@
+/* Primitive theme vars */
+$theme-color-base-100: var(--mu-color-base-100, #{$color-base-100});
+$theme-color-base-200: var(--mu-color-base-200, #{$color-base-200});
+$theme-color-base-300: var(--mu-color-base-300, #{$color-base-300});
+$theme-color-base-400: var(--mu-color-base-400, #{$color-base-400});
+$theme-color-base-500: var(--mu-color-base-500, #{$color-base-500});
+$theme-color-base-600: var(--mu-color-base-600, #{$color-base-600});
+
+$theme-color-accent-300: var(--mu-color-accent-300, #{$color-accent-300});
+
+$theme-color-contrast-200: var(--mu-color-contrast-200, #{$color-contrast-200});
+$theme-color-contrast-300: var(--mu-color-contrast-300, #{$color-contrast-300});
+
+$theme-color-neutral-100: var(--mu-color-neutral-100, #{$color-neutral-100});
+$theme-color-neutral-200: var(--mu-color-neutral-200, #{$color-neutral-200});
+$theme-color-neutral-300: var(--mu-color-neutral-300, #{$color-neutral-300});
+$theme-color-neutral-400: var(--mu-color-neutral-400, #{$color-neutral-400});
+$theme-color-neutral-500: var(--mu-color-neutral-500, #{$color-neutral-500});
+$theme-color-neutral-600: var(--mu-color-neutral-600, #{$color-neutral-600});
+$theme-color-neutral-700: var(--mu-color-neutral-700, #{$color-neutral-700});
+
+$theme-color-danger-100: var(--mu-color-danger-100, #{$color-danger-100});
+$theme-color-danger-200: var(--mu-color-danger-200, #{$color-danger-200});
+$theme-color-danger-300: var(--mu-color-danger-300, #{$color-danger-300});
+$theme-color-danger-400: var(--mu-color-danger-400, #{$color-danger-400});
+
+$theme-color-action-100: var(--mu-color-action-100, #{$color-action-100});
+$theme-color-action-200: var(--mu-color-action-200, #{$color-action-200});
+$theme-color-action-300: var(--mu-color-action-300, #{$color-action-300});
+
+/* Semantic theme vars */
+// Surfaces
+$theme-surface-100-bg: var(--mu-surface-100-bg, #{$theme-color-base-100});
+$theme-surface-200-bg: var(--mu-surface-200-bg, #{$theme-color-base-200});
+$theme-surface-300-bg: var(--mu-surface-300-bg, #{$theme-color-base-300});
+$theme-surface-400-bg: var(--mu-surface-400-bg, #{$theme-color-base-400});
+$theme-surface-500-bg: var(--mu-surface-500-bg, #{$theme-color-base-500});
+$theme-surface-600-bg: var(--mu-surface-600-bg, #{$theme-color-base-600});
+$theme-surface-overlay-bg: var(--mu-surface-overlay-bg, #{$surface-overlay-bg});
+$theme-surface-shadow: var(--mu-surface-shadow, #{$surface-shadow});
+
+// Compatibility aliases
+$surface-100-bg: $theme-surface-100-bg;
+$surface-200-bg: $theme-surface-200-bg;
+$surface-300-bg: $theme-surface-300-bg;
+$surface-400-bg: $theme-surface-400-bg;
+$surface-500-bg: $theme-surface-500-bg;
+$surface-600-bg: $theme-surface-600-bg;
+
+// Content
+$theme-content-default-fg: var(--mu-content-default-fg, #{$theme-color-neutral-300});
+$theme-content-strong-fg: var(--mu-content-strong-fg, #{$theme-color-contrast-300});
+$theme-content-accent-fg: var(--mu-content-accent-fg, #{$theme-color-accent-300});
+$theme-content-muted-fg: var(--mu-content-muted-fg, #{$theme-color-neutral-200});
+$theme-content-subtle-fg: var(--mu-content-subtle-fg, #{$theme-color-neutral-100});
+$theme-content-disabled-fg: var(--mu-content-disabled-fg, #{$theme-color-neutral-100});
+$theme-content-placeholder-fg: var(--mu-content-placeholder-fg, #{$content-placeholder-fg});
+$theme-content-error-fg: var(--mu-content-error-fg, #{$theme-color-danger-300});
+// Content - status
+$theme-content-danger-fg: var(--mu-content-danger-fg, #{$theme-color-danger-300});
+$theme-content-info-fg: var(--mu-content-info-fg, #{$theme-color-action-300});
+$theme-content-success-fg: var(--mu-content-success-fg, #{$status-success});
+$theme-content-warning-fg: var(--mu-content-warning-fg, #{$theme-color-accent-300});
+$theme-content-active-fg: var(--mu-content-active-fg, #{$theme-color-action-300});
+$theme-content-inactive-fg: var(--mu-content-inactive-fg, #{$theme-color-neutral-300});
+
+// Controls
+$theme-control-default-300-bg: var(--mu-control-default-300-bg, #{$theme-color-base-300});
+$theme-control-default-300-bg-hover: var(--mu-control-default-300-bg-hover, #{$theme-color-base-400});
+$theme-control-default-300-bg-active: var(--mu-control-default-300-bg-active, #{$theme-color-base-500});
+$theme-control-default-300-fg: var(--mu-control-default-300-fg, #{$theme-color-neutral-300});
+$theme-control-default-300-fg-hover: var(--mu-control-default-300-fg-hover, #{$theme-color-neutral-400});
+$theme-control-default-400-bg: var(--mu-control-default-400-bg, #{$theme-color-base-400});
+$theme-control-default-400-bg-hover: var(--mu-control-default-400-bg-hover, #{$theme-color-base-500});
+$theme-control-default-400-bg-active: var(--mu-control-default-400-bg-active, #{$theme-color-base-600});
+$theme-control-default-400-fg: var(--mu-control-default-400-fg, #{$theme-color-neutral-400});
+$theme-control-default-400-fg-hover: var(--mu-control-default-400-fg-hover, #{$theme-color-neutral-500});
+$theme-control-default-500-bg: var(--mu-control-default-500-bg, #{$theme-color-base-500});
+$theme-control-default-500-bg-hover: var(--mu-control-default-500-bg-hover, #{$theme-color-base-600});
+$theme-control-default-500-bg-active: var(--mu-control-default-500-bg-active, #{$theme-color-base-600});
+$theme-control-default-500-fg: var(--mu-control-default-500-fg, #{$theme-color-neutral-400});
+$theme-control-default-500-fg-hover: var(--mu-control-default-500-fg-hover, #{$theme-color-neutral-500});
+$theme-control-primary-bg: var(--mu-control-primary-bg, #{$theme-color-action-300});
+$theme-control-primary-bg-hover: var(--mu-control-primary-bg-hover, #{$theme-color-action-200});
+$theme-control-primary-bg-active: var(--mu-control-primary-bg-active, #{$theme-color-action-100});
+$theme-control-primary-fg: var(--mu-control-primary-fg, #{$theme-color-base-300});
+$theme-control-primary-fg-hover: var(--mu-control-primary-fg-hover, #{$theme-color-base-400});
+$theme-control-secondary-bg: var(--mu-control-secondary-bg, #{$theme-color-neutral-300});
+$theme-control-secondary-bg-hover: var(--mu-control-secondary-bg-hover, #{$theme-color-neutral-200});
+$theme-control-secondary-bg-active: var(--mu-control-secondary-bg-active, #{$theme-color-neutral-100});
+$theme-control-secondary-fg: var(--mu-control-secondary-fg, #{$theme-color-base-300});
+$theme-control-secondary-fg-hover: var(--mu-control-secondary-fg-hover, #{$theme-color-base-400});
+$theme-control-danger-bg: var(--mu-control-danger-bg, #{$theme-color-danger-300});
+$theme-control-danger-bg-hover: var(--mu-control-danger-bg-hover, #{$theme-color-danger-200});
+$theme-control-danger-bg-active: var(--mu-control-danger-bg-active, #{$theme-color-danger-100});
+$theme-control-danger-fg: var(--mu-control-danger-fg, #{$black});
+$theme-control-recessed-bg: var(--mu-control-default-200-bg, #{$theme-color-base-200});
+$theme-control-recessed-bg-hover: var(--mu-control-default-200-bg-hover, #{$theme-color-base-100});
+$theme-control-recessed-bg-active: var(--mu-control-default-200-bg-active, #{$theme-color-base-100});
+$theme-control-recessed-fg: var(--mu-control-default-200-fg, #{$theme-color-neutral-300});
+$theme-control-recessed-fg-hover: var(--mu-control-default-200-fg-hover, #{$theme-color-neutral-400});
+$theme-control-placeholder-fg: var(--mu-control-placeholder-fg, #{$control-placeholder-fg});
+$theme-control-overlay-bg: var(--mu-control-overlay-bg, #{$control-overlay-bg});
+$theme-control-overlay-bg-hover: var(--mu-control-overlay-bg-hover, #{$control-overlay-bg-hover});
+$theme-control-overlay-bg-active: var(--mu-control-overlay-bg-active, #{$control-overlay-bg-active});
+
+// Inputs
+$theme-input-default-bg: var(--mu-input-default-bg, #{$theme-color-base-500});
+$theme-input-default-fg: var(--mu-input-default-fg, #{$theme-color-contrast-300});
+$theme-input-default-placeholder-fg: var(--mu-input-default-placeholder-fg, #{$theme-control-placeholder-fg});
+$theme-input-default-caret: var(--mu-input-default-caret, #{$theme-color-contrast-300});
+$theme-input-incomplete-fg: var(--mu-input-incomplete-fg, #{$theme-color-neutral-400});
+
+// Dividers and focus
+$theme-divider-default-border: var(--mu-divider-default-border, #{$theme-color-base-400});
+$theme-divider-muted-border: var(--mu-divider-muted-border, #{$theme-color-base-300});
+$theme-divider-subtle-border: var(--mu-divider-subtle-border, #{$theme-color-base-200});
+$theme-divider-strong-border: var(--mu-divider-strong-border, #{$theme-color-neutral-300});
+$theme-divider-contrast-border: var(--mu-divider-contrast-border, #{$black});
+$theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-accent-300});
+$theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
+
+// Scrollbar
+$theme-scrollbar-thumb-bg: var(--mu-scrollbar-thumb-bg, #{$scrollbar-thumb-bg});
+
+// Status
+$theme-status-danger-bg: var(--mu-status-danger-bg, #{$theme-color-danger-300});
+$theme-status-danger-fg: var(--mu-status-danger-fg, #{$theme-color-base-200});
+$theme-status-danger-border: var(--mu-status-danger-border, #{$theme-color-danger-300});
+$theme-status-info-bg: var(--mu-status-info-bg, #{$theme-color-action-300});
+$theme-status-info-fg: var(--mu-status-info-fg, #{$theme-color-base-200});
+$theme-status-info-border: var(--mu-status-info-border, #{$theme-color-action-300});
+$theme-status-success-bg: var(--mu-status-success-bg, #{$status-success});
+$theme-status-success-fg: var(--mu-status-success-fg, #{$theme-color-base-200});
+$theme-status-success-border: var(--mu-status-success-border, #{$status-success});
+$theme-status-warning-bg: var(--mu-status-warning-bg, #{$theme-color-accent-300});
+$theme-status-warning-fg: var(--mu-status-warning-fg, #{$theme-color-base-200});
+$theme-status-warning-border: var(--mu-status-warning-border, #{$theme-color-accent-300});
+$theme-status-active-bg: var(--mu-status-active-bg, #{$theme-color-action-300});
+$theme-status-active-fg: var(--mu-status-active-fg, #{$theme-color-base-200});
+$theme-status-active-border: var(--mu-status-active-border, #{$theme-color-action-300});
+$theme-status-inactive-bg: var(--mu-status-inactive-bg, #{$theme-color-neutral-300});
+$theme-status-inactive-fg: var(--mu-status-inactive-fg, #{$theme-color-base-200});
+$theme-status-inactive-border: var(--mu-status-inactive-border, #{$theme-color-neutral-300});
+
+// Links
+$theme-link-default-fg: var(--mu-link-default-fg, #{$theme-color-action-300});
+$theme-link-default-fg-hover: var(--mu-link-default-fg-hover, #{$theme-color-action-200});
+$theme-link-default-fg-active: var(--mu-link-default-fg-active, #{$theme-color-action-100});
+
+// Idle levels
+$theme-idlelevel-asleep-fg: var(--mu-idlelevel-asleep-fg, #{$theme-color-neutral-300});
+$theme-idlelevel-active-fg: var(--mu-idlelevel-active-fg, #{$theme-color-contrast-300});
+$theme-idlelevel-idle-fg: var(--mu-idlelevel-idle-fg, #{$theme-color-accent-300});
+$theme-idlelevel-away-fg: var(--mu-idlelevel-away-fg, #{$idlelevel-away-fg});
+$theme-idlelevel-bot-fg: var(--mu-idlelevel-bot-fg, #{$idlelevel-bot-fg});
+
+// Logs
+$theme-log-error-fg: var(--mu-log-error-fg, #{$log-error-fg});
+$theme-log-cmd-fg: var(--mu-log-cmd-fg, #{$theme-color-accent-300});
+$theme-log-attr-fg: var(--mu-log-attr-fg, #{$theme-color-accent-300});
+$theme-log-listitem-fg: var(--mu-log-listitem-fg, #{$log-listitem-fg});
+$theme-log-delim-fg: var(--mu-log-delim-fg, #{$theme-color-neutral-300});
+$theme-log-text-fg: var(--mu-log-text-fg, #{$theme-color-neutral-600});
+$theme-log-entityid-fg: var(--mu-log-entityid-fg, #{$theme-color-neutral-600});
+$theme-log-bot-fg: var(--mu-log-bot-fg, #{$log-bot-fg});
+$theme-log-instance-fg: var(--mu-log-instance-fg, #{$log-instance-fg});
+$theme-log-card-bg: var(--mu-log-card-bg, #{$log-card-bg});
+$theme-log-strong-fg: var(--mu-log-strong-fg, #{$theme-color-contrast-300});
+$theme-log-default-fg: var(--mu-log-default-fg, #{$theme-color-neutral-300});
+$theme-log-ooc-fg: var(--mu-log-ooc-fg, #{$theme-color-neutral-200});
+$theme-log-comm-fg: var(--mu-log-comm-fg, #{$theme-color-neutral-600});
+$theme-log-placeholder-fg: var(--mu-log-placeholder-fg, #{$theme-color-neutral-200});
+$theme-log-char-fg: var(--mu-log-char-fg, #{$log-char-fg});
+$theme-log-source-fg: var(--mu-log-source-fg, #{$theme-color-neutral-600});
+$theme-log-info-fg: var(--mu-log-info-fg, #{$theme-color-neutral-200});
+$theme-log-title-fg: var(--mu-log-title-fg, #{$theme-color-contrast-200});
+$theme-log-code-fg: var(--mu-log-code-fg, #{$theme-color-accent-300});
+$theme-log-code-bg: var(--mu-log-code-bg, #{$theme-color-base-100});
+$theme-log-header-fg: var(--mu-log-header-fg, #{$theme-color-accent-300});
+$theme-log-link-fg: var(--mu-log-link-fg, #{$theme-link-default-fg});
+$theme-log-cmd-ooc-fg: var(--mu-log-cmd-ooc-fg, #{$theme-color-neutral-300});
+$theme-log-formatter-fg: var(--mu-log-formatter-fg, #{$theme-color-neutral-200});
+$theme-log-emphasis-fg: var(--mu-log-emphasis-fg, #{$theme-color-action-300});
+$theme-log-fieldset-border: var(--mu-log-fieldset-border, #{$theme-color-neutral-200});
+$theme-log-fieldset-label-fg: var(--mu-log-fieldset-label-fg, #{$theme-log-default-fg});
+$theme-log-fieldset-label-bg: var(--mu-log-fieldset-label-bg, #{$theme-surface-200-bg});
+$theme-log-active-fg: var(--mu-log-active-fg, #{$theme-content-active-fg});
+$theme-log-inactive-fg: var(--mu-log-inactive-fg, #{$theme-color-base-400});
+$theme-log-highlight-fg: var(--mu-log-highlight-fg, #{$theme-color-neutral-600});
+$theme-log-highlight-bg: var(--mu-log-highlight-bg, #{$theme-surface-400-bg});
+$theme-log-highlight-ooc-fg: var(--mu-log-highlight-ooc-fg, #{$theme-color-neutral-400});
+$theme-log-highlight-comm-fg: var(--mu-log-highlight-comm-fg, #{$theme-color-contrast-300});
+$theme-log-highlight-event-bg: var(--mu-log-highlight-event-bg, #{$theme-surface-300-bg});
+$theme-log-highlight-event-fg: var(--mu-log-highlight-event-fg, #{$theme-color-neutral-400});
+$theme-log-highlight-event-ooc-fg: var(--mu-log-highlight-event-ooc-fg, #{$theme-color-neutral-300});
+$theme-log-highlight-event-comm-fg: var(--mu-log-highlight-event-comm-fg, #{$theme-color-neutral-700});
+$theme-log-highlight-active-bg: var(--mu-log-highlight-active-bg, #{$theme-surface-500-bg});
+$theme-log-highlight-active-fg: var(--mu-log-highlight-active-fg, #{$theme-color-neutral-500});
+$theme-log-highlight-active-comm-fg: var(--mu-log-highlight-active-comm-fg, #{$white});
+
+// Tags
+$theme-tag-default-fg: var(--mu-tag-default-fg, #{$theme-color-neutral-300});
+$theme-tag-default-border: var(--mu-tag-default-border, #{$theme-color-neutral-300});
+$theme-tag-default-fg-hover: var(--mu-tag-default-fg-hover, #{$theme-color-neutral-500});
+$theme-tag-default-border-hover: var(--mu-tag-default-border-hover, #{$theme-color-neutral-500});
+$theme-tag-dislike-fg: var(--mu-tag-dislike-fg, #{$theme-color-danger-300});
+$theme-tag-dislike-border: var(--mu-tag-dislike-border, #{$theme-color-danger-300});
+$theme-tag-dislike-fg-hover: var(--mu-tag-dislike-fg-hover, #{$theme-color-danger-400});
+$theme-tag-dislike-border-hover: var(--mu-tag-dislike-border-hover, #{$theme-color-danger-400});
+$theme-tag-title-fg: var(--mu-tag-title-fg, #{$theme-color-action-300});
+$theme-tag-title-border: var(--mu-tag-title-border, #{$theme-color-action-300});
+$theme-tag-title-fg-hover: var(--mu-tag-title-fg-hover, #{$theme-color-action-200});
+$theme-tag-title-border-hover: var(--mu-tag-title-border-hover, #{$theme-color-action-200});
+$theme-tag-icon-fg: var(--mu-tag-icon-fg, #{$theme-color-base-200});
+
+// Modals
+$theme-modal-overlay-bg: var(--mu-modal-overlay-bg, #{$modal-overlay-bg});
+$theme-modal-shadow: var(--mu-modal-shadow, #{$modal-shadow});
+
+/* Shared component theme vars */
+
+// Badges
+$theme-badge-100-bg: var(--mu-badge-100-bg, #{$theme-surface-100-bg});
+$theme-badge-100-bg-hover: var(--mu-badge-100-bg-hover, #{$badge-100-bg-hover});
+$theme-badge-200-bg: var(--mu-badge-200-bg, #{$theme-surface-200-bg});
+$theme-badge-200-fg: var(--mu-badge-200-fg, #{$white});
+$theme-badge-200-bg-hover: var(--mu-badge-200-bg-hover, #{$surface-100-bg});
+$theme-badge-symbol-fg: var(--mu-badge-symbol-fg, #{$theme-content-default-fg});
+$theme-badge-icon-bg: var(--mu-badge-icon-bg, #{$theme-surface-400-bg});
+$theme-badge-icon-fg: var(--mu-badge-icon-fg, #{$theme-content-default-fg});
+$theme-badge-text-fg: var(--mu-badge-text-fg, #{$theme-content-default-fg});
+$theme-badge-title-fg: var(--mu-badge-title-fg, #{$theme-content-accent-fg});
+$theme-badge-subtitle-fg: var(--mu-badge-subtitle-fg, #{$theme-content-accent-fg});
+$theme-badge-strong-fg: var(--mu-badge-strong-fg, #{$theme-content-strong-fg});
+$theme-badge-highlight-fg: var(--mu-badge-highlight-fg, #{$theme-log-instance-fg});
+$theme-badge-error-fg: var(--mu-badge-error-fg, #{$theme-content-error-fg});
+$theme-badge-divider-border: var(--mu-badge-divider-border, #{$theme-surface-500-bg});
+
+// Common formatted content
+$theme-common-format-divider-border: var(--mu-common-format-divider-border, #{$common-format-divider-border});
+$theme-common-addbtn-fg-hover: var(--mu-common-addbtn-fg-hover, #{$theme-color-neutral-500});
+
+// Keyboard hints
+$theme-kbd-fg: var(--mu-kbd-fg, #{$theme-control-danger-fg});
+$theme-kbd-text-shadow: var(--mu-kbd-text-shadow, #{$theme-color-neutral-600});
+$theme-kbd-bg: var(--mu-kbd-bg, #{$theme-color-neutral-400});
+$theme-kbd-border: var(--mu-kbd-border, #{$theme-color-neutral-200});
+$theme-kbd-shadow: var(--mu-kbd-shadow, #{$kbd-shadow});
+$theme-kbd-highlight: var(--mu-kbd-highlight, #{$kbd-highlight});
+
+// SVGs
+$theme-svg-placeholder-100-bg: var(--mu-svg-placeholder-100-bg, #{$surface-300-bg});
+$theme-svg-placeholder-100-fg: var(--mu-svg-placeholder-100-fg, #{$surface-100-bg});
+$theme-svg-placeholder-200-bg: var(--mu-svg-placeholder-200-bg, #{$surface-400-bg});
+$theme-svg-placeholder-200-fg: var(--mu-svg-placeholder-200-fg, #{$surface-200-bg});
