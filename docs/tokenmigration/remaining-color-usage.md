@@ -9,7 +9,7 @@ remaining matches are either allowed fallback definitions, intentionally local
 styling, technical color values, or follow-up work that needs a separate design
 decision.
 
-The SCSS inventory currently contains 227 files.
+The SCSS inventory currently contains 226 files.
 
 ## Search Commands
 
@@ -33,7 +33,7 @@ because the file defines primitive, semantic, and component token fallbacks.
 
 | File | Lines | Category | Reason |
 | --- | --- | --- | --- |
-| `src/common/scss/_variables.scss` | 9-10, 13-18, 21, 24-30, 32-33, 35-42, 44-47, 49-59, 62-71, 73, 75-77, 79-83, 85-91, 94-121, 125-131, 141-169, 173-186, 189-216, 221-226, 230-285, 289, 298, 321, 330, 334-336 | allowed token fallback in `_variables.scss` | Global primitive, semantic, component, log, badge, tooltip, and keyboard fallback definitions. Lines 13-18 are primitive family comments matched by the search. |
+| `src/common/scss/_variables.scss` | 9-10, 13-18, 21, 24-29, 31, 33-34, 36-42, 44-47, 49-51, 54-62, 66, 68, 70-73, 75-76, 78-79, 82-87, 89, 91-92, 94-100, 102-105, 107-109, 113-118, 120, 131-136, 138, 140-141, 143-145, 148-181, 188-189, 191-192, 195-201, 204, 207-212, 214, 216-224, 227-229, 232-234, 239-244, 248-249, 251-253, 257-261, 263-268, 270-273, 277-278, 280-281, 283-285, 287-288, 291-303, 311, 326, 336, 340-342 | allowed token fallback in `_variables.scss` | Global primitive, semantic, component, log, badge, tooltip, and keyboard fallback definitions. Lines 13-18 are primitive family comments matched by the search. |
 
 ## Allowed Module-Owned Fallbacks
 
@@ -47,7 +47,6 @@ These files intentionally keep module-owned runtime token fallbacks decentralize
 | `src/client/modules/main/dialogs/dialogTag/dialogTag-theme.scss` | 4-5 | allowed module-owned fallback in `*-theme.scss` | Fallbacks for disabled description and dislike hover tokens. |
 | `src/client/modules/main/pages/pageArea/pageArea-theme.scss` | 4-6 | allowed module-owned fallback in `*-theme.scss` | Fallbacks for selected location and image-location marker border tokens. |
 | `src/client/modules/main/pages/pageMail/pageMail-theme.scss` | 4-5 | allowed module-owned fallback in `*-theme.scss` | Fallbacks for unread mail row tokens. |
-| `src/client/modules/main/layout/console/console-theme.scss` | 4 | allowed module-owned fallback in `*-theme.scss` | Fallback for `console.scrollbar.thumb`. |
 | `src/client/modules/main/layout/charLog/charLog-theme.scss` | 4-6 | allowed module-owned fallback in `*-theme.scss` | Fallbacks for invalid event and event menu tokens. |
 
 ## Hub-Local Brand, Artwork, And Product Colors
@@ -87,13 +86,13 @@ caret sides, invisible tracks, and scrollbar tracks.
 | --- | --- | --- | --- |
 | `src/common/scss/_spinner.scss` | 15 | technical color | Spinner invisible border edge. |
 | `src/common/classes/tooltip.scss` | 82, 86 | technical color | Tooltip caret transparent side borders. |
-| `src/common/components/popupTip.scss` | 43, 62, 81, 100, 120, 139 | technical color | Popup tip caret transparent side borders. |
-| `src/common/components/popupPill.scss` | 34 | technical color | Popup pill caret transparent side borders. |
+| `src/common/components/popupTip.scss` | 38, 57, 76, 95, 115, 134 | technical color | Popup tip caret transparent side borders. |
+| `src/common/components/popupPill.scss` | 29 | technical color | Popup pill caret transparent side borders. |
 | `src/common/components/togglebox.scss` | 13 | technical color | Empty togglebox transparent fill. |
 | `src/common/components/spinnerModal.scss` | 35 | technical color | Spinner modal invisible border edge. |
 | `src/client/scripteditor/modules/main/editScript/editScript.scss` | 122, 126, 129 | technical color | CodeMirror scrollbar track and corner transparency. |
 | `src/client/modules/main/layout/playerTabs/playerTabs.scss` | 11 | technical color | Inactive player-tab border reserve. |
-| `src/client/modules/main/layout/console/console.scss` | 113 | technical color | Active-character border reserve. |
+| `src/client/modules/main/layout/console/console.scss` | 106 | technical color | Active-character border reserve. |
 | `src/client/modules/main/layout/charLog/charLog.scss` | 25 | technical color | Character log focus marker border reserve. |
 | `src/client/modules/main/pages/pageRoom/pageRoom.scss` | 104 | technical color | Room looking marker border reserve. |
 | `src/client/modules/main/pages/pageArea/pageArea.scss` | 50 | technical color | Page-area location marker border reserve. |
@@ -106,13 +105,6 @@ without a focused design decision.
 
 | File | Lines | Category | Reason |
 | --- | --- | --- | --- |
-| `src/common/components/autocomplete.scss` | 4-5, 11-12, 19, 33, 37, 51-53, 57, 61, 65, 69, 71 | deferred design decision | Shared autocomplete has existing shared-component-candidate rows and direct primitive styling that needs a component-token decision. |
-| `src/common/components/hamburger.scss` | 19, 24 | deferred design decision | Shared hamburger SVG fill needs a component-token decision. |
-| `src/common/components/kebabMenu.scss` | 5, 14, 19, 22, 45 | deferred design decision | Shared kebab trigger/menu styling has shared-component-candidate rows and direct primitive styling. |
-| `src/common/components/mobilePanel.scss` | 20, 33 | deferred design decision | Shared mobile panel primitive styling needs a component-token decision. |
-| `src/common/components/navButtons.scss` | 4, 11, 24, 30, 39, 47, 52, 54, 57, 59, 68 | deferred design decision | Shared SVG nav button fill/shadow styling needs a component-token decision. |
-| `src/common/components/popupPill.scss` | 5 | deferred design decision | Shared popup pill tip background has a shared-component-candidate row. |
-| `src/common/components/popupTip.scss` | 4 | deferred design decision | Shared popup tip background has a shared-component-candidate row. |
 | `src/common/components/spinnerModal.scss` | 16, 34 | deferred design decision | Shared modal scrim and spinner danger color need a component-token decision. |
 | `src/common/components/togglebox.scss` | 4-5, 12, 40, 47 | deferred design decision | Shared togglebox action/danger colors have shared-component-candidate rows. |
 | `src/common/components/placeholderSvg.scss` | 5 | deferred design decision | Fixed placeholder illustration mark color is neither clearly hub-only nor a reusable semantic token. |
@@ -145,14 +137,14 @@ future tokenization work with focused UI review.
 | `src/client/modules/main/addons/mobileCharToggle/mobileCharToggle.scss` | 7, 9-10 | unresolved issue requiring follow-up | Replace direct primitive shadow/background/text wrappers. |
 | `src/client/modules/main/addons/overlayNav/overlayNav.scss` | 18, 20, 61 | unresolved issue requiring follow-up | Replace direct primitive shadow/background wrappers; keep module-owned hover token in `overlayNav-theme.scss`. |
 | `src/client/modules/main/help/helpFormat/helpFormat.scss` | 10, 19 | unresolved issue requiring follow-up | Replace direct primitive danger color wrappers. |
-| `src/client/modules/main/layout/console/console.scss` | 116 | unresolved issue requiring follow-up | Replace direct primitive danger border wrapper. |
+| `src/client/modules/main/layout/console/console.scss` | 109 | unresolved issue requiring follow-up | Replace direct primitive danger border wrapper. |
 | `src/client/modules/main/layout/playerTabs/playerTabs.scss` | 14 | unresolved issue requiring follow-up | Replace direct primitive danger border wrapper. |
 | `src/client/modules/main/pages/pageArea/pageArea.scss` | 36, 55 | unresolved issue requiring follow-up | Replace direct primitive wrappers apart from deferred image overlay and marker shadow lines. |
 | `src/client/modules/main/pages/pageAwake/pageAwake.scss` | 46, 49, 58, 62, 69, 72, 85 | unresolved issue requiring follow-up | Replace direct primitive wrappers; lines 69 and 72 are commented-out references. |
 | `src/client/modules/main/pages/pageChar/pageChar.scss` | 24, 47, 54 | unresolved issue requiring follow-up | Replace direct primitive divider/text wrappers. |
 | `src/client/modules/main/pages/pageCharSelect/pageCharSelect.scss` | 14, 17-18, 36, 44 | unresolved issue requiring follow-up | Replace direct primitive empty/error state wrappers. |
 | `src/client/modules/main/pages/pageEditExit/pageEditExit.scss` | 20 | unresolved issue requiring follow-up | Replace direct primitive disabled/muted button color wrapper. |
-| `src/client/modules/main/pages/pageEditRoomScript/pageEditRoomScript.scss` | 18, 40, 51-53, 59 | unresolved issue requiring follow-up | Replace direct primitive log preview wrappers. |
+| `src/client/modules/main/pages/pageEditRoomScript/pageEditRoomScript.scss` | 18, 40, 51-53 | unresolved issue requiring follow-up | Replace direct primitive log preview wrappers. |
 | `src/client/modules/main/pages/pageMail/pageMail.scss` | 42 | unresolved issue requiring follow-up | Replace direct primitive muted text wrapper; keep module-owned unread tokens in `pageMail-theme.scss`. |
 | `src/client/modules/main/pages/pageRoom/pageRoom.scss` | 11, 42, 82, 93-94, 109, 114 | unresolved issue requiring follow-up | Replace direct primitive room text/background/marker wrappers. |
 | `src/client/modules/main/pages/pageTeleportChar/pageTeleportChar.scss` | 11, 17 | unresolved issue requiring follow-up | Replace direct primitive text wrappers. |
@@ -169,7 +161,6 @@ token registrations:
 | `src/client/modules/main/dialogs/dialogTag/DialogTag.js` | module-owned runtime token registration |
 | `src/client/modules/main/pages/pageArea/PageArea.js` | module-owned runtime token registration |
 | `src/client/modules/main/pages/pageMail/PageMail.js` | module-owned runtime token registration |
-| `src/client/modules/main/layout/console/Console.js` | module-owned runtime token registration |
 | `src/client/modules/main/layout/charLog/CharLog.js` | module-owned runtime token registration |
 
 No hub module registers hub-only runtime tokens.

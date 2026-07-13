@@ -180,7 +180,7 @@ class RealmSettingsThemeComponent {
 						},
 					})),
 					n.elem('reset', 'button', {
-						className: 'realmsettingstheme--tokenreset iconbtn medium tinyicon',
+						className: 'realmsettingstheme--tokenreset default-500 iconbtn medium tinyicon',
 						attributes: {
 							type: 'button',
 						},

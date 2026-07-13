@@ -1,0 +1,8 @@
+@import '~scss/variables';
+
+// Togglebox colors
+$togglebox-action-hover: lighten($color-action-300, 5%);
+$togglebox-danger-hover: lighten($color-danger-300, 5%);
+// Togglebox theme vars
+$theme-togglebox-action-hover: var(--mu-togglebox-action-hover, #{$togglebox-action-hover});
+$theme-togglebox-danger-hover: var(--mu-togglebox-danger-hover, #{$togglebox-danger-hover});

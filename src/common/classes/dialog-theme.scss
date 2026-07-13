@@ -1,0 +1,11 @@
+@import '~scss/variables';
+
+// Dialog colors
+$dialog-input-bg: $color-neutral-500;
+$dialog-input-bg-hover: $color-neutral-300;
+$dialog-input-fg: $black;
+
+// Dialog theme vars
+$theme-dialog-input-bg: var(--mu-dialog-input-bg, #{$dialog-input-bg});
+$theme-dialog-input-bg-hover: var(--mu-dialog-input-bg-hover, #{$dialog-input-bg-hover});
+$theme-dialog-input-fg: var(--mu-dialog-input-fg, #{$dialog-input-fg});

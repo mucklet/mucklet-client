@@ -14,6 +14,7 @@ class PasswordInput extends RootElem {
 	 * @param {object} [opt] Optional parameters.
 	 * @param {object} [opt.onInput] Callback on input events.
 	 * @param {string} [opt.className] Additional class names to append to font-awesome class names.
+	 * @param {string} [opt.iconClassName] Additional class name to add to eye icon div.
 	 * @param {object} [opt.attributes] Key/value attributes object
 	 * @param {object} [opt.inputOpt] Options for the input element
 	 * @param {object} [opt.events] Key/value events object, where the key is the event name, and value is the callback. Default click event is calling toggleNext()
@@ -31,7 +32,7 @@ class PasswordInput extends RootElem {
 		this.setRootNode(n => n.elem('div', opt, [
 			n.component(this._input),
 			n.elem('div', {
-				className: 'passwordinput--eye iconbtn medium tinyicon',
+				className: 'passwordinput--eye iconbtn medium tinyicon' + (opt.iconClassName ? ' ' + opt.iconClassName : ''),
 				events: { click: () => this.toggle() },
 			}, [
 				n.component(this._eye),

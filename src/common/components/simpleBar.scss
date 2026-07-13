@@ -1,0 +1,6 @@
+@import '~scss/variables';
+@import './simpleBar-theme';
+
+.simplebar-scrollbar::before {
+	background-color: $theme-simplebar-thumb-bg;
+}

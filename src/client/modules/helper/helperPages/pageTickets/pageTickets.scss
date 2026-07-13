@@ -21,17 +21,8 @@
 	}
 }
 
-
 .pagetickets-ticket {
 	padding: 2px 0;
-
-	&--icon.accepted {
-		@include btn-style($theme-status-success-bg, $theme-status-success-bg, $theme-status-success-bg, $theme-control-danger-fg, $theme-control-danger-fg);
-	}
-
-	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-status-danger-bg, $theme-status-danger-bg, $theme-status-danger-bg, $theme-control-danger-fg, $theme-control-danger-fg);
-	}
 }
 
 .pagetickets-ticket, .pagetickets-activity {
@@ -53,9 +44,5 @@
 	&--head {
 		padding: 0 0 8px;
 		font-size: $font-size-small;
-	}
-
-	&--nomail {
-		font-style: italic;
 	}
 }

@@ -1,22 +1,15 @@
 @import '~scss/variables';
 
-// Autocomplete colors
-$autocomplete-hover-bg: lighten($color-action-300, 20%);
-$autocomplete-selected-bg: lighten($color-action-300, 30%);
-// Autocomplete theme vars
-$theme-autocomplete-hover-bg: var(--mu-autocomplete-hover-bg, #{$autocomplete-hover-bg});
-$theme-autocomplete-selected-bg: var(--mu-autocomplete-selected-bg, #{$autocomplete-selected-bg});
-
 .autocomplete {
-	color: $theme-color-neutral-100;
-	background: white;
+	color: $theme-content-default-fg;
+	background: $theme-surface-100-bg;
+	border: 1px solid $theme-color-accent-300;
 	z-index: 1000;
 	font-size: $font-size;
 	line-height: 32px;
 	font-family: $font-text;
 	overflow: auto;
 	box-sizing: border-box;
-	border: 1px solid rgba(50, 50, 50, 0.6);
 	border-radius: 4px;
 	padding-bottom: 4px;
 
@@ -24,51 +17,28 @@ $theme-autocomplete-selected-bg: var(--mu-autocomplete-selected-bg, #{$autocompl
 		font: inherit;
 	}
 
-	 > div {
+	> div {
 		padding: 0 14px;
 	}
 
 	> div > em {
-		font-weight: bold;
-		color: $black;
+		font-weight: normal;
+		color: $theme-content-strong-fg;
 	}
 
 	.group {
-		background: #eee;
+		background: $theme-surface-200-bg;
 	}
 
 	> div:hover:not(.group) {
-		background: $theme-autocomplete-hover-bg;
+		background: $theme-surface-300-bg;
 	}
 
 	> div.selected {
-		background: $theme-autocomplete-selected-bg;
+		background: $theme-surface-400-bg;
 		cursor: pointer;
-	}
-}
-
-.autocomplete.autocomplete-dark {
-	color: $theme-color-neutral-300;
-	background: $black;
-	border: 1px solid $theme-color-accent-300;
-
-	> div > em {
-		font-weight: bold;
-		color: $white;
-	}
-
-	.group {
-		background: $theme-color-base-100;
-	}
-
-	> div:hover:not(.group) {
-		background: $theme-color-base-200;
-	}
-
-	> div.selected {
-		background: $theme-color-base-300;
 		&:hover {
-			background: $theme-color-base-400;
+			background: $theme-surface-500-bg;
 		}
 	}
 }

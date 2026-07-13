@@ -123,7 +123,7 @@
 			}
 		}
 		thead {
-			border-bottom: 1px solid $theme-common-format-divider-border;
+			border-bottom: 1px solid $theme-divider-strong-border;
 		}
 		span.nobr {
 			white-space: nowrap;
@@ -180,21 +180,6 @@
 
 	&--addpadding {
 		padding: 12px 0;
-	}
-
-	&--addbtn.btn {
-		background: none;
-		width: 100%;
-		border: dashed 2px $theme-divider-strong-border;
-
-		&:hover, &:focus {
-			color: $theme-common-addbtn-fg-hover;
-			background: $theme-surface-200-bg;
-		}
-
-		> .fa {
-				line-height: 24px;
-		}
 	}
 
 	&--btnwidth {

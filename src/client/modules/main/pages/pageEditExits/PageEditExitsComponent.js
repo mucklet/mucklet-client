@@ -44,7 +44,7 @@ class PageEditExitsComponent {
 					n.elem('div', { className: 'common--addpadding' }, [
 						n.elem('button', { events: {
 							click: () => this._onCreate(false),
-						}, className: 'btn icon-left common--addbtn' }, [
+						}, className: 'btn icon-left default-300 full-width dashed' }, [
 							n.component(new FAIcon('plus')),
 							n.component(new Txt(l10n.l('pageEditExits.createExit', "Create new exit"))),
 						]),
@@ -88,7 +88,7 @@ class PageEditExitsComponent {
 								n.elem('div', { className: 'common--addpadding' }, [
 									n.elem('button', { events: {
 										click: () => this._onCreate(true),
-									}, className: 'btn icon-left common--addbtn' }, [
+									}, className: 'btn icon-left default-300 full-width dashed' }, [
 										n.component(new FAIcon('plus')),
 										n.component(new Txt(l10n.l('pageEditExits.createHiddenExit', "Create hidden exit"))),
 									]),

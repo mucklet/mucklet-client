@@ -191,7 +191,6 @@ class RouteNodeSettingsNode {
 					new ModelComponent(
 						node,
 						new AutoComplete({
-							innerClassName: 'autocomplete-dark',
 							attributes: {
 								placeholder: l10n.t('routeNodeSettings.searchRelease', "Search release (Name)"),
 								name: 'routenodesettings-node--release',

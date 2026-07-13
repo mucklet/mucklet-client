@@ -45,7 +45,7 @@ class KeywordList {
 				}, [
 					n.component(new ModelTxt(keyword, keywordCallback)),
 					n.component(onDelete ? new Elem(n => n.elem('button', {
-						className: 'keywordlist--delete',
+						className: 'keywordlist--delete iconbtn puny default-500',
 						events: {
 							click: (c, e) => {
 								onDelete(keyword, this.keywords);

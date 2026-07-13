@@ -95,7 +95,7 @@ class CharLogEventMenu {
 			n.component(new CollectionList(
 				this.menuItems,
 				m => new Elem(n => n.elem('div', {
-					className: 'charlog-eventmenu--btn flex-row pad8',
+					className: 'menubtn small flex-row pad8',
 					events: {
 						click: (c, ev) => {
 							m.onClick(this.charId, this.ev);

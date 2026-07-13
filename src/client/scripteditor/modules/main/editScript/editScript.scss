@@ -1,5 +1,4 @@
 @import '~scss/variables';
-@import './editScript-theme';
 
 .editscript, .editscript-container {
 	width: 100%;
@@ -119,25 +118,25 @@
 	}
 	.cm-scroller {
 		overflow: auto;
-		scrollbar-color: $theme-color-base-600 transparent;
+		scrollbar-color: $theme-scrollbar-thumb-bg transparent;
+
+		&::-webkit-scrollbar-button {
+			display: none;
+			width: 0;
+			height: 0;
+		}
+
 		&::-webkit-scrollbar {
 			width: 12px;
 			height: 12px;
 			background-color: transparent;
 		}
+
 		&::-webkit-scrollbar-corner {
 			background-color: transparent;
 		}
 		&::-webkit-scrollbar-track {
 			background: $theme-color-base-200;
-		}
-		&::-webkit-scrollbar-thumb {
-			background: $theme-color-base-600;
-			border: 2px solid $theme-color-base-200;
-			border-radius: 6px;
-		}
-		&::-webkit-scrollbar-thumb:hover {
-			background: $theme-editscript-scrollbar-thumb-hover;
 		}
 	}
 	.cm-gutters {

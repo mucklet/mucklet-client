@@ -17,9 +17,9 @@
 		flex: 0 0 auto;
 		background-color: $theme-surface-400-bg;
 		z-index: 5;
-		-webkit-box-shadow: 4px 0px 5px 0px $theme-surface-raised-shadow;
-		-moz-box-shadow: 4px 0px 5px 0px $theme-surface-raised-shadow;
-		box-shadow: 2px 0px 6px 0px $theme-surface-raised-shadow;
+		-webkit-box-shadow: 4px 0px 5px 0px $theme-surface-shadow;
+		-moz-box-shadow: 4px 0px 5px 0px $theme-surface-shadow;
+		box-shadow: 2px 0px 6px 0px $theme-surface-shadow;
 	}
 
 	&--activepanel {

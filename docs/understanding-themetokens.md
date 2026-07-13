@@ -56,6 +56,7 @@ surface.100.border
 content.default.fg
 content.muted.fg
 content.disabled.fg
+content.danger.fg
 
 control.primary.bg
 control.primary.fg
@@ -94,7 +95,8 @@ surface.100.bg      -> color.base.100
 surface.100.fg      -> color.neutral.300
 control.primary.bg  -> color.action.300
 control.primary.fg  -> color.base.300
-status.danger.fg    -> color.danger.300
+content.danger.fg   -> color.danger.300
+status.danger.fg    -> color.base.200
 idlelevel.idle.fg   -> color.accent.300
 log.cmd.fg          -> color.accent.300
 tag.dislike.fg      -> color.danger.300
@@ -102,10 +104,11 @@ tag.dislike.fg      -> color.danger.300
 
 ## Initial semantic groups
 
-Surface colors describe reusable layers from the darkest base surface through
-raised surfaces. The overlay surface is shared by tooltips, popup tips, popup
-pills, and menu-like overlays unless a component needs a more specific
-opacity, hover, pointer, or contrast override:
+Surface tokens describe reusable layers from the darkest base surface through
+raised surfaces, plus the shared shadow color for raised surfaces. The overlay
+surface is shared by tooltips, popup tips, popup pills, and menu-like overlays
+unless a component needs a more specific opacity, hover, pointer, or contrast
+override:
 
 ```text
 surface.100.bg
@@ -114,6 +117,7 @@ surface.300.bg
 surface.400.bg
 surface.500.bg
 surface.overlay.bg
+surface.shadow
 ```
 
 Content colors describe text and icon emphasis:
@@ -126,6 +130,12 @@ content.subtle.fg
 content.disabled.fg
 content.placeholder.fg
 content.error.fg
+content.danger.fg
+content.info.fg
+content.success.fg
+content.warning.fg
+content.active.fg
+content.inactive.fg
 ```
 
 Control colors describe reusable default, primary, secondary, and destructive
@@ -170,21 +180,33 @@ divider.accent.border
 focus.ring
 ```
 
-The initial status group covers reusable danger and informational meanings:
+Status colors describe filled status surfaces. The `fg` slot is the foreground
+color used on that status background. Use `content.*.fg` instead for colored
+status text or icons on a normal surface:
 
 ```text
-status.danger.fg
 status.danger.bg
+status.danger.fg
 status.danger.border
-status.info.fg
 status.info.bg
+status.info.fg
 status.info.border
+status.success.bg
+status.success.fg
+status.success.border
+status.warning.bg
+status.warning.fg
+status.warning.border
+status.active.bg
+status.active.fg
+status.active.border
+status.inactive.bg
+status.inactive.fg
+status.inactive.border
 ```
 
-Success and warning remain unclassified in the initial set because current
-usage does not provide a single generic fallback without introducing another
-palette family. Toaster status surfaces remain component tokens because their
-opacity and hover behavior are component-specific.
+Toaster status surfaces remain component tokens because their opacity and hover
+behavior are component-specific.
 
 Unread mail and unassigned ticket or report rows do not define an attention
 surface token. Their background treatment is being replaced by a danger-colored
@@ -229,7 +251,6 @@ Example defaults:
 button.primary.bg -> control.primary.bg
 button.primary.fg -> control.primary.fg
 tooltip.bg        -> surface.overlay.bg
-realmtag.genre.fg -> status.active.fg
 ```
 
 ### Module-owned theme files

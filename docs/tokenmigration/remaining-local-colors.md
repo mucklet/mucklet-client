@@ -36,15 +36,12 @@ property wrappers outside `_variables.scss`.
 | `src/common/components/autocomplete.scss` | `$autocomplete-selected-background` | `--mu-autocomplete-selected-background` | `autocomplete.selected.background` | `lighten($color-action-300, 30%)` | Light autocomplete selected option background. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/kebabMenu.scss` | `$kebabmenu-btn-background` | `--mu-kebabmenu-btn-background` | `kebabmenu.btn.background` | `rgba($color-base-200, 0.8)` | Shared kebab trigger button background. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/navButtons.scss` | `$navbuttons-btn-hover-fill` | `--mu-navbuttons-btn-hover-fill` | `navbuttons.btn.hover.fill` | `lighten($color-base-500, 5%)` | SVG navigation button hover fill. | `shared-component-candidate` | later shared component decision |
-| `src/common/components/popupPill.scss` | `$popuppill-tip-background` | `--mu-popuppill-tip-background` | `popuppill.tip.background` | `rgba(darken($color-base-200, 10%), 0.9)` | Popup pill tooltip surface and caret color. | `shared-component-candidate` | later shared component decision |
-| `src/common/components/popupTip.scss` | `$popuptip-background` | `--mu-popuptip-background` | `popuptip.background` | `rgba(darken($color-base-200, 10%), 0.9)` | Popup tip surface and caret color. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/togglebox.scss` | `$togglebox-action-hover` | `--mu-togglebox-action-hover` | `togglebox.action.hover` | `lighten($color-action-300, 5%)` | Togglebox positive/action hover fill. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/togglebox.scss` | `$togglebox-danger-hover` | `--mu-togglebox-danger-hover` | `togglebox.danger.hover` | `lighten($color-danger-300, 5%)` | Togglebox danger/dislike hover fill. | `shared-component-candidate` | later shared component decision |
 | `src/client/scripteditor/modules/main/editScript/editScript.scss` | `$editscript-scrollbar-thumb-hover` | `--mu-editscript-scrollbar-thumb-hover` | `editscript.scrollbar.thumb.hover` | `lighten($color-base-200, 18%)` | CodeMirror scrollbar thumb hover in the script editor module. | `module-theme-token` | keep |
 | `src/client/modules/main/dialogs/dialogTag/dialogTag.scss` | `$dialogtag-desc-disabled-background` | `--mu-dialogtag-desc-disabled-background` | `dialogtag.desc.disabled.background` | `rgba($color-neutral-500, 0.1)` | Disabled tag description textarea background. | `module-theme-token` | keep |
 | `src/client/modules/main/dialogs/dialogTag/dialogTag.scss` | `$dialogtag-pref-dislike-background-hover` | `--mu-dialogtag-pref-dislike-background-hover` | `dialogtag.pref.dislike.background.hover` | `lighten($color-danger-300, 5%)` | Dislike preference toggle hover background. | `module-theme-token` | keep |
 | `src/client/modules/main/addons/overlayNav/overlayNav.scss` | `$overlaynav-badge-background-hover` | `--mu-overlaynav-badge-background-hover` | `overlaynav.badge.background.hover` | `lighten($color-base-400, 3%)` | Overlay navigation badge/toggle hover background. | `module-theme-token` | keep |
-| `src/client/modules/main/layout/console/console.scss` | `$console-scrollbar-thumb` | `--mu-console-scrollbar-thumb` | `console.scrollbar.thumb` | `lighten($color-base-200, 18%)` | Console simplebar scrollbar thumb. | `module-theme-token` | keep |
 | `src/client/modules/main/pages/pageMail/pageMail.scss` | `$pagemail-mail-unread-background` | `--mu-pagemail-mail-unread-background` | `pagemail.mail.unread.background` | `darken($color-base-200, 6%)` | Unread mail badge/list row background. | `module-theme-token` | keep |
 | `src/client/modules/main/pages/pageMail/pageMail.scss` | `$pagemail-mail-unread-background-hover` | `--mu-pagemail-mail-unread-background-hover` | `pagemail.mail.unread.background.hover` | `darken($color-base-200, 9%)` | Unread mail badge/list row hover background. | `module-theme-token` | keep |
 | `src/client/modules/main/pages/pageArea/pageArea.scss` | `$pagearea-location-selected-background` | `--mu-pagearea-location-selected-background` | `pagearea.location.selected.background` | `darken($color-base-200, 3%)` | Selected page-area location badge background. | `module-theme-token` | keep |
@@ -86,7 +83,6 @@ search.
 | `src/common/components/autocomplete.scss` | none | none | none | `white`, `rgba(50, 50, 50, 0.6)`, `$black`, `#eee`, `$white` | Shared autocomplete base surfaces, text emphasis, border, group rows, and dark variant foregrounds/backgrounds. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/hamburger.scss` | none | none | none | `#000` | Shared hamburger open/close SVG fills. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/kebabMenu.scss` | none | none | none | `rgba(0,0,0,0.65)` | Shared kebab menu shadow. | `shared-component-candidate` | later shared component decision |
-| `src/common/components/mobilePanel.scss` | none | none | none | `$black` | Shared mobile panel header divider border. | `shared-component-candidate` | later shared component decision |
 | `src/common/components/spinnerModal.scss` | none | none | none | `rgba(0, 0, 0, 40%)` | Shared spinner modal scrim. | `shared-component-candidate` | later shared component decision |
 | `src/common/modules/realmInfo/realmInfo.scss` | none | none | none | `#00000029` | Shared realm info icon shadow. Similar shadows also appear in hub lists/search. | `shared-component-candidate` | later shared component decision |
 | `src/client/modules/main/pages/pageArea/pageArea.scss` | none | none | none | `rgba($white, 0.5)`, `rgba($white, 0.6)`, `rgba($white, 0.7)`, `$black`, `#000` | Page-area image overlay buttons and location marker shadows. | `module-theme-token` | later design decision |
@@ -122,7 +118,6 @@ Module-owned runtime registrations currently exist only in these files:
 | `src/client/scripteditor/modules/main/editScript/EditScript.js` | `editscript.scrollbar.thumb.hover` | `module-theme-token` |
 | `src/client/modules/main/dialogs/dialogTag/DialogTag.js` | `dialogtag.desc.disabled.background`, `dialogtag.pref.dislike.background.hover` | `module-theme-token` |
 | `src/client/modules/main/addons/overlayNav/OverlayNav.js` | `overlaynav.badge.background.hover` | `module-theme-token` |
-| `src/client/modules/main/layout/console/Console.js` | `console.scrollbar.thumb` | `module-theme-token` |
 | `src/client/modules/main/pages/pageMail/PageMail.js` | `pagemail.mail.unread.background`, `pagemail.mail.unread.background.hover` | `module-theme-token` |
 | `src/client/modules/main/pages/pageArea/PageArea.js` | `pagearea.location.selected.background`, `pagearea.image.location.border`, `pagearea.image.location.border.selected` | `module-theme-token` |
 | `src/client/modules/main/layout/charLog/CharLog.js` | `charlog.invalid.background`, `charlog.eventmenu.background`, `charlog.eventmenu.shadow` | `module-theme-token` |
@@ -138,8 +133,8 @@ single local styling decision appears on multiple adjacent declarations.
 
 | Classification | Count |
 | --- | ---: |
-| `shared-component-candidate` | 14 |
-| `module-theme-token` | 14 |
+| `shared-component-candidate` | 12 |
+| `module-theme-token` | 13 |
 | `trivial-alias` | 5 |
 | `hub-local` | 13 |
 | `technical-color` | 13 |

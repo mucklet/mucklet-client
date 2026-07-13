@@ -1,0 +1,5 @@
+@import '~scss/variables';
+
+// Tooltip theme vars
+$theme-tooltip-bg: var(--mu-tooltip-bg, #{$theme-surface-overlay-bg});
+$theme-tooltip-fg: var(--mu-tooltip-fg, #{$theme-color-neutral-500});

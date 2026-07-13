@@ -104,7 +104,6 @@ class OverseerRealmSettingsBottomSection {
 				new ModelComponent(
 					this.realm,
 					new AutoComplete({
-						innerClassName: 'autocomplete-dark',
 						attributes: {
 							placeholder: l10n.t('overseerRealmSettings.searchRelease', "Search release (Name)"),
 							name: 'routereleases-release--release',
@@ -150,7 +149,6 @@ class OverseerRealmSettingsBottomSection {
 				new ModelComponent(
 					this.realm,
 					new AutoComplete({
-						innerClassName: 'autocomplete-dark',
 						attributes: {
 							placeholder: l10n.t('routeReleases.searchRelease', "Search node (Keyname)"),
 							name: 'overseerrealmsettings-node',

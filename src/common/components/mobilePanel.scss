@@ -16,10 +16,6 @@
 		overflow: auto;
 	}
 
-	.simplebar-scrollbar::before {
-		background-color: $theme-color-neutral-300;
-	}
-
 	&--header {
 		display: flex;
 		flex-direction: column;
@@ -30,7 +26,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		border-bottom: 1px solid $black;
+		border-bottom: 1px solid $theme-divider-contrast-border;
 		@include transition(opacity 200ms ease-out);
 	}
 

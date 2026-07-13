@@ -1,9 +1,9 @@
 @import '~scss/variables';
+@import '~scss/mixins';
+@import './dialog-theme';
 
 .dialog--overlay {
-	background: $theme-dialog-overlay-bg;
-	opacity: 0.25;
-	filter: Alpha(Opacity=25);
+	background: $theme-modal-overlay-bg;
 }
 
 .dialog--container, .dialog--overlay {
@@ -26,6 +26,8 @@
 	transform: translateX(-50%) translateY(-50%);
 	display: flex;
 	flex-direction: column;
+	-webkit-box-shadow: 0px 0px 20px 6px $theme-modal-shadow;
+	box-shadow: 0px 0px 20px 6px $theme-modal-shadow;
 
 	&:not(.dialog--noanim) {
 		animation-name: dialog-opacity;
@@ -82,6 +84,10 @@
 	width: 100%;
 	background: $theme-dialog-input-bg;
 	color: $theme-dialog-input-fg;
+}
+
+.dialog--input-icon {
+	@include btn-style(none, $theme-dialog-input-bg-hover, $theme-dialog-input-bg-hover, $theme-color-base-400, $theme-color-base-300);
 }
 
 .dialog--incomplete {

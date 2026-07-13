@@ -1,5 +1,7 @@
 @import '~scss/variables';
 @import '~scss/mixins';
+@import './tooltip-theme';
+
 .tooltip {
 	position: absolute;
 	background: $theme-tooltip-bg;

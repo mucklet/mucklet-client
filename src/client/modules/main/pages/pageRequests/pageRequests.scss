@@ -21,15 +21,16 @@
 	}
 }
 
-
 .pagerequests-request {
 	padding: 2px 0;
 
 	&--icon.accepted {
-		@include btn-style($theme-status-info-bg, $theme-status-info-bg, $theme-status-info-bg, $theme-control-danger-fg, $theme-control-danger-fg);
+		background: $theme-status-info-bg;
+		color: $theme-status-info-fg;
 	}
 
 	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-status-danger-bg, $theme-status-danger-bg, $theme-status-danger-bg, $theme-control-danger-fg, $theme-control-danger-fg);
+		background: $theme-status-danger-bg;
+		color: $theme-status-danger-fg;
 	}
 }

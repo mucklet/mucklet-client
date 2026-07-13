@@ -7,21 +7,6 @@
 
 	&--add {
 		padding: 16px 0;
-
-		> .btn {
-			background: none;
-			width: 100%;
-			border: dashed 2px $theme-color-neutral-300;
-
-			&:hover, &:focus {
-				color: $theme-color-neutral-500;
-				background: $theme-color-base-300;
-			}
-
-			> .fa {
-				 line-height: 24px;
-			}
-		}
 	}
 
 	&--add-tip.popuptip {

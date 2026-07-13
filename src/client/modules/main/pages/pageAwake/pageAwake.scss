@@ -81,8 +81,7 @@
 		}
 	}
 
-	&--filter-clear.iconbtn {
-		@include btn-style(none, $theme-color-base-400, $theme-color-base-500, $theme-color-neutral-400, $theme-color-neutral-500);
+	&--filter-clear {
 		position: absolute;
 		right: 3px;
 		top: 3px;

@@ -112,6 +112,27 @@
 	background: $theme-control-default-300-bg;
 }
 
+.btn.default-300, .iconbtn.default-300 {
+	@include btn-style(
+		none,
+		$theme-control-default-300-bg-hover,
+		$theme-control-default-300-bg-active,
+		$theme-control-default-300-fg,
+		$theme-control-default-300-fg-hover
+	);
+	&.filled {
+		background: $theme-control-default-300-bg;
+	}
+	&.dashed {
+		border: dashed 2px $theme-control-default-300-fg;
+		&:not(:disabled) {
+			&:hover, &:focus {
+				border-color: $theme-control-default-300-fg-hover;
+			}
+		}
+	}
+}
+
 .btn.default-400, .iconbtn.default-400 {
 	@include btn-style(
 		none,
@@ -122,6 +143,14 @@
 	);
 	&.filled {
 		background: $theme-control-default-400-bg;
+	}
+	&.dashed {
+		border: dashed 2px $theme-control-default-400-fg;
+		&:not(:disabled) {
+			&:hover, &:focus {
+				border-color: $theme-control-default-400-fg-hover;
+			}
+		}
 	}
 }
 
@@ -135,6 +164,24 @@
 	);
 	&.filled {
 		background: $theme-control-default-500-bg;
+	}
+}
+
+.btn.default-300, .iconbtn.default-300,
+.btn.default-400, .iconbtn.default-400,
+.btn.default-500, .iconbtn.default-500 {
+	&.overlay {
+		&:not(:disabled) {
+			&:hover {
+				background: $theme-control-overlay-bg-hover;
+			}
+			&:active, &:focus {
+				background: $theme-control-overlay-bg-active;
+			}
+		}
+		&.filled {
+			background: $theme-control-overlay-bg;
+		}
 	}
 }
 
@@ -307,4 +354,21 @@
 .orderbtn {
 	display: flex;
 	flex-direction: column;
+}
+
+.menubtn {
+	padding: 8px 20px;
+	font-size: $font-size;
+	font-family: $font-text;
+	text-decoration: none;
+	border: 0;
+	width: 100%;
+	transition: color 0.2s, background-color 0.2s;
+	cursor: pointer;
+	@include btn-style(none, $theme-control-default-400-bg-hover, $theme-control-default-400-bg-active, $theme-control-default-400-fg, $theme-content-strong-fg);
+}
+
+.menubtn.small {
+	padding: 4px 12px;
+	font-size: $font-size-small;
 }
