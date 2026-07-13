@@ -38,6 +38,11 @@ const themeTokens = [
 		name: l10n.l('realmSettingsTheme.action', "Action"),
 		info: l10n.l('realmSettingsTheme.actionInfo', "Action color used for links, buttons, and interactive elements."),
 	},
+	{
+		key: 'color.success',
+		name: l10n.l('realmSettingsTheme.success', "Success"),
+		info: l10n.l('realmSettingsTheme.successInfo', "Success color used for completed states and positive status."),
+	},
 ];
 
 class RealmSettingsThemeComponent {

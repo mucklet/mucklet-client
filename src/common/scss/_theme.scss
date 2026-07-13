@@ -28,6 +28,8 @@ $theme-color-action-100: var(--mu-color-action-100, #{$color-action-100});
 $theme-color-action-200: var(--mu-color-action-200, #{$color-action-200});
 $theme-color-action-300: var(--mu-color-action-300, #{$color-action-300});
 
+$theme-color-success-300: var(--mu-color-success-300, #{$color-success-300});
+
 /* Semantic theme vars */
 // Surfaces
 $theme-surface-100-bg: var(--mu-surface-100-bg, #{$theme-color-base-100});
@@ -59,7 +61,7 @@ $theme-content-error-fg: var(--mu-content-error-fg, #{$theme-color-danger-300});
 // Content - status
 $theme-content-danger-fg: var(--mu-content-danger-fg, #{$theme-color-danger-300});
 $theme-content-info-fg: var(--mu-content-info-fg, #{$theme-color-action-300});
-$theme-content-success-fg: var(--mu-content-success-fg, #{$status-success});
+$theme-content-success-fg: var(--mu-content-success-fg, #{$theme-color-success-300});
 $theme-content-warning-fg: var(--mu-content-warning-fg, #{$theme-color-accent-300});
 $theme-content-active-fg: var(--mu-content-active-fg, #{$theme-color-action-300});
 $theme-content-inactive-fg: var(--mu-content-inactive-fg, #{$theme-color-neutral-300});
@@ -130,9 +132,9 @@ $theme-status-danger-border: var(--mu-status-danger-border, #{$theme-color-dange
 $theme-status-info-bg: var(--mu-status-info-bg, #{$theme-color-action-300});
 $theme-status-info-fg: var(--mu-status-info-fg, #{$theme-color-base-200});
 $theme-status-info-border: var(--mu-status-info-border, #{$theme-color-action-300});
-$theme-status-success-bg: var(--mu-status-success-bg, #{$status-success});
+$theme-status-success-bg: var(--mu-status-success-bg, #{$theme-color-success-300});
 $theme-status-success-fg: var(--mu-status-success-fg, #{$theme-color-base-200});
-$theme-status-success-border: var(--mu-status-success-border, #{$status-success});
+$theme-status-success-border: var(--mu-status-success-border, #{$theme-color-success-300});
 $theme-status-warning-bg: var(--mu-status-warning-bg, #{$theme-color-accent-300});
 $theme-status-warning-fg: var(--mu-status-warning-fg, #{$theme-color-base-200});
 $theme-status-warning-border: var(--mu-status-warning-border, #{$theme-color-accent-300});
