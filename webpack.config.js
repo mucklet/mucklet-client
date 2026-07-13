@@ -23,6 +23,7 @@ const defaultColors = {
 	neutral: '#93969f',
 	danger: '#c96036',
 	action: '#4a9fc3',
+	success: '#458136',
 };
 
 // Theme color is the one used in manifest

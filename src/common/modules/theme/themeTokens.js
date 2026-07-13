@@ -34,6 +34,8 @@ const tokens = {
 	'color.action.200': (getToken) => adjust(getToken('color.action'), -8),
 	'color.action.300': (getToken) => getToken('color.action'),
 
+	'color.success.300': (getToken) => getToken('color.success'),
+
 	// Semantic surfaces and content
 	'surface.100.bg': (getToken) => getToken('color.base.100'),
 	'surface.200.bg': (getToken) => getToken('color.base.200'),
@@ -55,7 +57,7 @@ const tokens = {
 
 	'content.danger.fg': (getToken) => getToken('color.danger.300'),
 	'content.info.fg': (getToken) => getToken('color.action.300'),
-	'content.success.fg': '#458136',
+	'content.success.fg': (getToken) => getToken('color.success.300'),
 	'content.warning.fg': (getToken) => getToken('color.accent.300'),
 	'content.active.fg': (getToken) => getToken('color.action.300'),
 	'content.inactive.fg': (getToken) => getToken('color.neutral.300'),
@@ -125,9 +127,9 @@ const tokens = {
 	'status.info.bg': (getToken) => getToken('color.action.300'),
 	'status.info.fg': (getToken) => getToken('color.base.200'),
 	'status.info.border': (getToken) => getToken('color.action.300'),
-	'status.success.bg': '#458136',
+	'status.success.bg': (getToken) => getToken('color.success.300'),
 	'status.success.fg': (getToken) => getToken('color.base.200'),
-	'status.success.border': '#458136',
+	'status.success.border': (getToken) => getToken('color.success.300'),
 	'status.warning.bg': (getToken) => getToken('color.accent.300'),
 	'status.warning.fg': (getToken) => getToken('color.base.200'),
 	'status.warning.border': (getToken) => getToken('color.accent.300'),
@@ -263,12 +265,12 @@ const tokens = {
 	//
 	// It is a module, but since it is also used by hub which doesn't have the
 	// Theme module, we register them here.
-	'toaster.info.bg': (getToken) => alpha(getToken('color.base.500'), 0.9),
-	'toaster.success.bg': (getToken) => alpha(mix(getToken('status.success.bg'), getToken('color.base.200'), 50), 0.9),
+	'toaster.info.bg.hover': (getToken) => getToken('color.base.500'),
+	'toaster.info.bg': (getToken) => alpha(getToken('toaster.info.bg.hover'), 0.9),
 	'toaster.success.bg.hover': (getToken) => mix(getToken('status.success.bg'), getToken('color.base.200'), 50),
-	'toaster.warn.bg': (getToken) => alpha(adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3), 0.9),
-	'toaster.warn.bg.hover': (getToken) => adjust(mix(getToken('color.danger.300'), getToken('color.base.200'), 63), -16, -3),
-	'toaster.close.bg.hover': (getToken) => alpha(adjust(getToken('color.contrast.300'), 4), 0.06),
+	'toaster.success.bg': (getToken) => alpha(getToken('toaster.success.bg.hover'), 0.9),
+	'toaster.warn.bg.hover': (getToken) => adjust(mix(getToken('status.danger.bg'), getToken('color.base.200'), 63), -16, -3),
+	'toaster.warn.bg': (getToken) => alpha(getToken('toaster.warn.bg.hover'), 0.9),
 	'toaster.shadow': '#000',
 };
 

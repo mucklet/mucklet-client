@@ -16,6 +16,7 @@ $black: #000;
 // $color-neutral
 // $color-danger
 // $color-action
+// $color-success
 
 /* Primitive color fallback levels */
 $color-base-100: darken($color-base, 4%);
@@ -47,6 +48,8 @@ $color-action-100: darken($color-action, 16%);
 $color-action-200: darken($color-action, 8%);
 $color-action-300: $color-action;
 
+$color-success-300: $color-success;
+
 /* Semantic color fallbacks */
 $content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
 $control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
@@ -56,7 +59,6 @@ $control-overlay-bg-active: rgba($white, 8%);
 $surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
 $idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
 $idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
-$status-success: #458136;
 $modal-overlay-bg: rgba($black, 0.4);
 $modal-shadow: rgba($black, 0.6);
 $surface-shadow: rgba(0, 0, 0, 0.3);

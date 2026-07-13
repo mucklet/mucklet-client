@@ -1,16 +1,18 @@
 @import '~scss/variables';
 
 // Toaster colors
-$toaster-success-bg-hover: mix($status-success, $color-base-200, 50%);
-$toaster-warning-bg-hover: desaturate(darken(mix($color-danger-300, $color-base-200, 63%), 16%), 3%);
+$toaster-info-bg-hover: $color-base-500;
+$toaster-info-bg: rgba($toaster-info-bg-hover, 0.9);
+$toaster-success-bg-hover: mix($color-success-300, $color-base-200, 50%);
 $toaster-success-bg: rgba($toaster-success-bg-hover, 0.9);
-$toaster-info-bg: rgba($color-base-500, 0.9);
+$toaster-warning-bg-hover: desaturate(darken(mix($color-danger-300, $color-base-200, 63%), 16%), 3%);
 $toaster-warning-bg: rgba($toaster-warning-bg-hover, 0.9);
 $toaster-shadow: $black;
 // Toaster theme vars
-$theme-toaster-success-bg: var(--mu-toaster-success-bg, #{$toaster-success-bg});
 $theme-toaster-info-bg: var(--mu-toaster-info-bg, #{$toaster-info-bg});
-$theme-toaster-warn-bg: var(--mu-toaster-warn-bg, #{$toaster-warning-bg});
+$theme-toaster-info-bg-hover: var(--mu-toaster-info-bg-hover, #{$toaster-info-bg-hover});
+$theme-toaster-success-bg: var(--mu-toaster-success-bg, #{$toaster-success-bg});
 $theme-toaster-success-bg-hover: var(--mu-toaster-success-bg-hover, #{$toaster-success-bg-hover});
+$theme-toaster-warn-bg: var(--mu-toaster-warn-bg, #{$toaster-warning-bg});
 $theme-toaster-warn-bg-hover: var(--mu-toaster-warn-bg-hover, #{$toaster-warning-bg-hover});
 $theme-toaster-shadow: var(--mu-toaster-shadow, #{$toaster-shadow});
