@@ -235,10 +235,6 @@ const tokens = {
 	'badge.error.fg': (getToken) => getToken('content.error.fg'),
 	'badge.divider.border': (getToken) => getToken('surface.500.bg'),
 
-	// src/common/scss/_common.scss
-	'common.format.divider.border': 'rgba(255, 255, 255, 0.2)',
-	'common.addbtn.fg.hover': (getToken) => getToken('color.neutral.500'),
-
 	// src/common/classes/dialog-theme.scss
 	'dialog.input.bg': (getToken) => getToken('color.neutral.500'),
 	'dialog.input.bg.hover': (getToken) => getToken('color.neutral.300'),

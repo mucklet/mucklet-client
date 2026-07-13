@@ -123,6 +123,14 @@
 	&.filled {
 		background: $theme-control-default-300-bg;
 	}
+	&.dashed {
+		border: dashed 2px $theme-control-default-300-fg;
+		&:not(:disabled) {
+			&:hover, &:focus {
+				border-color: $theme-control-default-300-fg-hover;
+			}
+		}
+	}
 }
 
 .btn.default-400, .iconbtn.default-400 {
@@ -135,6 +143,14 @@
 	);
 	&.filled {
 		background: $theme-control-default-400-bg;
+	}
+	&.dashed {
+		border: dashed 2px $theme-control-default-400-fg;
+		&:not(:disabled) {
+			&:hover, &:focus {
+				border-color: $theme-control-default-400-fg-hover;
+			}
+		}
 	}
 }
 

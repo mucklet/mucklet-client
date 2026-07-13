@@ -54,7 +54,7 @@ class PageCharSelectComponent {
 			n.elem('div', { className: 'pagecharselect--add' }, [
 				n.component(new ModelComponent(
 					this.module.onboarding.getModel(),
-					new Elem(n => n.elem('add', 'button', { events: { click: () => this._onCreate() }, className: 'btn icon-left' }, [
+					new Elem(n => n.elem('add', 'button', { events: { click: () => this._onCreate() }, className: 'btn icon-left default-400 full-width dashed' }, [
 						n.component(new FAIcon('plus')),
 						n.component(new Txt(l10n.l('pageCharSelect.createNew', "Create New"))),
 					])),
