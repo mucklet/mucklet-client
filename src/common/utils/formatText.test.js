@@ -1,4 +1,4 @@
-import { formatTextTokens, modeDescription } from './formatText';
+import formatText, { formatTextTokens, modeDescription } from './formatText';
 
 const testCases = [
 	// Header
@@ -87,5 +87,9 @@ describe('formatTextTokens', () => {
 describe('formatText', () => {
 	it.each(testCases)('formatText(`%s`, { mode: modeDescription })', (msg, expected) => {
 		expect(formatText(msg, { mode: modeDescription })).toBe(expected);
+	});
+
+	it('marks trigger words with the mark class', () => {
+		expect(formatText("Hello Jane.", { triggers: [{ key: 'jane' }] })).toBe('Hello <span class="mark">Jane</span>.');
 	});
 });

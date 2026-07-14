@@ -189,17 +189,18 @@ $theme-log-fieldset-label-fg: var(--mu-log-fieldset-label-fg, #{$theme-log-defau
 $theme-log-fieldset-label-bg: var(--mu-log-fieldset-label-bg, #{$theme-surface-200-bg});
 $theme-log-active-fg: var(--mu-log-active-fg, #{$theme-content-active-fg});
 $theme-log-inactive-fg: var(--mu-log-inactive-fg, #{$theme-color-base-400});
-$theme-log-highlight-fg: var(--mu-log-highlight-fg, #{$theme-color-neutral-600});
-$theme-log-highlight-bg: var(--mu-log-highlight-bg, #{$theme-surface-400-bg});
-$theme-log-highlight-ooc-fg: var(--mu-log-highlight-ooc-fg, #{$theme-color-neutral-400});
-$theme-log-highlight-comm-fg: var(--mu-log-highlight-comm-fg, #{$theme-color-contrast-300});
-$theme-log-highlight-event-bg: var(--mu-log-highlight-event-bg, #{$theme-surface-300-bg});
-$theme-log-highlight-event-fg: var(--mu-log-highlight-event-fg, #{$theme-color-neutral-400});
-$theme-log-highlight-event-ooc-fg: var(--mu-log-highlight-event-ooc-fg, #{$theme-color-neutral-300});
-$theme-log-highlight-event-comm-fg: var(--mu-log-highlight-event-comm-fg, #{$theme-color-neutral-700});
-$theme-log-highlight-active-bg: var(--mu-log-highlight-active-bg, #{$theme-surface-500-bg});
-$theme-log-highlight-active-fg: var(--mu-log-highlight-active-fg, #{$theme-color-neutral-500});
-$theme-log-highlight-active-comm-fg: var(--mu-log-highlight-active-comm-fg, #{$white});
+$theme-log-mark-fg: var(--mu-log-mark-fg, #{$theme-color-neutral-600});
+$theme-log-mark-bg: var(--mu-log-mark-bg, #{$theme-surface-400-bg});
+$theme-log-mark-ooc-fg: var(--mu-log-mark-ooc-fg, #{$theme-color-neutral-400});
+$theme-log-mark-comm-fg: var(--mu-log-mark-comm-fg, #{$theme-color-contrast-300});
+$theme-log-highlight-bg: var(--mu-log-highlight-bg, #{$theme-surface-300-bg});
+$theme-log-highlight-fg: var(--mu-log-highlight-fg, #{$theme-color-neutral-400});
+$theme-log-highlight-ooc-fg: var(--mu-log-highlight-ooc-fg, #{$theme-color-neutral-300});
+$theme-log-highlight-comm-fg: var(--mu-log-highlight-comm-fg, #{$theme-color-neutral-700});
+$theme-log-highlight-mark-bg: var(--mu-log-highlight-mark-bg, #{$theme-surface-500-bg});
+$theme-log-highlight-mark-fg: var(--mu-log-highlight-mark-fg, #{$theme-color-neutral-600});
+$theme-log-highlight-mark-ooc-fg: var(--mu-log-highlight-mark-ooc-fg, #{$theme-color-neutral-500});
+$theme-log-highlight-mark-comm-fg: var(--mu-log-highlight-mark-comm-fg, #{$white});
 
 // Tags
 $theme-tag-default-fg: var(--mu-tag-default-fg, #{$theme-color-neutral-300});
