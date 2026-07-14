@@ -2,11 +2,10 @@ import { Model } from 'modapp-resource';
 import PageAreaComponent from './PageAreaComponent';
 import PageAreaImage from './PageAreaImage';
 import { areaInfo } from './pageAreaTxt';
-import { adjust, alpha } from 'utils/color';
+import { alpha } from 'utils/color';
 import './pageArea.scss';
 
 const themeTokens = {
-	'pagearea.location.selected.background': (getToken) => adjust(getToken('color.base.200'), -3),
 	'pagearea.image.location.border': (getToken) => alpha(getToken('color.danger.300'), 0.6),
 	'pagearea.image.location.border.selected': (getToken) => alpha(getToken('color.danger.300'), 0.8),
 };

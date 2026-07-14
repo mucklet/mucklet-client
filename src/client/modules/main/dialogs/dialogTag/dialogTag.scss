@@ -1,5 +1,4 @@
 @import '~scss/variables';
-@import './dialogTag-theme';
 
 .dialogtag {
 	max-width: 420px;
@@ -9,14 +8,14 @@
 
 		&:disabled {
 			color: $theme-content-default-fg;
-			background: $theme-dialogtag-desc-disabled-background;
+			background: $theme-surface-400-bg;
 		}
 	}
 
 	&--pref-dislike > .togglebox.value-1 > div {
-		background: $theme-status-danger-bg;
+		background: $theme-control-danger-bg;
 		&:hover {
-			background: $theme-dialogtag-pref-dislike-background-hover;
+			background: $theme-control-danger-bg-hover;
 		}
 	}
 }

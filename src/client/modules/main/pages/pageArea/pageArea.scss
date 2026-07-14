@@ -63,7 +63,7 @@
 	&.selected {
 		.btn.badge {
 			&:not(:disabled) {
-				background: $theme-pagearea-location-selected-background;
+				background: $color-base-100;
 			}
 		}
 	}
