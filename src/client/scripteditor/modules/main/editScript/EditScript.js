@@ -3,13 +3,24 @@ import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import fetchRoomScriptSource from 'utils/fetchRoomScriptSource';
 import { addBeforeUnload, removeBeforeUnload } from 'utils/reload';
-import { adjust } from 'utils/color';
 
 import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
 
 const themeTokens = {
-	'editscript.scrollbar.thumb.hover': (getToken) => adjust(getToken('color.base.200'), 18),
+	'editscript.keyword.fg': (getToken) => getToken('content.accent.fg'),
+	'editscript.name.fg': (getToken) => getToken('content.strong.fg'),
+	'editscript.variable.fg': (getToken) => getToken('content.strong.fg'),
+	'editscript.constant.fg': (getToken) => getToken('content.strong.fg'),
+	'editscript.separator.fg': (getToken) => getToken('content.strong.fg'),
+	'editscript.type.fg': (getToken) => getToken('content.accent.fg'),
+	'editscript.operator.fg': (getToken) => getToken('content.default.fg'),
+	'editscript.comment.fg': (getToken) => getToken('content.muted.fg'),
+	'editscript.link.fg': (getToken) => getToken('content.info.fg'),
+	'editscript.heading.fg': (getToken) => getToken('content.accent.fg'),
+	'editscript.bool.fg': (getToken) => getToken('content.accent.fg'),
+	'editscript.string.fg': (getToken) => getToken('content.info.fg'),
+	'editscript.invalid.fg': (getToken) => getToken('log.error.fg'),
 };
 
 const pathDef = [

@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import './editScript-theme';
 
 .editscript, .editscript-container {
 	width: 100%;
@@ -153,43 +154,43 @@
 
 	// Style
 	&--keyword {
-		color: $theme-color-accent-300;
+		color: $theme-editscript-keyword-fg;
 	}
 	&--name {
-		color: $theme-color-contrast-300;
+		color: $theme-editscript-name-fg;
 	}
 	&--variable {
-		color: $theme-color-contrast-300;
+		color: $theme-editscript-variable-fg;
 	}
 	&--constant {
-		color: $theme-color-contrast-300;
+		color: $theme-editscript-constant-fg;
 	}
 	&--separator {
-		color: $theme-color-contrast-300;
+		color: $theme-editscript-separator-fg;
 	}
 	&--type {
-		color: $theme-color-accent-300;
+		color: $theme-editscript-type-fg;
 	}
 	&--operator {
-		color: $theme-color-neutral-300;
+		color: $theme-editscript-operator-fg;
 	}
 	&--comment {
-		color: $theme-color-neutral-200;
+		color: $theme-editscript-comment-fg;
 	}
 	&--link {
-		color: $theme-color-action-300;
+		color: $theme-editscript-link-fg;
 	}
 	&--heading {
-		color: $theme-color-accent-300;
+		color: $theme-editscript-heading-fg;
 	}
 	&--bool {
-		color: $theme-color-accent-300;
+		color: $theme-editscript-bool-fg;
 	}
 	&--string {
-		color: $theme-color-action-300;
+		color: $theme-editscript-string-fg;
 	}
 	&--invalid {
-		color: $theme-log-error-fg;
+		color: $theme-editscript-invalid-fg;
 	}
 }
 
