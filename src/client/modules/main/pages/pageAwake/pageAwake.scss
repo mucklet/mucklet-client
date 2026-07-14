@@ -43,10 +43,10 @@
 
 		&:hover, &:focus {
 			.pageawake--showall-line {
-				background: $theme-color-neutral-500;
+				background: $theme-control-default-300-fg-hover;
 			}
 			.pageawake--showall-icon {
-				color: $theme-color-neutral-500;
+				color: $theme-control-default-300-fg-hover;
 			}
 		}
 	}
@@ -55,22 +55,17 @@
 		height: 1px;
 		margin-right: 4px;
 		margin-bottom: 1px; // aligning with icon
-		background: $theme-color-neutral-300;
+		background: $theme-control-default-300-fg;
 		transition: background-color 0.2s;
 	}
 	&--showall-icon {
-		color: $theme-color-neutral-300;
+		color: $theme-control-default-300-fg;
 		flex: 0 0 auto;
 		transition: color 0.2s;
 	}
 
 	&--unwatched {
 		padding-top: 4px;
-		// border-top: 1px solid $theme-color-accent-300;
-		// > *:first-child {
-		// 	padding-top: 4px;
-		// 	border-top: 1px solid $theme-color-accent-300;
-		// }
 	}
 
 	&--filter {

@@ -32,8 +32,6 @@
 		font-size: $font-size-tiny;
 		position: relative;
 		top: -8px;
-		font-size: $font-size-tiny;
-		color: $theme-color-neutral-300;
 		cursor: help;
 	}
 
@@ -52,7 +50,7 @@
 		transition: 0.5s border;
 
 		&.inlocation {
-			border-left: 4px solid $theme-color-accent-300;
+			border-left: 4px solid $theme-indicator-context-border;
 		}
 	}
 

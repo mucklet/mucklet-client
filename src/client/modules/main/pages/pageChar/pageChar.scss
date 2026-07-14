@@ -21,7 +21,7 @@
 
 	&--footertools {
 		margin: 0 -2px;
-		border-top: 1px solid $theme-color-base-100;
+		border-top: 1px solid $theme-divider-subtle-border;
 		padding-top: 8px;
 
 		> div {
@@ -41,17 +41,10 @@
 		height: 286px;
 	}
 
-	&--fullname {
-		padding: 10px 0 4px 0;
-		font-family: $font-text;
-		color: $theme-color-contrast-300;
-		font-size: 20px;
-	}
-
 	&--notset {
 		font-style: italic;
 		font-size: $font-size;
-		color: $theme-color-neutral-200;
+		color: $theme-content-muted-fg;
 	}
 
 	&--tags {

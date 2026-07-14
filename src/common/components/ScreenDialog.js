@@ -20,7 +20,7 @@ class ScreenDialog {
 		this.elem = new Elem(n => n.elem('div', { className: 'screendialog' }, [
 			n.elem('div', { className: 'screendialog--container' + (this.size ? ' ' + this.size : '') }, [
 				this.title || this.close ? n.elem('div', { className: 'screendialog--head' }, [
-					this.close ? n.elem('button', { className: 'screendialog--close iconbtn medium', events: { click: () => this.close() }}, [
+					this.close ? n.elem('button', { className: 'screendialog--close iconbtn medium filled', events: { click: () => this.close() }}, [
 						n.component(new FAIcon('close')),
 					]) : n.component(null),
 					n.component(new Txt(this.title || "", { tagName: 'h2' })),

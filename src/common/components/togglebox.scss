@@ -1,9 +1,8 @@
 @import '~scss/variables';
-@import './togglebox-theme';
 
 .togglebox {
 	display: inline-block;
-	border: 4px solid $theme-color-neutral-300;
+	border: 4px solid $theme-control-secondary-bg;
 	background: transparent;
 	border-radius: 3px;
 	padding: 0;
@@ -31,15 +30,15 @@
 }
 
 .togglebox.value-1 > div {
-	background: $theme-color-action-300;
+	background: $theme-control-primary-bg;
 	&:hover:not(:disabled) {
-		background: $theme-togglebox-action-hover;
+		background: $theme-control-primary-bg-hover;
 	}
 }
 
 .togglebox.value-2 > div {
-	background: $theme-color-danger-300;
+	background: $theme-control-danger-bg;
 	&:hover:not(:disabled) {
-		background: $theme-togglebox-danger-hover;
+		background: $theme-control-danger-bg-hover;
 	}
 }

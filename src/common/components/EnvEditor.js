@@ -82,7 +82,10 @@ class EnvEditor {
 
 				// Add new
 				n.elem('div', { className: 'enveditor--create' }, [
-					n.elem('add', 'button', { events: { click: () => this._onCreate() }, className: 'btn small icon-left' }, [
+					n.elem('add', 'button', {
+						events: { click: () => this._onCreate() },
+						className: 'btn small icon-left dashed default-300 full-width',
+					}, [
 						n.component(new FAIcon('plus')),
 						n.component(new Txt(l10n.l('envEditor.createNew', "Create new"))),
 					]),

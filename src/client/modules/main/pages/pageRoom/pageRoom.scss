@@ -8,7 +8,6 @@
 		position: relative;
 		top: -8px;
 		font-size: $font-size-tiny;
-		color: $theme-color-neutral-300;
 	}
 
 	&--tools {
@@ -34,13 +33,6 @@
 		border-radius: 20px;
 		width: 286px;
 		height: 286px;
-	}
-
-	&--name {
-		padding: 10px 0 4px 0;
-		font-family: $font-text;
-		color: $theme-color-contrast-300;
-		font-size: 20px;
 	}
 
 	&--exitsheader, &--inroomheader {
@@ -79,7 +71,7 @@
 		text-align: left;
 		white-space: pre;
 		font-size: $font-size-tiny;
-		color: $theme-color-neutral-500;
+		color: $theme-content-default-fg;
 		line-height: 18px;
 	}
 
@@ -106,16 +98,8 @@
 		@include transition(border 0.5s);
 
 		&.looking {
-			border-left: 4px solid $theme-color-accent-300;
+			border-left: 4px solid $theme-indicator-context-border;
 		}
-	}
-
-	&--looking {
-		color: $theme-color-neutral-400;
-		font-size: $font-size-tiny;
-		position: absolute;
-		top: 4px;
-		right: 8px;
 	}
 
 	&--note i {

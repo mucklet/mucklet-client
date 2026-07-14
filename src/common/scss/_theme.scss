@@ -122,6 +122,10 @@ $theme-divider-contrast-border: var(--mu-divider-contrast-border, #{$black});
 $theme-divider-accent-border: var(--mu-divider-accent-border, #{$theme-color-accent-300});
 $theme-focus-ring: var(--mu-focus-ring, #{$theme-color-accent-300});
 
+// Indicators
+$theme-indicator-active-border: var(--mu-indicator-active-border, #{$theme-color-danger-300});
+$theme-indicator-context-border: var(--mu-indicator-context-border, #{$theme-color-accent-300});
+
 // Scrollbar
 $theme-scrollbar-thumb-bg: var(--mu-scrollbar-thumb-bg, #{$scrollbar-thumb-bg});
 

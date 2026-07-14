@@ -18,7 +18,7 @@
 	padding: 3px 0;
 
 	&.suspended .pagecharselect-char--title {
-		color: $theme-color-danger-300;
+		color: $theme-content-error-fg;
 	}
 }
 
@@ -26,6 +26,6 @@
 	padding: 3px 0;
 
 	.suspended {
-		color: $theme-color-danger-300;
+		color: $theme-content-error-fg;
 	}
 }

@@ -119,6 +119,9 @@ const tokens = {
 	'link.default.fg.active': (getToken) => getToken('color.action.100'),
 	'focus.ring': (getToken) => getToken('color.accent.300'),
 
+	'indicator.active.border': (getToken) => getToken('color.danger.300'),
+	'indicator.context.border': (getToken) => getToken('color.accent.300'),
+
 	'scrollbar.thumb.bg': (getToken) => mix(getToken('color.base.200'), getToken('color.neutral.300'), 50),
 
 	'status.danger.bg': (getToken) => getToken('color.danger.300'),
@@ -257,10 +260,6 @@ const tokens = {
 
 	// src/common/components/simpleBar-theme.scss
 	'simplebar.thumb.bg': (getToken) => getToken('color.neutral.300'),
-
-	// src/common/components/togglebox-theme.scss
-	'togglebox.action.hover': (getToken) => adjust(getToken('color.action.300'), 5),
-	'togglebox.danger.hover': (getToken) => adjust(getToken('color.danger.300'), 5),
 
 	// src/common/classes/tooltip-theme.scss
 	'tooltip.bg': (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9),

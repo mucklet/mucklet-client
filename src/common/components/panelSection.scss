@@ -21,7 +21,7 @@
 
 	&--required {
 		flex: 1 1 0;
-		color: $theme-color-danger-300;
+		color: $theme-content-error-fg;
 	}
 
 	&--popuptip {
@@ -32,7 +32,7 @@
 	&--caret {
 		padding-left: 1px;
 		font-size: $font-size;
-		color: $theme-color-accent-300;
+		color: $theme-content-accent-fg;
 		position: absolute;
 		bottom: 9px;
 		right: 0;

@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import './pageEditRoomScript-theme';
 
 .pageeditroomscript {
 	padding: 16px;
@@ -15,7 +16,7 @@
 	}
 
 	&--logscont {
-		background: $theme-color-base-200;
+		background: $theme-surface-200-bg;
 		border-radius: 4px;
 		padding: 4px 4px;
 		height: 320px;
@@ -37,7 +38,7 @@
 	&--logtime {
 		display: block;
 		font-size: $font-size-tiny;
-		color: $theme-color-neutral-700;
+		color: $theme-pageeditroomscript-time-fg;
 		line-height: 1.2em;
 	}
 
@@ -48,10 +49,10 @@
 	}
 
 	&--log {
-		&-log { color: $theme-color-neutral-300; }
-		&-debug { color: $theme-color-neutral-200; }
-		&-info { color: $theme-color-contrast-300; }
-		&-warn { color: $theme-log-cmd-fg; }
-		&-error { color: $theme-log-error-fg; }
+		&-log { color: $theme-pageeditroomscript-log-fg; }
+		&-debug { color: $theme-pageeditroomscript-debug-fg; }
+		&-info { color: $theme-pageeditroomscript-info-fg; }
+		&-warn { color: $theme-pageeditroomscript-warn-fg; }
+		&-error { color: $theme-pageeditroomscript-error-fg; }
 	}
 }
