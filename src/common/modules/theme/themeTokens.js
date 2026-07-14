@@ -174,9 +174,9 @@ const tokens = {
 	'log.cmd.ooc.fg': (getToken) => getToken('color.neutral.300'),
 	'log.formatter.fg': (getToken) => getToken('color.neutral.200'),
 	'log.emphasis.fg': (getToken) => getToken('color.action.300'),
+	'log.fieldset.bg': (getToken) => getToken('surface.200.bg'),
 	'log.fieldset.border': (getToken) => getToken('color.neutral.200'),
 	'log.fieldset.label.fg': (getToken) => getToken('log.default.fg'),
-	'log.fieldset.label.bg': (getToken) => getToken('surface.200.bg'),
 	'log.active.fg': (getToken) => getToken('content.active.fg'),
 	'log.inactive.fg': (getToken) => getToken('color.base.400'),
 	'log.mark.fg': (getToken) => getToken('color.neutral.600'),
@@ -191,6 +191,9 @@ const tokens = {
 	'log.highlight.mark.fg': (getToken) => getToken('color.neutral.600'),
 	'log.highlight.mark.ooc.fg': (getToken) => getToken('color.neutral.500'),
 	'log.highlight.mark.comm.fg': '#fff',
+	'log.highlight.fieldset.bg': (getToken) => getToken('surface.300.bg'),
+	'log.highlight.fieldset.border': (getToken) => getToken('color.neutral.200'),
+	'log.highlight.fieldset.label.fg': (getToken) => getToken('log.default.fg'),
 
 	// Tag colors
 	'tag.default.fg': (getToken) => getToken('color.neutral.300'),

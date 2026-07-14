@@ -184,9 +184,9 @@ $theme-log-link-fg: var(--mu-log-link-fg, #{$theme-link-default-fg});
 $theme-log-cmd-ooc-fg: var(--mu-log-cmd-ooc-fg, #{$theme-color-neutral-300});
 $theme-log-formatter-fg: var(--mu-log-formatter-fg, #{$theme-color-neutral-200});
 $theme-log-emphasis-fg: var(--mu-log-emphasis-fg, #{$theme-color-action-300});
+$theme-log-fieldset-bg: var(--mu-log-fieldset-bg, #{$theme-surface-200-bg});
 $theme-log-fieldset-border: var(--mu-log-fieldset-border, #{$theme-color-neutral-200});
 $theme-log-fieldset-label-fg: var(--mu-log-fieldset-label-fg, #{$theme-log-default-fg});
-$theme-log-fieldset-label-bg: var(--mu-log-fieldset-label-bg, #{$theme-surface-200-bg});
 $theme-log-active-fg: var(--mu-log-active-fg, #{$theme-content-active-fg});
 $theme-log-inactive-fg: var(--mu-log-inactive-fg, #{$theme-color-base-400});
 $theme-log-mark-fg: var(--mu-log-mark-fg, #{$theme-color-neutral-600});
@@ -201,6 +201,9 @@ $theme-log-highlight-mark-bg: var(--mu-log-highlight-mark-bg, #{$theme-surface-5
 $theme-log-highlight-mark-fg: var(--mu-log-highlight-mark-fg, #{$theme-color-neutral-600});
 $theme-log-highlight-mark-ooc-fg: var(--mu-log-highlight-mark-ooc-fg, #{$theme-color-neutral-500});
 $theme-log-highlight-mark-comm-fg: var(--mu-log-highlight-mark-comm-fg, #{$white});
+$theme-log-highlight-fieldset-bg: var(--mu-log-highlight-fieldset-bg, #{$theme-surface-300-bg});
+$theme-log-highlight-fieldset-border: var(--mu-log-highlight-fieldset-border, #{$theme-color-neutral-200});
+$theme-log-highlight-fieldset-label-fg: var(--mu-log-highlight-fieldset-label-fg, #{$theme-log-default-fg});
 
 // Tags
 $theme-tag-default-fg: var(--mu-tag-default-fg, #{$theme-color-neutral-300});

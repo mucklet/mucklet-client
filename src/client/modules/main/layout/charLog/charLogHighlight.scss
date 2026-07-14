@@ -38,8 +38,14 @@
 .charlog--highlight-mention {
 	.charlog--ev.mentioned, .charlog--ev.targeted {
 		// Highlight background
-		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
+		.charlog--highlight {
 			background: $theme-log-highlight-bg;
+		}
+		.charlog--fieldset {
+			background: $theme-log-highlight-fieldset-bg;
+		}
+		.charlog--fieldset-label {
+			background: $theme-log-highlight-fieldset-bg;
 		}
 
 		// Text color for highlighted targeted/mention messages
@@ -60,14 +66,32 @@
 			color: $theme-log-highlight-ooc-fg;
 		}
 	}
+
+	// Border and label text color should not overrule warn and help
+	:not(.ev-warn):not(.ev-helpme) > .charlog--ev.mentioned,
+	:not(.ev-warn):not(.ev-helpme) > .charlog--ev.targeted {
+		.charlog--fieldset {
+			border-color: $theme-log-highlight-fieldset-border;
+		}
+
+		.charlog--fieldset-label {
+			color: $theme-log-highlight-fieldset-label-fg;
+		}
+	}
 }
 
 // Highlight own messages
 .charlog--highlight-own {
 	.charlog--ev.own{
 		// Highlight background
-		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
+		.charlog--highlight {
 			background: $theme-log-highlight-bg;
+		}
+		.charlog--fieldset {
+			background: $theme-log-highlight-fieldset-bg;
+		}
+		.charlog--fieldset-label {
+			background: $theme-log-highlight-fieldset-bg;
 		}
 
 		// Text color for highlighted own messages
@@ -86,6 +110,17 @@
 		// Brighten ooc
 		.charlog--ooc {
 			color: $theme-log-highlight-ooc-fg;
+		}
+	}
+
+	// Border and label text color should not overrule warn and help
+	:not(.ev-warn):not(.ev-helpme) > .charlog--ev.own {
+		.charlog--fieldset {
+			border-color: $theme-log-highlight-fieldset-border;
+		}
+
+		.charlog--fieldset-label {
+			color: $theme-log-highlight-fieldset-label-fg;
 		}
 	}
 }

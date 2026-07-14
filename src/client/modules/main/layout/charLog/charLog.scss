@@ -97,6 +97,7 @@
 	// Common styling
 	&--fieldset {
 		position: relative;
+		background: $theme-log-fieldset-bg;
 		border: 1px solid $theme-log-fieldset-border;
 		padding: 5px 10px;
 		border-radius: 8px;
@@ -105,7 +106,7 @@
 	&--fieldset-label {
 		color: $theme-log-fieldset-label-fg;
 		position: absolute;
-		background: $theme-log-fieldset-label-bg;
+		background: $theme-log-fieldset-bg;
 		top: -1px;
 		height: 2px;
 		left: 16px;
