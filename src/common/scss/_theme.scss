@@ -189,6 +189,7 @@ $theme-log-fieldset-border: var(--mu-log-fieldset-border, #{$theme-color-neutral
 $theme-log-fieldset-label-fg: var(--mu-log-fieldset-label-fg, #{$theme-log-default-fg});
 $theme-log-active-fg: var(--mu-log-active-fg, #{$theme-content-active-fg});
 $theme-log-inactive-fg: var(--mu-log-inactive-fg, #{$theme-color-base-400});
+$theme-log-invalid-bg: var(--mu-log-invalid-bg, #{mix($color-base-200, $color-danger-300, 80%)});
 $theme-log-mark-fg: var(--mu-log-mark-fg, #{$theme-color-neutral-600});
 $theme-log-mark-bg: var(--mu-log-mark-bg, #{$theme-surface-400-bg});
 $theme-log-mark-ooc-fg: var(--mu-log-mark-ooc-fg, #{$theme-color-neutral-400});

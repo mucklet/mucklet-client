@@ -179,6 +179,7 @@ const tokens = {
 	'log.fieldset.label.fg': (getToken) => getToken('log.default.fg'),
 	'log.active.fg': (getToken) => getToken('content.active.fg'),
 	'log.inactive.fg': (getToken) => getToken('color.base.400'),
+	'log.invalid.bg': (getToken) => mix(getToken('surface.200.bg'), getToken('color.danger.300'), 80),
 	'log.mark.fg': (getToken) => getToken('color.neutral.600'),
 	'log.mark.bg': (getToken) => getToken('surface.400.bg'),
 	'log.mark.ooc.fg': (getToken) => getToken('color.neutral.400'),

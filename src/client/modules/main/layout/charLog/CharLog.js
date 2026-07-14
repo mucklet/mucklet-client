@@ -6,7 +6,7 @@ import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
 import compareSortOrderId from 'utils/compareSortOrderId';
-import { alpha, mix } from 'utils/color';
+import { alpha } from 'utils/color';
 import {
 	msgEvent,
 	sayEvent,
@@ -39,7 +39,6 @@ import './charLogEvent.scss';
 import './charLogHighlight.scss';
 
 const themeTokens = {
-	'charlog.invalid.bg': (getToken) => mix(getToken('surface.200.bg'), getToken('color.danger'), 80),
 	'charlog.eventmenu.bg': (getToken) => alpha(getToken('surface.200.bg'), 0.8),
 };
 
