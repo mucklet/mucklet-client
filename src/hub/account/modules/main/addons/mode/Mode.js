@@ -6,6 +6,7 @@ const modes = [
 	{ key: 'overseer', name: l10n.l('mode.admin', "Admin"), criteria: (user) => user?.idRoles.includes('overseer') },
 ];
 const namespace = 'module.mode';
+const modeStoragePrefix = 'mode.user.';
 
 /**
  * Mode holds the active mode, such as 'user' or 'overseer'.
@@ -36,6 +37,7 @@ class Mode {
 				this.user = user;
 				this.user.on('change', this._update);
 				this._update();
+				this._loadMode(user);
 			}
 		});
 	}
@@ -80,7 +82,7 @@ class Mode {
 					console.error("User does not fulfil mode criteria");
 					return;
 				}
-				return this._setMode(mode);
+				return this._setMode(mode, true);
 			}
 		}
 		console.error("Mode not found: ", mode);
@@ -109,17 +111,40 @@ class Mode {
 
 		// Switch to user if critera no longer fulfilled.
 		if (!this.getActiveMode().criteria(this.user)) {
-			this._setMode('user');
+			this._setMode('user', true);
 		}
 		this.modes?.refresh();
 	}
 
-	_setMode(mode) {
+	_setMode(mode, save) {
 		if (this.model.mode == mode) {
 			return;
 		}
 		this.model.set({ mode });
 		this.app.eventBus.emit(this, namespace + '.modeChange', { mode });
+		if (save) {
+			this._saveMode();
+		}
+	}
+
+	_saveMode() {
+		if (localStorage && this.user) {
+			localStorage.setItem(modeStoragePrefix + this.user.id, JSON.stringify({
+				mode: this.model.mode,
+			}));
+		}
+	}
+
+	_loadMode(user) {
+		if (localStorage) {
+			let data = localStorage.getItem(modeStoragePrefix + user.id);
+			if (data) {
+				let o = JSON.parse(data);
+				if (o?.hasOwnProperty('mode')) {
+					this._setMode(o.mode);
+				}
+			}
+		}
 	}
 
 	dispose() {
