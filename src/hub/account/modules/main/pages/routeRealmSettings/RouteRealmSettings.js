@@ -4,7 +4,7 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import { relistenResource } from 'utils/listenResource';
 import { hasIdRoles } from 'utils/idRoles';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 
 import RouteRealmSettingsComponent from './RouteRealmSettingsComponent';
 import './routeRealmSettings.scss';

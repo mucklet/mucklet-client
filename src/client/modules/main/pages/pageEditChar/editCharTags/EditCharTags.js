@@ -1,5 +1,5 @@
 import { Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import EditCharTagsComponent from './EditCharTagsComponent';
 import './editCharTags.scss';
 

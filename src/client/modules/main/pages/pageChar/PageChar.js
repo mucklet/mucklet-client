@@ -1,6 +1,6 @@
 import { Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import PageCharComponent from './PageCharComponent';
 import PageCharSleep from './PageCharSleep';
 import './pageChar.scss';

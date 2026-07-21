@@ -101,7 +101,6 @@ $theme-control-recessed-bg-hover: var(--mu-control-default-200-bg-hover, #{$them
 $theme-control-recessed-bg-active: var(--mu-control-default-200-bg-active, #{$theme-color-base-100});
 $theme-control-recessed-fg: var(--mu-control-default-200-fg, #{$theme-color-neutral-300});
 $theme-control-recessed-fg-hover: var(--mu-control-default-200-fg-hover, #{$theme-color-neutral-400});
-$theme-control-placeholder-fg: var(--mu-control-placeholder-fg, #{$control-placeholder-fg});
 $theme-control-overlay-bg: var(--mu-control-overlay-bg, #{$control-overlay-bg});
 $theme-control-overlay-bg-hover: var(--mu-control-overlay-bg-hover, #{$control-overlay-bg-hover});
 $theme-control-overlay-bg-active: var(--mu-control-overlay-bg-active, #{$control-overlay-bg-active});
@@ -109,7 +108,7 @@ $theme-control-overlay-bg-active: var(--mu-control-overlay-bg-active, #{$control
 // Inputs
 $theme-input-default-bg: var(--mu-input-default-bg, #{$theme-color-base-500});
 $theme-input-default-fg: var(--mu-input-default-fg, #{$theme-color-contrast-300});
-$theme-input-default-placeholder-fg: var(--mu-input-default-placeholder-fg, #{$theme-control-placeholder-fg});
+$theme-input-default-placeholder-fg: var(--mu-input-default-placeholder-fg, #{$input-default-placeholder-fg});
 $theme-input-default-caret: var(--mu-input-default-caret, #{$theme-color-contrast-300});
 $theme-input-incomplete-fg: var(--mu-input-incomplete-fg, #{$theme-color-neutral-400});
 

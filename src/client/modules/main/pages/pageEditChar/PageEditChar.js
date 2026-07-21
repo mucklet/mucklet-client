@@ -2,7 +2,7 @@ import { Elem } from 'modapp-base-component';
 import { Collection } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import PageEditCharComponent from './PageEditCharComponent';
 import './pageEditChar.scss';
 

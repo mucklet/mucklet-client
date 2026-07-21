@@ -1,7 +1,7 @@
 import { Collection, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 
 import RouteOverviewComponent from './RouteOverviewComponent';
 import './routeOverview.scss';

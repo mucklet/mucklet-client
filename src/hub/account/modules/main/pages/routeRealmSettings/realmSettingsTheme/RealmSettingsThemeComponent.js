@@ -193,7 +193,7 @@ class RealmSettingsThemeComponent {
 							click: () => this._setModel(model, token, this.theme.props[token.key]),
 						},
 					}, [
-						n.component(new FAIcon('times')),
+						n.component(new FAIcon('undo')),
 					]),
 				]),
 			])),

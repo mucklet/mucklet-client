@@ -1,5 +1,5 @@
 import { Model, Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import './playerTabs.scss';
 import PlayerTabsTabs from './PlayerTabsTabs';
 

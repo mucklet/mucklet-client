@@ -7,21 +7,22 @@ import { addBeforeUnload, removeBeforeUnload } from 'utils/reload';
 import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
 
-const themeTokens = {
-	'editscript.keyword.fg': (getToken) => getToken('content.accent.fg'),
-	'editscript.name.fg': (getToken) => getToken('content.strong.fg'),
-	'editscript.variable.fg': (getToken) => getToken('content.strong.fg'),
-	'editscript.constant.fg': (getToken) => getToken('content.strong.fg'),
-	'editscript.separator.fg': (getToken) => getToken('content.strong.fg'),
-	'editscript.type.fg': (getToken) => getToken('content.accent.fg'),
-	'editscript.operator.fg': (getToken) => getToken('content.default.fg'),
-	'editscript.comment.fg': (getToken) => getToken('content.muted.fg'),
-	'editscript.link.fg': (getToken) => getToken('content.info.fg'),
-	'editscript.heading.fg': (getToken) => getToken('content.accent.fg'),
-	'editscript.bool.fg': (getToken) => getToken('content.accent.fg'),
-	'editscript.string.fg': (getToken) => getToken('content.info.fg'),
-	'editscript.invalid.fg': (getToken) => getToken('log.error.fg'),
-};
+const themeTokens = [
+	{ keyPrefix: 'editscript', name: l10n.l('editScript.scriptEditorColors', "Script editor colors"), sortOrder: 1000 },
+	{ key: 'editscript.keyword.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.name.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.variable.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.constant.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.separator.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.type.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.operator.fg', value: (getToken) => getToken('content.default.fg') },
+	{ key: 'editscript.comment.fg', value: (getToken) => getToken('content.muted.fg') },
+	{ key: 'editscript.link.fg', value: (getToken) => getToken('content.info.fg') },
+	{ key: 'editscript.heading.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.bool.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.string.fg', value: (getToken) => getToken('content.info.fg') },
+	{ key: 'editscript.invalid.fg', value: (getToken) => getToken('log.error.fg') },
+];
 
 const pathDef = [
 	[ '$scriptId', '$mode' ],

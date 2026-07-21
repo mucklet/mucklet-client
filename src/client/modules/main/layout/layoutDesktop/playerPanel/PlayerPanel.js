@@ -1,7 +1,7 @@
 import { Transition } from 'modapp-base-component';
 import { Model, Collection } from 'modapp-resource';
 import Panel from 'components/Panel';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import PlayerPanelFooter from './PlayerPanelFooter';
 import './playerPanel.scss';
 

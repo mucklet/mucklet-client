@@ -15,7 +15,7 @@ class PlayerSettingsMainCharComponent {
 
 	render(el) {
 		this.elem = new PanelSection(
-			l10n.l('playerSettings.preferences', "Main character"),
+			l10n.l('playerSettings.mainCharacter', "Main character"),
 			new ModelComponent(
 				this.player,
 				new Fader(),

@@ -3,7 +3,7 @@ import { ModelComponent } from 'modapp-resource-component';
 import { Collection, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import PagePlayerSettingsComponent from './PagePlayerSettingsComponent';
 import './pagePlayerSettings.scss';
 
