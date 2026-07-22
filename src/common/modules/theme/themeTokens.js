@@ -72,7 +72,7 @@ const tokens = [
 	{ key: 'content.active.fg', value: (getToken) => getToken('color.action.300') },
 	{ key: 'content.inactive.fg', value: (getToken) => getToken('color.neutral.300') },
 
-	{ keyPrefix: 'control.default', name: l10n.l('theme.defaultControlVariantsColors', "Default control variants colors"), sortOrder: 100 },
+	{ keyPrefix: 'control.default', name: l10n.l('theme.defaultControlVariantsColors', "Default control variants"), sortOrder: 100 },
 	{ key: 'control.default.300.bg', value: (getToken) => getToken('color.base.300') },
 	{ key: 'control.default.300.bg.hover', value: (getToken) => getToken('color.base.400') },
 	{ key: 'control.default.300.bg.active', value: (getToken) => getToken('color.base.500') },
@@ -262,7 +262,6 @@ const tokens = [
 	{ key: 'badge.100.bg', value: (getToken) => getToken('surface.100.bg') },
 	{ key: 'badge.100.bg.hover', value: (getToken) => adjust(getToken('color.base.200'), -6) },
 	{ key: 'badge.200.bg', value: (getToken) => getToken('surface.200.bg') },
-	{ key: 'badge.200.fg', value: '#fff' },
 	{ key: 'badge.200.bg.hover', value: (getToken) => getToken('surface.100.bg') },
 	{ key: 'badge.avatar.bg', value: (getToken) => getToken('surface.400.bg') },
 	{ key: 'badge.avatar.fg', value: (getToken) => getToken('surface.200.bg') },

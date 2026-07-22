@@ -6,6 +6,7 @@ import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
+import normalizeHexColor from 'utils/normalizeHexColor';
 
 const themeTokens = [
 	{
@@ -168,7 +169,7 @@ class RealmSettingsThemeComponent {
 						events: {
 							input: (c) => {
 								let v = c.getValue();
-								let color = this._normalizeHexColor(v);
+								let color = normalizeHexColor(v);
 								c[!v || color ? 'removeClass' : 'addClass']('input--incomplete');
 
 								if (!v) {
@@ -220,15 +221,6 @@ class RealmSettingsThemeComponent {
 		// Set realm with our model if it has been modified,
 		// to make it signal that there is updated properties.
 		this.realm.set({ theme: model.isModified ? model : this.theme });
-	}
-
-	_normalizeHexColor(color) {
-		color = String(color || '').trim();
-		let match = color.match(/^#?([0-9a-f]{6})$/i);
-		if (!match) {
-			return null;
-		}
-		return '#' + match[1].toLowerCase();
 	}
 }
 

@@ -21,8 +21,8 @@ class PageCustomThemeComponent {
 		let groups = this._getGroups();
 		this.elem = new Context(
 			() => ({
-				model: new Model({ data: Object.assign({ selected: null, preview: false }, this.state?.model) }),
-				theme: new ModifyModel(this.theme, { props: this.state?.theme }),
+				model: new Model({ data: Object.assign({ selected: null, preview: true }, this.state?.model) }),
+				theme: new ModifyModel(this.theme, { props: this.state?.theme, isModifiedProperty: null }),
 			}),
 			(ctx) => this.state = {
 				model: ctx.model.props,
@@ -45,15 +45,16 @@ class PageCustomThemeComponent {
 							(m, c) => {},
 						))))),
 						{
+							className: 'common--sectionpadding',
 							noToggle: true,
 						},
 					))))),
 					// If preview is on, update theme based on the current settings.
-					(m, c) => ctx.model.preview && this.module.theme.setTheme(m.props),
+					(m, c) => ctx.model.preview && this.module.theme.setTheme(Object.assign({}, m.props)),
 				),
 				(m, c, change) => {
 					if (!change || change.hasOwnProperty('preview')) {
-						this.module.theme.setTheme(m.preview ? ctx.theme.props : this.theme.props);
+						this.module.theme.setTheme(Object.assign({}, m.preview ? ctx.theme.props : this.theme.props));
 					}
 				},
 			),
