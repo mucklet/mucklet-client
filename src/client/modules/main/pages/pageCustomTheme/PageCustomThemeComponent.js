@@ -1,12 +1,22 @@
-import { Elem, Context } from 'modapp-base-component';
-import { ModelComponent } from 'modapp-resource-component';
-import { Model, ModifyModel } from 'modapp-resource';
+import { Context } from 'modapp-base-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
+import { Model, ModifyModel, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import compareSortOrder from 'utils/compareSortOrder';
 import PageCustomThemeColor from './PageCustomThemeColor';
+import NestedCollection from 'classes/NestedCollection';
 
 const txtOther = l10n.l('pageCustomTheme.other', "Other tokens");
+
+function getGroup(keyPrefix, groups) {
+	for (let g of groups) {
+		if (keyPrefix == g.keyPrefix) {
+			return g;
+		}
+	}
+	return null;
+}
 
 class PageCustomThemeComponent {
 	constructor(module, theme, state, close) {
@@ -18,37 +28,54 @@ class PageCustomThemeComponent {
 
 	render(el) {
 
-		let groups = this._getGroups();
 		this.elem = new Context(
 			() => ({
 				model: new Model({ data: Object.assign({ selected: null, preview: true }, this.state?.model) }),
 				theme: new ModifyModel(this.theme, { props: this.state?.theme, isModifiedProperty: null }),
+				groups: new NestedCollection(new Model({ data: {
+					groups: this.module.theme.getGroups(),
+					values: this.module.theme.getTokenValues(),
+				}}), (m, self) => this._getGroups(m.groups, m.values, self), {
+					maxDepth: 3,
+				}),
 			}),
-			(ctx) => this.state = {
-				model: ctx.model.props,
-				theme: ctx.theme.getModifications(),
+			(ctx) => {
+				this.state = {
+					model: ctx.model.props,
+					theme: ctx.theme.getModifications(),
+				};
+				ctx.theme.dispose();
+				ctx.groups.dispose();
 			},
 			(ctx) => new ModelComponent(
 				ctx.model,
 				new ModelComponent(
 					ctx.theme,
-					new Elem(n => n.elem('div', { className: 'pagecustomtheme' }, groups.map(g => n.component(new PanelSection(
-						g.name,
-						new Elem(n => n.elem('div', { className: 'pagecustomtheme--group' }, g.tokens.map(t => n.component(new ModelComponent(
-							null,
-							new PageCustomThemeColor(
-								ctx.model,
-								ctx.theme,
-								t,
-								(v, c) => ctx.theme?.set({ [t.key]: v || undefined }),
+					new CollectionList(
+						ctx.groups,
+						group => new PanelSection(
+							group.name,
+							new CollectionList(
+								group.tokens,
+								token => new ModelComponent(
+									token,
+									new PageCustomThemeColor(
+										ctx.model,
+										ctx.theme,
+										token,
+										(v, c) => ctx.theme?.set({ [token.key]: v || undefined }),
+									),
+									(m, c) => {},
+								),
+								{ className: 'pagecustomtheme--group' },
 							),
-							(m, c) => {},
-						))))),
-						{
-							className: 'common--sectionpadding',
-							noToggle: true,
-						},
-					))))),
+							{
+								className: 'common--sectionpadding',
+								noToggle: true,
+							},
+						),
+						{ className: 'pagecustomtheme' },
+					),
 					// If preview is on, update theme based on the current settings.
 					(m, c) => ctx.model.preview && this.module.theme.setTheme(Object.assign({}, m.props)),
 				),
@@ -75,33 +102,63 @@ class PageCustomThemeComponent {
 	 * keyPrefix.
 	 *
 	 * Groups without tokens are filtered out.
-	 * @returns {Array<{ keyPrefix: string, name: LocaleString|string, sortOrder?:number, tokens: Array<{ key: string, value: string }>}>} Group array.
+	 * @param {Model<Record<string, {
+	 * 	keyPrefix: string,
+	 * 	name: LocaleString|string>,
+	 * 	sortOrder?: number,
+	 * }>>} groups Theme groups model.
+	 * @param {Model<Record<string, Model<{
+	 *  key: string,
+	 * 	value: string|null,
+	 * 	theme: string|null,
+	 * 	realm: string|null,
+	 * 	custom: string|null,
+	 * 	param: string|null,
+	 * }>>} values Theme values model.
+	 * @param {NestedCollection} nestedCollection Collection
+	 * @returns {Collection<{
+	 * 	keyPrefix: string,
+	 * 	name: LocaleString|string,
+	 * 	sortOrder?:number,
+	 * 	tokens: Collection<Model<{
+	 *  	key: string,
+	 * 		value: string|null,
+	 * 		theme: string|null,
+	 * 		realm: string|null,
+	 * 		custom: string|null,
+	 * 		param: string|null,
+	 * }>}>} Group array.
 	 */
-	_getGroups() {
-		let g = this.module.theme.getGroups();
-		let t = this.module.theme.getTokenValues();
-
+	_getGroups(groups, values, nestedCollection) {
+		let groupMap = {
+			'': getGroup('', nestedCollection) || { keyPrefix: '', name: txtOther, sortOrder: Number.MAX_SAFE_INTEGER, tokens: new CollectionWrapper(null) },
+		};
+		let groupValues = { '': [] };
 		// Clone group objects
-		for (let k in g) {
-			g[k] = Object.assign({}, g[k], { tokens: [] });
+		for (let k in groups.props) {
+			groupMap[k] = getGroup(k, nestedCollection) || Object.assign({}, groups.props[k], { tokens: new CollectionWrapper(null) });
+			groupValues[k] = [];
 		}
-		g[''] = { keyPrefix: '', name: txtOther, sortOrder: Number.MAX_SAFE_INTEGER, tokens: [] };
 
-		for (let k in t) {
+		for (let k in values.props) {
 			let parts = k.split('.');
 			for (let i = parts.length - 1; i >= 0; i--) {
 				let prefix = parts.slice(0, i).join('.');
-				let group = g[prefix];
+				let group = groupMap[prefix];
 				if (group) {
-					group.tokens.push({ key: k, value: t[k] });
+					groupValues[prefix].push(values.props[k]);
 					break;
 				}
 			}
 		}
 
-		return Object.keys(g)
-			.map(k => g[k])
-			.filter(o => o.tokens.length)
+		return Object.keys(groupMap)
+			.filter(k => groupValues[k].length)
+			.map(k => {
+				let g = groupMap[k];
+				g.tokens.setCollection(groupValues[k]);
+				return g;
+			})
 			.sort((a, b) => compareSortOrder(a, b) || a.keyPrefix.localeCompare(b.keyPrefix));
 	}
 }

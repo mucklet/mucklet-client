@@ -1,3 +1,4 @@
+import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import themeTokens from './themeTokens';
 const seedColors = APP_COLORS;
@@ -18,6 +19,13 @@ function shallowCompare(obj1, obj2) {
 
 /**
  * Theme handles the theme tokens and css variables.
+ *
+ * The order by which a theme value is selected is:
+ *
+ * 	theme - Custom theme value for the client
+ * 	param - Query parameter value
+ *  realm - Realm theme value
+ * 	preset - Client preset value, possibly calculated from other values
  */
 class Theme {
 	constructor(app, params) {
@@ -28,11 +36,12 @@ class Theme {
 		this.getTokenValue = this.getTokenValue.bind(this);
 
 		this.appTheme = this.app.props.theme || {};
-		this.theme = {};
 		this.tokens = {};
-		this.values = {};
-		this.colors = {};
-		this.groups = { 'color': { keyPrefix: 'color', name: l10n.l('theme.seedColors', "Seed colors"), sortOrder: 0 }};
+		this.theme = new Model({ data: {}, eventBus: this.app.eventBus });
+		this.values = new Model({ data: {}, eventBus: this.app.eventBus });
+		this.groups = new Model({ data: {
+			'color': { keyPrefix: 'color', name: l10n.l('theme.seedColors', "Seed colors"), sortOrder: 0 },
+		}, eventBus: this.app.eventBus });
 		// Add standard color tokens
 		this._addColorTokens();
 
@@ -52,28 +61,39 @@ class Theme {
 	}
 
 	/**
-	 * Returns the token value by key.
+	 * Returns the effective token value by key.
 	 * @param {string} key Token key.
-	 * @returns {string | null} Token string or null if not set.
+	 * @returns {string} Currently set value that is in effect.
 	 */
 	getTokenValue(key) {
-		return this.values[key] || null;
+		return this.values.props[key]?.value || null;
 	}
 
 	/**
 	 * Returns token values with their resolved values.
-	 * @returns {Record<string, string>} Object with key being the token key, and value being the token value.
+	 * @returns {Model<Record<string, Model<{
+	 *  key: string,
+	 * 	value: string|null,
+	 * 	theme: string|null,
+	 * 	realm: string|null,
+	 * 	custom: string|null,
+	 * 	param: string|null,
+	 * }>>} Model with key being the token key, and value being the token value model.
 	 */
 	getTokenValues() {
-		return Object.assign({}, this.values);
+		return this.values;
 	}
 
 	/**
 	 * Returns token groups.
-	 * @returns {Record<string, {keyPrefix: string, name: LocaleString|string>, sortOrder?: number}>} Object with key being the keyPrefix, and value being the token object.
+	 * @returns {Model<Record<string, {
+	 * 	keyPrefix: string,
+	 * 	name: LocaleString|string>,
+	 * 	sortOrder?: number,
+	 * }>>} Object with key being the keyPrefix, and value being the token object.
 	 */
 	getGroups() {
-		return Object.assign({}, this.groups);
+		return this.groups;
 	}
 
 	/**
@@ -91,7 +111,7 @@ class Theme {
 			return null;
 		}
 		this.tokens[key] = token.value;
-		return this._setValue(key);
+		this.values.set({ [key]: this._setValue(key) });
 	}
 
 	/**
@@ -118,7 +138,7 @@ class Theme {
 			document.documentElement.style.removeProperty(keyToCssVar(key));
 		}
 		delete this.tokens[key];
-		delete this.values[key];
+		this.values.set({ [key]: undefined });
 	}
 
 	/**
@@ -144,11 +164,11 @@ class Theme {
 	 */
 	addGroup(group) {
 		let keyPrefix = group.keyPrefix;
-		if (this.groups[keyPrefix]) {
+		if (this.groups.props[keyPrefix]) {
 			console.error("[Theme] Duplicate group keyPrefix: " + keyPrefix);
 			return null;
 		}
-		this.groups[keyPrefix] = group;
+		this.groups.set({ [keyPrefix]: group });
 	}
 
 	/**
@@ -156,41 +176,50 @@ class Theme {
 	 * @param {string} keyPrefix Token key prefix.
 	 */
 	removeGroup(keyPrefix) {
-		delete this.groups[keyPrefix];
+		this.groups.set({ [keyPrefix]: undefined });
 	}
 
 	_setValue(key) {
 		let t = this.tokens[key];
 		if (!t) return;
 
-		let v = this._getParam(key) ||
-			this._getParam(legacyMapping[key]) ||
-			this.theme[key] ||
-			this.appTheme[key] ||
-			this.appTheme[legacyMapping[key]] ||
-			(
-				typeof t == 'function'
-					? t(this.getTokenValue)
-					: String(t ?? '')
-			);
-		if (v) {
-			document.documentElement.style.setProperty(keyToCssVar(key), v);
+		let theme = this.theme[key] || null;
+		let param = this._getParam(key) || this._getParam(legacyMapping[key]) || null;
+		let realm = this.appTheme[key] || this.appTheme[legacyMapping[key]] || null;
+		let preset = (
+			typeof t == 'function'
+				? t(this.getTokenValue)
+				: String(t ?? '')
+		);
+		// Select value based on prio order
+		let value = theme || param || realm || preset || null;
+		if (value) {
+			document.documentElement.style.setProperty(keyToCssVar(key), value);
+		} else {
+			document.documentElement.style.removeProperty(keyToCssVar(key));
 		}
-		this.values[key] = v;
-		return v;
+		let data = { key, value, theme, param, realm, preset };
+		let model = this.values.props[key];
+		if (model) {
+			model.set(data);
+		} else {
+			model = new Model({ data, eventBus: this.app.eventBus });
+		}
+		return model;
 	}
 
 	_update() {
+		let o = {};
 		for (let key in this.tokens) {
-			this._setValue(key);
+			o[key] = this._setValue(key);
 		}
+		this.values.reset(o);
 	}
 
 	_addColorTokens(params) {
 		// Set theme seed colors
 		for (let k in seedColors) {
-			let v = this.addToken({ key: 'color.' + k, value: seedColors[k] });
-			Object.defineProperty(this.colors, k, { value: v });
+			this.addToken({ key: 'color.' + k, value: seedColors[k] });
 		}
 
 		// Set additional theme tokens
