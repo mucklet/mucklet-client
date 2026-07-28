@@ -33,7 +33,6 @@ class PageCustomThemeComponent {
 				model: new Model({ data: Object.assign({ selected: null, preview: true }, this.state?.model) }),
 				theme: new ModifyModel(this.theme, {
 					props: this.state?.theme,
-					isModifiedProperty: null,
 					modifiedOnNew: true,
 				}),
 				groups: new NestedCollection(new Model({ data: {
@@ -46,9 +45,7 @@ class PageCustomThemeComponent {
 			(ctx) => {
 				this.state = {
 					model: ctx.model.props,
-					theme: ctx.theme.getModifications(),
 				};
-				ctx.theme.dispose();
 				ctx.groups.dispose();
 			},
 			(ctx) => new ModelComponent(
@@ -83,19 +80,16 @@ class PageCustomThemeComponent {
 						)),
 
 						n.elem('div', { className: 'pagecustomtheme--footer' }, [
-							n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
+							n.elem('div', { className: 'flex-row margin8 flex-end' }, [
 								n.elem('div', { className: 'flex-1' }, [
 									n.component(new ModelComponent(
 										ctx.theme,
-										new Elem(n => n.elem('update', 'button', { events: {
+										new Elem(n => n.elem('button', { events: {
 											click: () => this._save(ctx.theme),
 										}, className: 'btn primary flex-1' }, [
-											n.component('text', new Txt()),
+											n.component(new Txt(l10n.l('pageCustomTheme.update', "Save theme"))),
 										])),
-										(m, c) => c.getNode('text').setText(m.getModifications()
-											? l10n.l('pageCustomTheme.update', "Save theme")
-											: l10n.l('pageCustomTheme.close', "Close"),
-										),
+										(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
 									)),
 								]),
 							]),
@@ -118,6 +112,7 @@ class PageCustomThemeComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			this.module.theme.setTheme(this.theme.props);
 		}
 	}
 
@@ -187,8 +182,13 @@ class PageCustomThemeComponent {
 			.sort((a, b) => compareSortOrder(a, b) || a.keyPrefix.localeCompare(b.keyPrefix));
 	}
 
-	_save(theme, messageComponent) {
-		this.module.toaster.openError("Test", { title: l10n.l('pageCustomTheme.errorSavingTheme', "Error saving theme") });
+	_save(theme) {
+		let mods = theme.getModifications();
+		if (!mods) {
+			return;
+		}
+		this.theme.set(mods);
+		theme.reset();
 	}
 }
 

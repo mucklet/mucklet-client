@@ -103,6 +103,7 @@ class PageCustomTheme {
 
 	_onChange() {
 		this.module.theme.setTheme(this.theme.props);
+		this._saveCustomTheme();
 	}
 
 	dispose() {
