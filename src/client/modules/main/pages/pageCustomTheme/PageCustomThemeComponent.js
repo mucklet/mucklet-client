@@ -1,11 +1,11 @@
-import { Context } from 'modapp-base-component';
+import { Context, Elem, Txt } from 'modapp-base-component';
 import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import { Model, ModifyModel, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
+import NestedCollection from 'classes/NestedCollection';
 import compareSortOrder from 'utils/compareSortOrder';
 import PageCustomThemeColor from './PageCustomThemeColor';
-import NestedCollection from 'classes/NestedCollection';
 
 const txtOther = l10n.l('pageCustomTheme.other', "Other tokens");
 
@@ -31,7 +31,11 @@ class PageCustomThemeComponent {
 		this.elem = new Context(
 			() => ({
 				model: new Model({ data: Object.assign({ selected: null, preview: true }, this.state?.model) }),
-				theme: new ModifyModel(this.theme, { props: this.state?.theme, isModifiedProperty: null }),
+				theme: new ModifyModel(this.theme, {
+					props: this.state?.theme,
+					isModifiedProperty: null,
+					modifiedOnNew: true,
+				}),
 				groups: new NestedCollection(new Model({ data: {
 					groups: this.module.theme.getGroups(),
 					values: this.module.theme.getTokenValues(),
@@ -51,31 +55,52 @@ class PageCustomThemeComponent {
 				ctx.model,
 				new ModelComponent(
 					ctx.theme,
-					new CollectionList(
-						ctx.groups,
-						group => new PanelSection(
-							group.name,
-							new CollectionList(
-								group.tokens,
-								token => new ModelComponent(
-									token,
-									new PageCustomThemeColor(
-										ctx.model,
-										ctx.theme,
+					new Elem(n => n.elem('div', { className: 'pagecustomtheme' }, [
+						n.component(new CollectionList(
+							ctx.groups,
+							group => new PanelSection(
+								group.name,
+								new CollectionList(
+									group.tokens,
+									token => new ModelComponent(
 										token,
-										(v, c) => ctx.theme?.set({ [token.key]: v || undefined }),
+										new PageCustomThemeColor(
+											ctx.model,
+											ctx.theme,
+											token,
+											(v, c) => ctx.theme?.set({ [token.key]: v || undefined }),
+										),
+										(m, c) => {},
 									),
-									(m, c) => {},
+									{ className: 'pagecustomtheme--group' },
 								),
-								{ className: 'pagecustomtheme--group' },
+								{
+									className: 'common--sectionpadding',
+									noToggle: true,
+								},
 							),
-							{
-								className: 'common--sectionpadding',
-								noToggle: true,
-							},
-						),
-						{ className: 'pagecustomtheme' },
-					),
+							{ className: 'pagecustomtheme--tokens' },
+						)),
+
+						n.elem('div', { className: 'pagecustomtheme--footer' }, [
+							n.elem('div', { className: 'pad-top-xl flex-row margin8 flex-end' }, [
+								n.elem('div', { className: 'flex-1' }, [
+									n.component(new ModelComponent(
+										ctx.theme,
+										new Elem(n => n.elem('update', 'button', { events: {
+											click: () => this._save(ctx.theme),
+										}, className: 'btn primary flex-1' }, [
+											n.component('text', new Txt()),
+										])),
+										(m, c) => c.getNode('text').setText(m.getModifications()
+											? l10n.l('pageCustomTheme.update', "Save theme")
+											: l10n.l('pageCustomTheme.close', "Close"),
+										),
+									)),
+								]),
+							]),
+						]),
+					])),
 					// If preview is on, update theme based on the current settings.
 					(m, c) => ctx.model.preview && this.module.theme.setTheme(Object.assign({}, m.props)),
 				),
@@ -160,6 +185,10 @@ class PageCustomThemeComponent {
 				return g;
 			})
 			.sort((a, b) => compareSortOrder(a, b) || a.keyPrefix.localeCompare(b.keyPrefix));
+	}
+
+	_save(theme, messageComponent) {
+		this.module.toaster.openError("Test", { title: l10n.l('pageCustomTheme.errorSavingTheme', "Error saving theme") });
 	}
 }
 

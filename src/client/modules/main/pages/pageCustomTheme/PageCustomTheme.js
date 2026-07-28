@@ -21,6 +21,7 @@ class PageCustomTheme {
 			'playerTabs',
 			'pagePlayerSettings',
 			'theme',
+			'toaster',
 		], this._init.bind(this));
 	}
 

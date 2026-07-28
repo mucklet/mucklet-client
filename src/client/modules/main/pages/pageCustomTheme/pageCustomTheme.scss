@@ -1,7 +1,19 @@
 @import '~scss/variables';@import '~scss/mixins';
 
 .pagecustomtheme {
-	padding: 16px 14px;
+	position: relative;
+	padding: 16px 14px; // 16px 14px 84px 14px;
+
+	&--footer {
+		// Attempt att having the button fixed at the bottom
+
+		// width: 100%;
+		// background: $theme-surface-400-bg;
+		// position: fixed;
+		// bottom: 49px;
+		// padding:8px 14px;
+		// right: 0;
+	}
 }
 
 .pagecustomtheme-color {
