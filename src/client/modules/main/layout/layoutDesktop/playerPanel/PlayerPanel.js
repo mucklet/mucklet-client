@@ -1,4 +1,3 @@
-import { Transition } from 'modapp-base-component';
 import { Model, Collection } from 'modapp-resource';
 import Panel from 'components/Panel';
 import { compareSortOrderId } from 'utils/compareSortOrder';
@@ -41,8 +40,7 @@ class PlayerPanel {
 			eventBus: this.module.self.app.eventBus,
 		});
 
-		this.tabPage = new Transition({ className: 'playerpanel--tabpage' });
-		this.component = new Panel("", null, {
+		this.panel = new Panel("", null, {
 			align: 'left',
 			instant: true,
 			className: 'playerpanel',
@@ -59,7 +57,7 @@ class PlayerPanel {
 		this._onPlayerTabsChange();
 		this._onModelChange();
 
-		this.module.layoutDesktop.setNode('playerPanel', this.component);
+		this.module.layoutDesktop.setNode('playerPanel', this.panel);
 	}
 
 	/**
@@ -130,20 +128,20 @@ class PlayerPanel {
 			if (change && change.hasOwnProperty('tabId')) {
 				dir = this.module.playerTabs.getTabDirection(change.tabId, m.tabId);
 			}
-			this.tabPage[dir == 0
-				? 'fade'
-				: dir > 0
-					? 'slideLeft'
-					: 'slideRight'
-			](pi.component);
 
-			this.component
+			this.panel
 				.setTitle(pi.title || '')
 				.setButton((m.page && m.page.close) || null, pi.closeIcon || (m.pageIdx > 0
 					? 'chevron-circle-left'
 					: 'times'
 				))
-				.setComponent(this.tabPage);
+				.setComponent(pi.component, {
+					transition: dir == 0
+						? 'fade'
+						: dir > 0
+							? 'slideLeft'
+							: 'slideRight',
+				});
 		}
 	}
 
