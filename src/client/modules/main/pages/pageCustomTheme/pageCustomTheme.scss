@@ -2,25 +2,20 @@
 
 .pagecustomtheme {
 	position: relative;
-	padding: 16px 14px;
-	// padding: 16px 14px 60px 14px;
+	padding: 16px 14px 60px 14px;
 
 	&--footer {
-		padding-top: 8px;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: calc(100% - 14px);
+		background: linear-gradient(to bottom, transparent 0, $theme-surface-400-bg 16px);
+		padding: 24px 0 8px 14px;
+		pointer-events: none;
 
-		// Attempt att having the button fixed at the bottom
-		//
-		// width: calc(100% - 14px);
-		// background: linear-gradient(to bottom, transparent 0, $theme-surface-400-bg 16px);
-		// position: absolute;
-		// bottom: 0;
-		// padding: 24px 0 8px 14px;
-		// left: 0;
-		// pointer-events: none;
-
-		// > * {
-		// 	pointer-events: auto;
-		// }
+		> * {
+			pointer-events: auto;
+		}
 	}
 }
 

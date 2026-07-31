@@ -1,6 +1,6 @@
-import { Context, Elem, Txt } from 'modapp-base-component';
+import { Context, Elem } from 'modapp-base-component';
 import { ModelComponent, CollectionList } from 'modapp-resource-component';
-import { Model, ModifyModel, CollectionWrapper } from 'modapp-resource';
+import { Model, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import NestedCollection from 'classes/NestedCollection';
@@ -31,10 +31,6 @@ class PageCustomThemeComponent {
 		this.elem = new Context(
 			() => ({
 				model: new Model({ data: Object.assign({ selected: null, preview: true }, this.state?.model) }),
-				theme: new ModifyModel(this.theme, {
-					props: this.state?.theme,
-					modifiedOnNew: true,
-				}),
 				groups: new NestedCollection(new Model({ data: {
 					groups: this.module.theme.getGroups(),
 					values: this.module.theme.getTokenValues(),
@@ -51,7 +47,7 @@ class PageCustomThemeComponent {
 			(ctx) => new ModelComponent(
 				ctx.model,
 				new ModelComponent(
-					ctx.theme,
+					this.theme,
 					new Elem(n => n.elem('div', { className: 'pagecustomtheme' }, [
 						n.component(new CollectionList(
 							ctx.groups,
@@ -63,9 +59,9 @@ class PageCustomThemeComponent {
 										token,
 										new PageCustomThemeColor(
 											ctx.model,
-											ctx.theme,
+											this.theme,
 											token,
-											(v, c) => ctx.theme?.set({ [token.key]: v || undefined }),
+											(v, c) => this.theme?.set({ [token.key]: v || undefined }),
 										),
 										(m, c) => {},
 									),
@@ -78,29 +74,13 @@ class PageCustomThemeComponent {
 							),
 							{ className: 'pagecustomtheme--tokens' },
 						)),
-
-						n.elem('div', { className: 'pagecustomtheme--footer' }, [
-							n.elem('div', { className: 'flex-row margin8 flex-end' }, [
-								n.elem('div', { className: 'flex-1' }, [
-									n.component(new ModelComponent(
-										ctx.theme,
-										new Elem(n => n.elem('button', { events: {
-											click: () => this._save(ctx.theme),
-										}, className: 'btn primary flex-1' }, [
-											n.component(new Txt(l10n.l('pageCustomTheme.update', "Save theme"))),
-										])),
-										(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
-									)),
-								]),
-							]),
-						]),
 					])),
 					// If preview is on, update theme based on the current settings.
 					(m, c) => ctx.model.preview && this.module.theme.setTheme(Object.assign({}, m.props)),
 				),
 				(m, c, change) => {
 					if (!change || change.hasOwnProperty('preview')) {
-						this.module.theme.setTheme(Object.assign({}, m.preview ? ctx.theme.props : this.theme.props));
+						this.module.theme.setTheme(Object.assign({}, m.preview ? this.theme.props : this.theme.getModel().props));
 					}
 				},
 			),
@@ -112,7 +92,7 @@ class PageCustomThemeComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
-			this.module.theme.setTheme(this.theme.props);
+			this.module.theme.setTheme(this.theme.getModel().props);
 		}
 	}
 
@@ -187,7 +167,7 @@ class PageCustomThemeComponent {
 		if (!mods) {
 			return;
 		}
-		this.theme.set(mods);
+		this.theme.getModel().set(mods);
 		theme.reset();
 	}
 }

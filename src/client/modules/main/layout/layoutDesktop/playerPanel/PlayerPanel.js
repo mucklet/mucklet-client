@@ -136,6 +136,7 @@ class PlayerPanel {
 					: 'times'
 				))
 				.setComponent(pi.component, {
+					overlayComponent: m.page.overlayComponent || null,
 					transition: dir == 0
 						? 'fade'
 						: dir > 0
