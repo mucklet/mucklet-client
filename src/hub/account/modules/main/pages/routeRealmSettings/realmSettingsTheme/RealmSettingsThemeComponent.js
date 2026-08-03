@@ -47,6 +47,7 @@ const themeTokens = [
 ];
 
 const txtInvalidThemeFile = l10n.l('realmSettingsTheme.invalidThemeFile', "Invalid theme file");
+const txtThemeInfo = l10n.l('realmSettingsTheme.themeInfo', "Create a theme inside the realm under Player settings - Custom theme - Edit theme. Use the export button to export a file that can be used here when clicking Import theme.");
 
 function clearModelObject(model) {
 	let o = {};
@@ -169,6 +170,7 @@ class RealmSettingsThemeComponent {
 				{
 					className: 'realmsettingstheme common--sectionpadding',
 					noToggle: true,
+					popupTip: txtThemeInfo,
 				},
 			),
 		);
