@@ -15,7 +15,7 @@
 	&--token {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 16px;
 	}
 
 	&--tokeninfo {
@@ -41,23 +41,9 @@
 		background: $color-base-200;
 	}
 
-	&--tokencont {
-		position: relative;
-		flex: 0 0 128px;
-	}
-
-	&--tokeninput {
-		width: 100%;
-		padding-right: 38px;
-		text-transform: uppercase;
-		font-size: $font-size-large;
-		font-family: $font-code;
-	}
-
-	&--tokenreset {
-		position: absolute;
-		right: 3px;
-		top: 3px;
+	&--unsaved {
+		font-size: $font-size-small;
+		color: $theme-content-danger-fg;
 	}
 
 }
