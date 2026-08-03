@@ -1,4 +1,4 @@
-import { Elem, Txt, Context, Input } from 'modapp-base-component';
+import { Elem, Txt, Context } from 'modapp-base-component';
 import { CollectionList, ModelComponent } from 'modapp-resource-component';
 import { ModifyModel } from 'modapp-resource';
 import { CollectionWrapper } from 'modapp-resource';
@@ -6,7 +6,7 @@ import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import ModelCollapser from 'components/ModelCollapser';
-import normalizeHexColor from 'utils/normalizeHexColor';
+import ColorInput from 'components/ColorInput';
 
 const themeTokens = [
 	{
@@ -148,69 +148,26 @@ class RealmSettingsThemeComponent {
 	}
 
 	_newToken(token, model) {
+		let color = new ColorInput('', {
+			onChange: value => this._setModel(model, token, value || undefined),
+			inputName: 'realmsettingstheme--token-' + token.key.replaceAll('.', '-'),
+			placeholder: APP_COLORS[token.key.split('.')[1]],
+		});
+
 		return new ModelComponent(
-			model,
-			new Elem(n => n.elem('div', { className: 'realmsettingstheme--token' }, [
-				n.elem('div', { className: 'realmsettingstheme--tokeninfo' }, [
-					n.component(new Txt(token.name, { tagName: 'div', className: 'realmsettingstheme--tokenname' })),
-					n.component(new Txt(token.info, { tagName: 'div', className: 'realmsettingstheme--tokendesc' })),
-				]),
-				n.elem('color', 'div', { className: 'realmsettingstheme--tokencolor' }),
-
-				n.elem('div', { className: 'realmsettingstheme--tokencont' }, [
-					n.component('input', new Input('', {
-						className: 'realmsettingstheme--tokeninput',
-						attributes: {
-							name: 'realmsettingstheme--token-' + token.key.replaceAll('.', '-'),
-							placeholder: APP_COLORS[token.key.split('.')[1]],
-							maxlength: 7,
-							spellcheck: false,
-						},
-						events: {
-							input: (c) => {
-								let v = c.getValue();
-								let color = normalizeHexColor(v);
-								c[!v || color ? 'removeClass' : 'addClass']('input--incomplete');
-
-								if (!v) {
-									this._setModel(model, token, undefined);
-								} else if (color) {
-									this._setModel(model, token, color);
-									c.setValue(color);
-								}
-							},
-							blur: c => {
-								c.setValue(model.props[token.key] || '');
-								c.removeClass('input--incomplete');
-							},
-						},
-					})),
-					n.elem('reset', 'button', {
-						className: 'realmsettingstheme--tokenreset default-500 iconbtn medium tinyicon',
-						attributes: {
-							type: 'button',
-						},
-						events: {
-							click: () => this._setModel(model, token, this.theme.props[token.key]),
-						},
-					}, [
-						n.component(new FAIcon('undo')),
+			this.theme,
+			new ModelComponent(
+				model,
+				new Elem(n => n.elem('div', { className: 'realmsettingstheme--token' }, [
+					n.elem('div', { className: 'realmsettingstheme--tokeninfo' }, [
+						n.component(new Txt(token.name, { tagName: 'div', className: 'realmsettingstheme--tokenname' })),
+						n.component(new Txt(token.info, { tagName: 'div', className: 'realmsettingstheme--tokendesc' })),
 					]),
-				]),
-			])),
-			(m, c, change) => {
-				// Set disable button
-				c.setNodeProperty('reset', 'disabled', model.getModifications()?.hasOwnProperty(token.key) ? null : 'disabled');
-
-				if (change && !change.hasOwnProperty(token.key)) {
-					return;
-				}
-				let color = model.props[token.key];
-				let input = c.getNode('input');
-				c.setNodeStyle('color', 'backgroundColor', color || APP_COLORS[token.key.split('.')[1]] || '');
-				input.setValue(color || '');
-				input.removeClass('input--incomplete');
-			},
+					n.component(color),
+				])),
+				(m, c, change) => (!change || change.hasOwnProperty(token.key)) && color.setValue(m.props[token.key]),
+			),
+			(m, c, change) => (!change || change.hasOwnProperty(token.key)) && color.setDefaultValue(m.props[token.key]),
 		);
 	}
 

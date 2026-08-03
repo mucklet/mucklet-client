@@ -61,3 +61,11 @@
 	}
 
 }
+
+@media screen and (max-width: 720px) {
+	.realmsettingstheme {
+		&--tokendesc {
+			display: none;
+		}
+	}
+}
