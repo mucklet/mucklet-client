@@ -2,6 +2,7 @@ import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { Model, ModifyModel } from 'modapp-resource';
 import FAIcon from 'components/FAIcon';
+import FileButton from 'components/FileButton';
 import l10n from 'modapp-l10n';
 import exportFile from 'utils/exportFile';
 import PageCustomThemeComponent from './PageCustomThemeComponent';
@@ -9,6 +10,8 @@ import PageCustomThemeSettings from './PageCustomThemeSettings';
 import './pageCustomTheme.scss';
 
 const storagePrefix = 'pageCustomTheme.';
+
+const txtInvalidThemeFile = l10n.l('pageCustomTheme.invalidThemeFile', "Invalid theme file");
 
 /**
  * PageCustomTheme adds a Custom theme sections to player settings.
@@ -95,11 +98,15 @@ class PageCustomTheme {
 						])),
 						(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
 					)),
-					n.elem('button', { className: 'iconbtn medium default-400 flex-auto', events: {
-						click: () => this._import(theme),
-					}}, [
-						n.component(new FAIcon('upload')),
-					]),
+					n.component(new FileButton(
+						new FAIcon('upload'),
+						(file, text) => this._import(theme, text),
+						{
+							className: 'iconbtn medium default-400 flex-auto',
+							asText: true,
+							onError: () => this.module.toaster.openError(l10n.l('pageCustomTheme.importFailed', "Failed to import theme file")),
+						},
+					)),
 					n.elem('button', { className: 'iconbtn medium default-400 flex-auto', events: {
 						click: () => this._export(theme),
 					}}, [
@@ -147,8 +154,44 @@ class PageCustomTheme {
 		this._saveCustomTheme();
 	}
 
-	_import() {
+	_import(theme, text) {
+		let imported;
+		try {
+			imported = JSON.parse(text);
+		} catch (err) {
+			this.module.toaster.openError(txtInvalidThemeFile);
+			return;
+		}
+		if (!imported || typeof imported != 'object' || Array.isArray(imported)) {
+			this.module.toaster.openError(txtInvalidThemeFile);
+			return;
+		}
 
+		let overrides = {};
+		let values = this.module.theme.getTokenValues().props;
+		for (let key in values) {
+			let value = imported[key];
+			if (
+				Object.prototype.hasOwnProperty.call(imported, key) &&
+				typeof value == 'string' &&
+				value &&
+				value != values[key].realm
+			) {
+				overrides[key] = value;
+			}
+		}
+
+		let changes = {};
+		let modifications = theme.getModifications() || {};
+		// Cleared saved theme values
+		for (let key in theme.getModel().props) {
+			changes[key] = undefined;
+		}
+		// Clear unsaved theme values
+		for (let key in modifications) {
+			changes[key] = undefined;
+		}
+		theme.set(Object.assign(changes, overrides));
 	}
 
 	_export(theme) {
