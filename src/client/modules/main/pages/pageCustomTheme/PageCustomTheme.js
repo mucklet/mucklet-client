@@ -1,7 +1,9 @@
 import { Elem, Txt } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { Model, ModifyModel } from 'modapp-resource';
+import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
+import exportFile from 'utils/exportFile';
 import PageCustomThemeComponent from './PageCustomThemeComponent';
 import PageCustomThemeSettings from './PageCustomThemeSettings';
 import './pageCustomTheme.scss';
@@ -75,7 +77,7 @@ class PageCustomTheme {
 					this.closer = null;
 					theme.dispose();
 				},
-				overlayComponent: new Elem(n => n.elem('div', { className: 'pagecustomtheme--footer' }, [
+				overlayComponent: new Elem(n => n.elem('div', { className: 'pagecustomtheme--footer flex-row gap8' }, [
 					n.component(new ModelComponent(
 						theme,
 						new Elem(n => n.elem('button', { events: {
@@ -88,11 +90,21 @@ class PageCustomTheme {
 								theme.getModel().set(mods);
 								theme.reset();
 							},
-						}, className: 'btn primary flex-1' }, [
+						}, className: 'btn primary flex-1 medium' }, [
 							n.component(new Txt(l10n.l('pageCustomTheme.update', "Save theme"))),
 						])),
 						(m, c) => c.setProperty('disabled', m.isModified ? null : 'disabled'),
 					)),
+					n.elem('button', { className: 'iconbtn medium default-400 flex-auto', events: {
+						click: () => this._import(theme),
+					}}, [
+						n.component(new FAIcon('upload')),
+					]),
+					n.elem('button', { className: 'iconbtn medium default-400 flex-auto', events: {
+						click: () => this._export(theme),
+					}}, [
+						n.component(new FAIcon('download')),
+					]),
 				])),
 			},
 		);
@@ -133,6 +145,38 @@ class PageCustomTheme {
 	_onChange() {
 		this.module.theme.setTheme(this.theme.props);
 		this._saveCustomTheme();
+	}
+
+	_import() {
+
+	}
+
+	_export(theme) {
+		let overrides = {};
+		let modifications = theme.getModifications() || {};
+		let values = this.module.theme.getTokenValues().props;
+		for (let key in values) {
+			let token = values[key];
+			let value = token.realm;
+			if (token.theme) {
+				value = token.theme;
+			}
+			if (modifications.hasOwnProperty(key)) {
+				value = modifications[key] || token.realm;
+			}
+			if (value) {
+				overrides[key] = value;
+			}
+		}
+
+		let date = new Date();
+		let filename = 'theme_' + date.getFullYear() + '-' +
+			('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+			('0' + date.getDate()).slice(-2) + '_' +
+			('0' + date.getHours()).slice(-2) +
+			('0' + date.getMinutes()).slice(-2) +
+			('0' + date.getSeconds()).slice(-2) + '.json';
+		exportFile(filename, JSON.stringify(overrides, null, 2), 'application/json');
 	}
 
 	dispose() {
