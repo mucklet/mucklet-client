@@ -3,6 +3,7 @@ import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import { Model, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
+import LabelToggleBox from 'components/LabelToggleBox';
 import NestedCollection from 'classes/NestedCollection';
 import compareSortOrder from 'utils/compareSortOrder';
 import PageCustomThemeColor from './PageCustomThemeColor';
@@ -49,6 +50,16 @@ class PageCustomThemeComponent {
 				new ModelComponent(
 					this.theme,
 					new Elem(n => n.elem('div', { className: 'pagecustomtheme' }, [
+
+						// Preview theme toggle box
+						n.component(new LabelToggleBox("Preview theme", ctx.model.preview, {
+							onChange: preview => ctx.model.set({ preview }),
+						})),
+
+						// Divider for tokens
+						n.elem('div', { className: 'common--hr' }),
+
+						// Token groups
 						n.component(new CollectionList(
 							ctx.groups,
 							group => new PanelSection(
