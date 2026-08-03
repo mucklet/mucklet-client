@@ -131,12 +131,12 @@ class PlayerPanel {
 
 			this.panel
 				.setTitle(pi.title || '')
-				.setButton((m.page && m.page.close) || null, pi.closeIcon || (m.pageIdx > 0
+				.setButton(m.page?.close || null, pi.closeIcon || (m.pageIdx > 0
 					? 'chevron-circle-left'
 					: 'times'
 				))
 				.setComponent(pi.component, {
-					overlayComponent: m.page.overlayComponent || null,
+					overlayComponent: m.page?.overlayComponent || null,
 					transition: dir == 0
 						? 'fade'
 						: dir > 0

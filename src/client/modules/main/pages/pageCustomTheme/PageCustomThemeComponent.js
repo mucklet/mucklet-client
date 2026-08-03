@@ -5,6 +5,7 @@ import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import LabelToggleBox from 'components/LabelToggleBox';
 import NestedCollection from 'classes/NestedCollection';
+import NestedModel from 'classes/NestedModel';
 import compareSortOrder from 'utils/compareSortOrder';
 import PageCustomThemeColor from './PageCustomThemeColor';
 
@@ -38,12 +39,16 @@ class PageCustomThemeComponent {
 				}}), (m, self) => this._getGroups(m.groups, m.values, self), {
 					maxDepth: 3,
 				}),
+				values: new NestedModel(this.theme, (m) => this.module.theme.calculateTheme(m.props), {
+					maxDepth: 1,
+				}),
 			}),
 			(ctx) => {
 				this.state = {
 					model: ctx.model.props,
 				};
 				ctx.groups.dispose();
+				ctx.values.dispose();
 			},
 			(ctx) => new ModelComponent(
 				ctx.model,
@@ -71,7 +76,8 @@ class PageCustomThemeComponent {
 										new PageCustomThemeColor(
 											ctx.model,
 											this.theme,
-											token,
+											ctx.values,
+											token.key,
 											(v, c) => this.theme?.set({ [token.key]: v || undefined }),
 										),
 										(m, c) => {},

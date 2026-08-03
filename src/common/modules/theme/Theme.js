@@ -52,12 +52,27 @@ class Theme {
 	 * @param {Record<string, string>} theme Theme object where key is the token key, and value the token value.
 	 */
 	setTheme(theme) {
-		theme = theme || {};
+		theme = Object.assign({}, theme);
 		if (shallowCompare(this.theme, theme)) {
 			return;
 		}
 		this.theme = theme;
 		this._update();
+	}
+
+	/**
+	 * Calculates all token values based on a custom theme without making any
+	 * changes to the applied theme.
+	 * @param {Record<string, string>} theme Theme object where key is the token key, and value the token value.
+	 * @returns
+	 */
+	calculateTheme(theme) {
+		let o = Object.assign({}, theme);
+		let getTokenValue = (key) => o[key] || null;
+		for (let key in this.tokens) {
+			o[key] = this._calculateValue(key, o, getTokenValue, true);
+		}
+		return o;
 	}
 
 	/**
@@ -179,26 +194,34 @@ class Theme {
 		this.groups.set({ [keyPrefix]: undefined });
 	}
 
-	_setValue(key) {
+	_calculateValue(key, themeColors, getTokenValue, valueOnly) {
 		let t = this.tokens[key];
-		if (!t) return;
+		if (!t) return null;
 
-		let theme = this.theme[key] || null;
+		let theme = themeColors[key] || null;
 		let param = this._getParam(key) || this._getParam(legacyMapping[key]) || null;
 		let realm = this.appTheme[key] || this.appTheme[legacyMapping[key]] || null;
 		let preset = (
 			typeof t == 'function'
-				? t(this.getTokenValue)
+				? t(getTokenValue)
 				: String(t ?? '')
 		);
 		// Select value based on prio order
 		let value = theme || param || realm || preset || null;
-		if (value) {
-			document.documentElement.style.setProperty(keyToCssVar(key), value);
+
+		return valueOnly ? value : { key, value, theme, param, realm, preset };
+	}
+
+	_setValue(key) {
+		let data = this._calculateValue(key, this.theme, this.getTokenValue, false);
+
+		if (!data) return null;
+
+		if (data.value) {
+			document.documentElement.style.setProperty(keyToCssVar(key), data.value);
 		} else {
 			document.documentElement.style.removeProperty(keyToCssVar(key));
 		}
-		let data = { key, value, theme, param, realm, preset };
 		let model = this.values.props[key];
 		if (model) {
 			model.set(data);

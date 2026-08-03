@@ -4,17 +4,17 @@ import ModelCollapser from 'components/ModelCollapser';
 import ColorInput from 'components/ColorInput';
 
 class PageCustomThemeColor {
-	constructor(model, theme, token, onChange) {
+	constructor(model, theme, values, key, onChange) {
 		this.model = model;
 		this.theme = theme;
-		this.token = token;
-		this.key = token.key;
+		this.values = values;
+		this.key = key;
 		this.onChange = onChange;
 	}
 
 	render(el) {
 		this.elem = new ModelComponent(
-			this.token,
+			this.values,
 			new ModelComponent(
 				this.theme,
 				new Elem(n => n.elem('div', { className: 'pagecustomtheme-color' }, [
@@ -42,7 +42,7 @@ class PageCustomThemeColor {
 								return new Elem(n => n.elem('div', { className: 'pagecustomtheme-color--content' }, [
 									n.elem('div', { className: 'badge--divider' }),
 									n.component(new ModelComponent(
-										this.token,
+										this.values,
 										new ModelComponent(
 											this.theme,
 											new ModelComponent(
@@ -52,7 +52,7 @@ class PageCustomThemeColor {
 											),
 											(m, c) => color.setValue(m.props[this.key]),
 										),
-										(m, c) => color.setPlaceholder(m.value),
+										(m, c) => color.setPlaceholder(m.props[this.key]),
 									)),
 								]));
 							},
@@ -61,7 +61,7 @@ class PageCustomThemeColor {
 				])),
 				(m, c, change) => change?.hasOwnProperty(this.key) && this._update(c),
 			),
-			(m, c, change) => this._update(c.getComponent()),
+			(m, c, change) => (!change || change?.hasOwnProperty(this.key)) && this._update(c.getComponent()),
 		);
 		return this.elem.render(el);
 	}
@@ -76,7 +76,7 @@ class PageCustomThemeColor {
 	_update(c) {
 		let v = this.theme.props[this.key];
 		c[v ? 'addClass' : 'removeClass']('isset');
-		c.setNodeStyle('dot', 'background-color', this.theme.props[this.key] || this.token.value);
+		c.setNodeStyle('dot', 'background-color', v || this.values.props[this.key]);
 	}
 }
 
