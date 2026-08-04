@@ -25,10 +25,12 @@ class PageCustomTheme {
 
 		this.app.require([
 			'auth',
+			'player',
 			'playerTabs',
 			'pagePlayerSettings',
 			'theme',
 			'toaster',
+			'info',
 		], this._init.bind(this));
 	}
 

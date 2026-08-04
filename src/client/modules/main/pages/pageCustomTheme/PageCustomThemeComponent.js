@@ -4,9 +4,12 @@ import { Model, CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import PanelSection from 'components/PanelSection';
 import LabelToggleBox from 'components/LabelToggleBox';
+import FAIcon from 'components/FAIcon';
+import ModelFader from 'components/ModelFader';
 import NestedCollection from 'classes/NestedCollection';
 import NestedModel from 'classes/NestedModel';
 import compareSortOrder from 'utils/compareSortOrder';
+import exportFile from 'utils/exportFile';
 import PageCustomThemeColor from './PageCustomThemeColor';
 
 const txtOther = l10n.l('pageCustomTheme.other', "Other tokens");
@@ -56,10 +59,28 @@ class PageCustomThemeComponent {
 					this.theme,
 					new Elem(n => n.elem('div', { className: 'pagecustomtheme' }, [
 
-						// Preview theme toggle box
-						n.component(new LabelToggleBox("Preview theme", ctx.model.preview, {
-							onChange: preview => ctx.model.set({ preview }),
-						})),
+						// Tools
+						n.elem('div', { className: 'flex-row' }, [
+							// Preview theme toggle box
+							n.elem('div', { className: 'flex-1' }, [
+								n.component(new LabelToggleBox("Preview theme", ctx.model.preview, {
+									onChange: preview => ctx.model.set({ preview }),
+								})),
+							]),
+
+							// Overseer token export
+							n.component(new ModelFader(this.module.player.getModel(), [{
+								condition: () => this.module.player.isOverseer(),
+								factory: () => new Elem(n => n.elem('button', { className: 'iconbtn tiny default-400 flex-auto', events: {
+									click: (el, e) => {
+										this._exportTokens();
+										e.stopPropagation();
+									},
+								}}, [
+									n.component(new FAIcon('share-square-o')),
+								])),
+							}])),
+						]),
 
 						// Divider for tokens
 						n.elem('div', { className: 'common--hr' }),
@@ -186,6 +207,12 @@ class PageCustomThemeComponent {
 		}
 		this.theme.getModel().set(mods);
 		theme.reset();
+	}
+
+	_exportTokens() {
+		let tokens = this.module.theme.export();
+		let filename = 'client_tokens_' + this.module.info.getClient().version + '.json';
+		exportFile(filename, JSON.stringify(tokens, null, 2), 'application/json');
 	}
 }
 

@@ -117,6 +117,7 @@ class Theme {
 	 * @param {object} token Token object.
 	 * @param {string} token.key Token key. Modules should prefix it with its own name, lower-cased.
 	 * @param {string | (colors: Record<string, string>, getToken: (key: string) => string) => (string)} token.value Token default value, or callback function that returns the default value.
+	 * @param {"rgb" | "rgba"} [token.type] Token type. Defaults to "rgb" if omitted.
 	 * @returns {string} Resolved token value
 	 */
 	addToken(token) {
@@ -125,13 +126,14 @@ class Theme {
 			console.error("[Theme] Duplicate token key: " + key);
 			return null;
 		}
-		this.tokens[key] = token.value;
+		this.tokens[key] = { value: token.value, type: token.type || 'rgb' };
 		this.values.set({ [key]: this._setValue(key) });
 	}
 
 	/**
 	 * Adds a set of theme tokens or groups.
-	 * @param {Array<{ key: string, value: string | (colors: Record<string, string>, getToken: (key: string) => string) => (string) } | { keyPrefix: string, name: LocaleString | string, sortOrder?: number }>} tokens Array of token or group objects.	 * @returns {this}
+	 * @param {Array<{ key: string, value: string | (colors: Record<string, string>, getToken: (key: string) => string) => (string) } | { keyPrefix: string, name: LocaleString | string, sortOrder?: number }, type?: "rgb"|"rgba">} tokens Array of token or group objects.
+	 * @returns {this}
 	 */
 	addTokens(tokens) {
 		for (let o of tokens) {
@@ -202,9 +204,9 @@ class Theme {
 		let param = this._getParam(key) || this._getParam(legacyMapping[key]) || null;
 		let realm = this.appTheme[key] || this.appTheme[legacyMapping[key]] || null;
 		let preset = (
-			typeof t == 'function'
-				? t(getTokenValue)
-				: String(t ?? '')
+			typeof t.value == 'function'
+				? t.value(getTokenValue)
+				: String(t.value ?? '')
 		);
 		// Select value based on prio order
 		let value = theme || param || realm || preset || null;
@@ -242,7 +244,7 @@ class Theme {
 	_addColorTokens(params) {
 		// Set theme seed colors
 		for (let k in seedColors) {
-			this.addToken({ key: 'color.' + k, value: seedColors[k] });
+			this.addToken({ key: 'color.' + k, value: seedColors[k], type: 'rgb' });
 		}
 
 		// Set additional theme tokens
@@ -265,7 +267,7 @@ class Theme {
 	}
 
 	export() {
-		return Object.keys(this.tokens).map(k => ({ key: k, value: this.tokens[k] }));
+		return Object.keys(this.tokens).reduce((o, k) => ({ ...o, [k]: { type: this.tokens[k].type }}), {});
 	}
 
 	dispose() {

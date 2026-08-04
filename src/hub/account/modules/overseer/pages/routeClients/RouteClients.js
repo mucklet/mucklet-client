@@ -3,18 +3,18 @@ import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import { compareSortOrderId } from 'utils/compareSortOrder';
 
-import RouteNodesComponent from './RouteNodesComponent';
-import './routeNodes.scss';
+import RouteClientsComponent from './RouteClientsComponent';
+import './routeClients.scss';
 
 const pathDef = [
-	[ 'node', '$nodeKey' ],
+	[ 'client', '$clientId' ],
 ];
 
 
 /**
- * RouteNodes adds the nodes route.
+ * RouteClients adds the clients route.
  */
-class RouteNodes {
+class RouteClients {
 
 	constructor(app, params) {
 		this.app = app;
@@ -25,6 +25,8 @@ class RouteNodes {
 			'routeError',
 			'auth',
 			'confirm',
+			'dialogCreateClient',
+			'toaster',
 		], this._init.bind(this));
 	}
 
@@ -32,8 +34,8 @@ class RouteNodes {
 		this.module = Object.assign({ self: this }, module);
 
 		this.model = new Model({ data: {
-			nodes: null,
-			node: null,
+			clients: null,
+			client: null,
 			error: null,
 		}, eventBus: this.app.eventBus });
 
@@ -44,25 +46,25 @@ class RouteNodes {
 		});
 
 		this.module.router.addRoute({
-			id: 'nodes',
-			icon: 'server',
-			name: l10n.l('routeNodes.nodes', "Nodes"),
-			component: new RouteNodesComponent(this.module, this.model),
+			id: 'clients',
+			icon: 'television',
+			name: l10n.l('routeClients.clientReleases', "Client releases"),
+			component: new RouteClientsComponent(this.module, this.model),
 			setState: params => this._setState(params),
 			getUrl: params => this.module.router.createDefUrl(params, pathDef),
 			parseUrl: parts => this.module.router.parseDefUrl(parts, pathDef),
-			order: 1010,
+			order: 1020,
 		});
 	}
 
 	/**
 	 * Sets the route to the router.
 	 * @param {{
-	 * 	nodeKey?: string;
+	 * 	clientId?: string;
 	 * }} params - Route parameters.
 	 */
 	setRoute(params) {
-		this.module.router.setRoute('nodes', params);
+		this.module.router.setRoute('clients', params);
 	}
 
 	/**
@@ -74,11 +76,11 @@ class RouteNodes {
 	}
 
 	/**
-	 * Registers an node component tool.
+	 * Registers an client component tool.
 	 * @param {object} tool Tool object
 	 * @param {string} tool.id Tool ID.
 	 * @param {number} tool.sortOrder Sort order.
-	 * @param {(node: NodeModel) => Component} tool.componentFactory Tool component factory.
+	 * @param {(client: ClientModel) => Component} tool.componentFactory Tool component factory.
 	 * @param {string} [tool.type] Target type. May be 'button'. Defaults to 'button'.
 	 * @param {string} [tool.className] Class to give to the list item container.
 	 * @returns {this}
@@ -105,11 +107,11 @@ class RouteNodes {
 
 	async _setState(params) {
 		return this.module.auth.getUserPromise()
-			.then(user => this.module.api.get(`control.overseer.nodes`)
-				.then(nodes => {
-					let node = (params?.nodeKey && nodes.toArray().find(r => r.key == params.nodeKey)) || null;
-					this._setModel({ nodes, node });
-				}),
+			.then(user => params?.clientId
+				? this.module.api.get(`control.overseer.client.${params.clientId}`)
+					.then(client => this._setModel({ client }))
+				: this.module.api.get(`control.overseer.clients`)
+					.then(clients => this._setModel({ clients })),
 			)
 			.catch(error => {
 				console.error(error);
@@ -120,15 +122,15 @@ class RouteNodes {
 	_setModel(props) {
 		props = props || {};
 		return this.model.set({
-			node: relistenResource(this.model.node, props.node),
-			nodes: relistenResource(this.model.nodes, props.nodes),
+			client: relistenResource(this.model.client, props.client),
+			clients: relistenResource(this.model.clients, props.clients),
 			error: props.error || null,
 		});
 	}
 
 	dispose() {
-		this.module.router.removeRoute('nodes');
+		this.module.router.removeRoute('clients');
 	}
 }
 
-export default RouteNodes;
+export default RouteClients;
