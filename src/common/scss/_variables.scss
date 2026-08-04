@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 /* General */
 $font-size: 16px;
 $font-size-large: 20px;
@@ -8,6 +10,18 @@ $font-size-micro: 11px;
 /* Colors */
 $white: #fff;
 $black: #000;
+
+@function hex-part($value) {
+	$digits: '0123456789abcdef';
+	$value: round(max(0, min(255, $value)));
+	$high: floor(math.div($value, 16));
+	$low: $value % 16;
+	@return str-slice($digits, $high + 1, $high + 1) + str-slice($digits, $low + 1, $low + 1);
+}
+
+@function hex-alpha($color, $alpha) {
+	@return unquote('##{hex-part(red($color))}#{hex-part(green($color))}#{hex-part(blue($color))}#{hex-part($alpha)}');
+}
 
 // Seed colors injected from webpack.config.js
 // $color-base
@@ -53,24 +67,24 @@ $color-success-300: $color-success;
 /* Semantic color fallbacks */
 $content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
 $input-default-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
-$control-overlay-bg: rgba($white, 2%);
-$control-overlay-bg-hover: rgba($white, 6%);
-$control-overlay-bg-active: rgba($white, 8%);
-$surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
+$control-overlay-bg: hex-alpha($white, 5);
+$control-overlay-bg-hover: hex-alpha($white, 15);
+$control-overlay-bg-active: hex-alpha($white, 20);
+$surface-overlay-bg: hex-alpha(darken($color-base-200, 10%), 230);
 $idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
 $idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
-$modal-overlay-bg: rgba($black, 0.4);
-$modal-shadow: rgba($black, 0.6);
-$surface-shadow: rgba(0, 0, 0, 0.3);
+$modal-overlay-bg: hex-alpha($black, 102);
+$modal-shadow: hex-alpha($black, 153);
+$surface-shadow: hex-alpha($black, 77);
 $scrollbar-thumb-bg: mix($color-base-200, $color-neutral-300, 50%);
 
 /* Shared component color fallbacks */
 
 $badge-100-bg-hover: darken($color-base-100, 2%);
 
-$common-format-divider-border: rgba($white, 0.2);
+$common-format-divider-border: hex-alpha($white, 51);
 
-$kbd-shadow: rgba($black, 0.3);
+$kbd-shadow: hex-alpha($black, 77);
 $kbd-highlight: $white;
 
 // Log fallbacks

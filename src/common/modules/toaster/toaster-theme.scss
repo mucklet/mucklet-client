@@ -2,11 +2,11 @@
 
 // Toaster colors
 $toaster-info-bg-hover: $color-base-500;
-$toaster-info-bg: rgba($toaster-info-bg-hover, 0.9);
+$toaster-info-bg: hex-alpha($toaster-info-bg-hover, 230);
 $toaster-success-bg-hover: mix($color-success-300, $color-base-200, 50%);
-$toaster-success-bg: rgba($toaster-success-bg-hover, 0.9);
+$toaster-success-bg: hex-alpha($toaster-success-bg-hover, 230);
 $toaster-warning-bg-hover: desaturate(darken(mix($color-danger-300, $color-base-200, 63%), 16%), 3%);
-$toaster-warning-bg: rgba($toaster-warning-bg-hover, 0.9);
+$toaster-warning-bg: hex-alpha($toaster-warning-bg-hover, 230);
 $toaster-shadow: $black;
 // Toaster theme vars
 $theme-toaster-info-bg: var(--mu-toaster-info-bg, #{$toaster-info-bg});

@@ -3,13 +3,13 @@ import l10n from 'modapp-l10n';
 import PageAreaComponent from './PageAreaComponent';
 import PageAreaImage from './PageAreaImage';
 import { areaInfo } from './pageAreaTxt';
-import { alpha } from 'utils/color';
+import { rgba } from 'utils/color';
 import './pageArea.scss';
 
 const themeTokens = [
 	{ keyPrefix: 'pagearea', name: l10n.l('pagearea.pageAreaTokens', "Area page module tokens"), sortOrder: 1020 },
-	{ key: 'pagearea.image.location.border', value: (getToken) => alpha(getToken('color.danger.300'), 0.6), type: 'rgba' },
-	{ key: 'pagearea.image.location.border.selected', value: (getToken) => alpha(getToken('color.danger.300'), 0.8), type: 'rgba' },
+	{ key: 'pagearea.image.location.border', value: (getToken) => rgba(getToken('color.danger.300'), 153), type: 'rgba' },
+	{ key: 'pagearea.image.location.border.selected', value: (getToken) => rgba(getToken('color.danger.300'), 204), type: 'rgba' },
 ];
 
 /**

@@ -1,6 +1,6 @@
 @import '~scss/variables';
 
 // Charlog colors
-$charlog-eventmenu-bg: rgba($color-base-200, 0.8);
+$charlog-eventmenu-bg: hex-alpha($color-base-200, 204);
 // Charlog theme vars
 $theme-charlog-eventmenu-bg: var(--mu-charlog-eventmenu-bg, #{$charlog-eventmenu-bg});

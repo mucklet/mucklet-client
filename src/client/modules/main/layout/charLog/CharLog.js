@@ -6,7 +6,7 @@ import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
 import { compareSortOrderId } from 'utils/compareSortOrder';
-import { alpha } from 'utils/color';
+import { rgba } from 'utils/color';
 import CharLogComponent from './CharLogComponent';
 import {
 	msgEvent,
@@ -41,7 +41,7 @@ import './charLogHighlight.scss';
 
 const themeTokens = [
 	{ keyPrefix: 'charlog', name: l10n.l('charLog.charLogTokens', "Character log module tokens"), sortOrder: 1030 },
-	{ key: 'charlog.eventmenu.bg', value: (getToken) => alpha(getToken('surface.200.bg'), 0.8), type: 'rgba' },
+	{ key: 'charlog.eventmenu.bg', value: (getToken) => rgba(getToken('surface.200.bg'), 204), type: 'rgba' },
 ];
 
 const componentFactories = {

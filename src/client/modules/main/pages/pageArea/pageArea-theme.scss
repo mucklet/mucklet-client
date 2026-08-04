@@ -1,8 +1,8 @@
 @import '~scss/variables';
 
 // Page area colors
-$pagearea-image-location-border: rgba($color-danger-300, 0.6);
-$pagearea-image-location-border-selected: rgba($color-danger-300, 0.8);
+$pagearea-image-location-border: hex-alpha($color-danger-300, 153);
+$pagearea-image-location-border-selected: hex-alpha($color-danger-300, 204);
 // Page area theme vars
 $theme-pagearea-image-location-border: var(--mu-pagearea-image-location-border, #{$pagearea-image-location-border});
 $theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location-border-selected, #{$pagearea-image-location-border-selected});
