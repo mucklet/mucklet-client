@@ -33,11 +33,38 @@ class OverseerRealmSettingsBottomSection {
 				l10n.l('overseerRealmSettings.clientVersion', "Client version"),
 				new ModelComponent(
 					this.realm,
-					new Input("", {
-						events: { input: c => this.realm.set({ clientVersion: c.getValue() }) },
-						attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+					new AutoComplete({
+						attributes: {
+							placeholder: l10n.t('overseerRealmSettings.searchClient', "Search client (Name)"),
+							name: 'overseerrealmsettings-bottomsection--client',
+						},
+						events: {
+							input: (c, ev) => {
+								if (!ev.target.value) {
+									this.realm.set({ client: null });
+								}
+							},
+						},
+						fetch: (text, update) => {
+							this.module.api.call(`control.overseer.clients`, 'search', { text, limit: 20 })
+								.then(clients => {
+									update(clients.hits.map(o => Object.assign(o, {
+										label: o.name,
+									})));
+								});
+						},
+						minLength: 1,
+						onSelect: (c, item) => {
+							c.setProperty('value', item.label);
+							// Get the original model.
+							let realm = this.realm.getModel();
+							this.realm.set({ client: item.id == (realm.client?.id)
+								? realm.client
+								: item,
+							});
+						},
 					}),
-					(m, c) => c.setValue(m.clientVersion),
+					(m, c) => c.setProperty('value', m.client?.name || ''),
 				),
 				{
 					className: 'flex-1 common--sectionpadding',
@@ -45,6 +72,27 @@ class OverseerRealmSettingsBottomSection {
 					popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Version of the client."),
 				},
 			)),
+
+			// Client version
+			n.component(new ModelCollapser(this.realm, [{
+				condition: m => !this.realm.client,
+				factory: () => new PanelSection(
+					l10n.l('overseerRealmSettings.clientVersion', "Legacy client version"),
+					new ModelComponent(
+						this.realm,
+						new Input("", {
+							events: { input: c => this.realm.set({ clientVersion: c.getValue() }) },
+							attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+						}),
+						(m, c) => c.setValue(m.clientVersion),
+					),
+					{
+						className: 'flex-1 common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Manually set version of the client."),
+					},
+				),
+			}])),
 
 			n.elem('div', { className: 'flex-row m pad16' }, [
 				// Client Host
@@ -106,7 +154,7 @@ class OverseerRealmSettingsBottomSection {
 					new AutoComplete({
 						attributes: {
 							placeholder: l10n.t('overseerRealmSettings.searchRelease', "Search release (Name)"),
-							name: 'routereleases-release--release',
+							name: 'overseerrealmsettings-bottomsection--release',
 						},
 						events: {
 							input: (c, ev) => {
