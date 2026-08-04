@@ -41,7 +41,7 @@ import './charLogHighlight.scss';
 
 const themeTokens = [
 	{ keyPrefix: 'charlog', name: l10n.l('charLog.charLogTokens', "Character log module tokens"), sortOrder: 1030 },
-	{ key: 'charlog.eventmenu.bg', value: (getToken) => alpha(getToken('surface.200.bg'), 0.8) },
+	{ key: 'charlog.eventmenu.bg', value: (getToken) => alpha(getToken('surface.200.bg'), 0.8), type: 'rgba' },
 ];
 
 const componentFactories = {

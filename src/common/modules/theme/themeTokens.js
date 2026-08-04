@@ -53,8 +53,8 @@ const tokens = [
 	{ key: 'surface.400.bg', value: (getToken) => getToken('color.base.400') },
 	{ key: 'surface.500.bg', value: (getToken) => getToken('color.base.500') },
 	{ key: 'surface.600.bg', value: (getToken) => getToken('color.base.600') },
-	{ key: 'surface.overlay.bg', value: (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9) },
-	{ key: 'surface.shadow', value: 'rgba(0, 0, 0, 0.3)' },
+	{ key: 'surface.overlay.bg', value: (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9), type: 'rgba' },
+	{ key: 'surface.shadow', value: 'rgba(0, 0, 0, 0.3)', type: 'rgba' },
 
 	{ keyPrefix: 'content', name: l10n.l('theme.contentColors', "Content colors"), sortOrder: 90 },
 	{ key: 'content.default.fg', value: (getToken) => getToken('color.neutral.300') },
@@ -117,9 +117,9 @@ const tokens = [
 	{ key: 'control.recessed.fg.hover', value: (getToken) => getToken('color.neutral.400') },
 
 	{ keyPrefix: 'control.overlay', name: l10n.l('theme.overlayControlColors', "Overlay control colors"), sortOrder: 150 },
-	{ key: 'control.overlay.bg', value: (getToken) => 'rgba(255, 255, 255, 0.02)' },
-	{ key: 'control.overlay.bg.hover', value: (getToken) => 'rgba(255, 255, 255, 0.06)' },
-	{ key: 'control.overlay.bg.active', value: (getToken) => 'rgba(255, 255, 255, 0.08)' },
+	{ key: 'control.overlay.bg', value: (getToken) => 'rgba(255, 255, 255, 0.02)', type: 'rgba' },
+	{ key: 'control.overlay.bg.hover', value: (getToken) => 'rgba(255, 255, 255, 0.06)', type: 'rgba' },
+	{ key: 'control.overlay.bg.active', value: (getToken) => 'rgba(255, 255, 255, 0.08)', type: 'rgba' },
 
 	{ keyPrefix: 'input', name: l10n.l('theme.inputColors', "Input colors"), sortOrder: 160 },
 	{ key: 'input.default.bg', value: (getToken) => getToken('color.base.500') },
@@ -254,8 +254,8 @@ const tokens = [
 
 	// Modals
 	{ keyPrefix: 'modal', name: l10n.l('theme.modalColors', "Modal colors"), sortOrder: 260 },
-	{ key: 'modal.overlay.bg', value: 'rgba(0, 0, 0, 0.4)' },
-	{ key: 'modal.shadow', value: 'rgba(0, 0, 0, 0.6)' },
+	{ key: 'modal.overlay.bg', value: 'rgba(0, 0, 0, 0.4)', type: 'rgba' },
+	{ key: 'modal.shadow', value: 'rgba(0, 0, 0, 0.6)', type: 'rgba' },
 
 	// src/common/scss/_badge.scss
 	{ keyPrefix: 'badge', name: l10n.l('theme.badgeColors', "Badge control colors"), sortOrder: 270 },
@@ -290,7 +290,7 @@ const tokens = [
 	{ key: 'kbd.text.shadow', value: (getToken) => getToken('color.neutral.600') },
 	{ key: 'kbd.bg', value: (getToken) => getToken('color.neutral.400') },
 	{ key: 'kbd.border', value: (getToken) => getToken('color.neutral.200') },
-	{ key: 'kbd.shadow', value: 'rgba(0, 0, 0, 0.3)' },
+	{ key: 'kbd.shadow', value: 'rgba(0, 0, 0, 0.3)', type: 'rgba' },
 	{ key: 'kbd.highlight', value: '#fff' },
 
 	// src/common/components/simpleBar-theme.scss
@@ -299,7 +299,7 @@ const tokens = [
 
 	// src/common/classes/tooltip-theme.scss
 	{ keyPrefix: 'tooltip', name: l10n.l('theme.tooltipColors', "Tool tip specific colors"), sortOrder: 310 },
-	{ key: 'tooltip.bg', value: (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9) },
+	{ key: 'tooltip.bg', value: (getToken) => alpha(adjust(getToken('color.base.200'), -10), 0.9), type: 'rgba' },
 	{ key: 'tooltip.fg', value: (getToken) => getToken('color.neutral.500') },
 
 	// src/common/modules/toaster/toaster.scss
@@ -308,11 +308,11 @@ const tokens = [
 	// Theme module, we register them here.
 	{ keyPrefix: 'toaster', name: l10n.l('theme.toasterColors', "Toaster colors"), sortOrder: 320 },
 	{ key: 'toaster.info.bg.hover', value: (getToken) => getToken('color.base.500') },
-	{ key: 'toaster.info.bg', value: (getToken) => alpha(getToken('toaster.info.bg.hover'), 0.9) },
+	{ key: 'toaster.info.bg', value: (getToken) => alpha(getToken('toaster.info.bg.hover'), 0.9), type: 'rgba' },
 	{ key: 'toaster.success.bg.hover', value: (getToken) => mix(getToken('status.success.bg'), getToken('color.base.200'), 50) },
-	{ key: 'toaster.success.bg', value: (getToken) => alpha(getToken('toaster.success.bg.hover'), 0.9) },
+	{ key: 'toaster.success.bg', value: (getToken) => alpha(getToken('toaster.success.bg.hover'), 0.9), type: 'rgba' },
 	{ key: 'toaster.warn.bg.hover', value: (getToken) => adjust(mix(getToken('status.danger.bg'), getToken('color.base.200'), 63), -16, -3) },
-	{ key: 'toaster.warn.bg', value: (getToken) => alpha(getToken('toaster.warn.bg.hover'), 0.9) },
+	{ key: 'toaster.warn.bg', value: (getToken) => alpha(getToken('toaster.warn.bg.hover'), 0.9), type: 'rgba' },
 	{ key: 'toaster.shadow', value: '#000000' },
 ];
 

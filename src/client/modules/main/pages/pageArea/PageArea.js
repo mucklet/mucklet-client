@@ -8,8 +8,8 @@ import './pageArea.scss';
 
 const themeTokens = [
 	{ keyPrefix: 'pagearea', name: l10n.l('pagearea.pageAreaTokens', "Area page module tokens"), sortOrder: 1020 },
-	{ key: 'pagearea.image.location.border', value: (getToken) => alpha(getToken('color.danger.300'), 0.6) },
-	{ key: 'pagearea.image.location.border.selected', value: (getToken) => alpha(getToken('color.danger.300'), 0.8) },
+	{ key: 'pagearea.image.location.border', value: (getToken) => alpha(getToken('color.danger.300'), 0.6), type: 'rgba' },
+	{ key: 'pagearea.image.location.border.selected', value: (getToken) => alpha(getToken('color.danger.300'), 0.8), type: 'rgba' },
 ];
 
 /**
