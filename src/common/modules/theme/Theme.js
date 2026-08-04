@@ -7,6 +7,19 @@ function keyToCssVar(key) {
 	return '--mu-' + key.replaceAll('.', '-');
 }
 
+function transformValue(type, value) {
+	switch (type) {
+		case 'rgba':
+			if (value.length !== 9 || value[0] !== '#') return value;
+			let hex = Number('0x' + value.slice(1));
+			if (Number.isNaN(hex)) {
+				return value;
+			}
+			return `rgba(${hex >>> 24}, ${(hex >>> 16) & 0xff}, ${(hex >>> 8) & 0xff}, ${Math.round((hex & 0xff) / 0xff * 1000) / 1000})`;
+	}
+	return value;
+}
+
 // Legacy mappings.
 const legacyMapping = {
 	'color.neutral': 'color.muted',
@@ -70,7 +83,7 @@ class Theme {
 		let o = Object.assign({}, theme);
 		let getTokenValue = (key) => o[key] || null;
 		for (let key in this.tokens) {
-			o[key] = this._calculateValue(key, o, getTokenValue, true);
+			o[key] = this._calculateValue(key, this.tokens[key], o, getTokenValue, true);
 		}
 		return o;
 	}
@@ -126,8 +139,9 @@ class Theme {
 			console.error("[Theme] Duplicate token key: " + key);
 			return null;
 		}
-		this.tokens[key] = { value: token.value, type: token.type || 'rgb' };
-		this.values.set({ [key]: this._setValue(key) });
+		let t = { value: token.value, type: token.type || 'rgb' };
+		this.tokens[key] = t;
+		this.values.set({ [key]: this._setValue(key, t) });
 	}
 
 	/**
@@ -196,17 +210,16 @@ class Theme {
 		this.groups.set({ [keyPrefix]: undefined });
 	}
 
-	_calculateValue(key, themeColors, getTokenValue, valueOnly) {
-		let t = this.tokens[key];
-		if (!t) return null;
+	_calculateValue(key, token, themeColors, getTokenValue, valueOnly) {
+		if (!token) return null;
 
 		let theme = themeColors[key] || null;
 		let param = this._getParam(key) || this._getParam(legacyMapping[key]) || null;
 		let realm = this.appTheme[key] || this.appTheme[legacyMapping[key]] || null;
 		let preset = (
-			typeof t.value == 'function'
-				? t.value(getTokenValue)
-				: String(t.value ?? '')
+			typeof token.value == 'function'
+				? token.value(getTokenValue)
+				: String(token.value ?? '')
 		);
 		// Select value based on prio order
 		let value = theme || param || realm || preset || null;
@@ -214,13 +227,13 @@ class Theme {
 		return valueOnly ? value : { key, value, theme, param, realm, preset };
 	}
 
-	_setValue(key) {
-		let data = this._calculateValue(key, this.theme, this.getTokenValue, false);
+	_setValue(key, token) {
+		let data = this._calculateValue(key, token, this.theme, this.getTokenValue, false);
 
 		if (!data) return null;
 
 		if (data.value) {
-			document.documentElement.style.setProperty(keyToCssVar(key), data.value);
+			document.documentElement.style.setProperty(keyToCssVar(key), transformValue(token.type, data.value));
 		} else {
 			document.documentElement.style.removeProperty(keyToCssVar(key));
 		}
@@ -236,7 +249,7 @@ class Theme {
 	_update() {
 		let o = {};
 		for (let key in this.tokens) {
-			o[key] = this._setValue(key);
+			o[key] = this._setValue(key, this.tokens[key]);
 		}
 		this.values.reset(o);
 	}
