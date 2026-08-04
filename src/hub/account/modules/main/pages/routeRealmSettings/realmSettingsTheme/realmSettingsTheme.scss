@@ -43,6 +43,11 @@
 
 	&--unsaved {
 		font-size: $font-size-small;
+		row-gap: 8px;
+		column-gap: 16px;
+	}
+
+	&--warn {
 		color: $theme-content-danger-fg;
 	}
 

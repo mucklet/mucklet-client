@@ -228,6 +228,7 @@ class PageCustomTheme {
 			('0' + date.getSeconds()).slice(-2) + '.json';
 		exportFile(filename, JSON.stringify({
 			version: this.module.info.getClient().version,
+			created: new Date().getTime(),
 			tokens: overrides,
 		}, null, 2), 'application/json');
 	}

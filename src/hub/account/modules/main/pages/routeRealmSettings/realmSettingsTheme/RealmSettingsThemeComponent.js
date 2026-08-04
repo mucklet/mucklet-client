@@ -114,18 +114,30 @@ class RealmSettingsThemeComponent {
 					// Unsaved changed
 					n.component(new ModelCollapser(model, [{
 						condition: m => m.isModified,
-						factory: m => new Elem(n => n.elem('div', {
-							className: 'link realmsettingstheme--unsaved',
-							attributes: {
-								target: '_blank',
-							},
-							events: {
-								click: (c, ev) => ev.stopPropagation(),
-							},
-						}, [
-							n.component(new FAIcon('exclamation-circle')),
-							n.html('&nbsp;&nbsp;'),
-							n.component(new Txt(l10n.l('realmSettingsTheme.themeIsModified', "Theme contains unsaved changes"))),
+						factory: m => new Elem(n => n.elem('div', { className: 'realmsettingstheme--unsaved flex-row flex-wrap' }, [
+							n.elem('span', {
+								className: 'realmsettingstheme--warn flex-auto',
+							}, [
+								n.component(new FAIcon('exclamation-circle')),
+								n.html('&nbsp;&nbsp;'),
+								n.component(new Txt(l10n.l('realmSettingsTheme.themeIsModified', "Theme contains unsaved changes"))),
+							]),
+							n.elem('a', {
+								className: 'link realmsettingstheme--revert flex-auto',
+								attributes: {
+									target: '_blank',
+								},
+								events: {
+									click: (c, ev) => {
+										ev.stopPropagation();
+										this._revert(model);
+									},
+								},
+							}, [
+								n.component(new FAIcon('undo')),
+								n.html('&nbsp;&nbsp;'),
+								n.component(new Txt(l10n.l('realmSettingsTheme.revertChanges', "Revert changes"))),
+							]),
 						])),
 					}])),
 
@@ -203,11 +215,6 @@ class RealmSettingsThemeComponent {
 		);
 	}
 
-	_setModel(model, token, value) {
-		model.set({ [token.key]: value });
-		this._updateModel(model);
-	}
-
 	_import(model, text) {
 		let imported;
 		try {
@@ -216,7 +223,8 @@ class RealmSettingsThemeComponent {
 			this.module.toaster.openError(txtInvalidThemeFile);
 			return;
 		}
-		if (!imported || typeof imported != 'object' || Array.isArray(imported)) {
+		let isObject = (v) => v && typeof v == 'object' && !Array.isArray(v);
+		if (!isObject(imported) || !isObject(imported.tokens)) {
 			this.module.toaster.openError(txtInvalidThemeFile);
 			return;
 		}
@@ -232,12 +240,17 @@ class RealmSettingsThemeComponent {
 			changes[key] = undefined;
 		}
 
-		model.set(Object.assign(clearModelObject(model), imported));
+		model.set(Object.assign(clearModelObject(model), imported.tokens));
 		this._updateModel(model);
 	}
 
 	_reset(model) {
 		model.set(clearModelObject(model));
+		this._updateModel(model);
+	}
+
+	_revert(model) {
+		model.reset();
 		this._updateModel(model);
 	}
 
