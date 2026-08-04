@@ -164,17 +164,22 @@ class PageCustomTheme {
 			this.module.toaster.openError(txtInvalidThemeFile);
 			return;
 		}
-		if (!imported || typeof imported != 'object' || Array.isArray(imported)) {
+		let isObject = (v) => v && typeof v == 'object' && !Array.isArray(v);
+		if (
+			!isObject(imported) ||
+			!isObject(imported.tokens)
+		) {
 			this.module.toaster.openError(txtInvalidThemeFile);
 			return;
 		}
 
 		let overrides = {};
 		let values = this.module.theme.getTokenValues().props;
+		let tokens = imported.tokens;
 		for (let key in values) {
-			let value = imported[key];
+			let value = tokens[key];
 			if (
-				Object.prototype.hasOwnProperty.call(imported, key) &&
+				Object.prototype.hasOwnProperty.call(tokens, key) &&
 				typeof value == 'string' &&
 				value &&
 				value != values[key].realm
@@ -221,7 +226,10 @@ class PageCustomTheme {
 			('0' + date.getHours()).slice(-2) +
 			('0' + date.getMinutes()).slice(-2) +
 			('0' + date.getSeconds()).slice(-2) + '.json';
-		exportFile(filename, JSON.stringify(overrides, null, 2), 'application/json');
+		exportFile(filename, JSON.stringify({
+			version: this.module.info.getClient().version,
+			tokens: overrides,
+		}, null, 2), 'application/json');
 	}
 
 	dispose() {
