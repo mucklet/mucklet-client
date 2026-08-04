@@ -4,11 +4,12 @@ import ModelCollapser from 'components/ModelCollapser';
 import ColorInput from 'components/ColorInput';
 
 class PageCustomThemeColor {
-	constructor(model, theme, values, key, onChange) {
+	constructor(model, theme, values, key, isRgba, onChange) {
 		this.model = model;
 		this.theme = theme;
 		this.values = values;
 		this.key = key;
+		this.isRgba = isRgba;
 		this.onChange = onChange;
 	}
 
@@ -35,6 +36,7 @@ class PageCustomThemeColor {
 							factory: m => {
 								let color = new ColorInput('', {
 									className: 'pagecustomtheme-color--input',
+									isRgba: this.isRgba,
 									onChange: (value) => this.theme.set({ [this.key]: value || undefined }),
 									inputName: 'pagecustomtheme--token-' + this.key.replaceAll('.', '-'),
 								});

@@ -13,11 +13,26 @@
 		border: 1px solid $color-neutral-300;
 		border-radius: 4px;
 		background: $color-base-200;
+		overflow: hidden;
+		position: relative;
+	}
+
+	&--checker,
+	&--preview {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	&--checker {
+		color: #000;
+		background: #fff;
 	}
 
 	&--inputcont {
 		position: relative;
-		flex: 0 0 128px;
+		flex: 1 1 0px;
 	}
 
 	&--input {

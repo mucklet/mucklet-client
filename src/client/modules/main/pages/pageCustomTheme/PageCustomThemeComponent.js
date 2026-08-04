@@ -99,6 +99,7 @@ class PageCustomThemeComponent {
 											this.theme,
 											ctx.values,
 											token.key,
+											token.type == 'rgba',
 											(v, c) => this.theme?.set({ [token.key]: v || undefined }),
 										),
 										(m, c) => {},

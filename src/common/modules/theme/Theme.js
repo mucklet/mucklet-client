@@ -101,6 +101,7 @@ class Theme {
 	 * Returns token values with their resolved values.
 	 * @returns {Model<Record<string, Model<{
 	 *  key: string,
+	 * 	type: "rgb"|"rgba",
 	 * 	value: string|null,
 	 * 	theme: string|null,
 	 * 	realm: string|null,
@@ -224,7 +225,7 @@ class Theme {
 		// Select value based on prio order
 		let value = theme || param || realm || preset || null;
 
-		return valueOnly ? value : { key, value, theme, param, realm, preset };
+		return valueOnly ? value : { key, type: token.type, value, theme, param, realm, preset };
 	}
 
 	_setValue(key, token) {
