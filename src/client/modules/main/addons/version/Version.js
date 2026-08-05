@@ -61,6 +61,9 @@ class Version {
 		this.coreInfo = this.module.info.getCore();
 
 		this._listen(true);
+		// The info requests may have completed before this module subscribes.
+		// Check the current values too, so a fast response cannot hide an update.
+		this._onInfoChange();
 	}
 
 	_listen(on) {
@@ -82,7 +85,9 @@ class Version {
 		}
 
 		let { diff, level } = versionCompare(APP_VERSION, clientVer);
-		if (!diff) {
+		// A newer loaded client should not be prompted to reload to an older
+		// server-advertised version, such as after a server rollback.
+		if (!diff || diff > 0) {
 			return;
 		}
 
