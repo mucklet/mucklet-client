@@ -26,59 +26,54 @@
 	}
 
 	&--unit {
-		color: $color-muted;
+		color: $theme-content-default-fg;
 	}
 
 	&--badge.recurrence-once {
 		.badge--faicon {
-			background: $color-base-lightest;
-			color: $color-base;
+			background: $theme-surface-600-bg;
+			color: $theme-color-base-100;
 		}
 	}
 	&--badge.recurrence-month {
 		.badge--faicon {
-			background: $color-action;
-			color: $color-base-light;
+			background: $theme-status-info-bg;
+			color: $theme-control-primary-fg;
 		}
 	}
 	&--badge.recurrence-quarter {
 		.badge--faicon {
-			background: $color-accent;
-			color: $color-base-light;
+			background: $theme-status-warning-bg;
+			color: $theme-control-primary-fg;
 		}
 	}
 
 	&--badge.btn.badge.recurrence-once:not(:disabled):hover {
 		.badge--faicon {
-			color: $color-base-dark;
+			color: $theme-surface-100-bg;
 		}
 	}
 	&--badge.btn.badge.recurrence-month:not(:disabled):hover {
 		.badge--faicon {
-			background: darken($color-action, 8%);
-			color: $color-base;
+			background: $theme-control-primary-bg-hover;
+			color: $theme-surface-200-bg;
 		}
 	}
 	&--badge.btn.badge.recurrence-quarter:not(:disabled):hover {
 		.badge--faicon {
-			background: darken($color-accent, 8%);
-			color: $color-base;
+			background: darken($color-accent-300, 8%);
+			color: $theme-surface-200-bg;
 		}
 	}
 }
 
 .overviewsupporterstatus-offercontent {
 	padding-top: 6px;
-
-	// &--paypal.btn {
-	// 	@include btn-style($color-paypal, $color-paypal-hover, $color-paypal-active, $white, $white);
-	// }
 }
 
 .overviewsupporterstatus-nosubscription {
 	&--until {
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size-small;
 	}
 }
-

@@ -5,7 +5,7 @@
 
 	&--fullname {
 		font-family: $font-text;
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size-large;
 		line-height: 24px;
 	}
@@ -22,6 +22,15 @@
 
 	&--lastawake, &--puppeteer {
 		font-size: $font-size-small;
+		font-style: italic;
+	}
+
+	&--lfrp-header {
+		position: relative;
+	}
+
+	&--lfrp-counter.counter {
+		right: -12px;
 	}
 
 	&--lfrp-placeholder {

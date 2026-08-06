@@ -1,16 +1,11 @@
 import { Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import PageRoomComponent from './PageRoomComponent';
 import PageRoomChar from './PageRoomChar';
 import PageRoomExits from './PageRoomExits';
-import { mix } from 'utils/color';
 
 import { roomInfo } from './pageRoomTxt';
 import './pageRoom.scss';
-
-const themeTokens = {
-	'pageroom.char.status': (c) => mix(c.muted, c.accent, 20),
-};
 
 /**
  * PageRoom sets the default page in the room panel.
@@ -26,13 +21,11 @@ class PageRoom {
 			'dialogEditNote',
 			'charPages',
 			'toaster',
-			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-		this.module.theme.addTokens(themeTokens);
 
 		this.tools = new Collection({
 			idAttribute: m => m.id,
@@ -129,7 +122,6 @@ class PageRoom {
 
 	dispose() {
 		this.module.roomPages.setDefaultRoomPageFactory(null);
-		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

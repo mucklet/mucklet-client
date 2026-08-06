@@ -52,7 +52,7 @@ class PageMailComponent {
 						)),
 						n.component(new ModelComponent(
 							this.model,
-							new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
+							new Elem(n => n.elem('button', { className: 'iconbtn medium default-400', events: {
 								click: () => this._loadMail(this.model.offset < defaultLimit ? 0 : this.model.offset - defaultLimit),
 							}}, [
 								n.component(new FAIcon('angle-left')),
@@ -61,7 +61,7 @@ class PageMailComponent {
 						)),
 						n.component(new ModelComponent(
 							this.model,
-							new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
+							new Elem(n => n.elem('button', { className: 'iconbtn medium default-400', events: {
 								click: () => this._loadMail(this.model.offset + defaultLimit),
 							}}, [
 								n.component(new FAIcon('angle-right')),

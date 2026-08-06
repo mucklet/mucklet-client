@@ -68,46 +68,46 @@
 		}
 
 		&.color1 {
-			color: $color-contrast;
-			background: $color-base;
+			color: $color-contrast-300;
+			background: $color-base-200;
 			.sub1 {
-				background: $color-base-light;
+				background: $color-base-300;
 			}
 			.sub2 {
-				background: $color-base-lighter;
+				background: $color-base-400;
 			}
 			.sub3 {
-				background: $color-base-lightest;
+				background: $color-base-500;
 			}
 		}
 		&.color2 {
 			color: $black;
-			background: $color-accent;
+			background: $color-accent-300;
 		}
 		&.color3 {
 			color: $black;
-			background: $color-contrast;
+			background: $color-contrast-300;
 		}
 		&.color4 {
 			color: $black;
-			background: $color-muted;
+			background: $color-neutral-300;
 			.sub1 {
-				background: $color-muted-light;
+				background: $color-neutral-400;
 			}
 			.sub2 {
-				background: $color-muted-lighter;
+				background: $color-neutral-500;
 			}
 			.sub3 {
-				background: $color-muted-lightest;
+				background: $color-neutral-600;
 			}
 		}
 		&.color5 {
 			color: $black;
-			background: $color-danger;
+			background: $color-danger-300;
 		}
 		&.color6 {
 			color: $black;
-			background: $color-action;
+			background: $color-action-300;
 		}
 	}
 
@@ -129,7 +129,7 @@
 	&--font {
 		margin-bottom: 20px;
 		padding: 20px 0px;
-		background: $color-base-light;
+		background: $color-base-300;
 		display: flex;
 		flex-direction: row;
 	}
@@ -138,19 +138,19 @@
 		padding: 0 20px;
 		flex: 1 1 0px;
 		&.amatic {
-			color: $color-accent;
+			color: $color-accent-300;
 			font-family: $font-header;
 			font-size: 30px;
 			line-height: 36px;
 		}
 		&.opensans {
-			color: $color-muted-light;
+			color: $color-neutral-400;
 			font-family: $font-text;
 			font-size: 18px;
 			line-height: 30px;
 		}
 		&.consolas {
-			color: $color-action;
+			color: $color-action-300;
 			font-family: $font-code;
 			font-size: 18px;
 			line-height: 30px;
@@ -161,7 +161,7 @@
 		font-size: $font-size-small;
 		padding: 0 20px;
 		flex: 1 1 0px;
-		border-left: 1px solid $color-accent;
+		border-left: 1px solid $color-accent-300;
 	}
 
 	&--icons {

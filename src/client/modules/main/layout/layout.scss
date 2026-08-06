@@ -15,16 +15,16 @@
 	&--playerpanel {
 		height: 100%;
 		flex: 0 0 auto;
-		background-color: $theme-color-base-lighter;
+		background-color: $theme-surface-400-bg;
 		z-index: 5;
-		-webkit-box-shadow: 4px 0px 5px 0px $shadow;
-		-moz-box-shadow: 4px 0px 5px 0px $shadow;
-		box-shadow: 2px 0px 6px 0px $shadow;
+		-webkit-box-shadow: 4px 0px 5px 0px $theme-surface-shadow;
+		-moz-box-shadow: 4px 0px 5px 0px $theme-surface-shadow;
+		box-shadow: 2px 0px 6px 0px $theme-surface-shadow;
 	}
 
 	&--activepanel {
 		height: 100%;
 		flex: 1 1 0px;
-		background-color: $theme-color-base;
+		background-color: $theme-surface-200-bg;
 	}
 }

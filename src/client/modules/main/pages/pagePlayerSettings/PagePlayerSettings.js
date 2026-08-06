@@ -3,7 +3,7 @@ import { ModelComponent } from 'modapp-resource-component';
 import { Collection, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import PagePlayerSettingsComponent from './PagePlayerSettingsComponent';
 import './pagePlayerSettings.scss';
 
@@ -54,11 +54,11 @@ class PagePlayerSettings {
 			sortOrder: 100,
 			componentFactory: () => new ModelComponent(
 				this.model,
-				new Elem(n => n.elem('button', { className: 'iconbtn medium lighten pageplayersettings--tool-btn', events: {
+				new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 pageplayersettings--tool-btn', events: {
 					click: this._onClick,
 				}}, [
 					n.component(new FAIcon('cog')),
-					n.elem('alert', 'div', { className: 'counter small alert' }),
+					n.elem('alert', 'div', { className: 'counter small top-right alert' }),
 				])),
 				(m, c) => c[m.alert ? 'removeNodeClass' : 'addNodeClass']('alert', 'hide'),
 			),

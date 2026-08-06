@@ -8,7 +8,7 @@ class LogoutToolComponent {
 	}
 
 	render(el) {
-		this.elem = new Elem(n => n.elem('button', { className: 'btn medium logouttool lighten', events: {
+		this.elem = new Elem(n => n.elem('button', { className: 'btn medium logouttool default-400', events: {
 			click: () => this.module.self.logout(),
 		}}, [
 			n.component(new FAIcon('sign-out')),

@@ -32,7 +32,7 @@ class CharSettingsBotTokenContent {
 					n.component(new FAIcon('clipboard')),
 					n.component(new Txt(l10n.l('charSettingsBotToken.copy', "Copy to clipboard"))),
 				]),
-				n.elem('button', { className: 'iconbtn tiny solid tinyicon flex-auto', events: {
+				n.elem('button', { className: 'iconbtn tiny default-400 filled tinyicon flex-auto', events: {
 					click: (el, e) => {
 						this._deleteToken();
 						e.stopPropagation();

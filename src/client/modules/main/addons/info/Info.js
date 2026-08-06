@@ -22,11 +22,19 @@ class Info {
 		this.report = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.support = new ModelWrapper(null, { eventBus: this.app.eventBus });
 		this.client = new ModelWrapper(Object.assign({ version: APP_VERSION }, this.params.client), { eventBus: this.app.eventBus });
+		this.realm = new ModelWrapper(null, { eventBus: this.app.eventBus });
 
 		this.module.auth.getUserPromise().then(() => {
 			this.module.api.get('core.info').then(info => {
 				if (this.core) {
 					this.core.setModel(info);
+
+					this.module.api.get(`control.realm.${info.realmId}.info`).then(info => {
+						if (this.realm) {
+							this.realm.setModel(info);
+						}
+					}).catch(err => console.error("Failed to get realm info: ", err));
+
 				}
 			}).catch(err => console.error("Failed to get core info: ", err));
 
@@ -96,6 +104,10 @@ class Info {
 		return this.client;
 	}
 
+	getRealm() {
+		return this.realm;
+	}
+
 	dispose() {
 		this.core.dispose();
 		this.core = null;
@@ -111,6 +123,8 @@ class Info {
 		this.support = null;
 		this.client.dispose();
 		this.client = null;
+		this.realm.dispose();
+		this.realm = null;
 	}
 }
 

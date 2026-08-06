@@ -11,7 +11,7 @@
 	border-bottom: 2px solid transparent;
 
 	&.active {
-		border-bottom: 2px solid $theme-color-danger;
+		border-bottom: 2px solid $theme-indicator-active-border;
 	}
 
 	> .iconbtn:focus {

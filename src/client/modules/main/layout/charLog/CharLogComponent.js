@@ -54,7 +54,7 @@ class CharLogComponent {
 				null,
 				this.simpleBar,
 				(m, c) => {
-					c[m?.highlightTriggers ? 'addClass' : 'removeClass']('charlog--highlight-triggers');
+					c[m?.highlightTriggers ? 'addClass' : 'removeClass']('charlog--mark-triggers');
 					c[m?.highlightMentionMessages ? 'addClass' : 'removeClass']('charlog--highlight-mention');
 					c[m?.highlightOwnMessages ? 'addClass' : 'removeClass']('charlog--highlight-own');
 				},

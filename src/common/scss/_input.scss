@@ -1,35 +1,36 @@
 
 input, textarea, .input--textarea {
-	background: $theme-color-base-lightest;
+	background: $theme-input-default-bg;
 	font-size: $font-size;
 	font-family: $font-text;
 	border: none;
 	padding: 8px;
 	border-radius: 4px;
-	color: $theme-color-contrast;
+	color: $theme-input-default-fg;
+	caret-color: $theme-input-default-caret;
 	width: 100%;
 
 	&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: $theme-color-base-placeholder-light;
+		color: $theme-input-default-placeholder-fg;
 		opacity: 1; /* Firefox */
 	}
 	&:-ms-input-placeholder { /* Internet Explorer 10-11 */
-		color: $theme-color-base-placeholder-light;
+		color: $theme-input-default-placeholder-fg;
 	}
 	&::-ms-input-placeholder { /* Microsoft Edge */
-		color: $theme-color-base-placeholder-light;
+		color: $theme-input-default-placeholder-fg;
 	}
 }
 
 input, textarea {
 	&:focus {
 		outline: 0;
-		box-shadow: 0 0 4px 1px $theme-color-accent;
+		box-shadow: 0 0 4px 1px $theme-focus-ring;
 	}
 }
 
 .input--incomplete {
-	color: $theme-color-muted-light;
+	color: $theme-input-incomplete-fg;
 }
 
 input[type='text'], textarea {
@@ -42,16 +43,16 @@ input.autocomplete {
 	&:autofill:focus,
 	&:autofill:active {
 		font-size: $font-size;
-		color: $theme-log-bot !important;
-		background: $theme-color-base-lightest !important;
+		color: $theme-log-bot-fg !important;
+		background: $theme-input-default-bg !important;
 	}
 
 	&:-webkit-autofill,
 	&:-webkit-autofill:hover,
 	&:-webkit-autofill:focus,
 	&:-webkit-autofill:active {
-		-webkit-text-fill-color: $theme-log-bot;
-		-webkit-box-shadow: 0 0 0 32px $theme-color-base-lightest inset !important;
+		-webkit-text-fill-color: $theme-log-bot-fg;
+		-webkit-box-shadow: 0 0 0 32px $theme-input-default-bg inset !important;
 		transition: background-color 5000s ease-in-out 0s;
 		border-radius: 4px !important;
 	}

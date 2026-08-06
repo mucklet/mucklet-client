@@ -1,7 +1,7 @@
 import { Model, Collection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 
 import RouteNodesComponent from './RouteNodesComponent';
 import './routeNodes.scss';
@@ -34,7 +34,6 @@ class RouteNodes {
 		this.model = new Model({ data: {
 			nodes: null,
 			node: null,
-			user: null,
 			error: null,
 		}, eventBus: this.app.eventBus });
 

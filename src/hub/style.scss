@@ -17,7 +17,7 @@ body {
 	--gap: 64px;
 	min-height: 100vh;
 	width: 100%;
-	background: $color-base-dark;
+	background: $theme-surface-100-bg;
 
 	ul {
 		list-style-position: outside;
@@ -30,7 +30,7 @@ body {
 	}
 
 	&--inner {
-		background: $color-base;
+		background: $theme-surface-200-bg;
 		max-width: 2400px;
 		margin: 0 auto;
 		box-shadow: 0px 0px 50px 3px #000000;
@@ -46,7 +46,7 @@ body {
 			width: 100%;
 			height: 667px;
 			top: calc(var(--scroll) * 0.6px);
-			background: $color-base-light url('./top_bg.jpg') no-repeat padding-box center;
+			background: $color-base-300 url('./top_bg.jpg') no-repeat padding-box center;
 		}
 		&-overlay1 {
 			width: 100%;
@@ -115,7 +115,7 @@ body {
 			vertical-align: middle;
 		}
 		&-text {
-			color: $color-contrast;
+			color: $color-contrast-300;
 			font-family: $font-header;
 			font-size: 56px;
 			margin-left: 20px;
@@ -130,7 +130,7 @@ body {
 	&--subheading {
 		text-transform: uppercase;
 		line-height: initial;
-		color: $color-muted;
+		color: $color-neutral-300;
 		font-family: $font-text;
 		font-weight: 300;
 		letter-spacing: 11.4px;
@@ -140,7 +140,7 @@ body {
 	}
 
 	&--heading {
-		color: $color-accent;
+		color: $color-accent-300;
 		text-align: center;
 		font-size: 108px;
 		line-height: initial;
@@ -160,7 +160,7 @@ body {
 
 		> h2 {
 			text-transform: uppercase;
-			color: $color-muted;
+			color: $color-neutral-300;
 			font-family: $font-text;
 			font-weight: 300;
 			letter-spacing: 3.42px;
@@ -296,7 +296,7 @@ body {
 	}
 
 	&--footer {
-		background: $color-base-lighter;
+		background: $theme-surface-400-bg;
 
 		&-container {
 			width: 90%;
@@ -324,7 +324,7 @@ body {
 				vertical-align: middle;
 			}
 			&-text {
-				color: $color-contrast;
+				color: $color-contrast-300;
 				font-family: $font-header;
 				font-size: 32px;
 				margin-left: 12px;
@@ -359,7 +359,7 @@ body {
 
 		&-disclaimer {
 			font-size: $font-size-small;
-			color: $color-muted-dark;
+			color: $theme-content-muted-fg;
 		}
 	}
 }
@@ -499,45 +499,13 @@ body {
 
 			> h2 {
 				text-transform: uppercase;
-				color: $color-muted;
+				color: $color-neutral-300;
 				font-family: $font-text;
 				font-weight: 300;
 				letter-spacing: 3.42px;
 				text-align: center;
 				font-size: 18px;
 			}
-		}
-
-		&--searchbar {
-			position: relative;
-			margin: 46px auto 0;
-			align-items: center;
-			width: 100%;
-			max-width: 624px;
-		}
-
-		&--searchinput {
-
-			background: $color-base-light;
-			padding: 18px 16px;
-			border-radius: 14px;
-			border: 1px solid $color-base-lightest;
-			color: $color-muted-lighter;
-			padding-left: 64px;
-			font-size: 16px;
-			box-shadow: 0px 3px 6px #00000029;
-		}
-
-		&--searchbtn {
-			width: 48px;
-			padding: 8px 0 9px;
-			font-weight: bold;
-			text-transform: uppercase;
-			position: absolute;
-			left: 6px;
-			top: 6px;
-			height: calc(100% - 12px);
-			border-radius: 8px;
 		}
 
 		&--aboutimgs {

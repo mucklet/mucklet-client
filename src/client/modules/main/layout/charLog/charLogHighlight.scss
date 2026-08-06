@@ -1,34 +1,34 @@
 @import '~scss/variables';
 
-// Highlight trigger words
-.charlog--highlight-triggers {
+// Mark trigger words
+.charlog--mark-triggers {
 	.common--formattext {
-		span.highlight {
-			color: $theme-color-muted-lightest;
-			background: $theme-color-base-lighter;
+		span.mark {
+			color: $theme-log-mark-fg;
+			background: $theme-log-mark-bg;
 			padding: 0 3px;
 			margin: 0 -1px;
 			border-radius: 4px;
 		}
 		// Inline ooc text
 		span.ooc {
-			span.highlight {
-				color: $theme-color-muted-light;
+			span.mark {
+				color: $theme-log-mark-ooc-fg;
 			}
 		}
 	}
 
-	// Highlight text color for ooc text
+	// Mark text color for ooc text
 	.charlog--ooc .common--formattext {
-		span.highlight {
-			color: $theme-color-muted-light;
+		span.mark {
+			color: $theme-log-mark-ooc-fg;
 		}
 	}
-	// Highlight text color for communication text
+	// Mark text color for communication text
 	.charlog--comm {
 		.common--formattext {
-			span.highlight {
-				color: $theme-color-contrast;
+			span.mark {
+				color: $theme-log-mark-comm-fg;
 			}
 		}
 	}
@@ -37,123 +37,153 @@
 // Highlight targeted/mention messages
 .charlog--highlight-mention {
 	.charlog--ev.mentioned, .charlog--ev.targeted {
-		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
-			background: $theme-color-base-light;
+		// Highlight background
+		.charlog--highlight {
+			background: $theme-log-highlight-bg;
+		}
+		.charlog--fieldset {
+			background: $theme-log-highlight-fieldset-bg;
+		}
+		.charlog--fieldset-label {
+			background: $theme-log-highlight-fieldset-bg;
+		}
+
+		// Text color for highlighted targeted/mention messages
+		// Default color
+		color: $theme-log-highlight-fg;
+		// Inline ooc text
+		.common--formattext {
+			span.ooc {
+				color: $theme-log-highlight-ooc-fg;
+			}
+		}
+		// Brighten comm
+		.charlog--comm {
+			color: $theme-log-highlight-comm-fg;
+		}
+		// Brighten ooc
+		.charlog--ooc {
+			color: $theme-log-highlight-ooc-fg;
+		}
+	}
+
+	// Border and label text color should not overrule warn and help
+	:not(.ev-warn):not(.ev-helpme) > .charlog--ev.mentioned,
+	:not(.ev-warn):not(.ev-helpme) > .charlog--ev.targeted {
+		.charlog--fieldset {
+			border-color: $theme-log-highlight-fieldset-border;
+		}
+
+		.charlog--fieldset-label {
+			color: $theme-log-highlight-fieldset-label-fg;
 		}
 	}
 }
 
 // Highlight own messages
 .charlog--highlight-own {
-	.charlog--ev.own {
-		.charlog--highlight, .charlog--fieldset, .charlog--fieldset-label {
-			background: $theme-color-base-light;
-		}
-	}
-}
-
-// Text color for highlighted targeted/mention messages
-.charlog--highlight-mention {
-	.charlog--ev.mentioned, .charlog--ev.targeted {
-		// Default color
-		color: $theme-color-muted-light;
-		// Inline ooc text
-		.common--formattext {
-			span.ooc {
-				color: $theme-color-muted-semidark;
-			}
-		}
-		// Brighten comm
-		.charlog--comm {
-			color: $theme-color-muted-lightestest;
-		}
-		// Brighten ooc
-		.charlog--ooc {
-			color: $theme-color-muted-semidark;
-		}
-	}
-}
-
-// Text color for highlighted own messages
-.charlog--highlight-own {
 	.charlog--ev.own{
+		// Highlight background
+		.charlog--highlight {
+			background: $theme-log-highlight-bg;
+		}
+		.charlog--fieldset {
+			background: $theme-log-highlight-fieldset-bg;
+		}
+		.charlog--fieldset-label {
+			background: $theme-log-highlight-fieldset-bg;
+		}
+
+		// Text color for highlighted own messages
 		// Default color
-		color: $theme-color-muted-light;
+		color: $theme-log-highlight-fg;
 		// Inline ooc text
 		.common--formattext {
 			span.ooc {
-				color: $theme-color-muted-semidark;
+				color: $theme-log-highlight-ooc-fg;
 			}
 		}
 		// Brighten comm
 		.charlog--comm {
-			color: $theme-color-muted-lightestest;
+			color: $theme-log-highlight-comm-fg;
 		}
 		// Brighten ooc
 		.charlog--ooc {
-			color: $theme-color-muted-semidark;
+			color: $theme-log-highlight-ooc-fg;
+		}
+	}
+
+	// Border and label text color should not overrule warn and help
+	:not(.ev-warn):not(.ev-helpme) > .charlog--ev.own {
+		.charlog--fieldset {
+			border-color: $theme-log-highlight-fieldset-border;
+		}
+
+		.charlog--fieldset-label {
+			color: $theme-log-highlight-fieldset-label-fg;
 		}
 	}
 }
 
-// Highlighted targeted/mention messages with highlighted triggers
-.charlog--highlight-triggers.charlog--highlight-mention {
+// Highlighted targeted/mention messages with marked triggers
+.charlog--mark-triggers.charlog--highlight-mention {
 	.charlog--ev.mentioned, .charlog--ev.targeted {
 		.common--formattext {
-			span.highlight {
-				background: $theme-color-base-lightest;
+			span.mark {
+				color: $theme-log-highlight-mark-fg;
+				background: $theme-log-highlight-mark-bg;
 			}
 			span.ooc {
-				span.highlight {
-					color: $theme-color-muted-lighter;
+				span.mark {
+					color: $theme-log-highlight-mark-ooc-fg;
 				}
 			}
 		}
-		// Brighten comm highlighting
+		// Brighten comm marking
 		.charlog--comm {
 			.common--formattext {
-				span.highlight {
-					color: $white;
+				span.mark {
+					color: $theme-log-highlight-mark-comm-fg;
 				}
 			}
 		}
-		// Brighten ooc highlighting
+		// Brighten ooc marking
 		.charlog--ooc {
 			.common--formattext {
-				span.highlight {
-					color: $theme-color-muted-lighter;
+				span.mark {
+					color: $theme-log-highlight-mark-ooc-fg;
 				}
 			}
 		}
 	}
 }
 
-// Highlighted own messages with highlighted triggers
-.charlog--highlight-triggers.charlog--highlight-own {
+// Highlighted own messages with marked triggers
+.charlog--mark-triggers.charlog--highlight-own {
 	.charlog--ev.own {
 		.common--formattext {
-			span.highlight {
-				background: $theme-color-base-lightest;
+			span.mark {
+				background: $theme-log-highlight-mark-bg;
 			}
 			span.ooc {
-				span.highlight {
-					color: $theme-color-muted-lighter;
+				span.mark {
+					color: $theme-log-highlight-mark-ooc-fg;
 				}
 			}
 		}
-		// Brighten comm highlighting
+		// Brighten comm marking
 		.charlog--comm {
 			.common--formattext {
-				span.highlight {
-					color: $white;
+				span.mark {
+					color: $theme-log-highlight-mark-comm-fg;
 				}
 			}
 		}
-		// Brighten ooc highlighting
+		// Brighten ooc marking
 		.charlog--ooc {
 			.common--formattext {
-				span.highlight {
-					color: $theme-color-muted-lighter;
+				span.mark {
+					color: $theme-log-highlight-mark-ooc-fg;
 				}
 			}
 		}

@@ -5,7 +5,7 @@
 	padding: 16px 14px;
 
 	&--name {
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size;
 	}
 
@@ -21,15 +21,16 @@
 	}
 }
 
-
 .pagerequests-request {
 	padding: 2px 0;
 
 	&--icon.accepted {
-		@include btn-style($theme-color-action, $theme-color-action, $theme-color-action, $black, $black);
+		background: $theme-status-info-bg;
+		color: $theme-status-info-fg;
 	}
 
 	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-color-danger, $theme-color-danger, $theme-color-danger, $black, $black);
+		background: $theme-status-danger-bg;
+		color: $theme-status-danger-fg;
 	}
 }

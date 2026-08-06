@@ -48,7 +48,7 @@ class DialogChangePassword {
 								autocomplete: 'current-password',
 							},
 						},
-						className: 'darkeye',
+						iconClassName: 'dialog--input-icon',
 					}),
 					{
 						className: 'common--sectionpadding',
@@ -67,7 +67,7 @@ class DialogChangePassword {
 								autocomplete: 'new-password',
 							},
 						},
-						className: 'darkeye',
+						iconClassName: 'dialog--input-icon',
 					}),
 					{
 						className: 'common--sectionpadding',

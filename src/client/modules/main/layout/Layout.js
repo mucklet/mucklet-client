@@ -1,6 +1,6 @@
 import { Elem } from 'modapp-base-component';
 import { Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import Fader from 'components/Fader';
 import './layout.scss';
 

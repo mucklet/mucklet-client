@@ -112,7 +112,6 @@ class OverlayNavButtons {
 			this.fader.setComponent(
 				this.fader.getComponent()?.setState(state) ||
 				new NavButtons(state, {
-					shadow: true,
 					center: true,
 					onClick: this._onClick,
 					className: 'overlaynav-buttons',

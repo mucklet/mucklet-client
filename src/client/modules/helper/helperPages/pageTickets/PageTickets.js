@@ -5,13 +5,7 @@ import l10n from 'modapp-l10n';
 import FAIcon from 'components/FAIcon';
 import counterString from 'utils/counterString';
 import PageTicketsComponent from './PageTicketsComponent';
-import { adjust } from 'utils/color';
 import './pageTickets.scss';
-
-const themeTokens = {
-	'pagetickets.ticket.unassigned.background': (c) => adjust(c.base, -6),
-	'pagetickets.ticket.unassigned.background.hover': (c) => adjust(c.base, -9),
-};
 
 /**
  * PageTickets adds the tickets panel and tickets button to player panel's
@@ -38,13 +32,11 @@ class PageTickets {
 			'confirm',
 			'notify',
 			'copyCharId',
-			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
-		this.module.theme.addTokens(themeTokens);
 		this.model = new Model({ data: { tickets: null }, eventBus: this.app.eventBus });
 		this.activityTypes = new Collection({
 			idAttribute: m => m.id,
@@ -64,7 +56,7 @@ class PageTickets {
 				this.module.playerTabs.addTab({
 					id: 'tickets',
 					sortOrder: 105,
-					tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium light pagetickets--tool-btn', events: {
+					tabFactory: click => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 pagetickets--tool-btn', events: {
 						click: (c, e) => {
 							click();
 							e.stopPropagation();
@@ -78,7 +70,7 @@ class PageTickets {
 								tickets,
 								new CollectionComponent(
 									unassigned,
-									new Elem(n => n.elem('div', { className: 'counter' }, [
+									new Elem(n => n.elem('div', { className: 'counter top-right-overlap' }, [
 										n.component('txt', new Txt("")),
 									])),
 									(col, c) => this._setCounter(c, tickets, unassigned),
@@ -182,7 +174,6 @@ class PageTickets {
 			this.module.playerTabs.removeTab('tickets');
 		}
 		this.model = null;
-		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

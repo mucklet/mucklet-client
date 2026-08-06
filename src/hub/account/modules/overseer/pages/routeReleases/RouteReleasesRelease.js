@@ -102,7 +102,6 @@ class RouteReleasesRelease {
 						release,
 						new AutoComplete({
 							className: 'routereleases-release--next',
-							innerClassName: 'autocomplete-dark',
 							attributes: {
 								placeholder: l10n.t('routeReleases.searchRelease', "Search release (Name)"),
 								name: 'routereleases-release--next',
@@ -235,7 +234,7 @@ class RouteReleasesRelease {
 								body: l10n.l('routeReleases.deleteReleaseBody', "Do you really wish to delete this release?"),
 								confirm: l10n.l('routeReleases.delete', "Delete"),
 							}),
-						}, className: 'iconbtn medium solid' }, [
+						}, className: 'iconbtn medium filled' }, [
 							n.component(new FAIcon('trash')),
 						]),
 					]),

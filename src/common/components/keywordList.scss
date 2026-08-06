@@ -23,8 +23,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 6px;
-		color: $theme-color-muted;
-		border: 1px solid $theme-color-muted;
+		color: $theme-tag-default-fg;
+		border: 1px solid $theme-tag-default-border;
 		border-radius: 4px;
 
 		&.editable {
@@ -32,27 +32,15 @@
 			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 
 			&:hover {
-				color: $theme-color-muted-lighter;
-				border-color: $theme-color-muted-lighter;
+				color: $theme-tag-default-fg-hover;
+				border-color: $theme-tag-default-border-hover;
 			}
 		}
 	}
 
 	&--delete {
 		margin: -1px -3px -1px 2px;
-		text-decoration: none;
-		border: 0;
-		padding: 0;
-		border-radius: 2px;
-		transition: border-color 0.2s, color 0.2s, background-color 0.2s, opacity 0.4s;
-		cursor: pointer;
-		font-size: 12px;
 		width: 17px;
 		height: 17px;
-		text-align: center;
-		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
-		> i {
-			line-height: 15px;
-		}
 	}
 }

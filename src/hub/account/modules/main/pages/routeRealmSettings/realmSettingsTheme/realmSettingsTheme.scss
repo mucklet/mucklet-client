@@ -15,7 +15,7 @@
 	&--token {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 16px;
 	}
 
 	&--tokeninfo {
@@ -24,41 +24,39 @@
 	}
 
 	&--tokenname {
-		color: $color-contrast;
+		color: $color-contrast-300;
 	}
 
 	&--tokendesc {
 		font-size: $font-size-small;
-		color: $color-muted;
+		color: $color-neutral-300;
 	}
 
 	&--tokencolor {
 		flex: 0 0 auto;
 		width: 32px;
 		height: 32px;
-		border: 1px solid $color-muted;
+		border: 1px solid $color-neutral-300;
 		border-radius: 4px;
-		background: $color-base;
+		background: $color-base-200;
 	}
 
-	&--tokencont {
-		position: relative;
-		flex: 0 0 128px;
+	&--unsaved {
+		font-size: $font-size-small;
+		row-gap: 8px;
+		column-gap: 16px;
 	}
 
-	&--tokeninput {
-		width: 100%;
-		padding-right: 38px;
-		text-transform: uppercase;
-		font-size: $font-size-large;
-		font-family: $font-code;
+	&--warn {
+		color: $theme-content-danger-fg;
 	}
 
-	&--tokenreset {
-		@include btn-style(none, $color-base-lighter, $color-base-lightest, $color-muted-light, $color-muted-lighter);
-		position: absolute;
-		right: 3px;
-		top: 3px;
-	}
+}
 
+@media screen and (max-width: 720px) {
+	.realmsettingstheme {
+		&--tokendesc {
+			display: none;
+		}
+	}
 }

@@ -6,14 +6,14 @@ const types = {
 		key: 'realm',
 		name: l10n.l('routeReleases.realmReleases', "Realm releases"),
 		icon: 'th',
-		order: 1020,
+		order: 1030,
 	},
 	'node': {
 		id: 'nodereleases',
 		key: 'node',
 		name: l10n.l('routeReleases.nodeReleases', "Node releases"),
 		icon: 'th-large',
-		order: 1021,
+		order: 1031,
 	},
 };
 

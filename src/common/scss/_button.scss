@@ -26,7 +26,7 @@
 .btn:focus {
 	outline: 0;
 	&:not(.nooutline) {
-		box-shadow: 0 0 4px 1px $theme-color-accent;
+		box-shadow: 0 0 4px 1px $theme-focus-ring;
 	}
 }
 
@@ -61,12 +61,6 @@
 	cursor: help;
 }
 
-// .btn.icon-left .fa {
-// 	padding: 0 7px;
-// 	left: -16px;
-// }
-
-
 .btn.icon-left {
 	display: flex;
 	align-items: center;
@@ -83,36 +77,112 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	// Aligning it slightly to the left by adding padding, as it otherwise looks
+	// off center.
+	&.medium {
+		padding-right: 16px;
+	}
 }
 
 // Set colors for your buttons, see the button mixin at the top of this
 // file to see how the hex colors are allocated
 .btn.primary, .iconbtn.primary {
-	@include btn-style($theme-color-action, $theme-color-action-hover, $theme-color-action-active, $theme-color-base-light, $theme-color-base-lighter);
+	@include btn-style($theme-control-primary-bg, $theme-control-primary-bg-hover, $theme-control-primary-bg-active, $theme-control-primary-fg, $theme-control-primary-fg-hover);
 }
 
 .btn.secondary, .iconbtn.secondary {
-	@include btn-style($theme-color-muted, $theme-color-muted-dark, $theme-color-muted-darker, $theme-color-base-light, $theme-color-base-lighter);
+	@include btn-style($theme-control-secondary-bg, $theme-control-secondary-bg-hover, $theme-control-secondary-bg-active, $theme-control-secondary-fg, $theme-control-secondary-fg-hover);
 }
 
-.btn.warning {
-	@include btn-style($theme-color-danger, $theme-color-danger-hover, $theme-color-danger-active, $black, $black);
+.btn.warning, .iconbtn.warning {
+	@include btn-style($theme-control-danger-bg, $theme-control-danger-bg-hover, $theme-control-danger-bg-active, $theme-control-danger-fg, $theme-control-danger-fg);
 }
 
-.btn.light, .iconbtn.light {
-	@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
+.btn.recessed, .iconbtn.recessed {
+	@include btn-style(
+		$theme-control-recessed-bg,
+		$theme-control-recessed-bg-hover,
+		$theme-control-recessed-bg-active,
+		$theme-control-recessed-fg,
+		$theme-control-recessed-fg-hover
+	);
 }
 
-.btn.lighten, .iconbtn.lighten {
-	@include btn-style(none, rgba($white, 0.07), rgba($white, 0.10), $theme-color-muted-light, $theme-color-muted-lighter);
+.btn.filled, .iconbtn.filled {
+	background: $theme-control-default-300-bg;
 }
 
-.btn.darken, .iconbtn.darken {
-	@include btn-style(rgba($black, 0.3), rgba($black, 0.5), rgba($black, 0.6), $theme-color-muted-light, $theme-color-muted-lighter);
+.btn.default-300, .iconbtn.default-300 {
+	@include btn-style(
+		none,
+		$theme-control-default-300-bg-hover,
+		$theme-control-default-300-bg-active,
+		$theme-control-default-300-fg,
+		$theme-control-default-300-fg-hover
+	);
+	&.filled {
+		background: $theme-control-default-300-bg;
+	}
+	&.dashed {
+		border: dashed 2px $theme-control-default-300-fg;
+		&:not(:disabled) {
+			&:hover, &:focus {
+				border-color: $theme-control-default-300-fg-hover;
+			}
+		}
+	}
 }
 
-.btn.solid, .iconbtn.solid {
-	@include btn-style($theme-color-base-lighter, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
+.btn.default-400, .iconbtn.default-400 {
+	@include btn-style(
+		none,
+		$theme-control-default-400-bg-hover,
+		$theme-control-default-400-bg-active,
+		$theme-control-default-400-fg,
+		$theme-control-default-400-fg-hover
+	);
+	&.filled {
+		background: $theme-control-default-400-bg;
+	}
+	&.dashed {
+		border: dashed 2px $theme-control-default-400-fg;
+		&:not(:disabled) {
+			&:hover, &:focus {
+				border-color: $theme-control-default-400-fg-hover;
+			}
+		}
+	}
+}
+
+.btn.default-500, .iconbtn.default-500 {
+	@include btn-style(
+		none,
+		$theme-control-default-500-bg-hover,
+		$theme-control-default-500-bg-active,
+		$theme-control-default-500-fg,
+		$theme-control-default-500-fg-hover
+	);
+	&.filled {
+		background: $theme-control-default-500-bg;
+	}
+}
+
+.btn.default-300, .iconbtn.default-300,
+.btn.default-400, .iconbtn.default-400,
+.btn.default-500, .iconbtn.default-500 {
+	&.overlay {
+		&:not(:disabled) {
+			&:hover {
+				background: $theme-control-overlay-bg-hover;
+			}
+			&:active, &:focus {
+				background: $theme-control-overlay-bg-active;
+			}
+		}
+		&.filled {
+			background: $theme-control-overlay-bg;
+		}
+	}
 }
 
 // Add this class to a <button> or element with a .btn class
@@ -184,7 +254,13 @@
 	width: 52px;
 	height: 52px;
 	text-align: center;
-	@include btn-style(none, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
+	@include btn-style(
+		none,
+		$theme-control-default-300-bg-hover,
+		$theme-control-default-300-bg-active,
+		$theme-control-default-300-fg,
+		$theme-control-default-300-fg-hover
+	);
 	> i {
 		line-height: 51px;
 	}
@@ -278,4 +354,21 @@
 .orderbtn {
 	display: flex;
 	flex-direction: column;
+}
+
+.menubtn {
+	padding: 8px 20px;
+	font-size: $font-size;
+	font-family: $font-text;
+	text-decoration: none;
+	border: 0;
+	width: 100%;
+	transition: color 0.2s, background-color 0.2s;
+	cursor: pointer;
+	@include btn-style(none, $theme-control-default-400-bg-hover, $theme-control-default-400-bg-active, $theme-control-default-400-fg, $theme-content-strong-fg);
+}
+
+.menubtn.small {
+	padding: 4px 12px;
+	font-size: $font-size-small;
 }

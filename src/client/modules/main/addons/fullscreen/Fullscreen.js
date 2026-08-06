@@ -36,7 +36,7 @@ class Fullscreen {
 				componentFactory: click => {
 					this.model.set(this._getData());
 					return new Elem(n => n.elem('div', {
-						className: 'kebabmenu--itembtn flex-row pad8',
+						className: 'menubtn flex-row pad8',
 						events: { click },
 					}, [
 						n.elem('div', { className: 'kebabmenu--itemicon flex-auto' }, [

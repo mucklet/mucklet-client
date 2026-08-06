@@ -25,7 +25,7 @@ class AccountEmailButton {
 					if (!this.account.email) {
 						comp = components.setEmail = components.setEmail || new Elem(n => n.elem('button', { events: {
 							click: () => this.module.dialogChangeEmail.open(this.account, { setEmail: true }),
-						}, className: 'btn medium light icon-left' + fullWidth }, [
+						}, className: 'btn medium default-400 icon-left' + fullWidth }, [
 							n.component(new FAIcon('at')),
 							n.component(new Txt(l10n.l('accountEmail.setEmailAddress', "Set email address"))),
 						]));
@@ -36,7 +36,7 @@ class AccountEmailButton {
 							events: {
 								click: () => this.module.dialogChangeEmail.open(this.account),
 							},
-							className: 'btn medium light icon-left' + fullWidth,
+							className: 'btn medium default-400 icon-left' + fullWidth,
 						}, [
 							n.component(new FAIcon('pencil')),
 							n.component(new ModelComponent(
@@ -66,7 +66,7 @@ class AccountEmailButton {
 									: l10n.l('accountEmail.recoverRequiresEmail', "Recovery requires email."),
 								{ tagName: 'div', className: 'common--error' },
 							)),
-							n.elem('alert', 'div', { className: 'counter small alert' }),
+							n.elem('alert', 'div', { className: 'counter small top-right alert' }),
 						]),
 					])),
 				),

@@ -21,7 +21,7 @@
 
 	&--footertools {
 		margin: 0 -2px;
-		border-top: 1px solid $theme-color-base-dark;
+		border-top: 1px solid $theme-divider-subtle-border;
 		padding-top: 8px;
 
 		> div {
@@ -41,21 +41,37 @@
 		height: 286px;
 	}
 
-	&--fullname {
-		padding: 10px 0 4px 0;
-		font-family: $font-text;
-		color: $theme-color-contrast;
-		font-size: 20px;
-	}
-
 	&--notset {
 		font-style: italic;
 		font-size: $font-size;
-		color: $theme-color-muted-dark;
+		color: $theme-content-muted-fg;
 	}
 
 	&--tags {
 		padding-top: 6px;
+	}
+	&--puppet {
+		padding-bottom: 8px;
+	}
+
+	&--lfrp-header {
+		position: relative;
+	}
+
+	&--lfrp-counter.counter {
+		right: -12px;
+	}
+
+	&--lfrp-placeholder {
+		display: block;
+		font-style: italic;
+		font-size: $font-size-small;
+		padding-bottom: 10px;
+	}
+
+	&--puppeteer {
+		font-size: $font-size-small;
+		font-style: italic;
 	}
 }
 

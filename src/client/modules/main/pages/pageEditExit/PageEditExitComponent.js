@@ -1,5 +1,5 @@
 import { Elem, Txt, Input, Textarea, Context } from 'modapp-base-component';
-import { ModelComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
+import { ModelComponent, ModelTxt } from 'modapp-resource-component';
 import { ModifyModel, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
@@ -136,19 +136,19 @@ class PageEditExitComponent {
 					n.component(new PanelSection(
 						l10n.l('pageEditExit.icon', "Icon"),
 						new Elem(n => n.elem('div', { className: 'flex-row' }, [
-							n.component(this._newIconSet(ctx.exit, [
-								[ 'nw', 'n', 'ne' ],
-								[ 'w', '', 'e' ],
-								[ 'sw', 's', 'se' ],
-							], {
-								className: 'pageeditexit--dir-icons flex-auto',
-							})),
-							n.component(this._newIconSet(ctx.exit, [
-								[ 'in', 'out' ],
-								[ 'up', 'down' ],
-							], {
-								className: 'pageeditexit--misc-icons flex-1',
-							})),
+							n.elem('div', { className: 'flex-auto' }, [
+								this._newIconSet(n, ctx.exit, [
+									'nw', 'n', 'ne',
+									'w', '', 'e',
+									'sw', 's', 'se',
+								], { className: 'pageeditexit--dir-icons' }),
+							]),
+							n.elem('div', { className: 'flex-auto' }, [
+								this._newIconSet(n, ctx.exit, [
+									'in', 'out',
+									'up', 'down',
+								], { className: 'pageeditexit--misc-icons' }),
+							]),
 						])),
 						{
 							className: 'flex-1',
@@ -269,10 +269,9 @@ class PageEditExitComponent {
 		));
 	}
 
-	_newIconSet(model, set, opt) {
-		return new CollectionList(set, row => new CollectionList(
-			row,
-			icon => new ModelComponent(
+	_newIconSet(n, model, set, opt) {
+		return n.elem('div', opt, set.map(icon => icon
+			? n.component(new ModelComponent(
 				model,
 				new Elem(n => n.elem('div', { className: 'pageeditexit--icon' }, [
 					n.elem('btn', 'button', {
@@ -288,13 +287,14 @@ class PageEditExitComponent {
 						n.component(new ExitIcon(icon)),
 					]),
 				])),
-				(m, c) => c[icon && model.icon == icon ? 'addNodeClass' : 'removeNodeClass']('btn', 'active'),
-			),
-			{
-				className: 'pageeditexit--icon-row flex-row',
-				horizontal: true,
-			},
-		), opt);
+				(m, c) => {
+					c[icon && model.icon == icon ? 'addNodeClass' : 'removeNodeClass']('btn', 'primary');
+					c[icon && model.icon == icon ? 'removeNodeClass' : 'addNodeClass']('btn', 'default-500');
+					c[icon && model.icon == icon ? 'removeNodeClass' : 'addNodeClass']('btn', 'filled');
+				},
+			))
+			: n.elem('div'),
+		));
 	}
 
 	_getNavState(nav) {

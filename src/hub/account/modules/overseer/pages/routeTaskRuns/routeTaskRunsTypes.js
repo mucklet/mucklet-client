@@ -57,7 +57,7 @@ const types = {
 			id: 'taskRuns',
 			type: 'button',
 			sortOrder: 100,
-			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium solid', events: {
+			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 filled', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();
 					module.self.setRoute('node', { projectKey: node.key });

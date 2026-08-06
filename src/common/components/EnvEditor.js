@@ -40,7 +40,7 @@ class EnvEditor {
 						n.elem('div', { className: 'flex-row' }, [
 							n.component(new Txt(key, { tagName: 'div', className: 'badge--title flex-1' })),
 							n.elem('button', {
-								className: 'iconbtn puny lighten flex-auto',
+								className: 'iconbtn puny flex-auto',
 								events: {
 									click: (el, e) => {
 										this.model.set({ [key]: undefined });
@@ -82,7 +82,10 @@ class EnvEditor {
 
 				// Add new
 				n.elem('div', { className: 'enveditor--create' }, [
-					n.elem('add', 'button', { events: { click: () => this._onCreate() }, className: 'btn small icon-left' }, [
+					n.elem('add', 'button', {
+						events: { click: () => this._onCreate() },
+						className: 'btn small icon-left dashed default-300 full-width',
+					}, [
 						n.component(new FAIcon('plus')),
 						n.component(new Txt(l10n.l('envEditor.createNew', "Create new"))),
 					]),

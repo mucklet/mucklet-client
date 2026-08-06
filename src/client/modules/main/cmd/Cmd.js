@@ -8,7 +8,7 @@ import ErrorStep from 'classes/ErrorStep';
 import Err from 'classes/Err';
 import escapeHtml from 'utils/escapeHtml';
 import { getToken } from 'utils/codemirror';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import { mergeCompleteResults, offsetCompleteResults } from 'utils/codemirrorTabCompletion';
 import cmdParser from './cmdParser';
 import cmdHighlightStyle from './cmdHighlightStyle';

@@ -1,38 +1,37 @@
 @import '~scss/variables';
-@import '~scss/hubvariables';
 
 .taskrunstates {
 	&-- {
 		// &none, &queued {
-		// 	color: $color-muted-darker !important;
+		// 	color: $theme-content-subtle-fg !important;
 		// }
 		&running:not(.bg) {
-			color: $color-action !important;
+			color: $theme-content-active-fg !important;
 		}
 		&success:not(.bg) {
-			color: $color-success !important;
+			color: $theme-content-success-fg !important;
 		}
 		&warning:not(.bg) {
-			color: $color-accent !important;
+			color: $theme-content-warning-fg !important;
 		}
 		&error:not(.bg) {
-			color: $color-danger !important;
+			color: $theme-content-danger-fg !important;
 		}
 
 		// &none, &queued {
-		// 	background: $color-muted-darker !important;
+		// 	background: $theme-content-subtle-fg !important;
 		// }
 		&running.bg {
-			background: $color-action !important;
+			background: $theme-status-active-bg !important;
 		}
 		&success.bg {
-			background: $color-success !important;
+			background: $theme-status-success-bg !important;
 		}
 		&warning.bg {
-			background: $color-accent !important;
+			background: $theme-status-warning-bg !important;
 		}
 		&error.bg {
-			background: $color-danger !important;
+			background: $theme-status-danger-bg !important;
 		}
 	}
 }

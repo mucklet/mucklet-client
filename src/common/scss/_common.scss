@@ -1,16 +1,3 @@
-// Common colors
-$common-level-asleep: $color-muted;
-$common-level-active: $color-contrast;
-$common-level-idle: $color-accent;
-$common-level-inactive: mix($color-danger, $color-accent, 80%);
-$common-level-bot: $log-bot;
-// Common theme vars
-$theme-common-level-asleep: var(--mu-common-level-asleep, #{$common-level-asleep});
-$theme-common-level-active: var(--mu-common-level-active, #{$common-level-active});
-$theme-common-level-idle: var(--mu-common-level-idle, #{$common-level-idle});
-$theme-common-level-inactive: var(--mu-common-level-inactive, #{$common-level-inactive});
-$theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
-
 .common {
 	&--placeholder {
 		font-style: italic;
@@ -37,7 +24,7 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 	}
 
 	&--error {
-		color: $theme-color-danger;
+		color: $theme-content-error-fg;
 		font-size: 90%;
 	}
 
@@ -67,7 +54,7 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 			font-size: $font-size-large;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $theme-color-accent;
+			color: $theme-content-accent-fg;
 			margin: 1em 0 0.5em 0;
 		}
 
@@ -76,7 +63,7 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 			font-size: $font-size;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $theme-color-accent;
+			color: $theme-content-accent-fg;
 			margin: 1em 0 0.5em 0;
 		}
 
@@ -85,25 +72,25 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 			font-size: $font-size-small;
 			font-family: $font-text;
 			font-weight: normal;
-			color: $theme-color-accent;
+			color: $theme-content-accent-fg;
 			margin: 1em 0 0.5em 0;
 		}
 
 		span.ooc {
-			color: $theme-color-muted-dark;
+			color: $theme-log-ooc-fg;
 		}
 		span.cmd {
 			font-family: $font-code;
-			color: $theme-color-accent;
+			color: $theme-log-cmd-fg;
 		}
 		a {
-			color: $theme-color-action;
+			color: $theme-link-default-fg;
 			transition: color 0.2s;
 			&:hover {
-				color: $theme-color-action-hover;
+				color: $theme-link-default-fg-hover;
 			}
 			&:active {
-				color: $theme-color-action-active;
+				color: $theme-link-default-fg-active;
 			}
 		}
 		sup, sub {
@@ -119,12 +106,12 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 			bottom: -0.25em;
 		}
 		span.err {
-			color: $theme-color-danger;
+			color: $theme-log-error-fg;
 		}
 		table {
 			margin: 8px 0 12px 0;
 			th {
-				color: $theme-color-contrast;
+				color: $theme-content-strong-fg;
 			}
 			th, td {
 				// padding: 1px 8px 1px 0;
@@ -136,7 +123,7 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 			}
 		}
 		thead {
-			border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+			border-bottom: 1px solid $theme-divider-strong-border;
 		}
 		span.nobr {
 			white-space: nowrap;
@@ -145,9 +132,9 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 			font-family: $font-code;
 			font-style: normal;
 			font-size: $font-size-small;
-			color: $theme-color-accent;
+			color: $theme-log-code-fg;
 			padding: 6px 10px;
-			background: $theme-color-base-dark;
+			background: $theme-log-code-bg;
 			border-radius: 8px;
 			margin: 0.5em 0 0.25em 0;
 		}
@@ -161,25 +148,25 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 	&--durationinput {
 		transition: 0.2s color;
 		&.invalid {
-			color: $theme-color-muted;
+			color: $theme-content-default-fg;
 		}
 	}
 
 	&--level {
 		&-asleep {
-			color: $theme-common-level-asleep;
+			color: $theme-idlelevel-asleep-fg;
 		}
 		&-active {
-			color: $theme-common-level-active;
+			color: $theme-idlelevel-active-fg;
 		}
 		&-idle {
-			color: $theme-common-level-idle;
+			color: $theme-idlelevel-idle-fg;
 		}
 		&-inactive {
-			color: $theme-common-level-inactive;
+			color: $theme-idlelevel-away-fg;
 		}
 		&-bot {
-			color: $theme-common-level-bot;
+			color: $theme-idlelevel-bot-fg;
 		}
 	}
 
@@ -195,21 +182,6 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 		padding: 12px 0;
 	}
 
-	&--addbtn.btn {
-		background: none;
-		width: 100%;
-		border: dashed 2px $theme-color-muted;
-
-		&:hover, &:focus {
-			color: $theme-color-muted-lighter;
-			background: $theme-color-base;
-		}
-
-		> .fa {
-				line-height: 24px;
-		}
-	}
-
 	&--btnwidth {
 		min-width: 128px;
 	}
@@ -220,7 +192,7 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 
 	&--itemtitle {
 		font-family: $font-text;
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size-large;
 	}
 
@@ -232,7 +204,7 @@ $theme-common-level-bot: var(--mu-common-level-bot, #{$common-level-bot});
 		display: block;
 		padding-bottom: 20px;
 		margin-bottom: 16px;
-		border-bottom: 1px solid $theme-color-accent;
+		border-bottom: 1px solid $theme-divider-accent-border;
 	}
 
 	&--tooltip {

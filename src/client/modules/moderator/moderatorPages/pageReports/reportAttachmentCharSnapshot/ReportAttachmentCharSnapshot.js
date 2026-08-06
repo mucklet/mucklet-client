@@ -25,7 +25,7 @@ class ReportAttachmentCharSnapshot {
 			componentFactory: (info, reporter) => {
 				return new Elem(n => n.elem('div', { className: 'reportattachmentcharsnapshot badge--select badge--margin' }, [
 					n.elem('button', {
-						className: 'badge--faicon iconbtn smallicon solid',
+						className: 'badge--faicon iconbtn smallicon default-400 filled',
 						events: {
 							click: (c, e) => {
 								this.module.dialogCharSnapshotAttachment.open(info, reporter);

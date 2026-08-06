@@ -15,7 +15,7 @@ class PageMailMessage {
 		this.elem = new ModelComponent(
 			this.mail,
 			new Elem(n => n.elem('div', { className: 'pagemail-mail' }, [
-				n.elem('badge', 'div', { className: 'pagemail-mail--badge badge btn margin4', events: {
+				n.elem('div', { className: 'pagemail-mail--badge badge btn margin4', events: {
 					click: () => this._toggleInfo(),
 				}}, [
 					n.elem('div', { className: 'badge--select' }, [
@@ -40,10 +40,14 @@ class PageMailMessage {
 							);
 						},
 					)),
+					// Unread mark
+					n.elem('div', { className: 'counter-group' }, [
+						n.elem('unread', 'div', { className: 'counter small top-right alert' }),
+					]),
 				]),
 			])),
 			(m, c) => {
-				c[m.read ? 'removeNodeClass' : 'addNodeClass']('badge', 'unread');
+				c[m.read ? 'addNodeClass' : 'removeNodeClass']('unread', 'hide');
 			},
 		);
 		return this.elem.render(el);

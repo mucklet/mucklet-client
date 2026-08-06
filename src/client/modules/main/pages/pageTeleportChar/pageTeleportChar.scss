@@ -1,4 +1,5 @@
 @import '~scss/variables';
+@import '~scss/mixins';
 
 .pageteleportchar {
 	padding: 16px;
@@ -8,13 +9,18 @@
 	padding: 2px 0;
 
 	&--tools i {
-		color: $theme-color-base;
-		transition: color 0.3s;
+		@include transition(opacity 0.3s);
 	}
 
-	&:hover {
-		.pageteleportchar-room--tools i, .pageteleportchar-node--tools i {
-			color: $theme-color-muted-light;
-		}
+	&--tools i {
+		opacity: 0;
+	}
+
+	&:hover &--tools i {
+		opacity: 0.6;
+	}
+
+	&:hover &--tools:hover i {
+		opacity: 1;
 	}
 }

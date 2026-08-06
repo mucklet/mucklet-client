@@ -1,9 +1,9 @@
 @import '~scss/variables';
+@import '~scss/mixins';
+@import './dialog-theme';
 
 .dialog--overlay {
-	background: #000;
-	opacity: 0.25;
-	filter: Alpha(Opacity=25);
+	background: $theme-modal-overlay-bg;
 }
 
 .dialog--container, .dialog--overlay {
@@ -26,6 +26,8 @@
 	transform: translateX(-50%) translateY(-50%);
 	display: flex;
 	flex-direction: column;
+	-webkit-box-shadow: 0px 0px 20px 6px $theme-modal-shadow;
+	box-shadow: 0px 0px 20px 6px $theme-modal-shadow;
 
 	&:not(.dialog--noanim) {
 		animation-name: dialog-opacity;
@@ -33,7 +35,7 @@
 		opacity: 1;
 	}
 
-	background: $theme-color-base-lightest;
+	background: $theme-surface-500-bg;
 
 	&.fullscreen {
 		width: 100%;
@@ -61,7 +63,7 @@
 		margin: 0;
 		padding: 8px 16px;
 	}
-	border-bottom: 1px solid $theme-color-accent;
+	border-bottom: 1px solid $theme-divider-accent-border;
 }
 
 .dialog--content-wrap {
@@ -80,22 +82,26 @@
 
 .dialog--input {
 	width: 100%;
-	background: $theme-color-muted-lighter;
-	color: $black;
+	background: $theme-dialog-input-bg;
+	color: $theme-dialog-input-fg;
+}
+
+.dialog--input-icon {
+	@include btn-style(none, $theme-dialog-input-bg-hover, $theme-dialog-input-bg-hover, $theme-color-base-400, $theme-color-base-300);
 }
 
 .dialog--incomplete {
-	color: $theme-color-base-placeholder;
+	color: $theme-content-placeholder-fg;
 }
 
 .dialog--error {
-	color: $theme-color-danger;
+	color: $theme-content-error-fg;
 }
 
 .dialog--strong {
 	display: inline-block;
 	font-family: $font-text;
-	color: $theme-color-contrast;
+	color: $theme-content-strong-fg;
 }
 
 .dialog--emphasis {
@@ -120,8 +126,8 @@
 
 .dialog--avatar {
 	> svg {
-		background-color: $theme-color-base-lighter;
-		color: $theme-color-base;
+		background-color: $theme-svg-placeholder-200-bg;
+		color: $theme-svg-placeholder-200-fg;
 	}
 }
 
