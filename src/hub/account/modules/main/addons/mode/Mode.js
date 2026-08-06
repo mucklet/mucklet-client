@@ -140,8 +140,9 @@ class Mode {
 			let data = localStorage.getItem(modeStoragePrefix + user.id);
 			if (data) {
 				let o = JSON.parse(data);
-				if (o?.hasOwnProperty('mode')) {
-					this._setMode(o.mode);
+				let mode = modes.find(m => m.key == o?.mode);
+				if (mode?.criteria(user)) {
+					this._setMode(mode.key);
 				}
 			}
 		}
