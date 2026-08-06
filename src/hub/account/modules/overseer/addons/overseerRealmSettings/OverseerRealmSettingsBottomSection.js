@@ -73,11 +73,32 @@ class OverseerRealmSettingsBottomSection {
 				},
 			)),
 
-			// Client version
+			// Client legacy name
 			n.component(new ModelCollapser(this.realm, [{
 				condition: m => !this.realm.client,
 				factory: () => new PanelSection(
-					l10n.l('overseerRealmSettings.clientVersion', "Legacy client version"),
+					l10n.l('overseerRealmSettings.manualClientVersion', "Manual client name"),
+					new ModelComponent(
+						this.realm,
+						new Input("", {
+							events: { input: c => this.realm.set({ clientName: c.getValue() }) },
+							attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+						}),
+						(m, c) => c.setValue(m.clientName),
+					),
+					{
+						className: 'flex-1 common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('overseerRealmSettings.clientNameInfo', "Manually set human readable version name of the client, such as \"1.23.4\" or \"1.24.0-rc1\"."),
+					},
+				),
+			}])),
+
+			// Client legacy version
+			n.component(new ModelCollapser(this.realm, [{
+				condition: m => !this.realm.client,
+				factory: () => new PanelSection(
+					l10n.l('overseerRealmSettings.manualClientVersion', "Manual client version"),
 					new ModelComponent(
 						this.realm,
 						new Input("", {
@@ -89,7 +110,7 @@ class OverseerRealmSettingsBottomSection {
 					{
 						className: 'flex-1 common--sectionpadding',
 						noToggle: true,
-						popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Manually set version of the client."),
+						popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Manually set version of the client in the format \"MAJOR.MINOR.PATCH\".."),
 					},
 				),
 			}])),
