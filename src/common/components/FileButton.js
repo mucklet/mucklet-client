@@ -14,7 +14,8 @@ class FileButton extends RootElem {
 	 * @param {string} [opt.className] Class name
 	 * @param {object} [opt.attributes] Key/value attributes object
 	 * @param {object} [opt.events] Key/value events object, where the key is the event name, and value is the callback.
-	 * @param {object} [opt.asArrayBuffer] Flag telling if the result should be an ArrayBuffer instead of a Data URL.
+	 * @param {boolean} [opt.asArrayBuffer] Flag telling if the result should be an ArrayBuffer instead of a Data URL.
+	 * @param {boolean} [opt.asText] Flag telling if the result should be text instead of a Data URL.
 	 * @param {boolean} [opt.noFileReader] Flag telling if the file should just be returned without reader.
 	 */
 	constructor(component, onSelect, opt) {
@@ -25,6 +26,7 @@ class FileButton extends RootElem {
 		this.component = component;
 		this.onSelect = onSelect;
 		this.asArrayBuffer = !!opt.asArrayBuffer;
+		this.asText = !!opt.asText;
 		this.noFileReader = !!opt.noFileReader;
 		this.onError = opt.onError || null;
 
@@ -68,7 +70,9 @@ class FileButton extends RootElem {
 				console.error("File load error: ", ev);
 			}
 		};
-		if (this.asArrayBuffer) {
+		if (this.asText) {
+			reader.readAsText(file);
+		} else if (this.asArrayBuffer) {
 			reader.readAsArrayBuffer(file);
 		} else {
 			reader.readAsDataURL(file);

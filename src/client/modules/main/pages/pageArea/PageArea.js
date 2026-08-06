@@ -1,14 +1,16 @@
 import { Model } from 'modapp-resource';
+import l10n from 'modapp-l10n';
 import PageAreaComponent from './PageAreaComponent';
 import PageAreaImage from './PageAreaImage';
 import { areaInfo } from './pageAreaTxt';
-import { alpha } from 'utils/color';
+import { rgba } from 'utils/color';
 import './pageArea.scss';
 
-const themeTokens = {
-	'pagearea.image.location.border': (getToken) => alpha(getToken('color.danger.300'), 0.6),
-	'pagearea.image.location.border.selected': (getToken) => alpha(getToken('color.danger.300'), 0.8),
-};
+const themeTokens = [
+	{ keyPrefix: 'pagearea', name: l10n.l('pagearea.pageAreaTokens', "Area page module tokens"), sortOrder: 1020 },
+	{ key: 'pagearea.image.location.border', value: (getToken) => rgba(getToken('color.danger.300'), 153), type: 'rgba' },
+	{ key: 'pagearea.image.location.border.selected', value: (getToken) => rgba(getToken('color.danger.300'), 204), type: 'rgba' },
+];
 
 /**
  * PageArea opens an in-panel edit room page in the room panel.

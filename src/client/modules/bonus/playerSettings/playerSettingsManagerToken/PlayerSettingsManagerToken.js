@@ -24,7 +24,7 @@ class PlayerSettingsManagerToken {
 		this.module.pagePlayerSettings.addTool({
 			id: 'managerToken',
 			type: 'section',
-			sortOrder: 25,
+			sortOrder: 35,
 			componentFactory: (user, player, state) => new PlayerSettingsManagerTokenComponent(this.module, user, state),
 		});
 	}

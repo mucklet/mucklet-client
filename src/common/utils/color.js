@@ -121,15 +121,15 @@ export function adjust(color, lightness, saturation) {
 }
 
 /**
- * Converts a hex color to an rgba color string.
+ * Adds an alpha channel to a hex color.
  * @param {string} color Hex color.
- * @param {number} opacity Alpha opacity.
- * @returns {string | null} RGBA color, or null.
+ * @param {number} alpha Alpha value from 0 to 255.
+ * @returns {string | null} Eight-digit hex color, or null.
  */
-export function alpha(color, opacity) {
+export function rgba(color, alpha) {
 	var rgb = toRgb(color);
 	return rgb
-		? 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', ' + opacity + ')'
+		? toHex(rgb) + toHexPart(alpha)
 		: null;
 }
 

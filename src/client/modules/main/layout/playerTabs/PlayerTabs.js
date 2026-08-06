@@ -1,5 +1,5 @@
 import { Model, Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import './playerTabs.scss';
 import PlayerTabsTabs from './PlayerTabsTabs';
 
@@ -86,6 +86,7 @@ class PlayerTabs {
 	 * @param {bool} [opt.reset] Flag if the tab should be opened upon the default page, closing all others. Defaults to false.
 	 * @param {function} [opt.beforeClose] Callback called before closing a page. If the beforeClose is set, the provided close method must be called for the page to close: function(close)
 	 * @param {function} [opt.onClose] Callback called when page is closed: function()
+	 * @param {function} [opt.overlayComponent] Overlay component to render on top of the page. It should be absolute positioned. The overlay component will be removed when the page is closed.
 	 * @returns {function} Close function for the tab page. If force is true, the page will be closed without calling beforeClose: function(force)
 	 */
 	openPage(pageId, pageFactory, opt) {
@@ -101,6 +102,7 @@ class PlayerTabs {
 	 * @param {bool} [opt.reset] Flag if the tab should be opened upon the default page, closing all others. Defaults to false.
 	 * @param {function} [opt.beforeClose] Callback called before closing a page. If the beforeClose is set, the provided close method must be called for the page to close: function(close)
 	 * @param {function} [opt.onClose] Callback called when page is closed: function()
+	 * @param {function} [opt.overlayComponent] Overlay component to render on top of the page. It should be absolute positioned. The overlay component will be removed when the page is closed.
 	 * @returns {function} Close function for the tab page. If force is true, the page will be closed without calling beforeClose: function(force)
 	 */
 	openTabPage(tabId, pageId, pageFactory, opt) {
@@ -135,6 +137,7 @@ class PlayerTabs {
 					? force => force ? close : opt.beforeClose(close)
 					: close,
 				onClose: opt.onClose,
+				overlayComponent: opt.overlayComponent,
 			});
 		}
 

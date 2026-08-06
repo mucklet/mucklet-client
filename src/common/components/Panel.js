@@ -1,4 +1,4 @@
-import { RootElem, Elem, Txt } from 'modapp-base-component';
+import { RootElem, Elem, Txt, Transition } from 'modapp-base-component';
 import FAIcon from 'components/FAIcon';
 import Fader from 'components/Fader';
 import SimpleBar from 'components/SimpleBar';
@@ -24,7 +24,9 @@ class Panel extends RootElem {
 	 * @param {function} [opt.clickIcon] Optional icon to use for the top-right button. Defaults to 'close'.
 	 * @param {function} [opt.footerComponent] Optional footer component.
 	 * @param {function} [opt.subheaderComponent] Optional subheader component.
+	 * @param {Component} [opt.overlayComponent] Optional overlay component. Should be absolute positioned.
 	 * @param {function} [opt.btnClass] Optional class name for buttons.
+	 * @param {number} [opt.transitionDuration] Optional duration for component transition duration.
 	 */
 	constructor(title, component, opt) {
 		opt = Object.assign({ align: "left" }, opt);
@@ -65,6 +67,12 @@ class Panel extends RootElem {
 			n.component('icon', new FAIcon()),
 		]));
 
+		this.main = new Transition({
+			className: 'panel--main',
+			duration: typeof opt.transitionDuration == 'number'
+				? opt.transitionDuration
+				: undefined,
+		});
 		this.subheaderComponent = opt.subheaderComponent || null;
 		this.footerComponent = opt.footerComponent || null;
 		this.footer = this.footerComponent
@@ -79,7 +87,7 @@ class Panel extends RootElem {
 					n.component('btn', new Fader(null, { className: 'panel--btncont' })),
 					n.elem('header', 'div', { className: 'panel--header' }),
 				]),
-				n.elem('content', 'div', { className: 'panel--main' }),
+				n.component(this.main),
 				n.component(this.footer),
 			]),
 		]));
@@ -87,7 +95,9 @@ class Panel extends RootElem {
 		// Additional components
 		this.titleFader = new Fader(null, { className: 'panel--title' });
 		this.titleTxt = new Txt("", { tagName: 'h3', className: 'panel--titletxt' });
-		this.simpleBar = new SimpleBar(new Fader(null), { className: 'panel--content' });
+		this.component = null;
+		this.overlay = null;
+		this.content = null;
 		this.rendered = false;
 
 		// Bind callbacks
@@ -95,7 +105,7 @@ class Panel extends RootElem {
 		this._onClick = this._onClick.bind(this);
 
 		this.setTitle(title)
-			.setComponent(component)
+			.setComponent(component, opt)
 			.setButton(opt.onClick || null, opt.clickIcon)
 			.toggle(!opt.closed, false);
 	}
@@ -125,8 +135,8 @@ class Panel extends RootElem {
 
 	_renderComponent() {
 		if (!this.rendered) {
-			this.simpleBar.render(this._rootElem.getNode('content'));
 			this.titleFader.render(this._rootElem.getNode('header'));
+			this.main.set(this.content);
 			if (this.footer) {
 				this.footerComponent.render(this.footer.getElement());
 			}
@@ -141,7 +151,7 @@ class Panel extends RootElem {
 	_unrenderComponent() {
 		if (this.rendered) {
 			this.titleFader.unrender();
-			this.simpleBar.unrender();
+			this.main.set(null);
 			if (this.footer) {
 				this.footerComponent.unrender();
 			}
@@ -178,20 +188,58 @@ class Panel extends RootElem {
 	 * @param {object} [opt] Optional parameters
 	 * @param {function} [opt.onRender] Callback function to call after rendering the component.
 	 * @param {function} [opt.onUnrender] Callback function to call before unrendering the component.
+	 * @param {Component} [opt.overlayComponent] Overlay component. Should be absolute positioned.
+	 * @param {"fade"|"slideLeft"|"slideRight"|"set"} [opt.transition] Transition method. Defaults to "set".
 	 * @returns {this}
 	 */
 	setComponent(component, opt) {
-		this.simpleBar.getComponent().setComponent(component, opt);
-		this.simpleBar.recalculate();
+		component = component || null;
+		let overlay = opt?.overlayComponent || null;
+		if (
+			this.content &&
+			this.component == component &&
+			this.overlay == overlay
+		) {
+			return this;
+		}
+		this.component = component;
+		this.overlay = overlay;
+		this.content = new Elem(n => n.elem('div', { className: 'panel--content' }, [
+			n.component('simplebar', new SimpleBar(component, { className: 'panel--simplebar' })),
+			...(overlay
+				? [	n.component(overlay) ]
+				: []
+			),
+		]));
+
+		if (this.rendered) {
+			this.main[opt.transition || 'set'](this.content);
+		}
 		return this;
 	}
 
+	fade(component, opt) {
+		this.setComponent(component, Object.assign({}, opt, { transition: 'fade' }));
+	}
+
+	slideLeft(component, opt) {
+		this.setComponent(component, Object.assign({}, opt, { transition: 'slideLeft' }));
+	}
+
+	slideRight(component, opt) {
+		this.setComponent(component, Object.assign({}, opt, { transition: 'slideRight' }));
+	}
+
 	getComponent() {
-		this.simpleBar.getComponent().getComponent();
+		return this.component;
+	}
+
+	getOverlay() {
+		return this.overlay;
 	}
 
 	getSimpleBar() {
-		return this.simpleBar && this.simpleBar.simplebar || null;
+		return this.content?.getNode('simplebar').simplebar || null;
 	}
 
 	/**

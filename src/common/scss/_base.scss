@@ -22,6 +22,9 @@ a {
 }
 
 a.link {
+	&:not(:disabled) {
+		cursor: pointer;
+	}
 	color: $theme-link-default-fg;
 	transition: color 0.2s;
 	&:hover {

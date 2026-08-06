@@ -3,14 +3,15 @@ import getRoomInstanceId from 'utils/getRoomInstanceId';
 import PageEditRoomScriptComponent from './PageEditRoomScriptComponent';
 import './pageEditRoomScript.scss';
 
-const themeTokens = {
-	'pageeditroomscript.time.fg': (getToken) => getToken('color.neutral.700'),
-	'pageeditroomscript.log.fg': (getToken) => getToken('color.neutral.300'),
-	'pageeditroomscript.debug.fg': (getToken) => getToken('color.neutral.200'),
-	'pageeditroomscript.info.fg': (getToken) => getToken('color.contrast.300'),
-	'pageeditroomscript.warn.fg': (getToken) => getToken('color.accent.300'),
-	'pageeditroomscript.error.fg': (getToken) => getToken('log.error.fg'),
-};
+const themeTokens = [
+	{ keyPrefix: 'pageeditroomscript', name: l10n.l('pageEditRoomScript.pageEditRoomScriptTokens', "Edit room script log color"), sortOrder: 1010 },
+	{ key: 'pageeditroomscript.time.fg', value: (getToken) => getToken('color.neutral.700') },
+	{ key: 'pageeditroomscript.log.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'pageeditroomscript.debug.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'pageeditroomscript.info.fg', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'pageeditroomscript.warn.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'pageeditroomscript.error.fg', value: (getToken) => getToken('log.error.fg') },
+];
 
 /**
  * PageEditRoomScript opens an in-panel edit room script page in the room

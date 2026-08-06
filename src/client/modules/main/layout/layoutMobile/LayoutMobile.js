@@ -1,6 +1,6 @@
 import Fader from 'components/Fader';
 import { Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import LayoutMobileComponent from './LayoutMobileComponent';
 import './layoutMobile.scss';
 

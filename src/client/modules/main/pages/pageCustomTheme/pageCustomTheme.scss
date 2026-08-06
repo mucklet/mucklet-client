@@ -1,0 +1,52 @@
+@import '~scss/variables';@import '~scss/mixins';
+
+.pagecustomtheme {
+	position: relative;
+	padding: 16px 14px 60px 14px;
+
+	&--footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: calc(100% - 14px);
+		background: linear-gradient(to bottom, transparent 0, $theme-surface-400-bg 16px);
+		padding: 24px 0 8px 14px;
+		pointer-events: none;
+
+		> * {
+			pointer-events: auto;
+		}
+	}
+}
+
+.pagecustomtheme-color {
+	padding: 2px 0;
+
+	&--tokenkey {
+		font-family: $font-code;
+		@include transition(color 0.5s);
+	}
+
+	&.isset &--tokenkey {
+		color: $theme-badge-strong-fg;
+	}
+
+	&--dot {
+		margin-left: 2px;
+		background: $theme-status-inactive-bg;
+		align-self: center;
+		width: 16px;
+		height: 16px;
+		border-radius: 3px;
+		vertical-align: middle;
+		border: 1px solid $color-neutral-300;
+	}
+
+	&--content {
+		overflow: hidden;
+	}
+
+	&--input {
+		padding: 2px 2px;
+	}
+}

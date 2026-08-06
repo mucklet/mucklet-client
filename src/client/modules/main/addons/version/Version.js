@@ -59,30 +59,49 @@ class Version {
 		this.latestVersion = APP_VERSION;
 		this.clientInfo = this.module.info.getClient();
 		this.coreInfo = this.module.info.getCore();
+		this.realmInfo = this.module.info.getRealm();
 
 		this._listen(true);
+		// The info requests may have completed before this module subscribes.
+		// Check the current values too, so a fast response cannot hide an update.
+		this._onInfoChange();
 	}
 
 	_listen(on) {
 		let cb = on ? 'on' : 'off';
 		this.clientInfo[cb]('change', this._onInfoChange);
 		this.coreInfo[cb]('change', this._onInfoChange);
+		this.realmInfo[cb]('change', this._onInfoChange);
 	}
 
 	_onInfoChange(change) {
-		if (this.clientInfo.version == this.latestVersion || this.clientInfo.version == APP_VERSION || (change && !change.hasOwnProperty('version'))) {
+		let clientVer = this.clientInfo.version;
+		// If a newer version is set on the realm, use that version for
+		// comparison. The clientInfo.version comes from the info.json file in
+		// the client build folder, while realmInfo.clientVersion is the one
+		// configured for the realm.
+		let realmVer = this.realmInfo.clientVersion;
+		if (
+			realmVer &&
+			versionCompare(realmVer, clientVer).diff > 0
+		) {
+			clientVer = realmVer;
+		}
+
+		if (clientVer == this.latestVersion || clientVer == APP_VERSION) {
 			return;
 		}
 
 		let apiVer = this.coreInfo.version;
-		let clientVer = this.clientInfo.version;
 
 		if (!apiVer || !clientVer) {
 			return;
 		}
 
 		let { diff, level } = versionCompare(APP_VERSION, clientVer);
-		if (!diff) {
+		// A newer loaded client should not be prompted to reload to an older
+		// server-advertised version, such as after a server rollback.
+		if (!diff || diff > 0) {
 			return;
 		}
 

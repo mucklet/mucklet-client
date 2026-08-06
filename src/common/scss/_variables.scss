@@ -52,7 +52,7 @@ $color-success-300: $color-success;
 
 /* Semantic color fallbacks */
 $content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
-$control-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
+$input-default-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
 $control-overlay-bg: rgba($white, 2%);
 $control-overlay-bg-hover: rgba($white, 6%);
 $control-overlay-bg-active: rgba($white, 8%);

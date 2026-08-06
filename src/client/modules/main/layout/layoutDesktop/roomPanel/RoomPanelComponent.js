@@ -1,4 +1,3 @@
-import { Transition } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import Panel from 'components/Panel';
 import OnRender from 'components/OnRender';
@@ -11,8 +10,7 @@ class RoomPanelComponent {
 	constructor(module) {
 		this.module = module;
 
-		this.transition = new Transition(null, { duration: 150 }),
-		this.panel = new Panel("", this.transition, {
+		this.panel = new Panel("", null, {
 			align: 'right',
 			className: 'roompanel',
 			subheaderComponent: this.module.roomPages.newZoomBar({ className: 'roompanel--zoombar' }),
@@ -28,41 +26,42 @@ class RoomPanelComponent {
 					let pageInfo = m.factory?.('desktop');
 
 					if (!pageInfo) {
-						c.setTitle("").setButton(null).setComponent(null);
+						c.setTitle("").setButton(null).setComponent(null, { transition: 'fade' });
 						return;
 					}
 
-					let cb = 'fade';
+					let transition = 'fade';
 					if (!change?.hasOwnProperty('char') && change?.hasOwnProperty('area')) {
 						let before = getAreaIdx(change?.hasOwnProperty('areas') ? change.areas : m.areas, change.area);
 						let after = getAreaIdx(m.areas, m.area);
 						if (before >= 0 && after >= 0 && before != after) {
-							cb = (after - before) > 0 ? 'slideLeft' : 'slideRight';
+							transition = (after - before) > 0 ? 'slideLeft' : 'slideRight';
 						}
 					}
 
 					let page = m.page;
-					this.transition[cb](new OnRender(pageInfo.component, {
-						afterRender: () => {
-							// Restore scrolling of page
-							let sb = c.getSimpleBar();
-							if (sb) {
-								sb.getScrollElement().scrollTop = page.state.scrollTop || 0;
-							}
-						},
-						beforeUnrender: () => {
-							// Store scrolling of page
-							let sb = c.getSimpleBar();
-							if (sb) {
-								page.state.scrollTop = sb.getScrollElement().scrollTop;
-							}
-						},
-					}));
 
 					c
 						.setTitle(pageInfo.title || '')
 						.setButton(pageInfo.close || page?.close || null, pageInfo.closeIcon || page?.closeIcon || 'chevron-circle-left')
-						.setComponent(this.transition);
+						.setComponent(new OnRender(pageInfo.component, {
+							afterRender: () => {
+								// Restore scrolling of page
+								let sb = c.getSimpleBar();
+								if (sb) {
+									sb.getScrollElement().scrollTop = page.state.scrollTop || 0;
+								}
+							},
+							beforeUnrender: () => {
+								// Store scrolling of page
+								let sb = c.getSimpleBar();
+								if (sb) {
+									page.state.scrollTop = sb.getScrollElement().scrollTop;
+								}
+							},
+						}), {
+							transition,
+						});
 				}
 			},
 		);

@@ -17,7 +17,7 @@ class PlayerSettingsMainChar {
 		this.module.pagePlayerSettings.addTool({
 			id: 'mainChar',
 			type: 'section',
-			sortOrder: 30,
+			sortOrder: 40,
 			componentFactory: (user, player, state) => new PlayerSettingsMainCharComponent(this.module, user, player, state),
 		});
 	}

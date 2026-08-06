@@ -1,12 +1,13 @@
-import CharLogComponent from './CharLogComponent';
+import l10n from 'modapp-l10n';
 import { Transition } from 'modapp-base-component';
 import { Model, Collection } from 'modapp-resource';
 import ResizeObserverComponent from 'components/ResizeObserverComponent';
 import Err from 'classes/Err';
 import getCtrlId from 'utils/getCtrlId';
 import { isTargeted } from 'utils/charEvent';
-import compareSortOrderId from 'utils/compareSortOrderId';
-import { alpha } from 'utils/color';
+import { compareSortOrderId } from 'utils/compareSortOrder';
+import { rgba } from 'utils/color';
+import CharLogComponent from './CharLogComponent';
 import {
 	msgEvent,
 	sayEvent,
@@ -38,9 +39,10 @@ import './charLog.scss';
 import './charLogEvent.scss';
 import './charLogHighlight.scss';
 
-const themeTokens = {
-	'charlog.eventmenu.bg': (getToken) => alpha(getToken('surface.200.bg'), 0.8),
-};
+const themeTokens = [
+	{ keyPrefix: 'charlog', name: l10n.l('charLog.charLogTokens', "Character log module tokens"), sortOrder: 1030 },
+	{ key: 'charlog.eventmenu.bg', value: (getToken) => rgba(getToken('surface.200.bg'), 204), type: 'rgba' },
+];
 
 const componentFactories = {
 	component: (charId, ev) => ev.component,

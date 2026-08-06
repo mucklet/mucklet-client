@@ -42,9 +42,14 @@ class OverseerRealmSettings {
 			type: 'section',
 			componentFactory: (realm) => new OverseerRealmSettingsBottomSection(this.module, realm),
 			onSave: (params) => {
+				// Prepare params for client.
+				if (params.hasOwnProperty('client')) {
+					params.clientId = params.client?.id || '';
+					delete params.client;
+				}
 				// Prepare params for release.
 				if (params.hasOwnProperty('release')) {
-					params.releaseId = params.release?.id || null;
+					params.releaseId = params.release?.id || '';
 					delete params.release;
 				}
 				return params;

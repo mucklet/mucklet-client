@@ -15,7 +15,7 @@
 	&--token {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 16px;
 	}
 
 	&--tokeninfo {
@@ -41,23 +41,22 @@
 		background: $color-base-200;
 	}
 
-	&--tokencont {
-		position: relative;
-		flex: 0 0 128px;
+	&--unsaved {
+		font-size: $font-size-small;
+		row-gap: 8px;
+		column-gap: 16px;
 	}
 
-	&--tokeninput {
-		width: 100%;
-		padding-right: 38px;
-		text-transform: uppercase;
-		font-size: $font-size-large;
-		font-family: $font-code;
+	&--warn {
+		color: $theme-content-danger-fg;
 	}
 
-	&--tokenreset {
-		position: absolute;
-		right: 3px;
-		top: 3px;
-	}
+}
 
+@media screen and (max-width: 720px) {
+	.realmsettingstheme {
+		&--tokendesc {
+			display: none;
+		}
+	}
 }
