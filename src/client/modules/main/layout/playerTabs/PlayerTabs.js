@@ -59,23 +59,30 @@ class PlayerTabs {
 
 	/**
 	 * Open a tab.
-	 * @param {string} tabId Tab ID. If null of missing, all tabs will be closed.
+	 * @param {string} tabId Tab ID. If null or missing, the latest non-tabbed page will be opened.
 	 * @param {bool} reset Flag if the tab should be reset to show the default page. Defaults to false.
 	 */
 	openTab(tabId, reset) {
 		tabId = tabId || null;
 		let tab = this.tabs.get(tabId);
-		if (!tab) {
+		if (!tab && tabId) {
 			this.closeTabs();
 			return;
 		}
 		let pages = this._getTabPages(tab);
+		if (!pages.length) {
+			this.closeTabs();
+			return;
+		}
 		if (reset) {
 			this._closePages(tabId);
 		}
+		if (!pages.length) {
+			this.closeTabs();
+			return;
+		}
 		let pageIdx = pages.length - 1;
 		this._setModel(tabId, pages[pageIdx], pageIdx);
-		this._closePages(null);
 	}
 
 	/**
@@ -115,7 +122,7 @@ class PlayerTabs {
 		let pageIdx = getPageIdx(pageId, pages);
 		if (opt.reset) {
 			this._closePages(tabId, pageId);
-		} else if (pageIdx >= firstIdx && i < pages.length - 1) {
+		} else if (pageIdx >= firstIdx && pageIdx < pages.length - 1) {
 			// Move page from stack to end.
 			pages.push(pages.splice(pageIdx, 1)[0]);
 		}
@@ -141,11 +148,6 @@ class PlayerTabs {
 			});
 		}
 
-		// When switching to a tab, all other non-tabbed pages are closed
-		if (tab) {
-			this._closePages(null);
-		}
-
 		pageIdx = pages.length - 1;
 		let page = pages[pageIdx];
 		this._setModel(tabId, page, pageIdx);
@@ -158,6 +160,27 @@ class PlayerTabs {
 	 */
 	closeTabs() {
 		this._setModel(null, null, 0);
+	}
+
+	/**
+	 * Toggles a tab between being shown and hidden.
+	 * @param {string} tabId Tab ID. If null or missing, the non-tabbed page stack will be toggled.
+	 * @returns {boolean} True if a tab was toggled, or false if no pages are available for the tab.
+	 */
+	toggleTab(tabId) {
+		tabId = tabId || null;
+		if (this.model.tabId === tabId && this.model.page) {
+			this.closeTabs();
+			return true;
+		}
+
+		let tab = this.tabs.get(tabId);
+		if ((!tab && tabId) || (!tab && !this.nullPages.length)) {
+			return false;
+		}
+
+		this.openTab(tabId);
+		return true;
 	}
 
 	/**
