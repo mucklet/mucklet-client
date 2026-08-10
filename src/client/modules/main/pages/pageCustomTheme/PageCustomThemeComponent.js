@@ -24,9 +24,10 @@ function getGroup(keyPrefix, groups) {
 }
 
 class PageCustomThemeComponent {
-	constructor(module, theme, state, close) {
+	constructor(module, theme, modifyTheme, state, close) {
 		this.module = module;
 		this.theme = theme;
+		this.modifyTheme = modifyTheme;
 		this.state = state;
 		this.close = close;
 	}
@@ -42,7 +43,7 @@ class PageCustomThemeComponent {
 				}}), (m, self) => this._getGroups(m.groups, m.values, self), {
 					maxDepth: 3,
 				}),
-				values: new NestedModel(this.theme, (m) => this.module.theme.calculateTheme(m.props), {
+				values: new NestedModel(this.modifyTheme, (m) => this.module.theme.calculateTheme(m.props), {
 					maxDepth: 1,
 				}),
 			}),
@@ -56,7 +57,7 @@ class PageCustomThemeComponent {
 			(ctx) => new ModelComponent(
 				ctx.model,
 				new ModelComponent(
-					this.theme,
+					this.modifyTheme,
 					new Elem(n => n.elem('div', { className: 'pagecustomtheme' }, [
 
 						// Tools
@@ -96,11 +97,11 @@ class PageCustomThemeComponent {
 										token,
 										new PageCustomThemeColor(
 											ctx.model,
-											this.theme,
+											this.modifyTheme,
 											ctx.values,
 											token.key,
 											token.type == 'rgba',
-											(v, c) => this.theme?.set({ [token.key]: v || undefined }),
+											(v, c) => this.modifyTheme?.set({ [token.key]: v || undefined }),
 										),
 										(m, c) => {},
 									),
@@ -119,9 +120,8 @@ class PageCustomThemeComponent {
 				),
 				(m, c, change) => {
 					if (!change || change.hasOwnProperty('preview')) {
-						let theme = this.theme.getModel();
-						if (theme) {
-							this.module.theme.setTheme(Object.assign({}, m.preview ? this.theme.props : theme.props));
+						if (this.modifyTheme.getModel()) {
+							this.module.theme.setTheme(Object.assign({}, m.preview ? this.modifyTheme.props : this.theme.props));
 						}
 					}
 				},
@@ -134,6 +134,7 @@ class PageCustomThemeComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
+			this.module.theme.setTheme(this.theme.props);
 		}
 	}
 

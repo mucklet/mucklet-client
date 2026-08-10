@@ -67,34 +67,33 @@ class PageCustomTheme {
 		if (this.closer) {
 			this.closer();
 		}
-		let theme = new ModifyModel(this.theme, {
+		let modifyTheme = new ModifyModel(this.theme, {
 			props: this.state?.theme,
 			modifiedOnNew: true,
 		});
 		this.closer = this.module.playerTabs.openPage(
 			'customTheme',
 			(state, close, layoutId) => ({
-				component: new PageCustomThemeComponent(this.module, theme, state, close),
+				component: new PageCustomThemeComponent(this.module, this.theme, modifyTheme, state, close),
 				title: l10n.l('pageCustomTheme.customTheme', "Custom theme"),
 			}),
 			{
 				onClose: () => {
 					this.closer = null;
-					this.module.theme.setTheme(this.theme.props);
-					theme.dispose();
+					modifyTheme.dispose();
 				},
 				overlayComponent: new Elem(n => n.elem('div', { className: 'pagecustomtheme--footer flex-row gap8' }, [
 					n.component(new ModelComponent(
-						theme,
+						modifyTheme,
 						new Elem(n => n.elem('button', { events: {
 							click: (c, ev) => {
 								ev.stopPropagation();
-								let mods = theme.getModifications();
+								let mods = modifyTheme.getModifications();
 								if (!mods) {
 									return;
 								}
-								theme.getModel().set(mods);
-								theme.reset();
+								modifyTheme.getModel().set(mods);
+								modifyTheme.reset();
 							},
 						}, className: 'btn primary flex-1 medium' }, [
 							n.component(new Txt(l10n.l('pageCustomTheme.update', "Save theme"))),
@@ -103,7 +102,7 @@ class PageCustomTheme {
 					)),
 					n.component(new FileButton(
 						new FAIcon('upload'),
-						(file, text) => this._import(theme, text),
+						(file, text) => this._import(modifyTheme, text),
 						{
 							className: 'iconbtn medium default-400 flex-auto',
 							asText: true,
@@ -111,7 +110,7 @@ class PageCustomTheme {
 						},
 					)),
 					n.elem('button', { className: 'iconbtn medium default-400 flex-auto', events: {
-						click: () => this._export(theme),
+						click: () => this._export(modifyTheme),
 					}}, [
 						n.component(new FAIcon('download')),
 					]),
