@@ -1,10 +1,11 @@
 import { Elem, Txt } from 'modapp-base-component';
-import { CollectionComponent, ModelTxt } from 'modapp-resource-component';
+import { ModelTxt } from 'modapp-resource-component';
 import { Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Dialog from 'classes/Dialog';
 import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
+import CollectionCollapser from 'components/CollectionCollapser';
 import FAIcon from 'components/FAIcon';
 import './dialogDeleteChar.scss';
 
@@ -35,80 +36,74 @@ class DialogDeleteChar {
 		this.dialog = new Dialog({
 			title: l10n.l('dialogDeleteChar.deleteChar', "Delete character"),
 			className: 'dialogdeletechar',
-			content: new CollectionComponent(
-				ownedChars,
-				new Collapser(),
-				(col, c, ev) => {
-					let len = col.toArray().filter(m => m.id !== char.id).length;
-					if (!len) {
-						c.setComponent(new Elem(n => n.elem('div', [
-							n.elem('div', { className: 'common--formmargin' }, [
-								n.component(new Txt(l10n.l('dialogDeleteChar.noHeir1', "You cannot delete your last character as you need someone to inherit any room or item owned by the character."))),
-							]),
-							n.elem('div', { className: 'pad-top-xl' }, [
-								n.elem('button', { className: 'btn primary', events: {
-									click: () => {
-										if (this.dialog) {
-											this.dialog.close();
-										}
-									},
-								}}, [
-									n.component(new Txt(l10n.l('dialogdeletechar.okay', "Okay"))),
-								]),
-							]),
-						])));
-						return;
-					}
-
-					if (!ev || (len === 1 && ev.event == 'add')) {
-						c.setComponent(new Elem(n => n.elem('div', [
-							n.elem('div', [
-								n.component(new Txt(l10n.l('dialogDeleteChar.deleteCharBody', "Do you really wish to delete the character?"), { tagName: 'p' })),
-								n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogdeletechar--fullname' })),
-							]),
-							n.elem('p', { className: 'dialog--error' }, [
-								n.component(new FAIcon('exclamation-triangle')),
-								n.html("&nbsp;&nbsp;"),
-								n.component(new Txt(l10n.l('dialogDeleteChar.deletionWarning', "Deletion cannot be undone."))),
-							]),
-							n.component('heir', new PanelSection(
-								l10n.l('dialogDeleteChar.characterHeir', "Character heir"),
-								this.module.searchChar.newSearchChar({
-									ownedChars: true,
-									excludeChars: [ char.id ],
-									placeholder: l10n.l('dialogDeleteChar.selectAChar', "Search for an heir"),
-									onSelect: (char) => model.set({ heir: char.id }),
-									events: {
-										input: (c, ev) => model.set({ heir: null }),
-										blur: c => !model.heir && c.setProperty('value', ""),
-									},
-								}),
-								{
-									className: 'common--sectionpadding',
-									noToggle: true,
-									required: true,
-									popupTip: l10n.l('dialogDeleteChar.characterHeirInfo', "The heir inherits any room or item owned by the deleted character."),
+			content: new CollectionCollapser(ownedChars, [
+				{
+					condition: (col) => !col.toArray().filter(m => m.id !== char.id).length,
+					factory: (col) => new Elem(n => n.elem('div', [
+						n.elem('div', { className: 'common--formmargin' }, [
+							n.component(new Txt(l10n.l('dialogDeleteChar.noHeir1', "You cannot delete your last character as you need someone to inherit any room or item owned by the character."))),
+						]),
+						n.elem('div', { className: 'pad-top-xl' }, [
+							n.elem('button', { className: 'btn primary', events: {
+								click: () => {
+									if (this.dialog) {
+										this.dialog.close();
+									}
 								},
-							)),
-							n.component('message', new Collapser(null)),
-							n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
-								n.elem('button', {
-									events: { click: () => this._onDelete(char, model) },
-									className: 'btn primary flex-1',
-								}, [
-									n.component(new Txt(l10n.l('dialogDeleteChar.delete', "Delete character"))),
-								]),
-								n.elem('button', {
-									className: 'btn secondary flex-1',
-									events: { click: () => this.close() },
-								}, [
-									n.component(new Txt(l10n.l('dialogDeleteChar.cancel', "Cancel"))),
-								]),
+							}}, [
+								n.component(new Txt(l10n.l('dialogdeletechar.okay', "Okay"))),
 							]),
-						])));
-					}
+						]),
+					])),
 				},
-			),
+				{
+					factory: (col) => new Elem(n => n.elem('div', [
+						n.elem('div', [
+							n.component(new Txt(l10n.l('dialogDeleteChar.deleteCharBody', "Do you really wish to delete the character?"), { tagName: 'p' })),
+							n.component(new ModelTxt(char, m => (m.name + " " + m.surname).trim(), { className: 'dialogdeletechar--fullname' })),
+						]),
+						n.elem('p', { className: 'dialog--error' }, [
+							n.component(new FAIcon('exclamation-triangle')),
+							n.html("&nbsp;&nbsp;"),
+							n.component(new Txt(l10n.l('dialogDeleteChar.deletionWarning', "Deletion cannot be undone."))),
+						]),
+						n.component('heir', new PanelSection(
+							l10n.l('dialogDeleteChar.characterHeir', "Character heir"),
+							this.module.searchChar.newSearchChar({
+								ownedChars: true,
+								excludeChars: [ char.id ],
+								placeholder: l10n.l('dialogDeleteChar.selectAChar', "Search for an heir"),
+								onSelect: (char) => model.set({ heir: char.id }),
+								events: {
+									input: (c, ev) => model.set({ heir: null }),
+									blur: c => !model.heir && c.setProperty('value', ""),
+								},
+							}),
+							{
+								className: 'common--sectionpadding',
+								noToggle: true,
+								required: true,
+								popupTip: l10n.l('dialogDeleteChar.characterHeirInfo', "The heir inherits any room or item owned by the deleted character."),
+							},
+						)),
+						n.component('message', new Collapser(null)),
+						n.elem('div', { className: 'dialog--footer flex-row margin16' }, [
+							n.elem('button', {
+								events: { click: () => this._onDelete(char, model) },
+								className: 'btn primary flex-1',
+							}, [
+								n.component(new Txt(l10n.l('dialogDeleteChar.delete', "Delete character"))),
+							]),
+							n.elem('button', {
+								className: 'btn secondary flex-1',
+								events: { click: () => this.close() },
+							}, [
+								n.component(new Txt(l10n.l('dialogDeleteChar.cancel', "Cancel"))),
+							]),
+						]),
+					])),
+				},
+			]),
 			onClose: () => { this.dialog = null; },
 		});
 

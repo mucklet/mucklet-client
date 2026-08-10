@@ -1,5 +1,5 @@
 import { Context, Elem, Txt } from 'modapp-base-component';
-import { ModelComponent, CollectionList, CollectionComponent } from 'modapp-resource-component';
+import { ModelComponent, CollectionList } from 'modapp-resource-component';
 import { Model, ModelToCollection } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
@@ -7,6 +7,7 @@ import Fader from 'components/Fader';
 import NameSection from 'components/NameSection';
 import PanelSection from 'components/PanelSection';
 import FormatTxt from 'components/FormatTxt';
+import CollectionCollapser from 'components/CollectionCollapser';
 import AreaChildrenModel from 'classes/AreaChildrenModel';
 import listenResource, { relistenResource } from 'utils/listenResource';
 import PageAreaLocation from './PageAreaLocation';
@@ -80,29 +81,18 @@ class PageAreaComponent {
 						eventBus: this.module.self.eventBus,
 					}),
 					tools => tools.dispose(),
-					tools => new CollectionComponent(
-						tools,
-						new Collapser(),
-						(col, c, ev) => {
-							// Collapse if we have no tools to show
-							if (!col.length) {
-								c.setComponent(null);
-								return;
-							}
-
-							if (!ev || (col.length == 1 && ev.event == 'add')) {
-								c.setComponent(new CollectionList(
-									tools,
-									t => t.componentFactory(this.ctrl, this.area),
-									{
-										className: 'pagearea--tools',
-										subClassName: t => t.className || null,
-										horizontal: true,
-									},
-								));
-							}
-						},
-					),
+					tools => new CollectionCollapser(tools, [{
+						condition: (col) => col.length,
+						factory: (col) => new CollectionList(
+							tools,
+							t => t.componentFactory(this.ctrl, this.area),
+							{
+								className: 'pagearea--tools',
+								subClassName: t => t.className || null,
+								horizontal: true,
+							},
+						),
+					}]),
 				),
 				(m, c, change) => {
 					// Reset filtering of tools is ownership of the area changes.

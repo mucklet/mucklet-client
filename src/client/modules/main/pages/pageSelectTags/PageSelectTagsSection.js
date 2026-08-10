@@ -1,7 +1,7 @@
 import { Context } from 'modapp-base-component';
-import { CollectionComponent, ModelTxt, CollectionList } from 'modapp-resource-component';
+import { ModelTxt, CollectionList } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
-import Collapser from 'components/Collapser';
+import CollectionCollapser from 'components/CollectionCollapser';
 import PanelSection from 'components/PanelSection';
 import PageSelectTagsTag from './PageSelectTagsTag';
 
@@ -31,27 +31,16 @@ class PageSelectTagsSection {
 					&& this.isRoleTags !== !(t.role || t.idRole),
 			}),
 			tags => tags.dispose(),
-			tags => new CollectionComponent(
-				tags,
-				new Collapser(),
-				(col, c, ev) => {
-					// Collapse if we have no tools to show
-					if (!col.length) {
-						c.setComponent(null);
-						return;
-					}
-
-					if (!ev || (col.length == 1 && ev.event == 'add')) {
-						c.setComponent(new PanelSection(
-							new ModelTxt(this.group, m => m.name, { className: 'pageselecttags-section--title', tagName: 'h3' }),
-							new CollectionList(col, tag => new PageSelectTagsTag(this.model, tag, this.module.tags.getPreferences())),
-							{
-								className: 'pageselecttags-section pad-bottom-s' + this.className,
-							},
-						));
-					}
-				},
-			),
+			tags => new CollectionCollapser(tags, [{
+				condition: col => col.length,
+				factory: col => new PanelSection(
+					new ModelTxt(this.group, m => m.name, { className: 'pageselecttags-section--title', tagName: 'h3' }),
+					new CollectionList(col, tag => new PageSelectTagsTag(this.model, tag, this.module.tags.getPreferences())),
+					{
+						className: 'pageselecttags-section pad-bottom-s' + this.className,
+					},
+				),
+			}]),
 		);
 		return this.elem.render(el);
 	}

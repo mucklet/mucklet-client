@@ -2,6 +2,7 @@ import { Txt } from 'modapp-base-component';
 import { CollectionList, CollectionComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Fader from 'components/Fader';
+import resourceComponentSelector from 'utils/resourceComponentSelector';
 import PageRoomExit from './PageRoomExit';
 
 class PageRoomExits extends CollectionComponent {
@@ -15,18 +16,18 @@ class PageRoomExits extends CollectionComponent {
 		super(
 			exits,
 			new Fader(null, opt),
-			(col, c, e) => {
-				if (!col || !col.length) {
-					c.setComponent(new Txt(l10n.l('pageRoom.noExits', "There are no exits."), { className: 'common--nolistplaceholder' }));
-					return;
-				}
-				if (!e || (col.length == 1 && e.event == 'add')) {
-					c.setComponent(new CollectionList(
+			resourceComponentSelector([
+				{
+					condition: col => !col || !col.length,
+					factory: col => new Txt(l10n.l('pageRoom.noExits', "There are no exits."), { className: 'common--nolistplaceholder' }),
+				},
+				{
+					factory: col => new CollectionList(
 						col,
 						m => new PageRoomExit(module, ctrl, m, onClick, opt),
-					));
-				}
-			},
+					),
+				},
+			]),
 		);
 	}
 }

@@ -1,8 +1,9 @@
 import { Elem, Txt, Context } from 'modapp-base-component';
-import { ModelTxt, ModelComponent, CollectionList, CollectionComponent } from 'modapp-resource-component';
+import { ModelTxt, ModelComponent, CollectionList } from 'modapp-resource-component';
 import { CollectionWrapper } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
+import CollectionCollapser from 'components/CollectionCollapser';
 import Img from 'components/Img';
 import PanelSection from 'components/PanelSection';
 import NameSection from 'components/NameSection';
@@ -43,29 +44,18 @@ class PageCharComponent {
 					filter: t => (t.type || 'header') == 'header' && (!t.filter || t.filter(this.ctrl, this.char)),
 				}),
 				tools => tools.dispose(),
-				tools => new CollectionComponent(
-					tools,
-					new Collapser(),
-					(col, c, ev) => {
-						// Collapse if we have no tools to show
-						if (!col.length) {
-							c.setComponent(null);
-							return;
-						}
-
-						if (!ev || (col.length == 1 && ev.event == 'add')) {
-							c.setComponent(new CollectionList(
-								tools,
-								t => t.componentFactory(this.ctrl, this.char),
-								{
-									className: 'pagechar--tools',
-									subClassName: t => t.className || null,
-									horizontal: true,
-								},
-							));
-						}
-					},
-				),
+				tools => new CollectionCollapser(tools, [{
+					condition: col => col.length,
+					factory: col => new CollectionList(
+						tools,
+						t => t.componentFactory(this.ctrl, this.char),
+						{
+							className: 'pagechar--tools',
+							subClassName: t => t.className || null,
+							horizontal: true,
+						},
+					),
+				}]),
 			)),
 			n.component(new ModelComponent(
 				this.char,
@@ -197,29 +187,18 @@ class PageCharComponent {
 					filter: t => t.type == 'footer' && (!t.filter || t.filter(this.ctrl, this.char)),
 				}),
 				tools => tools.dispose(),
-				tools => new CollectionComponent(
-					tools,
-					new Collapser(),
-					(col, c, ev) => {
-						// Collapse if we have no tools to show
-						if (!col.length) {
-							c.setComponent(null);
-							return;
-						}
-
-						if (!ev || (col.length == 1 && ev.event == 'add')) {
-							c.setComponent(new CollectionList(
-								tools,
-								t => t.componentFactory(this.ctrl, this.char),
-								{
-									className: 'pagechar--footertools',
-									subClassName: t => t.className || null,
-									horizontal: true,
-								},
-							));
-						}
-					},
-				),
+				tools => new CollectionCollapser(tools, [{
+					condition: col => col.length,
+					factory: col => new CollectionList(
+						tools,
+						t => t.componentFactory(this.ctrl, this.char),
+						{
+							className: 'pagechar--footertools',
+							subClassName: t => t.className || null,
+							horizontal: true,
+						},
+					),
+				}]),
 			)),
 		]));
 
