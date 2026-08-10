@@ -80,6 +80,7 @@ class PageCustomTheme {
 			{
 				onClose: () => {
 					this.closer = null;
+					this.module.theme.setTheme(this.theme.props);
 					theme.dispose();
 				},
 				overlayComponent: new Elem(n => n.elem('div', { className: 'pagecustomtheme--footer flex-row gap8' }, [

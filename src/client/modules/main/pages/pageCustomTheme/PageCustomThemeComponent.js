@@ -119,7 +119,10 @@ class PageCustomThemeComponent {
 				),
 				(m, c, change) => {
 					if (!change || change.hasOwnProperty('preview')) {
-						this.module.theme.setTheme(Object.assign({}, m.preview ? this.theme.props : this.theme.getModel().props));
+						let theme = this.theme.getModel();
+						if (theme) {
+							this.module.theme.setTheme(Object.assign({}, m.preview ? this.theme.props : theme.props));
+						}
 					}
 				},
 			),
@@ -131,7 +134,6 @@ class PageCustomThemeComponent {
 		if (this.elem) {
 			this.elem.unrender();
 			this.elem = null;
-			this.module.theme.setTheme(this.theme.getModel().props);
 		}
 	}
 
@@ -199,15 +201,6 @@ class PageCustomThemeComponent {
 				return g;
 			})
 			.sort((a, b) => compareSortOrder(a, b) || a.keyPrefix.localeCompare(b.keyPrefix));
-	}
-
-	_save(theme) {
-		let mods = theme.getModifications();
-		if (!mods) {
-			return;
-		}
-		this.theme.getModel().set(mods);
-		theme.reset();
 	}
 
 	_exportTokens() {
