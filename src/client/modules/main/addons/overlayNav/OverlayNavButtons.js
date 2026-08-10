@@ -154,6 +154,7 @@ class OverlayNavButtons {
 				{
 					className: 'overlaynav-buttons--tooltip',
 					position: 'bottom',
+					align: 'right',
 					padding: 'none',
 					size: 'auto',
 					hoverDelay: true,
