@@ -67,6 +67,7 @@ class PageEditExitComponent {
 				}),
 			}),
 			ctx => {
+				this.state.keys = ctx.model.keys;
 				this.state.exit = ctx.exit.getModifications() || {};
 				ctx.exit.dispose();
 			},
