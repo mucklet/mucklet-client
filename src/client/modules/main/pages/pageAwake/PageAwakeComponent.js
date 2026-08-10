@@ -3,6 +3,7 @@ import { CollectionList, CollectionComponent, ModelComponent } from 'modapp-reso
 import { CollectionWrapper, Model } from 'modapp-resource';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
+import CollectionCollapser from 'components/CollectionCollapser';
 import Fader from 'components/Fader';
 import LabelToggleBox from 'components/LabelToggleBox';
 import FAIcon from 'components/FAIcon';
@@ -40,29 +41,18 @@ class PageAwakeComponent {
 					filter: t => (t.type || 'realm') == 'realm' && (t.filter ? t.filter() : true),
 				}),
 				tools => tools.dispose(),
-				tools => new CollectionComponent(
-					tools,
-					new Collapser(),
-					(col, c, ev) => {
-						// Collapse if we have no tools to show
-						if (!col.length) {
-							c.setComponent(null);
-							return;
-						}
-
-						if (!ev || (col.length == 1 && ev.event == 'add')) {
-							c.setComponent(new CollectionList(
-								tools,
-								t => t.componentFactory(),
-								{
-									className: 'pageawake--tools',
-									subClassName: t => t.className || null,
-									horizontal: true,
-								},
-							));
-						}
-					},
-				),
+				tools => new CollectionCollapser(tools, [{
+					condition: col => col.length,
+					factory: col => new CollectionList(
+						tools,
+						t => t.componentFactory(),
+						{
+							className: 'pageawake--tools',
+							subClassName: t => t.className || null,
+							horizontal: true,
+						},
+					),
+				}]),
 			)),
 			n.component(new ModelComponent(
 				charsAwakeModel,
