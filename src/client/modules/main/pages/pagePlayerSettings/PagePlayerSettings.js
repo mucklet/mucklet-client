@@ -69,9 +69,7 @@ class PagePlayerSettings {
 	}
 
 	_onClick() {
-		if (this.closer) {
-			this.closer();
-		} else {
+		if (!this.module.playerTabs.toggleTab()) {
 			this.open();
 		}
 	}
