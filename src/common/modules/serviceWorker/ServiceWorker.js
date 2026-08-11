@@ -59,7 +59,7 @@ class ServiceWorker {
 	 * @param {boolean} [updateServiceWorker] Flag to tell if the service-worker itself should be update. Defaults to false.
 	 */
 	clearCacheAndReload(updateServiceWorker) {
-		Promise.resolve(caches?.keys().then(keys => {
+		return Promise.resolve(caches?.keys().then(keys => {
 			for (let key of keys) {
 				caches.delete(key);
 			}
