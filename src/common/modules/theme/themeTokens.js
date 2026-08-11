@@ -1,91 +1,319 @@
-import { adjust, alpha, mix } from "utils/color";
+import l10n from 'modapp-l10n';
+import { adjust, rgba, mix } from "utils/color";
 
 /**
- * Standard tokens used my tbe app.
+ * Standard tokens used by the app.
  */
-const tokens = {
+const tokens = [
 
-	// src/common/scss/_variables.scss
-	// Color base variants
-	'color.base.light': (c) => adjust(c.base, 4),
-	'color.base.lighter': (c) => adjust(c.base, 8),
-	'color.base.lightest': (c) => adjust(c.base, 14),
-	'color.base.dark': (c) => adjust(c.base, -4),
-	'color.base.placeholder': (c) => adjust(c.base, 24, -15),
-	'color.base.placeholder.light': (c) => adjust(c.base, 34, -15),
-	// Color muted variants
-	'color.muted.light': (c) => adjust(c.muted, 4),
-	'color.muted.lighter': (c) => adjust(c.muted, 8),
-	'color.muted.lightest': (c) => adjust(c.muted, 16),
-	'color.muted.lightestest': (c) => adjust(c.muted, 20),
-	'color.muted.semidark': (c) => adjust(c.muted, -8),
-	'color.muted.dark': (c) => adjust(c.muted, -16),
-	'color.muted.darker': (c) => adjust(c.muted, -24),
-	// Color contrast variants
-	'color.contrast.dark': (c) => adjust(c.contrast, -16),
-	// Color danger variants
-	'color.danger.light': (c) => adjust(c.danger, 6),
-	'color.danger.hover': (c) => adjust(c.danger, -8),
-	'color.danger.active': (c) => adjust(c.danger, -16),
-	// Color action variants
-	'color.action.hover': (c) => adjust(c.action, -8),
-	'color.action.active': (c) => adjust(c.action, -16),
+	// Primitive colors
+	{ keyPrefix: 'color.base', name: l10n.l('theme.baseColorVariants', "Base color variants"), sortOrder: 10 },
+	{ key: 'color.base.100', value: (getToken) => adjust(getToken('color.base'), -4) },
+	{ key: 'color.base.200', value: (getToken) => getToken('color.base') },
+	{ key: 'color.base.300', value: (getToken) => adjust(getToken('color.base'), 4) },
+	{ key: 'color.base.400', value: (getToken) => adjust(getToken('color.base'), 8) },
+	{ key: 'color.base.500', value: (getToken) => adjust(getToken('color.base'), 12) },
+	{ key: 'color.base.600', value: (getToken) => adjust(getToken('color.base'), 16) },
+
+	{ keyPrefix: 'color.accent', name: l10n.l('theme.accentColorVariants', "Accent color variants"), sortOrder: 20 },
+	{ key: 'color.accent.300', value: (getToken) => getToken('color.accent') },
+
+	{ keyPrefix: 'color.contrast', name: l10n.l('theme.contrastColorVariants', "Contrast color variants"), sortOrder: 30 },
+	{ key: 'color.contrast.200', value: (getToken) => adjust(getToken('color.contrast'), -16) },
+	{ key: 'color.contrast.300', value: (getToken) => getToken('color.contrast') },
+
+	{ keyPrefix: 'color.neutral', name: l10n.l('theme.neutralColorVariants', "Neutral color variants"), sortOrder: 40 },
+	{ key: 'color.neutral.100', value: (getToken) => adjust(getToken('color.neutral'), -24) },
+	{ key: 'color.neutral.200', value: (getToken) => adjust(getToken('color.neutral'), -16) },
+	{ key: 'color.neutral.300', value: (getToken) => getToken('color.neutral') },
+	{ key: 'color.neutral.400', value: (getToken) => adjust(getToken('color.neutral'), 4) },
+	{ key: 'color.neutral.500', value: (getToken) => adjust(getToken('color.neutral'), 8) },
+	{ key: 'color.neutral.600', value: (getToken) => adjust(getToken('color.neutral'), 16) },
+	{ key: 'color.neutral.700', value: (getToken) => adjust(getToken('color.neutral'), 20) },
+
+	{ keyPrefix: 'color.danger', name: l10n.l('theme.dangerColorVariants', "Danger color variants"), sortOrder: 50 },
+	{ key: 'color.danger.100', value: (getToken) => adjust(getToken('color.danger'), -16) },
+	{ key: 'color.danger.200', value: (getToken) => adjust(getToken('color.danger'), -8) },
+	{ key: 'color.danger.300', value: (getToken) => getToken('color.danger') },
+	{ key: 'color.danger.400', value: (getToken) => adjust(getToken('color.danger'), 6) },
+
+	{ keyPrefix: 'color.action', name: l10n.l('theme.actionColorVariants', "Action color variants"), sortOrder: 60 },
+	{ key: 'color.action.100', value: (getToken) => adjust(getToken('color.action'), -16) },
+	{ key: 'color.action.200', value: (getToken) => adjust(getToken('color.action'), -8) },
+	{ key: 'color.action.300', value: (getToken) => getToken('color.action') },
+
+	{ keyPrefix: 'color.success', name: l10n.l('theme.successColorVariants', "Success color variants"), sortOrder: 70 },
+	{ key: 'color.success.300', value: (getToken) => getToken('color.success') },
+
+	// Semantic surfaces and content
+	{ keyPrefix: 'surface', name: l10n.l('theme.surfaceColors', "Surface colors"), sortOrder: 80 },
+	{ key: 'surface.100.bg', value: (getToken) => getToken('color.base.100') },
+	{ key: 'surface.200.bg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'surface.300.bg', value: (getToken) => getToken('color.base.300') },
+	{ key: 'surface.400.bg', value: (getToken) => getToken('color.base.400') },
+	{ key: 'surface.500.bg', value: (getToken) => getToken('color.base.500') },
+	{ key: 'surface.600.bg', value: (getToken) => getToken('color.base.600') },
+	{ key: 'surface.overlay.bg', value: (getToken) => rgba(adjust(getToken('color.base.200'), -10), 230), type: 'rgba' },
+	{ key: 'surface.shadow', value: '#0000004d', type: 'rgba' },
+
+	{ keyPrefix: 'content', name: l10n.l('theme.contentColors', "Content colors"), sortOrder: 90 },
+	{ key: 'content.default.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'content.strong.fg', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'content.accent.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'content.muted.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'content.subtle.fg', value: (getToken) => getToken('color.neutral.100') },
+	{ key: 'content.disabled.fg', value: (getToken) => getToken('color.neutral.100') },
+	{ key: 'content.error.fg', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'content.placeholder.fg', value: (getToken) => adjust(getToken('color.base.200'), 24, -15) },
+	{ key: 'content.danger.fg', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'content.info.fg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'content.success.fg', value: (getToken) => getToken('color.success.300') },
+	{ key: 'content.warning.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'content.active.fg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'content.inactive.fg', value: (getToken) => getToken('color.neutral.300') },
+
+	{ keyPrefix: 'control.default', name: l10n.l('theme.defaultControlVariantsColors', "Default control variants"), sortOrder: 100 },
+	{ key: 'control.default.300.bg', value: (getToken) => getToken('color.base.300') },
+	{ key: 'control.default.300.bg.hover', value: (getToken) => getToken('color.base.400') },
+	{ key: 'control.default.300.bg.active', value: (getToken) => getToken('color.base.500') },
+	{ key: 'control.default.300.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'control.default.300.fg.hover', value: (getToken) => getToken('color.neutral.400') },
+	{ key: 'control.default.400.bg', value: (getToken) => getToken('color.base.400') },
+	{ key: 'control.default.400.bg.hover', value: (getToken) => getToken('color.base.500') },
+	{ key: 'control.default.400.bg.active', value: (getToken) => getToken('color.base.600') },
+	{ key: 'control.default.400.fg', value: (getToken) => getToken('color.neutral.400') },
+	{ key: 'control.default.400.fg.hover', value: (getToken) => getToken('color.neutral.500') },
+	{ key: 'control.default.500.bg', value: (getToken) => getToken('color.base.500') },
+	{ key: 'control.default.500.bg.hover', value: (getToken) => getToken('color.base.600') },
+	{ key: 'control.default.500.bg.active', value: (getToken) => getToken('color.base.600') },
+	{ key: 'control.default.500.fg', value: (getToken) => getToken('color.neutral.400') },
+	{ key: 'control.default.500.fg.hover', value: (getToken) => getToken('color.neutral.500') },
+
+	{ keyPrefix: 'control.primary', name: l10n.l('theme.primaryControlColors', "Primary control colors"), sortOrder: 110 },
+	{ key: 'control.primary.bg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'control.primary.bg.hover', value: (getToken) => getToken('color.action.200') },
+	{ key: 'control.primary.bg.active', value: (getToken) => getToken('color.action.100') },
+	{ key: 'control.primary.fg', value: (getToken) => getToken('color.base.300') },
+	{ key: 'control.primary.fg.hover', value: (getToken) => getToken('color.base.400') },
+
+	{ keyPrefix: 'control.secondary', name: l10n.l('theme.secondaryControlColors', "Secondary control colors"), sortOrder: 120 },
+	{ key: 'control.secondary.bg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'control.secondary.bg.hover', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'control.secondary.bg.active', value: (getToken) => getToken('color.neutral.100') },
+	{ key: 'control.secondary.fg', value: (getToken) => getToken('color.base.300') },
+	{ key: 'control.secondary.fg.hover', value: (getToken) => getToken('color.base.400') },
+
+	{ keyPrefix: 'control.danger', name: l10n.l('theme.dangerControlColors', "Danger control colors"), sortOrder: 130 },
+	{ key: 'control.danger.bg', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'control.danger.bg.hover', value: (getToken) => getToken('color.danger.200') },
+	{ key: 'control.danger.bg.active', value: (getToken) => getToken('color.danger.100') },
+	{ key: 'control.danger.fg', value: '#000000' },
+
+	{ keyPrefix: 'control.recessed', name: l10n.l('theme.recessedControlColors', "Recessed control colors"), sortOrder: 140 },
+	{ key: 'control.recessed.bg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'control.recessed.bg.hover', value: (getToken) => getToken('color.base.100') },
+	{ key: 'control.recessed.bg.active', value: (getToken) => getToken('color.base.100') },
+	{ key: 'control.recessed.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'control.recessed.fg.hover', value: (getToken) => getToken('color.neutral.400') },
+
+	{ keyPrefix: 'control.overlay', name: l10n.l('theme.overlayControlColors', "Overlay control colors"), sortOrder: 150 },
+	{ key: 'control.overlay.bg', value: '#ffffff05', type: 'rgba' },
+	{ key: 'control.overlay.bg.hover', value: '#ffffff0f', type: 'rgba' },
+	{ key: 'control.overlay.bg.active', value: '#ffffff14', type: 'rgba' },
+
+	{ keyPrefix: 'input', name: l10n.l('theme.inputColors', "Input colors"), sortOrder: 160 },
+	{ key: 'input.default.bg', value: (getToken) => getToken('color.base.500') },
+	{ key: 'input.default.fg', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'input.default.placeholder.fg', value: (getToken) => adjust(getToken('color.base.200'), 34, -15) },
+	{ key: 'input.default.caret', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'input.incomplete.fg', value: (getToken) => getToken('color.neutral.400') },
+
+	{ keyPrefix: 'divider', name: l10n.l('theme.dividerColors', "Divider colors"), sortOrder: 170 },
+	{ key: 'divider.default.border', value: (getToken) => getToken('color.base.400') },
+	{ key: 'divider.muted.border', value: (getToken) => getToken('color.base.300') },
+	{ key: 'divider.subtle.border', value: (getToken) => getToken('color.base.200') },
+	{ key: 'divider.strong.border', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'divider.contrast.border', value: '#000000' },
+	{ key: 'divider.accent.border', value: (getToken) => getToken('color.accent.300') },
+
+	{ keyPrefix: 'link', name: l10n.l('theme.linkColors', "Link colors"), sortOrder: 170 },
+	{ key: 'link.default.fg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'link.default.fg.hover', value: (getToken) => getToken('color.action.200') },
+	{ key: 'link.default.fg.active', value: (getToken) => getToken('color.action.100') },
+
+	{ keyPrefix: 'focus', name: l10n.l('theme.focusColors', "Focus colors"), sortOrder: 180 },
+	{ key: 'focus.ring', value: (getToken) => getToken('color.accent.300') },
+
+	{ keyPrefix: 'indicator', name: l10n.l('theme.indicatorColors', "Indicator colors"), sortOrder: 190 },
+	{ key: 'indicator.active.border', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'indicator.context.border', value: (getToken) => getToken('color.accent.300') },
+
+	{ keyPrefix: 'scrollbar', name: l10n.l('theme.scrollbarColors', "Scrollbar colors"), sortOrder: 200 },
+	{ key: 'scrollbar.thumb.bg', value: (getToken) => mix(getToken('color.base.200'), getToken('color.neutral.300'), 50) },
+
+	{ keyPrefix: 'status', name: l10n.l('theme.statusColors', "Status colors"), sortOrder: 210 },
+	{ key: 'status.danger.bg', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'status.danger.fg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'status.danger.border', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'status.info.bg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'status.info.fg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'status.info.border', value: (getToken) => getToken('color.action.300') },
+	{ key: 'status.success.bg', value: (getToken) => getToken('color.success.300') },
+	{ key: 'status.success.fg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'status.success.border', value: (getToken) => getToken('color.success.300') },
+	{ key: 'status.warning.bg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'status.warning.fg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'status.warning.border', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'status.active.bg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'status.active.fg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'status.active.border', value: (getToken) => getToken('color.action.300') },
+	{ key: 'status.inactive.bg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'status.inactive.fg', value: (getToken) => getToken('color.base.200') },
+	{ key: 'status.inactive.border', value: (getToken) => getToken('color.neutral.300') },
+
+	// IdleLevel colors
+	{ keyPrefix: 'idlelevel', name: l10n.l('theme.idlelevelColors', "Idle level colors"), sortOrder: 220 },
+	{ key: 'idlelevel.asleep.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'idlelevel.active.fg', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'idlelevel.idle.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'idlelevel.away.fg', value: (getToken) => mix(getToken('color.danger.300'), getToken('color.accent.300'), 80) },
+	{ key: 'idlelevel.bot.fg', value: (getToken) => mix(getToken('color.action.300'), getToken('color.contrast.300'), 80) },
 
 	// Log colors
-	'log.error': (c) => mix(c.danger, c.muted, 70),
-	'log.cmd': (c) => c.accent,
-	'log.attr': (c) => c.accent,
-	'log.listitem': (c) => mix(c.action, c.muted, 50),
-	'log.delim': (c) => c.muted,
-	'log.text': (c) => adjust(c.muted, 16),
-	'log.entityid': (c) => adjust(c.muted, 16),
-	'log.bot': (c) => mix(c.action, c.contrast, 80),
-	'log.instance': (c) => mix(c.action, c.muted, 60),
-	'log.card': (c) => mix(c.accent, c.base, 10),
+	{ keyPrefix: 'log', name: l10n.l('theme.logColors', "Message log colors"), sortOrder: 230 },
+	{ key: 'log.error.fg', value: (getToken) => mix(getToken('color.danger.300'), getToken('color.neutral.300'), 70) },
+	{ key: 'log.cmd.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'log.attr.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'log.listitem.fg', value: (getToken) => mix(getToken('color.action.300'), getToken('color.neutral.300'), 50) },
+	{ key: 'log.delim.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'log.text.fg', value: (getToken) => getToken('color.neutral.600') },
+	{ key: 'log.entityid.fg', value: (getToken) => getToken('color.neutral.600') },
+	{ key: 'log.bot.fg', value: (getToken) => getToken('idlelevel.bot.fg') },
+	{ key: 'log.instance.fg', value: (getToken) => mix(getToken('color.action.300'), getToken('color.neutral.300'), 60) },
+	{ key: 'log.card.bg', value: (getToken) => mix(getToken('color.accent.300'), getToken('color.base.200'), 10) },
+	{ key: 'log.strong.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'log.default.fg', value: (getToken) => getToken('content.default.fg') },
+	{ key: 'log.ooc.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'log.comm.fg', value: (getToken) => getToken('color.neutral.600') },
+	{ key: 'log.placeholder.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'log.char.fg', value: (getToken) => getToken('log.listitem.fg') },
+	{ key: 'log.source.fg', value: (getToken) => getToken('log.text.fg') },
+	{ key: 'log.info.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'log.title.fg', value: (getToken) => getToken('color.contrast.200') },
+	{ key: 'log.code.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'log.code.bg', value: (getToken) => getToken('surface.100.bg') },
+	{ key: 'log.header.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'log.link.fg', value: (getToken) => getToken('link.default.fg') },
+	{ key: 'log.cmd.ooc.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'log.formatter.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'log.emphasis.fg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'log.fieldset.bg', value: (getToken) => getToken('surface.200.bg') },
+	{ key: 'log.fieldset.border', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'log.fieldset.label.fg', value: (getToken) => getToken('log.default.fg') },
+	{ key: 'log.active.fg', value: (getToken) => getToken('content.active.fg') },
+	{ key: 'log.inactive.fg', value: (getToken) => getToken('color.base.400') },
+	{ key: 'log.invalid.bg', value: (getToken) => mix(getToken('surface.200.bg'), getToken('color.danger.300'), 80) },
+	{ key: 'log.mark.fg', value: (getToken) => getToken('color.neutral.600') },
+	{ key: 'log.mark.bg', value: (getToken) => getToken('surface.400.bg') },
+	{ key: 'log.mark.ooc.fg', value: (getToken) => getToken('color.neutral.400') },
+	{ key: 'log.mark.comm.fg', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'log.highlight.bg', value: (getToken) => getToken('surface.300.bg') },
+	{ key: 'log.highlight.fg', value: (getToken) => getToken('color.neutral.400') },
+	{ key: 'log.highlight.ooc.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'log.highlight.comm.fg', value: (getToken) => getToken('color.neutral.700') },
+	{ key: 'log.highlight.mark.bg', value: (getToken) => getToken('surface.500.bg') },
+	{ key: 'log.highlight.mark.fg', value: (getToken) => getToken('color.neutral.600') },
+	{ key: 'log.highlight.mark.ooc.fg', value: (getToken) => getToken('color.neutral.500') },
+	{ key: 'log.highlight.mark.comm.fg', value: '#fff' },
+	{ key: 'log.highlight.fieldset.bg', value: (getToken) => getToken('surface.300.bg') },
+	{ key: 'log.highlight.fieldset.border', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'log.highlight.fieldset.label.fg', value: (getToken) => getToken('log.default.fg') },
+
+	// Tag colors
+	{ keyPrefix: 'tag', name: l10n.l('theme.tagColors', "Tag colors"), sortOrder: 240 },
+	{ key: 'tag.default.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'tag.default.border', value: (getToken) => getToken('tag.default.fg') },
+	{ key: 'tag.default.fg.hover', value: (getToken) => getToken('color.neutral.500') },
+	{ key: 'tag.default.border.hover', value: (getToken) => getToken('tag.default.fg.hover') },
+	{ key: 'tag.dislike.fg', value: (getToken) => getToken('color.danger.300') },
+	{ key: 'tag.dislike.border', value: (getToken) => getToken('tag.dislike.fg') },
+	{ key: 'tag.dislike.fg.hover', value: (getToken) => getToken('color.danger.400') },
+	{ key: 'tag.dislike.border.hover', value: (getToken) => getToken('tag.dislike.fg.hover') },
+	{ key: 'tag.title.fg', value: (getToken) => getToken('color.action.300') },
+	{ key: 'tag.title.border', value: (getToken) => getToken('tag.title.fg') },
+	{ key: 'tag.title.fg.hover', value: (getToken) => getToken('color.action.200') },
+	{ key: 'tag.title.border.hover', value: (getToken) => getToken('tag.title.fg.hover') },
+	{ key: 'tag.icon.fg', value: (getToken) => getToken('color.base.200') },
+
+	// SVGs
+	{ keyPrefix: 'svg', name: l10n.l('theme.svgColors', "SVG colors"), sortOrder: 250 },
+	{ key: 'svg.placeholder.100.bg', value: (getToken) => getToken('surface.300.bg') },
+	{ key: 'svg.placeholder.100.fg', value: (getToken) => getToken('surface.100.bg') },
+	{ key: 'svg.placeholder.200.bg', value: (getToken) => getToken('surface.400.bg') },
+	{ key: 'svg.placeholder.200.fg', value: (getToken) => getToken('surface.200.bg') },
+
+	// Modals
+	{ keyPrefix: 'modal', name: l10n.l('theme.modalColors', "Modal colors"), sortOrder: 260 },
+	{ key: 'modal.overlay.bg', value: '#00000066', type: 'rgba' },
+	{ key: 'modal.shadow', value: '#00000099', type: 'rgba' },
 
 	// src/common/scss/_badge.scss
-	'badge.highlight': (c) => alpha(adjust(c.base, 22, 8), 0.5),
-	'badge.highlight.hover': (c) => alpha(adjust(c.base, 19, 8), 0.5),
-	'badge.dark.hover': (c) => adjust(c.base, -6),
-	'badge.hover': (c) => adjust(c.base, -3),
+	{ keyPrefix: 'badge', name: l10n.l('theme.badgeColors', "Badge control colors"), sortOrder: 270 },
+	{ key: 'badge.100.bg', value: (getToken) => getToken('surface.100.bg') },
+	{ key: 'badge.100.bg.hover', value: (getToken) => adjust(getToken('color.base.200'), -6) },
+	{ key: 'badge.200.bg', value: (getToken) => getToken('surface.200.bg') },
+	{ key: 'badge.200.bg.hover', value: (getToken) => getToken('surface.100.bg') },
+	{ key: 'badge.avatar.bg', value: (getToken) => getToken('surface.400.bg') },
+	{ key: 'badge.avatar.fg', value: (getToken) => getToken('surface.200.bg') },
+	{ key: 'badge.dark.avatar.bg', value: (getToken) => getToken('surface.300.bg') },
+	{ key: 'badge.dark.avatar.fg', value: (getToken) => getToken('surface.100.bg') },
+	{ key: 'badge.symbol.fg', value: (getToken) => getToken('content.default.fg') },
+	{ key: 'badge.icon.bg', value: (getToken) => getToken('surface.400.bg') },
+	{ key: 'badge.icon.fg', value: (getToken) => getToken('content.default.fg') },
+	{ key: 'badge.text.fg', value: (getToken) => getToken('content.default.fg') },
+	{ key: 'badge.title.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'badge.subtitle.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'badge.strong.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'badge.highlight.fg', value: (getToken) => getToken('log.instance.fg') },
+	{ key: 'badge.error.fg', value: (getToken) => getToken('content.error.fg') },
+	{ key: 'badge.divider.border', value: (getToken) => getToken('surface.500.bg') },
 
-	// src/common/scss/_common.scss
-	'common.level.asleep': (c) => c.muted,
-	'common.level.active': (c) => c.contrast,
-	'common.level.idle': (c) => c.accent,
-	'common.level.inactive': (c) => mix(c.danger, c.accent, 80),
-	'common.level.bot': (c) => mix(c.action, c.contrast, 80),
+	// src/common/classes/dialog-theme.scss
+	{ keyPrefix: 'dialog', name: l10n.l('theme.dialogColors', "Dialog specific colors"), sortOrder: 280 },
+	{ key: 'dialog.input.bg', value: (getToken) => getToken('color.neutral.500') },
+	{ key: 'dialog.input.bg.hover', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'dialog.input.fg', value: '#000000' },
 
-	// src/common/components/autocomplete.scss
-	'autocomplete.hover.background': (c) => adjust(c.action, 20),
-	'autocomplete.selected.background': (c) => adjust(c.action, 30),
+	// src/common/scss/_kbd.scss
+	{ keyPrefix: 'kbd', name: l10n.l('theme.kbdColors', "Keyboard key colors"), sortOrder: 290 },
+	{ key: 'kbd.fg', value: (getToken) => getToken('control.danger.fg') },
+	{ key: 'kbd.text.shadow', value: (getToken) => getToken('color.neutral.600') },
+	{ key: 'kbd.bg', value: (getToken) => getToken('color.neutral.400') },
+	{ key: 'kbd.border', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'kbd.shadow', value: '#0000004d', type: 'rgba' },
+	{ key: 'kbd.highlight', value: '#fff' },
 
-	// src/common/components/navButtons.scss
-	'navbuttons.btn.hover.fill': (c) => adjust(c.base, 19),
+	// src/common/components/simpleBar-theme.scss
+	{ keyPrefix: 'simplebar', name: l10n.l('theme.simplebarColors', "Simplebar component color"), sortOrder: 300 },
+	{ key: 'simplebar.thumb.bg', value: (getToken) => getToken('color.neutral.300') },
 
-	// src/common/components/kebabMenu.scss
-	'kebabmenu.btn.background': (c) => alpha(c.base, 0.8),
-
-	// src/common/components/togglebox.scss
-	'togglebox.action.hover': (c) => adjust(c.action, 5),
-	'togglebox.danger.hover': (c) => adjust(c.danger, 5),
-
-	// src/common/classes/tooltip.scss
-	'tooltip.background': (c) => alpha(adjust(c.base, -10), 0.9),
-
-	// src/common/components/popupTip.scss
-	'popuptip.background': (c) => alpha(adjust(c.base, -10), 0.9),
-
-	// src/common/components/popupPill.scss
-	'popuppill.tip.background': (c) => alpha(adjust(c.base, -10), 0.9),
+	// src/common/classes/tooltip-theme.scss
+	{ keyPrefix: 'tooltip', name: l10n.l('theme.tooltipColors', "Tool tip specific colors"), sortOrder: 310 },
+	{ key: 'tooltip.bg', value: (getToken) => rgba(adjust(getToken('color.base.200'), -10), 230), type: 'rgba' },
+	{ key: 'tooltip.fg', value: (getToken) => getToken('color.neutral.500') },
 
 	// src/common/modules/toaster/toaster.scss
-	'toaster.info.background': 'rgba(48,55,83,90%)',
-	'toaster.success.background': 'rgba(39,67,42,90%)',
-	'toaster.warn.background': 'rgba(73,40,28,90%)',
-	'toaster.success.background.hover': '#27432a',
-	'toaster.warn.background.hover': 'rgba(73,40,28,1)',
-	'toaster.close.background.hover': 'rgba(255,255,255,6%)',
-};
+	//
+	// It is a module, but since it is also used by hub which doesn't have the
+	// Theme module, we register them here.
+	{ keyPrefix: 'toaster', name: l10n.l('theme.toasterColors', "Toaster colors"), sortOrder: 320 },
+	{ key: 'toaster.info.bg.hover', value: (getToken) => getToken('color.base.500') },
+	{ key: 'toaster.info.bg', value: (getToken) => rgba(getToken('toaster.info.bg.hover'), 230), type: 'rgba' },
+	{ key: 'toaster.success.bg.hover', value: (getToken) => mix(getToken('status.success.bg'), getToken('color.base.200'), 50) },
+	{ key: 'toaster.success.bg', value: (getToken) => rgba(getToken('toaster.success.bg.hover'), 230), type: 'rgba' },
+	{ key: 'toaster.warn.bg.hover', value: (getToken) => adjust(mix(getToken('status.danger.bg'), getToken('color.base.200'), 63), -16, -3) },
+	{ key: 'toaster.warn.bg', value: (getToken) => rgba(getToken('toaster.warn.bg.hover'), 230), type: 'rgba' },
+	{ key: 'toaster.shadow', value: '#000000' },
+];
 
 export default tokens;

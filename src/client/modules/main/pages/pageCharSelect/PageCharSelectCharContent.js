@@ -39,7 +39,7 @@ class PageCharSelectCharContent {
 
 		this.elem = new Elem(n => n.elem('div', [
 			n.elem('div', { className: 'badge--select badge--margin' }, [
-				n.elem('button', { className: 'badge--faicon iconbtn medium solid', events: {
+				n.elem('button', { className: 'badge--faicon iconbtn medium default-400 filled', events: {
 					click: (c, ev) => {
 						this.module.pageCharSettings.open(this.char);
 						ev.stopPropagation();

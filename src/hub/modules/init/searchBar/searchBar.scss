@@ -10,11 +10,11 @@
 
 	&--input {
 
-		background: $color-base-light;
+		background: $theme-surface-300-bg;
 		padding: 18px 16px;
 		border-radius: 14px;
-		border: 1px solid $color-base-lightest;
-		color: $color-muted-lighter;
+		border: 1px solid $theme-surface-500-bg;
+		color: $theme-content-strong-fg;
 		padding-left: 64px;
 		font-size: 16px;
 		box-shadow: 0px 3px 6px #00000029;

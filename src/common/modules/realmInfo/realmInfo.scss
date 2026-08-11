@@ -33,8 +33,8 @@
 		display: block;
 
 		&.placeholder {
-			background: $theme-color-base-light;
-			color: $theme-color-base-dark;
+			background: $theme-svg-placeholder-100-bg;
+			color: $theme-svg-placeholder-100-fg;
 			overflow: hidden;
 		}
 	}
@@ -63,7 +63,7 @@
 
 	&--title {
 		font-family: $font-text;
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: 32px;
 		line-height: 110%;
 	}
@@ -83,7 +83,7 @@
 	}
 
 	&--dot {
-		background: $theme-color-muted;
+		background: $theme-status-inactive-bg;
 		display: inline-block;
 		width: 10px;
 		height: 10px;
@@ -93,7 +93,7 @@
 		vertical-align: middle;
 		margin-right: 10px;
 		&.highlight {
-			background: $theme-color-action;
+			background: $theme-status-active-bg;
 		}
 	}
 
@@ -105,8 +105,8 @@
 		display: block;
 
 		&.placeholder {
-			background: $theme-color-base-light;
-			color: $theme-color-base-dark;
+			background: $theme-svg-placeholder-100-bg;
+			color: $theme-svg-placeholder-100-fg;
 			overflow: hidden;
 		}
 	}
@@ -156,7 +156,7 @@
 		font-size: $font-size-tiny;
 		text-transform: uppercase;
 		line-height: 125%;
-		color: $theme-color-muted;
+		color: $theme-content-default-fg;
 		font-family: "Open Sans", sans-serif;
 		font-weight: 300;
 		margin-bottom: 20px;
@@ -195,9 +195,7 @@
 		cursor: pointer;
 
 		&:hover {
-			.greetingscreen--footer-logo-text {
-				color: $theme-color-action;
-			}
+			color: $theme-link-default-fg-hover;
 		}
 	}
 

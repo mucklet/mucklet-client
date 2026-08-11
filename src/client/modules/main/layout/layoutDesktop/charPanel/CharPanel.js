@@ -27,9 +27,9 @@ class CharPanel {
 			data: Object.assign({ pageInfo: null }, this.module.charPages.getModel().props),
 			eventBus: this.module.self.app.eventBus,
 		});
-		this.component = new Panel("", null, { align: 'left', className: 'charpanel' });
+		this.panel = new Panel("", null, { align: 'left', className: 'charpanel' });
 
-		this.module.activePanel.setNode('charPanel', this.component);
+		this.module.activePanel.setNode('charPanel', this.panel);
 		this._setListeners(true);
 		this._onCharPagesChange();
 		this._onModelChange();
@@ -41,7 +41,7 @@ class CharPanel {
 	 * @returns {this}
 	 */
 	toggle(open) {
-		this.component.toggle(open);
+		this.panel.toggle(open);
 		return this;
 	}
 
@@ -75,24 +75,24 @@ class CharPanel {
 		let page = m.page;
 
 		if (!pi) {
-			this.component.setTitle("").setButton(null).setComponent(null);
+			this.panel.setTitle("").setButton(null).setComponent(null, { transition: 'fade' });
 			return;
 		}
 
-		this.component
+		this.panel
 			.setTitle(pi.title || '')
 			.setButton(pi.close || (page && page.close) || null, pi.closeIcon || 'chevron-circle-left')
 			.setComponent(pi.component, {
 				onRender: () => {
 					// Restore scrolling of page
-					let sb = this.component.getSimpleBar();
+					let sb = this.panel.getSimpleBar();
 					if (sb) {
 						sb.getScrollElement().scrollTop = page.state.scrollTop || 0;
 					}
 				},
 				onUnrender: () => {
 					// Store scrolling of page
-					let sb = this.component.getSimpleBar();
+					let sb = this.panel.getSimpleBar();
 					if (sb) {
 						page.state.scrollTop = sb.getScrollElement().scrollTop;
 					}

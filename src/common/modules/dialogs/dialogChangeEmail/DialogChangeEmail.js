@@ -63,7 +63,7 @@ class DialogChangeEmail {
 					new PasswordInput(model.pass, {
 						onInput: c => model.set({ pass: c.getValue() }),
 						inputOpt: { className: 'dialog--input' },
-						className: 'darkeye',
+						iconClassName: 'dialog--input-icon',
 					}),
 					{
 						className: 'common--sectionpadding',

@@ -1,11 +1,11 @@
 import arraysEqual from './arraysEqual';
 
 /**
- * @typedef {object} modelComponentSelectorComponent
- * @property {function} [component] Component to set.
- * @property {function} [factory] Component factory function. Ignored if a component property is set: function(model) -> Component
- * @property {function} [condition] Condition function if component is to be selected: function(model) -> boolean
- * @property {function} [hash] Callback that returns a value that determines if a new component should be created. Ignored if the factory property is not used: function(model) -> {*|Array.<*>}
+ * @typedef {object} resourceComponentSelectorComponent
+ * @property {Component} [component] Component to set.
+ * @property {(resource: any) => Component} [factory] Component factory function. Ignored if a component property is set.
+ * @property {(resource: any) => boolean} [condition] Condition function if component is to be selected.
+ * @property {(resource: any) => (any|Array.<any>)} [hash] Callback that returns a value that determines if a new component should be created. Ignored if the factory property is not used.
  */
 
 const defaultSetter = (c, component) => c?.setComponent(component);
@@ -33,26 +33,29 @@ function equalHash(a, b) {
 }
 
 /**
- * Returns a function to be used as on change callback for ModelComponent
- * classes.
+ * Returns a function to be used as on change callback for ModelComponent or
+ * CollectionComponent classes.
  *
- * The function will iterate over a set of component factories,
- * selecting the first that meets the condition, and setting it using a setter.
+ * The function will iterate over a set of component factories, selecting the
+ * first that meets the condition, and setting it using a setter.
  *
  * If no component meets the condition, a null component will be set.
  *
- * If a subsequent model change callback results in the same component, no new
- * component will be set unless:
+ * If a subsequent resource event callback results in the same component, no new
+ * component will be set unless the following critera are all true:
  * 1) The component uses a factory function.
  * 2) The component has a hash function.
  * 3) The hash function produces a different hash than previous.
  *
- * @param {Array.<modelComponentSelectorComponent>} components An array of selector component objects.
+ * @param {Array.<resourceComponentSelectorComponent>} components An array of
+ * selector component objects.
  * @param {object} [opt] Optional parameters.
- * @param {function} [opt.setter] Setter callback that sets the selected component: function(wrappedComponent, selectedComponent). Defaults to (c, component) => c.setComponent(component).
- * @returns {function} Callback function for ModelComponent onChange callback.
+ * @param {function} [opt.setter] Setter callback that sets the selected
+ * component: function(wrappedComponent, selectedComponent). Defaults to (c,
+ * component) => c.setComponent(component).
+ * @returns {function} Callback function for ModelComponent or CollectionComponent event callback.
  */
-export default function modelComponentSelector(components, opt) {
+export default function resourceComponentSelector(components, opt) {
 	let selected = null;
 	let hash = null;
 	let setter = opt?.setter || defaultSetter;

@@ -60,10 +60,18 @@ class PageRequestsRequest {
 								]),
 							]),
 						]),
+
+						// Incoming mark
+						n.elem('div', { className: 'counter-group' }, [
+							n.elem('incoming', 'div', { className: 'counter small top-right alert' }),
+						]),
+
 						n.component('actions', new Collapser(null)),
+
 					]),
 				])),
 				(m, c) => {
+					c[this.outgoing || m.state != 'pending' ? 'addNodeClass' : 'removeNodeClass']('incoming', 'remove');
 					c[m.state == 'pending' ? 'removeNodeClass' : 'addNodeClass']('btn', 'inactive');
 					for (let state in stateIcons) {
 						c[m.state == state ? 'addNodeClass' : 'removeNodeClass']('icon', state);

@@ -128,11 +128,11 @@ class StripePaymentElement {
 				theme: 'flat',
 				variables: {
 					colorPrimary: '#c1a657', // $color-accent
-					colorBackground: '#303753', // $color-base-lightest
+					colorBackground: '#2c334d', // $color-base-500
 					colorText: '#fffcf2', // $color-contrast
-					colorDanger: '#9a593e', // $log-error
-					colorTextPlaceholder: '#676c82', // $color-base-placeholder-light
-					colorTextSecondary: '#93969f', // $color-muted
+					colorDanger: '#9a593e', // $log-error-fg
+					colorTextPlaceholder: '#676c82', // $control-placeholder-fg
+					colorTextSecondary: '#93969f', // $color-neutral
 					colorIcon: '#fffcf2', // $color-contrast
 					fontSizeBase: '16px', // $font-size
 					fontFamily: 'Open Sans, sans-serif',

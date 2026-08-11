@@ -56,7 +56,7 @@ class PlayerSettingsManagerTokenComponent {
 						}}, [
 							n.elem('div', { className: 'badge--select' }, [
 								n.elem('button', {
-									className: 'badge--faicon iconbtn smallicon solid',
+									className: 'badge--faicon iconbtn smallicon default-400 filled',
 									events: {
 										click: (c, e) => {
 											let tokens = ctx.collection?._collection; // [TODO] Once the bug is fixed in CollectionWrapper, replace with this: getCollection();

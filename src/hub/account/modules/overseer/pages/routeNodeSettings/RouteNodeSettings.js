@@ -173,7 +173,7 @@ class RouteNodeSettings {
 			id: 'nodeSettings-link',
 			type: 'button',
 			sortOrder: 200,
-			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium solid', events: {
+			componentFactory: (node) => new Elem(n => n.elem('button', { className: 'iconbtn medium default-400 filled', events: {
 				click: (c, ev) => {
 					ev.stopPropagation();
 					this.setRoute({ nodeKey: node.key });

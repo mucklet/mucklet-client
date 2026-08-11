@@ -121,7 +121,7 @@ export function filterTriggers(str, triggers) {
 	triggers.sort(keySort);
 	parseTokens(tokens, { triggers });
 	let foundTriggers = {};
-	tokens.filter(t => t.type == 'highlight_start').forEach(t => foundTriggers[t.trigger.key] = t.trigger);
+	tokens.filter(t => t.type == 'mark_start').forEach(t => foundTriggers[t.trigger.key] = t.trigger);
 	let keys = Object.keys(foundTriggers);
 	if (!keys.length) {
 		return null;
@@ -150,7 +150,7 @@ export function firstTriggerWord(str, triggers) {
 	parseTokens(tokens, { triggers }, true);
 
 	for (let t of tokens) {
-		if (t.type == 'highlight_static') {
+		if (t.type == 'mark_static') {
 			return t.content;
 		}
 	}
@@ -174,8 +174,8 @@ const token_sub_end = new Token('sub_end', '</sub>');
 const token_strikethrough_start = new Token('strikethrough_start', '<s>');
 const token_strikethrough_end = new Token('strikethrough_end', '</s>');
 const token_br = new Token(typeBr, '<br/>');
-const token_highlight_start = new Token('highlight_start', '<span class="highlight">');
-const token_highlight_end = new Token('highlight_end', '</span>');
+const token_mark_start = new Token('mark_start', '<span class="mark">');
+const token_mark_end = new Token('mark_end', '</span>');
 const token_h1_start = new Token('h1_start', '<h1>', 0);
 const token_h1_end = new Token('h1_end', '</h1>', 0);
 const token_h2_start = new Token('h2_start', '<h2>', 0);
@@ -412,10 +412,10 @@ function triggers(tokens, opt, keepContent) {
 
 					let txtIdx = str.indexOf(trigger.key);
 					if (txtIdx >= 0 && isBoundary(str, txtIdx) && isBoundary(str, txtIdx + triggerLength)) {
-						spliceTextToken(tokens, idx, txtIdx + triggerLength, txtIdx + triggerLength, token_highlight_end, keepContent);
-						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign(token_highlight_start.clone(), { trigger }), keepContent);
+						spliceTextToken(tokens, idx, txtIdx + triggerLength, txtIdx + triggerLength, token_mark_end, keepContent);
+						spliceTextToken(tokens, idx, txtIdx, txtIdx, Object.assign(token_mark_start.clone(), { trigger }), keepContent);
 						let t = tokens[idx + 2];
-						t.type = 'highlight_static';
+						t.type = 'mark_static';
 						if (!keepContent) {
 							t.content = escapeHtml(t.content);
 						}

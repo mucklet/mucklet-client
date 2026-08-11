@@ -133,7 +133,7 @@ class ConsoleComponent {
 										this.module.charLog.getUnseenTargeted(),
 										new ModelComponent(
 											this.module.charLog.getUnseen(),
-											new Elem(n => n.elem('div', { className: 'counter' }, [
+											new Elem(n => n.elem('div', { className: 'counter top-right' }, [
 												n.component('txt', new Txt("")),
 											])),
 											(m, c) => {

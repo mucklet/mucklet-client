@@ -8,7 +8,7 @@
 	&--key {
 		font-size: $font-size-large;
 		line-height: 24px;
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 	}
 
 	&--footertools {
@@ -22,7 +22,7 @@
 		border-radius: 10px;
 		width: 480px;
 		max-width: 100%;
-		background: $color-base-lighter;
+		background: $theme-surface-400-bg;
 
 		&:not(.placeholder) {
 			cursor: pointer;
@@ -34,7 +34,7 @@
 		border-radius: 10px;
 		width: 140px;
 		max-width: 100%;
-		background: $color-base-lighter;
+		background: $theme-surface-400-bg;
 
 		&:not(.placeholder) {
 			cursor: pointer;
@@ -67,7 +67,7 @@
 
 	&--version {
 		font-size: $font-size-small;
-		color: $color-muted;
+		color: $theme-content-default-fg;
 	}
 
 	&--medialinks {

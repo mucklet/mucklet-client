@@ -1,0 +1,9 @@
+@import '~scss/variables';
+
+// PageEditRoomScript log level colors
+$theme-pageeditroomscript-time-fg: var(--mu-pageeditroomscript-time-fg, #{$theme-color-neutral-700});
+$theme-pageeditroomscript-log-fg: var(--mu-pageeditroomscript-log-fg, #{$theme-color-neutral-300});
+$theme-pageeditroomscript-debug-fg: var(--mu-pageeditroomscript-debug-fg, #{$theme-color-neutral-200});
+$theme-pageeditroomscript-info-fg: var(--mu-pageeditroomscript-info-fg, #{$theme-color-contrast-300});
+$theme-pageeditroomscript-warn-fg: var(--mu-pageeditroomscript-warn-fg, #{$theme-color-accent-300});
+$theme-pageeditroomscript-error-fg: var(--mu-pageeditroomscript-error-fg, #{$theme-log-error-fg});

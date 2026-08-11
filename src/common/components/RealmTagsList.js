@@ -94,7 +94,7 @@ class RealmTagsList {
 						}, [
 							n.component(new ModelTxt(tag, m => m.key)),
 							n.component(onDelete ? new Elem(n => n.elem('button', {
-								className: 'realmtagslist--delete',
+								className: 'realmtagslist--delete iconbtn puny default-400',
 								events: {
 									click: (c, e) => {
 										onDelete(tag, this.tags);

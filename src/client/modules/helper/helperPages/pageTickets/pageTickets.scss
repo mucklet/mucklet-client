@@ -1,18 +1,11 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-// Page tickets colors
-$pagetickets-ticket-unassigned-background: darken($color-base, 6%);
-$pagetickets-ticket-unassigned-background-hover: darken($color-base, 9%);
-// Page tickets theme vars
-$theme-pagetickets-ticket-unassigned-background: var(--mu-pagetickets-ticket-unassigned-background, #{$pagetickets-ticket-unassigned-background});
-$theme-pagetickets-ticket-unassigned-background-hover: var(--mu-pagetickets-ticket-unassigned-background-hover, #{$pagetickets-ticket-unassigned-background-hover});
-
 .pagetickets {
 	padding: 16px 14px;
 
 	&--name {
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size;
 	}
 
@@ -28,27 +21,8 @@ $theme-pagetickets-ticket-unassigned-background-hover: var(--mu-pagetickets-tick
 	}
 }
 
-
 .pagetickets-ticket {
 	padding: 2px 0;
-
-	&--icon.accepted {
-		@include btn-style($theme-color-action, $theme-color-action, $theme-color-action, $black, $black);
-	}
-
-	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-color-danger, $theme-color-danger, $theme-color-danger, $black, $black);
-	}
-
-	&--badge.unassigned {
-		background: $theme-pagetickets-ticket-unassigned-background;
-
-		&:not(:disabled) {
-			&:hover, &:focus, &:active {
-				background: $theme-pagetickets-ticket-unassigned-background-hover;
-			}
-		}
-	}
 }
 
 .pagetickets-ticket, .pagetickets-activity {
@@ -70,9 +44,5 @@ $theme-pagetickets-ticket-unassigned-background-hover: var(--mu-pagetickets-tick
 	&--head {
 		padding: 0 0 8px;
 		font-size: $font-size-small;
-	}
-
-	&--nomail {
-		font-style: italic;
 	}
 }

@@ -6,10 +6,10 @@
 	padding: 8px 0 0 0;
 
 	.charlog--fieldset {
-		border-color: $theme-color-action;
+		border-color: $theme-status-info-border;
 	}
 
 	.charlog--fieldset-label {
-		color: $theme-color-action;
+		color: $theme-content-info-fg;
 	}
 }

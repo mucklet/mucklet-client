@@ -22,7 +22,7 @@ class PageTicketsTicket {
 		this.elem = new ModelComponent(
 			this.ticket,
 			new Elem(n => n.elem('div', { className: 'pagetickets-ticket' }, [
-				n.elem('badge', 'div', { className: 'pagetickets-ticket--badge badge btn margin4', events: {
+				n.elem('div', { className: 'pagetickets-ticket--badge badge btn margin4', events: {
 					click: () => this._toggleInfo(),
 				}}, [
 					n.elem('div', { className: 'badge--select' }, [
@@ -75,10 +75,14 @@ class PageTicketsTicket {
 							);
 						},
 					)),
+					// Unassigned mark
+					n.elem('div', { className: 'counter-group' }, [
+						n.elem('unassigned', 'div', { className: 'counter small top-right alert' }),
+					]),
 				]),
 			])),
 			(m, c) => {
-				c[m.assigned ? 'removeNodeClass' : 'addNodeClass']('badge', 'unassigned');
+				c[m.assigned ? 'addNodeClass' : 'removeNodeClass']('unassigned', 'hide');
 			},
 		);
 		return this.elem.render(el);

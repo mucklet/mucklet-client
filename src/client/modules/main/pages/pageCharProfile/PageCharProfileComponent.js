@@ -22,7 +22,7 @@ class PageCharProfileComponent {
 	render(el) {
 		this.model = new Model({ data: this.state, eventBus: this.module.self.app.eventBus });
 		let createProfile = new Elem(n => n.elem('div', { className: 'common--addpadding' }, [
-			n.elem('button', { events: { click: this._onCreate }, className: 'btn icon-left common--addbtn' }, [
+			n.elem('button', { events: { click: this._onCreate }, className: 'btn icon-left default-300 full-width dashed' }, [
 				n.component(new FAIcon('plus')),
 				n.component(new Txt(l10n.l('pageCharProfile.createProfile', "Create new profile"))),
 			]),

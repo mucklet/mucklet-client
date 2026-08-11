@@ -2,12 +2,12 @@
 
 .listemailusers {
 	&--deleted > code {
-		color: $theme-color-muted;
+		color: $theme-log-default-fg;
 	}
 	&--banned > code {
-		color: $theme-log-error;
+		color: $theme-log-error-fg;
 	}
 	&--notverified {
-		color: $theme-log-error;
+		color: $theme-log-error-fg;
 	}
 }

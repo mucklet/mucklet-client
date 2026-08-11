@@ -9,7 +9,7 @@
 	column-gap: 24px;
 
 	&--headerbtn.btn, &--headerbtn.iconbtn {
-		@include btn-style($color-base, $color-base-light, $color-base-lighter, $color-muted-light, $color-muted-lightest);
+		@include btn-style($theme-surface-200-bg, $theme-surface-300-bg, $theme-surface-400-bg, $theme-control-default-300-fg-hover, $theme-content-strong-fg);
 	}
 
 	&--helpbtn {
@@ -22,8 +22,6 @@
 		font-size: 20px;
 	}
 	&--joinbtn, &--loginbtn {
-		// color: $color-base !important;
-		// background: linear-gradient(180deg, rgba(74,159,195,1) 0%, rgba(86,183,224,1) 50%, rgba(74,159,195,1) 100%) !important;
 		padding: 4px 18px;
 		min-width: 120px;
 		height: 40px;
@@ -43,14 +41,14 @@
 	position: absolute;
 	z-index: 1001;
 	border-radius: 6px;
-	-webkit-box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.5);
-	box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 1px 6px 0px $theme-surface-shadow;
+	box-shadow: 1px 1px 6px 0px $theme-surface-shadow;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	row-gap: 8px;
 
-	background: $color-base;
+	background: $theme-surface-200-bg;
 	animation-name: signin-menu-appear;
 	animation-duration: 0.3s;
 	transform-origin: 100% 0%;
@@ -63,8 +61,8 @@
 	&--logout, &--item {
 		display: block;
 		padding: 8px 16px 8px 12px;
-		background: $color-base;
-		color: $color-muted-lightest;
+		background: $theme-surface-200-bg;
+		color: $theme-content-strong-fg;
 		cursor: pointer;
 		-webkit-transition: color 0.2s, background-color 0.2s;
 		-ms-transition: color 0.2s, background-color 0.2s;
@@ -73,8 +71,8 @@
 
 
 		&:hover {
-			background: $color-base-lighter;
-			color: $color-muted-lightestest;
+			background: $theme-surface-400-bg;
+			color: $theme-content-strong-fg;
 		}
 	}
 

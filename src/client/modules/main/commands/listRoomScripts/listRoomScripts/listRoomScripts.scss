@@ -2,10 +2,10 @@
 
 .listroomscripts {
 	&-active {
-		color: $theme-color-action;
+		color: $theme-log-active-fg;
 	}
 
 	&-inactive {
-		color: $theme-color-base-lighter;
+		color: $theme-log-inactive-fg;
 	}
 }

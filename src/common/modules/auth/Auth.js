@@ -11,6 +11,12 @@ const crossOrigin = API_CROSS_ORIGIN;
 const wsLoginRid = AUTH_LOGIN_RID;
 const wsAuthRid = AUTH_AUTHENTICATE_RID;
 const hubUrl = HUB_PATH;
+// Refresh early enough that an access token cannot expire in transit.
+const refreshSafetyMargin = 1000 * 60 * 15;
+// Refresh periodically when the server did not provide an access-token expiry.
+const fallbackRefreshDuration = 1000 * 60 * 60 * 24 * 6;
+// Retry transient authentication-service failures without busy-looping.
+const retryRefreshDuration = 1000 * 60;
 
 function redirectWithUri(url, pushHistory) {
 	redirect(url + (url.indexOf('?') >= 0 ? '&' : '?') + 'redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
@@ -41,6 +47,9 @@ class Auth {
 		this._onConnect = this._onConnect.bind(this);
 		this._onUnsubscribe = this._onUnsubscribe.bind(this);
 		this._onModelChange = this._onModelChange.bind(this);
+		this._onVisibilityChange = this._onVisibilityChange.bind(this);
+		this._beforeConnect = this._beforeConnect.bind(this);
+		this._onApiConnect = this._onApiConnect.bind(this);
 
 		this.app.require([
 			'api',
@@ -53,11 +62,20 @@ class Auth {
 		this.loginResolve = null;
 		this.userPromise = null;
 		this.authPromise = null;
+		this.refreshPromise = null;
+		this.refreshTimer = null;
+		this.accessTokenExpiresAt = 0;
+		this.reauthenticationRequired = false;
 		this.model = new Model({ data: { loggedIn: false, user: null, authError: null }});
 		this.model.on('change', this._onModelChange);
 		this.state = {};
 
 		this.module.api.setOnConnect(this._onConnect);
+		this.module.api.setBeforeConnect(this._beforeConnect);
+		this.module.api.on('connect', this._onApiConnect);
+		if (typeof document != 'undefined') {
+			document.addEventListener('visibilitychange', this._onVisibilityChange);
+		}
 	}
 
 	/**
@@ -88,55 +106,17 @@ class Auth {
 			return this._getCurrentUser(true);
 		}
 
-		this.authPromise = fetch(authenticateUrl, {
-			method: 'POST',
-			mode: 'cors',
-			credentials: crossOrigin ? 'include' : 'same-origin',
-		}).catch(err => {
-			throw new Err('auth.failedToFetch', "Failed to send authentication check.");
-		}).then(resp => {
-			// >= 400 errors
-			if (resp.status >= 400) {
-				return resp.json().then(err => {
-					// 401 simply means not logged in, and should result in a
-					// null user. Any other error is an actual error.
-					if (resp.status == 401) {
-						if (!noRedirect) {
-							redirectWithUri(oauth2Url);
-						}
-						return null;
+		this.authPromise = this._authenticateRequest(false)
+			.then(() => this._getCurrentUser(true))
+			.catch(err => {
+				if (err.status == 401) {
+					if (!noRedirect) {
+						redirectWithUri(oauth2Url);
 					}
-					throw err;
-				}, err => resp.text().then(
-					text => {
-						throw new Err('auth.failedToAuthenticateMsg', "Failed to authenticate: {text}", resp.text());
-					},
-					err => {
-						throw new Err('auth.failedToAuthenticate', "Failed to authenticate.");
-					},
-				));
-			}
-			// [TODO] Remove this piece of code. The comment says "new
-			// behavior", but the matching commit on the backend does not have
-			// any changes in behavior, but will send 401 with an error message.
-			// A 200 status should not contain an error.
-			// > New behavior allows a 200 response but with an {"error": {...}}
-			// > json object, to indicate failed authentication.
-			return resp.text().then(text => {
-				try {
-					let result = JSON.parse(text);
-					if (result?.error) {
-						if (!noRedirect) {
-							redirectWithUri(oauth2Url);
-						}
-						return null;
-					}
-				} catch (ex) {
-					// A 200 response with invalid JSON is legacy success.
+					return null;
 				}
-				return this._getCurrentUser(true);
+				throw err;
 			});
-		});
 
 		return this.authPromise;
 	}
@@ -145,30 +125,99 @@ class Auth {
 	 * Tries to refresh access tokens by calling the authenticate endpoint.
 	 *
 	 * The returned promise will be rejected if refresh failed.
-	 * @param {boolean} redirectOnerror Flag to redirect to login on error. Defaults to false.
+	 * @param {boolean} redirectOnError Flag to redirect to login on error. Defaults to false.
+	 * @param {boolean} forceRefresh Flag to refresh even when the access token is still valid.
 	 * @returns {Promise} Promise to tokens being refreshed.
 	 */
-	refreshTokens(redirectOnerror) {
-		return fetch(authenticateUrl, {
+	refreshTokens(redirectOnError, forceRefresh) {
+		if (!this.refreshPromise) {
+			this.refreshPromise = this._authenticateRequest(!!forceRefresh)
+				.catch(err => {
+					// A 401 means the browser no longer has usable credentials. Do
+					// not keep retrying it as though the identity provider is down.
+					if (err.status == 401) {
+						this.reauthenticationRequired = true;
+						if (redirectOnError) {
+							this.redirectToLogin(true);
+						}
+					}
+					throw err;
+				})
+				.finally(() => this.refreshPromise = null);
+		}
+		return this.refreshPromise;
+	}
+
+	_authenticateRequest(forceRefresh) {
+		let url = authenticateUrl + (forceRefresh ? (authenticateUrl.indexOf('?') >= 0 ? '&' : '?') + 'refresh=true' : '');
+		return fetch(url, {
 			method: 'POST',
 			mode: 'cors',
 			credentials: crossOrigin ? 'include' : 'same-origin',
-		}).then(authResp => {
-			return authResp.text().then(text => {
-				if (text) {
-					try {
-						let result = JSON.parse(text);
-						if (result?.error) {
-							// A proper error messages means we are not logged in.
-							if (redirectOnError) {
-								this.redirectToLogin(true);
-							}
-							return Promise.reject(result.error);
-						}
-					} catch (ex) {}
+		}).catch(() => {
+			throw new Err('auth.failedToFetch', "Failed to send authentication check.");
+		}).then(resp => resp.text().then(text => {
+			let result = null;
+			if (text) {
+				try {
+					result = JSON.parse(text);
+				} catch (ex) {}
+			}
+			if (!resp.ok) {
+				let err = new Err(result?.code || 'auth.failedToAuthenticate', result?.message || "Failed to authenticate.", result?.data);
+				err.status = resp.status;
+				throw err;
+			}
+			this._setAccessTokenExpiry(result?.accessTokenExpiresAt);
+			return result;
+		}));
+	}
+
+	_setAccessTokenExpiry(expiresAt) {
+		this.accessTokenExpiresAt = Number(expiresAt) || 0;
+		this._scheduleRefresh();
+	}
+
+	_scheduleRefresh(delay) {
+		if (this.refreshTimer) {
+			clearTimeout(this.refreshTimer);
+		}
+		let refreshAt = this.accessTokenExpiresAt
+			? this.accessTokenExpiresAt - Date.now() - refreshSafetyMargin
+			: fallbackRefreshDuration;
+		this.refreshTimer = setTimeout(() => {
+			this.refreshTimer = null;
+			this.refreshTokens(true, true).catch(err => {
+				if (err.code != 'auth.reauthenticationRequired') {
+					this._scheduleRefresh(delay || retryRefreshDuration);
 				}
 			});
-		});
+		}, Math.max(0, delay || refreshAt));
+	}
+
+	_beforeConnect() {
+		if (!this.model.loggedIn || !this._isRefreshDue()) {
+			return Promise.resolve();
+		}
+		return this.refreshTokens(true, true);
+	}
+
+	_isRefreshDue() {
+		return !this.accessTokenExpiresAt || Date.now() >= this.accessTokenExpiresAt - refreshSafetyMargin;
+	}
+
+	_onVisibilityChange() {
+		if (document.visibilityState == 'visible' && this.model.loggedIn && this._isRefreshDue()) {
+			this.refreshTokens(true, true).catch(() => {});
+		}
+	}
+
+	_onApiConnect() {
+		if (this.model.loggedIn && !this.userPromise) {
+			this._getCurrentUser(false).catch(err => {
+				this.model.set({ authError: err });
+			});
+		}
 	}
 
 	getModel() {
@@ -308,6 +357,10 @@ class Auth {
 	}
 
 	_onUnsubscribe() {
+		if (this.model.user && this.module.api.tryConnect && !this.reauthenticationRequired) {
+			this.userPromise = null;
+			return;
+		}
 		// Remove user model
 		if (this.model.user) {
 			this.model.user.off('unsubscribe', this._onUnsubscribe);
@@ -340,6 +393,14 @@ class Auth {
 	}
 
 	dispose() {
+		if (this.refreshTimer) {
+			clearTimeout(this.refreshTimer);
+		}
+		if (typeof document != 'undefined') {
+			document.removeEventListener('visibilitychange', this._onVisibilityChange);
+		}
+		this.module.api.setBeforeConnect(null);
+		this.module.api.off('connect', this._onApiConnect);
 		this.model.off('change', this._onModelChange);
 		this._onUnsubscribe();
 	}

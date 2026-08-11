@@ -12,10 +12,6 @@
 		margin: 16px 0 32px 0;
 
 	}
-
-	// p {
-	// 	margin: 8px 0 12px 0;
-	// }
 }
 
 
@@ -25,22 +21,6 @@
 	.btn + .btn {
 		margin-left: 12px;
 	}
-
-	// .btn.confirm--withspinner {
-	// 	padding-left: 48px;
-	// 	padding-right: 48px;
-	// 	> .spinner {
-	// 		position: absolute;
-	// 		top: 50%;
-	// 		left: 24px;
-	// 		&:before {
-	// 			border-top-color: $white;
-	// 		}
-	// 		&.hide {
-	// 			display: none;
-	// 		}
-	// 	}
-	// }
 
 	> * {
 		min-width: 120px;

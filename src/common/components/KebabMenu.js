@@ -104,7 +104,7 @@ class KebabMenu {
 					return m.componentFactory
 						? m.componentFactory(click)
 						: new Elem(n => n.elem('div', {
-							className: 'kebabmenu--itembtn flex-row pad8',
+							className: 'menubtn flex-row pad8',
 							events: { click },
 						}, [
 							n.elem('div', { className: 'kebabmenu--itemicon flex-auto' }, [ n.component(m.icon ? new FAIcon(m.icon) : null) ]),

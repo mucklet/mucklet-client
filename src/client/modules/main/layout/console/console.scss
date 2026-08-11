@@ -1,15 +1,10 @@
 @import '~scss/variables';
 
-// Console colors
-$console-scrollbar-thumb: lighten($color-base, 18%);
-// Console theme vars
-$theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scrollbar-thumb});
-
 .console {
 	padding: 1px 14px 14px 14px;
 
 	&--container {
-		background-color: $theme-color-base-light;
+		background-color: $theme-surface-300-bg;
 		border-radius: 16px; // rounded corners
 		display: flex;
 		flex-direction: column;
@@ -25,7 +20,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 		padding: 4px 12px 2px 12px;
 		display: flex;
 		flex-direction: row;
-		border-bottom: 2px solid $theme-color-base;
+		border-bottom: 2px solid $theme-divider-subtle-border;
 	}
 
 	&--editorcont {
@@ -61,16 +56,6 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	&--editor {
 		height: 92px;
 		padding: 0 8px 0 4px;
-	}
-
-	&--counter > .counter {
-		top: 0;
-		right: 0;
-	}
-
-
-	.simplebar-scrollbar::before {
-		background-color: $theme-console-scrollbar-thumb;
 	}
 
 	&--touchonly {
@@ -117,14 +102,14 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	border-bottom: 2px transparent;
 
 	&.active {
-		border-bottom: 2px solid $theme-color-danger;
+		border-bottom: 2px solid $theme-indicator-active-border;
 	}
 
 	> .btn:focus {
 		box-shadow: none;
 	}
 
-	&--counter {
+	&--counter.counter {
 		right: -6px;
 	}
 
@@ -136,8 +121,8 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 			margin-left: 8px;
 		}
 		> svg {
-			background-color: $theme-color-base-lighter;
-			color: $theme-color-base;
+			background-color: $theme-svg-placeholder-200-bg;
+			color: $theme-svg-placeholder-200-fg;
 		}
 	}
 
@@ -150,7 +135,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 		position: absolute;
 		top: 5px;
 		left: 3px;
-		color: $theme-color-base-placeholder;
+		color: $theme-content-placeholder-fg;
 		display: none;
 	}
 
@@ -163,7 +148,7 @@ $theme-console-scrollbar-thumb: var(--mu-console-scrollbar-thumb, #{$console-scr
 	> .cm-editor {
 		.cm-content {
 			font-family: $font-text;
-			caret-color: $theme-color-contrast;
+			caret-color: $theme-input-default-caret;
 			padding: 4px 0 0 0;
 			min-height: 100px;
 			// white-space: pre-line;

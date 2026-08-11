@@ -7,13 +7,7 @@ import Err from 'classes/Err';
 import Collapser from 'components/Collapser';
 import LabelToggleBox from 'components/LabelToggleBox';
 import PanelSection from 'components/PanelSection';
-import { adjust, alpha } from 'utils/color';
 import './dialogTag.scss';
-
-const themeTokens = {
-	'dialogtag.desc.disabled.background': (c, getToken) => alpha(getToken('color.muted.lighter'), 0.1),
-	'dialogtag.pref.dislike.background.hover': (c) => adjust(c.danger, 5),
-};
 
 class DialogTag {
 	constructor(app, params) {
@@ -23,12 +17,14 @@ class DialogTag {
 		this._onClose = this._onClose.bind(this);
 		this._onSubmit = this._onSubmit.bind(this);
 
-		this.app.require([ 'api', 'tags', 'theme' ], this._init.bind(this));
+		this.app.require([
+			'api',
+			'tags',
+		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = module;
-		this.module.theme.addTokens(themeTokens);
 	}
 
 	/**
@@ -239,9 +235,7 @@ class DialogTag {
 		n.setComponent(msg ? new Txt(msg, { className: 'dialog--error' }) : null);
 	}
 
-	dispose() {
-		this.module.theme.removeTokens(themeTokens);
-	}
+	dispose() {}
 }
 
 export default DialogTag;

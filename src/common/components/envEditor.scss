@@ -15,16 +15,8 @@
 		padding-top: 12px;
 
 		> .btn {
-			background: none;
-			width: 100%;
-			border: dashed 2px $theme-color-muted;
 			padding: 4px 12px;
 			height: inherit;
-
-			&:hover, &:focus {
-				color: $theme-color-muted-lighter;
-				background: $theme-color-base-light;
-			}
 		}
 	}
 }

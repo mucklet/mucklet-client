@@ -9,97 +9,82 @@ $font-size-micro: 11px;
 $white: #fff;
 $black: #000;
 
-// The following colors are injected from webpack.config.js
+// Seed colors injected from webpack.config.js
 // $color-base
 // $color-accent
 // $color-contrast
-// $color-muted
+// $color-neutral
 // $color-danger
 // $color-action
+// $color-success
 
-/* Shadow */
-$shadow: rgba(0, 0, 0, 0.3);
+/* Primitive color fallback levels */
+$color-base-100: darken($color-base, 4%);
+$color-base-200: $color-base;
+$color-base-300: lighten($color-base, 4%);
+$color-base-400: lighten($color-base, 8%);
+$color-base-500: lighten($color-base, 12%);
+$color-base-600: lighten($color-base, 16%);
 
-/* Variants */
-$color-base-light: lighten($color-base, 4%);
-$color-base-lighter: lighten($color-base, 8%);
-$color-base-lightest: lighten($color-base, 14%);
-$color-base-placeholder: desaturate(lighten($color-base, 24%), 15%);
-$color-base-placeholder-light: desaturate(lighten($color-base, 34%), 15%);
-$color-base-dark: darken($color-base, 4%);
+$color-accent-300: $color-accent;
 
-$color-muted-light: lighten($color-muted, 4%);
-$color-muted-lighter: lighten($color-muted, 8%);
-$color-muted-lightest: lighten($color-muted, 16%);
-$color-muted-lightestest: lighten($color-muted, 20%);
-$color-muted-semidark: darken($color-muted, 8%);
-$color-muted-dark: darken($color-muted, 16%);
-$color-muted-darker: darken($color-muted, 24%);
+$color-contrast-200: darken($color-contrast, 16%);
+$color-contrast-300: $color-contrast;
 
-$color-contrast-dark: darken($color-contrast, 16%);
+$color-neutral-100: darken($color-neutral, 24%);
+$color-neutral-200: darken($color-neutral, 16%);
+$color-neutral-300: $color-neutral;
+$color-neutral-400: lighten($color-neutral, 4%);
+$color-neutral-500: lighten($color-neutral, 8%);
+$color-neutral-600: lighten($color-neutral, 16%);
+$color-neutral-700: lighten($color-neutral, 20%);
 
-$color-danger-light: lighten($color-danger, 6%);
-$color-danger-dark: darken($color-danger, 10%);
+$color-danger-100: darken($color-danger, 16%);
+$color-danger-200: darken($color-danger, 8%);
+$color-danger-300: $color-danger;
+$color-danger-400: lighten($color-danger, 6%);
 
-$color-action-hover: darken($color-action, 8%);
-$color-action-active: darken($color-action, 16%);
+$color-action-100: darken($color-action, 16%);
+$color-action-200: darken($color-action, 8%);
+$color-action-300: $color-action;
 
-// Color theme vars
-$theme-color-base: var(--mu-color-base, #{$color-base});
-$theme-color-accent: var(--mu-color-accent, #{$color-accent});
-$theme-color-contrast: var(--mu-color-contrast, #{$color-contrast});
-$theme-color-muted: var(--mu-color-muted, #{$color-muted});
-$theme-color-danger: var(--mu-color-danger, #{$color-danger});
-$theme-color-action: var(--mu-color-action, #{$color-action});
+$color-success-300: $color-success;
 
-$theme-color-base-light: var(--mu-color-base-light, #{$color-base-light});
-$theme-color-base-lighter: var(--mu-color-base-lighter, #{$color-base-lighter});
-$theme-color-base-lightest: var(--mu-color-base-lightest, #{$color-base-lightest});
-$theme-color-base-dark: var(--mu-color-base-dark, #{$color-base-dark});
-$theme-color-base-placeholder: var(--mu-color-base-placeholder, #{$color-base-placeholder});
-$theme-color-base-placeholder-light: var(--mu-color-base-placeholder-light, #{$color-base-placeholder-light});
+/* Semantic color fallbacks */
+$content-placeholder-fg: desaturate(lighten($color-base, 24%), 15%);
+$input-default-placeholder-fg: desaturate(lighten($color-base, 34%), 15%);
+$control-overlay-bg: rgba($white, 2%);
+$control-overlay-bg-hover: rgba($white, 6%);
+$control-overlay-bg-active: rgba($white, 8%);
+$surface-overlay-bg: rgba(darken($color-base-200, 10%), 0.9);
+$idlelevel-away-fg: mix($color-danger-300, $color-accent-300, 80%);
+$idlelevel-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
+$modal-overlay-bg: rgba($black, 0.4);
+$modal-shadow: rgba($black, 0.6);
+$surface-shadow: rgba(0, 0, 0, 0.3);
+$scrollbar-thumb-bg: mix($color-base-200, $color-neutral-300, 50%);
 
-$theme-color-muted-light: var(--mu-color-muted-light, #{$color-muted-light});
-$theme-color-muted-lighter: var(--mu-color-muted-lighter, #{$color-muted-lighter});
-$theme-color-muted-lightest: var(--mu-color-muted-lightest, #{$color-muted-lightest});
-$theme-color-muted-lightestest: var(--mu-color-muted-lightestest, #{$color-muted-lightestest});
-$theme-color-muted-semidark: var(--mu-color-muted-semidark, #{$color-muted-semidark});
-$theme-color-muted-dark: var(--mu-color-muted-dark, #{$color-muted-dark});
-$theme-color-muted-darker: var(--mu-color-muted-darker, #{$color-muted-darker});
+/* Shared component color fallbacks */
 
-$theme-color-contrast-dark: var(--mu-color-contrast-dark, #{$color-contrast-dark});
-$theme-color-danger-light: var(--mu-color-danger-light, #{$color-danger-light});
-$theme-color-danger-hover: var(--mu-color-danger-hover, #{darken($color-danger, 8%)});
-$theme-color-danger-active: var(--mu-color-danger-active, #{darken($color-danger, 16%)});
-$theme-color-action-hover: var(--mu-color-action-hover, #{$color-action-hover});
-$theme-color-action-active: var(--mu-color-action-active, #{$color-action-active});
+$badge-100-bg-hover: darken($color-base-100, 2%);
 
-/* Log colors */
-$log-error: #9a593e;
-$log-cmd: $color-accent;
-$log-attr: $color-accent;
-$log-listitem: mix($color-action, $color-muted, 50%);
-$log-delim: $color-muted;
-$log-text: $color-muted-lightest;
-$log-entityid: $color-muted-lightest;
-$log-bot: mix($color-action, $color-contrast, 80%);
-$log-instance: mix($color-action, $color-muted, 60%);
-$log-card: mix($color-accent, $color-base, 10%);
+$common-format-divider-border: rgba($white, 0.2);
 
-// Log theme vars
-$theme-log-error: var(--mu-log-error, #{$log-error});
-$theme-log-cmd: var(--mu-log-cmd, #{$log-cmd});
-$theme-log-attr: var(--mu-log-attr, #{$log-attr});
-$theme-log-listitem: var(--mu-log-listitem, #{$log-listitem});
-$theme-log-delim: var(--mu-log-delim, #{$log-delim});
-$theme-log-text: var(--mu-log-text, #{$log-text});
-$theme-log-entityid: var(--mu-log-entityid, #{$log-entityid});
-$theme-log-bot: var(--mu-log-bot, #{$log-bot});
-$theme-log-instance: var(--mu-log-instance, #{$log-instance});
-$theme-log-card: var(--mu-log-card, #{$log-card});
+$kbd-shadow: rgba($black, 0.3);
+$kbd-highlight: $white;
+
+// Log fallbacks
+$log-error-fg: mix($color-danger-300, $color-neutral-300, 70%);
+$log-listitem-fg: mix($color-action-300, $color-neutral-300, 50%);
+$log-bot-fg: mix($color-action-300, $color-contrast-300, 80%);
+$log-instance-fg: mix($color-action-300, $color-neutral-300, 60%);
+$log-card-bg: mix($color-accent-300, $color-base-200, 10%);
+$log-char-fg: mix($color-action-300, $color-neutral-300, 50%);
 
 /* Font families */
 // @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Open+Sans&display=swap');
 $font-header: 'Amatic SC', cursive;
 $font-text: 'Open Sans', sans-serif;
 $font-code: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+
+@import 'theme';

@@ -21,7 +21,7 @@
 
 
 .tbl-hr, .tbl thead, .tbl-small thead {
-	border-bottom: 1px solid $theme-color-base-lighter;
+	border-bottom: 1px solid $theme-divider-default-border;
 }
 
 .tbl-nomargin {
@@ -35,5 +35,5 @@
 }
 
 .tbl-header {
-	color: $theme-color-contrast;
+	color: $theme-content-strong-fg;
 }

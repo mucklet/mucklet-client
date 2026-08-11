@@ -1,18 +1,17 @@
 @import '~scss/variables';
-@import '~scss/hubvariables';
 
 // .routetaskruns {}
 
 .routetaskruns-taskrunbadge {
 	&--icon.badge--faicon {
-		color: $color-base-dark;
-		background: $color-muted-darker;
+		color: $theme-surface-100-bg;
+		background: $theme-control-secondary-bg-active;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		> .spinner:before {
-			border-top-color: $color-base-dark;
+			border-top-color: $theme-surface-100-bg;
 		}
 	}
 	&--state- {
@@ -21,22 +20,22 @@
 		// }
 		&running {
 			&.badge--faicon {
-				background: $color-action;
+				background: $theme-status-info-bg;
 			}
 		}
 		&success {
 			&.badge--faicon {
-				background: $color-success;
+				background: $theme-status-success-bg;
 			}
 		}
 		&warning {
 			&.badge--faicon {
-				background: $color-accent;
+				background: $theme-status-warning-bg;
 			}
 		}
 		&error {
 			&.badge--faicon {
-				background: $color-danger;
+				background: $theme-status-danger-bg;
 			}
 		}
 	}
@@ -50,7 +49,7 @@
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 	}
 
 	&--pagelistitem {
@@ -68,7 +67,7 @@
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 	}
 
 	&--info {
@@ -77,7 +76,7 @@
 
 	&--error {
 		padding-top: 6px;
-		color: $color-danger;
+		color: $theme-content-danger-fg;
 	}
 
 	&--steps {
@@ -89,7 +88,7 @@
 	}
 
 	&--stepname {
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size-small;
 	}
 	&--stepduration {
@@ -97,7 +96,7 @@
 	}
 	&--stepsubtitle {
 		display: block;
-		color: $color-accent;
+		color: $theme-content-accent-fg;
 		font-size: $font-size-small;
 		padding: 6px 0 2px 0;
 	}
@@ -106,7 +105,7 @@
 		font-style: normal;
 		font-size: $font-size-tiny;
 		font-family: $font-code;
-		background: $color-base-dark;
+		background: $theme-surface-100-bg;
 		border-radius: 8px;
 	}
 	&--steplogtxt {

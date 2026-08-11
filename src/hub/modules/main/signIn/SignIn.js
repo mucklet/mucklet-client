@@ -1,6 +1,6 @@
 import { Model, Collection } from 'modapp-resource';
 import Err from 'classes/Err';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import SignInComponent from './SignInComponent';
 import './signIn.scss';
 

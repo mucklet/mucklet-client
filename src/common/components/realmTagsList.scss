@@ -22,8 +22,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 16px 4px 13px;
-		color: $theme-color-muted;
-		border: 1px solid $theme-color-muted;
+		color: $theme-tag-default-fg;
+		border: 1px solid $theme-tag-default-border;
 		border-radius: 4px;
 		border-left: 15px solid;
 
@@ -31,14 +31,14 @@
 			font-family: FontAwesome;
 			font-style: normal;
 			position: absolute;
-			color: $theme-color-base;
+			color: $theme-tag-icon-fg;
 			left: -12px;
 			font-size: 10px;
 		}
 
 		&.realmtagslist--type-genre {
-			color: $theme-color-action;
-			border-color: $theme-color-action;
+			color: $theme-tag-title-fg;
+			border-color: $theme-tag-title-border;
 			&::before {
 				content: "\f132";
 				left: -11px;
@@ -50,32 +50,20 @@
 			}
 		}
 		&.realmtagslist--type-warn {
-			color: $theme-color-danger;
-			border-color: $theme-color-danger;
+			color: $theme-tag-dislike-fg;
+			border-color: $theme-tag-dislike-border;
 			&::before {
 				content: "\f071";
 			}
 		}
 	}
 
-	&--delete {
+	&--delete.iconbtn {
 		position: relative;
 		right: -8px;
 		top: -1px;
 		margin: -1px -6px -1px 2px;
-		text-decoration: none;
-		border: 0;
-		padding: 0;
-		border-radius: 2px;
-		transition: border-color 0.2s, color 0.2s, background-color 0.2s, opacity 0.4s;
-		cursor: pointer;
-		font-size: 12px;
 		width: 17px;
 		height: 17px;
-		text-align: center;
-		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
-		> i {
-			line-height: 15px;
-		}
 	}
 }

@@ -1,14 +1,6 @@
 @import '~scss/variables';
+@import './pageArea-theme';
 @import '~scss/mixins';
-
-// Page area colors
-$pagearea-location-selected-background: darken($color-base, 3%);
-$pagearea-image-location-border: rgba($color-danger, 0.6);
-$pagearea-image-location-border-selected: rgba($color-danger, 0.8);
-// Page area theme vars
-$theme-pagearea-location-selected-background: var(--mu-pagearea-location-selected-background, #{$pagearea-location-selected-background});
-$theme-pagearea-image-location-border: var(--mu-pagearea-image-location-border, #{$pagearea-image-location-border});
-$theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location-border-selected, #{$pagearea-image-location-border-selected});
 
 .pagearea {
 	padding: 8px 16px;
@@ -40,8 +32,6 @@ $theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location
 		font-size: $font-size-tiny;
 		position: relative;
 		top: -8px;
-		font-size: $font-size-tiny;
-		color: $theme-color-muted;
 		cursor: help;
 	}
 
@@ -60,7 +50,7 @@ $theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location
 		transition: 0.5s border;
 
 		&.inlocation {
-			border-left: 4px solid $theme-color-accent;
+			border-left: 4px solid $theme-indicator-context-border;
 		}
 	}
 
@@ -71,7 +61,7 @@ $theme-pagearea-image-location-border-selected: var(--mu-pagearea-image-location
 	&.selected {
 		.btn.badge {
 			&:not(:disabled) {
-				background: $theme-pagearea-location-selected-background;
+				background: $color-base-100;
 			}
 		}
 	}

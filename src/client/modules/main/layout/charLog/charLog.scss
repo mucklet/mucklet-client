@@ -1,12 +1,6 @@
 @import '~scss/variables';
+@import './charLog-theme';
 @import '~scss/mixins';
-
-// Charlog colors
-$charlog-invalid-background: rgba($log-error, 0.5);
-$charlog-eventmenu-background: rgba($color-base, 0.8);
-// Charlog theme vars
-$theme-charlog-invalid-background: var(--mu-charlog-invalid-background, #{$charlog-invalid-background});
-$theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$charlog-eventmenu-background});
 
 .charlog {
 	position: absolute;
@@ -44,45 +38,45 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 
 	// Colors
 	&--strong {
-		color: $theme-color-contrast;
+		color: $theme-log-strong-fg;
 	}
 
 	&--cmd {
-		color: $theme-log-cmd;
+		color: $theme-log-cmd-fg;
 	}
 
 	&--error {
-		color: $theme-log-error;
+		color: $theme-log-error-fg;
 	}
 
 	&--listitem {
-		color: $theme-log-listitem;
+		color: $theme-log-listitem-fg;
 	}
 
 	&--default {
-		color: $theme-color-muted;
+		color: $theme-log-default-fg;
 	}
 
 	&--ooc {
-		color: $theme-color-muted-dark;
+		color: $theme-log-ooc-fg;
 	}
 
 	&--comm {
-		color: $theme-color-muted-lightest;
+		color: $theme-log-comm-fg;
 	}
 
 	&--placeholder {
-		color: $theme-color-muted-dark;
+		color: $theme-log-placeholder-fg;
 		font-style: italic;
 	}
 
 	&--invalid {
-		background: $theme-charlog-invalid-background;
+		background: $theme-log-invalid-bg;
 	}
 
 	// Should have higher priority than the others.
 	&--char {
-		color: $theme-log-listitem;
+		color: $theme-log-char-fg;
 	}
 
 
@@ -103,15 +97,16 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	// Common styling
 	&--fieldset {
 		position: relative;
-		border: 1px solid $theme-color-muted-dark;
+		background: $theme-log-fieldset-bg;
+		border: 1px solid $theme-log-fieldset-border;
 		padding: 5px 10px;
 		border-radius: 8px;
 	}
 
 	&--fieldset-label {
-		color: $theme-color-muted;
+		color: $theme-log-fieldset-label-fg;
 		position: absolute;
-		background: $theme-color-base;
+		background: $theme-log-fieldset-bg;
 		top: -1px;
 		height: 2px;
 		left: 16px;
@@ -127,7 +122,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 
 	&--tag {
 		font-size: $font-size-tiny;
-		color: $theme-color-muted;
+		color: $theme-log-fieldset-label-fg;
 		position: absolute;
 		margin-left: -1em;
 		margin-top: -13px;
@@ -141,11 +136,11 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	&--code-simple {
 		font-size: $font-size-small;
 		font-family: $font-code;
-		color: $theme-color-accent;
+		color: $theme-log-code-fg;
 	}
 
 	&--source {
-		color: $theme-log-text;
+		color: $theme-log-source-fg;
 		font-family: $font-code;
 	}
 
@@ -153,7 +148,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		font-style: normal;
 		font-size: $font-size-small;
 		padding: 6px 10px;
-		background: $theme-color-base-dark;
+		background: $theme-log-code-bg;
 		border-radius: 8px;
 
 		h4 {
@@ -168,10 +163,10 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		code {
 			font-size: $font-size-small;
 			font-family: $font-code;
-			color: $theme-color-accent;
+			color: $theme-log-code-fg;
 
 			em {
-				color: $theme-color-action;
+				color: $theme-log-emphasis-fg;
 				font-style: normal;
 			}
 		}
@@ -179,16 +174,16 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		.opt {
 			&::before {
 				content: "[";
-				color: $theme-color-muted-dark;
+				color: $theme-log-formatter-fg;
 			}
 			&::after {
 				content: "]";
-				color: $theme-color-muted-dark;
+				color: $theme-log-formatter-fg;
 			}
 		}
 
 		.param {
-			color: $theme-log-listitem;
+			color: $theme-log-listitem-fg;
 			&::before {
 				content: "<";
 			}
@@ -198,7 +193,7 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		}
 
 		.comment {
-			color: $theme-color-muted;
+			color: $theme-log-default-fg;
 		}
 
 		sup {
@@ -232,25 +227,21 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	}
 
 	&--info {
-		color: $theme-color-muted-dark;
+		color: $theme-log-info-fg;
 		padding-top: 4px;
 	}
 
 	&--title {
 		padding: 6px 0 2px 0;
-		color: $theme-color-contrast-dark;
+		color: $theme-log-title-fg;
 		padding-top: 4px;
 	}
 
 	&--card {
 		position: relative;
-		background: $theme-log-card;
+		background: $theme-log-card-bg;
 		padding: 5px 11px;
 		border-radius: 8px;
-	}
-
-	.simplebar-scrollbar::before {
-		background-color: $theme-color-base-lightest;
 	}
 }
 
@@ -258,15 +249,15 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 	position: absolute;
 	right: 0px;
 	top: 0px;
-
-	@include btn-style($theme-charlog-eventmenu-background, $theme-color-base-lighter, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
+	box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
+	background: $theme-charlog-eventmenu-bg;
 
 	&--menu {
 		position: absolute;
-		background: $theme-color-base-lighter;
+		background: $theme-surface-400-bg;
 		min-width: 100px;
 		// min-height: 100px;
-		box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.65);
+		box-shadow: 0px 0px 8px 4px $theme-surface-200-bg;
 		padding: 8px 0;
 		// Animation
 		transform: translate(-100%, 0px);
@@ -274,18 +265,6 @@ $theme-charlog-eventmenu-background: var(--mu-charlog-eventmenu-background, #{$c
 		animation-duration: 0.3s;
 		opacity: 1;
 		z-index: 5;
-	}
-
-	&--btn {
-		padding: 4px 12px;
-		font-size: $font-size-small;
-		font-family: $font-text;
-		text-decoration: none;
-		border: 0;
-		width: 100%;
-		transition: color 0.2s, background-color 0.2s;
-		cursor: pointer;
-		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted-light, $theme-color-muted-lighter);
 	}
 
 	&--btnicon {

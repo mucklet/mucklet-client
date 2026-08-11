@@ -2,8 +2,8 @@ import { Elem, Txt } from 'modapp-base-component';
 import { CollectionComponent, CollectionList, ModelComponent } from 'modapp-resource-component';
 import l10n from 'modapp-l10n';
 import Collapser from 'components/Collapser';
-import Fader from 'components/Fader';
 import PanelSection from 'components/PanelSection';
+import CollectionFader from 'components/CollectionFader';
 import PageTeleportCharRoom from './PageTeleportCharRoom';
 import PageTeleportCharNode from './PageTeleportCharNode';
 
@@ -63,23 +63,18 @@ class PageTeleportCharComponent {
 					if (!change || change.hasOwnProperty('ownedRooms')) {
 						c.setComponent(m.ownedRooms ? new PanelSection(
 							l10n.l('pageTeleportChar.ownedRooms', "Owned rooms"),
-							new CollectionComponent(
-								this.ctrl.ownedRooms,
-								new Fader(),
-								(col, c, ev) => {
-									if (!col.length) {
-										c.setComponent(new Txt(l10n.l('pageTeleportChar.noOwnedRooms', "No rooms. Wanna create one?"), { className: 'common--nolistplaceholder' }));
-										return;
-									}
-
-									if (!ev || (col.length == 1 && ev.event == 'add')) {
-										c.setComponent(new CollectionList(
-											col,
-											m => new PageTeleportCharRoom(this.module, this.ctrl, m, this.close),
-										));
-									}
+							new CollectionFader(this.ctrl.ownedRooms, [
+								{
+									condition: col => !col.length,
+									factory: col => new Txt(l10n.l('pageTeleportChar.noOwnedRooms', "No rooms. Wanna create one?"), { className: 'common--nolistplaceholder' }),
 								},
-							),
+								{
+									factory: col => new CollectionList(
+										col,
+										m => new PageTeleportCharRoom(this.module, this.ctrl, m, this.close),
+									),
+								},
+							]),
 							{
 								className: 'pageteleportchar--ownedrooms common--sectionpadding',
 								open: this.state.inRoomOpen,

@@ -1,9 +1,5 @@
 @import '~scss/variables';
-
-// Edit script colors
-$editscript-scrollbar-thumb-hover: lighten($color-base, 18%);
-// Edit script theme vars
-$theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hover, #{$editscript-scrollbar-thumb-hover});
+@import './editScript-theme';
 
 .editscript, .editscript-container {
 	width: 100%;
@@ -18,7 +14,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 
 	&--header {
 		flex: 0 0 auto;
-		background-color: $theme-color-base-lighter;
+		background-color: $theme-surface-400-bg;
 		position: relative;
 		width: 100%;
 	}
@@ -53,10 +49,10 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 		}
 	}
 	&--headerinfo-room {
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 	}
 	&--headerinfo-key {
-		color: $theme-color-muted;
+		color: $theme-content-default-fg;
 	}
 
 	&--headerbuttons {
@@ -81,7 +77,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 		}
 	}
 
-	&--errorsbtn.iconbtn {
+	&--errorsbtn {
 		position: absolute;
 		z-index: 10;
 		top: 72px;
@@ -93,7 +89,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 	}
 
 	&--erroricon {
-		color: $theme-color-danger;
+		color: $theme-content-error-fg;
 	}
 
 	&--update.btn {
@@ -119,38 +115,42 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 	.cm-editor {
 		width: 100%;
 		height: 100%;
-		background: $theme-color-base;
+		background: $theme-surface-200-bg;
 	}
 	.cm-scroller {
 		overflow: auto;
-		scrollbar-color: $theme-color-base-lightest transparent;
+		scrollbar-color: $theme-scrollbar-thumb-bg transparent;
+
+		&::-webkit-scrollbar-button {
+			display: none;
+			width: 0;
+			height: 0;
+		}
+
 		&::-webkit-scrollbar {
 			width: 12px;
 			height: 12px;
 			background-color: transparent;
 		}
+
 		&::-webkit-scrollbar-corner {
 			background-color: transparent;
 		}
 		&::-webkit-scrollbar-track {
-			background: $theme-color-base;
-		}
-		&::-webkit-scrollbar-thumb {
-			background: $theme-color-base-lightest;
-			border: 2px solid $theme-color-base;
-			border-radius: 6px;
-		}
-		&::-webkit-scrollbar-thumb:hover {
-			background: $theme-editscript-scrollbar-thumb-hover;
+			background: $theme-surface-200-bg;
 		}
 	}
 	.cm-gutters {
-		color: $theme-color-muted-darker;
-		background-color: $theme-color-base;
+		color: $theme-content-subtle-fg;
+		background-color: $theme-surface-200-bg;
 		border: none;
 	}
+	.cm-activeLine {
+		background-color: $theme-surface-300-bg;
+	}
 	.cm-activeLineGutter {
-		background-color: $theme-color-base-light;
+		color: $theme-content-default-fg;
+		background-color: $theme-surface-400-bg;
 	}
 	.cm-lineNumbers .cm-gutterElement {
 		padding-right: 12px;
@@ -158,55 +158,55 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 
 	// Style
 	&--keyword {
-		color: $theme-color-accent;
+		color: $theme-editscript-keyword-fg;
 	}
 	&--name {
-		color: $theme-color-contrast;
+		color: $theme-editscript-name-fg;
 	}
 	&--variable {
-		color: $theme-color-contrast;
+		color: $theme-editscript-variable-fg;
 	}
 	&--constant {
-		color: $theme-color-contrast;
+		color: $theme-editscript-constant-fg;
 	}
 	&--separator {
-		color: $theme-color-contrast;
+		color: $theme-editscript-separator-fg;
 	}
 	&--type {
-		color: $theme-color-accent;
+		color: $theme-editscript-type-fg;
 	}
 	&--operator {
-		color: $theme-color-muted;
+		color: $theme-editscript-operator-fg;
 	}
 	&--comment {
-		color: $theme-color-muted-dark;
+		color: $theme-editscript-comment-fg;
 	}
 	&--link {
-		color: $theme-color-action;
+		color: $theme-editscript-link-fg;
 	}
 	&--heading {
-		color: $theme-color-accent;
+		color: $theme-editscript-heading-fg;
 	}
 	&--bool {
-		color: $theme-color-accent;
+		color: $theme-editscript-bool-fg;
 	}
 	&--string {
-		color: $theme-color-action;
+		color: $theme-editscript-string-fg;
 	}
 	&--invalid {
-		color: $theme-log-error;
+		color: $theme-editscript-invalid-fg;
 	}
 }
 
 .editscript-errors {
 	height: 8em;
-	background-color: $theme-color-base-lighter;
+	background-color: $theme-surface-400-bg;
 	padding: 8px 48px 16px 16px;
 	position: relative;
 
 
 	&--cont {
-		background: $theme-color-base;
+		background: $theme-surface-200-bg;
 		border-radius: 4px;
 		position: relative;
 		height: 100%;
@@ -220,7 +220,7 @@ $theme-editscript-scrollbar-thumb-hover: var(--mu-editscript-scrollbar-thumb-hov
 	&--text {
 		font-family: $font-code;
 		font-size: $font-size-small;
-		color: $theme-color-danger;
+		color: $theme-content-error-fg;
 		white-space: pre;
 	}
 

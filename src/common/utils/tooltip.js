@@ -75,6 +75,7 @@ function tryCreateTooltip(ref, text, opt) {
 		margin: opt.margin,
 		padding: opt.padding,
 		size: opt.size,
+		align: opt.align,
 		offset: opt.offset,
 		position: opt.position,
 		onClose: () => {

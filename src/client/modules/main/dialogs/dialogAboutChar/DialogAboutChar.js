@@ -40,10 +40,15 @@ class DialogAboutChar {
 				eventBus: this.app.eventBus,
 			});
 			let lfrpComponent = new PanelSection(
-				l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"),
+				new Elem(n => n.elem('span', { className: 'dialogaboutchar--lfrp-header' }, [
+					n.component(new Txt(l10n.l('dialogAboutChar.lfrp', "Looking for roleplay"), { tagName: 'h3' })),
+					n.elem('div', { className: 'dialogaboutchar--lfrp-counter counter small top-right-overlap highlight' }),
+				])),
 				new ModelComponent(
 					charInfo,
-					new FormatTxt("", { className: 'common--desc-size' }),
+					new FormatTxt("", {
+						className: 'common--desc-size',
+					}),
 					(m, c) => c.setFormatText(m.lfrpDesc || ''),
 				),
 				{
@@ -97,7 +102,7 @@ class DialogAboutChar {
 										let isWatched = m && m[char.id];
 
 										c.setComponent(new Elem(n => n.elem('button', {
-											className: 'btn lighten medium icon-left',
+											className: 'btn default-500 medium icon-left',
 											events: {
 												click: () => {
 													let rid = 'note.player.' + this.module.player.getPlayer().id + '.watch.' + char.id;
@@ -131,9 +136,10 @@ class DialogAboutChar {
 							(m, c) => c.setComponent(typeof m.lfrpDesc == 'string'
 								? m.lfrpDesc
 									? lfrpComponent
-									: new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."), {
-										className: 'dialogaboutchar--lfrp-placeholder',
-									})
+									: new Elem(n => n.elem('div', { className: 'dialogaboutchar--lfrp-placeholder' }, [
+										n.elem('div', { className: 'counter small inline highlight' }),
+										n.component(new Txt(l10n.l('dialogAboutChar.currentlyLookingForRoleplay', "Currently looking for roleplay."))),
+									]))
 								: null,
 							),
 						)),
@@ -178,21 +184,27 @@ class DialogAboutChar {
 								: l10n.l('dialogAboutChar.neverSeen', "Never seen"),
 						);
 						let lvl = getCharIdleLevel(m);
+						let puppeteer = c.getNode('puppeteer');
 						c.getNode('idle').setText(lvl.text);
 						c.getNode('status').setText(m.status ? ' (' + m.status + ')' : '');
-						if (!change || change.hasOwnProperty('puppeteer')) {
-							c.getNode('puppeteer').setComponent(m.puppeteer
-							 	? new ModelTxt(
-									 m.puppeteer,
-									 m => l10n.l('dialogAboutChar.controlledBy', "Controlled by {fullname}", { fullname: (m.name + ' ' + m.surname).trim() }),
-									 {
-										tagName: 'div',
+						let puppeteerComponent = m.type == 'puppet' || m.puppeteer
+							? puppeteer.getComponent() || new Elem(n => n.elem('div', [
+								n.elem('div', { className: 'counter small inline notice' }),
+								n.component('txt', new ModelTxt(
+									m.puppeteer,
+									m => m
+										? l10n.l('dialogAboutChar.controlledBy', "Controlled by {fullname}", { fullname: (m.name + ' ' + m.surname).trim() })
+										: l10n.l('dialogAboutChar.puppet', "Character is a puppet"),
+									{
 										className: 'dialogaboutchar--puppeteer',
-									 },
-								)
-							 	: null,
-							);
+									},
+								)),
+							]))
+							: null;
+						if (puppeteerComponent) {
+							puppeteerComponent.getNode('txt').setModel(m.puppeteer);
 						}
+						puppeteer.setComponent(puppeteerComponent);
 
 						for (let l of idleLevels) {
 							c[l == lvl ? 'addNodeClass' : 'removeNodeClass']('idleStatus', l.className);

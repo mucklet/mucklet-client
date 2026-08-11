@@ -3,14 +3,26 @@ import l10n from 'modapp-l10n';
 import { relistenResource } from 'utils/listenResource';
 import fetchRoomScriptSource from 'utils/fetchRoomScriptSource';
 import { addBeforeUnload, removeBeforeUnload } from 'utils/reload';
-import { adjust } from 'utils/color';
 
 import EditScriptContainer from './EditScriptContainer';
 import './editScript.scss';
 
-const themeTokens = {
-	'editscript.scrollbar.thumb.hover': (c) => adjust(c.base, 18),
-};
+const themeTokens = [
+	{ keyPrefix: 'editscript', name: l10n.l('editScript.scriptEditorColors', "Script editor colors"), sortOrder: 1000 },
+	{ key: 'editscript.keyword.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.name.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.variable.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.constant.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.separator.fg', value: (getToken) => getToken('content.strong.fg') },
+	{ key: 'editscript.type.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.operator.fg', value: (getToken) => getToken('content.default.fg') },
+	{ key: 'editscript.comment.fg', value: (getToken) => getToken('content.muted.fg') },
+	{ key: 'editscript.link.fg', value: (getToken) => getToken('content.info.fg') },
+	{ key: 'editscript.heading.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.bool.fg', value: (getToken) => getToken('content.accent.fg') },
+	{ key: 'editscript.string.fg', value: (getToken) => getToken('content.info.fg') },
+	{ key: 'editscript.invalid.fg', value: (getToken) => getToken('log.error.fg') },
+];
 
 const pathDef = [
 	[ '$scriptId', '$mode' ],

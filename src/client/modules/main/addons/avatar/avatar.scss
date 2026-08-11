@@ -11,10 +11,13 @@
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
-	background: $theme-color-base-lightest;
+	background: $theme-surface-500-bg;
 	> img {
 		width: 48px;
 		height: 48px;
+	}
+
+	> img.clickable {
 		cursor: pointer;
 	}
 

@@ -1,21 +1,6 @@
 @import '~scss/variables';
 
 .policies {
-	&--head {
-		padding-bottom: 14px;
-		margin-bottom: 12px;
-		border-bottom: 1px solid $theme-color-accent;
-		h2 {
-			margin: 0;
-			padding: 8px 16px 8px 0;
-		}
-	}
-
-	&--close.iconbtn {
-		float: right;
-		background: $theme-color-base-light;
-	}
-
 	&--subtitle {
 		display: block;
 		margin: 12px 0;

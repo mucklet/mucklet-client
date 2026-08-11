@@ -33,11 +33,38 @@ class OverseerRealmSettingsBottomSection {
 				l10n.l('overseerRealmSettings.clientVersion', "Client version"),
 				new ModelComponent(
 					this.realm,
-					new Input("", {
-						events: { input: c => this.realm.set({ clientVersion: c.getValue() }) },
-						attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+					new AutoComplete({
+						attributes: {
+							placeholder: l10n.t('overseerRealmSettings.searchClient', "Search client (Name)"),
+							name: 'overseerrealmsettings-bottomsection--client',
+						},
+						events: {
+							input: (c, ev) => {
+								if (!ev.target.value) {
+									this.realm.set({ client: null });
+								}
+							},
+						},
+						fetch: (text, update) => {
+							this.module.api.call(`control.overseer.clients`, 'search', { text, limit: 20 })
+								.then(clients => {
+									update(clients.hits.map(o => Object.assign(o, {
+										label: o.name,
+									})));
+								});
+						},
+						minLength: 1,
+						onSelect: (c, item) => {
+							c.setProperty('value', item.label);
+							// Get the original model.
+							let realm = this.realm.getModel();
+							this.realm.set({ client: item.id == (realm.client?.id)
+								? realm.client
+								: item,
+							});
+						},
 					}),
-					(m, c) => c.setValue(m.clientVersion),
+					(m, c) => c.setProperty('value', m.client?.name || ''),
 				),
 				{
 					className: 'flex-1 common--sectionpadding',
@@ -45,6 +72,48 @@ class OverseerRealmSettingsBottomSection {
 					popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Version of the client."),
 				},
 			)),
+
+			// Client legacy name
+			n.component(new ModelCollapser(this.realm, [{
+				condition: m => !this.realm.client,
+				factory: () => new PanelSection(
+					l10n.l('overseerRealmSettings.manualClientVersion', "Manual client name"),
+					new ModelComponent(
+						this.realm,
+						new Input("", {
+							events: { input: c => this.realm.set({ clientName: c.getValue() }) },
+							attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+						}),
+						(m, c) => c.setValue(m.clientName),
+					),
+					{
+						className: 'flex-1 common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('overseerRealmSettings.clientNameInfo', "Manually set human readable version name of the client, such as \"1.23.4\" or \"1.24.0-rc1\"."),
+					},
+				),
+			}])),
+
+			// Client legacy version
+			n.component(new ModelCollapser(this.realm, [{
+				condition: m => !this.realm.client,
+				factory: () => new PanelSection(
+					l10n.l('overseerRealmSettings.manualClientVersion', "Manual client version"),
+					new ModelComponent(
+						this.realm,
+						new Input("", {
+							events: { input: c => this.realm.set({ clientVersion: c.getValue() }) },
+							attributes: { name: 'overseerrealmsettings-clientversion', spellcheck: 'false' },
+						}),
+						(m, c) => c.setValue(m.clientVersion),
+					),
+					{
+						className: 'flex-1 common--sectionpadding',
+						noToggle: true,
+						popupTip: l10n.l('overseerRealmSettings.clientVersionInfo', "Manually set version of the client in the format \"MAJOR.MINOR.PATCH\".."),
+					},
+				),
+			}])),
 
 			n.elem('div', { className: 'flex-row m pad16' }, [
 				// Client Host
@@ -104,10 +173,9 @@ class OverseerRealmSettingsBottomSection {
 				new ModelComponent(
 					this.realm,
 					new AutoComplete({
-						innerClassName: 'autocomplete-dark',
 						attributes: {
 							placeholder: l10n.t('overseerRealmSettings.searchRelease', "Search release (Name)"),
-							name: 'routereleases-release--release',
+							name: 'overseerrealmsettings-bottomsection--release',
 						},
 						events: {
 							input: (c, ev) => {
@@ -150,7 +218,6 @@ class OverseerRealmSettingsBottomSection {
 				new ModelComponent(
 					this.realm,
 					new AutoComplete({
-						innerClassName: 'autocomplete-dark',
 						attributes: {
 							placeholder: l10n.t('routeReleases.searchRelease', "Search node (Keyname)"),
 							name: 'overseerrealmsettings-node',
@@ -202,7 +269,8 @@ class OverseerRealmSettingsBottomSection {
 						])),
 						(m, c) => {
 							c[v.key == m.type ? 'addClass' : 'removeClass']('primary');
-							c[v.key != m.type ? 'addClass' : 'removeClass']('darken');
+							c[v.key != m.type ? 'addClass' : 'removeClass']('default-400');
+							c[v.key != m.type ? 'addClass' : 'removeClass']('filled');
 						},
 					),
 					{

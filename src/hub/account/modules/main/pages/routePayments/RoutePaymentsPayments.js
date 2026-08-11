@@ -55,7 +55,7 @@ class RoutePaymentsPayments {
 							)),
 							n.component(new ModelComponent(
 								this.stateModel,
-								new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
+								new Elem(n => n.elem('button', { className: 'iconbtn medium default-400', events: {
 									click: () => this._setPage(Math.max(this.stateModel.page - 1, 0)),
 								}}, [
 									n.component(new FAIcon('angle-left')),
@@ -64,7 +64,7 @@ class RoutePaymentsPayments {
 							)),
 							n.component(new ModelComponent(
 								this.stateModel,
-								new Elem(n => n.elem('button', { className: 'iconbtn medium light', events: {
+								new Elem(n => n.elem('button', { className: 'iconbtn medium default-400', events: {
 									click: () => this._setPage(this.stateModel.page + 1),
 								}}, [
 									n.component(new FAIcon('angle-right')),

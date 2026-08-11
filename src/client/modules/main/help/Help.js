@@ -3,7 +3,7 @@ import TokenList from 'classes/TokenList';
 import ListStep from 'classes/ListStep';
 import RepeatStep from 'classes/RepeatStep';
 import l10n from 'modapp-l10n';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import HelpComponent from './HelpComponent';
 import HelpCategory from './HelpCategory';
 import HelpTopic from './HelpTopic';

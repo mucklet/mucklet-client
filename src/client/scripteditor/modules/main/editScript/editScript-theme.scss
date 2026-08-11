@@ -1,0 +1,16 @@
+@import '~scss/variables';
+
+// EditScript syntax colors
+$theme-editscript-keyword-fg: var(--mu-editscript-keyword-fg, #{$theme-content-accent-fg});
+$theme-editscript-name-fg: var(--mu-editscript-name-fg, #{$theme-content-strong-fg});
+$theme-editscript-variable-fg: var(--mu-editscript-variable-fg, #{$theme-content-strong-fg});
+$theme-editscript-constant-fg: var(--mu-editscript-constant-fg, #{$theme-content-strong-fg});
+$theme-editscript-separator-fg: var(--mu-editscript-separator-fg, #{$theme-content-strong-fg});
+$theme-editscript-type-fg: var(--mu-editscript-type-fg, #{$theme-content-accent-fg});
+$theme-editscript-operator-fg: var(--mu-editscript-operator-fg, #{$theme-content-default-fg});
+$theme-editscript-comment-fg: var(--mu-editscript-comment-fg, #{$theme-content-muted-fg});
+$theme-editscript-link-fg: var(--mu-editscript-link-fg, #{$theme-content-info-fg});
+$theme-editscript-heading-fg: var(--mu-editscript-heading-fg, #{$theme-content-accent-fg});
+$theme-editscript-bool-fg: var(--mu-editscript-bool-fg, #{$theme-content-accent-fg});
+$theme-editscript-string-fg: var(--mu-editscript-string-fg, #{$theme-content-info-fg});
+$theme-editscript-invalid-fg: var(--mu-editscript-invalid-fg, #{$theme-log-error-fg});

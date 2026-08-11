@@ -58,7 +58,7 @@ class CharSettingsBotTokenComponent {
 						}}, [
 							n.elem('div', { className: 'badge--select' }, [
 								n.elem('button', {
-									className: 'badge--faicon iconbtn smallicon solid',
+									className: 'badge--faicon iconbtn smallicon default-400 filled',
 									events: {
 										click: (c, e) => {
 											this._renewToken(ctx.model);

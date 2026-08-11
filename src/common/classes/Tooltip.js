@@ -16,6 +16,7 @@ class Tooltip {
 	 * @param {string} [opt.margin] Margin to use. May be 'm' (16px) or 'xs' (4px)
 	 * @param {string} [opt.padding] Inner padding to use. May be 's' or 'm'.
 	 * @param {string} [opt.size] Size. May be 'auto' or 'full'. Default to 'auto'.
+	 * @param {string} [opt.align] Horizontal alignment. May be 'left' or 'right'. Defaults to automatic.
 	 * @param {number} [opt.offset] Position of caret in pixels relative to viewport. Centered if omitted.
 	 * @param {string} [opt.position] Position of the tooltip. May be 'top', 'bottom'. Defaults to 'top'. }
 	 * @param {Element} [opt.boundary] Boundary box element. Will be used to try to set max-height.
@@ -23,10 +24,12 @@ class Tooltip {
 	 */
 	constructor(text, ref, opt) {
 		opt = opt || {};
+		this.align = opt.align == 'left' || opt.align == 'right' ? opt.align : null;
 		this.posClass = ' tooltip--pos-' + (opt.position || 'top');
 		opt.className = 'tooltip' +
 			(opt.className ? ' ' + opt.className : '') +
 			(opt.margin ? ' tooltip--margin-' + opt.margin : '') +
+			(this.align ? ' tooltip--align-' + this.align : '') +
 			(opt.padding ? ' tooltip--padding-' + opt.padding : '') +
 			this.posClass;
 		opt.events = Object.assign({ click: (c, ev) => ev.stopPropagation() }, opt.events);
@@ -71,7 +74,9 @@ class Tooltip {
 		this.elem.setStyle('margin-left', null);
 		let el = this.elem.getElement();
 		let width = el.offsetWidth;
-		this.elem.addClass('tooltip--full');
+		if (!this.align) {
+			this.elem.addClass('tooltip--full');
+		}
 		let contRect = el.getBoundingClientRect();
 		let contWidth = el.offsetWidth;
 		let refRect = this.ref.getBoundingClientRect();
@@ -87,7 +92,7 @@ class Tooltip {
 		// from being disconnected.
 		offset = Math.min(Math.max(offset, contRect.left - refRect.left + 9), contRect.right - refRect.left - 10);
 
-		if (width < contWidth && this.opt.size != 'full') {
+		if (!this.align && width < contWidth && this.opt.size != 'full') {
 			let contOffset = refRect.left - contRect.left + offset - (width / 2);
 			this.elem.removeClass('tooltip--full');
 			if (contOffset < 0) {

@@ -6,14 +6,16 @@
  */
 export default function exportFile(filename, data, mime) {
 	let blob = data instanceof Blob ? data : new Blob([ data ], { type: mime || 'text/plain' });
-	if (window.navigator.msSaveOrOpenBlob) {
+	if (window.navigator.msSaveBlob) {
 		window.navigator.msSaveBlob(blob, filename);
 	} else {
 		let elem = window.document.createElement('a');
-		elem.href = window.URL.createObjectURL(blob);
+		let url = window.URL.createObjectURL(blob);
+		elem.href = url;
 		elem.download = filename;
 		document.body.appendChild(elem);
 		elem.click();
 		document.body.removeChild(elem);
+		window.setTimeout(() => window.URL.revokeObjectURL(url), 0);
 	}
 }

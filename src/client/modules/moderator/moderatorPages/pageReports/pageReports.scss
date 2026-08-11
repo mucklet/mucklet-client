@@ -1,18 +1,11 @@
 @import '~scss/variables';
 @import '~scss/mixins';
 
-// Page reports colors
-$pagereports-report-unassigned-background: darken($color-base, 6%);
-$pagereports-report-unassigned-background-hover: darken($color-base, 9%);
-// Page reports theme vars
-$theme-pagereports-report-unassigned-background: var(--mu-pagereports-report-unassigned-background, #{$pagereports-report-unassigned-background});
-$theme-pagereports-report-unassigned-background-hover: var(--mu-pagereports-report-unassigned-background-hover, #{$pagereports-report-unassigned-background-hover});
-
 .pagereports {
 	padding: 16px 14px;
 
 	&--name {
-		color: $theme-color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size;
 	}
 
@@ -28,27 +21,8 @@ $theme-pagereports-report-unassigned-background-hover: var(--mu-pagereports-repo
 	}
 }
 
-
 .pagereports-report {
 	padding: 2px 0;
-
-	&--icon.accepted {
-		@include btn-style($theme-color-action, $theme-color-action, $theme-color-action, $black, $black);
-	}
-
-	&--icon.rejected, &--icon.failed {
-		@include btn-style($theme-color-danger, $theme-color-danger, $theme-color-danger, $black, $black);
-	}
-
-	&--badge.unassigned {
-		background: $theme-pagereports-report-unassigned-background;
-
-		&:not(:disabled) {
-			&:hover, &:focus, &:active {
-				background: $theme-pagereports-report-unassigned-background-hover;
-			}
-		}
-	}
 }
 
 .pagereports-report, .pagereports-reporter {

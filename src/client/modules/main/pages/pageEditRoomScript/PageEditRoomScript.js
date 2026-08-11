@@ -3,6 +3,16 @@ import getRoomInstanceId from 'utils/getRoomInstanceId';
 import PageEditRoomScriptComponent from './PageEditRoomScriptComponent';
 import './pageEditRoomScript.scss';
 
+const themeTokens = [
+	{ keyPrefix: 'pageeditroomscript', name: l10n.l('pageEditRoomScript.pageEditRoomScriptTokens', "Edit room script log color"), sortOrder: 1010 },
+	{ key: 'pageeditroomscript.time.fg', value: (getToken) => getToken('color.neutral.700') },
+	{ key: 'pageeditroomscript.log.fg', value: (getToken) => getToken('color.neutral.300') },
+	{ key: 'pageeditroomscript.debug.fg', value: (getToken) => getToken('color.neutral.200') },
+	{ key: 'pageeditroomscript.info.fg', value: (getToken) => getToken('color.contrast.300') },
+	{ key: 'pageeditroomscript.warn.fg', value: (getToken) => getToken('color.accent.300') },
+	{ key: 'pageeditroomscript.error.fg', value: (getToken) => getToken('log.error.fg') },
+];
+
 /**
  * PageEditRoomScript opens an in-panel edit room script page in the room
  * panel.
@@ -16,11 +26,13 @@ class PageEditRoomScript {
 			'confirm',
 			'dialogEditScriptSource',
 			'toaster',
+			'theme',
 		], this._init.bind(this));
 	}
 
 	_init(module) {
 		this.module = Object.assign({ self: this }, module);
+		this.module.theme.addTokens(themeTokens);
 	}
 
 	/**
@@ -54,6 +66,10 @@ class PageEditRoomScript {
 				},
 			);
 		});
+	}
+
+	dispose() {
+		this.module.theme.removeTokens(themeTokens);
 	}
 }
 

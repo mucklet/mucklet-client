@@ -35,14 +35,14 @@ class PageRoomComponent {
 				click: () => new ImgModal(this.room.image.href).open(),
 			}})),
 		]));
-		this.elem = new ModelComponent(
-			this.room,
-			new Context(
-				() => new CollectionWrapper(this.module.self.getTools(), {
-					filter: t => t.filter ? t.filter(this.ctrl, this.room, this._canEdit(), this._canDelete(), this.layout) : true,
-				}),
-				allTools => allTools.dispose(),
-				allTools => new Elem(n => n.elem('div', { className: 'pageroom' }, [
+		this.elem = new Context(
+			() => new CollectionWrapper(this.module.self.getTools(), {
+				filter: t => t.filter ? t.filter(this.ctrl, this.room, this._canEdit(), this._canDelete(), this.layout) : true,
+			}),
+			allTools => allTools.dispose(),
+			allTools => new ModelComponent(
+				this.room,
+				new Elem(n => n.elem('div', { className: 'pageroom' }, [
 					n.component(new Context(
 						() => new CollectionWrapper(allTools, {
 							filter: t => (t.type || 'room') == 'room',
@@ -51,25 +51,18 @@ class PageRoomComponent {
 						tools => new CollectionComponent(
 							tools,
 							new Collapser(),
-							(col, c, ev) => {
-								// Collapse if we have no tools to show
-								if (!col.length) {
-									c.setComponent(null);
-									return;
-								}
-
-								if (!ev || (col.length == 1 && ev.event == 'add')) {
-									c.setComponent(new CollectionList(
-										tools,
-										t => t.componentFactory(this.ctrl, this.room),
-										{
-											className: 'pageroom--tools',
-											subClassName: t => t.className || null,
-											horizontal: true,
-										},
-									));
-								}
-							},
+							(col, c, ev) => c.setComponent(col.length
+								? c.getComponent() || new CollectionList(
+									tools,
+									t => t.componentFactory(this.ctrl, this.room),
+									{
+										className: 'pageroom--tools',
+										subClassName: t => t.className || null,
+										horizontal: true,
+									},
+								)
+								: null,
+							),
 						),
 					)),
 					n.component(new ModelComponent(
@@ -188,13 +181,13 @@ class PageRoomComponent {
 						},
 					)),
 				])),
+				(m, c, change) => {
+					// Reset filtering of tools is ownership of the room changes.
+					if (change && change.hasOwnProperty('owner')) {
+						allTools.refresh();
+					}
+				},
 			),
-			(m, c, change) => {
-				// Reset filtering of tools is ownership of the room changes.
-				if (change && change.hasOwnProperty('owner')) {
-					c.getContext().refresh();
-				}
-			},
 		);
 
 		return this.elem.render(el);

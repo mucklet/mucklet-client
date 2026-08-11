@@ -112,7 +112,6 @@ class OverlayNavButtons {
 			this.fader.setComponent(
 				this.fader.getComponent()?.setState(state) ||
 				new NavButtons(state, {
-					shadow: true,
 					center: true,
 					onClick: this._onClick,
 					className: 'overlaynav-buttons',
@@ -155,6 +154,7 @@ class OverlayNavButtons {
 				{
 					className: 'overlaynav-buttons--tooltip',
 					position: 'bottom',
+					align: 'right',
 					padding: 'none',
 					size: 'auto',
 					hoverDelay: true,

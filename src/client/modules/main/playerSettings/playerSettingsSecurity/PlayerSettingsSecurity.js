@@ -21,7 +21,7 @@ class PlayerSettingsSecurity {
 		this.module.pagePlayerSettings.addTool({
 			id: 'security',
 			type: 'section',
-			sortOrder: 20,
+			sortOrder: 50,
 			componentFactory: (user, player, state) => user.identity && !this.module.api.isError(user.identity)
 				? new PlayerSettingsSecurityComponent(this.module, user.identity)
 				: null,

@@ -6,8 +6,8 @@
 
 	&--image {
 		> svg {
-			background: $theme-color-base-lighter;
-			color: $theme-color-base;
+			background-color: $theme-svg-placeholder-200-bg;
+			color: $theme-svg-placeholder-200-fg;
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { Elem } from 'modapp-base-component';
 import { Collection, Model } from 'modapp-resource';
 import Fader from 'components/Fader';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import MobileActivePanelRealm from './MobileActivePanelRealm';
 import './mobileActivePanel.scss';
 

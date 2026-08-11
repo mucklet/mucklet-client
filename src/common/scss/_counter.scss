@@ -1,7 +1,9 @@
-.counter, .counter-standalone {
+// Base counter styling defines appearance only. Use size modifiers for size,
+// placement modifiers for position, and .counter-group for grouped counters.
+.counter {
 	pointer-events: none;
-	background: $theme-color-muted;
-	color: $black;
+	background: $theme-control-secondary-bg;
+	color: $theme-control-danger-fg;
 	height: 16px;
 	min-width: 16px;
 	font-size: 12px;
@@ -11,6 +13,11 @@
 	padding: 2px;
 	transition: 0.2s opacity, 0.2s background-color;
 	text-align: center;
+
+	&.inline {
+		display: inline-block;
+		margin-right: 8px;
+	}
 
 	&.withtitle {
 		pointer-events: initial;
@@ -25,32 +32,52 @@
 		}
 	}
 
+	&.remove {
+		display: none;
+	}
+
 	&.alert {
-		background: $theme-color-danger;
+		background: $theme-status-danger-bg;
 	}
 
 	&.highlight {
-		background: $theme-color-action;
+		background: $theme-status-info-bg;
+	}
+
+	&.notice {
+		background: $theme-status-warning-bg;
 	}
 
 	&.small {
 		height: 8px;
 		min-width: 8px;
 		border-radius: 4px;
+	}
+
+	&.top-right-overlap {
+		position: absolute;
+		top: -3px;
+		right: -3px;
+	}
+
+	&.top-right {
+		position: absolute;
 		top: 0px;
 		right: 0px;
 	}
+}
 
-	&.indent  {
-		top: 4px;
-		right: 4px;
+.counter-group {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	display: flex;
+	flex-direction: row;
+	column-gap: 4px;
+	pointer-events: none;
+
+	> .counter {
+		position: static;
+		flex: 0 0 auto;
 	}
 }
-
-.counter {
-	position: absolute;
-	top: -3px;
-	right: -3px;
-}
-
-

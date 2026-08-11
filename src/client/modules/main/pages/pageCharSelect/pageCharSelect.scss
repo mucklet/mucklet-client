@@ -7,21 +7,6 @@
 
 	&--add {
 		padding: 16px 0;
-
-		> .btn {
-			background: none;
-			width: 100%;
-			border: dashed 2px $theme-color-muted;
-
-			&:hover, &:focus {
-				color: $theme-color-muted-lighter;
-				background: $theme-color-base-light;
-			}
-
-			> .fa {
-				 line-height: 24px;
-			}
-		}
 	}
 
 	&--add-tip.popuptip {
@@ -33,7 +18,7 @@
 	padding: 3px 0;
 
 	&.suspended .pagecharselect-char--title {
-		color: $theme-color-danger;
+		color: $theme-content-error-fg;
 	}
 }
 
@@ -41,6 +26,6 @@
 	padding: 3px 0;
 
 	.suspended {
-		color: $theme-color-danger;
+		color: $theme-content-error-fg;
 	}
 }

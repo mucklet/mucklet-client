@@ -1,7 +1,7 @@
 import { Elem } from 'modapp-base-component';
 import { ModelComponent } from 'modapp-resource-component';
 import { Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import FAIcon from 'components/FAIcon';
 import l10n from 'modapp-l10n';
 import PageEditLfrpComponent from './PageEditLfrpComponent';
@@ -38,7 +38,7 @@ class PageEditLfrp {
 					click: () => this.open(ctrl),
 				}}, [
 					n.component(new FAIcon('icosahedron')),
-					n.elem('lfrp', 'div', { className: 'counter small highlight' }),
+					n.elem('lfrp', 'div', { className: 'counter small top-right highlight' }),
 				])),
 				(m, c) => c[m.rp == 'lfrp' ? 'removeNodeClass' : 'addNodeClass']('lfrp', 'hide'),
 			),

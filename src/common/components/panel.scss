@@ -12,10 +12,6 @@
 		overflow: auto;
 	}
 
-	.simplebar-scrollbar::before {
-		background-color: $theme-color-muted;
-	}
-
 	&--container {
 		height: 100%;
 		position: relative;
@@ -25,7 +21,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		border-bottom: 1px solid $black;
+		border-bottom: 1px solid $theme-divider-contrast-border;
 	}
 
 	&--header {
@@ -39,7 +35,7 @@
 
 	&--footer {
 		flex: 0 0 auto;
-		border-top: 1px solid $theme-color-base;
+		border-top: 1px solid $theme-divider-subtle-border;
 	}
 
 	&--btncont {
@@ -60,6 +56,7 @@
 	}
 
 	&--content {
+		position: relative;
 		height: 100%;
 		// /* Hide scrollbar for Chrome, Safari and Opera */
 		// &::-webkit-scrollbar {
@@ -71,6 +68,9 @@
 		// scrollbar-width: none;  /* Firefox */
 
 		// overflow-x: auto;
+	}
+	&--simplebar {
+		height: 100%;
 	}
 
 	&--title {
@@ -110,7 +110,7 @@
 	.panel {
 		cursor: pointer;
 		&:hover {
-			background-color: $theme-color-base-lighter;
+			background-color: $theme-surface-400-bg;
 		}
 	}
 

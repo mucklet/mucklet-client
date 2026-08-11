@@ -14,11 +14,11 @@
 
 		> dt {
 			font-size: $font-size-small;
-			color: $theme-color-accent;
+			color: $theme-content-accent-fg;
 		}
 		> dd {
 			font-size: $font-size-tiny;
-			color: $theme-color-muted-light;
+			color: $theme-content-default-fg;
 
 			> .fa {display:inline-block;
 				min-width: 16px;

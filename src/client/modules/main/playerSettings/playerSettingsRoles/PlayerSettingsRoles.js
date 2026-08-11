@@ -20,7 +20,7 @@ class PlayerSettingsRoles {
 		this.module.pagePlayerSettings.addTool({
 			id: 'roles',
 			type: 'section',
-			sortOrder: 40,
+			sortOrder: 60,
 			componentFactory: (user, player, state) => new PlayerSettingsRolesComponent(this.module),
 		});
 	}

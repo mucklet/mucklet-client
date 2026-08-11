@@ -6,17 +6,17 @@
 .routepayments {
 	&--product {
 		font-family: $font-text;
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 		font-size: $font-size-large;
 	}
 
 	&--cost, &--amountrefunded {
 		font-size: $font-size;
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 	}
 
 	&--unit {
-		color: $color-muted;
+		color: $theme-content-default-fg;
 	}
 
 	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
@@ -29,7 +29,7 @@
 
 	&--featuretitle {
 		font-size: $font-size-small;
-		color: $color-accent;
+		color: $theme-content-accent-fg;
 	}
 
 	&--featuredesc {
@@ -54,13 +54,13 @@
 .routepayments-paymentbadge {
 	&.method-card {
 		.badge--faicon {
-			background: $color-action;
-			color: $color-base-light;
+			background: $theme-status-info-bg;
+			color: $theme-control-primary-fg;
 		}
 		&:hover {
 			.badge--faicon {
-				background: darken($color-action, 8%);
-				color: darken($color-base-light, 8%);
+				background: $theme-control-primary-bg-hover;
+				color: $theme-surface-100-bg;
 			}
 		}
 	}
@@ -78,15 +78,13 @@
 	}
 	&.refunded, &.canceled{
 		.badge--faicon {
-			// background: $color-success;
-			background: $color-danger;
-			color: $color-base-light;
+			background: $theme-status-danger-bg;
+			color: $theme-control-primary-fg;
 		}
 		&:hover, &:active {
 			.badge--faicon {
-				// background: darken($color-success, 8%);
-				background: darken($color-danger, 8%);
-				color: darken($color-base-light, 8%);
+				background: $theme-control-danger-bg-hover;
+				color: $theme-surface-100-bg;
 			}
 		}
 	}
@@ -101,17 +99,17 @@
 	}
 
 	&--date {
-		color: $color-muted;
+		color: $theme-content-default-fg;
 		line-height: 20px;
 		font-size: $font-size-small;
 	}
 
 	&--cost, &--refundednew {
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 	}
 
 	&--refundedcost {
-		color: $color-danger;
+		color: $theme-content-danger-fg;
 		text-decoration: line-through;
 	}
 }
@@ -128,11 +126,11 @@
 
 .routepayments-payment {
 	&--cost, &--refundednew {
-		color: $color-contrast;
+		color: $theme-content-strong-fg;
 	}
 
 	&--refundedcost {
-		color: $color-danger;
+		color: $theme-content-danger-fg;
 		text-decoration: line-through;
 	}
 

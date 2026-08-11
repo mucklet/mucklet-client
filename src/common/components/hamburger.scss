@@ -16,12 +16,10 @@
 
 	&--svg-open {
 		opacity: 1;
-		fill: #000;
 		transition: opacity 0.3s ease-in-out;
 	}
 	&--svg-close {
 		opacity: 0;
-		fill: #000;
 		transition: opacity 0.3s ease-in-out;
 	}
 

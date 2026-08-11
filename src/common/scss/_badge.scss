@@ -1,33 +1,17 @@
 
-// Badge colors
-$badge-highlight: rgba(saturate(lighten($color-base, 22%), 8%), 0.5);
-$badge-highlight-hover: rgba(saturate(lighten($color-base, 19%), 8%), 0.5);
-$badge-dark-hover: darken($color-base-dark, 2%);
-$badge-hover: darken($color-base, 3%);
-// Badge theme vars
-$theme-badge-highlight: var(--mu-badge-highlight, #{$badge-highlight});
-$theme-badge-highlight-hover: var(--mu-badge-highlight-hover, #{$badge-highlight-hover});
-$theme-badge-dark-hover: var(--mu-badge-dark-hover, #{$badge-dark-hover});
-$theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
-
 .badge {
 	width: 100%;
 	border: none;
-	background: $theme-color-base;
-	color: $white;
+	background: $theme-badge-200-bg;
 	padding: 4px;
 	border-radius: 8px;
 
-	&.highlight {
-		background: $theme-badge-highlight;
-	}
-
 	&.dark {
-		background: $theme-color-base-dark;
+		background: $theme-badge-100-bg;
 		.badge--avatar {
 			> svg {
-				background-color: $theme-color-base-light;
-				color: $theme-color-base-dark;
+				background-color: $theme-svg-placeholder-100-bg;
+				color: $theme-svg-placeholder-100-fg;
 			}
 		}
 	}
@@ -70,14 +54,14 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&--avatar {
 		> svg {
-			background-color: $theme-color-base-lighter;
-			color: $theme-color-base;
+			background-color: $theme-svg-placeholder-200-bg;
+			color: $theme-svg-placeholder-200-fg;
 		}
 	}
 
 	&--symbol {
 		font-size: $font-size-tiny;
-		color: $theme-color-muted;
+		color: $theme-badge-symbol-fg;
 		flex: 0 0 auto;
 		align-self: center;
 	}
@@ -89,8 +73,8 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 			line-height: 32px;
 		}
 		transition: 0.2s color, 0.2s background-color;
-		color: $theme-color-muted;
-		background: $theme-color-base-lighter;
+		color: $theme-badge-icon-fg;
+		background: $theme-badge-icon-bg;
 
 		&.smallicon {
 			font-size: 18px;
@@ -160,12 +144,12 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&--text {
-		color: $theme-color-muted;
+		color: $theme-badge-text-fg;
 	}
 
 	&--title {
 		font-size: $font-size-tiny + 1px;
-		color: $theme-color-accent;
+		color: $theme-badge-title-fg;
 	}
 
 	&--micro {
@@ -173,19 +157,19 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 	}
 
 	&--subtitle {
-		color: $theme-color-accent;
+		color: $theme-badge-subtitle-fg;
 	}
 
 	&--strong {
-		color: $theme-color-contrast;
+		color: $theme-badge-strong-fg;
 	}
 
 	&--highlight {
-		color: $theme-log-instance;
+		color: $theme-badge-highlight-fg;
 	}
 
 	&--error {
-		color: $theme-color-danger;
+		color: $theme-badge-error-fg;
 	}
 
 	&--strikethrough {
@@ -198,7 +182,7 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&--divider {
 		margin-top: 6px;
-		border-top: 1px solid $theme-color-base-lightest;
+		border-top: 1px solid $theme-badge-divider-border;
 		padding-bottom: 4px;
 	}
 
@@ -231,12 +215,9 @@ $theme-badge-hover: var(--mu-badge-hover, #{$badge-hover});
 
 	&:not(:disabled) {
 		&:hover, &:focus, &:active {
-			background: $theme-badge-hover;
-			&.highlight {
-				background: $theme-badge-highlight-hover;
-			}
+			background: $theme-badge-200-bg-hover;
 			&.dark {
-				background: $theme-badge-dark-hover;
+				background: $theme-badge-100-bg-hover;
 			}
 		}
 	}

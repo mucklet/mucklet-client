@@ -22,8 +22,8 @@
 		text-align: left;
 		white-space: nowrap;
 		padding: 4px 6px 4px 4px;
-		color: $theme-color-muted;
-		border: 1px solid $theme-color-muted;
+		color: $theme-tag-default-fg;
+		border: 1px solid $theme-tag-default-border;
 		border-radius: 4px;
 		border-left: 13px solid;
 
@@ -31,7 +31,7 @@
 			font-family: FontAwesome;
 			font-style: normal;
 			position: absolute;
-			color: $theme-color-base;
+			color: $theme-tag-icon-fg;
 			left: -11px;
 			font-size: 10px;
 		}
@@ -41,16 +41,16 @@
 		}
 
 		&.dislike {
-			color: $theme-color-danger;
-			border-color: $theme-color-danger;
+			color: $theme-tag-dislike-fg;
+			border-color: $theme-tag-dislike-border;
 			&::before {
 				content: "\f05e";
 			}
 		}
 
 		&.title {
-			color: $theme-color-action;
-			border-color: $theme-color-action;
+			color: $theme-tag-title-fg;
+			border-color: $theme-tag-title-border;
 			&::before {
 				content: "\f132";
 				left: -10px;
@@ -70,36 +70,23 @@
 			transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 
 			&:hover {
-				color: $theme-color-muted-lighter;
-				border-color: $theme-color-muted-lighter;
+				color: $theme-tag-default-fg-hover;
+				border-color: $theme-tag-default-border-hover;
 				&.dislike {
-					color: $theme-color-danger-light;
-					border-color: $theme-color-danger-light;
+					color: $theme-tag-dislike-fg-hover;
+					border-color: $theme-tag-dislike-border-hover;
 				}
 				&.title {
-					color: $theme-color-action-hover;
-					border-color: $theme-color-action-hover;
+					color: $theme-tag-title-fg-hover;
+					border-color: $theme-tag-title-border-hover;
 				}
-				// background: $theme-color-base;
 			}
 		}
 	}
 
-	&--delete {
+	&--delete.iconbtn {
 		margin: -1px -3px -1px 2px;
-		text-decoration: none;
-		border: 0;
-		padding: 0;
-		border-radius: 2px;
-		transition: border-color 0.2s, color 0.2s, background-color 0.2s, opacity 0.4s;
-		cursor: pointer;
-		font-size: 12px;
 		width: 17px;
 		height: 17px;
-		text-align: center;
-		@include btn-style(none, $theme-color-base-lightest, $theme-color-base-lightest, $theme-color-muted, $theme-color-muted-light);
-		> i {
-			line-height: 15px;
-		}
 	}
 }

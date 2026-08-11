@@ -25,6 +25,30 @@ class Api extends ResClient {
 
 		this.app = app;
 		this.webResourcePath = this._resolveWebResourcePath(app.props.apiWebresourcePath);
+		this.beforeConnect = null;
+		this.beforeConnectPromise = null;
+	}
+
+	/**
+	 * Sets a callback that is awaited before opening a WebSocket connection.
+	 * @param {?function} beforeConnect Callback run before connecting.
+	 * @returns {Api} This API instance.
+	 */
+	setBeforeConnect(beforeConnect) {
+		this.beforeConnect = beforeConnect;
+		return this;
+	}
+
+	connect() {
+		if (!this.beforeConnect) {
+			return super.connect();
+		}
+		if (!this.beforeConnectPromise) {
+			this.beforeConnectPromise = Promise.resolve()
+				.then(() => this.beforeConnect())
+				.finally(() => this.beforeConnectPromise = null);
+		}
+		return this.beforeConnectPromise.then(() => super.connect());
 	}
 
 	getWebResourceUri(rid) {

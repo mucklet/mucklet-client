@@ -1,5 +1,5 @@
 import { Model, Collection } from 'modapp-resource';
-import compareSortOrderId from 'utils/compareSortOrderId';
+import { compareSortOrderId } from 'utils/compareSortOrder';
 import './playerTabs.scss';
 import PlayerTabsTabs from './PlayerTabsTabs';
 
@@ -59,23 +59,30 @@ class PlayerTabs {
 
 	/**
 	 * Open a tab.
-	 * @param {string} tabId Tab ID. If null of missing, all tabs will be closed.
+	 * @param {string} tabId Tab ID. If null or missing, the latest non-tabbed page will be opened.
 	 * @param {bool} reset Flag if the tab should be reset to show the default page. Defaults to false.
 	 */
 	openTab(tabId, reset) {
 		tabId = tabId || null;
 		let tab = this.tabs.get(tabId);
-		if (!tab) {
+		if (!tab && tabId) {
 			this.closeTabs();
 			return;
 		}
 		let pages = this._getTabPages(tab);
+		if (!pages.length) {
+			this.closeTabs();
+			return;
+		}
 		if (reset) {
 			this._closePages(tabId);
 		}
+		if (!pages.length) {
+			this.closeTabs();
+			return;
+		}
 		let pageIdx = pages.length - 1;
 		this._setModel(tabId, pages[pageIdx], pageIdx);
-		this._closePages(null);
 	}
 
 	/**
@@ -86,6 +93,7 @@ class PlayerTabs {
 	 * @param {bool} [opt.reset] Flag if the tab should be opened upon the default page, closing all others. Defaults to false.
 	 * @param {function} [opt.beforeClose] Callback called before closing a page. If the beforeClose is set, the provided close method must be called for the page to close: function(close)
 	 * @param {function} [opt.onClose] Callback called when page is closed: function()
+	 * @param {function} [opt.overlayComponent] Overlay component to render on top of the page. It should be absolute positioned. The overlay component will be removed when the page is closed.
 	 * @returns {function} Close function for the tab page. If force is true, the page will be closed without calling beforeClose: function(force)
 	 */
 	openPage(pageId, pageFactory, opt) {
@@ -101,6 +109,7 @@ class PlayerTabs {
 	 * @param {bool} [opt.reset] Flag if the tab should be opened upon the default page, closing all others. Defaults to false.
 	 * @param {function} [opt.beforeClose] Callback called before closing a page. If the beforeClose is set, the provided close method must be called for the page to close: function(close)
 	 * @param {function} [opt.onClose] Callback called when page is closed: function()
+	 * @param {function} [opt.overlayComponent] Overlay component to render on top of the page. It should be absolute positioned. The overlay component will be removed when the page is closed.
 	 * @returns {function} Close function for the tab page. If force is true, the page will be closed without calling beforeClose: function(force)
 	 */
 	openTabPage(tabId, pageId, pageFactory, opt) {
@@ -113,7 +122,7 @@ class PlayerTabs {
 		let pageIdx = getPageIdx(pageId, pages);
 		if (opt.reset) {
 			this._closePages(tabId, pageId);
-		} else if (pageIdx >= firstIdx && i < pages.length - 1) {
+		} else if (pageIdx >= firstIdx && pageIdx < pages.length - 1) {
 			// Move page from stack to end.
 			pages.push(pages.splice(pageIdx, 1)[0]);
 		}
@@ -135,12 +144,8 @@ class PlayerTabs {
 					? force => force ? close : opt.beforeClose(close)
 					: close,
 				onClose: opt.onClose,
+				overlayComponent: opt.overlayComponent,
 			});
-		}
-
-		// When switching to a tab, all other non-tabbed pages are closed
-		if (tab) {
-			this._closePages(null);
 		}
 
 		pageIdx = pages.length - 1;
@@ -155,6 +160,27 @@ class PlayerTabs {
 	 */
 	closeTabs() {
 		this._setModel(null, null, 0);
+	}
+
+	/**
+	 * Toggles a tab between being shown and hidden.
+	 * @param {string} tabId Tab ID. If null or missing, the non-tabbed page stack will be toggled.
+	 * @returns {boolean} True if a tab was toggled, or false if no pages are available for the tab.
+	 */
+	toggleTab(tabId) {
+		tabId = tabId || null;
+		if (this.model.tabId === tabId && this.model.page) {
+			this.closeTabs();
+			return true;
+		}
+
+		let tab = this.tabs.get(tabId);
+		if ((!tab && tabId) || (!tab && !this.nullPages.length)) {
+			return false;
+		}
+
+		this.openTab(tabId);
+		return true;
 	}
 
 	/**
