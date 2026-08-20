@@ -49,6 +49,10 @@ module.exports = function(ctx) {
 			maxEntrypointSize: 512000,
 			maxAssetSize: 2048000,
 		},
+		ignoreWarnings: [
+			warning => warning.name === 'EntrypointsOverSizeLimitWarning'
+				&& warning.entrypoints?.every(({ name }) => name === 'scripteditor'),
+		],
 		devServer: {
 			port: 6450,
 			allowedHosts: [
