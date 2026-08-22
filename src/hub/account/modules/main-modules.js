@@ -7,6 +7,7 @@ import AccountEmail from 'modules/accountEmail/AccountEmail';
 import VerifyEmail from 'modules/verifyEmail/VerifyEmail';
 import DialogChangeEmail from 'modules/dialogs/dialogChangeEmail/DialogChangeEmail';
 import DialogChangePassword from 'modules/dialogs/dialogChangePassword/DialogChangePassword';
+import DialogDeleteAccount from 'modules/dialogs/dialogDeleteAccount/DialogDeleteAccount';
 import DialogCropImage from 'modules/dialogs/dialogCropImage/DialogCropImage';
 
 const modules = {
@@ -19,6 +20,7 @@ const modules = {
 	verifyEmail: VerifyEmail,
 	dialogChangeEmail: DialogChangeEmail,
 	dialogChangePassword: DialogChangePassword,
+	dialogDeleteAccount: DialogDeleteAccount,
 	dialogCropImage: DialogCropImage,
 };
 
