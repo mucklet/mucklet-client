@@ -229,6 +229,12 @@ class Login {
 		});
 	}
 
+	redirectToRoot() {
+		this._afterFade(() => {
+			redirect('/', false, true);
+		});
+	}
+
 	restorePendingAccount() {
 		return fetch(undeleteUrl, {
 			method: 'POST',

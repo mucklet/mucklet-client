@@ -15,18 +15,30 @@ class LoginAccountDeletionScheduled {
 
 	render(el) {
 		this.elem = new ScreenDialog(new Elem(n => n.elem('div', { className: 'login-accountdeletion' }, [
-			n.component(new Txt(this.deleteAt
-				? l10n.l('login.accountDeletionScheduledBody', "Your account is scheduled for permanent identity-data deletion on {date}.", { date: formatDateTime(new Date(Number(this.deleteAt)), { showYear: true }) })
-				: l10n.l('login.accountDeletionScheduledBodyFallback', "Your account is scheduled for permanent identity-data deletion after the recovery period."), { tagName: 'p' })),
+			n.component(new Txt(
+				this.deleteAt
+					? l10n.l('login.accountDeletionScheduledBody', "All identifying account data will be wiped on:")
+					: l10n.l('login.accountDeletionScheduledBodyFallback', "All identifying account data will be wiped after the recovery grace period."),
+				{ tagName: 'p' },
+			)),
+			n.component(this.deleteAt
+				? new Txt(formatDateTime(new Date(Number(this.deleteAt)), { showYear: true }), {
+					tagName: 'p',
+					className: 'screendialog--strong',
+				})
+				: null,
+			),
 			n.component(new Txt(l10n.l('login.accountDeletionRestoreInfo', "Sign in before that deadline to choose whether to restore the account."), { tagName: 'p', className: 'pad-top-m' })),
 			n.elem('button', {
 				className: 'btn large primary login-accountdeletion--button pad-top-xl',
-				events: { click: () => this.module.self.showLogin() },
+				events: {
+					click: () => this.module.self.redirectToRoot(),
+				},
 			}, [
-				n.component(new Txt(l10n.l('login.returnToLogin', "Return to sign in"))),
+				n.component(new Txt(l10n.l('login.goToMucklet', "Go to Mucklet"))),
 			]),
 		])), {
-			title: l10n.l('login.accountDeletionScheduled', "Account deletion scheduled"),
+			title: l10n.l('login.accountDeleted', "Account deleted"),
 		});
 		this.elem.render(el);
 	}
