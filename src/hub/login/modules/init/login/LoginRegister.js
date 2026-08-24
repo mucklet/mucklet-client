@@ -218,7 +218,6 @@ class LoginRegister {
 		this.registerPromise = this.module.self.register(model.name, model.pass, model.email)
 			.then(() => {
 				this._clearState();
-				this.close();
 			})
 			.catch(err => {
 				this._setMessage(l10n.l(err.code, err.message, err.data));

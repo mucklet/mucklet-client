@@ -357,7 +357,11 @@ class Auth {
 	}
 
 	_onUnsubscribe() {
-		if (this.model.user && this.module.api.tryConnect && !this.reauthenticationRequired) {
+		// Keep the current user only through a transient WebSocket disconnect
+		// while ResClient reconnects. tryConnect alone is insufficient: it also
+		// remains true when a live connection receives a token-reset unsubscribe,
+		// which must invalidate the session and log the user out.
+		if (this.model.user && !this.module.api.connected && this.module.api.tryConnect && !this.reauthenticationRequired) {
 			this.userPromise = null;
 			return;
 		}
