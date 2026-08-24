@@ -4,18 +4,6 @@
 .pagereports {
 	padding: 16px 14px;
 
-	&--name {
-		color: $theme-content-strong-fg;
-		font-size: $font-size;
-	}
-
-	&--name, &--email {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
 	&--tool-btn {
 		position: relative;
 	}
@@ -31,6 +19,9 @@
 		opacity: 0;
 	}
 
+}
+
+.pagereports-report {
 	&--badge .badge--select:hover &--copyid i {
 		opacity: 0.6;
 	}
@@ -46,7 +37,4 @@
 		font-size: $font-size-small;
 	}
 
-	&--nomail {
-		font-style: italic;
-	}
 }

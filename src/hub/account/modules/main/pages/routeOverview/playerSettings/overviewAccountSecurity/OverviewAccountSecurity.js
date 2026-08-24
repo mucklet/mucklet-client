@@ -1,5 +1,4 @@
 import OverviewAccountSecurityComponent from './OverviewAccountSecurityComponent';
-import './overviewAccountSecurity.scss';
 
 /**
  * OverviewAccountSecurity adds a section to Overview to change password.

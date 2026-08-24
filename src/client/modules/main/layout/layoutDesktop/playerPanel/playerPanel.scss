@@ -4,13 +4,6 @@
 	width: 240px;
 	background-color: $theme-surface-400-bg;
 
-	&--main {
-		height: 100%;
-		flex: 1 1 0px;
-		display: flex;
-		flex-direction: column;
-	}
-
 	&--tabs {
 		padding: 2px 8px 0px 8px;
 	}

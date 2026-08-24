@@ -1,6 +1,5 @@
 import l10n from 'modapp-l10n';
 import HelpRulesComponent from './HelpRulesComponent';
-import './helpRules.scss';
 
 /**
  * HelpRules adds the format help category and allows other modules to registers keyboard formats.
