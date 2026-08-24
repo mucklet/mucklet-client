@@ -298,17 +298,18 @@ class Login {
 
 		// If we are missing a client_id in the query params, we are not to
 		// redirect back to the oauth2, but instead to a local URL. If we have a
-		// required_uri query parameter, validate that it is a local path or
-		// belongs to the same origin.
+		// redirect_uri query parameter, validate that it belongs to the same
+		// origin.
 		if (!this.query.hasOwnProperty('client_id')) {
 			includeQuery = false;
 			url = this.query.redirect_uri || '/';
-			if (!url.startsWith('/')) {
-				let origin = window.location.origin;
-				if (url != origin && !url.startsWith(origin + '/')) {
-					// Fallback to redirect to root
+			try {
+				if (new URL(url, window.location.origin).origin != window.location.origin) {
 					url = '/';
 				}
+			} catch (err) {
+				// Fallback to redirect to root
+				url = '/';
 			}
 		}
 
