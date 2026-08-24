@@ -6,7 +6,6 @@ import Collapser from 'components/Collapser';
 import PanelSection from 'components/PanelSection';
 import FAIcon from 'components/FAIcon';
 import formatDateTime from 'utils/formatDateTime';
-import './dialogExportLog.scss';
 
 class DialogExportLog {
 	constructor(app, params) {

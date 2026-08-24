@@ -3,10 +3,4 @@
 
 .aboutarea {
 	@include log-pad(huge);
-
-	&--desc {
-		p {
-			@include log-pad();
-		}
-	}
 }

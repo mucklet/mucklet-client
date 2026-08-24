@@ -9,9 +9,4 @@
 		font-size: $font-size;
 	}
 
-	&--desc {
-		p {
-			@include log-pad();
-		}
-	}
 }

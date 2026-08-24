@@ -4,21 +4,6 @@
 	padding: 16px;
 	margin: 0;
 
-	&--tools {
-		padding-bottom: 8px;
-
-		&::after {
-			content: " ";
-			display: block;
-			height: 0;
-			clear: both;
-		}
-
-		> * {
-			display: inline-block;
-		}
-	}
-
 	&--image {
 		> svg {
 			background-color: $theme-svg-placeholder-200-bg;

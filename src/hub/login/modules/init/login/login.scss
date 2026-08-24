@@ -82,14 +82,16 @@
 		font-style: italic;
 	}
 
-	&--realmname {
-		color: $theme-content-strong-fg;
-	}
-
 	&--agree {
 		display: inline;
 		margin-left: 12px;
 		font-family: $font-text;
 		font-size: 13px;
+	}
+}
+
+.login-register {
+	&--realmname {
+		color: $theme-content-strong-fg;
 	}
 }

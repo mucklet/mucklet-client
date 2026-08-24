@@ -17,26 +17,4 @@
 		font-size: $font-size-small;
 	}
 
-	&--state {
-		line-height: 20px;
-	}
-}
-
-.routeclients-clients {
-
-	&-list {
-		padding-top: 4px;
-	}
-
-	&--listitem {
-		padding: 3px 0;
-	}
-}
-
-.routeclients-clientbadgecontent {
-	&--tools {
-		display: flex;
-		flex-direction: row;
-		column-gap: 6px;
-	}
 }

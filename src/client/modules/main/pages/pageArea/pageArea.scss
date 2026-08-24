@@ -22,12 +22,6 @@
 		padding-top: 8px;
 	}
 
-	&--imagebtn {
-		> .btn + .btn {
-			margin-top: 8px;
-		}
-	}
-
 	&--population {
 		font-size: $font-size-tiny;
 		position: relative;
@@ -35,9 +29,6 @@
 		cursor: help;
 	}
 
-	&--desc {
-		white-space: pre-wrap;
-	}
 }
 
 .pagearea-location {

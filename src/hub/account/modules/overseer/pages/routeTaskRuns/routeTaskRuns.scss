@@ -42,10 +42,6 @@
 }
 
 .routetaskruns-project {
-	&--subheader {
-		padding-bottom: 8px;
-	}
-
 	&--name {
 		font-size: $font-size;
 		line-height: 24px;
@@ -56,11 +52,6 @@
 		padding: 3px 0;
 	}
 
-	&--footertools {
-		> * {
-			display: inline-block;
-		}
-	}
 }
 
 .routetaskruns-taskrun {

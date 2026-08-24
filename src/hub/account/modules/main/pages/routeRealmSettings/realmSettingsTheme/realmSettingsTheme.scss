@@ -2,10 +2,6 @@
 @import '~scss/mixins';
 
 .realmsettingstheme {
-	&--theme {
-		position: relative;
-	}
-
 	&--tokens {
 		display: flex;
 		flex-direction: column;

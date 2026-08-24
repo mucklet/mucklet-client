@@ -1,5 +1,4 @@
 import OverviewAccountTitlesComponent from './OverviewAccountTitlesComponent';
-import './overviewAccountTitles.scss';
 
 /**
  * OverviewAccountTitles adds a section to the Overview to see account titles.
