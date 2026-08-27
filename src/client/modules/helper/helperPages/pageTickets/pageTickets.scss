@@ -4,18 +4,6 @@
 .pagetickets {
 	padding: 16px 14px;
 
-	&--name {
-		color: $theme-content-strong-fg;
-		font-size: $font-size;
-	}
-
-	&--name, &--email {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
 	&--tool-btn {
 		position: relative;
 	}
@@ -30,7 +18,10 @@
 		transition: opacity 0.3s;
 		opacity: 0;
 	}
+}
 
+
+.pagetickets-ticket {
 	&--badge .badge--select:hover &--copyid i {
 		opacity: 0.6;
 	}

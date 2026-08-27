@@ -140,8 +140,16 @@
 	align-items: flex-end;
 }
 
+.flex-self-end {
+	align-self: flex-end;
+}
+
 .flex-center {
 	align-items: center;
+}
+
+.flex-self-center {
+	align-self: center;
 }
 
 .flex-justify-end {

@@ -38,4 +38,10 @@
 	&--close.iconbtn {
 		float: right;
 	}
+
+	&--strong {
+		display: inline-block;
+		font-family: $font-text;
+		color: $theme-content-strong-fg;
+	}
 }

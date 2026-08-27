@@ -6,6 +6,8 @@ import './LoginRecover'; // Imported prior to LoginComponent to resolve a confli
 import LoginComponent from './LoginComponent';
 import LoginRegister from './LoginRegister';
 import LoginAgreeTerms from './LoginAgreeTerms';
+import LoginAccountDeletionPending from './LoginAccountDeletionPending';
+import LoginAccountDeletionScheduled from './LoginAccountDeletionScheduled';
 import './login.scss';
 
 const authenticateUrl = API_IDENTITY_PATH + 'authenticate?noredirect';
@@ -16,6 +18,8 @@ const agreeUrl = API_IDENTITY_PATH + 'agree?noredirect';
 const googleUrl = API_IDENTITY_PATH + 'google';
 const redirectUrl = API_IDENTITY_PATH + 'oauth2/authenticate';
 const recoverUrl = API_IDENTITY_PATH + 'recover?noredirect';
+const undeleteUrl = API_IDENTITY_PATH + 'account/undelete?noredirect';
+const keepDeletedUrl = API_IDENTITY_PATH + 'account/undelete?noredirect&keepdeleted';
 
 const crossOrigin = API_CROSS_ORIGIN;
 
@@ -69,6 +73,14 @@ class Login {
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
+					if (this.query.accountDeletionPending) {
+						this._showAccountDeletionPending(this.query.deleteAt || err.data?.deleteAt);
+						return;
+					}
+					if (this.query.accountDeleted) {
+						this._showAccountDeletionScheduled(this.query.deleteAt);
+						return;
+					}
 					if (resp.status < 500) {
 						this._showLogin();
 						return;
@@ -101,6 +113,10 @@ class Login {
 		}).then(resp => {
 			if (resp.status >= 400) {
 				return resp.json().then(err => {
+					if (err.code == 'identity.accountDeletionPending') {
+						this._showAccountDeletionPending(err.data?.deleteAt);
+						return;
+					}
 					throw err;
 				}, responseParseError(resp));
 			}
@@ -213,12 +229,56 @@ class Login {
 		});
 	}
 
+	redirectToRoot() {
+		this._afterFade(() => {
+			redirect('/', false, true);
+		});
+	}
+
+	restorePendingAccount() {
+		return fetch(undeleteUrl, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: crossOrigin ? 'include' : 'same-origin',
+		}).then(resp => {
+			if (!resp.ok) {
+				return resp.json().then(err => { throw err; }, responseParseError(resp));
+			}
+			return this._redirect();
+		});
+	}
+
+	keepPendingAccountDeleted() {
+		return fetch(keepDeletedUrl, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: crossOrigin ? 'include' : 'same-origin',
+		}).then(resp => {
+			if (!resp.ok) {
+				return resp.json().then(err => { throw err; }, responseParseError(resp));
+			}
+			this._showLogin();
+		});
+	}
+
 	_showLogin() {
 		let cb = (() => window.history.back());
 		this.module.screen.setComponent(this.params.register
 			? new LoginRegister(this.module, this.state, { close: cb })
 			: new LoginComponent(this.module, this.state, { close: cb, ...this.params }),
 		);
+	}
+
+	showLogin() {
+		this._showLogin();
+	}
+
+	_showAccountDeletionPending(deleteAt) {
+		this.module.screen.setComponent(new LoginAccountDeletionPending(this.module, deleteAt));
+	}
+
+	_showAccountDeletionScheduled(deleteAt) {
+		this.module.screen.setComponent(new LoginAccountDeletionScheduled(this.module, deleteAt));
 	}
 
 	_showAgreeTerms() {
@@ -238,17 +298,18 @@ class Login {
 
 		// If we are missing a client_id in the query params, we are not to
 		// redirect back to the oauth2, but instead to a local URL. If we have a
-		// required_uri query parameter, validate that it is a local path or
-		// belongs to the same origin.
+		// redirect_uri query parameter, validate that it belongs to the same
+		// origin.
 		if (!this.query.hasOwnProperty('client_id')) {
 			includeQuery = false;
 			url = this.query.redirect_uri || '/';
-			if (!url.startsWith('/')) {
-				let origin = window.location.origin;
-				if (url != origin && !url.startsWith(origin + '/')) {
-					// Fallback to redirect to root
+			try {
+				if (new URL(url, window.location.origin).origin != window.location.origin) {
 					url = '/';
 				}
+			} catch (err) {
+				// Fallback to redirect to root
+				url = '/';
 			}
 		}
 

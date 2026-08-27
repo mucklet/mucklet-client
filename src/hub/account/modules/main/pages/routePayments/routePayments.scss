@@ -10,7 +10,7 @@
 		font-size: $font-size-large;
 	}
 
-	&--cost, &--amountrefunded {
+	&--cost {
 		font-size: $font-size;
 		color: $theme-content-strong-fg;
 	}
@@ -19,7 +19,7 @@
 		color: $theme-content-default-fg;
 	}
 
-	&--description, &--recurrenceinfo, &--statusdescription, &--thanks {
+	&--description, &--statusdescription, &--thanks {
 		font-size: $font-size-small;
 	}
 

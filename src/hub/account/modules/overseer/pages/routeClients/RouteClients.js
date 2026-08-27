@@ -27,6 +27,7 @@ class RouteClients {
 			'confirm',
 			'dialogCreateClient',
 			'toaster',
+			'file',
 		], this._init.bind(this));
 	}
 

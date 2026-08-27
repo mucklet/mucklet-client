@@ -90,10 +90,6 @@
 	&--pad-large {
 		@include log-pad(large)
 	}
-	&--pad-huge {
-		@include log-pad(huge)
-	}
-
 	// Common styling
 	&--fieldset {
 		position: relative;
@@ -228,12 +224,6 @@
 
 	&--info {
 		color: $theme-log-info-fg;
-		padding-top: 4px;
-	}
-
-	&--title {
-		padding: 6px 0 2px 0;
-		color: $theme-log-title-fg;
 		padding-top: 4px;
 	}
 
