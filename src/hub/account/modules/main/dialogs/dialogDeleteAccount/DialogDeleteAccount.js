@@ -161,7 +161,7 @@ class DialogDeleteAccount {
 
 	_deleteWithGoogle() {
 		if (this.dialog) {
-			redirect(accountDeleteGoogleUrl, false);
+			redirect(accountDeleteGoogleUrl + '?redirect_uri=' + encodeURIComponent(window.location.href.split('?')[0]), false);
 		}
 	}
 

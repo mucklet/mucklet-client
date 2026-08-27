@@ -44,7 +44,7 @@ class Boot {
 			this.module.screen.setComponent(new ErrorScreenDialog(null, {
 				titleTxt: l10n.l('errorScreen.authenticationFailed', "Authentication failed"),
 				infoTxt: l10n.l('errorScreen.deleteAccountMismatch', "The account you selected does not match this Mucklet account. No account deletion was scheduled."),
-				buttonTxt: l10n.l('errorScreen.backToMucklet', "Go back to Account"),
+				buttonTxt: l10n.l('errorScreen.backToAccount', "Back to Account"),
 				redirectUrl: '/account',
 			}));
 			return;
