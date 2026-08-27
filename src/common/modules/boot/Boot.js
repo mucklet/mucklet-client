@@ -40,6 +40,16 @@ class Boot {
 	}
 
 	_showError(err) {
+		if (err.code == 'identity.deleteAccountMismatch') {
+			this.module.screen.setComponent(new ErrorScreenDialog(null, {
+				titleTxt: l10n.l('errorScreen.authenticationFailed', "Authentication failed"),
+				infoTxt: l10n.l('errorScreen.deleteAccountMismatch', "The account you selected does not match this Mucklet account. No account deletion was scheduled."),
+				buttonTxt: l10n.l('errorScreen.backToMucklet', "Go back to Account"),
+				redirectUrl: '/account',
+			}));
+			return;
+		}
+
 		this.module.screen.setComponent(new ErrorScreenDialog(err, {
 			infoTxt: l10n.l('errorScreen.errorAuthenticating', "An error occurred when trying to authenticate:"),
 			buttonTxt: l10n.l('errorScreen.backToLogin', "Back to login"),
