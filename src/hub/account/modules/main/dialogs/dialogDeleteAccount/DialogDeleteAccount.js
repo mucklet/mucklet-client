@@ -101,7 +101,7 @@ class DialogDeleteAccount {
 								className: 'btn warning',
 								events: { click: () => this._deleteWithPassword(model, message) },
 							}, [
-								n.component(new Txt(l10n.l('dialogDeleteAccount.deleteWithPassword', "Delete account"))),
+								n.component(new Txt(l10n.l('dialogDeleteAccount.deleteAccount', "Delete account"))),
 							]),
 						]
 						: []
@@ -109,7 +109,7 @@ class DialogDeleteAccount {
 					...(user.openIdProvider == 'google'
 						? [
 							n.elem('button', {
-								className: 'btn google dialog--btn',
+								className: 'btn warning dialog--btn',
 								events: { click: () => this._deleteWithGoogle() },
 							}, [
 								n.component(new Txt(l10n.l('dialogDeleteAccount.deleteWithGoogle', "Verify with Google and delete"))),
