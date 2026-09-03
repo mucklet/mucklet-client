@@ -20,4 +20,5 @@ module.exports = {
 	REALM_LOGIN_PATH: 'auth/oauth2/login',
 
 	HUB_PATH: 'https://mucklet.com/',
+	DOCS_PATH: 'https://docs.mucklet.com/',
 };
