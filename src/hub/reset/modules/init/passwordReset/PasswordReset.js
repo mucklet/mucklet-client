@@ -11,7 +11,7 @@ import PasswordResetComponent from './PasswordResetComponent';
 import './passwordReset.scss';
 
 const resetUrl = API_IDENTITY_PATH + 'resetpass?noredirect';
-const resetValidateUrl = API_IDENTITY_PATH + 'resetpass/validate?noredirect';;
+const resetValidateUrl = API_IDENTITY_PATH + 'resetpass/validate?noredirect';
 const redirectUrl = HUB_PATH;
 
 const crossOrigin = API_CROSS_ORIGIN;

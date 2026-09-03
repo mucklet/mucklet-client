@@ -56,7 +56,8 @@ class Version {
 	_init(module) {
 		this.module = module;
 
-		this.latestVersion = APP_VERSION;
+		this.clientVersion = APP_VERSION;
+		this.latestVersion = this.clientVersion;
 		this.clientInfo = this.module.info.getClient();
 		this.coreInfo = this.module.info.getCore();
 		this.realmInfo = this.module.info.getRealm();
