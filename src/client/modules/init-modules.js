@@ -1,5 +1,6 @@
 import Api from 'modules/api/Api';
 import Auth from 'modules/auth/Auth';
+import Promo from 'modules/promo/Promo';
 import Screen from 'modules/screen/Screen';
 import Policies from 'modules/policies/Policies';
 import ServiceWorker from 'modules/serviceWorker/ServiceWorker';
@@ -8,6 +9,7 @@ import Theme from 'modules/theme/Theme';
 const modules = {
 	api: Api,
 	auth: Auth,
+	promo: Promo,
 	screen: Screen,
 	theme: Theme,
 	policies: Policies,
