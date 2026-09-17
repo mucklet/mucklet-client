@@ -107,7 +107,7 @@ class LoginRegister {
 				})),
 				n.component('agree', new LabelToggleBox(
 					new Elem(n => n.elem('div', { className: 'login-register--agree' }, [
-						n.component(new Txt(l10n.l('login.agreePrefix', "I agree to the "))),
+						n.component(new Txt(l10n.l('login.agreePrefix', "I am at least 18 years old and I agree to the "))),
 						n.component(new Txt(l10n.l('login.privacyPolicy', "privacy policy"), {
 							tagName: 'a',
 							className: 'link',
@@ -168,7 +168,7 @@ class LoginRegister {
 				click: () => this.module.self.googleOAuth2(),
 			}, className: 'btn large google icon-left login--btn' }, [
 				n.component(new FAIcon('google')),
-				n.component(new Txt(l10n.l('login.signIn', "Sign in with Google"))),
+				n.component(new Txt(l10n.l('login.registerWithGoogle', "Register with Google"))),
 			]),
 		])), {
 			title: l10n.l('login.register', "Register"),
