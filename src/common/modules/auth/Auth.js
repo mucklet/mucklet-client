@@ -18,10 +18,6 @@ const fallbackRefreshDuration = 1000 * 60 * 60 * 24 * 6;
 // Retry transient authentication-service failures without busy-looping.
 const retryRefreshDuration = 1000 * 60;
 
-function redirectWithUri(url, pushHistory) {
-	redirect(url + (url.indexOf('?') >= 0 ? '&' : '?') + 'redirect_uri=' + encodeURIComponent(window.location.href), false, pushHistory);
-}
-
 /**
  * Auth authenticates and fetches the user, or redirects to login on fail.
  */
@@ -78,6 +74,20 @@ class Auth {
 		}
 	}
 
+	_redirectWithUri(url, pushHistory) {
+		let redirectUri = window.location.href;
+		let promo = this.app.getModule('promo');
+		let p = promo?.getPromo();
+		if (p) {
+			let uri = new URL(redirectUri);
+			if (!uri.searchParams.has('p')) {
+				uri.searchParams.set('p', p);
+				redirectUri = uri.href;
+			}
+		}
+		redirect(url + (url.indexOf('?') >= 0 ? '&' : '?') + 'redirect_uri=' + encodeURIComponent(redirectUri), false, pushHistory);
+	}
+
 	/**
 	 * Tries to authenticate without redirect on failure, if authenticate hasn't
 	 * been called yet. It returns a promise of the logged in user, or null if
@@ -111,7 +121,7 @@ class Auth {
 			.catch(err => {
 				if (err.status == 401) {
 					if (!noRedirect) {
-						redirectWithUri(oauth2Url);
+						this._redirectWithUri(oauth2Url);
 					}
 					return null;
 				}
@@ -252,7 +262,7 @@ class Auth {
 	logout(redirectToPage) {
 		this._afterFade(() => {
 			redirectToPage
-				? redirectWithUri(oauth2LogoutUrl, false)
+				? this._redirectWithUri(oauth2LogoutUrl, false)
 				: redirect(oauth2LogoutUrl, true);
 		});
 	}
@@ -263,10 +273,10 @@ class Auth {
 	 */
 	redirectToLogin(noFade) {
 		if (noFade) {
-			redirectWithUri(oauth2Url, true);
+			this._redirectWithUri(oauth2Url, true);
 		} else {
 			this._afterFade(() => {
-				redirectWithUri(oauth2Url, true);
+				this._redirectWithUri(oauth2Url, true);
 			});
 		}
 	}
@@ -278,10 +288,10 @@ class Auth {
 	redirectToRegister(noFade) {
 		let url = oauth2Url + '?login.register';
 		if (noFade) {
-			redirectWithUri(url, true);
+			this._redirectWithUri(url, true);
 		} else {
 			this._afterFade(() => {
-				redirectWithUri(url, true);
+				this._redirectWithUri(url, true);
 			});
 		}
 	}
@@ -329,7 +339,7 @@ class Auth {
 				})
 				.catch(err => {
 					if (err.code?.endsWith?.('.termsNotAgreed')) {
-						redirectWithUri(oauth2Url);
+						this._redirectWithUri(oauth2Url);
 						return;
 					}
 
