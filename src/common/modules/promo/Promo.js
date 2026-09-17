@@ -13,10 +13,10 @@ class Promo {
 		let search = window?.location?.search || '';
 		let query = URLSearchParams ? new URLSearchParams(search) : null;
 		this.promo = query?.get('p');
-		if (typeof p == 'string') {
+		if (typeof this.promo == 'string') {
 			// Store away and overwrite any previous promo code.
-			if (p && localStorage) {
-				localStorage.setItem('promo', p);
+			if (this.promo && localStorage) {
+				localStorage.setItem('promo', this.promo);
 			}
 
 			// Rewrite URL by removing `p` without reloading page.
