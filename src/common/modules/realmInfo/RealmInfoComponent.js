@@ -124,7 +124,7 @@ class RealmInfoComponent {
 
 						n.elem('div', { className: 'realminfo--sidebar' }, [
 
-							// Sign in button
+							// Enter button
 							...(this.opt?.withSignIn
 								? [
 									n.elem('div', { className: 'realminfo--signin' }, [
@@ -138,7 +138,7 @@ class RealmInfoComponent {
 											attributes: { type: 'submit' },
 											className: 'btn primary realminfo--btn icon-left',
 										}, [
-											n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
+											n.component(new Txt(l10n.l('login.enter', "Enter"))),
 											n.component(new FAIcon('sign-in')),
 										]),
 									]),
