@@ -4,6 +4,8 @@ import FAIcon from 'components/FAIcon';
 import ModelFader from 'components/ModelFader';
 import SignInMenu from './SignInMenu';
 
+const docsUrl = DOCS_PATH;
+
 /**
  * SignInComponent draws the sign in button.
  */
@@ -21,9 +23,7 @@ class SignInComponent {
 			{
 				condition: m => m.user,
 				factory: m => new Elem(n => n.elem('div', { className: 'signin' }, [
-					// n.elem('button', { className: 'signin--helpbtn signin--headerbtn iconbtn' }, [
-					// 	n.component(new FAIcon('question')),
-					// ]),
+					this._docsElem(n),
 					n.elem('menubtn', 'button', {
 						className: 'signin--loginbtn signin--headerbtn btn icon-left',
 						events: {
@@ -41,9 +41,7 @@ class SignInComponent {
 			{
 				condition: m => m.error,
 				factory: m => new Elem(n => n.elem('div', { className: 'signin' }, [
-					// n.elem('button', { className: 'signin--helpbtn signin--headerbtn iconbtn' }, [
-					// 	n.component(new FAIcon('question')),
-					// ]),
+					this._docsElem(n),
 					n.elem('button', {
 						className: 'signin--joinbtn signin--headerbtn btn',
 						events: {
@@ -86,6 +84,17 @@ class SignInComponent {
 		} else {
 			this._openMenu(el);
 		}
+	}
+
+	_docsElem(n) {
+		return n.elem('a', {
+			className: 'signin--helpbtn signin--headerbtn iconbtn',
+			attributes: {
+				href: docsUrl,
+			},
+		}, [
+			n.component(new FAIcon('question')),
+		]);
 	}
 
 	_openMenu(el) {
