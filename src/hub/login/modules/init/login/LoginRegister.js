@@ -107,7 +107,7 @@ class LoginRegister {
 				})),
 				n.component('agree', new LabelToggleBox(
 					new Elem(n => n.elem('div', { className: 'login-register--agree' }, [
-						n.component(new Txt(l10n.l('login.agreePrefix', "I agree to the "))),
+						n.component(new Txt(l10n.l('login.agreePrefix', "I am at least 18 years old and I agree to the "))),
 						n.component(new Txt(l10n.l('login.privacyPolicy', "privacy policy"), {
 							tagName: 'a',
 							className: 'link',
