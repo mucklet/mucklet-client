@@ -99,7 +99,7 @@ class LoginComponent {
 					className: 'btn large primary login--login pad-top-xl login--btn',
 				}, [
 					n.elem('loginSpinner', 'div', { className: 'spinner spinner--btn fade hide' }),
-					n.component(new Txt(l10n.l('login.login', "Login"))),
+					n.component(new Txt(l10n.l('login.signIn', "Sign in"))),
 				]),
 			]),
 			n.elem('div', { className: 'login--divider' }, [
@@ -109,7 +109,7 @@ class LoginComponent {
 				click: () => this.module.self.googleOAuth2(),
 			}, className: 'btn large google icon-left login--btn' }, [
 				n.component(new FAIcon('google')),
-				n.component(new Txt(l10n.l('login.signIn', "Sign in with Google"))),
+				n.component(new Txt(l10n.l('login.signInWithGoogle', "Sign in with Google"))),
 			]),
 			n.elem('div', { className: 'login--divider' }, [
 				n.component(new Txt(l10n.l('login.or', 'or'), { tagName: 'h3' })),
@@ -118,7 +118,7 @@ class LoginComponent {
 				click: () => this._onRegister(),
 			}, className: 'btn login--register icon-left login--btn' }, [
 				n.component(new FAIcon('pencil-square-o')),
-				n.component(new Txt(l10n.l('login.registerPlayer', "Register Player"))),
+				n.component(new Txt(l10n.l('login.registerPlayer', "Register player"))),
 			]),
 			n.elem('div', { className: 'login--policies' }, [
 				n.component(new Txt(l10n.l('login.privacyPolicy', "Privacy Policy"), {

@@ -168,7 +168,7 @@ class LoginRegister {
 				click: () => this.module.self.googleOAuth2(),
 			}, className: 'btn large google icon-left login--btn' }, [
 				n.component(new FAIcon('google')),
-				n.component(new Txt(l10n.l('login.signIn', "Sign in with Google"))),
+				n.component(new Txt(l10n.l('login.registerWithGoogle', "Register with Google"))),
 			]),
 		])), {
 			title: l10n.l('login.register', "Register"),
